@@ -45,4 +45,4 @@ If you are using SymClosestWannier in your scientific research, please help our 
 
 ## Documentation
 
-Refer to the [documentation](https://github.com/CMT-MU/SymClosestWannier/) for detailed installation and usage.
+Refer to the [documentation](https://cmt-mu.github.io/SymClosestWannier/) for detailed installation and usage.

@@ -19,7 +19,7 @@ SymClosestWannier can be installed from PyPI using pip on Python >= 3.9:
 pip install symclosestwannier
 ```
 You can also visit
-[PyPI](https://pypi.org/project/symclosestwannier/) ors [GitHub](https://github.com/rikuto-oiwa-phys/SymClosestWannier/) to download the source.
+[PyPI](https://pypi.org/project/symclosestwannier/) ors [GitHub](https://github.com/CMT-MU/SymClosestWannier/) to download the source.
 
 
 ## Authors
