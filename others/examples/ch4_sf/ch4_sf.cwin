@@ -1,0 +1,17 @@
+restart = wannierise ! symmetrize
+
+outdir = './'
+
+disentangle = false
+proj_min    = 0.5
+verbose     = true
+
+write_hr = .true.
+write_sr = .true.
+
+# symmetrization
+symmetrization = true
+mp_outdir      = './sym'
+mp_seedname    = ch4_sf
+ket_amn        = [(s,U)@C_1,(s,D)@C_1,(pz,U)@C_1,(pz,D)@C_1,(px,U)@C_1,(px,D)@C_1,(py,U)@C_1,(py,D)@C_1,(s,U)@H_1,(s,D)@H_1,(s,U)@H_2,(s,D)@H_2,(s,U)@H_3,(s,D)@H_3,(s,U)@H_4,(s,D)@H_4]
+irreps         = full

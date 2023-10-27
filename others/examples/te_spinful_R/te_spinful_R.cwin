@@ -1,0 +1,25 @@
+restart = wannierise ! symmetrize
+
+outdir = './'
+
+disentangle       = true
+proj_min          = 0.2
+dis_win_emax      = 9
+dis_win_emin      = 0
+smearing_temp_max = 3.0
+smearing_temp_min = 1e-6
+delta             = 1e-12
+svd               = true
+verbose           = true
+
+write_hr = .true.
+write_sr = .true.
+
+N1 = 50
+
+# symmetrization
+symmetrization = true
+mp_outdir      = 'sym'
+mp_seedname    = te_spinful_R_50
+ket_amn        = [(pz,U)@Te_1,(pz,D)@Te_1,(px,U)@Te_1,(px,D)@Te_1,(py,U)@Te_1,(py,D)@Te_1,(pz,U)@Te_2,(pz,D)@Te_2,(px,U)@Te_2,(px,D)@Te_2,(py,U)@Te_2,(py,D)@Te_2,(pz,U)@Te_3,(pz,D)@Te_3,(px,U)@Te_3,(px,D)@Te_3,(py,U)@Te_3,(py,D)@Te_3]
+irreps         = full ! full/all/list

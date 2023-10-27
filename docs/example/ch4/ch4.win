@@ -1,0 +1,65 @@
+num_bands = 46
+num_wann = 16 ! C: 4, H: 4
+num_print_cycles = 0
+
+!!! one-shot !!!
+dis_num_iter = 0
+num_iter = 0
+!!! optimize !!!
+
+
+begin projections
+!C:s;px;py;pz
+!H1:s
+!H2:s
+!H3:s
+!H4:s
+C:l=0;l=1:r=2(u,d)[0,0,1]
+H1:l=0:r=1(u,d)[0,0,1]
+H2:l=0:r=1(u,d)[0,0,1]
+H3:l=0:r=1(u,d)[0,0,1]
+H4:l=0:r=1(u,d)[0,0,1]
+end projections
+
+begin atoms_frac
+C  0.000000000       0.000000000       0.000000000
+H1 0.06275797425946456  0.06275797425946456 0.06275797425946456
+H2 -0.06275797425946456 -0.06275797425946456 0.06275797425946456
+H3 0.06275797425946456  -0.06275797425946456 -0.06275797425946456
+H4 -0.06275797425946456 0.06275797425946456 -0.06275797425946456
+end atoms_frac
+
+!gamma_only = T
+guiding_centres = T
+!bands_plot =T
+write_hr = T
+wannier_plot = T
+wannier_plot_supercell = 2
+
+spinors = .true.
+!dis_win_min = 4.6
+!dis_win_max = 32.0
+!dis_froz_min = 4.6
+!dis_froz_max = 17.0
+!dis_num_iter = 100
+!dis_mix_ratio = 0.5
+!write_proj = .true.
+!translate_home_cell = .true.
+
+
+##
+##
+##
+begin unit_cell_cart
+bohr
+  18.897259886   0.00000000     0.00000000
+  0.00000000     18.897259886   0.00000000
+  0.00000000     0.00000000     18.897259886
+end unit_cell_cart
+
+mp_grid : 1 1 1 
+
+begin kpoints
+0.00000000  0.00000000  0.00000000
+end kpoints
+

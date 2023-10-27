@@ -1,0 +1,19 @@
+restart = wannierise ! symmetrize
+
+outdir = './'
+
+disentangle = false
+proj_min    = 0.5
+verbose     = true
+
+write_hr = .true.
+write_sr = .true.
+
+N1 = 50
+
+# symmetrization
+symmetrization = true
+mp_outdir      = 'sym'
+mp_seedname    = mos2_11orbs_10
+ket_amn        = [du@Mo_1,dzx@Mo_1,dyz@Mo_1,dv@Mo_1,dxy@Mo_1,pz@S_1,px@S_1,py@S_1,pz@S_2,px@S_2,py@S_2]
+irreps         = full ! full/all/list

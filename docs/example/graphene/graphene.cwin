@@ -1,0 +1,27 @@
+restart = wannierise ! symmetrize
+
+outdir = './'
+
+disentangle       = true
+proj_min          = 0.2
+dis_win_emax      = 10
+dis_win_emin      = -30
+smearing_temp_max = 0.1
+smearing_temp_min = 1e-6
+delta             = 1e-12
+svd               = true
+verbose           = true
+
+write_hr = .true.
+write_sr = .true.
+
+N1 = 50
+
+# symmetrization
+symmetrization = true
+mp_outdir      = './'
+mp_seedname    = graphene
+ket_amn        = [pz@C_1,pz@C_2]
+irreps         = full ! full/all/list
+
+
