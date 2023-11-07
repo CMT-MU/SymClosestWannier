@@ -80,10 +80,11 @@ class SymCW(dict):
                 N1 = self["info"]["N1"]
                 A = NSArray(unit_cell_cart, "matrix", fmt="value")
                 B = A.inverse()
-                kpoints_path, k_linear, _ = NSArray.grid_path(kpoint, kpoint_path, N1, B)
+                kpoints_path, k_linear, k_dis_pos = NSArray.grid_path(kpoint, kpoint_path, N1, B)
             else:
                 kpoints_path = None
                 k_linear = None
+                k_dis_pos = None
 
             # number of k points
             num_k = Ak.shape[0]
@@ -219,6 +220,8 @@ class SymCW(dict):
                 self["data"]["kpoints_path"] = kpoints_path.tolist()
             if k_linear is not None:
                 self["data"]["k_linear"] = k_linear.tolist()
+            if k_dis_pos is not None:
+                self["data"]["k_dis_pos"] = k_dis_pos
 
             self["data"]["matrix_dict"] = None
         else:
@@ -484,7 +487,7 @@ class SymCW(dict):
             N1 = self["info"]["N1"]
             A = model["detail"]["A"]
             B = NSArray(A, "matrix", fmt="value").T.inverse()
-            kpoints_path, k_linear, _ = NSArray.grid_path(kpoint, kpoint_path, N1, B)
+            kpoints_path, _, _ = NSArray.grid_path(kpoint, kpoint_path, N1, B)
 
         #####
 

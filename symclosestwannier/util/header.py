@@ -82,7 +82,7 @@ info_header_str = """
 - num_bands : # of bands passed to the code (int).
 - num_wann : # of CWFs (int).
 - kpoint* : representative k points.
-- kpoint_path* : high-symmetry line in k space.d
+- kpoint_path* : high-symmetry line in k space.
 - unit_cell_cart* : transform matrix, [a1,a2,a3].
 - atoms_frac* : atomic positions in fractional coordinates with respect to the lattice vectors, {atom: [r1,r2,r3]}.
 - atoms_cart* : atomic positions in cartesian coordinates, {atom: [rx,ry,rz]}.
@@ -94,6 +94,7 @@ data_header_str = """
 - rpoints : lattice points data, [[r1, r2, r3]] (crystal coordinate).
 - kpoints_path* :  reciprocal lattice points along high symmetry line in Brillouin zonen, [[k1, k2, k3]] (crystal coordinate).
 - k_linear* : reciprocal lattice points along high symmetry line, [k].
+- k_dis_pos* : disconnected linear positions and labels, {disconnected linear position: label}.
 - Pk : projectability of each Kohn-Sham state in k-space.
 - Hk : Hamiltonian matrix elements in k-space.
 - Sk : Overlap matrix elements in k-space.
