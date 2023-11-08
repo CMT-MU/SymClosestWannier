@@ -74,7 +74,7 @@ class SymCW(dict):
                 ".", self["info"]["seedname"], encoding="utf-8"
             )
 
-            # band calculationd
+            # band calculation
             if kpoint is not None and kpoint_path is not None:
                 kpoint = {i: NSArray(j, "vector", fmt="value") for i, j in kpoint.items()}
                 N1 = self["info"]["N1"]
