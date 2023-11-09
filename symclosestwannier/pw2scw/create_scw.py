@@ -75,6 +75,7 @@ def create_scw(seedname="cwannier"):
     # band calculation
     if "kpoint" in scw["info"] and "kpoint_path" in scw["info"]:
         k_linear = NSArray(scw["data"]["k_linear"], "vector", fmt="value")
+        k_dis_pos = scw["data"]["k_dis_pos"]
 
         if os.path.isfile(f"{seedname}.band.gnu"):
             ref_filename = f"{seedname}.band.gnu"
@@ -92,7 +93,9 @@ def create_scw(seedname="cwannier"):
 
         ef = scw["info"]["fermi_energy"]
 
-        output_linear_dispersion(".", seedname + "_band.txt", k_linear, Ek, Uk, ref_filename=ref_filename, a=a, ef=ef)
+        output_linear_dispersion(
+            ".", seedname + "_band.txt", k_linear, Ek, Uk, ref_filename=ref_filename, a=a, ef=ef, k_dis_pos=k_dis_pos
+        )
 
         if scw["info"]["symmetrization"]:
             rel = os.path.relpath(outdir, mp_outdir)
@@ -107,5 +110,13 @@ def create_scw(seedname="cwannier"):
             Ek, Uk = np.linalg.eigh(scw.Hk_sym_path)
 
             output_linear_dispersion(
-                mp_outdir, mp_seedname + "_band.txt", k_linear, Ek, Uk, ref_filename=ref_filename, a=a, ef=ef
+                mp_outdir,
+                mp_seedname + "_band.txt",
+                k_linear,
+                Ek,
+                Uk,
+                ref_filename=ref_filename,
+                a=a,
+                ef=ef,
+                k_dis_pos=k_dis_pos,
             )
