@@ -46,3 +46,9 @@ If you are using SymClosestWannier in your scientific research, please help our 
 ## Documentation
 
 Refer to the [documentation](https://cmt-mu.github.io/SymClosestWannier/) for detailed installation and usage.
+
+
+## To Do
+
+- add function fo automatically set ket_amn.
+- add function to read seedname.mmn, seedname.uHu, and seedname.spn files.
