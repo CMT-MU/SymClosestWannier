@@ -137,7 +137,10 @@ def cwin_reader(topdir, seedname="cwannier", encoding="UTF-8"):
         if len(line) == 0:
             continue
 
-        if line[0] in ("!", "#"):
+        if "!" in line[0]:
+            continue
+
+        if "#" in line[0]:
             continue
 
         k = line[0]
