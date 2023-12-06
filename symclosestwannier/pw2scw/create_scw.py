@@ -29,19 +29,34 @@ def create_scw(seedname="cwannier"):
     mp_seedname = scw["info"]["mp_seedname"]
 
     scw.write(f"{seedname}_info.py", scw["info"], SymCW._info_header(), seedname)
-    scw.write(f"{seedname}_data.py", scw["data"], SymCW._data_header(), seedname)
+
+    d = scw["data"].copy()
+    del d["kpoints"]
+    del d["rpoints"]
+    del d["Pk"]
+    del d["Hk"]
+    del d["Sk"]
+    del d["Hk_nonortho"]
+    del d["matrix_dict"]
+    scw.write(f"{seedname}_data.py", d, SymCW._data_header(), seedname)
 
     if model_dict["write_hr"]:
         Hr_dict = SymCW.matrix_dict_r(scw.Hr, scw["data"]["rpoints"])
         Hr_str = "".join(
-            [f"{n1}  {n2}  {n3}  {a}  {b}  {np.real(v)}  {np.imag(v)}\n" for (n1, n2, n3, a, b), v in Hr_dict.items()]
+            [
+                f"{n1}  {n2}  {n3}  {a}  {b}  {'{:.6f}'.format(np.real(v))}  {'{:.6f}'.format(np.imag(v))}\n"
+                for (n1, n2, n3, a, b), v in Hr_dict.items()
+            ]
         )
         scw.write(f"{seedname}_hr.dat", Hr_str, SymCW._hr_header(), None)
 
     if model_dict["write_sr"]:
         Sr_dict = SymCW.matrix_dict_r(scw.Sr, scw["data"]["rpoints"])
         Sr_str = "".join(
-            [f"{n1}  {n2}  {n3}  {a}  {b}  {np.real(v)}  {np.imag(v)}\n" for (n1, n2, n3, a, b), v in Sr_dict.items()]
+            [
+                f"{n1}  {n2}  {n3}  {a}  {b}  {'{:.6f}'.format(np.real(v))}  {'{:.6f}'.format(np.imag(v))}\n"
+                for (n1, n2, n3, a, b), v in Sr_dict.items()
+            ]
         )
         scw.write(f"{seedname}_sr.dat", Sr_str, SymCW._sr_header(), None)
 
@@ -50,7 +65,7 @@ def create_scw(seedname="cwannier"):
             Hr_sym_dict = SymCW.matrix_dict_r(scw.Hr_sym, scw["data"]["rpoints_mp"])
             Hr_sym_str = "".join(
                 [
-                    f"{n1}  {n2}  {n3}  {a}  {b}  {np.real(v)}  {np.imag(v)}\n"
+                    f"{n1}  {n2}  {n3}  {a}  {b}  {'{:.6f}'.format(np.real(v))}  {'{:.6f}'.format(np.imag(v))}\n"
                     for (n1, n2, n3, a, b), v in Hr_sym_dict.items()
                 ]
             )
@@ -60,17 +75,35 @@ def create_scw(seedname="cwannier"):
             Sr_sym_dict = SymCW.matrix_dict_r(scw.Sr_sym, scw["data"]["rpoints_mp"])
             Sr_sym_str = "".join(
                 [
-                    f"{n1}  {n2}  {n3}  {a}  {b}  {np.real(v)}  {np.imag(v)}\n"
+                    f"{n1}  {n2}  {n3}  {a}  {b}  {'{:.6f}'.format(np.real(v))}  {'{:.6f}'.format(np.imag(v))}\n"
                     for (n1, n2, n3, a, b), v in Sr_sym_dict.items()
                 ]
             )
             scw.write(f"{seedname}_sr_sym.dat", Sr_sym_str, SymCW._sr_header(), None, dir=mp_outdir)
 
-        z = "".join([f"{j+1}    {zj}    {tag}    {v} \n " for j, ((zj, tag), v) in enumerate(scw["data"]["z"].items())])
+        z = "".join(
+            [
+                f"{j+1}    {zj}    {tag}    {'{:.6f}'.format(v)}  \n "
+                for j, ((zj, tag), v) in enumerate(scw["data"]["z"].items())
+            ]
+        )
         scw.write(f"{mp_seedname}_z.dat", z, SymCW._z_header(), None, dir=mp_outdir)
 
-        s = "".join([f"{j+1}    {zj}    {tag}    {v} \n " for j, ((zj, tag), v) in enumerate(scw["data"]["s"].items())])
+        s = "".join(
+            [
+                f"{j+1}    {zj}    {tag}    {'{:.6f}'.format(v)}  \n "
+                for j, ((zj, tag), v) in enumerate(scw["data"]["s"].items())
+            ]
+        )
         scw.write(f"{mp_seedname}_s.dat", s, SymCW._s_header(), None, dir=mp_outdir)
+
+        z_nonortho = "".join(
+            [
+                f"{j+1}    {zj}    {tag}    {'{:.6f}'.format(v)}  \n "
+                for j, ((zj, tag), v) in enumerate(scw["data"]["z_nonortho"].items())
+            ]
+        )
+        scw.write(f"{mp_seedname}_z_nonortho.dat", z_nonortho, SymCW._z_header(), None, dir=mp_outdir)
 
     # band calculation
     if "kpoint" in scw["info"] and "kpoint_path" in scw["info"]:

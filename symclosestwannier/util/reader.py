@@ -314,7 +314,8 @@ def eig_reader(topdir, seedname, encoding="UTF-8"):
     eig_data = [[v for v in lst.rstrip("\n").split(" ") if v != ""] for lst in eig_data]
     eig_data = [[float(v) if "." in v else int(v) for v in lst] for lst in eig_data]
 
-    num_bands, num_k = np.max([v[0] for v in eig_data]), np.max([v[1] for v in eig_data])
+    num_bands = np.max([v[0] for v in eig_data])
+    num_k = np.max([v[1] for v in eig_data])
 
     Eks = np.array([[eig_data[k * num_bands + m][2] for m in range(num_bands)] for k in range(num_k)])
 
