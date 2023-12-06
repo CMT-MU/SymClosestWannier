@@ -70,11 +70,11 @@ class SymCW(dict):
 
             # Kohn-Sham energy
             eig = Eig(".", self["info"]["seedname"], encoding="utf-8")
-            Ek = eig.Ek
+            Ek = eig["Ek"]
 
             # overlap between Kohn-Sham orbitals and non-orthogonalized atomic orbitals
             amn = Amn(".", self["info"]["seedname"], encoding="utf-8")
-            Ak = amn.Ak
+            Ak = amn["Ak"]
 
             # wannier input
             kpoints, kpoint, kpoint_path, unit_cell_cart, atoms_frac, atoms_cart = win_reader(
@@ -94,11 +94,11 @@ class SymCW(dict):
                 k_dis_pos = None
 
             # number of k points
-            num_k = amn.num_k
+            num_k = amn["num_k"]
             # number of Kohn-Sham orbitals
-            num_bands = amn.num_bands
+            num_bands = amn["num_bands"]
             # number of pseudo atomic orbitals
-            num_wann = amn.num_wann
+            num_wann = amn["num_wann"]
 
             if num_bands < num_wann:
                 raise Exception("number of Kohn-Sham orbitals is smaller than that of the pseudo atomic orbitals.")
@@ -699,7 +699,7 @@ class SymCW(dict):
     @classmethod
     def get_kpoints(cls, nk1, nk2, nk3):
         """
-        get reciprocal lattice points (crystal coordinate), k = (k1, k2, k3).
+        get k-points (crystal coordinate), k = (k1, k2, k3).
         k = k1*b1 + k2*b2 + k3*b3
         bj: reciprocal lattice vector.
 
@@ -740,14 +740,14 @@ class SymCW(dict):
     @classmethod
     def kpoints_to_rpoints(cls, kpoints):
         """
-        get lattice points corresponding to reciprocal lattice points.
+        get lattice points corresponding to k-points.
 
         Args:
-            kpoints (ndarray): reciprocal lattice points (crystal coordinate).
+            kpoints (ndarray): k-points (crystal coordinate).
             nk3 (int): # of lattice point b3 direction.
 
         Returns:
-            ndarray: reciprocal lattice points (crystal coordinate).
+            ndarray: k-points (crystal coordinate).
         """
         kpoints = np.array(kpoints, dtype=float)
         N1 = len(sorted(set(list(kpoints[:, 0]))))
@@ -768,7 +768,7 @@ class SymCW(dict):
 
         Args:
             Ok (ndarray): arbitrary operator in k-space representation, O_{ab}(k) = <φ_{a}(k)|O|φ_{b}(k)>.
-            kpoints (ndarray): reciprocal lattice points used in DFT calculation, [[k1, k2, k3]] (crystal coordinate).
+            kpoints (ndarray): k-points used in DFT calculation, [[k1, k2, k3]] (crystal coordinate).
             rpoints (ndarray, optional): lattice points (crystal coordinate, [[n1,n2,n3]], nj: integer).
             atoms_positions (ndarray, optional): atom's position in fractional coordinates.
 
@@ -817,7 +817,7 @@ class SymCW(dict):
         Args:
             Or (ndarray): real-space representation of the given operator, O_{ab}(R) = <φ_{a}(R)|O|φ_{b}(0)>.
             rpoints (ndarray): lattice points (crystal coordinate, [[n1,n2,n3]], nj: integer).
-            kpoints (ndarray): reciprocal lattice points used in DFT calculation, [[k1, k2, k3]] (crystal coordinate).
+            kpoints (ndarray): k-points used in DFT calculation, [[k1, k2, k3]] (crystal coordinate).
             atoms_positions (ndarray, optional): atom's position in fractional coordinates.
 
         Returns:
@@ -910,7 +910,7 @@ class SymCW(dict):
 
         Args:
             Ok (ndarray): arbitrary operator in k-space representation, O_{ab}(k) = <φ_{a}(k)|H|φ_{b}(k)>.
-            kpoints (ndarray): reciprocal lattice points used in DFT calculation, [[k1, k2, k3]] (crystal coordinate).
+            kpoints (ndarray): k-points used in DFT calculation, [[k1, k2, k3]] (crystal coordinate).
             diagonal (bool, optional): diagonal matrix ?
 
         Returns:
