@@ -19,6 +19,7 @@ from multipie.tag.tag_multipole import TagMultipole
 from symclosestwannier.util.reader import amn_reader, eig_reader, win_reader
 from symclosestwannier.util.amn import Amn
 from symclosestwannier.util.eig import Eig
+from symclosestwannier.util.win import Win
 from symclosestwannier.util.nnkp import Nnkp
 from symclosestwannier.util.header import (
     start_msg,
@@ -77,14 +78,18 @@ class SymCW(dict):
             amn = Amn(".", self["info"]["seedname"], encoding="utf-8")
             Ak = amn["Ak"]
 
-            print("start")
-
             nnkp = Nnkp(".", self["info"]["seedname"], encoding="utf-8")
 
+            print(nnkp["atom_pos_r"])
+
             # wannier input
-            kpoints, kpoint, kpoint_path, unit_cell_cart, atoms_frac, atoms_cart = win_reader(
-                ".", self["info"]["seedname"], encoding="utf-8"
-            )
+            win = Win(".", self["info"]["seedname"], encoding="utf-8")
+            kpoints = win["kpoints"]
+            kpoint = win["kpoint"]
+            kpoint_path = win["kpoint_path"]
+            unit_cell_cart = win["unit_cell_cart"]
+            atoms_frac = win["atoms_frac"]
+            atoms_cart = win["atoms_cart"]
 
             # band calculation
             if kpoint is not None and kpoint_path is not None:
