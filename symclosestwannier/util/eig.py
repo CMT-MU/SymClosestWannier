@@ -1,11 +1,13 @@
 """
 Eig manages Kohn-Sham energies in seedname.eig file, E_{m}(k).
 """
+import os
+import gzip
+import tarfile
+import itertools
 
 import numpy as np
 import scipy.linalg
-import os
-import itertools
 
 
 # ==================================================
@@ -48,6 +50,9 @@ class Eig(dict):
         elif os.path.exists(file_eig + ".gz"):
             with gzip.open(file_eig + ".gz", "rt") as fp:
                 eig_data = fp.readlines()
+        elif os.path.exists(file_eig + ".tar.gz"):
+            with tarfile.open(file_eig + "tar.gz", "rt") as fp:
+                amn_data = fp.readlines()
         else:
             raise Exception("failed to read eig file: " + file_eig)
 

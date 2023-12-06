@@ -5,6 +5,7 @@ Amn manages overlap matrix elements in seedname.amn file, A_{mn}(k) = <ψ^{KS}_{
 """
 import os
 import gzip
+import tarfile
 import itertools
 
 import numpy as np
@@ -27,7 +28,7 @@ class Amn(dict):
             seedname (str): seedname.
             encoding (str, optional): encoding.
         """
-        file_amn = topdir + "/" + seedname + ".amn"
+        file_amn = os.path.join(topdir, "{}.{}".format(seedname, "amn"))
 
         self.update(self.read(file_amn))
 
@@ -51,6 +52,9 @@ class Amn(dict):
                 amn_data = fp.readlines()
         elif os.path.exists(file_amn + ".gz"):
             with gzip.open(file_amn + ".gz", "rt") as fp:
+                amn_data = fp.readlines()
+        elif os.path.exists(file_amn + ".tar.gz"):
+            with tarfile.open(file_amn + "tar.gz", "rt") as fp:
                 amn_data = fp.readlines()
         else:
             raise Exception("failed to read amn file: " + file_amn)

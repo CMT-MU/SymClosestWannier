@@ -2,8 +2,11 @@
 Nnkp manages information needed to determine the required overlap elements Mmn(k,b) and projections A_{mn}(k).
 """
 import os
-import numpy as np
+import gzip
+import tarfile
 import itertools
+
+import numpy as np
 import scipy.linalg
 
 
@@ -31,11 +34,6 @@ class Nnkp(dict):
         file_nnkp = topdir + "/" + seedname + ".nnkp"
 
         self.update(self.read(file_nnkp))
-
-        for k, v in self.items():
-            print(k)
-            print(v)
-            print("\n\n")
 
     # ==================================================
     def read(self, file_nnkp):
@@ -74,6 +72,9 @@ class Nnkp(dict):
         elif os.path.exists(file_nnkp + ".gz"):
             with gzip.open(file_nnkp + ".gz", "rt") as fp:
                 nnkp_data = fp.readlines()
+        elif os.path.exists(file_nnkp + ".tar.gz"):
+            with tarfile.open(file_nnkp + "tar.gz", "rt") as fp:
+                amn_data = fp.readlines()
         else:
             raise Exception("failed to read nnkp file: " + file_nnkp)
 
