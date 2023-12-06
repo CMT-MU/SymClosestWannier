@@ -1,5 +1,6 @@
 """
-Symmetry-adapted Closest Wannier (SymCW) tight-binding model based on Symmetry-Adapted Multipole Basis (SAMB) and Plane-Wave (PW) DFT calculation.
+Closest Wannier (CW) tight-binding (TB) model based on Plane-Wave (PW) DFT calculation.
+CW TB model can be symmetrized by using Symmetry-Adapted Multipole Basis (SAMB).
 """
 import os
 import sys
@@ -38,9 +39,10 @@ from symclosestwannier.util.header import (
 
 
 # ==================================================
-class SymCW(dict):
+class CW(dict):
     """
-    Symmetry-adapted Closest Wannier (SymCW) tight-binding model based on Symmetry-Adapted Multipole Basis (SAMB) and Plane-Wave (PW) DFT calculation.
+    Closest Wannier (CW) tight-binding (TB) model based on Plane-Wave (PW) DFT calculation.
+    CW TB model can be symmetrized by using Symmetry-Adapted Multipole Basis (SAMB).
     """
 
     # ==================================================
@@ -219,7 +221,7 @@ class SymCW(dict):
 
             self["data"] = {
                 "kpoints": kpoints.tolist(),
-                "rpoints": SymCW.kpoints_to_rpoints(kpoints).tolist(),
+                "rpoints": CW.kpoints_to_rpoints(kpoints).tolist(),
                 #
                 "Pk": Pk.tolist(),
                 #
@@ -256,24 +258,24 @@ class SymCW(dict):
     # ==================================================
     @property
     def Hr(self):
-        return SymCW.fourier_transform_k_to_r(self["data"]["Hk"], self["data"]["kpoints"])[0]
+        return CW.fourier_transform_k_to_r(self["data"]["Hk"], self["data"]["kpoints"])[0]
 
     # ==================================================
     @property
     def Sr(self):
-        return SymCW.fourier_transform_k_to_r(self["data"]["Sk"], self["data"]["kpoints"])[0]
+        return CW.fourier_transform_k_to_r(self["data"]["Sk"], self["data"]["kpoints"])[0]
 
     # ==================================================
     @property
     def Hk_path(self):
-        return SymCW.interpolate(
+        return CW.interpolate(
             self["data"]["Hk"], self["data"]["kpoints"], self["data"]["kpoints_path"], self["data"]["rpoints"]
         )
 
     # ==================================================
     @property
     def Sk_path(self):
-        return SymCW.interpolate(
+        return CW.interpolate(
             self["data"]["Sk"], self["data"]["kpoints"], self["data"]["kpoints_path"], self["data"]["rpoints"]
         )
 
@@ -414,11 +416,11 @@ class SymCW(dict):
         kpoints = self["data"]["kpoints"]
         Hk = np.array(self["data"]["Hk"])
 
-        Hr_dict = SymCW.matrix_dict_r(self.Hr, self["data"]["rpoints"])
-        Sr_dict = SymCW.matrix_dict_r(self.Sr, self["data"]["rpoints"])
+        Hr_dict = CW.matrix_dict_r(self.Hr, self["data"]["rpoints"])
+        Sr_dict = CW.matrix_dict_r(self.Sr, self["data"]["rpoints"])
 
-        Hr_nonortho = SymCW.fourier_transform_k_to_r(self["data"]["Hk_nonortho"], self["data"]["kpoints"])[0]
-        Hr_nonortho_dict = SymCW.matrix_dict_r(Hr_nonortho, self["data"]["rpoints"])
+        Hr_nonortho = CW.fourier_transform_k_to_r(self["data"]["Hk_nonortho"], self["data"]["kpoints"])[0]
+        Hr_nonortho_dict = CW.matrix_dict_r(Hr_nonortho, self["data"]["rpoints"])
 
         #####
 
@@ -491,7 +493,7 @@ class SymCW(dict):
         )
         start = time.time()
 
-        z = SymCW.samb_decomp(Hr_dict, Zr_dict)
+        z = CW.samb_decomp(Hr_dict, Zr_dict)
 
         end = time.time()
         self._print(f"done ({'{:.2f}'.format(end - start)} [sec])", mode="a")
@@ -501,7 +503,7 @@ class SymCW(dict):
         self._print("   - decomposing overlap Sr as linear combination of SAMBs ... ", end="", mode="a")
         start = time.time()
 
-        s = SymCW.samb_decomp(Sr_dict, Zr_dict)
+        s = CW.samb_decomp(Sr_dict, Zr_dict)
 
         end = time.time()
         self._print(f"done ({'{:.2f}'.format(end - start)} [sec])", mode="a")
@@ -515,7 +517,7 @@ class SymCW(dict):
         )
         start = time.time()
 
-        z_nonortho = SymCW.samb_decomp(Hr_nonortho_dict, Zr_dict)
+        z_nonortho = CW.samb_decomp(Hr_nonortho_dict, Zr_dict)
 
         end = time.time()
         self._print(f"done ({'{:.2f}'.format(end - start)} [sec])", mode="a")
@@ -569,7 +571,7 @@ class SymCW(dict):
         #####
 
         if not mat["molecule"]:
-            Hk_path = SymCW.interpolate(Hk, kpoints, kpoints_path, rpoints)
+            Hk_path = CW.interpolate(Hk, kpoints, kpoints_path, rpoints)
             Ek_path, _ = np.linalg.eigh(Hk_path)
             Ek_path_sym, _ = np.linalg.eigh(self.Hk_sym_path)
             num_k, num_wann = Ek_path_sym.shape
@@ -649,7 +651,7 @@ class SymCW(dict):
         ]
 
         Or = self.construct_Or(z)
-        Ok, _ = SymCW.fourier_transform_r_to_k(Or, rpoints_mp, kpoints, atoms_positions=atoms_positions)
+        Ok, _ = CW.fourier_transform_r_to_k(Or, rpoints_mp, kpoints, atoms_positions=atoms_positions)
 
         return Ok
 
@@ -761,7 +763,7 @@ class SymCW(dict):
         N1 = N1 - 1 if N1 % 2 == 0 else N1
         N2 = N2 - 1 if N2 % 2 == 0 else N2
         N3 = N3 - 1 if N3 % 2 == 0 else N3
-        rpoints, _, _ = SymCW.get_rpoints(N1, N2, N3)
+        rpoints, _, _ = CW.get_rpoints(N1, N2, N3)
 
         return rpoints
 
@@ -782,7 +784,7 @@ class SymCW(dict):
         """
         # lattice points (crystal coordinate, [[n1,n2,n3]], nj: integer).
         if rpoints is None:
-            rpoints = SymCW.kpoints_to_rpoints(kpoints)
+            rpoints = CW.kpoints_to_rpoints(kpoints)
 
         Ok = np.array(Ok, dtype=complex)
         kpoints = np.array(kpoints, dtype=float)
@@ -870,8 +872,8 @@ class SymCW(dict):
         Returns:
             ndarray: matrix elements at each k point, O_{ab}(k) = <φ_{a}(k)|O|φ_{b}(k)>.
         """
-        Or, rpoints = SymCW.fourier_transform_k_to_r(Ok, kpoints_0, rpoints, atoms_positions)
-        Ok_interpolated, _ = SymCW.fourier_transform_r_to_k(Or, rpoints, kpoints, atoms_positions)
+        Or, rpoints = CW.fourier_transform_k_to_r(Ok, kpoints_0, rpoints, atoms_positions)
+        Ok_interpolated, _ = CW.fourier_transform_r_to_k(Or, rpoints, kpoints, atoms_positions)
 
         return Ok_interpolated
 

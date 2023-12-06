@@ -153,13 +153,13 @@ See for more detaied file formats [MultiPie](https://github.com/CMT-MU/MultiPie)
     ```
 
 3. At the folder where these two input files exist, do the following to create SymCW tight-binding models.
-See for more detail, try "**pw2scw --help**" command.
+See for more detail, try "**pw2cw --help**" command.
     ```
     $ cd example/ch4
-    $ pw2scw ch4
+    $ pw2cw ch4
 
     $ cd example/graphene
-    $ pw2scw graphene
+    $ pw2cw graphene
     ```
 1. The following files are created in **ch4** and **graphene** folders.
     - ch4.cwout, ch4_info.py, ch4_data.py, ch4_hr.dat, ch4_sr.dat, ch4_hr_sym.dat, ch4_sr_sym.dat, ch4_z.dat, ch4_s.dat.

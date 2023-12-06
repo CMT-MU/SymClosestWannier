@@ -21,7 +21,7 @@ end_msg = """
 
 input_header_str = """
 === input parameters (* optional [default] or only for crystal value) ===
-* For execution use: pw2scw [seedname]
+* For execution use: pw2cw [seedname]
     - If a seedname string is given the code will read its input from a file seedname.cwin. The default value is cwannier.
       One can also equivalently provide the string seedname.cwin instead of seedname.
 
