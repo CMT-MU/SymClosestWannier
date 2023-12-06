@@ -265,7 +265,7 @@ def win_reader(topdir, seedname, encoding="UTF-8"):
 def amn_reader(topdir, seedname, encoding="UTF-8"):
     """
     read seedname.amn file which is obtained by plane-wave DFT calculation software, such as QuantumEspresso and VASP.
-    seedname.amn file includes overlap matrix elements between Kohn-Sham orbitals (KSOs) [ψ^{KS}_{m}(k)] and pseudo atomic (PAOs) orbitals [φ^{A}_{n}(k)] at each k point, A_{mn}(k) = <ψ^{KS}_{m}(k)|φ^{A}_{n}(k)>.
+    seedname.amn file includes overlap matrix elements between Kohn-Sham orbitals (KSOs) [ψ^{KS}_{m}(k)] and pseudo atomic (PAOs) orbitals [φ_{n}(k)] at each k point, A_{mn}(k) = <ψ^{KS}_{m}(k)|φ_{n}(k)>.
 
     Args:
         topdir (str): directory of seedname.amn file.
@@ -320,6 +320,50 @@ def eig_reader(topdir, seedname, encoding="UTF-8"):
     Eks = np.array([[eig_data[k * num_bands + m][2] for m in range(num_bands)] for k in range(num_k)])
 
     return Eks
+
+
+# ==================================================
+def mmn_reader(topdir, seedname, encoding="UTF-8"):
+    """
+    read seedname.mmn file which is obtained by plane-wave DFT calculation software, such as QuantumEspresso and VASP.
+    seedname.mmn file includes overlap matrix, M^{(b)}_{mn}(k) = <u^{KS}_{m}(k)|u^{KS}_{n}(k+b)> (<r|ψ^{KS}_{m}(k)> = <r|u^{KS}_{m}(k)>e^{ik・r}).
+
+    Args:
+        topdir (str): directory of seedname.mmn file.
+        seedname (str): seedname.
+        encoding (str, optional): encoding.
+
+    Returns:
+        : overlap matrix, M^{(b)}_{mn}(k) = <u^{KS}_{m}(k)|u^{KS}_{n}(k+b)>
+
+    Notes:
+        - m: Kohn-Sham orbital # starting from 1.
+        - n: pseudo atomic orbital # starting from 1.
+        - b: b-vectors.
+    """
+    f = open(topdir + "/" + seedname + ".mmn", "r", encoding=encoding)
+    mmn_data = f.readlines()
+
+    _ = f.readline()  # first line starts with "IBZ" when prefix_ibz.mmn
+
+    num_bands, num_k, num_b = [int(x) for x in f.readline().split()]
+
+    Mbks = np.zeros([num_k, num_b, num_bands, num_bands], dtype=complex)
+    kpb_info = np.zeros([num_k, num_b, 5], dtype=int)
+
+    for ik, ib in itertools.product(range(num_k), range(num_b)):
+        d = [int(x) for x in f.readline().split()]
+        assert ik == d[0] - 1, "{} {}".format(ik, d[0])
+        kpb_info[ik, ib, :] = d
+        for m, n in itertools.product(range(num_bands), repeat=2):
+            dat = [float(x) for x in f.readline().split()]
+            Mbks[ik, ib, n, m] = dat[0] + 1j * dat[1]
+
+    f.close()
+
+    Mbks = np.transpose(Mbks[:, :, :, :], axes=(0, 1, 3, 2))
+
+    return Mbks, kpb_info
 
 
 # ==================================================

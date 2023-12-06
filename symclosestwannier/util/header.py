@@ -2,7 +2,7 @@
 headers.
 """
 
-start_str = """
+start_msg = """
 \n********************************************************************************
 *                                                                              *
 *  Create Closest Wannier Tight-Binding Model from Plane-Wave DFT Calculation  *
@@ -10,7 +10,7 @@ start_str = """
 ********************************************************************************\n
 """
 
-end_str = """
+end_msg = """
 \n********************************************************************************
 *                                                                              *
 *                            Successfully Completed                            *
@@ -54,7 +54,7 @@ input_header_str = """
 """
 
 
-info_header_str = """
+info_header = """
 === information for SymCW (* optional [default] or only for crystal value) ===
 - restart* : the restart position (str), ["wannierize"].
 - outdir* : input and output files are found in this directory (str), ["./"].
@@ -88,7 +88,7 @@ info_header_str = """
 - atoms_cart* : atomic positions in cartesian coordinates, {atom: [rx,ry,rz]}.
 """
 
-data_header_str = """
+data_header = """
 === data for SymCW (* optional [default] or only for crystal value) ===
 - kpoints : reciprocal lattice points used in DFT calculation, [[k1, k2, k3]] (crystal coordinate).
 - rpoints : lattice points data, [[r1, r2, r3]] (crystal coordinate).
@@ -107,13 +107,13 @@ data_header_str = """
 """
 
 
-kpoints_header_str = "# reciprocal lattice points used in DFT calculation, [[k1, k2, k3]] (crystal coordinate)."
+kpoints_header = "# reciprocal lattice points used in DFT calculation, [[k1, k2, k3]] (crystal coordinate)."
 
 
-rpoints_header_str = "# lattice points data, [[r1, r2, r3]] (crystal coordinate)."
+rpoints_header = "# lattice points data, [[r1, r2, r3]] (crystal coordinate)."
 
 
-hk_header_str = """
+hk_header = """
 === Hamiltonian matrix elements in k-space ===
 - {(k2,k2,k3,a,b) = H_{ab}(k)}.
 - H_{ab}(k) : <φ_{a}(k)|H|φ_{b}(k)>.
@@ -122,7 +122,7 @@ hk_header_str = """
 """
 
 
-sk_header_str = """
+sk_header = """
 === Overlap matrix elements in k-space ===
 - {(k2,k2,k3,a,b) = S_{ab}(k)}.
 - S_{ab}(k) : <φ_{a}(k)|φ_{b}(k)>.
@@ -131,7 +131,7 @@ sk_header_str = """
 """
 
 
-pk_header_str = """
+pk_header = """
 === Projectability of each Kohn-Sham state in k-space ===
 - {(k2,k2,k3,n,n) = P_{n}(k)}.
 - P_{n}(k) : Σ_{a} |<ψ_{n}(k)|φ_{a}(k)>|^2.
@@ -141,7 +141,7 @@ pk_header_str = """
 """
 
 
-hr_header_str = """
+hr_header = """
 === Hamiltonian matrix elements in real-space ===
 - n1 n2 n3 a b re(H_{ab}(R)) im(H_{ab}(R))
     - H_{ab}(R) : <φ_{a}(R)|H|φ_{b}(0)>.
@@ -149,7 +149,7 @@ hr_header_str = """
     - R = (n1,n2,n3) : lattice points (crystal coordinate, nj: integer).
 """
 
-sr_header_str = """
+sr_header = """
 === Overlap matrix elements in real-space ===
 - n1 n2 n3 a b re(S_{ab}(R)) im(S_{ab}(R))
     - S_{ab}(R) : <φ_{a}(R)|φ_{b}(0)>.
@@ -158,7 +158,7 @@ sr_header_str = """
 """
 
 
-z_header_str = """
+z_header = """
 === The expansion coefficients of the Hamiltonian matrix expressed by a linear combination of SAMBs ===
 - j z_j TagMultipole coefficient
     - H(R) ~ sum_{j} z_j Z_j(R)
@@ -167,7 +167,7 @@ z_header_str = """
 """
 
 
-s_header_str = """
+s_header = """
 === The expansion coefficients of the Overlap matrix expressed by a linear combination of SAMBs ===
 - j z_j TagMultipole coefficient
     - S(R) ~ sum_{j} z_j Z_j(R)

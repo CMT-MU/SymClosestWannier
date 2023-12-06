@@ -17,20 +17,21 @@ from gcoreutils.nsarray import NSArray
 from multipie.tag.tag_multipole import TagMultipole
 
 from symclosestwannier.util.reader import amn_reader, eig_reader, win_reader
+from symclosestwannier.util.amn import Amn
 from symclosestwannier.util.header import (
-    start_str,
-    end_str,
-    info_header_str,
-    data_header_str,
-    kpoints_header_str,
-    rpoints_header_str,
-    hk_header_str,
-    sk_header_str,
-    pk_header_str,
-    hr_header_str,
-    sr_header_str,
-    z_header_str,
-    s_header_str,
+    start_msg,
+    end_msg,
+    info_header,
+    data_header,
+    kpoints_header,
+    rpoints_header,
+    hk_header,
+    sk_header,
+    pk_header,
+    hr_header,
+    sr_header,
+    z_header,
+    s_header,
 )
 
 
@@ -52,10 +53,10 @@ class SymCW(dict):
         os.chdir(model_dict["outdir"])
         sys.path.append(os.getcwd())
         model_dict["outdir"] = os.getcwd().replace(os.sep, "/")
-
         self["info"] = model_dict
 
-        self._print(start_str)
+        #####
+        self._print(start_msg)
         start0 = time.time()
 
         self._print(f"* {self['info']['seedname']} \n", mode="a")
@@ -69,7 +70,8 @@ class SymCW(dict):
             # Kohn-Sham energy
             Ek = eig_reader(".", self["info"]["seedname"], encoding="utf-8")
             # overlap between Kohn-Sham orbitals and non-orthogonalized atomic orbitals
-            Ak = amn_reader(".", self["info"]["seedname"], encoding="utf-8")
+            amn = Amn(".", self["info"]["seedname"], encoding="utf-8")
+            Ak = amn.Ak
 
             # wannier input
             kpoints, kpoint, kpoint_path, unit_cell_cart, atoms_frac, atoms_cart = win_reader(
@@ -89,17 +91,14 @@ class SymCW(dict):
                 k_dis_pos = None
 
             # number of k points
-            num_k = Ak.shape[0]
+            num_k = amn.num_k
             # number of Kohn-Sham orbitals
-            num_bands = Ak.shape[1]
+            num_bands = amn.num_bands
             # number of pseudo atomic orbitals
-            num_wann = Ak.shape[2]
+            num_wann = amn.num_wann
 
             if num_bands < num_wann:
                 raise Exception("number of Kohn-Sham orbitals is smaller than that of the pseudo atomic orbitals.")
-
-            # overlap matrix, Sk = Ak^† @ Ak (num_wann × num_wann matrix)
-            Sk = Ak.transpose(0, 2, 1).conjugate() @ Ak
 
             # projectability
             Pk = np.real(np.diagonal(Ak @ Ak.transpose(0, 2, 1).conjugate(), axis1=1, axis2=2))
@@ -244,7 +243,7 @@ class SymCW(dict):
 
         end0 = time.time()
         self._print(f"\n - total elapsed_time: {'{:.2f}'.format(end0 - start0)} [sec]", mode="a")
-        self._print(end_str, mode="a")
+        self._print(end_msg, mode="a")
 
     # ==================================================
     @property
@@ -972,54 +971,54 @@ class SymCW(dict):
     # ==================================================
     @classmethod
     def _info_header(cls):
-        return info_header_str
+        return info_header
 
     # ==================================================
     @classmethod
     def _data_header(cls):
-        return data_header_str
+        return data_header
 
     # ==================================================
     @classmethod
     def _kpoints_header(cls):
-        return kpoints_header_str
+        return kpoints_header
 
     # ==================================================
     @classmethod
     def _rpoints_header(cls):
-        return rpoints_header_str
+        return rpoints_header
 
     # ==================================================
     @classmethod
     def _hk_header(cls):
-        return hk_header_str
+        return hk_header
 
     # ==================================================
     @classmethod
     def _sk_header(cls):
-        return sk_header_str
+        return sk_header
 
     # ==================================================
     @classmethod
     def _pk_header(cls):
-        return pk_header_str
+        return pk_header
 
     # ==================================================
     @classmethod
     def _hr_header(cls):
-        return hr_header_str
+        return hr_header
 
     # ==================================================
     @classmethod
     def _sr_header(cls):
-        return sr_header_str
+        return sr_header
 
     # ==================================================
     @classmethod
     def _z_header(cls):
-        return z_header_str
+        return z_header
 
     # ==================================================
     @classmethod
     def _s_header(cls):
-        return s_header_str
+        return s_header
