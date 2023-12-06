@@ -15,8 +15,6 @@ import scipy.linalg
 class Amn(dict):
     """
     Amn manages overlap matrix elements in seedname.amn file, A_{mn}(k) = <ψ^{KS}_{m}(k)|φ_{n}(k)>.
-    - ψ^{KS}_{m}(k): Kohn-Sham orbitals (KSOs).
-    - φ_{n}(k): pseudo atomic (PAOs) orbitals.
 
     Attributes:
         num_k (int): # of k points.
