@@ -14,11 +14,6 @@ import scipy.linalg
 class Nnkp(dict):
     """
     Nnkp manages information needed to determine the required overlap elements Mmn(k,b) and projections A_{mn}(k).
-
-    Attributes:
-        num_k (int): # of k points.
-        num_bands (int): # of bands passed to the code.
-        Ek (ndarray): Kohn-Sham energies, E_{m}(k).
     """
 
     # ==================================================
