@@ -18,6 +18,7 @@ from multipie.tag.tag_multipole import TagMultipole
 
 from symclosestwannier.util.reader import amn_reader, eig_reader, win_reader
 from symclosestwannier.util.amn import Amn
+from symclosestwannier.util.eig import Eig
 from symclosestwannier.util.header import (
     start_msg,
     end_msg,
@@ -68,7 +69,9 @@ class SymCW(dict):
             start = time.time()
 
             # Kohn-Sham energy
-            Ek = eig_reader(".", self["info"]["seedname"], encoding="utf-8")
+            eig = Eig(".", self["info"]["seedname"], encoding="utf-8")
+            Ek = eig.Ek
+
             # overlap between Kohn-Sham orbitals and non-orthogonalized atomic orbitals
             amn = Amn(".", self["info"]["seedname"], encoding="utf-8")
             Ak = amn.Ak
