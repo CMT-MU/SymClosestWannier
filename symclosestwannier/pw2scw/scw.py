@@ -5,6 +5,7 @@ import os
 import sys
 import codecs
 import time
+import pickle
 
 import sympy as sp
 import numpy as np
@@ -69,6 +70,7 @@ class SymCW(dict):
             Ek = eig_reader(".", self["info"]["seedname"], encoding="utf-8")
             # overlap between Kohn-Sham orbitals and non-orthogonalized atomic orbitals
             Ak = amn_reader(".", self["info"]["seedname"], encoding="utf-8")
+
             # wannier input
             kpoints, kpoint, kpoint_path, unit_cell_cart, atoms_frac, atoms_cart = win_reader(
                 ".", self["info"]["seedname"], encoding="utf-8"
@@ -206,6 +208,8 @@ class SymCW(dict):
             if atoms_cart is not None:
                 self["info"]["atoms_cart"] = {k: str(v.tolist()) for k, v in atoms_cart.items()}
 
+            S2k = np.array([spl.sqrtm(Sk[k]) for k in range(num_k)])
+
             self["data"] = {
                 "kpoints": kpoints.tolist(),
                 "rpoints": SymCW.kpoints_to_rpoints(kpoints).tolist(),
@@ -214,6 +218,7 @@ class SymCW(dict):
                 #
                 "Hk": Hk.tolist(),
                 "Sk": Sk.tolist(),
+                "Hk_nonortho": (S2k @ Hk @ S2k).tolist(),
             }
 
             if kpoints_path is not None:
@@ -340,10 +345,14 @@ class SymCW(dict):
         if type(file_dict) == str:
             full = dir + "/" + file_dict
             if os.path.isfile(full):
-                dic = read_dict(full)
-                self._print(f"  * read '{full}'.", mode="a")
+                if "pkl" in full:
+                    dic = pickle.load(open(full, "rb"))
+                else:
+                    dic = read_dict(full)
             else:
                 raise Exception(f"cannot open {full}.")
+
+            self._print(f"  * read '{full}'.", mode="a")
         else:
             dic = file_dict
 
@@ -401,6 +410,9 @@ class SymCW(dict):
         Hr_dict = SymCW.matrix_dict_r(self.Hr, self["data"]["rpoints"])
         Sr_dict = SymCW.matrix_dict_r(self.Sr, self["data"]["rpoints"])
 
+        Hr_nonortho = SymCW.fourier_transform_k_to_r(self["data"]["Hk_nonortho"], self["data"]["kpoints"])[0]
+        Hr_nonortho_dict = SymCW.matrix_dict_r(Hr_nonortho, self["data"]["rpoints"])
+
         #####
 
         self._print("   - reading output of multipie ... ", end="\n", mode="a")
@@ -408,7 +420,11 @@ class SymCW(dict):
 
         model = self.read(f"{self['info']['mp_seedname']}_model.py", dir=mp_outdir)
         samb = self.read(f"{self['info']['mp_seedname']}_samb.py", dir=mp_outdir)
-        mat = self.read(f"{self['info']['mp_seedname']}_matrix.py", dir=mp_outdir)
+
+        try:
+            mat = self.read(f"{self['info']['mp_seedname']}_matrix.pkl", dir=mp_outdir)
+        except:
+            mat = self.read(f"{self['info']['mp_seedname']}_matrix.py", dir=mp_outdir)
 
         ket_samb = model["info"]["ket"]
 
@@ -422,6 +438,10 @@ class SymCW(dict):
             Hr_dict = {(n1, n2, n3, idx_list[a], idx_list[b]): v for (n1, n2, n3, a, b), v in Hr_dict.items()}
             Sr_dict = {(n1, n2, n3, idx_list[a], idx_list[b]): v for (n1, n2, n3, a, b), v in Sr_dict.items()}
 
+            Hr_nonortho_dict = {
+                (n1, n2, n3, idx_list[a], idx_list[b]): v for (n1, n2, n3, a, b), v in Hr_nonortho_dict.items()
+            }
+
         if irreps == "all":
             irreps = model["info"]["generate"]["irrep"]
         elif irreps == "full":
@@ -433,9 +453,12 @@ class SymCW(dict):
 
         tag_dict = {zj: tag for zj, (tag, _) in samb["data"]["Z"].items()}
         Zr_dict = {
-            (zj, tag_dict[zj]): {k: complex(sp.sympify(v)) for k, v in d.items()} for zj, d in mat["matrix"].items()
+            (zj, tag_dict[zj]): {tuple(sp.sympify(k)): complex(sp.sympify(v)) for k, v in d.items()}
+            for zj, d in mat["matrix"].items()
         }
-        mat["matrix"] = {zj: {k: complex(sp.sympify(v)) for k, v in d.items()} for zj, d in mat["matrix"].items()}
+        mat["matrix"] = {
+            zj: {tuple(sp.sympify(k)): complex(sp.sympify(v)) for k, v in d.items()} for zj, d in mat["matrix"].items()
+        }
 
         lattice = model["info"]["group"][1].split("/")[1].replace(" ", "")[0]
         if lattice != "P":
@@ -478,6 +501,20 @@ class SymCW(dict):
 
         #####
 
+        self._print(
+            "   - decomposing non-orthogonal Hamiltonian Hr as linear combination of SAMBs ... ",
+            end="",
+            mode="a",
+        )
+        start = time.time()
+
+        z_nonortho = SymCW.samb_decomp(Hr_nonortho_dict, Zr_dict)
+
+        end = time.time()
+        self._print(f"done ({'{:.2f}'.format(end - start)} [sec])", mode="a")
+
+        #####
+
         rpoints_mp = [(n1, n2, n3) for Zj_dict in Zr_dict.values() for (n1, n2, n3, _, _) in Zj_dict.keys()]
         rpoints_mp = sorted(list(set(rpoints_mp)), key=rpoints_mp.index)
 
@@ -499,6 +536,7 @@ class SymCW(dict):
         self["data"] = {
             "z": z,
             "s": s,
+            "z_nonortho": z_nonortho,
             #
             "rpoints_mp": rpoints_mp,
         } | self["data"]
