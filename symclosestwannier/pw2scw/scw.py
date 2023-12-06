@@ -19,6 +19,7 @@ from multipie.tag.tag_multipole import TagMultipole
 from symclosestwannier.util.reader import amn_reader, eig_reader, win_reader
 from symclosestwannier.util.amn import Amn
 from symclosestwannier.util.eig import Eig
+from symclosestwannier.util.nnkp import Nnkp
 from symclosestwannier.util.header import (
     start_msg,
     end_msg,
@@ -75,6 +76,10 @@ class SymCW(dict):
             # overlap between Kohn-Sham orbitals and non-orthogonalized atomic orbitals
             amn = Amn(".", self["info"]["seedname"], encoding="utf-8")
             Ak = amn["Ak"]
+
+            print("start")
+
+            nnkp = Nnkp(".", self["info"]["seedname"], encoding="utf-8")
 
             # wannier input
             kpoints, kpoint, kpoint_path, unit_cell_cart, atoms_frac, atoms_cart = win_reader(

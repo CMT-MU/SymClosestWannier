@@ -1,7 +1,7 @@
 """
 Nnkp manages information needed to determine the required overlap elements Mmn(k,b) and projections A_{mn}(k).
 """
-
+import os
 import numpy as np
 import itertools
 import scipy.linalg
@@ -68,14 +68,16 @@ class Nnkp(dict):
         """
         d = {}
 
-        try:
-            if os.path.exists(file_nnkp):
-                with open(file_nnkp) as fp:
-                    nnkp_data = fp.readlines()
-            elif os.path.exists(file_nnkp + ".gz"):
-                with gzip.open(file_nnkp + ".gz", "rt") as fp:
-                    nnkp_data = fp.readlines()
+        if os.path.exists(file_nnkp):
+            with open(file_nnkp) as fp:
+                nnkp_data = fp.readlines()
+        elif os.path.exists(file_nnkp + ".gz"):
+            with gzip.open(file_nnkp + ".gz", "rt") as fp:
+                nnkp_data = fp.readlines()
+        else:
+            raise Exception("failed to read nnkp file: " + file_nnkp)
 
+        try:
             for i, line in enumerate(nnkp_data):
                 if "begin real_lattice" in line:
                     d["A"] = np.genfromtxt(nnkp_data[i + 1 : i + 4], dtype=float)
@@ -89,8 +91,8 @@ class Nnkp(dict):
 
                 if "begin nnkpts" in line:
                     d["num_b"] = int(nnkp_data[i + 1])
-                    dat = np.genfromtxt(nnkp_data[i + 2 : i + 2 + d["num_k"] * num_b], dtype=int)
-                    d["nnkpts"] = dat.reshape(d["num_k"], num_b, 5)
+                    dat = np.genfromtxt(nnkp_data[i + 2 : i + 2 + d["num_k"] * d["num_b"]], dtype=int)
+                    d["nnkpts"] = dat.reshape(d["num_k"], d["num_b"], 5)
 
                 if "begin projections" in line or "begin spinor_projections" in line:
                     spinors = "begin spinor_projections" in line
@@ -108,7 +110,6 @@ class Nnkp(dict):
                         else:
                             proj_str = nnkp_data[i + 2 + 2 * j]
                         proj_dat = proj_str.split()
-                        print(proj_dat)
                         nw2l[j] = int(proj_dat[3])
                         nw2m[j] = int(proj_dat[4])
                         nw2r[j, :] = [float(x) for x in proj_dat[0:3]]
@@ -159,9 +160,9 @@ class Nnkp(dict):
                 k = d["kpoints"][kv[0] - 1]
                 k_b = d["kpoints"][kv[1] - 1]
                 b = k_b - k + np.array(kv[2:5])
-                bvec_cart[i, :] = self.k_crys2cart(b, B)
-                bvec_crys[i, :] = self.k_cart2crys(bvec_cart[i, :], A)
-                bbmat[i, :] = [bvec[i, a] * bvec[i, b] for a, b in itertools.product(range(3), range(3))]
+                bvec_cart[i, :] = self.k_crys2cart(b, d["B"])
+                bvec_crys[i, :] = self.k_cart2crys(bvec_cart[i, :], d["A"])
+                bbmat[i, :] = [bvec_cart[i, a] * bvec_cart[i, b] for a, b in itertools.product(range(3), range(3))]
 
             delta_ab = np.array([a == b for a, b in itertools.product(range(3), range(3))]).astype(int)
             wb = np.matmul(delta_ab, scipy.linalg.pinv(bbmat))
