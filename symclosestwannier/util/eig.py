@@ -26,11 +26,7 @@ class Eig(dict):
         """
         file_eig = topdir + "/" + seedname + ".eig"
 
-        num_k, num_bands, Ek = self.read(file_eig)
-
-        self["num_k"] = num_k
-        self["num_bands"] = num_bands
-        self["Ek"] = Ek
+        self.update(self.read(file_eig))
 
     # ==================================================
     def read(self, file_eig):
@@ -41,33 +37,30 @@ class Eig(dict):
             file_eig (str): file name.
 
         Returns:
-            tuple:
+            dict:
                 num_k (int): # of k points.
                 num_bands (int): # of bands passed to the code.
                 Ek (ndarray): Kohn-Sham energies, E_{m}(k).
         """
-        try:
-            if os.path.exists(file_eig):
-                with open(file_eig) as fp:
-                    eig_data = fp.readlines()
-            elif os.path.exists(file_eig + ".gz"):
-                with gzip.open(file_eig + ".gz", "rt") as fp:
-                    eig_data = fp.readlines()
+        if os.path.exists(file_eig):
+            with open(file_eig) as fp:
+                eig_data = fp.readlines()
+        elif os.path.exists(file_eig + ".gz"):
+            with gzip.open(file_eig + ".gz", "rt") as fp:
+                eig_data = fp.readlines()
+        else:
+            raise Exception("failed to read eig file: " + file_eig)
 
-            eig_data = [[v for v in lst.rstrip("\n").split(" ") if v != ""] for lst in eig_data]
-            eig_data = [[float(v) if "." in v else int(v) for v in lst] for lst in eig_data]
+        eig_data = [[v for v in lst.rstrip("\n").split(" ") if v != ""] for lst in eig_data]
+        eig_data = [[float(v) if "." in v else int(v) for v in lst] for lst in eig_data]
 
-            num_bands = np.max([v[0] for v in eig_data])
-            num_k = np.max([v[1] for v in eig_data])
-            Ek = np.array([[eig_data[k * num_bands + m][2] for m in range(num_bands)] for k in range(num_k)])
+        num_bands = np.max([v[0] for v in eig_data])
+        num_k = np.max([v[1] for v in eig_data])
+        Ek = np.array([[eig_data[k * num_bands + m][2] for m in range(num_bands)] for k in range(num_k)])
 
-        except Exception as e:
-            print("failed to read eig file: " + file_eig)
-            print("type:" + str(type(e)))
-            print("args:" + str(e.args))
-            print(str(e))
+        d = {"num_k": num_k, "num_bands": num_bands, "Ek": Ek}
 
-        return num_k, num_bands, Ek
+        return d
 
     # ==================================================
     def write_eig(self, file_eig):

@@ -29,12 +29,7 @@ class Amn(dict):
         """
         file_amn = topdir + "/" + seedname + ".amn"
 
-        num_k, num_bands, num_wann, Ak = self.read(file_amn)
-
-        self["num_k"] = num_k
-        self["num_bands"] = num_bands
-        self["num_wann"] = num_wann
-        self["Ak"] = Ak
+        self.update(self.read(file_amn))
 
     # ==================================================
     def read(self, file_amn):
@@ -45,31 +40,28 @@ class Amn(dict):
             file_amn (str): file name.
 
         Returns:
-            tuple:
+            dict:
                 num_k (int): # of k points.
                 num_bands (int): # of bands passed to the code.
                 num_wann (int): # of CWFs.
                 amn (ndarray): Overlap matrix elements, A_{mn}(k) = <ψ^{KS}_{m}(k)|φ_{n}(k)>.
         """
-        try:
-            if os.path.exists(file_amn):
-                with open(file_amn) as fp:
-                    amn_data = fp.readlines()
-            elif os.path.exists(file_amn + ".gz"):
-                with gzip.open(file_amn + ".gz", "rt") as fp:
-                    amn_data = fp.readlines()
+        if os.path.exists(file_amn):
+            with open(file_amn) as fp:
+                amn_data = fp.readlines()
+        elif os.path.exists(file_amn + ".gz"):
+            with gzip.open(file_amn + ".gz", "rt") as fp:
+                amn_data = fp.readlines()
+        else:
+            raise Exception("failed to read amn file: " + file_amn)
 
-            num_bands, num_k, num_wann = [int(x) for x in amn_data[1].split()]
-            amn_data = np.genfromtxt(amn_data[2:]).reshape(num_k, num_wann, num_bands, 5)
-            Ak = np.transpose(amn_data[:, :, :, 3] + 1j * amn_data[:, :, :, 4], axes=(0, 2, 1))
+        num_bands, num_k, num_wann = [int(x) for x in amn_data[1].split()]
+        amn_data = np.genfromtxt(amn_data[2:]).reshape(num_k, num_wann, num_bands, 5)
+        Ak = np.transpose(amn_data[:, :, :, 3] + 1j * amn_data[:, :, :, 4], axes=(0, 2, 1))
 
-        except Exception as e:
-            print("failed to read amn file: " + file_amn)
-            print("type:" + str(type(e)))
-            print("args:" + str(e.args))
-            print(str(e))
+        d = {"num_k": num_k, "num_bands": num_bands, "num_wann": num_wann, "Ak": Ak}
 
-        return num_k, num_bands, num_wann, Ak
+        return d
 
     # ==================================================
     def write(self, file_amn):
