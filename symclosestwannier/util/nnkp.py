@@ -31,7 +31,7 @@ class Nnkp(dict):
             seedname (str): seedname.
             encoding (str, optional): encoding.
         """
-        file_nnkp = topdir + "/" + seedname + ".nnkp"
+        file_nnkp = os.path.join(topdir, "{}.{}".format(seedname, "nnkp"))
 
         self.update(self.read(file_nnkp))
 
@@ -59,7 +59,7 @@ class Nnkp(dict):
                 nw2r (ndarray):
                 atom_orb (ndarray):
                 atom_pos (ndarray):
-                atom_pos_r (ndarray):
+                atoms_frac (ndarray): atomic positions in fractional coordinates with respect to the lattice vectors, {atom: [r1,r2,r3]}.
                 bvec_cart: b-vectors (cartesian coordinate).
                 bvec_crys: b-vectors (crystal coordinate).
                 wb (ndarray): weight for each k-points and nearest-neighbour k-points.
@@ -88,7 +88,8 @@ class Nnkp(dict):
 
                 if "begin kpoints" in line:
                     d["num_k"] = int(nnkp_data[i + 1])
-                    d["kpoints"] = np.genfromtxt(nnkp_data[i + 2 : i + 2 + d["num_k"]], dtype=float)
+                    kpoints = np.genfromtxt(nnkp_data[i + 2 : i + 2 + d["num_k"]], dtype=float)
+                    d["kpoints"] = np.mod(kpoints, 1)  # 0 <= kj < 1.0
 
                 if "begin nnkpts" in line:
                     d["num_b"] = int(nnkp_data[i + 1])
@@ -116,9 +117,9 @@ class Nnkp(dict):
                         nw2r[j, :] = [float(x) for x in proj_dat[0:3]]
                         atom_orb_strlist.append(proj_str[0:40])
                         atom_pos_strlist.append(proj_str[0:35])
-                    # set atom_pos_r, atom_pos, atom_orb
+                    # set atoms_frac, atom_pos, atom_orb
                     #   for example, Fe case
-                    #   atom_pos_r: [[0.0, 0.0, 0.0]]
+                    #   atoms_frac: [[0.0, 0.0, 0.0]]
                     #   atom_pos: [[0, 1, 2]]
                     #   atom_orb: [[0, 1], [2, 3, 4, 5, 6, 7], [8, 9, 10, 11, 12, 13, 14, 15, 16, 17]]
                     atom_orb_uniq = sorted(set(atom_orb_strlist), key=atom_orb_strlist.index)
@@ -128,15 +129,15 @@ class Nnkp(dict):
                         indexes = [j for j, x in enumerate(atom_orb_strlist) if x == orb_str]
                         atom_orb.append(indexes)
                     atom_pos = []
-                    atom_pos_r = []
+                    atoms_frac = []
                     for pos_str in atom_pos_uniq:
                         indexes = [j for j, x in enumerate(atom_orb_uniq) if pos_str in x]
                         atom_pos.append(indexes)
-                        atom_pos_r.append([float(x) for x in pos_str.split()[0:3]])
-                    # print ("atom_pos_r: " + str(atom_pos_r))
+                        atoms_frac.append([float(x) for x in pos_str.split()[0:3]])
+                    # print ("atoms_frac: " + str(atoms_frac))
                     # print ("atom_pos: " + str( atom_pos))
                     # print ("atom_orb: " + str(atom_orb))
-                    num_atom = len(atom_pos_r)
+                    num_atom = len(atoms_frac)
                     for i, pos in enumerate(atom_pos):
                         for p in pos:
                             for n in atom_orb[p]:
@@ -150,7 +151,7 @@ class Nnkp(dict):
                     d["nw2r"] = nw2r
                     d["atom_orb"] = atom_orb
                     d["atom_pos"] = atom_pos
-                    d["atom_pos_r"] = atom_pos_r
+                    d["atoms_frac"] = atoms_frac
 
             # calculate b-vectors
             bvec_cart = np.zeros([d["num_b"], 3])

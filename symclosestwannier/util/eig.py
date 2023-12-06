@@ -26,7 +26,7 @@ class Eig(dict):
             seedname (str): seedname.
             encoding (str, optional): encoding.
         """
-        file_eig = topdir + "/" + seedname + ".eig"
+        file_eig = os.path.join(topdir, "{}.{}".format(seedname, "eig"))
 
         self.update(self.read(file_eig))
 
