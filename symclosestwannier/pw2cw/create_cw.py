@@ -36,6 +36,7 @@ def create_cw(seedname="cwannier"):
     del d["kpoints"]
     del d["rpoints"]
     del d["Pk"]
+    del d["Uk"]
     del d["Hk"]
     del d["Sk"]
     del d["Hk_nonortho"]

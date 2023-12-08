@@ -17,10 +17,12 @@ from gcoreutils.io_util import read_dict, write_dict
 from gcoreutils.nsarray import NSArray
 from multipie.tag.tag_multipole import TagMultipole
 
-from symclosestwannier.util.reader import amn_reader, eig_reader, win_reader
 from symclosestwannier.util.amn import Amn
 from symclosestwannier.util.eig import Eig
+from symclosestwannier.util.mmn import Mmn
+from symclosestwannier.util.nnkp import Nnkp
 from symclosestwannier.util.win import Win
+from symclosestwannier.util.berry import Berry
 from symclosestwannier.util.header import (
     start_msg,
     end_msg,
@@ -78,6 +80,9 @@ class CW(dict):
             # overlap between Kohn-Sham orbitals and non-orthogonalized atomic orbitals
             amn = Amn(".", self["info"]["seedname"], encoding="utf-8")
             Ak = amn["Ak"]
+
+            # nnkp = Nnkp(".", self["info"]["seedname"], encoding="utf-8")
+            # mmn = Mmn(".", self["info"]["seedname"], encoding="utf-8")
 
             # wannier input
             win = Win(".", self["info"]["seedname"], encoding="utf-8")
@@ -225,6 +230,8 @@ class CW(dict):
                 #
                 "Pk": Pk.tolist(),
                 #
+                "Uk": Uk,
+                #
                 "Hk": Hk.tolist(),
                 "Sk": Sk.tolist(),
                 "Hk_nonortho": (S2k @ Hk @ S2k).tolist(),
@@ -248,6 +255,8 @@ class CW(dict):
             ket_amn = self["info"].get("ket_amn", None)
             irreps = self["info"].get("irreps", "all")
             self.symmetrize(mp_outdir, mp_seedname, ket_amn, irreps)
+
+        # berry = Berry(nnkp, mmn, win, Uk, ".", self["info"]["seedname"], encoding="utf-8")
 
         #####
 

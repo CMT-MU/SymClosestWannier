@@ -93,15 +93,15 @@ class Nnkp(dict):
 
                 if "begin projections" in line or "begin spinor_projections" in line:
                     spinors = "begin spinor_projections" in line
-                    num_wann = int(nnkp_data[i + 1])
-                    nw2n = np.zeros([num_wann], dtype=int)
-                    nw2l = np.zeros([num_wann], dtype=int)
-                    nw2m = np.zeros([num_wann], dtype=int)
-                    nw2r = np.zeros([num_wann, 3], dtype=float)
+                    d["num_wann"] = int(nnkp_data[i + 1])
+                    nw2n = np.zeros([d["num_wann"]], dtype=int)
+                    nw2l = np.zeros([d["num_wann"]], dtype=int)
+                    nw2m = np.zeros([d["num_wann"]], dtype=int)
+                    nw2r = np.zeros([d["num_wann"], 3], dtype=float)
                     atom_orb_strlist = []
                     atom_pos_strlist = []
                     # read projections
-                    for j in range(num_wann):
+                    for j in range(d["num_wann"]):
                         if spinors:
                             proj_str = nnkp_data[i + 2 + 3 * j]
                         else:
@@ -137,7 +137,7 @@ class Nnkp(dict):
                         for p in pos:
                             for n in atom_orb[p]:
                                 nw2n[n] = i
-                    # for j in range(num_wann):
+                    # for j in range(d["num_wann"]):
                     #    print("nw {:3d} : n = {:3d}, l = {:3d}, m = {:3d}".format(j, nw2n[j], nw2l[j], nw2m[j]))
 
                     d["nw2n"] = nw2n

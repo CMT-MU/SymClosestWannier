@@ -45,7 +45,7 @@ class Amn(dict):
                 num_k (int): # of k points.
                 num_bands (int): # of bands passed to the code.
                 num_wann (int): # of CWFs.
-                amn (ndarray): Overlap matrix elements, A_{mn}(k) = <ψ^{KS}_{m}(k)|φ_{n}(k)>.
+                Ak (ndarray): Overlap matrix elements, A_{mn}(k) = <ψ^{KS}_{m}(k)|φ_{n}(k)>.
         """
         if os.path.exists(file_amn):
             with open(file_amn) as fp:

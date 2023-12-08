@@ -41,6 +41,11 @@ class Mmn(dict):
 
         Returns:
             dict:
+                num_k (int): # of k points.
+                num_bands (int): # of bands passed to the code.
+                num_b (int): # of b-vectors.
+                nnkpts (ndarray): nearest-neighbour k-points.
+                Mkb (ndarray): Overlap matrix elements, M_{mn}(k,b) = <u^{KS}_{m}(k)|u^{KS}_{n}(k+b)>.
         """
         if os.path.exists(file_mmn):
             fp = open(file_mmn, "r")

@@ -151,9 +151,11 @@ class Win(dict):
             if line.startswith(keyword):
                 assert data == None, keyword + " is defined more than once"
                 if len(line.split("=")) > 1:
-                    data = line.split("=")[1]
+                    data = line.split("=")[1].split("!")[0]
                 elif len(line.split(":")) > 1:
-                    data = line.split(":")[1]
+                    data = line.split(":")[1].split("!")[0]
+
+                # data = line[2] if line[1] in ("=", ":") else line[1]
 
         if data == None:
             data = default_value
@@ -162,3 +164,29 @@ class Win(dict):
             return None
 
         return dtype(data)
+
+    # # ==================================================
+    # def _get_param_keyword(self, lines, keyword, default_value=None, dtype=int):
+    #     data = None
+    #     for line in lines:
+    #         if line.startswith(keyword):
+    #             assert data == None, keyword + " is defined more than once"
+    #             line = [vi for vi in line.replace("\n", "").split(" ") if vi != ""]
+    #             if len(line) == 0:
+    #                 continue
+
+    #             if "!" in line[0]:
+    #                 continue
+
+    #             if "#" in line[0]:
+    #                 continue
+
+    #             data = line[2] if line[1] == "=" else line[1]
+
+    #     if data == None:
+    #         data = default_value
+
+    #     if data == None:
+    #         return None
+
+    #     return dtype(data)
