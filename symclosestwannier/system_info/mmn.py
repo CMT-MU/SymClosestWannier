@@ -10,6 +10,8 @@ import itertools
 import numpy as np
 import scipy.linalg
 
+_default_mmn = {"num_k": 1, "num_bands": 1, "num_b": 1, "nnkpts": None, "Mkb": None}
+
 
 # ==================================================
 class Mmn(dict):
@@ -18,43 +20,47 @@ class Mmn(dict):
     """
 
     # ==================================================
-    def __init__(self, topdir, seedname, encoding="UTF-8"):
+    def __init__(self, topdir=None, seedname=None, dic=None):
         """
         initialize the class.
 
         Args:
-            topdir (str): directory of seedname.mmn file.
-            seedname (str): seedname.
-            encoding (str, optional): encoding.
+            topdir (str, optional): directory of seedname.mmn file.
+            seedname (str, optional): seedname.
+            dic (dict, optional): dictionary of Mmn.
         """
-        file_mmn = os.path.join(topdir, "{}.{}".format(seedname, "mmn"))
+        super().__init__()
 
-        self.update(self.read(file_mmn))
+        if dic is None:
+            file_name = os.path.join(topdir, "{}.{}".format(seedname, "mmn"))
+            self.update(self.read(file_name))
+        else:
+            self.update(dic)
 
     # ==================================================
-    def read(self, file_mmn):
+    def read(self, file_name):
         """
         read seedname.mmn file.
 
         Args:
-            file_mmn (str): file name.
+            file_name (str): file name.
 
         Returns:
             dict:
-                num_k (int): # of k points.
-                num_bands (int): # of bands passed to the code.
-                num_b (int): # of b-vectors.
-                nnkpts (ndarray): nearest-neighbour k-points.
-                Mkb (ndarray): Overlap matrix elements, M_{mn}(k,b) = <u^{KS}_{m}(k)|u^{KS}_{n}(k+b)>.
+                - num_k     : # of k points (int), [1].
+                - num_bands : # of bands passed to the code (int), [1].
+                - num_b     : # of b-vectors (int), [1].
+                - nnkpts    : nearest-nmmnhbour k-points (list), [None].
+                - Mkb       : Overlap matrix elements, M_{mn}(k,b) = <u^{KS}_{m}(k)|u^{KS}_{n}(k+b)> (list), [None].
         """
-        if os.path.exists(file_mmn):
-            fp = open(file_mmn, "r")
-        elif os.path.exists(file_mmn + ".gz"):
-            fp = gzip.open(file_mmn + ".gz", "rt")
-        elif os.path.exists(file_mmn + ".tar.gz"):
-            fp = tarfile.open(file_mmn + "tar.gz", "rt")
+        if os.path.exists(file_name):
+            fp = open(file_name, "r")
+        elif os.path.exists(file_name + ".gz"):
+            fp = gzip.open(file_name + ".gz", "rt")
+        elif os.path.exists(file_name + ".tar.gz"):
+            fp = tarfile.open(file_name + "tar.gz", "rt")
         else:
-            raise Exception("failed to read mmn file: " + file_mmn)
+            raise Exception("failed to read mmn file: " + file_name)
 
         _ = fp.readline()  # first line
 
@@ -71,24 +77,33 @@ class Mmn(dict):
                 dat = [float(x) for x in fp.readline().split()]
                 Mkb[ik, ib, m, n] = dat[0] + 1j * dat[1]
 
+        Mkb = Mkb.tolist()
+
         d = {"num_k": num_k, "num_bands": num_bands, "num_b": num_b, "nnkpts": nnkpts, "Mkb": Mkb}
 
         return d
 
     # ==================================================
-    def write(self, file_mmn):
+    def write(self, file_name="cwannier.mmn"):
         """
         write mmn data.
 
         Args:
-            file_mmn (str): file name.
+            file_name (str, optional): file name.
         """
-        with open(file_mmn, "w") as fp:
-            fp.write("Mmn created by mmn.py\n")
+        Mkb = np.array(self["Mkb"])
+
+        with open(file_name, "w") as fp:
+            fp.write("# mmn created by mmn.py\n")
             fp.write("{} {} {}\n".format(d["num_bands"], d["num_k"], d["num_b"]))
             for ik, ib in itertools.product(range(d["num_k"]), range(d["num_b"])):
-                mkb = self["Mkb"][ik, ib, :, :]
+                mkb = Mkb[ik, ib, :, :]
                 ik, ib, g0, g1, g2 = nnkpts[ik, ib, :]
                 fp.write("{0}  {1}  {2}  {3}  {4}\n".format(ik, ib, g0, g1, g2))
                 for m, n in itertools.product(range(d["num_bands"]), repeat=2):
                     fp.write("{0.real:18.12f}  {0.imag:18.12f}\n".format(mkb[m, n]))
+
+    # ==================================================
+    @classmethod
+    def _default_mmn(cls):
+        return _default_mmn
