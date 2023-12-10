@@ -88,7 +88,11 @@ class Win(dict):
         for i, line in enumerate(win_data_lower):
             if "begin kpoints" in line:
                 kpoints = np.genfromtxt(win_data[i + 1 : i + 1 + d["num_k"]], dtype=float)
-                d["kpoints"] = np.mod(kpoints, 1).tolist()  # 0 <= kj < 1.0
+                kpoints = np.mod(kpoints, 1)  # 0 <= kj < 1.0
+                if kpoints.ndim == 1:
+                    d["kpoints"] = [kpoints.tolist()]
+                else:
+                    d["kpoints"] = kpoints.tolist()
 
             if "begin kpoint_path" in line:
                 k_data = win_data[i + 1 : win_data_lower.index("end kpoint_path")]
@@ -171,14 +175,15 @@ class Win(dict):
         if d["atoms_cart"] is not None:
             if d["atoms_frac"] is None:
                 A = d["unit_cell_cart"]
-                d["atoms_frac"] = {k: (np.array(A).inv() @ np.array(v)).tolist() for k, v in d["atoms_cart"].items()}
+                d["atoms_frac"] = {k: (np.linalg.inv(A) @ np.array(v)).tolist() for k, v in d["atoms_cart"].items()}
 
         if d["atoms_frac"] is not None:
             if d["atoms_cart"] is None:
                 A = d["unit_cell_cart"]
                 d["atoms_cart"] = {k: (np.array(v) @ np.array(A)).tolist() for k, v in d["atoms_frac"].items()}
 
-        d["rpoints"] = kpoints_to_rpoints(d["kpoints"]).tolist()
+        if d["atoms_cart"] is not None:
+            d["rpoints"] = kpoints_to_rpoints(d["kpoints"]).tolist()
 
         return d
 

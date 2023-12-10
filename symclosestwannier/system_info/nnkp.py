@@ -110,7 +110,11 @@ class Nnkp(dict):
                 if "begin kpoints" in line:
                     d["num_k"] = int(nnkp_data[i + 1])
                     kpoints = np.genfromtxt(nnkp_data[i + 2 : i + 2 + d["num_k"]], dtype=float)
-                    d["kpoints"] = np.mod(kpoints, 1).tolist()  # 0 <= kj < 1.0
+                    kpoints = np.mod(kpoints, 1)  # 0 <= kj < 1.0
+                    if kpoints.ndim == 1:
+                        d["kpoints"] = [kpoints.tolist()]
+                    else:
+                        d["kpoints"] = kpoints.tolist()
 
                 if "begin nnkpts" in line:
                     d["num_b"] = int(nnkp_data[i + 1])
