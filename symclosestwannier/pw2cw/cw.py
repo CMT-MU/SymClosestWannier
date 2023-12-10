@@ -431,7 +431,7 @@ class CW(dict):
         Hr_sym = CW.construct_Or(list(z.values()), self._cwi["num_wann"], rpoints_mp, mat)
         Hr_nonortho_sym = CW.construct_Or(list(z_nonortho.values()), self._cwi["num_wann"], rpoints_mp, mat)
 
-        atoms_frac = list(self._cwi["atoms_frac"].values())
+        atoms_frac = [self._cwi["atom_pos_r"][i] for i in self._cwi["nw2n"]]
         Sk_sym = CW.fourier_transform_r_to_k(Sr_sym, rpoints_mp, self._cwi["kpoints"], atoms_frac)[0]
         Hk_sym = CW.fourier_transform_r_to_k(Hr_sym, rpoints_mp, self._cwi["kpoints"], atoms_frac)[0]
         Hk_nonortho_sym = CW.fourier_transform_r_to_k(Hr_nonortho_sym, rpoints_mp, self._cwi["kpoints"], atoms_frac)[0]
