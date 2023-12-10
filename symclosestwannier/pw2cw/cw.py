@@ -1,31 +1,16 @@
 """
 Closest Wannier (CW) tight-binding (TB) model based on Plane-Wave (PW) DFT calculation.
-CW TB model can be symmetrized by using Symmetry-Adapted Multipole Basis (SAMB).
 """
-import os
-import sys
-import codecs
-import time
-import pickle
-
-import sympy as sp
 import numpy as np
 from numpy import linalg as npl
 from scipy import linalg as spl
 
-from gcoreutils.io_util import read_dict, write_dict
 from gcoreutils.nsarray import NSArray
-from multipie.tag.tag_multipole import TagMultipole
 
-from symclosestwannier.util.amn import Amn
-from symclosestwannier.util.eig import Eig
-from symclosestwannier.util.mmn import Mmn
-from symclosestwannier.util.nnkp import Nnkp
-from symclosestwannier.util.win import Win
-from symclosestwannier.util.berry import Berry
+from symclosestwannier.pw2cw.cw_info import CWInfo
+from symclosestwannier.pw2cw.cw_manager import CWManager
+
 from symclosestwannier.util.header import (
-    start_msg,
-    end_msg,
     info_header,
     data_header,
     kpoints_header,
@@ -39,630 +24,265 @@ from symclosestwannier.util.header import (
     s_header,
 )
 
+from symclosestwannier.util.message import opening_msg, ending_msg, starting_msg, system_msg
+
+from symclosestwannier.util.functions import (
+    w_proj,
+    get_rpoints,
+    get_kpoints,
+    kpoints_to_rpoints,
+    fourier_transform_k_to_r,
+    fourier_transform_r_to_k,
+    interpolate,
+    matrix_dict_r,
+    matrix_dict_k,
+    dict_to_matrix,
+)
+
 
 # ==================================================
 class CW(dict):
     """
     Closest Wannier (CW) tight-binding (TB) model based on Plane-Wave (PW) DFT calculation.
-    CW TB model can be symmetrized by using Symmetry-Adapted Multipole Basis (SAMB).
+
+    Attributes:
+        _cwi (SystemInfo): CWInfo.
+        _cwm (CWManager): CWManager.
+        _outfile (str): output file, seedname.cwout.
     """
 
     # ==================================================
-    def __init__(self, model_dict):
+    def __init__(self, cwi, cwm):
         """
         initialize the class.
 
         Args:
-            model_dict (dict): minimal model information.
+            cwi (CWInfo): CWInfo.
+            cwm (CWManager): CWManager.
         """
-        os.makedirs(os.path.abspath(model_dict["outdir"]), exist_ok=True)
-        os.chdir(model_dict["outdir"])
-        sys.path.append(os.getcwd())
-        model_dict["outdir"] = os.getcwd().replace(os.sep, "/")
-        self["info"] = model_dict
+        self._cwi = cwi
+        self._cwm = cwm
+        self._outfile = f"{self._cwi['seedname']}.cwout"
 
-        #####
-        self._print(start_msg)
-        start0 = time.time()
+        self._cwm.log(opening_msg(), stamp=None, end="\n", file=self._outfile, mode="w")
 
-        self._print(f"* {self['info']['seedname']} \n", mode="a")
+        self._cwm.log(system_msg(self._cwi), stamp=None, end="\n", file=self._outfile, mode="a")
 
-        #####
-
-        if self["info"]["restart"] == "wannierise":
-            self._print(" - reading output of DFT calculation ... ", end="", mode="a")
-            start = time.time()
-
-            # Kohn-Sham energy
-            eig = Eig(".", self["info"]["seedname"], encoding="utf-8")
-            Ek = eig["Ek"]
-
-            # overlap between Kohn-Sham orbitals and non-orthogonalized atomic orbitals
-            amn = Amn(".", self["info"]["seedname"], encoding="utf-8")
-            Ak = amn["Ak"]
-
-            # nnkp = Nnkp(".", self["info"]["seedname"], encoding="utf-8")
-            # mmn = Mmn(".", self["info"]["seedname"], encoding="utf-8")
-
-            # wannier input
-            win = Win(".", self["info"]["seedname"], encoding="utf-8")
-            kpoints = win["kpoints"]
-            kpoint = win["kpoint"]
-            kpoint_path = win["kpoint_path"]
-            unit_cell_cart = win["unit_cell_cart"]
-            atoms_frac = win["atoms_frac"]
-            atoms_cart = win["atoms_cart"]
-
-            # band calculation
-            if kpoint is not None and kpoint_path is not None:
-                kpoint = {i: NSArray(j, "vector", fmt="value") for i, j in kpoint.items()}
-                N1 = self["info"]["N1"]
-                A = NSArray(unit_cell_cart, "matrix", fmt="value")
-                B = A.inverse()
-                kpoints_path, k_linear, k_dis_pos = NSArray.grid_path(kpoint, kpoint_path, N1, B)
-            else:
-                kpoints_path = None
-                k_linear = None
-                k_dis_pos = None
-
-            # number of k points
-            num_k = amn["num_k"]
-            # number of Kohn-Sham orbitals
-            num_bands = amn["num_bands"]
-            # number of pseudo atomic orbitals
-            num_wann = amn["num_wann"]
-
-            if num_bands < num_wann:
-                raise Exception("number of Kohn-Sham orbitals is smaller than that of the pseudo atomic orbitals.")
-
-            # projectability
-            Pk = np.real(np.diagonal(Ak @ Ak.transpose(0, 2, 1).conjugate(), axis1=1, axis2=2))
-
-            end = time.time()
-            self._print(f"done ({'{:.2f}'.format(end - start)} [sec])", mode="a")
-
-            #####
-
-            if self["info"]["proj_min"] > 0.0:
-                self._print(
-                    f" - eliminating bands with low projectability (proj_min = {self['info']['proj_min']}) ... ",
-                    end="",
-                    mode="a",
-                )
-                start = time.time()
-
-                # band index for projection
-                proj_band_idx = [
-                    [n for n in range(num_bands) if Pk[k][n] > self["info"]["proj_min"]] for k in range(num_k)
-                ]
-
-                for k in range(num_k):
-                    if len(proj_band_idx[k]) < num_wann:
-                        raise Exception(
-                            f"proj_min = {self['info']['proj_min']} is too large or PAOs are inappropriate."
-                        )
-
-                # eliminate bands with low projectability
-                Ek = [Ek[k, proj_band_idx[k]] for k in range(num_k)]
-                Ak = [Ak[k, proj_band_idx[k], :] for k in range(num_k)]
-
-                end = time.time()
-                self._print(f"done ({'{:.2f}'.format(end - start)} [sec])", mode="a")
-
-            #####
-
-            if self["info"]["disentangle"]:
-                self._print(" - disentanglement ... ", end="", mode="a")
-                start = time.time()
-
-                # fermi-dirac function
-                def fermi(x, T=0.01):
-                    return 0.5 * (1.0 - np.tanh(0.5 * x / T))
-
-                # weight function for disentanglement
-                def weight(e, e0, e1, T0, T1, delta=10e-12):
-                    return fermi(e0 - e, T0) + fermi(e - e1, T1) - 1.0 + delta
-
-                Ak = [
-                    np.array(
-                        weight(
-                            Ek[k],
-                            self["info"]["dis_win_emin"],
-                            self["info"]["dis_win_emax"],
-                            self["info"]["smearing_temp_min"],
-                            self["info"]["smearing_temp_max"],
-                            self["info"]["delta"],
-                        )[:, np.newaxis]
-                        * Ak[k]
-                    )
-                    for k in range(num_k)
-                ]
-
-                end = time.time()
-                self._print(f"done ({'{:.2f}'.format(end - start)} [sec])", mode="a")
-
-            #####
-
-            self._print(" - constructing TB Hamiltonian ... ", end="", mode="a")
-            start = time.time()
-
-            Sk = np.array([Ak[k].transpose().conjugate() @ Ak[k] for k in range(num_k)])
-
-            if self["info"]["svd"]:  # orthogonalize PAOs by singular value decomposition (SVD)
-
-                def U_mat(k):
-                    u, _, vd = np.linalg.svd(Ak[k], full_matrices=False)
-                    return u @ vd
-
-                Uk = [U_mat(k) for k in range(num_k)]
-
-            else:  # orthogonalize PAOs by Lowdin's method
-                S2k_inv = np.array([npl.inv(spl.sqrtm(Sk[k])) for k in range(num_k)])
-                Uk = [Ak[k] @ S2k_inv[k] for k in range(num_k)]
-
-            # projection from KS energies to PAOs Hamiltonian
-            diag_Ek = [np.diag(Ek[k]) for k in range(num_k)]
-            Hk = np.array([Uk[k].transpose().conjugate() @ diag_Ek[k] @ Uk[k] for k in range(num_k)])
-
-            end = time.time()
-            self._print(f"done ({'{:.2f}'.format(end - start)} [sec])", mode="a")
-
-            #####
-
-            self["info"] |= {"num_k": num_k, "num_bands": num_bands, "num_wann": num_wann}
-
-            if kpoint is not None:
-                self["info"]["kpoint"] = {k: str(v.tolist()) for k, v in kpoint.items()}
-            if kpoint_path is not None:
-                self["info"]["kpoint_path"] = kpoint_path
-            if unit_cell_cart is not None:
-                self["info"]["unit_cell_cart"] = str(unit_cell_cart.tolist())
-            if atoms_frac is not None:
-                self["info"]["atoms_frac"] = {k: str(v.tolist()) for k, v in atoms_frac.items()}
-            if atoms_cart is not None:
-                self["info"]["atoms_cart"] = {k: str(v.tolist()) for k, v in atoms_cart.items()}
-
-            S2k = np.array([spl.sqrtm(Sk[k]) for k in range(num_k)])
-
-            self["data"] = {
-                "kpoints": kpoints.tolist(),
-                "rpoints": CW.kpoints_to_rpoints(kpoints).tolist(),
-                #
-                "Pk": Pk.tolist(),
-                #
-                "Uk": Uk,
-                #
-                "Hk": Hk.tolist(),
-                "Sk": Sk.tolist(),
-                "Hk_nonortho": (S2k @ Hk @ S2k).tolist(),
-            }
-
-            if kpoints_path is not None:
-                self["data"]["kpoints_path"] = kpoints_path.tolist()
-            if k_linear is not None:
-                self["data"]["k_linear"] = k_linear.tolist()
-            if k_dis_pos is not None:
-                self["data"]["k_dis_pos"] = k_dis_pos
-
-            self["data"]["matrix_dict"] = None
+        if self._cwi["restart"] == "wannierise":
+            dic = self._initialize()
         else:
-            self["info"] = self.read(f"{self['info']['seedname']}_info.py")
-            self["data"] = self.read(f"{self['info']['seedname']}_data.py")
+            dic = self._cwm.read(f"{self._cwi['seedname']}_data.py")
 
-        if self["info"]["symmetrization"]:
-            mp_outdir = self["info"]["mp_outdir"]
-            mp_seedname = self["info"]["mp_seedname"]
-            ket_amn = self["info"].get("ket_amn", None)
-            irreps = self["info"].get("irreps", "all")
-            self.symmetrize(mp_outdir, mp_seedname, ket_amn, irreps)
+        self.update(dic)
 
-        # berry = Berry(nnkp, mmn, win, Uk, ".", self["info"]["seedname"], encoding="utf-8")
+        msg = f"  * total elapsed_time:"
+        self._cwm.log(msg, stamp="start", file=self._outfile, mode="a")
 
-        #####
-
-        end0 = time.time()
-        self._print(f"\n - total elapsed_time: {'{:.2f}'.format(end0 - start0)} [sec]", mode="a")
-        self._print(end_msg, mode="a")
+        self._cwm.log(ending_msg(), stamp=None, end="\n", file=self._outfile, mode="a")
 
     # ==================================================
-    @property
-    def Hr(self):
-        return CW.fourier_transform_k_to_r(self["data"]["Hk"], self["data"]["kpoints"])[0]
-
-    # ==================================================
-    @property
-    def Sr(self):
-        return CW.fourier_transform_k_to_r(self["data"]["Sk"], self["data"]["kpoints"])[0]
-
-    # ==================================================
-    @property
-    def Hk_path(self):
-        return CW.interpolate(
-            self["data"]["Hk"], self["data"]["kpoints"], self["data"]["kpoints_path"], self["data"]["rpoints"]
-        )
-
-    # ==================================================
-    @property
-    def Sk_path(self):
-        return CW.interpolate(
-            self["data"]["Sk"], self["data"]["kpoints"], self["data"]["kpoints_path"], self["data"]["rpoints"]
-        )
-
-    # ==================================================
-    @property
-    def Hr_sym(self):
-        if "z" in self["data"]:
-            return self.construct_Or(list(self["data"]["z"].values()))
-        else:
-            return None
-
-    # ==================================================
-    @property
-    def Sr_sym(self):
-        if "s" in self["data"]:
-            return self.construct_Or(list(self["data"]["s"].values()))
-        else:
-            return None
-
-    # ==================================================
-    @property
-    def Hk_sym(self):
-        if "z" in self["data"]:
-            return self.construct_Ok(list(self["data"]["z"].values()), self["data"]["kpoints"])
-        else:
-            return None
-
-    # ==================================================
-    @property
-    def Sk_sym(self):
-        if "s" in self["data"]:
-            return self.construct_Ok(list(self["data"]["s"].values()), self["data"]["kpoints"])
-        else:
-            return None
-
-    # ==================================================
-    @property
-    def Hk_sym_path(self):
-        if "z" in self["data"]:
-            return self.construct_Ok(list(self["data"]["z"].values()), self["data"]["kpoints_path"])
-        else:
-            return None
-
-    # ==================================================
-    @property
-    def Sk_sym_path(self):
-        if "s" in self["data"]:
-            return self.construct_Ok(list(self["data"]["s"].values()), self["data"]["kpoints_path"])
-        else:
-            return None
-
-    # ==================================================
-    def _print(self, msg, mode="w", *args, **kwargs):
-        if self["info"]["verbose"]:
-            print(msg, *args, **kwargs)
-
-        print(msg, *args, **kwargs, file=codecs.open(f"{self['info']['seedname']}.cwout", mode, "utf-8"))
-
-    # ==================================================
-    def read(self, file_dict, dir=None):
+    def _initialize(self):
         """
-        read dict file or dict itself.
-
-        Args:
-            file_dict (str or dict): filename of dict. or dict.
-            dir (str, optional): directory.
+        initilize the class.
 
         Returns:
-            dict: read dict.
+            dict:
         """
-        if dir is None:
-            dir = self["info"]["outdir"]
+        self._cwm.log(starting_msg(self._cwi), stamp=None, end="\n", file=self._outfile, mode="a")
 
-        dir = dir[:-1] if dir[-1] == "/" else dir
+        Ek = np.array(self._cwi.eig["Ek"], dtype=float)
+        Ak = np.array(self._cwi.amn["Ak"], dtype=complex)
+        Pk = np.real(np.diagonal(Ak @ Ak.transpose(0, 2, 1).conjugate(), axis1=1, axis2=2))
 
-        if type(file_dict) == str:
-            full = dir + "/" + file_dict
-            if os.path.isfile(full):
-                if "pkl" in full:
-                    dic = pickle.load(open(full, "rb"))
-                else:
-                    dic = read_dict(full)
-            else:
-                raise Exception(f"cannot open {full}.")
+        if self._cwi["proj_min"] > 0.0:
+            msg = f"   - exluding bands with low projectability (proj_min = {self._cwi['proj_min']}) ... "
+            self._cwm.log(msg, None, end="", file=self._outfile, mode="a")
+            self._cwm.set_stamp()
 
-            self._print(f"  * read '{full}'.", mode="a")
+            Ek, Ak = self._exclude_bands(Pk, Ek, Ak)
+
+            self._cwm.log("done", file=self._outfile, mode="a")
+
+        if self._cwi["disentangle"]:
+            msg = "   - disentanglement ... "
+            self._cwm.log(msg, None, end="", file=self._outfile, mode="a")
+            self._cwm.set_stamp()
+
+            Ak = self._disentangle(Ek, Ak)
+
+            self._cwm.log("done", file=self._outfile, mode="a")
+
+        msg = "   - constructing TB Hamiltonian ... "
+        self._cwm.log(msg, None, end="", file=self._outfile, mode="a")
+        self._cwm.set_stamp()
+
+        Sk, Uk, Hk, Hk_nonortho, Sr, Hr, Hr_nonortho = self._construct_tb(Ek, Ak)
+
+        self._cwm.log("done", file=self._outfile, mode="a")
+
+        #####
+
+        if self._cwi["kpoint"] is not None and self._cwi["kpoint_path"] is not None:
+            kpoint = {i: NSArray(j, "vector", fmt="value") for i, j in self._cwi["kpoint"].items()}
+            kpoint_path = self._cwi["kpoint_path"]
+            N1 = self._cwi["N1"]
+            B = NSArray(self._cwi["unit_cell_cart"], "matrix", fmt="value").inverse()
+            kpoints_path, k_linear, k_dis_pos = NSArray.grid_path(kpoint, kpoint_path, N1, B)
         else:
-            dic = file_dict
+            kpoints_path, k_linear, k_dis_pos = None, None, None
 
-        return dic
+        if self._cwi["symmetrization"]:
+            self._symmetrize()
 
-    # ==================================================
-    def write(self, filename, dic, header=None, var=None, dir=None):
-        """
-        write dict to file.
-
-        Args:
-            filename (str): file name.
-            dic (dict): dict to write.
-            header (str, optional): header of dict.
-            var (str, optional): variable name for dict.
-            dir (str, optional): directory.
-        """
-        if dir is None:
-            dir = self["info"]["outdir"]
-
-        dir = dir[:-1] if dir[-1] == "/" else dir
-
-        full = dir + "/" + filename
-        write_dict(full, dic, header, var)
-        self._print(f"  * wrote '{filename}'.", mode="a")
-
-    # ==================================================
-    def symmetrize(self, mp_outdir="./", mp_seedname=None, ket_amn=None, irreps="all"):
-        """
-        write dict to file.
-
-        Args:
-            mp_outdir (str, optional): output files for multipie are found in this directory.
-            mp_seedname (str, optional): seedname for seedname.win and seedname.cwin files.
-            ket_amn (list): ket basis list in the seedname.amn file. The format of each ket must be same as the "ket" in sambname_model.py file. See sambname["info"]["ket"] in sambname_model.py file for the format.
-            irreps (str/list, optional): list of irreps to be considered.
-        """
-        self._print(" - symmetrization ... ", end="\n", mode="a")
-        start0 = time.time()
-
-        if mp_seedname is None:
-            mp_seedname = self["info"]["seedname"]
-
-        #####
-
-        rpoints = self["data"]["rpoints"]
-
-        num_k = self["info"]["num_k"]
-        num_wann = self["info"]["num_wann"]
-
-        rpoints = self["data"]["rpoints"]
-        kpoints = self["data"]["kpoints"]
-        Hk = np.array(self["data"]["Hk"])
-
-        Hr_dict = CW.matrix_dict_r(self.Hr, self["data"]["rpoints"])
-        Sr_dict = CW.matrix_dict_r(self.Sr, self["data"]["rpoints"])
-
-        Hr_nonortho = CW.fourier_transform_k_to_r(self["data"]["Hk_nonortho"], self["data"]["kpoints"])[0]
-        Hr_nonortho_dict = CW.matrix_dict_r(Hr_nonortho, self["data"]["rpoints"])
-
-        #####
-
-        self._print("   - reading output of multipie ... ", end="\n", mode="a")
-        start = time.time()
-
-        model = self.read(f"{self['info']['mp_seedname']}_model.py", dir=mp_outdir)
-        samb = self.read(f"{self['info']['mp_seedname']}_samb.py", dir=mp_outdir)
-
-        try:
-            mat = self.read(f"{self['info']['mp_seedname']}_matrix.pkl", dir=mp_outdir)
-        except:
-            mat = self.read(f"{self['info']['mp_seedname']}_matrix.py", dir=mp_outdir)
-
-        ket_samb = model["info"]["ket"]
-
-        # sort orbitals
-        if ket_amn is not None:
-            idx_list = [ket_amn.index(o) for o in ket_samb]
-            Hk = Hk[:, idx_list, :]
-            Hk = Hk[:, :, idx_list]
-
-            idx_list = [ket_samb.index(o) for o in ket_amn]
-            Hr_dict = {(n1, n2, n3, idx_list[a], idx_list[b]): v for (n1, n2, n3, a, b), v in Hr_dict.items()}
-            Sr_dict = {(n1, n2, n3, idx_list[a], idx_list[b]): v for (n1, n2, n3, a, b), v in Sr_dict.items()}
-
-            Hr_nonortho_dict = {
-                (n1, n2, n3, idx_list[a], idx_list[b]): v for (n1, n2, n3, a, b), v in Hr_nonortho_dict.items()
-            }
-
-        if irreps == "all":
-            irreps = model["info"]["generate"]["irrep"]
-        elif irreps == "full":
-            irreps = [model["info"]["generate"]["irrep"][0]]
-
-        for zj, (tag, _) in samb["data"]["Z"].items():
-            if TagMultipole(tag).irrep not in irreps:
-                del mat["matrix"][zj]
-
-        tag_dict = {zj: tag for zj, (tag, _) in samb["data"]["Z"].items()}
-        Zr_dict = {
-            (zj, tag_dict[zj]): {tuple(sp.sympify(k)): complex(sp.sympify(v)) for k, v in d.items()}
-            for zj, d in mat["matrix"].items()
-        }
-        mat["matrix"] = {
-            zj: {tuple(sp.sympify(k)): complex(sp.sympify(v)) for k, v in d.items()} for zj, d in mat["matrix"].items()
-        }
-
-        lattice = model["info"]["group"][1].split("/")[1].replace(" ", "")[0]
-        if lattice != "P":
-            cell_site = {}
-            for site, v in mat["cell_site"].items():
-                if "(" in site and ")" in site:
-                    if "(1)" in site:
-                        cell_site[site[:-3]] = v
-                else:
-                    cell_site[site] = v
-
-            mat["cell_site"] = cell_site
-
-        end = time.time()
-        self._print(f"   done ({'{:.2f}'.format(end - start)} [sec])", mode="a")
-
-        #####
-
-        self._print(
-            "   - decomposing Hamiltonian Hr as linear combination of SAMBs ... ",
-            end="",
-            mode="a",
-        )
-        start = time.time()
-
-        z = CW.samb_decomp(Hr_dict, Zr_dict)
-
-        end = time.time()
-        self._print(f"done ({'{:.2f}'.format(end - start)} [sec])", mode="a")
-
-        #####
-
-        self._print("   - decomposing overlap Sr as linear combination of SAMBs ... ", end="", mode="a")
-        start = time.time()
-
-        s = CW.samb_decomp(Sr_dict, Zr_dict)
-
-        end = time.time()
-        self._print(f"done ({'{:.2f}'.format(end - start)} [sec])", mode="a")
-
-        #####
-
-        self._print(
-            "   - decomposing non-orthogonal Hamiltonian Hr as linear combination of SAMBs ... ",
-            end="",
-            mode="a",
-        )
-        start = time.time()
-
-        z_nonortho = CW.samb_decomp(Hr_nonortho_dict, Zr_dict)
-
-        end = time.time()
-        self._print(f"done ({'{:.2f}'.format(end - start)} [sec])", mode="a")
-
-        #####
-
-        rpoints_mp = [(n1, n2, n3) for Zj_dict in Zr_dict.values() for (n1, n2, n3, _, _) in Zj_dict.keys()]
-        rpoints_mp = sorted(list(set(rpoints_mp)), key=rpoints_mp.index)
-
-        if not mat["molecule"]:
-            kpoint = {i: NSArray(j, "vector", fmt="value") for i, j in self["info"]["kpoint"].items()}
-            kpoint_path = self["info"]["kpoint_path"]
-            N1 = self["info"]["N1"]
-            A = model["detail"]["A"]
-            B = NSArray(A, "matrix", fmt="value").T.inverse()
-            kpoints_path, _, _ = NSArray.grid_path(kpoint, kpoint_path, N1, B)
-
-        #####
-
-        self["info"]["mp_outdir"] = mp_outdir
-        self["info"]["mp_seedname"] = mp_seedname
-        self["info"]["ket_amn"] = ket_amn
-        self["info"]["irreps"] = irreps
-
-        self["data"] = {
-            "z": z,
-            "s": s,
-            "z_nonortho": z_nonortho,
+        return {
+            "kpoints": self._cwi["kpoints"],
+            "rpoints": CW.kpoints_to_rpoints(self._cwi["kpoints"]).tolist(),
+            "kpoints_path": kpoints_path if kpoints_path is not None else None,
+            "k_linear": k_linear if k_linear is not None else None,
+            "k_dis_pos": k_dis_pos if k_dis_pos is not None else None,
             #
-            "rpoints_mp": rpoints_mp,
-        } | self["data"]
-
-        self["data"]["matrix_dict"] = mat
-
-        #####
-
-        self._print("   - evaluating fitting accuracy ... ", end="\n", mode="a")
-        start = time.time()
-
-        Ek_grid, _ = np.linalg.eigh(Hk)
-        Ek_grid_sym, _ = np.linalg.eigh(self.Hk_sym)
-        num_k, num_wann = Ek_grid_sym.shape
-        Ek_RMSE_grid = np.sum(np.abs(Ek_grid_sym - Ek_grid)) / num_k / num_wann * 1000  # [meV]
-
-        self._print(
-            f"     * RMSE of eigen values between CW and Symmetry-Adapted CW models (grid) = {'{:.4f}'.format(Ek_RMSE_grid)} [meV]",
-            end="\n",
-            mode="a",
-        )
-
-        #####
-
-        if not mat["molecule"]:
-            Hk_path = CW.interpolate(Hk, kpoints, kpoints_path, rpoints)
-            Ek_path, _ = np.linalg.eigh(Hk_path)
-            Ek_path_sym, _ = np.linalg.eigh(self.Hk_sym_path)
-            num_k, num_wann = Ek_path_sym.shape
-            Ek_RMSE_path = np.sum(np.abs(Ek_path_sym - Ek_path)) / num_k / num_wann * 1000  # [meV]
-            self._print(
-                f"     * RMSE of eigen values between CW and Symmetry-Adapted CW models (path) = {'{:.4f}'.format(Ek_RMSE_path)} [meV]",
-                end="\n",
-                mode="a",
-            )
-
-        end = time.time()
-        self._print(f"    done ({'{:.2f}'.format(end - start)} [sec])", mode="a")
-
-        #####
-
-        if Ek_RMSE_grid is not None:
-            self["data"] = {"Ek_RMSE_grid": Ek_RMSE_grid} | self["data"]
-
-        if not mat["molecule"]:
-            self["data"] = {"Ek_RMSE_path": Ek_RMSE_path} | self["data"]
-
-        self["info"]["symmetrization"] = True
-
-        #####
-
-        end0 = time.time()
-        self._print(f"  done ({'{:.2f}'.format(end0 - start0)} [sec])", mode="a")
-
-    # ==================================================
-    def construct_Or(self, z):
-        """
-        arbitrary operator constructed by linear combination of SAMBs in real space representation.
-
-        Args:
-            z (list): parameter set, [z_j].
-
-        Returns:
-            ndarray: matrix, [#r, dim, dim].
-        """
-        num_wann = self["info"]["num_wann"]
-        rpoints_mp = np.array(self["data"]["rpoints_mp"])
-
-        Or_dict = {
-            (n1, n2, n3, a, b): 0.0 for (n1, n2, n3) in rpoints_mp for a in range(num_wann) for b in range(num_wann)
+            "Pk": Pk.tolist(),
+            "Uk": [u.tolist() for u in Uk],
+            "Sk": Sk.tolist(),
+            "Hk": Hk.tolist(),
+            "Hk_nonortho": Hk_nonortho.tolist(),
+            #
+            "Sr": Sr.tolist(),
+            "Hr": Hr.tolist(),
+            "Hr_nonortho": Hr_nonortho.tolist(),
         }
-        for j, d in enumerate(self["data"]["matrix_dict"]["matrix"].values()):
-            zj = z[j]
-            for (n1, n2, n3, a, b), v in d.items():
-                Or_dict[(n1, n2, n3, a, b)] += zj * v
-
-        Or = np.array(
-            [
-                [[Or_dict.get((n1, n2, n3, a, b), 0.0) for b in range(num_wann)] for a in range(num_wann)]
-                for (n1, n2, n3) in rpoints_mp
-            ]
-        )
-
-        return Or
 
     # ==================================================
-    def construct_Ok(self, z, kpoints):
+    def _exclude_bands(self, Pk, Ek, Ak):
         """
-        arbitrary operator constructed by linear combination of SAMBs in k space representation.
+        exlude bands with low projectability.
 
         Args:
-            z (list): parameter set, [z_j].
+            Pk (ndarray): projectability of each Kohn-Sham state in k-space.
+            Ek (ndarray): Kohn-Sham energies.
+            Ak (ndarray): Overlap matrix elements.
 
         Returns:
-            ndarray: matrix, [#k, dim, dim].
+            tuple: Ek, Ak.
         """
-        rpoints_mp = np.array(self["data"]["rpoints_mp"])
-        kpoints = np.array(kpoints)
-        cell_site = self["data"]["matrix_dict"]["cell_site"]
-        ket = self["data"]["matrix_dict"]["ket"]
-        atoms_positions = [
-            NSArray(cell_site[ket[a].split("@")[1]][0], style="vector", fmt="value").tolist() for a in range(len(ket))
+        # band index for projection
+        proj_band_idx = [
+            [n for n in range(self._cwi["num_bands"]) if Pk[k][n] > self._cwi["proj_min"]]
+            for k in range(self._cwi["num_k"])
         ]
 
-        Or = self.construct_Or(z)
-        Ok, _ = CW.fourier_transform_r_to_k(Or, rpoints_mp, kpoints, atoms_positions=atoms_positions)
+        for k in range(self._cwi["num_k"]):
+            if len(proj_band_idx[k]) < self._cwi["num_wann"]:
+                raise Exception(f"proj_min = {self._cwi['proj_min']} is too large or PAOs are inappropriate.")
 
-        return Ok
+        # eliminate bands with low projectability
+        Ek = [Ek[k, proj_band_idx[k]] for k in range(self._cwi["num_k"])]
+        Ak = [Ak[k, proj_band_idx[k], :] for k in range(self._cwi["num_k"])]
+
+        return Ek, Ak
+
+    # ==================================================
+    def _disentangle(self, Ek, Ak):
+        """
+        disentangle bands.
+
+        Args:
+            Ek (ndarray): Kohn-Sham energies.
+            Ak (ndarray): Overlap matrix elements.
+
+        Returns:
+            ndarray: Ak.
+        """
+        Ak = [
+            np.array(
+                w_proj(
+                    Ek[k],
+                    self._cwi["dis_win_emin"],
+                    self._cwi["dis_win_emax"],
+                    self._cwi["smearing_temp_min"],
+                    self._cwi["smearing_temp_max"],
+                    self._cwi["delta"],
+                )[:, np.newaxis]
+                * Ak[k]
+            )
+            for k in range(self._cwi["num_k"])
+        ]
+
+        return Ak
+
+    # ==================================================
+    def _construct_tb(self, Ek, Ak):
+        """
+        construct CW TB Hamiltonian.
+
+        Args:
+            Ek (ndarray): Kohn-Sham energies.
+            Ak (ndarray): Overlap matrix elements.
+
+        Returns:
+            tuple: Sk, Uk, Hk, Hk_nonortho, Sr, Hr, Hr_nonortho.
+                - Sk (ndarray) : Overlap matrix elements in k-space.
+                - Uk (ndarray) : Unitary matrix elements in k-space.
+                - Hk (ndarray) : Hamiltonian matrix elements in k-space (orthogonal).
+                - Hk_nonortho (ndarray) : Hamiltonian matrix elements in k-space (non-orthogonal).
+                - Sr (ndarray) : Overlap matrix elements in real-space.
+                - Hr (ndarray) : Hamiltonian matrix elements in real-space (orthogonal).
+                - Hr_nonortho (ndarray) : Hamiltonian matrix elements in real-space (non-orthogonal).
+        """
+        Sk = np.array([Ak[k].transpose().conjugate() @ Ak[k] for k in range(self._cwi["num_k"])])
+
+        if self._cwi["svd"]:  # orthogonalize PAOs by singular value decomposition (SVD)
+
+            def U_mat(k):
+                u, _, vd = np.linalg.svd(Ak[k], full_matrices=False)
+                return u @ vd
+
+            Uk = [U_mat(k) for k in range(self._cwi["num_k"])]
+
+        else:  # orthogonalize PAOs by Lowdin's method
+            S2k_inv = np.array([npl.inv(spl.sqrtm(Sk[k])) for k in range(self._cwi["num_k"])])
+            Uk = [Ak[k] @ S2k_inv[k] for k in range(self._cwi["num_k"])]
+
+        # projection from KS energies to PAOs Hamiltonian
+        diag_Ek = [np.diag(Ek[k]) for k in range(self._cwi["num_k"])]
+        Hk = np.array([Uk[k].transpose().conjugate() @ diag_Ek[k] @ Uk[k] for k in range(self._cwi["num_k"])])
+
+        S2k = np.array([spl.sqrtm(Sk[k]) for k in range(self._cwi["num_k"])])
+        Hk_nonortho = S2k @ Hk @ S2k
+
+        Sr = CW.fourier_transform_k_to_r(Sk, self._cwi["kpoints"])[0]
+        Hr = CW.fourier_transform_k_to_r(Hk, self._cwi["kpoints"])[0]
+        Hr_nonortho = CW.fourier_transform_k_to_r(Hk_nonortho, self._cwi["kpoints"])[0]
+
+        return Sk, Uk, Hk, Hk_nonortho, Sr, Hr, Hr_nonortho
+
+    # ==================================================
+    def write_hr(self):
+        """
+        write seedname_hr.dat.
+        """
+        Hr_dict = CW.matrix_dict_r(self["Hr"], self["rpoints"])
+        Hr_str = "".join(
+            [
+                f"{n1}  {n2}  {n3}  {a}  {b}  {'{:.8f}'.format(np.real(v))}  {'{:.8f}'.format(np.imag(v))}\n"
+                for (n1, n2, n3, a, b), v in Hr_dict.items()
+            ]
+        )
+        self._cwm.write(f"{self._cwi['seedname']}_hr.dat", Hr_str, CW._hr_header(), None)
+
+    # ==================================================
+    def write_sr(self):
+        """
+        write seedname_sr.dat.
+        """
+        Sr_dict = CW.matrix_dict_r(self["Sr"], self["rpoints"])
+        Sr_str = "".join(
+            [
+                f"{n1}  {n2}  {n3}  {a}  {b}  {'{:.8f}'.format(np.real(v))}  {'{:.8f}'.format(np.imag(v))}\n"
+                for (n1, n2, n3, a, b), v in Sr_dict.items()
+            ]
+        )
+        self._cwm.write(f"{self._cwi['seedname']}_sr.dat", Sr_str, CW._sr_header(), None)
 
     # ==================================================
     @classmethod
@@ -681,35 +301,7 @@ class CW(dict):
         Returns:
             tuple: (R, Rfft, idx).
         """
-        A = unit_cell_cart
-        nrtot = nr1 * nr2 * nr3
-
-        R = np.zeros((nrtot, 3), dtype=float)
-        idx = np.zeros((nr1, nr2, nr3), dtype=int)
-        Rfft = np.zeros((nr1, nr2, nr3, 3), dtype=float)
-
-        for i in range(nr1):
-            for j in range(nr2):
-                for k in range(nr3):
-                    n = k + j * nr3 + i * nr2 * nr3
-                    R1 = float(i) / float(nr1)
-                    R2 = float(j) / float(nr2)
-                    R3 = float(k) / float(nr3)
-                    if R1 >= 0.5:
-                        R1 = R1 - 1.0
-                    if R2 >= 0.5:
-                        R2 = R2 - 1.0
-                    if R3 >= 0.5:
-                        R3 = R3 - 1.0
-                    R1 -= int(R1)
-                    R2 -= int(R2)
-                    R3 -= int(R3)
-
-                    R[n, :] = R1 * nr1 * A[0, :] + R2 * nr2 * A[1, :] + R3 * nr3 * A[2, :]
-                    Rfft[i, j, k, :] = R[n, :]
-                    idx[i, j, k] = n
-
-        return R, Rfft, idx
+        return get_rpoints(nr1, nr2, nr3, unit_cell_cart)
 
     # ==================================================
     @classmethod
@@ -727,30 +319,7 @@ class CW(dict):
         Returns:
             ndarray: lattice points.
         """
-        nktot = nk1 * nk2 * nk3
-
-        Kint = np.zeros((nktot, 3), dtype=float)
-
-        for i in range(nk1):
-            for j in range(nk2):
-                for k in range(nk3):
-                    n = k + j * nk3 + i * nk2 * nk3
-                    k1 = float(i) / float(nk1)
-                    k2 = float(j) / float(nk2)
-                    k3 = float(k) / float(nk3)
-                    if k1 >= 0.5:
-                        k1 = k1 - 1.0
-                    if k2 >= 0.5:
-                        k2 = k2 - 1.0
-                    if k3 >= 0.5:
-                        k3 = k3 - 1.0
-                    k1 -= int(k1)
-                    k2 -= int(k2)
-                    k3 -= int(k3)
-
-                    Kint[n] = k1, k2, k3
-
-        return Kint
+        return get_kpoints(nk1, nk2, nk3)
 
     # ==================================================
     @classmethod
@@ -765,20 +334,11 @@ class CW(dict):
         Returns:
             ndarray: k-points (crystal coordinate).
         """
-        kpoints = np.array(kpoints, dtype=float)
-        N1 = len(sorted(set(list(kpoints[:, 0]))))
-        N2 = len(sorted(set(list(kpoints[:, 1]))))
-        N3 = len(sorted(set(list(kpoints[:, 2]))))
-        N1 = N1 - 1 if N1 % 2 == 0 else N1
-        N2 = N2 - 1 if N2 % 2 == 0 else N2
-        N3 = N3 - 1 if N3 % 2 == 0 else N3
-        rpoints, _, _ = CW.get_rpoints(N1, N2, N3)
-
-        return rpoints
+        return kpoints_to_rpoints(kpoints)
 
     # ==================================================
     @classmethod
-    def fourier_transform_k_to_r(cls, Ok, kpoints, rpoints=None, atoms_positions=None):
+    def fourier_transform_k_to_r(cls, Ok, kpoints, rpoints=None, atoms_frac=None):
         """
         inverse fourier transformation of an arbitrary operator from k-space representation into real-space representation.
 
@@ -786,47 +346,16 @@ class CW(dict):
             Ok (ndarray): arbitrary operator in k-space representation, O_{ab}(k) = <φ_{a}(k)|O|φ_{b}(k)>.
             kpoints (ndarray): k-points used in DFT calculation, [[k1, k2, k3]] (crystal coordinate).
             rpoints (ndarray, optional): lattice points (crystal coordinate, [[n1,n2,n3]], nj: integer).
-            atoms_positions (ndarray, optional): atom's position in fractional coordinates.
+            atoms_frac (ndarray, optional): atom's position in fractional coordinates.
 
         Returns:
-            ndarray: real-space representation of the given operator, O_{ab}(R) = <φ_{a}(R)|O|φ_{b}(0)>.
+            (ndarray, ndarray): real-space representation of the given operator, O_{ab}(R) = <φ_{a}(R)|O|φ_{b}(0)>, lattice points.
         """
-        # lattice points (crystal coordinate, [[n1,n2,n3]], nj: integer).
-        if rpoints is None:
-            rpoints = CW.kpoints_to_rpoints(kpoints)
-
-        Ok = np.array(Ok, dtype=complex)
-        kpoints = np.array(kpoints, dtype=float)
-        rpoints = np.array(rpoints, dtype=float)
-
-        # number of k points
-        num_k = kpoints.shape[0]
-        # number of lattice points
-        Nr = rpoints.shape[0]
-        # number of pseudo atomic orbitalså
-        num_wann = Ok.shape[1]
-
-        if atoms_positions is not None:
-            ap = np.array(atoms_positions)
-            phase_ab = np.exp(
-                [
-                    [1.0j * (2 * np.pi * kpoints @ (ap[a, :] - ap[b, :]).transpose()) for b in range(num_wann)]
-                    for a in range(num_wann)
-                ]
-            ).transpose(2, 0, 1)
-            Ok = Ok * phase_ab
-
-        phase = np.exp(1.0j * 2 * np.pi * kpoints @ rpoints.T)
-        Or = np.array([np.sum(Ok[:, :, :] * phase[:, r, np.newaxis, np.newaxis], axis=0) for r in range(Nr)])
-        Or /= num_k
-
-        rpoints = np.array([[round(N1), round(N2), round(N3)] for N1, N2, N3 in rpoints], dtype=int)
-
-        return Or, rpoints
+        return fourier_transform_k_to_r(Ok, kpoints, rpoints, atoms_frac)
 
     # ==================================================
     @classmethod
-    def fourier_transform_r_to_k(cls, Or, rpoints, kpoints, atoms_positions=None):
+    def fourier_transform_r_to_k(cls, Or, rpoints, kpoints, atoms_frac=None):
         """
         fourier transformation of an arbitrary operator from real-space representation into k-space representation.
 
@@ -834,39 +363,16 @@ class CW(dict):
             Or (ndarray): real-space representation of the given operator, O_{ab}(R) = <φ_{a}(R)|O|φ_{b}(0)>.
             rpoints (ndarray): lattice points (crystal coordinate, [[n1,n2,n3]], nj: integer).
             kpoints (ndarray): k-points used in DFT calculation, [[k1, k2, k3]] (crystal coordinate).
-            atoms_positions (ndarray, optional): atom's position in fractional coordinates.
+            atoms_frac (ndarray, optional): atom's position in fractional coordinates.
 
         Returns:
             ndarray: k-space representation of the given operator, O_{ab}(k) = <φ_{a}(k)|O|φ_{b}(k)>.
         """
-        Or = np.array(Or, dtype=complex)
-        rpoints = np.array(rpoints, dtype=float)
-        kpoints = np.array(kpoints, dtype=float)
-
-        # number of k points
-        num_k = kpoints.shape[0]
-
-        # number of pseudo atomic orbitalså
-        num_wann = Or.shape[1]
-
-        phase = np.exp(-1.0j * 2 * np.pi * kpoints @ rpoints.T)
-        Ok = np.array([np.sum(Or[:, :, :] * phase[k, :, np.newaxis, np.newaxis], axis=0) for k in range(num_k)])
-
-        if atoms_positions is not None:
-            ap = np.array(atoms_positions)
-            phase_ab = np.exp(
-                [
-                    [1.0j * (-2 * np.pi * kpoints @ (ap[a, :] - ap[b, :]).transpose()) for b in range(num_wann)]
-                    for a in range(num_wann)
-                ]
-            ).transpose(2, 0, 1)
-            Ok = Ok * phase_ab
-
-        return Ok, kpoints
+        return fourier_transform_r_to_k(Or, rpoints, kpoints, atoms_frac)
 
     # ==================================================
     @classmethod
-    def interpolate(cls, Ok, kpoints_0, kpoints, rpoints=None, atoms_positions=None):
+    def interpolate(cls, Ok, kpoints_0, kpoints, rpoints=None, atoms_frac=None):
         """
         interpolate an arbitrary operator by implementing
         fourier transformation from real-space representation into k-space representation.
@@ -876,15 +382,12 @@ class CW(dict):
             kpoints_0 (ndarray): k points before interpolated (crystal coordinate, [[k1,k2,k3]]).
             kpoints (ndarray): k points after interpolated (crystal coordinate, [[k1,k2,k3]]).
             rpoints (ndarray): lattice points (crystal coordinate, [[n1,n2,n3]], nj: integer).
-            atoms_positions (ndarray, optional): atom's position in fractional coordinates.
+            atoms_frac (ndarray, optional): atom's position in fractional coordinates.
 
         Returns:
             ndarray: matrix elements at each k point, O_{ab}(k) = <φ_{a}(k)|O|φ_{b}(k)>.
         """
-        Or, rpoints = CW.fourier_transform_k_to_r(Ok, kpoints_0, rpoints, atoms_positions)
-        Ok_interpolated, _ = CW.fourier_transform_r_to_k(Or, rpoints, kpoints, atoms_positions)
-
-        return Ok_interpolated
+        return interpolate(Ok, kpoints_0, kpoints, rpoints, atoms_frac)
 
     # ==================================================
     @classmethod
@@ -900,23 +403,7 @@ class CW(dict):
         Returns:
             dict: real-space representation of the given operator, {(n2,n2,n3,a,b) = O_{ab}(R)}.
         """
-        # number of pseudo atomic orbitals
-        dim_r = len(Or[0])
-        if not diagonal:
-            dim_c = len(Or[0][0])
-
-        Or_dict = {}
-
-        r_list = [[r, round(n1), round(n2), round(n3)] for r, (n1, n2, n3) in enumerate(rpoints)]
-
-        if diagonal:
-            Or_dict = {(n1, n2, n3, a, a): Or[r][a] for r, n1, n2, n3 in r_list for a in range(dim_r)}
-        else:
-            Or_dict = {
-                (n1, n2, n3, a, b): Or[r][a][b] for r, n1, n2, n3 in r_list for a in range(dim_r) for b in range(dim_c)
-            }
-
-        return Or_dict
+        return matrix_dict_r(Or, rpoints, diagonal)
 
     # ==================================================
     @classmethod
@@ -932,21 +419,7 @@ class CW(dict):
         Returns:
             dict: k-space representation of the given operator, {(k2,k2,k3,a,b) = O_{ab}(k)}.
         """
-        # number of pseudo atomic orbitals
-        dim_r = len(Ok[0])
-        if not diagonal:
-            dim_c = len(Ok[0][0])
-
-        k_list = [[k, k1, k2, k3] for k, (k1, k2, k3) in enumerate(kpoints)]
-
-        if diagonal:
-            Ok_dict = {(k1, k2, k3, a, a): Ok[k][a] for k, k1, k2, k3 in k_list for a in range(dim_r)}
-        else:
-            Ok_dict = {
-                (k1, k2, k3, a, b): Ok[k][a][b] for k, k1, k2, k3 in k_list for a in range(dim_r) for b in range(dim_c)
-            }
-
-        return Ok_dict
+        return matrix_dict_k(Ok, kpoints, diagonal)
 
     # ==================================================
     @classmethod
@@ -960,32 +433,37 @@ class CW(dict):
         Returns:
             ndarray: matrix form of the given operator.
         """
-        dim = max([a for (_, _, _, a, _) in dic.keys()]) + 1
-
-        O_mat = [np.zeros((dim, dim), dtype=complex)]
-        idx = 0
-        g0 = list(dic.keys())[0][:3]
-
-        for (g1, g2, g3, a, b), v in dic.items():
-            g = (g1, g2, g3)
-            if g != g0:
-                O_mat.append(np.zeros((dim, dim), dtype=complex))
-                idx += 1
-                g0 = g
-
-            O_mat[idx][a, b] = complex(v)
-
-        return np.array(O_mat)
+        return dict_to_matrix(dic)
 
     # ==================================================
-    @classmethod
-    def samb_decomp(cls, Or_dict, Zr_dict):
-        z = {
-            k: np.real(np.sum([v * Or_dict.get((-k[0], -k[1], -k[2], k[4], k[3]), 0) for k, v in d.items()]))
-            for k, d in Zr_dict.items()
-        }
+    @property
+    def cwin(self):
+        self._cwm.cwin
 
-        return z
+    # ==================================================
+    @property
+    def win(self):
+        self._cwm.win
+
+    # ==================================================
+    @property
+    def eig(self):
+        self._cwm.eig
+
+    # ==================================================
+    @property
+    def amn(self):
+        self._cwm.amn
+
+    # ==================================================
+    @property
+    def mmn(self):
+        self._cwm.mmn
+
+    # ==================================================
+    @property
+    def nnkp(self):
+        self._cwm.nnkp
 
     # ==================================================
     @classmethod
