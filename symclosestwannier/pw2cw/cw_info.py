@@ -61,10 +61,12 @@ class CWInfo(dict):
                 for name_, info_ in info_list:
                     if k in info_:
                         v_ = info_[k]
-                        if v != v_:
-                            raise Exception(
-                                f"The value of {k} in {name} and {name_} is inconsistent: {v}({name}) != {v_}({name_})"
-                            )
+                        try:
+                            if v != v_:
+                                raise Exception(f"The value of {k} in {name} and {name_} is inconsistent.")
+                        except:
+                            if np.all(np.array(v) == np.array(v_)):
+                                raise Exception(f"The value of {k} in {name} and {name_} is inconsistent.")
 
             info_list.append((name, info))
             d.update(info)

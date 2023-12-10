@@ -95,12 +95,12 @@ class Mmn(dict):
 
         with open(file_name, "w") as fp:
             fp.write("# mmn created by mmn.py\n")
-            fp.write("{} {} {}\n".format(d["num_bands"], d["num_k"], d["num_b"]))
-            for ik, ib in itertools.product(range(d["num_k"]), range(d["num_b"])):
+            fp.write("{} {} {}\n".format(self["num_bands"], self["num_k"], self["num_b"]))
+            for ik, ib in itertools.product(range(self["num_k"]), range(self["num_b"])):
                 mkb = Mkb[ik, ib, :, :]
-                ik, ib, g0, g1, g2 = nnkpts[ik, ib, :]
+                ik, ib, g0, g1, g2 = self["nnkpts"][ik, ib, :]
                 fp.write("{0}  {1}  {2}  {3}  {4}\n".format(ik, ib, g0, g1, g2))
-                for m, n in itertools.product(range(d["num_bands"]), repeat=2):
+                for m, n in itertools.product(range(self["num_bands"]), repeat=2):
                     fp.write("{0.real:18.12f}  {0.imag:18.12f}\n".format(mkb[m, n]))
 
     # ==================================================

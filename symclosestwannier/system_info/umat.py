@@ -103,18 +103,18 @@ class Umat(dict):
                     v = [float(vi) for vi in u[i * num_wann + j].split() if vi != ""]
                     Uoptk[k, i, j] = v[0] + 1j * v[1]
 
-        Udisk = np.zeros([num_k, num_wann, num_bands], dtype=complex)
+        Udisk = np.zeros([num_k, num_bands, num_wann], dtype=complex)
         u_dis_mat_data = u_dis_mat_data[3:]
         for k in range(num_k):
             u = u_dis_mat_data[
                 k * (num_wann * num_bands + 2) + 1 : k * (num_wann * num_bands + 2) + num_wann * num_bands + 1
             ]
-            for i in range(num_wann):
-                for j in range(num_bands):
-                    v = [float(vi) for vi in u[i * num_bands + j].split() if vi != ""]
+            for i in range(num_bands):
+                for j in range(num_wann):
+                    v = [float(vi) for vi in u[i * num_wann + j].split() if vi != ""]
                     Udisk[k, i, j] = v[0] + 1j * v[1]
 
-        Uk = Uoptk @ Udisk
+        Uk = Udisk @ Uoptk
 
         d = {
             "num_k": num_k,
@@ -164,8 +164,8 @@ class Umat(dict):
             for k in range(self["num_k"]):
                 kv = self["kpoints"][k]
                 fp.write("{0:18.12f} {1:18.12f} {2:18.12f} \n".format(kv[0], kv[1], kv[2]))
-                for i in range(self["num_wann"]):
-                    for j in range(self["num_bands"]):
+                for i in range(self["num_bands"]):
+                    for j in range(self["num_wann"]):
                         fp.write("{0.real:18.12f}  {0.imag:18.12f} \n".format(self["Udisk"][k][i][j]))
 
                 fp.write("\n")
