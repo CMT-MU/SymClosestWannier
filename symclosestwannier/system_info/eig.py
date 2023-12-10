@@ -7,7 +7,7 @@ import tarfile
 import itertools
 
 import numpy as np
-import scipy.linalg
+
 
 _default_eig = {"num_k": 1, "num_bands": 1, "Ek": None}
 

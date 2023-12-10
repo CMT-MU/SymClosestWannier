@@ -9,7 +9,7 @@ import tarfile
 import itertools
 
 import numpy as np
-import scipy.linalg
+
 
 _default_amn = {"num_k": 1, "num_bands": 1, "num_wann": 1, "Ak": None}
 

@@ -8,7 +8,7 @@ import tarfile
 import itertools
 
 import numpy as np
-import scipy.linalg
+
 
 _default_mmn = {"num_k": 1, "num_bands": 1, "num_b": 1, "nnkpts": None, "Mkb": None}
 

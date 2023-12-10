@@ -2,7 +2,6 @@
 CWin manages input file for pw2cw, seedname.cwin file.
 """
 import os
-import xmltodict
 import numpy as np
 
 
