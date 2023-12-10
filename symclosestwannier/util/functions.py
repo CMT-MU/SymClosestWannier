@@ -3,6 +3,7 @@ utility functions.
 """
 
 import numpy as np
+from gcoreutils.nsarray import NSArray
 
 
 M_ZERO = np.finfo(float).eps
@@ -319,23 +320,23 @@ def matrix_dict_k(Ok, kpoints, diagonal=False):
 
 
 # ==================================================
-def dict_to_matrix(dic):
+def dict_to_matrix(Or_dict):
     """
     convert dictionary form to matrix form of an arbitrary operator matrix.
 
     Args:
-        dic (dict): dictionary form of an arbitrary operator matrix in reak-space/k-space representation.
+        Or_dict (dict): dictionary form of an arbitrary operator matrix in reak-space/k-space representation.
 
     Returns:
         ndarray: matrix form of the given operator.
     """
-    dim = max([a for (_, _, _, a, _) in dic.keys()]) + 1
+    dim = max([a for (_, _, _, a, _) in Or_dict.keys()]) + 1
 
     O_mat = [np.zeros((dim, dim), dtype=complex)]
     idx = 0
-    g0 = list(dic.keys())[0][:3]
+    g0 = list(Or_dict.keys())[0][:3]
 
-    for (g1, g2, g3, a, b), v in dic.items():
+    for (g1, g2, g3, a, b), v in Or_dict.items():
         g = (g1, g2, g3)
         if g != g0:
             O_mat.append(np.zeros((dim, dim), dtype=complex))
@@ -345,3 +346,82 @@ def dict_to_matrix(dic):
         O_mat[idx][a, b] = complex(v)
 
     return np.array(O_mat)
+
+
+# ==================================================
+def samb_decomp(Or_dict, Zr_dict):
+    """
+    decompose arbitrary operator into linear combination of SAMBs.
+
+    Args:
+        Or_dict (dict): dictionary form of an arbitrary operator matrix in reak-space/k-space representation.
+        Zr_dict (dict): SAMBs
+
+    Returns:
+        z (list): parameter set, [z_j].
+    """
+    z = {
+        k: np.real(np.sum([v * Or_dict.get((-k[0], -k[1], -k[2], k[4], k[3]), 0) for k, v in d.items()]))
+        for k, d in Zr_dict.items()
+    }
+
+    return z
+
+
+# ==================================================
+def construct_Or(z, num_wann, rpoints, matrix_dict):
+    """
+    arbitrary operator constructed by linear combination of SAMBs in real space representation.
+
+    Args:
+        z (list): parameter set, [z_j].
+        num_wann (int): # of CWFs.
+        rpoints (ndarray, optional): lattice points (crystal coordinate, [[n1,n2,n3]], nj: integer).
+        matrix_dict (dict): SAMBs.
+
+    Returns:
+        ndarray: matrix, [#r, dim, dim].
+    """
+    Or_dict = {(n1, n2, n3, a, b): 0.0 for (n1, n2, n3) in rpoints for a in range(num_wann) for b in range(num_wann)}
+    for j, d in enumerate(matrix_dict["matrix"].values()):
+        zj = z[j]
+        for (n1, n2, n3, a, b), v in d.items():
+            Or_dict[(n1, n2, n3, a, b)] += zj * v
+
+    Or = np.array(
+        [
+            [[Or_dict.get((n1, n2, n3, a, b), 0.0) for b in range(num_wann)] for a in range(num_wann)]
+            for (n1, n2, n3) in rpoints
+        ]
+    )
+
+    return Or
+
+
+# ==================================================
+def construct_Ok(z, num_wann, kpoints, rpoints, matrix_dict):
+    """
+    arbitrary operator constructed by linear combination of SAMBs in k space representation.
+
+    Args:
+        z (list): parameter set, [z_j].
+        num_wann (int): # of CWFs.
+        kpoints (ndarray): k-points used in DFT calculation, [[k1, k2, k3]] (crystal coordinate).
+        rpoints (ndarray, optional): lattice points (crystal coordinate, [[n1,n2,n3]], nj: integer).
+        matrix_dict (dict): SAMBs.
+
+    Returns:
+        ndarray: matrix, [#k, dim, dim].
+    """
+    kpoints = np.array(kpoints)
+    rpoints = np.array(rpoints)
+    cell_site = matrix_dict["cell_site"]
+    ket = matrix_dict["ket"]
+    atoms_frac = [
+        NSArray(cell_site[ket[a].split("@")[1]][0], style="vector", fmt="value").tolist() for a in range(len(ket))
+    ]
+
+    Or = construct_Or(z, num_wann, rpoints, matrix_dict)
+    Ok, _ = fourier_transform_r_to_k(Or, rpoints, kpoints, atoms_frac)
+
+    return Ok

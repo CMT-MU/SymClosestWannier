@@ -32,41 +32,31 @@ def create_cw(seedname="cwannier"):
     cw._cwm.write(f"{seedname}_data.py", cw.copy(), CW._data_header(), seedname)
 
     if cw._cwi["write_hr"]:
-        cw.write_hr()
+        cw.write_or(cw["Hr"], cw._cwi["rpoints"], f"{cw._cwi['seedname']}_hr.dat", CW._hr_header())
 
     if cw._cwi["write_sr"]:
-        cw.write_sr()
+        cw.write_or(cw["Sr"], cw._cwi["rpoints"], f"{cw._cwi['seedname']}_sr.dat", CW._sr_header())
 
     if cw._cwi["symmetrization"]:
         if cw._cwi["write_hr"]:
-            Hr_sym_dict = CW.matrix_dict_r(cw.Hr_sym, cw["rpoints_mp"])
-            Hr_sym_str = "".join(
-                [
-                    f"{n1}  {n2}  {n3}  {a}  {b}  {'{:.8f}'.format(np.real(v))}  {'{:.8f}'.format(np.imag(v))}\n"
-                    for (n1, n2, n3, a, b), v in Hr_sym_dict.items()
-                ]
-            )
-            cw._cwm.write(f"{seedname}_hr_sym.dat", Hr_sym_str, CW._hr_header(), None, dir=cwi["mp_outdir"])
+            filename = os.path.join(cw._cwi["mp_outdir"], "{}".format(f"{cw._cwi['mp_seedname']}_hr_sym.dat"))
+            cw.write_or(cw["Hr_sym"], cw["rpoints_mp"], filename, CW._hr_header())
 
         if cw._cwi["write_sr"]:
-            Sr_sym_dict = CW.matrix_dict_r(cw.Sr_sym, cw["rpoints_mp"])
-            Sr_sym_str = "".join(
-                [
-                    f"{n1}  {n2}  {n3}  {a}  {b}  {'{:.8f}'.format(np.real(v))}  {'{:.8f}'.format(np.imag(v))}\n"
-                    for (n1, n2, n3, a, b), v in Sr_sym_dict.items()
-                ]
-            )
-            cw._cwm.write(f"{seedname}_sr_sym.dat", Sr_sym_str, CW._sr_header(), None, dir=cwi["mp_outdir"])
+            filename = os.path.join(cw._cwi["mp_outdir"], "{}".format(f"{cw._cwi['mp_seedname']}_sr_sym.dat"))
+            cw.write_or(cw["Sr_sym"], cw["rpoints_mp"], filename, CW._sr_header())
 
         z = "".join(
             [f"{j+1}    {zj}    {tag}    {'{:.8f}'.format(v)}  \n " for j, ((zj, tag), v) in enumerate(cw["z"].items())]
         )
-        cw._cwm.write(f"{cwi['mp_seedname']}_z.dat", z, CW._z_header(), None, dir=cwi["mp_outdir"])
+        filename = os.path.join(cw._cwi["mp_outdir"], "{}".format(f"{cwi['mp_seedname']}_z.dat"))
+        cw._cwm.write(filename, z, CW._z_header(), None)
 
         s = "".join(
             [f"{j+1}    {zj}    {tag}    {'{:.8f}'.format(v)}  \n " for j, ((zj, tag), v) in enumerate(cw["s"].items())]
         )
-        cw._cwm.write(f"{cwi['mp_seedname']}_s.dat", s, CW._s_header(), None, dir=cwi["mp_outdir"])
+        filename = os.path.join(cw._cwi["mp_outdir"], "{}".format(f"{cwi['mp_seedname']}_s.dat"))
+        cw._cwm.write(filename, s, CW._s_header(), None)
 
         z_nonortho = "".join(
             [
@@ -74,10 +64,11 @@ def create_cw(seedname="cwannier"):
                 for j, ((zj, tag), v) in enumerate(cw["z_nonortho"].items())
             ]
         )
-        cw._cwm.write(f"{cwi['mp_seedname']}_z_nonortho.dat", z_nonortho, CW._z_header(), None, dir=cwi["mp_outdir"])
+        filename = os.path.join(cw._cwi["mp_outdir"], "{}".format(f"{cwi['mp_seedname']}_z_nonortho.dat"))
+        cw._cwm.write(filename, z_nonortho, CW._z_header(), None)
 
     # band calculation
-    if "kpoint" in cw._cwi and "kpoint_path" in cw._cwi:
+    if cw._cwi["kpoint"] is not None and cw._cwi["kpoint_path"] is not None:
         k_linear = NSArray(cw["k_linear"], "vector", fmt="value")
         k_dis_pos = cw["k_dis_pos"]
 
@@ -93,7 +84,7 @@ def create_cw(seedname="cwannier"):
             A = NSArray(cw._cwi["unit_cell_cart"], "matrix", fmt="value")
             a = A[0].norm()
 
-        Hk_path = cw.fourier_transform_r_to_k(cw["Hr"], cw["rpoints"], cw["kpoints_path"])[0]
+        Hk_path = cw.fourier_transform_r_to_k(cw["Hr"], cw._cwi["rpoints"], cw["kpoints_path"])[0]
         Ek, Uk = np.linalg.eigh(Hk_path)
 
         ef = cw._cwi["fermi_energy"]
@@ -103,7 +94,7 @@ def create_cw(seedname="cwannier"):
         )
 
         if cw._cwi["symmetrization"]:
-            rel = os.path.relpath(cwi["outdir"], cwi["mp_outdir"])
+            rel = os.path.relpath(cw._cwi["outdir"], cw._cwi["mp_outdir"])
 
             if os.path.isfile(f"{seedname}.band.gnu"):
                 ref_filename = f"{rel}/{seedname}.band.gnu"
@@ -112,7 +103,8 @@ def create_cw(seedname="cwannier"):
             else:
                 ref_filename = None
 
-            Ek, Uk = np.linalg.eigh(cw.Hk_sym_path)
+            Hk_sym_path = cw.fourier_transform_r_to_k(cw["Hr_sym"], cw["rpoints_mp"], cw["kpoints_path"])[0]
+            Ek, Uk = np.linalg.eigh(Hk_sym_path)
 
             output_linear_dispersion(
                 cwi["mp_outdir"],

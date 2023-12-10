@@ -2,12 +2,9 @@
 Win manages input file for wannier90.x, seedname.win file.
 """
 import os
-import gzip
-import tarfile
-import itertools
-
 import numpy as np
-import scipy.linalg
+
+from symclosestwannier.util.functions import kpoints_to_rpoints
 
 _default_win = {
     "seedname": "cwannier",
@@ -180,6 +177,8 @@ class Win(dict):
             if d["atoms_cart"] is None:
                 A = d["unit_cell_cart"]
                 d["atoms_cart"] = {k: (np.array(v) @ np.array(A)).tolist() for k, v in d["atoms_frac"].items()}
+
+        d["rpoints"] = kpoints_to_rpoints(d["kpoints"]).tolist()
 
         return d
 

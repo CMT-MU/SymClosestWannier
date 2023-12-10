@@ -1,11 +1,14 @@
 """
 Closest Wannier (CW) tight-binding (TB) model based on Plane-Wave (PW) DFT calculation.
 """
+import os
+import sympy as sp
 import numpy as np
 from numpy import linalg as npl
 from scipy import linalg as spl
 
 from gcoreutils.nsarray import NSArray
+from multipie.tag.tag_multipole import TagMultipole
 
 from symclosestwannier.pw2cw.cw_info import CWInfo
 from symclosestwannier.pw2cw.cw_manager import CWManager
@@ -37,6 +40,9 @@ from symclosestwannier.util.functions import (
     matrix_dict_r,
     matrix_dict_k,
     dict_to_matrix,
+    samb_decomp,
+    construct_Or,
+    construct_Ok,
 )
 
 
@@ -69,11 +75,9 @@ class CW(dict):
         self._cwm.log(system_msg(self._cwi), stamp=None, end="\n", file=self._outfile, mode="a")
 
         if self._cwi["restart"] == "wannierise":
-            dic = self._initialize()
+            self._wannierize()
         else:
-            dic = self._cwm.read(f"{self._cwi['seedname']}_data.py")
-
-        self.update(dic)
+            self.update(self._cwm.read(f"{self._cwi['seedname']}_data.py"))
 
         msg = f"  * total elapsed_time:"
         self._cwm.log(msg, stamp="start", file=self._outfile, mode="a")
@@ -81,12 +85,19 @@ class CW(dict):
         self._cwm.log(ending_msg(), stamp=None, end="\n", file=self._outfile, mode="a")
 
     # ==================================================
-    def _initialize(self):
+    def _wannierize(self):
         """
-        initilize the class.
+        wannierization.
 
         Returns:
-            dict:
+            tuple: Sk, Uk, Hk, Hk_nonortho, Sr, Hr, Hr_nonortho.
+                - Sk (ndarray) : Overlap matrix elements in k-space.
+                - Uk (ndarray) : Unitary matrix elements in k-space.
+                - Hk (ndarray) : Hamiltonian matrix elements in k-space (orthogonal).
+                - Hk_nonortho (ndarray) : Hamiltonian matrix elements in k-space (non-orthogonal).
+                - Sr (ndarray) : Overlap matrix elements in real-space.
+                - Hr (ndarray) : Hamiltonian matrix elements in real-space (orthogonal).
+                - Hr_nonortho (ndarray) : Hamiltonian matrix elements in real-space (non-orthogonal).
         """
         self._cwm.log(starting_msg(self._cwi), stamp=None, end="\n", file=self._outfile, mode="a")
 
@@ -131,26 +142,65 @@ class CW(dict):
         else:
             kpoints_path, k_linear, k_dis_pos = None, None, None
 
-        if self._cwi["symmetrization"]:
-            self._symmetrize()
+        self.update(
+            {
+                "kpoints_path": kpoints_path if kpoints_path is not None else None,
+                "k_linear": k_linear.tolist() if k_linear is not None else None,
+                "k_dis_pos": k_dis_pos if k_dis_pos is not None else None,
+                #
+                "Pk": Pk.tolist(),
+                "Uk": [u.tolist() for u in Uk],
+                "Sk": Sk.tolist(),
+                "Hk": Hk.tolist(),
+                "Hk_nonortho": Hk_nonortho.tolist(),
+                #
+                "Sr": Sr.tolist(),
+                "Hr": Hr.tolist(),
+                "Hr_nonortho": Hr_nonortho.tolist(),
+            }
+        )
 
-        return {
-            "kpoints": self._cwi["kpoints"],
-            "rpoints": CW.kpoints_to_rpoints(self._cwi["kpoints"]).tolist(),
-            "kpoints_path": kpoints_path if kpoints_path is not None else None,
-            "k_linear": k_linear if k_linear is not None else None,
-            "k_dis_pos": k_dis_pos if k_dis_pos is not None else None,
-            #
-            "Pk": Pk.tolist(),
-            "Uk": [u.tolist() for u in Uk],
-            "Sk": Sk.tolist(),
-            "Hk": Hk.tolist(),
-            "Hk_nonortho": Hk_nonortho.tolist(),
-            #
-            "Sr": Sr.tolist(),
-            "Hr": Hr.tolist(),
-            "Hr_nonortho": Hr_nonortho.tolist(),
-        }
+        if self._cwi["symmetrization"]:
+            msg = "   - symmetrization ... "
+            self._cwm.log(msg, None, end="\n", file=self._outfile, mode="a")
+
+            (
+                s,
+                z,
+                z_nonortho,
+                Sk_sym,
+                Hk_sym,
+                Hk_nonortho_sym,
+                Sr_sym,
+                Hr_sym,
+                Hr_nonortho_sym,
+                rpoints_mp,
+                Ek_RMSE_grid,
+                Ek_RMSE_path,
+                matrix_dict,
+            ) = self._symmetrize()
+
+            self.update(
+                {
+                    "s": s,
+                    "z": z,
+                    "z_nonortho": z_nonortho,
+                    #
+                    "Sk_sym": Sk_sym,
+                    "Hk_sym": Hk_sym,
+                    "Hk_nonortho_sym": Hk_nonortho_sym,
+                    "Sr_sym": Sr_sym,
+                    "Hr_sym": Hr_sym,
+                    "Hr_nonortho_sym": Hr_nonortho_sym,
+                    #
+                    "rpoints_mp": rpoints_mp,
+                    #
+                    "Ek_RMSE_grid": Ek_RMSE_grid,
+                    "Ek_RMSE_path": Ek_RMSE_path,
+                    #
+                    "matrix_dict": matrix_dict,
+                }
+            )
 
     # ==================================================
     def _exclude_bands(self, Pk, Ek, Ak):
@@ -257,32 +307,201 @@ class CW(dict):
         return Sk, Uk, Hk, Hk_nonortho, Sr, Hr, Hr_nonortho
 
     # ==================================================
-    def write_hr(self):
+    def _symmetrize(self):
         """
-        write seedname_hr.dat.
+        symmetrize CW TB Hamiltonian.
+
+        Returns:
+            tuple:
         """
-        Hr_dict = CW.matrix_dict_r(self["Hr"], self["rpoints"])
+        Hk = np.array(self["Hk"])
+        Hr_dict = CW.matrix_dict_r(self["Hr"], self._cwi["rpoints"])
+        Sr_dict = CW.matrix_dict_r(self["Sr"], self._cwi["rpoints"])
+        Hr_nonortho_dict = CW.matrix_dict_r(self["Hr_nonortho"], self._cwi["rpoints"])
+
+        #####
+
+        msg = "    - reading output of multipie ... "
+        self._cwm.log(msg, None, end="\n", file=self._outfile, mode="a")
+        self._cwm.set_stamp()
+
+        model = self._cwm.read(
+            os.path.join(self._cwi["mp_outdir"], "{}".format(f"{self._cwi['mp_seedname']}_model.py"))
+        )
+        samb = self._cwm.read(os.path.join(self._cwi["mp_outdir"], "{}".format(f"{self._cwi['mp_seedname']}_samb.py")))
+
+        try:
+            mat = self._cwm.read(
+                os.path.join(self._cwi["mp_outdir"], "{}".format(f"{self._cwi['mp_seedname']}_matrix.pkl"))
+            )
+        except:
+            mat = self._cwm.read(
+                os.path.join(self._cwi["mp_outdir"], "{}".format(f"{self._cwi['mp_seedname']}_matrix.py"))
+            )
+
+        ket_samb = model["info"]["ket"]
+        ket_amn = self._cwi["ket_amn"]
+
+        # sort orbitals
+        if ket_amn is not None:
+            idx_list = [ket_amn.index(o) for o in ket_samb]
+            Hk = Hk[:, idx_list, :]
+            Hk = Hk[:, :, idx_list]
+
+            idx_list = [ket_samb.index(o) for o in ket_amn]
+            Hr_dict = {(n1, n2, n3, idx_list[a], idx_list[b]): v for (n1, n2, n3, a, b), v in Hr_dict.items()}
+            Sr_dict = {(n1, n2, n3, idx_list[a], idx_list[b]): v for (n1, n2, n3, a, b), v in Sr_dict.items()}
+
+            Hr_nonortho_dict = {
+                (n1, n2, n3, idx_list[a], idx_list[b]): v for (n1, n2, n3, a, b), v in Hr_nonortho_dict.items()
+            }
+
+        if self._cwi["irreps"] == "all":
+            irreps = model["info"]["generate"]["irrep"]
+        elif self._cwi["irreps"] == "full":
+            irreps = [model["info"]["generate"]["irrep"][0]]
+        else:
+            irreps = self._cwi["irreps"]
+
+        for zj, (tag, _) in samb["data"]["Z"].items():
+            if TagMultipole(tag).irrep not in irreps:
+                del mat["matrix"][zj]
+
+        tag_dict = {zj: tag for zj, (tag, _) in samb["data"]["Z"].items()}
+        Zr_dict = {
+            (zj, tag_dict[zj]): {tuple(sp.sympify(k)): complex(sp.sympify(v)) for k, v in d.items()}
+            for zj, d in mat["matrix"].items()
+        }
+        mat["matrix"] = {
+            zj: {tuple(sp.sympify(k)): complex(sp.sympify(v)) for k, v in d.items()} for zj, d in mat["matrix"].items()
+        }
+
+        lattice = model["info"]["group"][1].split("/")[1].replace(" ", "")[0]
+        if lattice != "P":
+            cell_site = {}
+            for site, v in mat["cell_site"].items():
+                if "(" in site and ")" in site:
+                    if "(1)" in site:
+                        cell_site[site[:-3]] = v
+                else:
+                    cell_site[site] = v
+
+            mat["cell_site"] = cell_site
+
+        #####
+
+        msg = "    - decomposing Hamiltonian as linear combination of SAMBs ... "
+        self._cwm.log(msg, None, end="", file=self._outfile, mode="a")
+        self._cwm.set_stamp()
+
+        z = CW.samb_decomp(Hr_dict, Zr_dict)
+
+        self._cwm.log("done", file=self._outfile, mode="a")
+
+        #####
+
+        msg = "    - decomposing overlap as linear combination of SAMBs ... "
+        self._cwm.log(msg, None, end="", file=self._outfile, mode="a")
+        self._cwm.set_stamp()
+
+        s = CW.samb_decomp(Sr_dict, Zr_dict)
+
+        self._cwm.log("done", file=self._outfile, mode="a")
+
+        #####
+
+        msg = "    - decomposing non-orthogonal Hamiltonian as linear combination of SAMBs ... "
+        self._cwm.log(msg, None, end="", file=self._outfile, mode="a")
+        self._cwm.set_stamp()
+
+        z_nonortho = CW.samb_decomp(Hr_nonortho_dict, Zr_dict)
+
+        self._cwm.log("done", file=self._outfile, mode="a")
+
+        #####
+
+        msg = "    - constructing symmetrized TB Hamiltonian ... "
+        self._cwm.log(msg, None, end="", file=self._outfile, mode="a")
+        self._cwm.set_stamp()
+
+        rpoints_mp = [(n1, n2, n3) for Zj_dict in Zr_dict.values() for (n1, n2, n3, _, _) in Zj_dict.keys()]
+        rpoints_mp = sorted(list(set(rpoints_mp)), key=rpoints_mp.index)
+
+        Sr_sym = CW.construct_Or(list(s.values()), self._cwi["num_wann"], rpoints_mp, mat)
+        Hr_sym = CW.construct_Or(list(z.values()), self._cwi["num_wann"], rpoints_mp, mat)
+        Hr_nonortho_sym = CW.construct_Or(list(z_nonortho.values()), self._cwi["num_wann"], rpoints_mp, mat)
+
+        atoms_frac = list(self._cwi["atoms_frac"].values())
+        Sk_sym = CW.fourier_transform_r_to_k(Sr_sym, rpoints_mp, self._cwi["kpoints"], atoms_frac)[0]
+        Hk_sym = CW.fourier_transform_r_to_k(Hr_sym, rpoints_mp, self._cwi["kpoints"], atoms_frac)[0]
+        Hk_nonortho_sym = CW.fourier_transform_r_to_k(Hr_nonortho_sym, rpoints_mp, self._cwi["kpoints"], atoms_frac)[0]
+
+        self._cwm.log("done", file=self._outfile, mode="a")
+
+        #####
+
+        msg = "    - evaluating fitting accuracy ... "
+        self._cwm.log(msg, None, end="\n", file=self._outfile, mode="a")
+        self._cwm.set_stamp()
+
+        Ek_grid, _ = np.linalg.eigh(Hk)
+        Ek_grid_sym, _ = np.linalg.eigh(Hk_sym)
+
+        num_k, num_wann = Ek_grid_sym.shape
+        Ek_RMSE_grid = np.sum(np.abs(Ek_grid_sym - Ek_grid)) / num_k / num_wann * 1000  # [meV]
+
+        msg = f"     * RMSE of eigen values between CW and Symmetry-Adapted CW models (grid) = {'{:.4f}'.format(Ek_RMSE_grid)} [meV]"
+        self._cwm.log(msg, None, end="\n", file=self._outfile, mode="a")
+
+        #####
+
+        if not mat["molecule"]:
+            Hk_path = CW.fourier_transform_r_to_k(self["Hr"], self._cwi["rpoints"], self["kpoints_path"])[0]
+            Ek_path, _ = np.linalg.eigh(Hk_path)
+
+            Hk_sym_path = CW.fourier_transform_r_to_k(Hr_sym, rpoints_mp, self["kpoints_path"], atoms_frac)[0]
+            Ek_path_sym, _ = np.linalg.eigh(Hk_sym_path)
+
+            num_k, num_wann = Ek_path_sym.shape
+            Ek_RMSE_path = np.sum(np.abs(Ek_path_sym - Ek_path)) / num_k / num_wann * 1000  # [meV]
+
+            msg = f"     * RMSE of eigen values between CW and Symmetry-Adapted CW models (path) = {'{:.4f}'.format(Ek_RMSE_path)} [meV]"
+            self._cwm.log(msg, None, end="\n", file=self._outfile, mode="a")
+        else:
+            Ek_RMSE_path = None
+
+        return (
+            s,
+            z,
+            z_nonortho,
+            Sk_sym,
+            Hk_sym,
+            Hk_nonortho_sym,
+            Sr_sym,
+            Hr_sym,
+            Hr_nonortho_sym,
+            rpoints_mp,
+            Ek_RMSE_grid,
+            Ek_RMSE_path,
+            mat,
+        )
+
+    # ==================================================
+    def write_or(self, Or, rpoints, filename, header=None):
+        """
+        write seedname_or.dat.
+
+        Args:
+
+        """
+        Hr_dict = CW.matrix_dict_r(Or, rpoints)
         Hr_str = "".join(
             [
                 f"{n1}  {n2}  {n3}  {a}  {b}  {'{:.8f}'.format(np.real(v))}  {'{:.8f}'.format(np.imag(v))}\n"
                 for (n1, n2, n3, a, b), v in Hr_dict.items()
             ]
         )
-        self._cwm.write(f"{self._cwi['seedname']}_hr.dat", Hr_str, CW._hr_header(), None)
-
-    # ==================================================
-    def write_sr(self):
-        """
-        write seedname_sr.dat.
-        """
-        Sr_dict = CW.matrix_dict_r(self["Sr"], self["rpoints"])
-        Sr_str = "".join(
-            [
-                f"{n1}  {n2}  {n3}  {a}  {b}  {'{:.8f}'.format(np.real(v))}  {'{:.8f}'.format(np.imag(v))}\n"
-                for (n1, n2, n3, a, b), v in Sr_dict.items()
-            ]
-        )
-        self._cwm.write(f"{self._cwi['seedname']}_sr.dat", Sr_str, CW._sr_header(), None)
+        self._cwm.write(filename, Hr_str, header, None)
 
     # ==================================================
     @classmethod
@@ -423,7 +642,7 @@ class CW(dict):
 
     # ==================================================
     @classmethod
-    def dict_to_matrix(cls, dic):
+    def dict_to_matrix(cls, Or_dict):
         """
         convert dictionary form to matrix form of an arbitrary operator matrix.
 
@@ -433,7 +652,57 @@ class CW(dict):
         Returns:
             ndarray: matrix form of the given operator.
         """
-        return dict_to_matrix(dic)
+        return dict_to_matrix(Or_dict)
+
+    # ==================================================
+    @classmethod
+    def samb_decomp(cls, Or_dict, Zr_dict):
+        """
+        decompose arbitrary operator into linear combination of SAMBs.
+
+        Args:
+            Or_dict (dict): dictionary form of an arbitrary operator matrix in reak-space/k-space representation.
+            Zr_dict (dict): SAMBs
+
+        Returns:
+            z (list): parameter set, [z_j].
+        """
+        return samb_decomp(Or_dict, Zr_dict)
+
+    # ==================================================
+    @classmethod
+    def construct_Or(cls, z, num_wann, rpoints, matrix_dict):
+        """
+        arbitrary operator constructed by linear combination of SAMBs in real space representation.
+
+        Args:
+            z (list): parameter set, [z_j].
+            num_wann (int): # of CWFs.
+            rpoints (ndarray, optional): lattice points (crystal coordinate, [[n1,n2,n3]], nj: integer).
+            matrix_dict (dict): SAMBs.
+
+        Returns:
+            ndarray: matrix, [#r, dim, dim].
+        """
+        return construct_Or(z, num_wann, rpoints, matrix_dict)
+
+    # ==================================================
+    @classmethod
+    def construct_Ok(cls, z, num_wann, kpoints, rpoints, matrix_dict):
+        """
+        arbitrary operator constructed by linear combination of SAMBs in k space representation.
+
+        Args:
+            z (list): parameter set, [z_j].
+            num_wann (int): # of CWFs.
+            kpoints (ndarray): k-points used in DFT calculation, [[k1, k2, k3]] (crystal coordinate).
+            rpoints (ndarray, optional): lattice points (crystal coordinate, [[n1,n2,n3]], nj: integer).
+            matrix_dict (dict): SAMBs.
+
+        Returns:
+            ndarray: matrix, [#k, dim, dim].
+        """
+        return construct_Ok(z, num_wann, kpoints, rpoints, matrix_dict)
 
     # ==================================================
     @property
