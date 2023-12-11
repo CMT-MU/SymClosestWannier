@@ -208,9 +208,22 @@ class Nnkp(dict):
         return d
 
     # ==================================================
+    def calc_bvec(self, d):
+        """
+        d : array of integer [5]
+        return : bvec in cartesian coordinates
+        """
+        k = np.array(self["kpoints"][d[0] - 1])
+        kb = np.array(self["kpoints"][d[1] - 1])
+        G = np.array(d[2:5])
+        bvec = kb + G - k
+
+        return self.k_crys2cart(bvec, self["B"])
+
+    # ==================================================
     def bvec_num(self, b, type="cart"):
         for ib in range(self["num_b"]):
-            if np.allclose(self["bvec_" + type][ib, :], b):
+            if np.allclose(np.array(self["bvec_" + type])[ib, :], b):
                 return ib
 
         assert False, b
