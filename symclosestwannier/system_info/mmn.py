@@ -75,7 +75,7 @@ class Mmn(dict):
             nnkpts[ik, ib, :] = d
             for m, n in itertools.product(range(num_bands), repeat=2):
                 dat = [float(x) for x in fp.readline().split()]
-                Mkb[ik, ib, m, n] = dat[0] + 1j * dat[1]
+                Mkb[ik, ib, n, m] = dat[0] + 1j * dat[1]
 
         Mkb = Mkb.tolist()
 
@@ -101,7 +101,7 @@ class Mmn(dict):
                 ik, ib, g0, g1, g2 = self["nnkpts"][ik, ib, :]
                 fp.write("{0}  {1}  {2}  {3}  {4}\n".format(ik, ib, g0, g1, g2))
                 for m, n in itertools.product(range(self["num_bands"]), repeat=2):
-                    fp.write("{0.real:18.12f}  {0.imag:18.12f}\n".format(mkb[m, n]))
+                    fp.write("{0.real:18.12f}  {0.imag:18.12f}\n".format(mkb[n, m]))
 
     # ==================================================
     @classmethod
