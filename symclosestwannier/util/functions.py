@@ -30,214 +30,141 @@ def fermi_ddt(x, T=0.01):
 
 
 # ==================================================
-def w_proj(e, e0, e1, T0, T1, delta=10e-12):
+def weight_proj(e, e0, e1, T0, T1, delta=10e-12):
     """weight function for projection"""
     return fermi(e0 - e, T0) + fermi(e - e1, T1) - 1.0 + delta
 
 
 # ==================================================
-def get_rpoints(nr1, nr2, nr3, unit_cell_cart=np.eye(3)):
-    """
-    get lattice points, R = (R1, R2, R3).
-    R = R1*a1 + R2*a2 + R3*a3
-    Rj: lattice vector.
-
-    Args:
-        nr1 (int): # of lattice point a1 direction.
-        nr2 (int): # of lattice point a2 direction.
-        nr3 (int): # of lattice point a3 direction.
-        unit_cell_cart (ndarray, optional): transform matrix, [a1,a2,a3].
-
-    Returns:
-        tuple: (R, Rfft, idx).
-    """
-    A = unit_cell_cart
-    nrtot = nr1 * nr2 * nr3
-
-    R = np.zeros((nrtot, 3), dtype=float)
-    idx = np.zeros((nr1, nr2, nr3), dtype=int)
-    Rfft = np.zeros((nr1, nr2, nr3, 3), dtype=float)
-
-    for i in range(nr1):
-        for j in range(nr2):
-            for k in range(nr3):
-                n = k + j * nr3 + i * nr2 * nr3
-                R1 = float(i) / float(nr1)
-                R2 = float(j) / float(nr2)
-                R3 = float(k) / float(nr3)
-                if R1 >= 0.5:
-                    R1 = R1 - 1.0
-                if R2 >= 0.5:
-                    R2 = R2 - 1.0
-                if R3 >= 0.5:
-                    R3 = R3 - 1.0
-                R1 -= int(R1)
-                R2 -= int(R2)
-                R3 -= int(R3)
-
-                R[n, :] = R1 * nr1 * A[0, :] + R2 * nr2 * A[1, :] + R3 * nr3 * A[2, :]
-                Rfft[i, j, k, :] = R[n, :]
-                idx[i, j, k] = n
-
-    return R, Rfft, idx
+def iterate_nd(size, pm=False):
+    a = -size[0] if pm else 0
+    b = size[0] + 1 if pm else size[0]
+    if len(size) == 1:
+        return np.array([(i,) for i in range(a, b)])
+    else:
+        return np.array([(i,) + tuple(j) for i in range(a, b) for j in iterate_nd(size[1:], pm=pm)])
 
 
 # ==================================================
-def get_kpoints(nk1, nk2, nk3):
-    """
-    get k-points (crystal coordinate), k = (k1, k2, k3).
-    k = k1*b1 + k2*b2 + k3*b3
-    bj: reciprocal lattice vector.
-
-    Args:
-        nk1 (int): # of lattice point b1 direction.
-        nk2 (int): # of lattice point b2 direction.
-        nk3 (int): # of lattice point b3 direction.
-
-    Returns:
-        ndarray: lattice points.
-    """
-    nktot = nk1 * nk2 * nk3
-
-    Kint = np.zeros((nktot, 3), dtype=float)
-
-    for i in range(nk1):
-        for j in range(nk2):
-            for k in range(nk3):
-                n = k + j * nk3 + i * nk2 * nk3
-                k1 = float(i) / float(nk1)
-                k2 = float(j) / float(nk2)
-                k3 = float(k) / float(nk3)
-                if k1 >= 0.5:
-                    k1 = k1 - 1.0
-                if k2 >= 0.5:
-                    k2 = k2 - 1.0
-                if k3 >= 0.5:
-                    k3 = k3 - 1.0
-                k1 -= int(k1)
-                k2 -= int(k2)
-                k3 -= int(k3)
-
-                Kint[n] = k1, k2, k3
-
-    return Kint
+def iterate3dpm(size):
+    assert len(size) == 3
+    return iterate_nd(size, pm=True)
 
 
 # ==================================================
-def kpoints_to_rpoints(kpoints):
+def wigner_seitz(A, mp_grid, prec=1.0e-5):
     """
-    get lattice points corresponding to k-points.
+    wigner seitz cell.
+    return irreducible R vectors and number of degeneracy at each R.
 
     Args:
-        kpoints (ndarray): k-points (crystal coordinate).
-        nk3 (int): # of lattice point b3 direction.
+        A (list/ndarray): real lattice vectors, A = [a1,a2,a3] (list), [[[1,0,0], [0,1,0], [0,0,1]]].
+        mp_grid (list/ndarray): dimensions of the Monkhorst-Pack grid of k-points (list), [0, 0, 0].,
 
     Returns:
-        ndarray: k-points (crystal coordinate).
+        tuple: (irvec, ndegen)
+            - irvec (ndarray): irreducible R vectors (crystal coordinate, [[n1,n2,n3]], nj: integer).
+            - ndegen (ndarray): number of degeneracy at each R.
     """
-    kpoints = np.array(kpoints, dtype=float)
-    N1 = len(sorted(set(list(kpoints[:, 0]))))
-    N2 = len(sorted(set(list(kpoints[:, 1]))))
-    N3 = len(sorted(set(list(kpoints[:, 2]))))
-    N1 = N1 + 1 if N1 % 2 == 0 else N1
-    N2 = N2 + 1 if N2 % 2 == 0 else N2
-    N3 = N3 + 1 if N3 % 2 == 0 else N3
+    ws_search_size = np.array([1] * 3)
+    dist_dim = np.prod((ws_search_size + 1) * 2 + 1)
+    origin = divmod((dist_dim + 1), 2)[0] - 1
+    real_metric = A.dot(A.T)
+    mp_grid = np.array(mp_grid)
+    irvec = []
+    ndegen = []
+    for n in iterate3dpm(mp_grid * ws_search_size):
+        dist = []
+        for i in iterate3dpm((1, 1, 1) + ws_search_size):
+            ndiff = n - i * mp_grid
+            dist.append(ndiff.dot(real_metric.dot(ndiff)))
+        dist_min = np.min(dist)
+        if abs(dist[origin] - dist_min) < prec:
+            irvec.append(n)
+            ndegen.append(np.sum(abs(dist - dist_min) < prec))
 
-    rpoints, _, _ = get_rpoints(N1, N2, N3)
+    irvec = np.array(irvec)
+    ndegen = np.array(ndegen)
 
-    return rpoints
+    return irvec, ndegen
 
 
 # ==================================================
-def fourier_transform_k_to_r(Ok, kpoints, rpoints=None, atoms_frac=None):
+def fourier_transform_k_to_r(Ok, kpoints, irvec, atoms_frac=None):
     """
     inverse fourier transformation of an arbitrary operator from k-space representation into real-space representation.
 
     Args:
         Ok (ndarray): arbitrary operator in k-space representation, O_{ab}(k) = <φ_{a}(k)|O|φ_{b}(k)>.
         kpoints (ndarray): k-points used in DFT calculation, [[k1, k2, k3]] (crystal coordinate).
-        rpoints (ndarray, optional): lattice points (crystal coordinate, [[n1,n2,n3]], nj: integer).
+        irvec (ndarray, optional): irreducible R vectors (crystal coordinate, [[n1,n2,n3]], nj: integer).
         atoms_frac (ndarray, optional): atom's position in fractional coordinates.
 
     Returns:
         (ndarray, ndarray): real-space representation of the given operator, O_{ab}(R) = <φ_{a}(R)|O|φ_{b}(0)>, lattice points.
     """
-    # lattice points (crystal coordinate, [[n1,n2,n3]], nj: integer).
-    if rpoints is None:
-        rpoints = kpoints_to_rpoints(kpoints)
-
     Ok = np.array(Ok, dtype=complex)
     kpoints = np.array(kpoints, dtype=float)
-    rpoints = np.array(rpoints, dtype=float)
+    irvec = np.array(irvec, dtype=float)
 
-    # number of k points
     num_k = kpoints.shape[0]
-    # number of lattice points
-    Nr = rpoints.shape[0]
-    # number of pseudo atomic orbitalså
-    num_wann = Ok.shape[1]
+
+    kR = np.einsum("ka,Ra->kR", kpoints, irvec, optimize=True)
+    phase_R = np.exp(-2 * np.pi * 1j * kR)
 
     if atoms_frac is not None:
-        ap = np.array(atoms_frac)
-        phase_ab = np.exp(
-            [
-                [1.0j * (2 * np.pi * kpoints @ (ap[a, :] - ap[b, :]).transpose()) for b in range(num_wann)]
-                for a in range(num_wann)
-            ]
-        ).transpose(2, 0, 1)
-        Ok = Ok * phase_ab
+        tau = np.array(atoms_frac)
+        ktau = np.einsum("ka,ma->km", kpoints, tau, optimize=True)
+        eiktau = np.exp(-2 * np.pi * 1j * ktau)
 
-    phase = np.exp(1.0j * 2 * np.pi * kpoints @ rpoints.T)
-    Or = np.array([np.sum(Ok[:, :, :] * phase[:, r, np.newaxis, np.newaxis], axis=0) for r in range(Nr)])
-    Or /= num_k
+        Or = np.einsum("kR,km,kmn,kn->Rmn", phase_R, eiktau.conjugate(), Ok, eiktau, optimize=True) / num_k
+    else:
+        Or = np.einsum("kR,kmn->Rmn", phase_R, Ok, optimize=True) / num_k
 
-    rpoints = np.array([[round(N1), round(N2), round(N3)] for N1, N2, N3 in rpoints], dtype=int)
-
-    return Or, rpoints
+    return Or
 
 
 # ==================================================
-def fourier_transform_r_to_k(Or, rpoints, kpoints, atoms_frac=None):
+def fourier_transform_r_to_k(Or, kpoints, irvec, ndegen=None, atoms_frac=None):
     """
     fourier transformation of an arbitrary operator from real-space representation into k-space representation.
 
     Args:
         Or (ndarray): real-space representation of the given operator, O_{ab}(R) = <φ_{a}(R)|O|φ_{b}(0)>.
-        rpoints (ndarray): lattice points (crystal coordinate, [[n1,n2,n3]], nj: integer).
         kpoints (ndarray): k-points used in DFT calculation, [[k1, k2, k3]] (crystal coordinate).
+        irvec (ndarray): irreducible R vectors (crystal coordinate, [[n1,n2,n3]], nj: integer).
+        ndegen (ndarray, optional): number of degeneracy at each R.
         atoms_frac (ndarray, optional): atom's position in fractional coordinates.
 
     Returns:
         ndarray: k-space representation of the given operator, O_{ab}(k) = <φ_{a}(k)|O|φ_{b}(k)>.
     """
     Or = np.array(Or, dtype=complex)
-    rpoints = np.array(rpoints, dtype=float)
+    irvec = np.array(irvec, dtype=float)
+    Nr = irvec.shape[0]
+    if ndegen is None:
+        weight = np.array([1.0 for i in range(Nr)])
+    else:
+        weight = np.array([1.0 / ndegen[i] for i in range(Nr)])
     kpoints = np.array(kpoints, dtype=float)
 
-    # number of k points
-    num_k = kpoints.shape[0]
-
-    # number of pseudo atomic orbitalså
-    num_wann = Or.shape[1]
-
-    phase = np.exp(-1.0j * 2 * np.pi * kpoints @ rpoints.T)
-    Ok = np.array([np.sum(Or[:, :, :] * phase[k, :, np.newaxis, np.newaxis], axis=0) for k in range(num_k)])
+    kR = np.einsum("ka,Ra->kR", kpoints, irvec, optimize=True)
+    phase_R = np.exp(+2 * np.pi * 1j * kR)
 
     if atoms_frac is not None:
-        ap = np.array(atoms_frac)
-        phase_ab = np.exp(
-            [
-                [1.0j * (-2 * np.pi * kpoints @ (ap[a, :] - ap[b, :]).transpose()) for b in range(num_wann)]
-                for a in range(num_wann)
-            ]
-        ).transpose(2, 0, 1)
-        Ok = Ok * phase_ab
+        tau = np.array(atoms_frac)
+        ktau = np.einsum("ka,ma->km", kpoints, tau, optimize=True)
+        eiktau = np.exp(+2 * np.pi * 1j * ktau)
 
-    return Ok, kpoints
+        Ok = np.einsum("R,kR,km,Rmn,kn->kmn", weight, phase_R, eiktau.conjugate(), Or, eiktau, optimize=True)
+    else:
+        Ok = np.einsum("R,kR,Rmn->kmn", weight, phase_R, Or, optimize=True)
+
+    return Ok
 
 
 # ==================================================
-def interpolate(Ok, kpoints_0, kpoints, rpoints=None, atoms_frac=None):
+def interpolate(Ok, kpoints_0, kpoints, irvec, ndegen=None, atoms_frac=None):
     """
     interpolate an arbitrary operator by implementing
     fourier transformation from real-space representation into k-space representation.
@@ -246,14 +173,15 @@ def interpolate(Ok, kpoints_0, kpoints, rpoints=None, atoms_frac=None):
         Ok (ndarray): arbitrary operator in k-space representation, O_{ab}(k) = <φ_{a}(k)|O|φ_{b}(k)>.
         kpoints_0 (ndarray): k points before interpolated (crystal coordinate, [[k1,k2,k3]]).
         kpoints (ndarray): k points after interpolated (crystal coordinate, [[k1,k2,k3]]).
-        rpoints (ndarray): lattice points (crystal coordinate, [[n1,n2,n3]], nj: integer).
+        irvec (ndarray): irreducible R vectors (crystal coordinate, [[n1,n2,n3]], nj: integer).
+        ndegen (ndarray, optional): number of degeneracy at each R.
         atoms_frac (ndarray, optional): atom's position in fractional coordinates.
 
     Returns:
         ndarray: matrix elements at each k point, O_{ab}(k) = <φ_{a}(k)|O|φ_{b}(k)>.
     """
-    Or, rpoints = fourier_transform_k_to_r(Ok, kpoints_0, rpoints, atoms_frac)
-    Ok_interpolated, _ = fourier_transform_r_to_k(Or, rpoints, kpoints, atoms_frac)
+    Or = fourier_transform_k_to_r(Ok, kpoints_0, irvec, atoms_frac)
+    Ok_interpolated = fourier_transform_r_to_k(Or, kpoints, irvec, ndegen, atoms_frac)
 
     return Ok_interpolated
 
@@ -372,11 +300,11 @@ def samb_decomp(Or_dict, Zr_dict):
 # ==================================================
 def construct_Or(z, num_wann, rpoints, matrix_dict):
     """
-    arbitrary operator constructed by linear combination of SAMBs in real space representation.
+    arbitrary operator constructed by linear combination of SAMBs in real-space representation.
 
     Args:
         z (list): parameter set, [z_j].
-        num_wann (int): # of CWFs.
+        num_wann (int): # of WFs.
         rpoints (ndarray, optional): lattice points (crystal coordinate, [[n1,n2,n3]], nj: integer).
         matrix_dict (dict): SAMBs.
 
@@ -402,11 +330,11 @@ def construct_Or(z, num_wann, rpoints, matrix_dict):
 # ==================================================
 def construct_Ok(z, num_wann, kpoints, rpoints, matrix_dict):
     """
-    arbitrary operator constructed by linear combination of SAMBs in k space representation.
+    arbitrary operator constructed by linear combination of SAMBs in k-space representation.
 
     Args:
         z (list): parameter set, [z_j].
-        num_wann (int): # of CWFs.
+        num_wann (int): # of WFs.
         kpoints (ndarray): k-points used in DFT calculation, [[k1, k2, k3]] (crystal coordinate).
         rpoints (ndarray, optional): lattice points (crystal coordinate, [[n1,n2,n3]], nj: integer).
         matrix_dict (dict): SAMBs.
