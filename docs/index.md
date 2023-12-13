@@ -113,8 +113,12 @@ See for more detaied file formats [MultiPie](https://github.com/CMT-MU/MultiPie)
     proj_min    = 0.5
     verbose     = true
 
-    write_hr = .true.
-    write_sr = .true.
+    write_hr          = .true.
+    write_sr          = .true.
+    write_u_matrices  = .true.
+    write_rmn         = .true.
+    write_vmn         = .true.
+    write_tb          = .true.
 
     # symmetrization
     symmetrization = true
@@ -139,8 +143,12 @@ See for more detaied file formats [MultiPie](https://github.com/CMT-MU/MultiPie)
     svd               = true
     verbose           = true
 
-    write_hr = .true.
-    write_sr = .true.
+    write_hr          = .true.
+    write_sr          = .true.
+    write_u_matrices  = .true.
+    write_rmn         = .true.
+    write_vmn         = .true.
+    write_tb          = .true.
 
     N1 = 50
 
@@ -162,13 +170,13 @@ See for more detail, try "**pw2cw --help**" command.
     $ pw2cw graphene
     ```
 1. The following files are created in **ch4** and **graphene** folders.
-    - ch4.cwout, ch4_info.py, ch4_data.py, ch4_hr.dat, ch4_sr.dat, ch4_hr_sym.dat, ch4_sr_sym.dat, ch4_z.dat, ch4_s.dat.
-    - graphene.cwout, graphene_info.py, graphene_data.py, graphene_hr.dat, graphene_sr.dat, graphene_hr_sym.dat, graphene_sr_sym.dat, graphene_z.dat, graphene_s.dat.
+    - ch4.cwout, ch4_info.py, ch4_data.py, ch4_hr.dat, ch4_sr.dat, ch4_hr_sym.dat, ch4_sr_sym.dat, ch4_z.dat, ch4_s.dat, ch4_r.dat, ch4_v.dat, ch4_tb.dat, ch4_u.mat, ch4_u_dis.mat.
+    - graphene.cwout, graphene_info.py, graphene_data.py, graphene_hr.dat, graphene_sr.dat, graphene_hr_sym.dat, graphene_sr_sym.dat, graphene_z.dat, graphene_s.dat, graphene_r.dat, graphene_v.dat, graphene_tb.dat, graphene_u.mat, graphene_u_dis.mat.
 
     Each file contains
     - **seedname_cwin** : input.
     - **seedname_cwout** : standard output.
-    - **seedname_info.py** : calculation information for SymCW.
+    - **seedname_info.py** : calculation information for CWModel.
     - **seedname_data.py** : calculation data for SymCW.
     - **seedname_hr.dat** (**_hr_sym.dat**): (Symmetrized) Hamiltonian matrix elements in real-space.
     - **seedname_sr.dat** (**_hr_sym.dat**): (Symmetrized) Overlap matrix elements in real-space.
