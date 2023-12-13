@@ -13,6 +13,7 @@ from multipie.tag.tag_multipole import TagMultipole
 from symclosestwannier.pw2cw.cw_info import CWInfo
 from symclosestwannier.pw2cw.cw_manager import CWManager
 
+
 from symclosestwannier.util.header import (
     info_header,
     data_header,
@@ -27,7 +28,7 @@ from symclosestwannier.util.header import (
     s_header,
 )
 
-from symclosestwannier.util.message import opening_msg, ending_msg, starting_msg, system_msg
+from symclosestwannier.util.message import opening_msg, ending_msg, starting_msg, system_msg, starting_msg_w90
 
 from symclosestwannier.util.functions import (
     w_proj,
@@ -44,6 +45,36 @@ from symclosestwannier.util.functions import (
     construct_Or,
     construct_Ok,
 )
+
+_default = {
+    "Pk": None,
+    "Uk": None,
+    "Sk": None,
+    "Hk": None,
+    "Hk_nonortho": None,
+    #
+    "Sr": None,
+    "Hr": None,
+    "Hr_nonortho": None,
+    #
+    "s": None,
+    "z": None,
+    "z_nonortho": None,
+    #
+    "Sk_sym": None,
+    "Hk_sym": None,
+    "Hk_nonortho_sym": None,
+    "Sr_sym": None,
+    "Hr_sym": None,
+    "Hr_nonortho_sym": None,
+    #
+    "rpoints_mp": None,
+    #
+    "Ek_RMSE_grid": None,
+    "Ek_RMSE_path": None,
+    #
+    "matrix_dict": None,
+}
 
 
 # ==================================================
@@ -66,6 +97,10 @@ class CW(dict):
             cwi (CWInfo): CWInfo.
             cwm (CWManager): CWManager.
         """
+        super().__init__()
+
+        self.update(_default)
+
         self._cwi = cwi
         self._cwm = cwm
         self._outfile = f"{self._cwi['seedname']}.cwout"
@@ -74,8 +109,10 @@ class CW(dict):
 
         self._cwm.log(system_msg(self._cwi), stamp=None, end="\n", file=self._outfile, mode="a")
 
-        if self._cwi["restart"] == "wannierise":
-            self._wannierize()
+        if self._cwi["restart"] == "cw":
+            self._cw()
+        elif self._cwi["restart"] == "w90":
+            self._w90()
         else:
             self.update(self._cwm.read(f"{self._cwi['seedname']}_data.py"))
 
@@ -85,21 +122,52 @@ class CW(dict):
         self._cwm.log(ending_msg(), stamp=None, end="\n", file=self._outfile, mode="a")
 
     # ==================================================
-    def _wannierize(self):
+    def _w90(self):
         """
-        wannierization.
+        construct Wannier TB model by using wannier90 outputs.
+        """
+        self._cwm.log(starting_msg_w90(self._cwi["seedname"]), stamp=None, end="\n", file=self._outfile, mode="a")
 
-        Returns:
-            tuple: Sk, Uk, Hk, Hk_nonortho, Sr, Hr, Hr_nonortho.
-                - Sk (ndarray) : Overlap matrix elements in k-space.
-                - Uk (ndarray) : Unitary matrix elements in k-space.
-                - Hk (ndarray) : Hamiltonian matrix elements in k-space (orthogonal).
-                - Hk_nonortho (ndarray) : Hamiltonian matrix elements in k-space (non-orthogonal).
-                - Sr (ndarray) : Overlap matrix elements in real-space.
-                - Hr (ndarray) : Hamiltonian matrix elements in real-space (orthogonal).
-                - Hr_nonortho (ndarray) : Hamiltonian matrix elements in real-space (non-orthogonal).
+        Ek = np.array(self._cwi.eig["Ek"], dtype=float)
+        Ak = np.array(self._cwi.amn["Ak"], dtype=complex)
+        Pk = np.real(np.diagonal(Ak @ Ak.transpose(0, 2, 1).conjugate(), axis1=1, axis2=2))
+        Uk = np.array(self._cwi.umat["Uk"], dtype=complex)
+        Sk = Ak.transpose(0, 2, 1).conjugate() @ Ak
+        Sk = 0.5 * (Sk + np.einsum("kmn->knm", Sk).conj())
+
+        diag_Ek = np.array([np.diag(Ek[k]) for k in range(self._cwi["num_k"])])
+        Hk = Uk.transpose(0, 2, 1).conjugate() @ diag_Ek @ Uk
+        Hk = 0.5 * (Hk + np.einsum("kmn->knm", Hk).conj())
+
+        S2k = np.array([spl.sqrtm(Sk[k]) for k in range(self._cwi["num_k"])])
+        Hk_nonortho = S2k @ Hk @ S2k
+
+        Sr = CW.fourier_transform_k_to_r(Sk, self._cwi["kpoints"])[0]
+        Hr = CW.fourier_transform_k_to_r(Hk, self._cwi["kpoints"])[0]
+        Hr_nonortho = CW.fourier_transform_k_to_r(Hk_nonortho, self._cwi["kpoints"])[0]
+
+        #####
+
+        self.update(
+            {
+                "Pk": Pk.tolist(),
+                "Uk": Uk.tolist(),
+                "Sk": Sk.tolist(),
+                "Hk": Hk.tolist(),
+                "Hk_nonortho": Hk_nonortho.tolist(),
+                #
+                "Sr": Sr.tolist(),
+                "Hr": Hr.tolist(),
+                "Hr_nonortho": Hr_nonortho.tolist(),
+            }
+        )
+
+    # ==================================================
+    def _cw(self):
         """
-        self._cwm.log(starting_msg(self._cwi), stamp=None, end="\n", file=self._outfile, mode="a")
+        construct CW TB model.
+        """
+        self._cwm.log(starting_msg(self._cwi["seedname"]), stamp=None, end="\n", file=self._outfile, mode="a")
 
         Ek = np.array(self._cwi.eig["Ek"], dtype=float)
         Ak = np.array(self._cwi.amn["Ak"], dtype=complex)
@@ -110,7 +178,7 @@ class CW(dict):
             self._cwm.log(msg, None, end="", file=self._outfile, mode="a")
             self._cwm.set_stamp()
 
-            Ek, Ak = self._exclude_bands(Pk, Ek, Ak)
+            Ak = self._exclude_bands(Pk, Ak)
 
             self._cwm.log("done", file=self._outfile, mode="a")
 
@@ -133,23 +201,10 @@ class CW(dict):
 
         #####
 
-        if self._cwi["kpoint"] is not None and self._cwi["kpoint_path"] is not None:
-            kpoint = {i: NSArray(j, "vector", fmt="value") for i, j in self._cwi["kpoint"].items()}
-            kpoint_path = self._cwi["kpoint_path"]
-            N1 = self._cwi["N1"]
-            B = NSArray(self._cwi["unit_cell_cart"], "matrix", fmt="value").inverse()
-            kpoints_path, k_linear, k_dis_pos = NSArray.grid_path(kpoint, kpoint_path, N1, B)
-        else:
-            kpoints_path, k_linear, k_dis_pos = None, None, None
-
         self.update(
             {
-                "kpoints_path": kpoints_path if kpoints_path is not None else None,
-                "k_linear": k_linear.tolist() if k_linear is not None else None,
-                "k_dis_pos": k_dis_pos if k_dis_pos is not None else None,
-                #
                 "Pk": Pk.tolist(),
-                "Uk": [u.tolist() for u in Uk],
+                "Uk": Uk.tolist(),
                 "Sk": Sk.tolist(),
                 "Hk": Hk.tolist(),
                 "Hk_nonortho": Hk_nonortho.tolist(),
@@ -203,33 +258,27 @@ class CW(dict):
             )
 
     # ==================================================
-    def _exclude_bands(self, Pk, Ek, Ak):
+    def _exclude_bands(self, Pk, Ak):
         """
-        exlude bands with low projectability.
+        exlude bands by setting the matrix elements of Ak with low projectability to zero.
 
         Args:
             Pk (ndarray): projectability of each Kohn-Sham state in k-space.
-            Ek (ndarray): Kohn-Sham energies.
             Ak (ndarray): Overlap matrix elements.
 
         Returns:
-            tuple: Ek, Ak.
+            ndarray: Ak.
         """
-        # band index for projection
-        proj_band_idx = [
-            [n for n in range(self._cwi["num_bands"]) if Pk[k][n] > self._cwi["proj_min"]]
-            for k in range(self._cwi["num_k"])
-        ]
+        num_k = self._cwi["num_k"]
+        proj_min = self._cwi["proj_min"]
+        exclude_bands_idx = np.array([np.sum(Pk[:, n]) / num_k < proj_min for n in range(self._cwi["num_bands"])])
 
-        for k in range(self._cwi["num_k"]):
-            if len(proj_band_idx[k]) < self._cwi["num_wann"]:
-                raise Exception(f"proj_min = {self._cwi['proj_min']} is too large or PAOs are inappropriate.")
+        if np.sum(exclude_bands_idx) < self._cwi["num_wann"]:
+            raise Exception(f"proj_min = {proj_min} is too large or selected orbitals are inappropriate.")
 
-        # eliminate bands with low projectability
-        Ek = [Ek[k, proj_band_idx[k]] for k in range(self._cwi["num_k"])]
-        Ak = [Ak[k, proj_band_idx[k], :] for k in range(self._cwi["num_k"])]
+        Ak[:, exclude_bands_idx, :] = 0.0
 
-        return Ek, Ak
+        return Ak
 
     # ==================================================
     def _disentangle(self, Ek, Ak):
@@ -243,20 +292,16 @@ class CW(dict):
         Returns:
             ndarray: Ak.
         """
-        Ak = [
-            np.array(
-                w_proj(
-                    Ek[k],
-                    self._cwi["dis_win_emin"],
-                    self._cwi["dis_win_emax"],
-                    self._cwi["smearing_temp_min"],
-                    self._cwi["smearing_temp_max"],
-                    self._cwi["delta"],
-                )[:, np.newaxis]
-                * Ak[k]
-            )
-            for k in range(self._cwi["num_k"])
-        ]
+        w = w_proj(
+            Ek,
+            self._cwi["dis_win_emin"],
+            self._cwi["dis_win_emax"],
+            self._cwi["smearing_temp_min"],
+            self._cwi["smearing_temp_max"],
+            self._cwi["delta"],
+        )
+
+        Ak = w[:, :, np.newaxis] * Ak
 
         return Ak
 
@@ -279,23 +324,25 @@ class CW(dict):
                 - Hr (ndarray) : Hamiltonian matrix elements in real-space (orthogonal).
                 - Hr_nonortho (ndarray) : Hamiltonian matrix elements in real-space (non-orthogonal).
         """
-        Sk = np.array([Ak[k].transpose().conjugate() @ Ak[k] for k in range(self._cwi["num_k"])])
+        Sk = Ak.transpose(0, 2, 1).conjugate() @ Ak
+        Sk = 0.5 * (Sk + np.einsum("kmn->knm", Sk).conj())
 
-        if self._cwi["svd"]:  # orthogonalize PAOs by singular value decomposition (SVD)
+        if self._cwi["svd"]:  # orthogonalize orbitals by singular value decomposition (SVD)
 
             def U_mat(k):
                 u, _, vd = np.linalg.svd(Ak[k], full_matrices=False)
                 return u @ vd
 
-            Uk = [U_mat(k) for k in range(self._cwi["num_k"])]
+            Uk = np.array([U_mat(k) for k in range(self._cwi["num_k"])])
 
-        else:  # orthogonalize PAOs by Lowdin's method
+        else:  # orthogonalize orbitals by Lowdin's method
             S2k_inv = np.array([npl.inv(spl.sqrtm(Sk[k])) for k in range(self._cwi["num_k"])])
-            Uk = [Ak[k] @ S2k_inv[k] for k in range(self._cwi["num_k"])]
+            Uk = Ak @ S2k_inv
 
-        # projection from KS energies to PAOs Hamiltonian
-        diag_Ek = [np.diag(Ek[k]) for k in range(self._cwi["num_k"])]
-        Hk = np.array([Uk[k].transpose().conjugate() @ diag_Ek[k] @ Uk[k] for k in range(self._cwi["num_k"])])
+        # projection from KS energies to Closest Wannnier Hamiltonian
+        diag_Ek = np.array([np.diag(Ek[k]) for k in range(self._cwi["num_k"])])
+        Hk = Uk.transpose(0, 2, 1).conjugate() @ diag_Ek @ Uk
+        Hk = 0.5 * (Hk + np.einsum("kmn->knm", Hk).conj())
 
         S2k = np.array([spl.sqrtm(Sk[k]) for k in range(self._cwi["num_k"])])
         Hk_nonortho = S2k @ Hk @ S2k
@@ -456,10 +503,10 @@ class CW(dict):
         #####
 
         if not mat["molecule"]:
-            Hk_path = CW.fourier_transform_r_to_k(self["Hr"], self._cwi["rpoints"], self["kpoints_path"])[0]
+            Hk_path = CW.fourier_transform_r_to_k(self["Hr"], self._cwi["rpoints"], self._cwi["kpoints_path"])[0]
             Ek_path, _ = np.linalg.eigh(Hk_path)
 
-            Hk_sym_path = CW.fourier_transform_r_to_k(Hr_sym, rpoints_mp, self["kpoints_path"], atoms_frac)[0]
+            Hk_sym_path = CW.fourier_transform_r_to_k(Hr_sym, rpoints_mp, self._cwi["kpoints_path"], atoms_frac)[0]
             Ek_path_sym, _ = np.linalg.eigh(Hk_sym_path)
 
             num_k, num_wann = Ek_path_sym.shape
@@ -707,32 +754,32 @@ class CW(dict):
     # ==================================================
     @property
     def cwin(self):
-        self._cwm.cwin
+        self._cwi.cwin
 
     # ==================================================
     @property
     def win(self):
-        self._cwm.win
+        self._cwi.win
 
     # ==================================================
     @property
     def eig(self):
-        self._cwm.eig
+        self._cwi.eig
 
     # ==================================================
     @property
     def amn(self):
-        self._cwm.amn
+        self._cwi.amn
 
     # ==================================================
     @property
     def mmn(self):
-        self._cwm.mmn
+        self._cwi.mmn
 
     # ==================================================
     @property
     def nnkp(self):
-        self._cwm.nnkp
+        self._cwi.nnkp
 
     # ==================================================
     @classmethod

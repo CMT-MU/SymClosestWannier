@@ -23,7 +23,7 @@ def create_cw(seedname="cwannier"):
     Args:
         seedname (str, optional): seedname.
     """
-    cwi = CWInfo(".", seedname, read_mmn=False)
+    cwi = CWInfo(".", seedname)
     cwm = CWManager(topdir=cwi["outdir"], verbose=cwi["verbose"], parallel=cwi["parallel"], formatter=cwi["formatter"])
 
     cw = CW(cwi, cwm)
@@ -69,8 +69,8 @@ def create_cw(seedname="cwannier"):
 
     # band calculation
     if cw._cwi["kpoint"] is not None and cw._cwi["kpoint_path"] is not None:
-        k_linear = NSArray(cw["k_linear"], "vector", fmt="value")
-        k_dis_pos = cw["k_dis_pos"]
+        k_linear = NSArray(cw._cwi["k_linear"], "vector", fmt="value")
+        k_dis_pos = cw._cwi["k_dis_pos"]
 
         if os.path.isfile(f"{seedname}.band.gnu"):
             ref_filename = f"{seedname}.band.gnu"
@@ -84,7 +84,7 @@ def create_cw(seedname="cwannier"):
             A = NSArray(cw._cwi["unit_cell_cart"], "matrix", fmt="value")
             a = A[0].norm()
 
-        Hk_path = cw.fourier_transform_r_to_k(cw["Hr"], cw._cwi["rpoints"], cw["kpoints_path"])[0]
+        Hk_path = cw.fourier_transform_r_to_k(cw["Hr"], cw._cwi["rpoints"], cw._cwi["kpoints_path"])[0]
         Ek, Uk = np.linalg.eigh(Hk_path)
 
         ef = cw._cwi["fermi_energy"]
@@ -103,7 +103,7 @@ def create_cw(seedname="cwannier"):
             else:
                 ref_filename = None
 
-            Hk_sym_path = cw.fourier_transform_r_to_k(cw["Hr_sym"], cw["rpoints_mp"], cw["kpoints_path"])[0]
+            Hk_sym_path = cw.fourier_transform_r_to_k(cw["Hr_sym"], cw["rpoints_mp"], cw._cwi["kpoints_path"])[0]
             Ek, Uk = np.linalg.eigh(Hk_sym_path)
 
             output_linear_dispersion(
