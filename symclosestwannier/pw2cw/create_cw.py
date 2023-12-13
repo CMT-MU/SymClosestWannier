@@ -25,7 +25,6 @@ def create_cw(seedname="cwannier"):
     """
     cwi = CWInfo(".", seedname)
     cwm = CWManager(topdir=cwi["outdir"], verbose=cwi["verbose"], parallel=cwi["parallel"], formatter=cwi["formatter"])
-
     cw = CW(cwi, cwm)
 
     cw._cwm.write(f"{seedname}_info.py", cw._cwi.copy(), CW._info_header(), seedname)
