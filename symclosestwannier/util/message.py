@@ -80,11 +80,11 @@ def opening_msg():
 
 
 # ==================================================
-def starting_msg(cwi):
+def starting_msg(seedname):
     msg = f"""
 
 *----------------------------------------------------------------------------*
-       Starting a new SymClosestWannier calculation of ''{cwi['seedname']}''
+       Starting a new SymClosestWannier calculation of ''{seedname}''
 *----------------------------------------------------------------------------*
 
 """
@@ -163,6 +163,19 @@ def system_msg(cwi):
                                 ------------
 
               Grid size =  {mp_grid[0]} x {mp_grid[1]} x {mp_grid[2]}      Total points = {num_k}
+"""
+
+    return msg
+
+
+# ==================================================
+def starting_msg_w90(seedname):
+    msg = f"""
+
+*----------------------------------------------------------------------------*
+     Starting a new calculation of ''{seedname}'' from Wannier90 output
+*----------------------------------------------------------------------------*
+
 """
 
     return msg
