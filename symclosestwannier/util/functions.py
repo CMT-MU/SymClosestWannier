@@ -139,9 +139,10 @@ def kpoints_to_rpoints(kpoints):
     N1 = len(sorted(set(list(kpoints[:, 0]))))
     N2 = len(sorted(set(list(kpoints[:, 1]))))
     N3 = len(sorted(set(list(kpoints[:, 2]))))
-    N1 = N1 - 1 if N1 % 2 == 0 else N1
-    N2 = N2 - 1 if N2 % 2 == 0 else N2
-    N3 = N3 - 1 if N3 % 2 == 0 else N3
+    N1 = N1 + 1 if N1 % 2 == 0 else N1
+    N2 = N2 + 1 if N2 % 2 == 0 else N2
+    N3 = N3 + 1 if N3 % 2 == 0 else N3
+
     rpoints, _, _ = get_rpoints(N1, N2, N3)
 
     return rpoints
