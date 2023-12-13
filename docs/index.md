@@ -105,7 +105,7 @@ See for more detaied file formats [MultiPie](https://github.com/CMT-MU/MultiPie)
 2. Prepare input file for construction of SymCW tight-binding model. Example input files for [CH4](example/ch4.cwin) molecule and [graphene](example/graphene.cwin) are given here.
     ```
     # ch4.cwin
-    restart = wannierise ! symmetrize
+    restart = cw ! 'cw'/'w90'/'sym'
 
     outdir = './'
 
@@ -125,7 +125,7 @@ See for more detaied file formats [MultiPie](https://github.com/CMT-MU/MultiPie)
     ```
     ```
     # graphene.cwin
-    restart = wannierise ! symmetrize
+    restart = cw ! 'cw'/'w90'/'sym'
 
     outdir = './'
 

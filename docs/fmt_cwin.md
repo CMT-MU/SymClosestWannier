@@ -6,7 +6,7 @@
       One can also equivalently provide the string seedname.cwin instead of seedname.
 
 - input parameters in seedname.cwin (same format as seedname.win) (* optional [default])
-  - restart*           : the restart position (str), ["wannierize"].
+  - restart*           : the restart position 'cw'/'w90'/'sym' (str), ["wannierize"].
   - outdir*            : input and output files are found in this directory (str), ["./"].
   - disentangle*       : disentagle bands ? (bool), [False].
   - proj_min*          : minimum value of projectability: [0.0].

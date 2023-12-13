@@ -1,7 +1,7 @@
 # SymClosestWannier
 
 ## information for SymCW (* optional [default] or only for crystal value)
-- restart* : the restart position (str), ["wannierize"].
+- restart* : the restart position 'cw'/'w90'/'sym' (str), ["wannierize"].
 - outdir* : input and output files are found in this directory (str), ["./"].
 - seedname* : seedname for seedname.win and seedname.cwin files (str), ["cwannier"].
 - disentangle* : disentagle bands ? (bool), [False].
