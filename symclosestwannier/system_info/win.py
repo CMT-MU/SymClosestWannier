@@ -6,11 +6,20 @@ import numpy as np
 
 from symclosestwannier.util.functions import kpoints_to_rpoints
 
-_default_win = {
+_default = {
     "seedname": "cwannier",
     "num_k": 1,
     "num_bands": 1,
     "num_wann": 1,
+    #
+    "dis_num_iter": 0,
+    "num_iter": 200,
+    "dis_froz_max": +100000,
+    "dis_froz_min": -100000,
+    "dis_win_max": +100000,
+    "dis_win_min": -100000,
+    "dis_mix_ratio": 0.5,
+    #
     "mp_grid": [0, 0, 0],
     "kpoints": [[0, 0, 0]],
     "kpoint": None,
@@ -25,6 +34,10 @@ _default_win = {
 class Win(dict):
     """
     Win manages input file for wannier90.x, seedname.win file.
+
+    Attributes:
+        _topdir (str): top directory.
+        _seedname (str): seedname.
     """
 
     # ==================================================
@@ -38,6 +51,9 @@ class Win(dict):
             dic (dict, optional): dictionary of Win.
         """
         super().__init__()
+
+        self._topdir = topdir
+        self._seedname = seedname
 
         if dic is None:
             file_name = os.path.join(topdir, "{}.{}".format(seedname, "win"))
@@ -74,7 +90,7 @@ class Win(dict):
         else:
             raise Exception("failed to read win file: " + file_name)
 
-        d = Win._default_win().copy()
+        d = Win._default().copy()
 
         win_data = [v.replace("\n", "") for v in win_data]
         win_data_lower = [v.lower().replace("\n", "") for v in win_data]
@@ -84,6 +100,17 @@ class Win(dict):
         mp_grid = self._get_param_keyword(win_data, "mp_grid", [0, 0, 0], dtype=str)
         d["mp_grid"] = [int(x) for x in mp_grid.split()]
         d["num_k"] = np.prod(d["mp_grid"])
+
+        if d["num_bands"] > d["num_wann"]:
+            d["dis_num_iter"] = self._get_param_keyword(win_data, "dis_num_iter", 200, dtype=int)
+        else:
+            d["dis_num_iter"] = 0
+        d["num_iter"] = self._get_param_keyword(win_data, "num_iter", 200, dtype=int)
+        d["dis_froz_max"] = self._get_param_keyword(win_data, "dis_froz_max", +100000, dtype=float)
+        d["dis_froz_min"] = self._get_param_keyword(win_data, "dis_froz_min", -100000, dtype=float)
+        d["dis_win_max"] = self._get_param_keyword(win_data, "dis_win_max", +100000, dtype=float)
+        d["dis_win_min"] = self._get_param_keyword(win_data, "dis_win_min", -100000, dtype=float)
+        d["dis_mix_ratio"] = self._get_param_keyword(win_data, "dis_mix_ratio", 0.5, dtype=float)
 
         for i, line in enumerate(win_data_lower):
             if "begin kpoints" in line:
@@ -182,8 +209,7 @@ class Win(dict):
                 A = d["unit_cell_cart"]
                 d["atoms_cart"] = {k: (np.array(v) @ np.array(A)).tolist() for k, v in d["atoms_frac"].items()}
 
-        if d["atoms_cart"] is not None:
-            d["rpoints"] = kpoints_to_rpoints(d["kpoints"]).tolist()
+        d["rpoints"] = kpoints_to_rpoints(d["kpoints"]).tolist()
 
         return d
 
@@ -209,5 +235,5 @@ class Win(dict):
 
     # ==================================================
     @classmethod
-    def _default_win(cls):
-        return _default_win
+    def _default(cls):
+        return _default

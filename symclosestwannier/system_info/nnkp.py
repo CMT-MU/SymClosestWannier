@@ -10,7 +10,7 @@ import numpy as np
 import scipy.linalg
 
 
-_default_nnkp = {
+_default = {
     "A": [[1, 0, 0], [0, 1, 0], [0, 0, 1]],
     "B": [[2 * np.pi, 0, 0], [0, 2 * np.pi, 0], [0, 0, 2 * np.pi]],
     "num_k": 1,
@@ -36,6 +36,10 @@ _default_nnkp = {
 class Nnkp(dict):
     """
     Nnkp manages information needed to determine the required overlap elements Mmn(k,b) and projections A_{mn}(k).
+
+    Attributes:
+        _topdir (str): top directory.
+        _seedname (str): seedname.
     """
 
     # ==================================================
@@ -49,6 +53,9 @@ class Nnkp(dict):
             dic (dict, optional): dictionary of Nnkp.
         """
         super().__init__()
+
+        self._topdir = topdir
+        self._seedname = seedname
 
         if dic is None:
             file_name = os.path.join(topdir, "{}.{}".format(seedname, "nnkp"))
@@ -97,7 +104,7 @@ class Nnkp(dict):
         else:
             raise Exception("failed to read nnkp file: " + file_name)
 
-        d = Nnkp._default_nnkp().copy()
+        d = Nnkp._default().copy()
 
         try:
             for i, line in enumerate(nnkp_data):
@@ -142,11 +149,6 @@ class Nnkp(dict):
                         nw2r[j] = int(proj_dat[5])
                         atom_orb_strlist.append(proj_str[0:40])
                         atom_pos_strlist.append(proj_str[0:35])
-                    # set atom_pos_r, atom_pos, atom_orb
-                    #   for example, Fe case
-                    #   atom_pos_r: [[0.0, 0.0, 0.0]]
-                    #   atom_pos: [[0, 1, 2]]
-                    #   atom_orb: [[0, 1], [2, 3, 4, 5, 6, 7], [8, 9, 10, 11, 12, 13, 14, 15, 16, 17]]
                     atom_orb_uniq = sorted(set(atom_orb_strlist), key=atom_orb_strlist.index)
                     atom_pos_uniq = sorted(set(atom_pos_strlist), key=atom_pos_strlist.index)
                     atom_orb = []
@@ -159,16 +161,12 @@ class Nnkp(dict):
                         indexes = [j for j, x in enumerate(atom_orb_uniq) if pos_str in x]
                         atom_pos.append(indexes)
                         atom_pos_r.append([float(x) for x in pos_str.split()[0:3]])
-                    # print ("atom_pos_r: " + str(atom_pos_r))
-                    # print ("atom_pos: " + str( atom_pos))
-                    # print ("atom_orb: " + str(atom_orb))
+
                     num_atom = len(atom_pos_r)
                     for i, pos in enumerate(atom_pos):
                         for p in pos:
                             for n in atom_orb[p]:
                                 nw2n[n] = i
-                    # for j in range(d["num_wann"]):
-                    #    print("nw {:3d} : n = {:3d}, l = {:3d}, m = {:3d}".format(j, nw2n[j], nw2l[j], nw2m[j]))
 
                     d["num_atom"] = num_atom
                     d["nw2n"] = nw2n.tolist()
@@ -179,12 +177,15 @@ class Nnkp(dict):
                     d["atom_pos"] = atom_pos
                     d["atom_pos_r"] = atom_pos_r
 
-            # calculate b-vectors
             bvec_cart = np.zeros([d["num_b"], 3])
             bvec_crys = np.zeros([d["num_b"], 3])
             bbmat = np.zeros([d["num_b"], 9])
+            try:
+                Gp_idx = d["kpoints"].index([0.0, 0.0, 0.0])
+            except:
+                raise Exception("Gamma point must be included.")
             for i in range(d["num_b"]):
-                kv = d["nnkpts"][0][i]
+                kv = d["nnkpts"][Gp_idx][i]
                 k = d["kpoints"][kv[0] - 1]
                 k_b = d["kpoints"][kv[1] - 1]
                 b = np.array(k_b) - np.array(k) + np.array(kv[2:5])
@@ -208,25 +209,56 @@ class Nnkp(dict):
         return d
 
     # ==================================================
-    def calc_bvec(self, d):
+    def bvec_idx(self, b, type="cart"):
+        for ib in range(self["num_b"]):
+            if np.allclose(np.array(self["bvec_" + type][ib]), b):
+                return ib
+
+        assert False, b
+
+    # ==================================================
+    def bvec(self, d, type="cart"):
         """
         d : array of integer [5]
-        return : bvec in cartesian coordinates
+        return : b vector in cartesian/fractional coordinates
         """
         k = np.array(self["kpoints"][d[0] - 1])
         kb = np.array(self["kpoints"][d[1] - 1])
         G = np.array(d[2:5])
-        bvec = kb + G - k
+        b_crys = kb + G - k
 
-        return self.k_crys2cart(bvec, self["B"])
+        if type == "cart":
+            return self.k_crys2cart(b_crys, self["B"])
+        else:
+            return b_crys
 
     # ==================================================
-    def bvec_num(self, b, type="cart"):
-        for ib in range(self["num_b"]):
-            if np.allclose(np.array(self["bvec_" + type])[ib, :], b):
-                return ib
+    def bveck(self, type="cart"):
+        bk = np.zeros([self["num_k"], self["num_b"], 3], dtype=float)
+        for ik in range(self["num_k"]):
+            for ib in range(self["num_b"]):
+                bk[ik, ib] = self.bvec(self["nnkpts"][ik][ib], type)
 
-        assert False, b
+        return bk
+
+    # ==================================================
+    def wk(self):
+        wk = np.zeros([self["num_k"], self["num_b"]], dtype=float)
+        for ik in range(self["num_k"]):
+            for ib in range(self["num_b"]):
+                bk = self.bvec(self["nnkpts"][ik][ib])
+                wk[ik, ib] = self["wb"][self.bvec_idx(bk)]
+
+        return wk
+
+    # ==================================================
+    def kb2k(self):
+        kb2k = np.zeros([self["num_k"], self["num_b"]], dtype=int)
+        for ik in range(self["num_k"]):
+            for ib in range(self["num_b"]):
+                kb2k[ik, ib] = self["nnkpts"][ik][ib][1] - 1
+
+        return kb2k
 
     # ==================================================
     def k_crys2cart(self, k, B):
@@ -238,5 +270,5 @@ class Nnkp(dict):
 
     # ==================================================
     @classmethod
-    def _default_nnkp(cls):
-        return _default_nnkp
+    def _default(cls):
+        return _default

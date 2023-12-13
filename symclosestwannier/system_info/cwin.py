@@ -2,13 +2,12 @@
 CWin manages input file for pw2cw, seedname.cwin file.
 """
 import os
-import numpy as np
 
 
-_default_cwin = {
+_default = {
     "seedname": "cwannier",
     "outdir": "./",
-    "restart": "wannierise",
+    "restart": "cw",
     #
     "disentangle": False,
     "proj_min": 0.0,
@@ -42,6 +41,10 @@ _default_cwin = {
 class CWin(dict):
     """
     CWin manages input file for pw2cw, seedname.cwin file.
+
+    Attributes:
+        _topdir (str): top directory.
+        _seedname (str): seedname.
     """
 
     # ==================================================
@@ -55,6 +58,9 @@ class CWin(dict):
             dic (dict, optional): dictionary of CWin.
         """
         super().__init__()
+
+        self._topdir = topdir
+        self._seedname = seedname
 
         if dic is None:
             file_name = os.path.join(topdir, "{}.{}".format(seedname, "cwin"))
@@ -75,7 +81,7 @@ class CWin(dict):
             dict: dictionary form of seedname.cwin.
                 - seedname          : seedname (str), ["cwannier"].
                 - outdir            : output files are found in this directory (str), ["./"].
-                - restart           : the restart position (str), ["wannierize"].
+                - restart           : the restart position 'cw'/'w90'/'sym' (str), ["wannierize"].
                 - disentangle       : disentagle bands ? (bool), [False].
                 - proj_min          : minimum value of projectability: [0.0].
                 - dis_win_emax      : upper energy window (float), [None].
@@ -109,7 +115,7 @@ class CWin(dict):
             raise Exception("failed to read cwin file: " + file_name)
 
         # default
-        d = CWin._default_cwin().copy()
+        d = CWin._default().copy()
 
         for line in cwin_data:
             line = [vi for vi in line.replace("\n", "").split(" ") if vi != ""]
@@ -129,6 +135,9 @@ class CWin(dict):
                 v = line[2] if line[1] == "=" else line[1]
 
             d[k] = self._str_to(k, v)
+        assert not (
+            d["restart"] == "w90" and d["symmetrization"]
+        ), "Symmetrization cannot be performed when restart == w90."
 
         return d
 
@@ -141,8 +150,8 @@ class CWin(dict):
         elif k in ("outdir", "mp_outdir"):
             v = v[:-1] if v[-1] == "/" else v
         elif k == "restart":
-            if v not in ("wannierise", "symmetrization"):
-                raise Exception(f"invalid restart = {v} was given. choose from 'wannierise'/'symmetrization'.")
+            if v not in ("cw", "sym", "w90"):
+                raise Exception(f"invalid restart = {v} was given. choose from 'cw'/'w90'/'sym'.")
         elif k in (
             "proj_min",
             "dis_win_emax",
@@ -179,5 +188,5 @@ class CWin(dict):
 
     # ==================================================
     @classmethod
-    def _default_cwin(cls):
-        return _default_cwin
+    def _default(cls):
+        return _default

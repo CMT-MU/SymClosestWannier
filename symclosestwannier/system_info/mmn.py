@@ -10,13 +10,17 @@ import itertools
 import numpy as np
 
 
-_default_mmn = {"num_k": 1, "num_bands": 1, "num_b": 1, "nnkpts": None, "Mkb": None}
+_default = {"num_k": 1, "num_bands": 1, "num_b": 1, "nnkpts": None, "Mkb": None}
 
 
 # ==================================================
 class Mmn(dict):
     """
     Mmn manages overlap matrix elements in seedname.mmn file, M_{mn}(k,b) = <u^{KS}_{m}(k)|u^{KS}_{n}(k+b)>.
+
+    Attributes:
+        _topdir (str): top directory.
+        _seedname (str): seedname.
     """
 
     # ==================================================
@@ -30,6 +34,9 @@ class Mmn(dict):
             dic (dict, optional): dictionary of Mmn.
         """
         super().__init__()
+
+        self._topdir = topdir
+        self._seedname = seedname
 
         if dic is None:
             file_name = os.path.join(topdir, "{}.{}".format(seedname, "mmn"))
@@ -105,5 +112,5 @@ class Mmn(dict):
 
     # ==================================================
     @classmethod
-    def _default_mmn(cls):
-        return _default_mmn
+    def _default(cls):
+        return _default

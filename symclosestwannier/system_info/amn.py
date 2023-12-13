@@ -11,13 +11,17 @@ import itertools
 import numpy as np
 
 
-_default_amn = {"num_k": 1, "num_bands": 1, "num_wann": 1, "Ak": None}
+_default = {"num_k": 1, "num_bands": 1, "num_wann": 1, "Ak": None}
 
 
 # ==================================================
 class Amn(dict):
     """
     Amn manages overlap matrix elements in seedname.amn file, A_{mn}(k) = <ψ^{KS}_{m}(k)|φ_{n}(k)>.
+
+    Attributes:
+        _topdir (str): top directory.
+        _seedname (str): seedname.
     """
 
     # ==================================================
@@ -31,6 +35,9 @@ class Amn(dict):
             dic (dict, optional): dictionary of Amn.
         """
         super().__init__()
+
+        self._topdir = topdir
+        self._seedname = seedname
 
         if dic is None:
             file_name = os.path.join(topdir, "{}.{}".format(seedname, "amn"))
@@ -92,5 +99,5 @@ class Amn(dict):
 
     # ==================================================
     @classmethod
-    def _default_amn(cls):
-        return _default_amn
+    def _default(cls):
+        return _default

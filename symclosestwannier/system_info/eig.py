@@ -9,13 +9,17 @@ import itertools
 import numpy as np
 
 
-_default_eig = {"num_k": 1, "num_bands": 1, "Ek": None}
+_default = {"num_k": 1, "num_bands": 1, "Ek": None}
 
 
 # ==================================================
 class Eig(dict):
     """
     Eig manages Kohn-Sham energies in seedname.eig file, E_{m}(k).
+
+    Attributes:
+        _topdir (str): top directory.
+        _seedname (str): seedname.
     """
 
     # ==================================================
@@ -29,6 +33,9 @@ class Eig(dict):
             dic (dict, optional): dictionary of Eig.
         """
         super().__init__()
+
+        self._topdir = topdir
+        self._seedname = seedname
 
         if dic is None:
             file_name = os.path.join(topdir, "{}.{}".format(seedname, "eig"))
@@ -90,5 +97,5 @@ class Eig(dict):
 
     # ==================================================
     @classmethod
-    def _default_eig(cls):
-        return _default_eig
+    def _default(cls):
+        return _default
