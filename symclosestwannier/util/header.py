@@ -4,8 +4,8 @@ headers.
 
 cwin_info = {
     "seedname": "seedname (str), [cwannier].",
+    "restart": "the restart position 'cw'/'w90'/'sym' (str), ['cw'].",
     "outdir": "input and output files are found in this directory (str), ['./'].",
-    "restart": "the restart position 'cw'/'w90'/'sym' (str), ['wannierize'].",
     "disentangle": "disentagle bands ? (bool), [False].",
     "proj_min": "minimum value of projectability (float), [0.0].",
     "dis_win_emax": "upper energy window (float), [None].",
@@ -111,6 +111,7 @@ umat_info = {
 
 cw_info = cwin_info | win_info | nnkp_info | eig_info | amn_info | mmn_info | umat_info
 
+
 cwin_header = """
 === input parameters in the *.cwin file [default] === \n
 * For execution use: pw2cw [seedname]
@@ -160,8 +161,9 @@ umat_header += "\n".join(["    - {:<9} : {:<100} \n".format(k, v) for k, v in um
 cw_info_header = """
 === information in CWModel [default]===
 """
-cw_info_header += "\n".join(["    - {:<9} : {:<100} \n".format(k, v) for k, v in cw_info.items()])
+cw_info_header += "\n".join(["    - {:<17} : {:<100} \n".format(k, v) for k, v in cw_info.items()])
 
+print(cw_info_header)
 
 cw_data = {
     "Sk": "Overlap matrix elements in k-space (ndarray).",
@@ -185,10 +187,10 @@ cw_data = {
     #
     "rpoints_mp": "lattice points data included in matrix_dict, [[r1, r2, r3]] (crystal coordinate) (ndarray).",
     #
-    "Ek_RMSE_grid": "mean squared error of eigen energies between symmetrized and non-symmetrized closed wannier TB model (grid).",
-    "Ek_RMSE_path": "mean squared error of eigen energies between symmetrized and non-symmetrized closed wannier TB model (path).",
+    "Ek_RMSE_grid": "mean squared error of eigen energies between symmetrized and non-symmetrized closed wannier TB model (grid) (float).",
+    "Ek_RMSE_path": "mean squared error of eigen energies between symmetrized and non-symmetrized closed wannier TB model (path) (float).",
     #
-    "matrix_dict": "SAMBs matrix",
+    "matrix_dict": "dictionary form of the real-space representation of symmetry-adapted multipole basis (SAMB) (dict).",
 }
 
 cw_data_header = """
