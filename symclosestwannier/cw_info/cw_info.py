@@ -11,6 +11,7 @@ from symclosestwannier.system_info.eig import Eig
 from symclosestwannier.system_info.amn import Amn
 from symclosestwannier.system_info.mmn import Mmn
 from symclosestwannier.system_info.umat import Umat
+from symclosestwannier.cw_info._utility import wigner_seitz
 
 _class_map = {"cwin": CWin, "win": Win, "nnkp": Nnkp, "eig": Eig, "amn": Amn, "mmn": Mmn, "umat": Umat}
 
@@ -86,7 +87,7 @@ class CWInfo(dict):
 
         # additional information
         A = np.array(d["A"])
-        d["unit_cell_volume"] = np.dot(A[0], np.cross(A[1], A[2]))
+        irvec, ndegen = wigner_seitz(A, d["mp_grid"])
 
         if d["kpoint"] is not None and d["kpoint_path"] is not None:
             kpoint = {i: NSArray(j, "vector", fmt="value") for i, j in d["kpoint"].items()}
@@ -97,6 +98,9 @@ class CWInfo(dict):
         else:
             kpoints_path, k_linear, k_dis_pos = None, None, None
 
+        d["unit_cell_volume"] = np.dot(A[0], np.cross(A[1], A[2]))
+        d["irvec"] = irvec
+        d["ndegen"] = ndegen
         d["kpoints_path"] = kpoints_path
         d["k_linear"] = k_linear
         d["k_dis_pos"] = k_dis_pos
