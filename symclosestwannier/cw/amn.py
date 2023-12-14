@@ -25,7 +25,7 @@ class Amn(dict):
     """
 
     # ==================================================
-    def __init__(self, topdir=None, seedname=None, dic=None):
+    def __init__(self, topdir=None, seedname="cwannier", dic=None):
         """
         initialize the class.
 
@@ -80,27 +80,6 @@ class Amn(dict):
         d = {"num_k": num_k, "num_bands": num_bands, "num_wann": num_wann, "Ak": Ak}
 
         return d
-
-    # ==================================================
-    def write_u_dis_mat(self, file_name="cwannier.amn"):
-        """
-        write Udisk data.
-
-        Args:
-            file_name (str, optional): file name.
-        """
-        with open(file_name, "w") as fp:
-            fp.write("# u_dis.mat created by umat.py\n")
-            fp.write("{} {} {}\n\n".format(self["num_k"], self["num_wann"], self["num_bands"]))
-
-            for k in range(self["num_k"]):
-                kv = self["kpoints"][k]
-                fp.write("{0:18.12f} {1:18.12f} {2:18.12f} \n".format(kv[0], kv[1], kv[2]))
-                for i in range(self["num_wann"]):
-                    for j in range(self["num_bands"]):
-                        fp.write("{0.real:18.12f}  {0.imag:18.12f} \n".format(self["Udisk"][k][j][i]))
-
-                fp.write("\n")
 
     # ==================================================
     @classmethod

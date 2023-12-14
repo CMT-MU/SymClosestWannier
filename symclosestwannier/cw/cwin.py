@@ -52,7 +52,7 @@ class CWin(dict):
     """
 
     # ==================================================
-    def __init__(self, topdir=None, seedname=None, dic=None):
+    def __init__(self, topdir=None, seedname="cwannier", dic=None):
         """
         initialize the class.
 
