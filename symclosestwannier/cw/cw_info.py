@@ -11,7 +11,8 @@ from symclosestwannier.cw.eig import Eig
 from symclosestwannier.cw.amn import Amn
 from symclosestwannier.cw.mmn import Mmn
 from symclosestwannier.cw.umat import Umat
-from symclosestwannier.cw._utility import wigner_seitz
+
+from symclosestwannier.util._utility import wigner_seitz
 
 _class_map = {"cwin": CWin, "win": Win, "nnkp": Nnkp, "eig": Eig, "amn": Amn, "mmn": Mmn, "umat": Umat}
 

@@ -31,7 +31,7 @@ from symclosestwannier.util.header import (
     z_nonortho_header,
     s_header,
 )
-from symclosestwannier.util.functions import (
+from symclosestwannier.util._utility import (
     weight_proj,
     fourier_transform_k_to_r,
     fourier_transform_r_to_k,
@@ -116,8 +116,7 @@ class CWModel(dict):
         else:
             self.update(self._cwm.read(f"{self._cwi['seedname']}_data.py"))
 
-        msg = f"  * total elapsed_time:"
-        self._cwm.log(msg, stamp="start", file=self._outfile, mode="a")
+        self._cwm.log(f"  * total elapsed_time:", stamp="start", file=self._outfile, mode="a")
 
         self._cwm.log(ending_msg(), stamp=None, end="\n", file=self._outfile, mode="a")
 
