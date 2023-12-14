@@ -18,27 +18,19 @@
 #                                                                    #
 # ****************************************************************** #
 
-from symclosestwannier.util._utility import (
-    weight_proj,
-    fourier_transform_k_to_r,
-    fourier_transform_r_to_k,
-    interpolate,
-    matrix_dict_r,
-    matrix_dict_k,
-    dict_to_matrix,
-    samb_decomp,
-    construct_Or,
-    construct_Ok,
-)
+import numpy as np
+
+from symclosestwannier.util._utility import fourier_transform_k_to_r
 
 
 # ==================================================
-def get_HH_R(cwi):
+def get_HH_R(cwi, tb_gauge=False):
     """
     matrix elements of real-space Hamiltonian, <0n|H|Rm>.
 
     Args:
         cwi (SystemInfo): CWInfo.
+        tb_gauge (bool, optional): tb gauge?
 
     Returns:
         ndarray: Hamiltonian, HH_R(len(irvec), num_wann, num_wann).
@@ -53,7 +45,11 @@ def get_HH_R(cwi):
 
     kpoints = np.array(cwi["kpoints"])
     irvec = np.array(cwi["irvec"])
-    atoms_frac = np.array([cwi["atom_pos_r"][idx] for idx in cwi["nw2n"]])
+
+    if tb_gauge:
+        atoms_frac = np.array([cwi["atom_pos_r"][idx] for idx in cwi["nw2n"]])
+    else:
+        atoms_frac = None
 
     HH_R = fourier_transform_k_to_r(HH_k, kpoints, irvec, atoms_frac)
 
@@ -61,12 +57,13 @@ def get_HH_R(cwi):
 
 
 # ==================================================
-def get_AA_R(cwi):
+def get_AA_R(cwi, tb_gauge=False):
     """
     matrix elements of real-space position operator, <0n|r|Rm>.
 
     Args:
         cwi (SystemInfo): CWInfo.
+        tb_gauge (bool, optional): tb gauge?
 
     Returns:
         ndarray: position operator, AA_R(3, len(irvec), num_wann, num_wann).
@@ -89,9 +86,13 @@ def get_AA_R(cwi):
 
     kpoints = np.array(cwi["kpoints"])
     irvec = np.array(cwi["irvec"])
-    atoms_frac = np.array([cwi["atom_pos_r"][idx] for idx in cwi["nw2n"]])
 
-    AA_R = fourier_transform_k_to_r(AA_k, kpoints, irvec, atoms_frac)
+    if tb_gauge:
+        atoms_frac = np.array([cwi["atom_pos_r"][idx] for idx in cwi["nw2n"]])
+    else:
+        atoms_frac = None
+
+    AA_R = np.array([fourier_transform_k_to_r(AA_k[i], kpoints, irvec, atoms_frac) for i in range(3)])
 
     return AA_R
 
@@ -109,12 +110,13 @@ def get_CC_R():
 
 
 # ==================================================
-def get_SS_R():
+def get_SS_R(cwi, tb_gauge=False):
     """
     matrix elements of real-space spin operator, <0n|sigma_x,y,z|Rm>.
 
     Args:
         cwi (SystemInfo): CWInfo.
+        tb_gauge (bool, optional): tb gauge?
 
     Returns:
         ndarray: spin operator, SS_R(3, len(irvec), num_wann, num_wann).
@@ -124,13 +126,17 @@ def get_SS_R():
     num_k = cwi["num_k"]
 
     SS_k = Uk.transpose(0, 2, 1).conjugate() @ Sk @ Uk
-    SS_k = 0.5 * (SS_k + np.einsum("kmn->knm", SS_k).conj())
+    SS_k = 0.5 * (SS_k + np.einsum("akmn->aknm", SS_k).conj())
 
     kpoints = np.array(cwi["kpoints"])
     irvec = np.array(cwi["irvec"])
-    atoms_frac = np.array([cwi["atom_pos_r"][idx] for idx in cwi["nw2n"]])
 
-    SS_R = fourier_transform_k_to_r(SS_k, kpoints, irvec, atoms_frac)
+    if tb_gauge:
+        atoms_frac = np.array([cwi["atom_pos_r"][idx] for idx in cwi["nw2n"]])
+    else:
+        atoms_frac = None
+
+    SS_R = np.array([fourier_transform_k_to_r(SS_k[i], kpoints, irvec, atoms_frac) for i in range(3)])
 
     return SS_R
 
@@ -162,4 +168,89 @@ def get_SAA_R():
 # ==================================================
 def get_SBB_R():
     """<0n|sigma_x,y,z.H.(r-R)_alpha|Rm>"""
+    pass
+
+
+# ******************************************************************
+# ******************************************************************
+# ******************************************************************
+
+
+# ==================================================
+def get_berry_phase_R(cwi, tb_gauge=False):
+    """
+    matrix elements of real-space spin operator, <0n|A_x,y,z|Rm>.
+
+    Args:
+        cwi (SystemInfo): CWInfo.
+        tb_gauge (bool, optional): tb gauge?
+
+    Returns:
+        ndarray: spin operator, SS_R(3, len(irvec), num_wann, num_wann).
+    """
+    Mkb = np.array(cwi["Mkb"])
+    Uk = np.array(cwi["Uk"])
+    num_k = cwi["num_k"]
+
+    ### Unitary transform Mkb ###
+    kb2k = cwi.nnkp.kb2k()
+    Mkb_w = np.einsum("klm, kblp, kbpn->kbmn", np.conj(Uk), Mkb, Uk[kb2k[:, :], :, :], optimize=True)  # Eq. (61)
+
+    bveck = cwi.nnkp.bveck()
+    wk = cwi.nnkp.wk()
+
+    # i<wik|∇wjk>
+    a_k = 1j * np.einsum("kb,kba,kbmn->akmn", wk, bveck, (Mkb_w - np.eye(num_wann)), optimize=True)
+    a_k = 0.5 * (a_k + np.einsum("akmn->aknm", a_k.conj()))
+
+    kpoints = np.array(cwi["kpoints"])
+    irvec = np.array(cwi["irvec"])
+
+    if tb_gauge:
+        atoms_frac = np.array([cwi["atom_pos_r"][idx] for idx in cwi["nw2n"]])
+    else:
+        atoms_frac = None
+
+    a_R = np.array([fourier_transform_k_to_r(a_k[i], kpoints, irvec, atoms_frac) for i in range(3)])
+
+    return a_R
+
+
+# ==================================================
+def get_berry_Curvature_R():
+    """<0n|Ω|Rm>"""
+    pass
+
+
+# ==================================================
+def get_der_berry_Curvature_R():
+    """<0n|∇Ω|Rm>"""
+
+    pass
+
+
+# ==================================================
+def get_orbital_moment_R():
+    """<0n|Morb|Rm>"""
+
+    pass
+
+
+# ==================================================
+def get_der_orbital_moment_R():
+    """<0n|∇Morb|Rm>"""
+
+    pass
+
+
+# ==================================================
+def get_velocity_R():
+    """<0n|v|Rm>"""
+    pass
+
+
+# ==================================================
+def get_spin_velocity_R():
+    """<0n|{s,v}/2|Rm>"""
+
     pass
