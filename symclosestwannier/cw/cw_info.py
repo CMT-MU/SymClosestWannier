@@ -1,5 +1,5 @@
 """
-CWInfo manages information for CWModel, CWin, Win, Eig, Amn, Mmn, and Nnkp.
+CWInfo manages information for CWModel, CWin, Win, Nnkp, Eig, Amn, Mmn, Umat, Spn.
 """
 import numpy as np
 from gcoreutils.nsarray import NSArray
@@ -11,16 +11,17 @@ from symclosestwannier.cw.eig import Eig
 from symclosestwannier.cw.amn import Amn
 from symclosestwannier.cw.mmn import Mmn
 from symclosestwannier.cw.umat import Umat
+from symclosestwannier.cw.spn import Spn
 
 from symclosestwannier.util._utility import wigner_seitz
 
-_class_map = {"cwin": CWin, "win": Win, "nnkp": Nnkp, "eig": Eig, "amn": Amn, "mmn": Mmn, "umat": Umat}
+_class_map = {"cwin": CWin, "win": Win, "nnkp": Nnkp, "eig": Eig, "amn": Amn, "mmn": Mmn, "umat": Umat, "spn": Spn}
 
 
 # ==================================================
 class CWInfo(dict):
     """
-    CWInfo manages information for CWModel, CWin, Win, Eig, Amn, Mmn, and Nnkp.
+    CWInfo manages information for CWModel, CWin, Win, Nnkp, Eig, Amn, Mmn, Umat, Spn.
 
     Attributes:
         _topdir (str): top directory.
@@ -28,7 +29,7 @@ class CWInfo(dict):
     """
 
     # ==================================================
-    def __init__(self, topdir=None, seedname=None, dic=None):
+    def __init__(self, topdir=None, seedname="cwannier", dic=None):
         """
         initialize the class.
 
@@ -50,37 +51,42 @@ class CWInfo(dict):
     # ==================================================
     @property
     def cwin(self):
-        return CWin(dic={k: self[k] for k in CWin._default().keys()})
+        return CWin(dic={k: self[k] if k in self else v for k, v in CWin._default().items()})
 
     # ==================================================
     @property
     def win(self):
-        return Win(dic={k: self[k] for k in Win._default().keys()})
+        return Win(dic={k: self[k] if k in self else v for k, v in Win._default().items()})
 
     # ==================================================
     @property
     def nnkp(self):
-        return Nnkp(dic={k: self[k] for k in Nnkp._default().keys()})
+        return Nnkp(dic={k: self[k] if k in self else v for k, v in Nnkp._default().items()})
 
     # ==================================================
     @property
     def eig(self):
-        return Eig(dic={k: self[k] for k in Eig._default().keys()})
+        return Eig(dic={k: self[k] if k in self else v for k, v in Eig._default().items()})
 
     # ==================================================
     @property
     def amn(self):
-        return Amn(dic={k: self[k] for k in Amn._default().keys()})
+        return Amn(dic={k: self[k] if k in self else v for k, v in Amn._default().items()})
 
     # ==================================================
     @property
     def mmn(self):
-        return Mmn(dic={k: self[k] for k in Mmn._default().keys()})
+        return Mmn(dic={k: self[k] if k in self else v for k, v in Mmn._default().items()})
 
     # ==================================================
     @property
     def umat(self):
-        return Umat(dic={k: self[k] for k in Umat._default().keys()})
+        return Umat(dic={k: self[k] if k in self else v for k, v in Umat._default().items()})
+
+    # ==================================================
+    @property
+    def spn(self):
+        return Spn(dic={k: self[k] if k in self else v for k, v in Spn._default().items()})
 
     # ==================================================
     def read(self, topdir, seedname):
@@ -102,6 +108,8 @@ class CWInfo(dict):
         for name, C in _class_map.items():
             if name == "umat" and (d["restart"] != "w90"):
                 continue
+            # if name == "spn" and (d["restart"] != "postcw"):
+            #     continue
 
             info = C(topdir, seedname)
             for k, v in info.items():
