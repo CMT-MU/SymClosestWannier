@@ -8,10 +8,18 @@ import numpy as np
 
 from gcoreutils.nsarray import NSArray
 
+from symclosestwannier.cw.cw_info import CWInfo
+from symclosestwannier.cw.cw_manager import CWManager
 from symclosestwannier.cw.cw_model import CWModel
 from symclosestwannier.util.band import output_linear_dispersion
 
-from symclosestwannier.operator.berry import Berry
+
+from symclosestwannier.util.message import (
+    cw_start_output_msg,
+    cw_end_output_msg,
+)
+
+from symclosestwannier.cw.get_matrix_R import get_HH_R, get_AA_R, get_SS_R
 
 
 # ==================================================
@@ -23,7 +31,11 @@ def cw_creator(seedname="cwannier"):
     Args:
         seedname (str, optional): seedname.
     """
-    cw_model = CWModel(seedname)
+    cwi = CWInfo(".", seedname)
+    cwm = CWManager(topdir=cwi["outdir"], verbose=cwi["verbose"], parallel=cwi["parallel"], formatter=cwi["formatter"])
+    cw_model = CWModel(cwi, cwm)
+
+    cw_model._cwm.log(cw_start_output_msg(), stamp=None, end="\n", file=cw_model._outfile, mode="w")
 
     cw_model._cwm.write(f"{seedname}_info.py", cw_model._cwi.copy(), CWModel._cw_info_header(), seedname)
     cw_model._cwm.write(f"{seedname}_data.py", cw_model.copy(), CWModel._cw_data_header(), seedname)
@@ -31,7 +43,6 @@ def cw_creator(seedname="cwannier"):
     if cw_model._cwi["write_hr"]:
         filename = f"{cw_model._cwi['seedname']}_hr.dat"
         cw_model.write_or(cw_model["Hr"], filename, CWModel._hr_header())
-
         filename = f"{cw_model._cwi['seedname']}_hr_nonortho.dat"
         cw_model.write_or(cw_model["Hr_nonortho"], filename, CWModel._hr_header())
 
@@ -39,17 +50,23 @@ def cw_creator(seedname="cwannier"):
         filename = f"{cw_model._cwi['seedname']}_sr.dat"
         cw_model.write_or(cw_model["Sr"], filename, CWModel._sr_header())
 
-    if cw_model._cwi["write_rmn"]:
-        rr_w, ar_w = Berry(cw_model._cwi)
-        filename = f"{cw_model._cwi['seedname']}_r.dat"
-        cw_model.write_or(rr_w, filename, vec=True)
-
-        filename = f"{cw_model._cwi['seedname']}_a.dat"
-        cw_model.write_or(ar_w, filename, vec=True)
-
     if cw_model._cwi["write_u_matrices"] and cw_model._cwi["restart"] != "w90":
         file_names = (f"{cw_model._cwi['seedname']}_u.mat", f"{cw_model._cwi['seedname']}_u_dis.mat")
         cw_model.umat.write(file_names)
+
+    if cw_model._cwi["write_rmn"]:
+        AA_R = get_AA_R(cw_model._cwi)
+        filename = f"{cw_model._cwi['seedname']}_r.dat"
+        cw_model.write_or(AA_R, filename, vec=True)
+
+    if cw_model._cwi["write_vmn"]:
+        pass
+
+    if cw_model._cwi["write_tb"]:
+        pass
+
+    if cw_model._cwi["write_spn"]:
+        pass
 
     if cw_model._cwi["symmetrization"]:
         if cw_model._cwi["write_hr"]:
@@ -134,3 +151,7 @@ def cw_creator(seedname="cwannier"):
                 ef=ef,
                 k_dis_pos=k_dis_pos,
             )
+
+    cw_model._cwm.log(f"\n\n  * total elapsed_time:", stamp="start", file=cw_model._outfile, mode="a")
+
+    cw_model._cwm.log(cw_end_output_msg(), stamp=None, end="\n", file=cw_model._outfile, mode="a")

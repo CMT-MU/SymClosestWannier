@@ -49,46 +49,6 @@ class CWInfo(dict):
             self.update(dic)
 
     # ==================================================
-    @property
-    def cwin(self):
-        return CWin(dic={k: self[k] if k in self else v for k, v in CWin._default().items()})
-
-    # ==================================================
-    @property
-    def win(self):
-        return Win(dic={k: self[k] if k in self else v for k, v in Win._default().items()})
-
-    # ==================================================
-    @property
-    def nnkp(self):
-        return Nnkp(dic={k: self[k] if k in self else v for k, v in Nnkp._default().items()})
-
-    # ==================================================
-    @property
-    def eig(self):
-        return Eig(dic={k: self[k] if k in self else v for k, v in Eig._default().items()})
-
-    # ==================================================
-    @property
-    def amn(self):
-        return Amn(dic={k: self[k] if k in self else v for k, v in Amn._default().items()})
-
-    # ==================================================
-    @property
-    def mmn(self):
-        return Mmn(dic={k: self[k] if k in self else v for k, v in Mmn._default().items()})
-
-    # ==================================================
-    @property
-    def umat(self):
-        return Umat(dic={k: self[k] if k in self else v for k, v in Umat._default().items()})
-
-    # ==================================================
-    @property
-    def spn(self):
-        return Spn(dic={k: self[k] if k in self else v for k, v in Spn._default().items()})
-
-    # ==================================================
     def read(self, topdir, seedname):
         """
         read seedname.cwin/win/eig/amn/mmn/nnkp files.
@@ -108,8 +68,8 @@ class CWInfo(dict):
         for name, C in _class_map.items():
             if name == "umat" and (d["restart"] != "w90"):
                 continue
-            # if name == "spn" and (d["restart"] != "postcw"):
-            #     continue
+            if name == "spn" and (d["restart"] != "postcw"):
+                continue
 
             info = C(topdir, seedname)
             for k, v in info.items():
@@ -161,3 +121,43 @@ class CWInfo(dict):
             dict: system information.
         """
         pass
+
+    # ==================================================
+    @property
+    def cwin(self):
+        return CWin(dic={k: self[k] if k in self else v for k, v in CWin._default().items()})
+
+    # ==================================================
+    @property
+    def win(self):
+        return Win(dic={k: self[k] if k in self else v for k, v in Win._default().items()})
+
+    # ==================================================
+    @property
+    def nnkp(self):
+        return Nnkp(dic={k: self[k] if k in self else v for k, v in Nnkp._default().items()})
+
+    # ==================================================
+    @property
+    def eig(self):
+        return Eig(dic={k: self[k] if k in self else v for k, v in Eig._default().items()})
+
+    # ==================================================
+    @property
+    def amn(self):
+        return Amn(dic={k: self[k] if k in self else v for k, v in Amn._default().items()})
+
+    # ==================================================
+    @property
+    def mmn(self):
+        return Mmn(dic={k: self[k] if k in self else v for k, v in Mmn._default().items()})
+
+    # ==================================================
+    @property
+    def umat(self):
+        return Umat(dic={k: self[k] if k in self else v for k, v in Umat._default().items()})
+
+    # ==================================================
+    @property
+    def spn(self):
+        return Spn(dic={k: self[k] if k in self else v for k, v in Spn._default().items()})

@@ -16,7 +16,13 @@ from multipie.tag.tag_multipole import TagMultipole
 from symclosestwannier.cw.cw_info import CWInfo
 from symclosestwannier.cw.cw_manager import CWManager
 
-from symclosestwannier.util.message import opening_msg, ending_msg, starting_msg, system_msg, starting_msg_w90
+from symclosestwannier.util.message import (
+    cw_open_msg,
+    cw_end_msg,
+    cw_start_msg,
+    system_msg,
+    cw_start_msg_w90,
+)
 from symclosestwannier.util.header import (
     cw_info_header,
     cw_data_header,
@@ -85,27 +91,23 @@ class CWModel(dict):
     """
 
     # ==================================================
-    def __init__(self, seedname):
+    def __init__(self, cwi, cwm):
         """
         initialize the class.
 
         Args:
-            seedname (str, optional): seedname.
+            cwi (SystemInfo, optional): CWInfo.
+            cwm (CWManager, optional): CWManager.
         """
         super().__init__()
 
         self.update(_default)
 
-        self._cwi = CWInfo(".", seedname)
-        self._cwm = CWManager(
-            topdir=self._cwi["outdir"],
-            verbose=self._cwi["verbose"],
-            parallel=self._cwi["parallel"],
-            formatter=self._cwi["formatter"],
-        )
+        self._cwi = cwi
+        self._cwm = cwm
         self._outfile = f"{self._cwi['seedname']}.cwout"
 
-        self._cwm.log(opening_msg(), stamp=None, end="\n", file=self._outfile, mode="w")
+        self._cwm.log(cw_open_msg(), stamp=None, end="\n", file=self._outfile, mode="w")
 
         self._cwm.log(system_msg(self._cwi), stamp=None, end="\n", file=self._outfile, mode="a")
 
@@ -118,18 +120,17 @@ class CWModel(dict):
 
         self._cwm.log(f"  * total elapsed_time:", stamp="start", file=self._outfile, mode="a")
 
-        self._cwm.log(ending_msg(), stamp=None, end="\n", file=self._outfile, mode="a")
+        self._cwm.log(cw_end_msg(), stamp=None, end="\n", file=self._outfile, mode="a")
 
     # ==================================================
     def _w90(self):
         """
         construct Wannier TB model by using wannier90 outputs.
         """
-        self._cwm.log(starting_msg_w90(self._cwi["seedname"]), stamp=None, end="\n", file=self._outfile, mode="a")
+        self._cwm.log(cw_start_msg_w90(self._cwi["seedname"]), stamp=None, end="\n", file=self._outfile, mode="a")
 
         Ek = np.array(self._cwi["Ek"], dtype=float)
         Ak = np.array(self._cwi["Ak"], dtype=complex)
-        Pk = np.real(np.diagonal(Ak @ Ak.transpose(0, 2, 1).conjugate(), axis1=1, axis2=2))
         Uk = np.array(self._cwi["Uk"], dtype=complex)
         Sk = Ak.transpose(0, 2, 1).conjugate() @ Ak
         Sk = 0.5 * (Sk + np.einsum("kmn->knm", Sk).conj())
@@ -164,18 +165,17 @@ class CWModel(dict):
         """
         construct CW TB model.
         """
-        self._cwm.log(starting_msg(self._cwi["seedname"]), stamp=None, end="\n", file=self._outfile, mode="a")
+        self._cwm.log(cw_start_msg(self._cwi["seedname"]), stamp=None, end="\n", file=self._outfile, mode="a")
 
         Ek = np.array(self._cwi["Ek"], dtype=float)
         Ak = np.array(self._cwi["Ak"], dtype=complex)
-        Pk = np.real(np.diagonal(Ak @ Ak.transpose(0, 2, 1).conjugate(), axis1=1, axis2=2))
 
         if self._cwi["proj_min"] > 0.0:
             msg = f"   - exluding bands with low projectability (proj_min = {self._cwi['proj_min']}) ... "
             self._cwm.log(msg, None, end="", file=self._outfile, mode="a")
             self._cwm.set_stamp()
 
-            Ak = self._exclude_bands(Pk, Ak)
+            Ak = self._exclude_bands(Ak)
 
             self._cwm.log("done", file=self._outfile, mode="a")
 
@@ -258,17 +258,19 @@ class CWModel(dict):
             )
 
     # ==================================================
-    def _exclude_bands(self, Pk, Ak):
+    def _exclude_bands(self, Ak):
         """
         exlude bands by setting the matrix elements of Ak with low projectability to zero.
 
         Args:
-            Pk (ndarray): projectability of each Kohn-Sham state in k-space.
             Ak (ndarray): Overlap matrix elements.
 
         Returns:
             ndarray: Ak.
         """
+        # projectability of each Kohn-Sham state in k-space.
+        Pk = np.real(np.diagonal(Ak @ Ak.transpose(0, 2, 1).conjugate(), axis1=1, axis2=2))
+
         num_k = self._cwi["num_k"]
         proj_min = self._cwi["proj_min"]
         exclude_bands_idx = np.array([np.sum(Pk[:, n]) / num_k < proj_min for n in range(self._cwi["num_bands"])])
@@ -790,10 +792,8 @@ class CWModel(dict):
         unit_cell_cart = np.array(self._cwi["unit_cell_cart"])
         Or = np.array(Or)
 
-        t = datetime.datetime.now()
-
         Or_str = "# *_or.dat created by berry.py\n"
-        Or_str += "# written {}\n".format(t.strftime("on %d%b%Y at %H:%M:%S"))
+        Or_str += "# written {}\n".format(datetime.datetime.now().strftime("on %d%b%Y at %H:%M:%S"))
         Or_str += " {0[0]:15.8f} {0[1]:15.8f} {0[2]:15.8f}\n".format(unit_cell_cart[0, :])
         Or_str += " {0[0]:15.8f} {0[1]:15.8f} {0[2]:15.8f}\n".format(unit_cell_cart[1, :])
         Or_str += " {0[0]:15.8f} {0[1]:15.8f} {0[2]:15.8f}\n".format(unit_cell_cart[2, :])
