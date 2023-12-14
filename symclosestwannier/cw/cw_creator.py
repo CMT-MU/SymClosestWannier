@@ -1,7 +1,23 @@
-"""
-create Closest Wannier (CW) tight-binding (TB) model based on Plane-Wave (PW) DFT calculation.
-CW TB model can be symmetrized by using Symmetry-Adapted Multipole Basis (SAMB).
-"""
+# ****************************************************************** #
+#                                                                    #
+# This file is distributed as part of the symclosestwannier code and #
+#     under the terms of the GNU General Public License. See the     #
+#     file LICENSE in the root directory of the symclosestwannier    #
+#      distribution, or http://www.gnu.org/licenses/gpl-3.0.txt      #
+#                                                                    #
+#          The symclosestwannier code is hosted on GitHub:           #
+#                                                                    #
+#            https://github.com/CMT-MU/SymClosestWannier             #
+#                                                                    #
+#                            written by                              #
+#                        Rikuto Oiwa, RIKEN                          #
+#                                                                    #
+# ------------------------------------------------------------------ #
+#                                                                    #
+#           cw_analyzer: create Closest Wannier TB model             #
+#                                                                    #
+# ****************************************************************** #
+
 import os
 
 import numpy as np
@@ -33,12 +49,13 @@ def cw_creator(seedname="cwannier"):
     """
     cwi = CWInfo(".", seedname)
     cwm = CWManager(topdir=cwi["outdir"], verbose=cwi["verbose"], parallel=cwi["parallel"], formatter=cwi["formatter"])
+
     cw_model = CWModel(cwi, cwm)
 
-    cw_model._cwm.log(cw_start_output_msg(), stamp=None, end="\n", file=cw_model._outfile, mode="w")
+    cwm.log(cw_start_output_msg(), stamp=None, end="\n", file=cw_model._outfile, mode="w")
 
-    cw_model._cwm.write(f"{seedname}_info.py", cw_model._cwi.copy(), CWModel._cw_info_header(), seedname)
-    cw_model._cwm.write(f"{seedname}_data.py", cw_model.copy(), CWModel._cw_data_header(), seedname)
+    cwm.write(f"{seedname}_info.py", cw_model._cwi.copy(), CWModel._cw_info_header(), seedname)
+    cwm.write(f"{seedname}_data.py", cw_model.copy(), CWModel._cw_data_header(), seedname)
 
     if cw_model._cwi["write_hr"]:
         filename = f"{cw_model._cwi['seedname']}_hr.dat"
@@ -87,15 +104,15 @@ def cw_creator(seedname="cwannier"):
             cw_model.write_or(cw_model["Sr_sym"], filename, CWModel._sr_header())
 
         filename = os.path.join(cw_model._cwi["mp_outdir"], "{}".format(f"{cw_model._cwi['mp_seedname']}_z.dat"))
-        cw_model._cwm.write_samb_coeffs(filename, type="z")
+        cwm.write_samb_coeffs(filename, type="z")
 
         filename = os.path.join(
             cw_model._cwi["mp_outdir"], "{}".format(f"{cw_model._cwi['mp_seedname']}_z_nonortho.dat")
         )
-        cw_model._cwm.write_samb_coeffs(filename, type="z_nonortho")
+        cwm.write_samb_coeffs(filename, type="z_nonortho")
 
         filename = os.path.join(cw_model._cwi["mp_outdir"], "{}".format(f"{cw_model._cwi['mp_seedname']}_s.dat"))
-        cw_model._cwm.write_samb_coeffs(filename, type="s")
+        cwm.write_samb_coeffs(filename, type="s")
 
     # band calculation
     if cw_model._cwi["kpoint"] is not None and cw_model._cwi["kpoint_path"] is not None:
@@ -152,6 +169,6 @@ def cw_creator(seedname="cwannier"):
                 k_dis_pos=k_dis_pos,
             )
 
-    cw_model._cwm.log(f"\n\n  * total elapsed_time:", stamp="start", file=cw_model._outfile, mode="a")
+    cwm.log(f"\n\n  * total elapsed_time:", stamp="start", file=cw_model._outfile, mode="a")
 
-    cw_model._cwm.log(cw_end_output_msg(), stamp=None, end="\n", file=cw_model._outfile, mode="a")
+    cwm.log(cw_end_output_msg(), stamp=None, end="\n", file=cw_model._outfile, mode="a")

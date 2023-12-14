@@ -1,6 +1,23 @@
-"""
-Closest Wannier (CW) tight-binding (TB) model based on Plane-Wave (PW) DFT calculation.
-"""
+# ****************************************************************** #
+#                                                                    #
+# This file is distributed as part of the symclosestwannier code and #
+#     under the terms of the GNU General Public License. See the     #
+#     file LICENSE in the root directory of the symclosestwannier    #
+#      distribution, or http://www.gnu.org/licenses/gpl-3.0.txt      #
+#                                                                    #
+#          The symclosestwannier code is hosted on GitHub:           #
+#                                                                    #
+#            https://github.com/CMT-MU/SymClosestWannier             #
+#                                                                    #
+#                            written by                              #
+#                        Rikuto Oiwa, RIKEN                          #
+#                                                                    #
+# ------------------------------------------------------------------ #
+#                                                                    #
+#                cw_model: Closest Wannier TB model                  #
+#                                                                    #
+# ****************************************************************** #
+
 import os
 import datetime
 import itertools
