@@ -163,7 +163,6 @@ cw_info_header = """
 """
 cw_info_header += "\n".join(["    - {:<17} : {:<100} \n".format(k, v) for k, v in cw_info.items()])
 
-print(cw_info_header)
 
 cw_data = {
     "Sk": "Overlap matrix elements in k-space (ndarray).",
