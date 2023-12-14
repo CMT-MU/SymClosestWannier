@@ -1,25 +1,28 @@
 """
 utility codes.
 """
-
-
-__debug = False
-
-from . import PYFFTW_IMPORTED
-
-if PYFFTW_IMPORTED:
-    import pyfftw
-import inspect
 import numpy as np
-
-from lazy_property import LazyProperty as Lazy
-from time import time
-from termcolor import cprint
 import fortio, scipy.io
 
 from gcoreutils.nsarray import NSArray
 
 M_ZERO = np.finfo(float).eps
+
+
+# ==================================================
+class FortranFileR(fortio.FortranFile):
+    def __init__(self, filename):
+        try:
+            super().__init__(filename, mode="r", header_dtype="uint32", auto_endian=True, check_file=True)
+        except ValueError:
+            print("File '{}' contains subrecords - using header_dtype='int32'".format(filename))
+            super().__init__(filename, mode="r", header_dtype="int32", auto_endian=True, check_file=True)
+
+
+# ==================================================
+class FortranFileW(scipy.io.FortranFile):
+    def __init__(self, filename):
+        super().__init__(filename, mode="w")
 
 
 # ==================================================
