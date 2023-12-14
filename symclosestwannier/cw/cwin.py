@@ -28,6 +28,7 @@ _default = {
     "write_rmn": False,
     "write_vmn": False,
     "write_tb": False,
+    "write_spn": False,
     #
     "symmetrization": False,
     "mp_outdir": "./",
@@ -99,6 +100,11 @@ class CWin(dict):
                 - formatter         : format by using black? (bool), [False].
                 - write_hr          : write seedname_hr.py ? (bool), [False].
                 - write_sr          : write seedname_sr.py ? (bool), [False].
+                - write_u_matrices  : write seedname_u.dat and seedname_u_dis.dat ? (bool), [False].
+                - write_rmn         : write seedname_r.dat ? (bool), [False].
+                - write_vmn         : write seedname_v.dat ? (bool), [False].
+                - write_tb          : write seedname_tb.dat ? (bool), [False].
+                - write_spn         : write seedname.spn.cw ? (bool), [False].
 
             # only used for symmetrization.
                 - symmetrization    : symmetrize ? (bool), [False].

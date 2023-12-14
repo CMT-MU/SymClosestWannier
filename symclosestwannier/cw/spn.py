@@ -96,6 +96,55 @@ class Spn(dict):
 
         return d
 
+    # # ==================================================
+    # def write(self, file_name="cwannier.spn"):
+    #     """
+    #     write spn data.
+
+    #     Args:
+    #         file_name (str, optional): file name.
+    #     """
+    #     SPN = FortranFileW(file_name)
+    #     header = "Created from wavecar at {0}".format(datetime.datetime.now().isoformat())
+    #     header = header[:60]
+    #     header += " " * (60 - len(header))
+    #     SPN.write_record(bytearray(header, encoding="ascii"))
+    #     SPN.write_record(np.array([NBout, NK], dtype=np.int32))
+
+    #     for ik in range(NK):
+    #         npw = int(record(2 + ik * (NBin + 1), 1))
+    #         npw12 = npw // 2
+    #         if npw != npw12 * 2:
+    #             raise RuntimeError(f"odd number of coefs {npw}")
+    #         print("k-point {0:3d} : {1:6d} plane waves".format(ik, npw))
+    #         WF = np.zeros((npw, NBout), dtype=complex)
+    #         for ib in range(NBout):
+    #             WF[:, ib] = record(3 + ik * (NBin + 1) + ib + IBstart, npw, np.complex64)
+    #         overlap = WF.conj().T.dot(WF)
+    #         assert np.max(np.abs(overlap - overlap.T.conj())) < 1e-15
+
+    #         if normalize == "norm":
+    #             WF = WF / np.sqrt(np.abs(overlap.diagonal()))
+
+    #         SIGMA = np.array(
+    #             [
+    #                 [
+    #                     np.einsum(
+    #                         "ki,kj->ij", WF.conj()[npw12 * i : npw12 * (i + 1), :], WF[npw12 * j : npw12 * (j + 1), :]
+    #                     )
+    #                     for j in (0, 1)
+    #                 ]
+    #                 for i in (0, 1)
+    #             ]
+    #         )
+    #         SX = SIGMA[0, 1] + SIGMA[1, 0]
+    #         SY = -1.0j * (SIGMA[0, 1] - SIGMA[1, 0])
+    #         SZ = SIGMA[0, 0] - SIGMA[1, 1]
+    #         A = np.array(
+    #             [s[n, m] for m in range(NBout) for n in range(m + 1) for s in (SX, SY, SZ)], dtype=np.complex128
+    #         )
+    #         SPN.write_record(A)
+
     # ==================================================
     @classmethod
     def _default(cls):
