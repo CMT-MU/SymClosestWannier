@@ -23,6 +23,7 @@ import numpy as np
 
 from gcoreutils.nsarray import NSArray
 
+from symclosestwannier.cw.cwin import CWin
 from symclosestwannier.cw.cw_info import CWInfo
 from symclosestwannier.cw.cw_manager import CWManager
 from symclosestwannier.cw.cw_model import CWModel
@@ -49,7 +50,12 @@ def cw_creator(seedname="cwannier"):
     cwi = CWInfo(".", seedname)
     cwm = CWManager(topdir=cwi["outdir"], verbose=cwi["verbose"], parallel=cwi["parallel"], formatter=cwi["formatter"])
 
-    cw_model = CWModel(cwi, cwm)
+    if cwi["restart"] == "sym":
+        filename = os.path.join(cwi["outdir"], "{}".format(f"{seedname}.hdf5"))
+        cw_model = CWModel(cwi, cwm, dic=CWModel.read_data(filename))
+    else:
+        cw_model = CWModel(cwi, cwm)
+
     cwi = cw_model._cwi
 
     cwm.log(cw_start_output_msg(), stamp=None, end="\n", file=cw_model._outfile, mode="a")
@@ -67,9 +73,9 @@ def cw_creator(seedname="cwannier"):
         filename = f"{cwi['seedname']}_sr.dat"
         cw_model.write_or(cw_model["Sr"], filename, CWModel._sr_header())
 
-    if cwi["write_u_matrices"] and cwi["restart"] != "w90":
-        file_names = (f"{cwi['seedname']}_u.mat", f"{cwi['seedname']}_u_dis.mat")
-        cw_model.umat.write(file_names)
+    # if cwi["write_u_matrices"] and cwi["restart"] != "w90":
+    #     file_names = (f"{cwi['seedname']}_u.mat", f"{cwi['seedname']}_u_dis.mat")
+    #     cw_model.umat.write(file_names)
 
     if cwi["write_rmn"]:
         AA_R = get_AA_R(cwi)

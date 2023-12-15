@@ -127,8 +127,10 @@ class CWModel(dict):
 
         if dic is not None:
             self.update(dic)
-        else:
+        elif self._cwi["restart"] in ("cw", "w90"):
             self.update(_default)
+
+        if (dic is not None and self._cwi["restart"] == "sym") or self._cwi["restart"] in ("cw", "w90"):
             self._cwm.log(cw_open_msg(), stamp=None, end="\n", file=self._outfile, mode="w")
             self._cwm.log(system_msg(self._cwi), stamp=None, end="\n", file=self._outfile, mode="a")
 
@@ -136,8 +138,10 @@ class CWModel(dict):
                 self._cw()
             elif self._cwi["restart"] == "w90":
                 self._w90()
+            elif self._cwi["restart"] == "sym":
+                self._sym()
             else:
-                raise Exception(f"invalid restart = {self._cwi['restart']} was given. choose from cw/w90/postcw.")
+                raise Exception(f"invalid restart = {v} was given. choose from 'cw'/'w90'/'sym'.")
 
             self._cwm.log(f"  * total elapsed_time:", stamp="start", file=self._outfile, mode="a")
             self._cwm.log(cw_end_msg(), stamp=None, end="\n", file=self._outfile, mode="a")
@@ -253,7 +257,7 @@ class CWModel(dict):
                 Ek_RMSE_grid,
                 Ek_RMSE_path,
                 matrix_dict,
-            ) = self._symmetrize()
+            ) = self._sym()
 
             self.update(
                 {
@@ -376,7 +380,7 @@ class CWModel(dict):
         return Sk, Uk, Hk, Hk_nonortho, Sr, Hr, Hr_nonortho
 
     # ==================================================
-    def _symmetrize(self):
+    def _sym(self):
         """
         symmetrize CW TB Hamiltonian.
 
@@ -501,10 +505,10 @@ class CWModel(dict):
         Hr_nonortho_sym = CWModel.construct_Or(list(z_nonortho.values()), self._cwi["num_wann"], rpoints_mp, mat)
 
         atoms_frac = [self._cwi["atom_pos_r"][i] for i in self._cwi["nw2n"]]
-        Sk_sym = CWModel.fourier_transform_r_to_k(Sr_sym, self._cwi["kpoints"], rpoints_mp, atoms_frac)
-        Hk_sym = CWModel.fourier_transform_r_to_k(Hr_sym, self._cwi["kpoints"], rpoints_mp, atoms_frac)
+        Sk_sym = CWModel.fourier_transform_r_to_k(Sr_sym, self._cwi["kpoints"], rpoints_mp, atoms_frac=atoms_frac)
+        Hk_sym = CWModel.fourier_transform_r_to_k(Hr_sym, self._cwi["kpoints"], rpoints_mp, atoms_frac=atoms_frac)
         Hk_nonortho_sym = CWModel.fourier_transform_r_to_k(
-            Hr_nonortho_sym, self._cwi["kpoints"], rpoints_mp, atoms_frac
+            Hr_nonortho_sym, self._cwi["kpoints"], rpoints_mp, atoms_frac=atoms_frac
         )
 
         self._cwm.log("done", file=self._outfile, mode="a")
@@ -532,7 +536,9 @@ class CWModel(dict):
             )
             Ek_path, _ = np.linalg.eigh(Hk_path)
 
-            Hk_sym_path = CWModel.fourier_transform_r_to_k(Hr_sym, self._cwi["kpoints_path"], rpoints_mp, atoms_frac)
+            Hk_sym_path = CWModel.fourier_transform_r_to_k(
+                Hr_sym, self._cwi["kpoints_path"], rpoints_mp, atoms_frac=atoms_frac
+            )
             Ek_path_sym, _ = np.linalg.eigh(Hk_sym_path)
 
             num_k, num_wann = Ek_path_sym.shape
@@ -806,37 +812,39 @@ class CWModel(dict):
         with h5py.File(filename, "w") as hf:
             info = hf.create_group("info")
             for k, v in self._cwi.items():
-                if v is not None:
-                    try:
-                        if type(v) in (str, list, np.ndarray):
-                            dset = info.create_dataset(k, data=v)
-                        elif type(v) == bool:
-                            dset = info.create_dataset(k, data=v, dtype=bool)
-                        else:
-                            dset = info.create_dataset(k, data=str(v))
-                    except:
+                # if v is not None:
+                try:
+                    if type(v) in (str, list, np.ndarray):
+                        dset = info.create_dataset(k, data=v)
+                    elif type(v) == bool:
+                        dset = info.create_dataset(k, data=v, dtype=bool)
+                    else:
                         dset = info.create_dataset(k, data=str(v))
+                except:
+                    dset = info.create_dataset(k, data=str(v))
 
             data = hf.create_group("data")
             for k, v in self.items():
-                if v is not None:
+                # if v is not None:
+                try:
                     dset = data.create_dataset(k, data=v)
+                except:
+                    dset = data.create_dataset(k, data=str(v))
 
     # ==================================================
     @classmethod
-    def read_info_data(self, filename):
+    def read_info(self, filename):
         """
-        read info and data from seedname.hdf5 (hdf5 format).
+        read info from seedname.hdf5 (hdf5 format).
 
         Args:
             filename (str): file name.
 
         Returns:
-            tuple: CWInfo, dictionary of data.
+            CWInfo: info.
         """
         with h5py.File(filename, "r") as hf:
-            dic = {k: v[:] if v is not None else None for k, v in hf["data"].items()}
-            cwi = {}
+            info = {}
             for k, v in hf["info"].items():
                 v = v[()]
 
@@ -854,12 +862,43 @@ class CWModel(dict):
                 elif type(v) == np.ndarray:
                     v = list(v)
 
-                cwi[k] = v
+                info[k] = v
 
-                # if type(v) != list:
-                #     print(k, type(v), v)
+        return info
 
-            return cwi, dic
+    # ==================================================
+    @classmethod
+    def read_data(self, filename):
+        """
+        read data from seedname.hdf5 (hdf5 format).
+
+        Args:
+            filename (str): file name.
+
+        Returns:
+            dict: dictionary of data.
+        """
+        with h5py.File(filename, "r") as hf:
+            data = {k: v[()] if v is not None else None for k, v in hf["data"].items()}
+
+        return data
+
+    # ==================================================
+    @classmethod
+    def read_info_data(self, filename):
+        """
+        read info and data from seedname.hdf5 (hdf5 format).
+
+        Args:
+            filename (str): file name.
+
+        Returns:
+            tuple: CWInfo, dictionary of data.
+        """
+        info = CWModel.read_info(filename)
+        data = CWModel.read_info(filename)
+
+        return info, data
 
     # ==================================================
     def write_or(self, Or, filename, header=None, vec=False):

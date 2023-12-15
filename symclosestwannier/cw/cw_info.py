@@ -85,8 +85,8 @@ class CWInfo(dict):
         for name, C in _class_map.items():
             if name == "umat" and (d["restart"] != "w90"):
                 continue
-            if name == "spn" and (d["restart"] != "postcw"):
-                continue
+            # if name == "spn" and (d["restart"] != "w90"):
+            #     continue
 
             info = C(topdir, seedname)
             for k, v in info.items():
@@ -117,10 +117,10 @@ class CWInfo(dict):
             kpoints_path, k_linear, k_dis_pos = None, None, None
 
         d["unit_cell_volume"] = np.dot(A[0], np.cross(A[1], A[2]))
-        d["irvec"] = irvec
-        d["ndegen"] = ndegen
-        d["kpoints_path"] = kpoints_path
-        d["k_linear"] = k_linear
+        d["irvec"] = irvec.tolist()
+        d["ndegen"] = ndegen.tolist()
+        d["kpoints_path"] = kpoints_path.tolist()
+        d["k_linear"] = k_linear.tolist()
         d["k_dis_pos"] = k_dis_pos
 
         return d
