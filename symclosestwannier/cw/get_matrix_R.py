@@ -14,7 +14,7 @@
 #                                                                    #
 # ------------------------------------------------------------------ #
 #                                                                    #
-#          get_oper: matrix elements of various operators            #
+#         get_matrix_R: matrix elements of various operators         #
 #                                                                    #
 # ****************************************************************** #
 
