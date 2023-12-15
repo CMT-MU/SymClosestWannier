@@ -161,6 +161,7 @@ def fourier_transform_r_to_k(Or, kpoints, irvec, ndegen=None, atoms_frac=None):
     if ndegen is None:
         weight = np.array([1.0 for i in range(Nr)])
     else:
+        ndegen = np.array(ndegen)
         weight = np.array([1.0 / ndegen[i] for i in range(Nr)])
     kpoints = np.array(kpoints, dtype=float)
 
