@@ -51,4 +51,4 @@ Refer to the [documentation](https://cmt-mu.github.io/SymClosestWannier/) for de
 ## To Do
 
 - add function fo automatically set ket_amn.
-- add function to read seedname.mmn, seedname.uHu, and seedname.spn files.
+- add function to read seedname.uHu, seedname.uIu files.
