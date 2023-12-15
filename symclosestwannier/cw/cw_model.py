@@ -19,6 +19,8 @@
 # ****************************************************************** #
 
 import os
+import h5py
+import ast
 import datetime
 import itertools
 import textwrap
@@ -108,36 +110,37 @@ class CWModel(dict):
     """
 
     # ==================================================
-    def __init__(self, cwi, cwm):
+    def __init__(self, cwi, cwm, dic=None):
         """
         initialize the class.
 
         Args:
             cwi (SystemInfo, optional): CWInfo.
-            cwm (CWManager, optional): CWManager.
+            cwm (CWManager,optional): CWManager.
+            dic (dict, optional): dictionary of data.
         """
         super().__init__()
-
-        self.update(_default)
 
         self._cwi = cwi
         self._cwm = cwm
         self._outfile = f"{self._cwi['seedname']}.cwout"
 
-        self._cwm.log(cw_open_msg(), stamp=None, end="\n", file=self._outfile, mode="w")
-
-        self._cwm.log(system_msg(self._cwi), stamp=None, end="\n", file=self._outfile, mode="a")
-
-        if self._cwi["restart"] == "cw":
-            self._cw()
-        elif self._cwi["restart"] == "w90":
-            self._w90()
+        if dic is not None:
+            self.update(dic)
         else:
-            self.update(self._cwm.read(f"{self._cwi['seedname']}_data.py"))
+            self.update(_default)
+            self._cwm.log(cw_open_msg(), stamp=None, end="\n", file=self._outfile, mode="w")
+            self._cwm.log(system_msg(self._cwi), stamp=None, end="\n", file=self._outfile, mode="a")
 
-        self._cwm.log(f"  * total elapsed_time:", stamp="start", file=self._outfile, mode="a")
+            if self._cwi["restart"] == "cw":
+                self._cw()
+            elif self._cwi["restart"] == "w90":
+                self._w90()
+            else:
+                raise Exception(f"invalid restart = {self._cwi['restart']} was given. choose from cw/w90/postcw.")
 
-        self._cwm.log(cw_end_msg(), stamp=None, end="\n", file=self._outfile, mode="a")
+            self._cwm.log(f"  * total elapsed_time:", stamp="start", file=self._outfile, mode="a")
+            self._cwm.log(cw_end_msg(), stamp=None, end="\n", file=self._outfile, mode="a")
 
     # ==================================================
     def _w90(self):
@@ -793,6 +796,72 @@ class CWModel(dict):
         return s_header
 
     # ==================================================
+    def write_info_data(self, filename):
+        """
+        write info and data to seedname.hdf5 (hdf5 format).
+
+        Args:
+            filename (str): file name.
+        """
+        with h5py.File(filename, "w") as hf:
+            info = hf.create_group("info")
+            for k, v in self._cwi.items():
+                if v is not None:
+                    try:
+                        if type(v) in (str, list, np.ndarray):
+                            dset = info.create_dataset(k, data=v)
+                        elif type(v) == bool:
+                            dset = info.create_dataset(k, data=v, dtype=bool)
+                        else:
+                            dset = info.create_dataset(k, data=str(v))
+                    except:
+                        dset = info.create_dataset(k, data=str(v))
+
+            data = hf.create_group("data")
+            for k, v in self.items():
+                if v is not None:
+                    dset = data.create_dataset(k, data=v)
+
+    # ==================================================
+    @classmethod
+    def read_info_data(self, filename):
+        """
+        read info and data from seedname.hdf5 (hdf5 format).
+
+        Args:
+            filename (str): file name.
+
+        Returns:
+            tuple: CWInfo, dictionary of data.
+        """
+        with h5py.File(filename, "r") as hf:
+            dic = {k: v[:] if v is not None else None for k, v in hf["data"].items()}
+            cwi = {}
+            for k, v in hf["info"].items():
+                v = v[()]
+
+                if type(v) == bytes:
+                    v = v.decode("utf-8")
+                    try:
+                        v = ast.literal_eval(v)
+                    except:
+                        v = v
+
+                elif type(v) == np.bool_:
+                    v = bool(v)
+                elif type(v) == np.float64:
+                    v = float(v)
+                elif type(v) == np.ndarray:
+                    v = list(v)
+
+                cwi[k] = v
+
+                # if type(v) != list:
+                #     print(k, type(v), v)
+
+            return cwi, dic
+
+    # ==================================================
     def write_or(self, Or, filename, header=None, vec=False):
         """
         write seedname_or.dat.
@@ -803,8 +872,8 @@ class CWModel(dict):
             header (str, optional): header.
             vec (bool, optional): vector ?
         """
-        irvec = self._cwi["irvec"]
-        ndegen = self._cwi["ndegen"]
+        irvec = np.array(self._cwi["irvec"])
+        ndegen = np.array(self._cwi["ndegen"])
         num_wann = self._cwi["num_wann"]
         unit_cell_cart = np.array(self._cwi["unit_cell_cart"])
         Or = np.array(Or)
