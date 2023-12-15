@@ -19,13 +19,40 @@ _default = {
     "dis_win_min": -100000,
     "dis_mix_ratio": 0.5,
     #
-    "mp_grid": [0, 0, 0],
+    "mp_grid": [1, 1, 1],
     "kpoints": [[0, 0, 0]],
     "kpoint": None,
     "kpoint_path": None,
     "unit_cell_cart": None,
     "atoms_frac": None,
     "atoms_cart": None,
+    #
+    "kmesh": [1, 1, 1],
+    "kmesh_spacing": [1, 1, 1],
+    "adpt_smr": True,
+    "adpt_smr_fac": np.sqrt(2),
+    "adpt_smr_max": 1.0,
+    "smr_type": "gauss",
+    "smr_fixed_en_width": 0.0,
+    # berry
+    "berry": False,
+    "berry_task": None,
+    "berry_kmesh": [1, 1, 1],
+    "berry_kmesh_spacing": [1, 1, 1],
+    # kubo
+    "kubo_freq_max": None,
+    "kubo_freq_min": 0.0,
+    "kubo_freq_step": 0.01,
+    "kubo_eigval_max": None,
+    "kubo_adpt_smr": True,
+    "kubo_adpt_smr_fac": np.sqrt(2),
+    "kubo_adpt_smr_max": 1.0,
+    "kubo_smr_fixed_en_width": 0.0,
+    "kubo_smr_type": "gauss",
+    # gyrotropic
+    "gyrotropic": False,
+    # boltzwann
+    "boltzwann": False,
 }
 
 
@@ -71,26 +98,57 @@ class Win(dict):
 
         Returns:
             dict: dictionary form of seedname.win.
-                - num_k              : # of k points (int), [1].
-                - num_bands          : # of bands passed to the code (int), [1].
-                - num_wann           : # of WFs (int), [1].
-                - kpoint*            : representative k points, [1].
-                - kpoint_path*       : high-symmetry line in k-space, [None].
-                - unit_cell_cart*    : transform matrix, [a1,a2,a3], [None].
-                - atoms_frac*        : atomic positions in fractional coordinates with respect to the lattice vectors, {atom: [r1,r2,r3]} [None].
-                - atoms_cart*        : atomic positions in cartesian coordinates, {atom: [rx,ry,rz]} [None].
-                - dis_num_iter*      : # of iterations for disentanglement (int), [0].
-                - num_iter*          : # of iterations for maximal localization (int), [200].
-                - dis_froz_max       : top of the inner (frozen) energy window (float), [+100000].
-                - dis_froz_min       : bottom of the inner (frozen) energy window (float), [-100000].
-                - dis_win_max        : top of the outer energy window (float), [+100000].
-                - dis_win_min        : bottom of the outer energy window (float), [-100000].
-                - dis_mix_ratio      : mixing ratio during the disentanglement (float), [0.5].
-                - mp_grid            : dimensions of the Monkhorst-Pack grid of k-points (list), [0, 0, 0],
-                - kpoints            : k-points used in DFT calculation, [[k1, k2, k3]] (crystal coordinate).
-                - kpoint             : representative k points (dict), [None].
-                - kpoint_path        : k-points along high symmetry line in Brillouin zonen, [[k1, k2, k3]] (crystal coordinate) (str), [None].
-                - unit_cell_cart     : transform matrix, [a1,a2,a3] (list), [None].
+                - num_k               : # of k points (int), [1].
+                - num_bands           : # of bands passed to the code (int), [1].
+                - num_wann            : # of WFs (int), [1].
+                - kpoint*             : representative k points, [1].
+                - kpoint_path*        : high-symmetry line in k-space, [None].
+                - unit_cell_cart*     : transform matrix, [a1,a2,a3], [None].
+                - atoms_frac*         : atomic positions in fractional coordinates with respect to the lattice vectors, {atom: [r1,r2,r3]} [None].
+                - atoms_cart*         : atomic positions in cartesian coordinates, {atom: [rx,ry,rz]} [None].
+                - dis_num_iter*       : # of iterations for disentanglement (int), [0].
+                - num_iter*           : # of iterations for maximal localization (int), [200].
+                - dis_froz_max        : top of the inner (frozen) energy window (float), [+100000].
+                - dis_froz_min        : bottom of the inner (frozen) energy window (float), [-100000].
+                - dis_win_max         : top of the outer energy window (float), [+100000].
+                - dis_win_min         : bottom of the outer energy window (float), [-100000].
+                - dis_mix_ratio       : mixing ratio during the disentanglement (float), [0.5].
+                - mp_grid             : dimensions of the Monkhorst-Pack grid of k-points (list), [[1, 1, 1]],
+                - kpoints             : k-points used in DFT calculation, [[k1, k2, k3]] (crystal coordinate).
+                - kpoint              : representative k points (dict), [None].
+                - kpoint_path         : k-points along high symmetry line in Brillouin zonen, [[k1, k2, k3]] (crystal coordinate) (str), [None].
+                - unit_cell_cart      : transform matrix, [a1,a2,a3] (list), [None].
+
+            # only used for postcw calculation (same as postw90).
+                - kmesh               : dimensions of the Monkhorst-Pack grid of k-points for response calculation (list), [[1, 1, 1]].
+                - kmesh_spacing       : minimum distance for neighboring k points along each of the three directions in k space (The units are [Ang])(list), [1,1,1]].
+                - adpt_smr            : Determines whether to use an adaptive scheme for broadening the DOS and similar quantities defined on the energy axis (bool), [True].
+                - adpt_smr_fac        : The width ηnk of the broadened delta function used to determine the contribution to the spectral property (DOS, ...) from band n at point k (float), [sqrt(2)].
+                - adpt_smr_max        : Maximum allowed value for the adaptive energy smearing [eV] (float), [1.0].
+                - smr_type            : Defines the analytical form used for the broadened delta function in the computation of the DOS and similar quantities defined on the energy axis, gauss/m-pN/m-v or cold/f-d (str), [gauss].
+                - smr_fixed_en_width  : Energy width for the smearing function for the DOS. Used only if adpt_smr is false (The units are [eV]) (flaot), [0.0].
+            # berry
+                - berry               : Determines whether to enter the berry routines (bool), [False].
+                - berry_task          : The quantity to compute when berry=true, kubo/ahc/morb/shc (str).
+                - berry_kmesh         : Overrides the kmesh global variable.
+                - berry_kmesh_spacing : Overrides the kmesh_spacing global variable.
+            # kubo
+                - kubo_freq_max       : Upper limit of the frequency range for computing the optical conductivity, JDOS and ac SHC. (The units are [eV]) (float), [If an inner energy window was specified, the default value is dis_froz_max-fermi_energy+0.6667. Otherwise it is the difference between the maximum and the minimum energy eigenvalue stored in seedname.eig, plus 0.6667.].
+                - kubo_freq_min       : Lower limit of the frequency range for computing the optical conductivity, JDOS and ac SHC. (The units are [eV]) (float), [0.0].
+                - kubo_freq_step      : Difference between consecutive values of the optical frequency between kubo_freq_min and kubo_freq_max. (The units are [eV]) (float), [0.01].
+                - kubo_eigval_max     : Maximum energy eigenvalue of the eigenstates to be included in the evaluation of the optical conductivity, JDOS and ac SHC. (The units are [eV]) (float), [If an inner energy window was specified, the default value is the upper bound of the inner energy window plus 0.6667. Otherwise it is the maximum energy eigenvalue stored in seedname.eig plus 0.6667.].
+                - kubo_adpt_smr       : Overrides the adpt_smr global variable.
+                - kubo_adpt_smr_fac   : Overrides the adpt_smr_fac global variable.
+                - kubo_adpt_smr_max   : Overrides the adpt_smr_max global variable.
+                - kubo_smr_fixed_en_width : Overrides the smr_fixed_en_width global variable.
+                - kubo_smr_type       : Overrides the smr_type global variable.
+            # ahc
+            # morb
+            # shc
+            # gyrotropic
+                - gyrotropic          : Determines whether to enter the gyrotropic routines (bool), [False].
+            # boltzwann
+                - boltzwann           : Determines whether to enter the boltzwann routines (bool), [False].
         """
         if os.path.exists(file_name):
             with open(file_name) as fp:

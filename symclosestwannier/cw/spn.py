@@ -64,6 +64,15 @@ class Spn(dict):
                 - Udisk     : num_wann×num_bands partial unitary matrix (ndarray), [None].
                 - Uk        : num_wann×num_bands full unitary matrix (ndarray), [None].
         """
+        if os.path.exists(file_name):
+            pass
+        elif os.path.exists(file_name + ".gz"):
+            pass
+        elif os.path.exists(file_name + ".tar.gz"):
+            pass
+        else:
+            return _default
+
         if self._spn_formatted:
             f_spn_in = open(file_name, "r")
             SPNheader = f_spn_in.readline().strip()

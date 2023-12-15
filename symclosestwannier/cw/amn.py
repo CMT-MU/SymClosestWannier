@@ -75,7 +75,6 @@ class Amn(dict):
         num_bands, num_k, num_wann = [int(x) for x in amn_data[1].split()]
         amn_data = np.genfromtxt(amn_data[2:]).reshape(num_k, num_wann, num_bands, 5)
         Ak = np.transpose(amn_data[:, :, :, 3] + 1j * amn_data[:, :, :, 4], axes=(0, 2, 1))
-        Ak = Ak.tolist()
 
         d = {"num_k": num_k, "num_bands": num_bands, "num_wann": num_wann, "Ak": Ak}
 
