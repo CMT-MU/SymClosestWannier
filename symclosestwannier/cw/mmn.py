@@ -6,11 +6,20 @@ import os
 import gzip
 import tarfile
 import itertools
+import multiprocessing
+from itertools import islice
 
 import numpy as np
 
 
 _default = {"num_k": 1, "num_bands": 1, "num_b": 1, "nnkpts": None, "Mkb": None}
+
+_mult = 4
+
+
+# ==================================================
+def _convert(lst):
+    return np.array([l.split() for l in lst], dtype=float)
 
 
 # ==================================================
@@ -21,10 +30,11 @@ class Mmn(dict):
     Attributes:
         _topdir (str): top directory.
         _seedname (str): seedname.
+        _npar (int): # of cpu core.
     """
 
     # ==================================================
-    def __init__(self, topdir=None, seedname="cwannier", dic=None):
+    def __init__(self, topdir=None, seedname="cwannier", dic=None, npar=multiprocessing.cpu_count()):
         """
         initialize the class.
 
@@ -32,11 +42,13 @@ class Mmn(dict):
             topdir (str, optional): directory of seedname.mmn file.
             seedname (str, optional): seedname.
             dic (dict, optional): dictionary of Mmn.
+            npar (int, optional): # of cpu core.
         """
         super().__init__()
 
         self._topdir = topdir
         self._seedname = seedname
+        self._npar = npar
 
         if dic is None:
             file_name = os.path.join(topdir, "{}.{}".format(seedname, "mmn"))
@@ -69,20 +81,41 @@ class Mmn(dict):
         else:
             raise Exception("failed to read mmn file: " + file_name)
 
-        _ = fp.readline()  # first line
+        fp.readline()
+        num_bands, num_k, num_b = np.array(fp.readline().split(), dtype=int)
 
-        num_bands, num_k, num_b = [int(x) for x in fp.readline().split()]
+        block = 1 + num_bands * num_bands
 
-        Mkb = np.zeros([num_k, num_b, num_bands, num_bands], dtype=complex)
-        nnkpts = np.zeros([num_k, num_b, 5], dtype=int)
+        Mkb_data = []
+        nnkpts_data = []
 
-        for ik, ib in itertools.product(range(num_k), range(num_b)):
-            d = [int(x) for x in fp.readline().split()]
-            assert ik == d[0] - 1, "{} {}".format(ik, d[0])
-            nnkpts[ik, ib, :] = d
-            for m, n in itertools.product(range(num_bands), repeat=2):
-                dat = [float(x) for x in fp.readline().split()]
-                Mkb[ik, ib, n, m] = dat[0] + 1j * dat[1]
+        if self._npar > 0:
+            pool = multiprocessing.Pool(self._npar)
+
+        for j in range(0, num_b * num_k, self._npar * _mult):
+            x = list(islice(fp, int(block * self._npar * _mult)))
+            if len(x) == 0:
+                break
+            nnkpts_data += x[::block]
+            y = [x[i * block + 1 : (i + 1) * block] for i in range(self._npar * _mult) if (i + 1) * block <= len(x)]
+            if self._npar > 0:
+                Mkb_data += pool.map(_convert, y)
+            else:
+                Mkb_data += [_convert(z) for z in y]
+
+        if self._npar > 0:
+            pool.close()
+            pool.join()
+
+        fp.close()
+
+        Mkb_data = [d[:, 0] + 1j * d[:, 1] for d in Mkb_data]
+        Mkb = np.array(Mkb_data).reshape(num_k, num_b, num_bands, num_bands).transpose((0, 1, 3, 2))
+        nnkpts_data = np.array([s.split() for s in nnkpts_data], dtype=int).reshape(num_k, num_b, 5)
+
+        assert np.all(nnkpts_data[:, :, 0] - 1 == np.arange(num_k)[:, None])
+
+        nnkpts = nnkpts_data
 
         nnkpts = nnkpts.tolist()
         Mkb = Mkb.tolist()
