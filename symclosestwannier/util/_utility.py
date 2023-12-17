@@ -307,8 +307,8 @@ def samb_decomp(Or_dict, Zr_dict):
         z (list): parameter set, [z_j].
     """
     z = {
-        k: np.real(np.sum([v * Or_dict.get((-k[0], -k[1], -k[2], k[4], k[3]), 0) for k, v in d.items()]))
-        for k, d in Zr_dict.items()
+        tag: np.real(np.sum([v * Or_dict.get((-k[0], -k[1], -k[2], k[4], k[3]), 0) for k, v in d.items()]))
+        for tag, d in Zr_dict.items()
     }
 
     return z
