@@ -285,12 +285,12 @@ class Win(dict):
         d["adpt_smr"] = self._get_param_keyword(win_data, "adpt_smr", True, dtype=bool)
         d["adpt_smr_fac"] = self._get_param_keyword(win_data, "adpt_smr_fac", np.sqrt(2), dtype=float)
         d["adpt_smr_max"] = self._get_param_keyword(win_data, "adpt_smr_max", 1.0, dtype=float)
-        d["smr_type"] = self._get_param_keyword(win_data, "smr_type", "gauss", dtype=str)
+        d["smr_type"] = self._get_param_keyword(win_data, "smr_type", "gauss", dtype=str).replace(" ", "")
         d["smr_fixed_en_width"] = self._get_param_keyword(win_data, "smr_fixed_en_width", 0.0, dtype=float)
         d["spin_decomp"] = self._get_param_keyword(win_data, "spin_decomp", False, dtype=bool)
 
         d["berry"] = self._get_param_keyword(win_data, "berry", False, dtype=bool)
-        d["berry_task"] = self._get_param_keyword(win_data, "berry_task", None, dtype=bool)
+        d["berry_task"] = self._get_param_keyword(win_data, "berry_task", None, dtype=str).replace(" ", "")
         berry_kmesh = self._get_param_keyword(win_data, "berry_kmesh", "1  1  1", dtype=str)
         d["berry_kmesh"] = [int(x) for x in berry_kmesh.split()]
         berry_kmesh_spacing = self._get_param_keyword(win_data, "berry_kmesh_spacing", "1  1  1", dtype=str)
@@ -303,7 +303,7 @@ class Win(dict):
         d["kubo_adpt_smr"] = self._get_param_keyword(win_data, "kubo_adpt_smr", True, dtype=bool)
         d["kubo_adpt_smr_fac"] = self._get_param_keyword(win_data, "kubo_adpt_smr_fac", np.sqrt(2), dtype=float)
         d["kubo_adpt_smr_max"] = self._get_param_keyword(win_data, "kubo_adpt_smr_max", 1.0, dtype=float)
-        d["kubo_smr_type"] = self._get_param_keyword(win_data, "smr_type", "gauss", dtype=str)
+        d["kubo_smr_type"] = self._get_param_keyword(win_data, "smr_type", "gauss", dtype=str).replace(" ", "")
         d["kubo_smr_fixed_en_width"] = self._get_param_keyword(win_data, "kubo_smr_fixed_en_width", 0.0, dtype=float)
 
         d["gyrotropic"] = self._get_param_keyword(win_data, "gyrotropic", False, dtype=bool)
