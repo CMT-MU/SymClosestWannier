@@ -85,8 +85,12 @@ class CWInfo(dict):
         for name, C in _class_map.items():
             if name == "umat" and (d["restart"] != "w90"):
                 continue
-            # if name == "spn" and (d["restart"] != "w90"):
-            #     continue
+            if name == "mmn":
+                if not np.all(d["write_rmn"], d["write_vmn"], d["write_tb"]):
+                    continue
+            if name == "spn":
+                if not np.all(d["write_spn"]):
+                    continue
 
             info = C(topdir, seedname)
             for k, v in info.items():
@@ -97,7 +101,7 @@ class CWInfo(dict):
                             if v != v_:
                                 raise Exception(f"The value of {k} in {name} and {name_} is inconsistent.")
                         except:
-                            if np.all(np.array(v) == np.array(v_)):
+                            if not np.sum(np.array(v) - np.array(v_)) < 1e-6:
                                 raise Exception(f"The value of {k} in {name} and {name_} is inconsistent.")
 
             info_list.append((name, info))

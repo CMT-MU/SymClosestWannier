@@ -71,7 +71,7 @@ class Spn(dict):
         elif os.path.exists(file_name + ".tar.gz"):
             pass
         else:
-            return _default
+            raise Exception("failed to read spn file: " + file_name)
 
         if self._spn_formatted:
             f_spn_in = open(file_name, "r")
