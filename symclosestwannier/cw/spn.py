@@ -101,6 +101,8 @@ class Spn(dict):
             if check > 1e-10:
                 raise RuntimeError("REAL DIAG CHECK FAILED : {0}".format(check))
 
+            Sk[:, ik, :, :] = A
+
         d = {"num_k": num_k, "num_bands": num_bands, "Sk": Sk.tolist()}
 
         return d
