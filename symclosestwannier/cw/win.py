@@ -290,7 +290,10 @@ class Win(dict):
         d["spin_decomp"] = self._get_param_keyword(win_data, "spin_decomp", False, dtype=bool)
 
         d["berry"] = self._get_param_keyword(win_data, "berry", False, dtype=bool)
-        d["berry_task"] = self._get_param_keyword(win_data, "berry_task", None, dtype=str).replace(" ", "")
+        berry_task = self._get_param_keyword(win_data, "berry_task", None, dtype=str)
+        if berry_task is not None:
+            berry_task = berry_task.replace(" ", "")
+        d["berry_task"] = berry_task
         berry_kmesh = self._get_param_keyword(win_data, "berry_kmesh", "1  1  1", dtype=str)
         d["berry_kmesh"] = [int(x) for x in berry_kmesh.split()]
         berry_kmesh_spacing = self._get_param_keyword(win_data, "berry_kmesh_spacing", "1  1  1", dtype=str)
