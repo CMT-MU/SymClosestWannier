@@ -37,7 +37,7 @@ _default = {
     "spin_decomp": False,
     # berry
     "berry": False,
-    "berry_task": None,
+    "berry_task": "",
     "berry_kmesh": [1, 1, 1],
     "berry_kmesh_spacing": [1, 1, 1],
     # kubo
@@ -165,7 +165,7 @@ class Win(dict):
 
         d["num_bands"] = self._get_param_keyword(win_data, "num_bands", 0, dtype=int)
         d["num_wann"] = self._get_param_keyword(win_data, "num_wann", 0, dtype=int)
-        mp_grid = self._get_param_keyword(win_data, "mp_grid", [0, 0, 0], dtype=str)
+        mp_grid = self._get_param_keyword(win_data, "mp_grid", "1  1  1", dtype=str)
         d["mp_grid"] = [int(x) for x in mp_grid.split()]
         d["num_k"] = np.prod(d["mp_grid"])
 
@@ -277,24 +277,69 @@ class Win(dict):
                 A = d["unit_cell_cart"]
                 d["atoms_cart"] = {k: (np.array(v) @ np.array(A)).tolist() for k, v in d["atoms_frac"].items()}
 
+        # postcw
+        kmesh = self._get_param_keyword(win_data, "kmesh", "1  1  1", dtype=str)
+        d["kmesh"] = [int(x) for x in kmesh.split()]
+        kmesh_spacing = self._get_param_keyword(win_data, "kmesh_spacing", "1  1  1", dtype=str)
+        d["kmesh_spacing"] = [int(x) for x in kmesh_spacing.split()]
+        d["adpt_smr"] = self._get_param_keyword(win_data, "adpt_smr", True, dtype=bool)
+        d["adpt_smr_fac"] = self._get_param_keyword(win_data, "adpt_smr_fac", np.sqrt(2), dtype=float)
+        d["adpt_smr_max"] = self._get_param_keyword(win_data, "adpt_smr_max", 1.0, dtype=float)
+        d["smr_type"] = self._get_param_keyword(win_data, "smr_type", "gauss", dtype=str)
+        d["smr_fixed_en_width"] = self._get_param_keyword(win_data, "smr_fixed_en_width", 0.0, dtype=float)
+        d["spin_decomp"] = self._get_param_keyword(win_data, "spin_decomp", False, dtype=bool)
+
+        d["berry"] = self._get_param_keyword(win_data, "berry", False, dtype=bool)
+        d["berry_task"] = self._get_param_keyword(win_data, "berry_task", None, dtype=bool)
+        berry_kmesh = self._get_param_keyword(win_data, "berry_kmesh", "1  1  1", dtype=str)
+        d["berry_kmesh"] = [int(x) for x in berry_kmesh.split()]
+        berry_kmesh_spacing = self._get_param_keyword(win_data, "berry_kmesh_spacing", "1  1  1", dtype=str)
+        d["berry_kmesh_spacing"] = [int(x) for x in berry_kmesh_spacing.split()]
+
+        d["kubo_freq_max"] = self._get_param_keyword(win_data, "kubo_freq_max", None, dtype=float)
+        d["kubo_freq_min"] = self._get_param_keyword(win_data, "kubo_freq_min", 0.0, dtype=float)
+        d["kubo_freq_step"] = self._get_param_keyword(win_data, "kubo_freq_step", 0.01, dtype=float)
+        d["kubo_eigval_max"] = self._get_param_keyword(win_data, "kubo_eigval_max", None, dtype=float)
+        d["kubo_adpt_smr"] = self._get_param_keyword(win_data, "kubo_adpt_smr", True, dtype=bool)
+        d["kubo_adpt_smr_fac"] = self._get_param_keyword(win_data, "kubo_adpt_smr_fac", np.sqrt(2), dtype=float)
+        d["kubo_adpt_smr_max"] = self._get_param_keyword(win_data, "kubo_adpt_smr_max", 1.0, dtype=float)
+        d["kubo_smr_type"] = self._get_param_keyword(win_data, "smr_type", "gauss", dtype=str)
+        d["kubo_smr_fixed_en_width"] = self._get_param_keyword(win_data, "kubo_smr_fixed_en_width", 0.0, dtype=float)
+
+        d["gyrotropic"] = self._get_param_keyword(win_data, "gyrotropic", False, dtype=bool)
+        d["boltzwann"] = self._get_param_keyword(win_data, "boltzwann", False, dtype=bool)
+
         return d
 
     # ==================================================
     def _get_param_keyword(self, lines, keyword, default_value=None, dtype=int):
         data = None
+        keys = []
         for line in lines:
             line = line.replace("\n", "")
             if line.startswith(keyword):
-                assert data == None, keyword + " is defined more than once"
                 if len(line.split("=")) > 1:
-                    data = line.split("=")[1].split("!")[0]
+                    key, data = line.split("=")
+                    key = key.replace(" ", "")
+                    if key == keyword:
+                        data = data.split("!")[0]
+                    assert key not in keys, key + " is defined more than once"
                 elif len(line.split(":")) > 1:
-                    data = line.split(":")[1].split("!")[0]
+                    key, data = line.split(":")
+                    key = key.replace(" ", "")
+                    if key == keyword:
+                        data = data.split("!")[0]
+                    assert key not in keys, key + " is defined more than once"
 
-        if data == None:
+        if data is None:
             data = default_value
+        else:
+            if data.lower() in ("true", ".true."):
+                data = True
+            elif data.lower() in ("false", ".false."):
+                data = False
 
-        if data == None:
+        if data is None:
             return None
 
         return dtype(data)
