@@ -34,6 +34,7 @@ _default = {
     "adpt_smr_max": 1.0,
     "smr_type": "gauss",
     "smr_fixed_en_width": 0.0,
+    "spin_decomp": False,
     # berry
     "berry": False,
     "berry_task": None,
@@ -127,9 +128,10 @@ class Win(dict):
                 - adpt_smr_max        : Maximum allowed value for the adaptive energy smearing [eV] (float), [1.0].
                 - smr_type            : Defines the analytical form used for the broadened delta function in the computation of the DOS and similar quantities defined on the energy axis, gauss/m-pN/m-v or cold/f-d (str), [gauss].
                 - smr_fixed_en_width  : Energy width for the smearing function for the DOS. Used only if adpt_smr is false (The units are [eV]) (flaot), [0.0].
+                - spin_decomp         : If true, extra columns are added to some output files (such as seedname-dos.dat for the dos module, and analogously for the berry and BoltzWann modules) (bool), [False].
             # berry
                 - berry               : Determines whether to enter the berry routines (bool), [False].
-                - berry_task          : The quantity to compute when berry=true, kubo/ahc/morb/shc (str).
+                - berry_task          : The quantity to compute when berry=true, ahc/morb/kubo/sc/shc/kdotp (str).
                 - berry_kmesh         : Overrides the kmesh global variable.
                 - berry_kmesh_spacing : Overrides the kmesh_spacing global variable.
             # kubo
