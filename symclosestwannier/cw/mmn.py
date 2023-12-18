@@ -144,6 +144,8 @@ class Mmn(dict):
                 for m, n in itertools.product(range(self["num_bands"]), repeat=2):
                     fp.write("{0.real:18.12f}  {0.imag:18.12f}\n".format(mkb[n, m]))
 
+        print(f"  * wrote '{file_name}'.")
+
     # ==================================================
     @classmethod
     def _default(cls):

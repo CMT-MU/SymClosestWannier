@@ -96,6 +96,8 @@ class Eig(dict):
             for ik, n in itertools.product(range(self["num_k"]), range(self["num_bands"])):
                 fp.write("{:5d}{:5d}{:<18.12f}\n".format(n + 1, ik + 1, Ek[ik, n]))
 
+        print(f"  * wrote '{file_name}'.")
+
     # ==================================================
     @classmethod
     def _default(cls):

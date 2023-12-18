@@ -193,6 +193,8 @@ class Umat(dict):
 
                 fp.write("\n")
 
+        print(f"  * wrote '{file_name}'.")
+
     # ==================================================
     def write_u_dis_mat(self, file_name="cwannier_u_dis.mat"):
         """
@@ -213,6 +215,8 @@ class Umat(dict):
                         fp.write("{0.real:18.12f}  {0.imag:18.12f} \n".format(self["Udisk"][k][j][i]))
 
                 fp.write("\n")
+
+        print(f"  * wrote '{file_name}'.")
 
     # ==================================================
     def write(self, file_names=("cwannier_u.mat", "cwannier_u_dis.mat")):
