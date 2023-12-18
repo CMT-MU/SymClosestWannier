@@ -30,16 +30,14 @@ import numpy as np
 from numpy import linalg as npl
 from scipy import linalg as spl
 
+from gcoreutils.nsarray import NSArray
 from multipie.tag.tag_multipole import TagMultipole
 
 from symclosestwannier.cw.cw_info import CWInfo
 from symclosestwannier.cw.cw_manager import CWManager
 
 from symclosestwannier.util.message import (
-    cw_open_msg,
-    cw_end_msg,
     cw_start_msg,
-    system_msg,
     cw_start_msg_w90,
 )
 from symclosestwannier.util.header import (
@@ -131,9 +129,6 @@ class CWModel(dict):
             self.update(_default)
 
         if (dic is not None and self._cwi["restart"] == "sym") or self._cwi["restart"] in ("cw", "w90"):
-            self._cwm.log(cw_open_msg(), stamp=None, end="\n", file=self._outfile, mode="w")
-            self._cwm.log(system_msg(self._cwi), stamp=None, end="\n", file=self._outfile, mode="a")
-
             if self._cwi["restart"] == "cw":
                 self._cw()
             elif self._cwi["restart"] == "w90":
@@ -142,9 +137,6 @@ class CWModel(dict):
                 self._sym()
             else:
                 raise Exception(f"invalid restart = {v} was given. choose from 'cw'/'w90'/'sym'.")
-
-            self._cwm.log(f"  * total elapsed_time:", stamp="start", file=self._outfile, mode="a")
-            self._cwm.log(cw_end_msg(), stamp=None, end="\n", file=self._outfile, mode="a")
 
     # ==================================================
     def _w90(self):
@@ -242,44 +234,7 @@ class CWModel(dict):
         if self._cwi["symmetrization"]:
             msg = "   - symmetrization ... "
             self._cwm.log(msg, None, end="\n", file=self._outfile, mode="a")
-
-            (
-                s,
-                z,
-                z_nonortho,
-                Sk_sym,
-                Hk_sym,
-                Hk_nonortho_sym,
-                Sr_sym,
-                Hr_sym,
-                Hr_nonortho_sym,
-                rpoints_mp,
-                Ek_RMSE_grid,
-                Ek_RMSE_path,
-                matrix_dict,
-            ) = self._sym()
-
-            self.update(
-                {
-                    "s": s,
-                    "z": z,
-                    "z_nonortho": z_nonortho,
-                    #
-                    "Sk_sym": Sk_sym,
-                    "Hk_sym": Hk_sym,
-                    "Hk_nonortho_sym": Hk_nonortho_sym,
-                    "Sr_sym": Sr_sym,
-                    "Hr_sym": Hr_sym,
-                    "Hr_nonortho_sym": Hr_nonortho_sym,
-                    #
-                    "rpoints_mp": rpoints_mp,
-                    #
-                    "Ek_RMSE_grid": Ek_RMSE_grid,
-                    "Ek_RMSE_path": Ek_RMSE_path,
-                    #
-                    "matrix_dict": matrix_dict,
-                }
-            )
+            self._sym()
 
     # ==================================================
     def _exclude_bands(self, Ak):
@@ -292,17 +247,23 @@ class CWModel(dict):
         Returns:
             ndarray: Ak.
         """
+        num_k = self._cwi["num_k"]
+        num_bands = self._cwi["num_bands"]
+        num_wann = self._cwi["num_wann"]
+        proj_min = self._cwi["proj_min"]
+
         # projectability of each Kohn-Sham state in k-space.
         Pk = np.real(np.diagonal(Ak @ Ak.transpose(0, 2, 1).conjugate(), axis1=1, axis2=2))
 
-        num_k = self._cwi["num_k"]
-        proj_min = self._cwi["proj_min"]
-        exclude_bands_idx = np.array([np.sum(Pk[:, n]) / num_k < proj_min for n in range(self._cwi["num_bands"])])
+        # band index for projection
+        proj_band_idx = [[n for n in range(num_bands) if Pk[k][n] > proj_min] for k in range(num_k)]
 
-        if np.sum(exclude_bands_idx) < self._cwi["num_wann"]:
-            raise Exception(f"proj_min = {proj_min} is too large or selected orbitals are inappropriate.")
-
-        Ak[:, exclude_bands_idx, :] = 0.0
+        for k in range(num_k):
+            if len(proj_band_idx[k]) < num_wann:
+                raise Exception(f"proj_min = {proj_min} is too large or PAOs are inappropriate.")
+            for n in range(num_bands):
+                if n not in proj_band_idx[k]:
+                    Ak[k, n, :] = 0
 
         return Ak
 
@@ -383,9 +344,6 @@ class CWModel(dict):
     def _sym(self):
         """
         symmetrize CW TB Hamiltonian.
-
-        Returns:
-            tuple:
         """
         Hk = np.array(self["Hk"])
         Hr_dict = CWModel.matrix_dict_r(self["Hr"], self._cwi["irvec"])
@@ -504,7 +462,15 @@ class CWModel(dict):
         Hr_sym = CWModel.construct_Or(list(z.values()), self._cwi["num_wann"], rpoints_mp, mat)
         Hr_nonortho_sym = CWModel.construct_Or(list(z_nonortho.values()), self._cwi["num_wann"], rpoints_mp, mat)
 
-        atoms_frac = [self._cwi["atom_pos_r"][i] for i in self._cwi["nw2n"]]
+        # the order of atoms are different from that of SAMBs
+        # atoms_frac = [self._cwi["atom_pos_r"][i] for i in self._cwi["nw2n"]]
+
+        cell_site = mat["cell_site"]
+        atoms_frac = [
+            NSArray(cell_site[ket_samb[a].split("@")[1]][0], style="vector", fmt="value").tolist()
+            for a in range(self._cwi["num_wann"])
+        ]
+
         Sk_sym = CWModel.fourier_transform_r_to_k(Sr_sym, self._cwi["kpoints"], rpoints_mp, atoms_frac=atoms_frac)
         Hk_sym = CWModel.fourier_transform_r_to_k(Hr_sym, self._cwi["kpoints"], rpoints_mp, atoms_frac=atoms_frac)
         Hk_nonortho_sym = CWModel.fourier_transform_r_to_k(
@@ -549,20 +515,26 @@ class CWModel(dict):
         else:
             Ek_RMSE_path = None
 
-        return (
-            s,
-            z,
-            z_nonortho,
-            Sk_sym,
-            Hk_sym,
-            Hk_nonortho_sym,
-            Sr_sym,
-            Hr_sym,
-            Hr_nonortho_sym,
-            rpoints_mp,
-            Ek_RMSE_grid,
-            Ek_RMSE_path,
-            mat,
+        self.update(
+            {
+                "s": s,
+                "z": z,
+                "z_nonortho": z_nonortho,
+                #
+                "Sk_sym": Sk_sym,
+                "Hk_sym": Hk_sym,
+                "Hk_nonortho_sym": Hk_nonortho_sym,
+                "Sr_sym": Sr_sym,
+                "Hr_sym": Hr_sym,
+                "Hr_nonortho_sym": Hr_nonortho_sym,
+                #
+                "rpoints_mp": rpoints_mp,
+                #
+                "Ek_RMSE_grid": Ek_RMSE_grid,
+                "Ek_RMSE_path": Ek_RMSE_path,
+                #
+                "matrix_dict": mat,
+            }
         )
 
     # ==================================================
@@ -728,6 +700,11 @@ class CWModel(dict):
 
     # ==================================================
     @property
+    def nnkp(self):
+        self._cwi.nnkp
+
+    # ==================================================
+    @property
     def eig(self):
         self._cwi.eig
 
@@ -743,8 +720,13 @@ class CWModel(dict):
 
     # ==================================================
     @property
-    def nnkp(self):
-        self._cwi.nnkp
+    def umat(self):
+        self._cwi.umat
+
+    # ==================================================
+    @property
+    def spn(self):
+        self._cwi.spn
 
     # ==================================================
     @classmethod
@@ -812,7 +794,6 @@ class CWModel(dict):
         with h5py.File(filename, "w") as hf:
             info = hf.create_group("info")
             for k, v in self._cwi.items():
-                # if v is not None:
                 try:
                     if type(v) in (str, list, np.ndarray):
                         dset = info.create_dataset(k, data=v)
@@ -825,9 +806,13 @@ class CWModel(dict):
 
             data = hf.create_group("data")
             for k, v in self.items():
-                # if v is not None:
                 try:
-                    dset = data.create_dataset(k, data=v)
+                    if type(v) in (str, list, np.ndarray):
+                        dset = data.create_dataset(k, data=v)
+                    elif type(v) == bool:
+                        dset = data.create_dataset(k, data=v, dtype=bool)
+                    else:
+                        dset = data.create_dataset(k, data=str(v))
                 except:
                     dset = data.create_dataset(k, data=str(v))
 
@@ -864,7 +849,7 @@ class CWModel(dict):
 
                 info[k] = v
 
-        return info
+            return info
 
     # ==================================================
     @classmethod
@@ -881,7 +866,7 @@ class CWModel(dict):
         with h5py.File(filename, "r") as hf:
             data = {k: v[()] if v is not None else None for k, v in hf["data"].items()}
 
-        return data
+            return data
 
     # ==================================================
     @classmethod
@@ -896,39 +881,50 @@ class CWModel(dict):
             tuple: CWInfo, dictionary of data.
         """
         info = CWModel.read_info(filename)
-        data = CWModel.read_info(filename)
+        data = CWModel.read_data(filename)
 
         return info, data
 
     # ==================================================
-    def write_or(self, Or, filename, header=None, vec=False):
+    def write_or(self, Or, filename, rpoints=None, header=None, vec=False):
         """
         write seedname_or.dat.
 
         Args:
             Or (ndarray): real-space representation of the given operator, O_{ab}(R) = <φ_{a}(R)|O|φ_{b}(0)>.
             filename (str): file name.
+            rpoints (ndarray): rpoints.
             header (str, optional): header.
             vec (bool, optional): vector ?
         """
-        irvec = np.array(self._cwi["irvec"])
-        ndegen = np.array(self._cwi["ndegen"])
         num_wann = self._cwi["num_wann"]
         unit_cell_cart = np.array(self._cwi["unit_cell_cart"])
         Or = np.array(Or)
-
         Or_str = "# *_or.dat created by berry.py\n"
         Or_str += "# written {}\n".format(datetime.datetime.now().strftime("on %d%b%Y at %H:%M:%S"))
+
         Or_str += " {0[0]:15.8f} {0[1]:15.8f} {0[2]:15.8f}\n".format(unit_cell_cart[0, :])
         Or_str += " {0[0]:15.8f} {0[1]:15.8f} {0[2]:15.8f}\n".format(unit_cell_cart[1, :])
         Or_str += " {0[0]:15.8f} {0[1]:15.8f} {0[2]:15.8f}\n".format(unit_cell_cart[2, :])
-        Or_str += "{:12d}\n{:12d}\n".format(num_wann, len(ndegen))
-        Or_str += textwrap.fill("".join(["{:5d}".format(x) for x in ndegen]), 75, drop_whitespace=False)
-        Or_str += "\n"
 
-        for irpts in range(len(ndegen)):
+        if rpoints is None:
+            rpoints = np.array(self._cwi["irvec"])
+            ndegen = np.array(self._cwi["ndegen"])
+            Or_str += "{:12d}\n{:12d}\n".format(num_wann, len(ndegen))
+            Or_str += textwrap.fill("".join(["{:5d}".format(x) for x in ndegen]), 75, drop_whitespace=False)
+            Or_str += "\n"
+
+        else:
+            rpoints = np.array(rpoints)
+            ndegen = None
+            Or_str += "{:12d}\n".format(num_wann)
+
+        for irpts in range(len(rpoints)):
             for i, j in itertools.product(range(num_wann), repeat=2):
-                line = "{:5d}{:5d}{:5d}{:5d}{:5d}  ".format(*irvec[irpts, :], j + 1, i + 1)
+                v = rpoints[irpts, :]
+                line = "{:5d}{:5d}{:5d}{:5d}{:5d}  ".format(
+                    int(round(v[0])), int(round(v[1])), int(round(v[2])), j + 1, i + 1
+                )
                 if vec:
                     line += "".join([" {:>12.8f} {:>12.8f}".format(x.real, x.imag) for x in Or[:, irpts, j, i]])
                 else:
@@ -965,7 +961,7 @@ class CWModel(dict):
 
         o_str = "".join(
             [
-                " {:>7d}   {:>15}   {:>15}   {:>12.8f}".format(j + 1, zj, tag, v)
+                "{:>7d}   {:>15}   {:>15}   {:>12.8f} \n ".format(j + 1, zj, tag, v)
                 for j, ((zj, tag), v) in enumerate(o.items())
             ]
         )
