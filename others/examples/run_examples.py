@@ -11,7 +11,7 @@ def main():
 
     for seedname in models:
         os.chdir(seedname)
-        subprocess.run(f"pw2scw {seedname}", shell=True)
+        subprocess.run(f"pw2cw {seedname}", shell=True)
         os.chdir("..")
 
 
