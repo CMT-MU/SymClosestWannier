@@ -125,10 +125,10 @@ class CWModel(dict):
 
         if dic is not None:
             self.update(dic)
-        elif self._cwi["restart"] in ("cw", "w90"):
+            if self._cwi["restart"] == "sym":
+                self._sym()
+        if dic is None:
             self.update(_default)
-
-        if (dic is not None and self._cwi["restart"] == "sym") or self._cwi["restart"] in ("cw", "w90"):
             if self._cwi["restart"] == "cw":
                 self._cw()
             elif self._cwi["restart"] == "w90":

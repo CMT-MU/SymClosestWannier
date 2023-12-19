@@ -14,64 +14,80 @@
 #                                                                    #
 # ------------------------------------------------------------------ #
 #                                                                    #
-#           cw_analyzer: analyze Closest Wannier TB model            #
+#                 analyzer: analyze Wannier TB model                 #
 #                                                                    #
 # ****************************************************************** #
 
 import os
 import numpy as np
 
+from symclosestwannier.cw.win import Win
 from symclosestwannier.cw.cwin import CWin
 from symclosestwannier.cw.cw_info import CWInfo
 from symclosestwannier.cw.cw_manager import CWManager
 from symclosestwannier.cw.cw_model import CWModel
-from symclosestwannier.cw.cw_response import CWResponse
-from symclosestwannier.cw.cw_band import CWBand
+from symclosestwannier.analyzer.response import Response
+from symclosestwannier.analyzer.band import Band
 
 from symclosestwannier.util.message import (
-    cw_start_response_msg,
-    cw_end_response_msg,
-    cw_start_band_msg,
-    cw_end_band_msg,
+    cw_open_msg,
+    postcw_end_msg,
+    system_msg,
+    cw_start_output_msg,
+    cw_end_output_msg,
 )
 
 
 # ==================================================
-def cw_analyzer(seedname="cwannier"):
+def analyzer(seedname="cwannier"):
     """
-    Closest Wannier (CW) tight-binding (TB) model based on Plane-Wave (PW) DFT calculation.
-    CW TB model can be symmetrized by using Symmetry-Adapted Multipole Basis (SAMB).
+    Analyze Wannier TB model.
 
     Args:
         seedname (str, optional): seedname.
     """
+    win = Win(".", seedname)
     cwin = CWin(".", seedname)
-    filename = os.path.join(cwin["outdir"], "{}".format(f"{seedname}.hdf5"))
+    cwm = CWManager(
+        topdir=cwin["outdir"], verbose=cwin["verbose"], parallel=cwin["parallel"], formatter=cwin["formatter"]
+    )
 
-    cwi, dic = CWModel.read_info_data(filename)
-    cwi = CWInfo("./", seedname="cwannier", dic=cwi)
-    cwm = CWManager(topdir=cwi["outdir"], verbose=cwi["verbose"], parallel=cwi["parallel"], formatter=cwi["formatter"])
-    cw_model = CWModel(cwi, cwm, dic)
+    filename = os.path.join(cwin["outdir"], "{}".format(f"{seedname}.hdf5"))
+    info, data = CWModel.read_info_data(filename)
+    cwi = CWInfo("./", seedname, dic=info)
+    cwi |= cwin | win
+    cw_model = CWModel(cwi, cwm, dic=data)
+
     cwi = cw_model._cwi
 
-    outfile = f"{cwi['seedname']}.cwpout"
+    outfile = f"{seedname}.cwpout"
+
+    cwm.log(cw_open_msg(), stamp=None, end="\n", file=outfile, mode="w")
+    cwm.log(system_msg(cwi), stamp=None, end="\n", file=outfile, mode="a")
 
     # ******************** #
     #       Response       #
     # ******************** #
 
-    cwm.log(cw_start_response_msg(), stamp=None, end="\n", file=outfile, mode="w")
-
-    cwr = CWResponse(cwi, cwm)
-
-    cwm.log(cw_end_response_msg(), stamp=None, end="\n", file=outfile, mode="a")
+    res = Response(cwi, cwm)
 
     # ******************** #
     #         Band         #
     # ******************** #
 
-    cwm.log(cw_start_band_msg(), stamp=None, end="\n", file=outfile, mode="a")
+    band = Band(cwi, cwm)
 
-    cwb = CWBand(cwi, cwm)
+    # ******************** #
+    #        Output        #
+    # ******************** #
 
-    cwm.log(cw_end_band_msg(), stamp=None, end="\n", file=outfile, mode="a")
+    cwm.log(cw_start_output_msg(), stamp=None, end="\n", file=outfile, mode="a")
+    cwm.set_stamp()
+
+    # write_all()
+
+    cwm.log(f"\n\n  * total elapsed_time:", file=outfile, mode="a")
+    cwm.log(cw_end_output_msg(), stamp=None, end="\n", file=outfile, mode="a")
+
+    cwm.log(f"  * total elapsed_time:", stamp="start", file=outfile, mode="a")
+    cwm.log(postcw_end_msg(), stamp=None, end="\n", file=outfile, mode="a")

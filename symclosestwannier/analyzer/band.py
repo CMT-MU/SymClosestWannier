@@ -14,7 +14,7 @@
 #                                                                    #
 # ------------------------------------------------------------------ #
 #                                                                    #
-#             cw_band: Analyze band related properties               #
+#                       band: band properties                        #
 #                                                                    #
 # ****************************************************************** #
 
@@ -22,12 +22,12 @@ import numpy as np
 
 from symclosestwannier.cw.cw_info import CWInfo
 from symclosestwannier.cw.cw_manager import CWManager
-from symclosestwannier.cw.get_matrix_R import get_HH_R, get_AA_R, get_SS_R
-from symclosestwannier.cw.get_response import dos_main, k_path, k_slice, spin_get_moment, geninterp_main
+from symclosestwannier.util.get_oper_R import get_HH_R, get_AA_R, get_SS_R
+from symclosestwannier.analyzer.get_band import dos_main, k_path, k_slice, spin_get_moment, geninterp_main
 
 
 # ==================================================
-class CWBand(dict):
+class Band(dict):
     """
     Analyze band related properties of Closest Wannier (CW) tight-binding (TB) model.
 

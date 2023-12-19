@@ -24,6 +24,34 @@ from symclosestwannier.util._utility import fourier_transform_k_to_r
 
 
 # ==================================================
+def get_oper_R(name, cwi, tb_gauge=False):
+    """
+    wrapper for getting matrix elements of the operator.
+
+    Args:
+        cwi (SystemInfo): CWInfo.
+        tb_gauge (bool, optional): tb gauge?
+
+    Returns:
+        ndarray: matrix elements of the operator.
+    """
+    d = {
+        "HH_R": get_HH_R,  # <0n|H|Rm>
+        "AA_R": get_AA_R,  # <0n|r|Rm>
+        "BB_R": get_BB_R,  # <0|H(r-R)|R>
+        "CC_R": get_CC_R,  # <0|r_alpha.H(r-R)_beta|R>
+        "SS_R": get_SS_R,  # <0n|sigma_x,y,z|Rm>
+        "SR_R": get_SR_R,  # <0n|sigma_x,y,z.(r-R)_alpha|Rm>
+        "SHR_R": get_SHR_R,  # <0n|sigma_x,y,z.H.(r-R)_alpha|Rm>
+        "SH_R": get_SH_R,  # <0n|sigma_x,y,z.H|Rm>
+        "SAA_R": get_SAA_R,  # <0n|sigma_x,y,z.(r-R)_alpha|Rm>
+        "SBB_R": get_SBB_R,  # <0n|sigma_x,y,z.H.(r-R)_alpha|Rm>
+    }
+
+    return d[name](cwi, tb_gauge)
+
+
+# ==================================================
 def get_HH_R(cwi, tb_gauge=False):
     """
     matrix elements of real-space Hamiltonian, <0n|H|Rm>.
@@ -70,7 +98,6 @@ def get_AA_R(cwi, tb_gauge=False):
     """
     Mkb = np.array(cwi["Mkb"])
     Uk = np.array(cwi["Uk"])
-    num_k = cwi["num_k"]
 
     ### Unitary transform Mkb ###
     kb2k = cwi.nnkp.kb2k()
@@ -123,7 +150,6 @@ def get_SS_R(cwi, tb_gauge=False):
     """
     Sk = np.array(cwi["Sk"])
     Uk = np.array(cwi["Uk"])
-    num_k = cwi["num_k"]
 
     SS_k = Uk.transpose(0, 2, 1).conjugate() @ Sk @ Uk
     SS_k = 0.5 * (SS_k + np.einsum("akmn->aknm", SS_k).conj())

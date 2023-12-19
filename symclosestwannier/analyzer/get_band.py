@@ -14,45 +14,33 @@
 #                                                                    #
 # ------------------------------------------------------------------ #
 #                                                                    #
-#              postcw: analyze Closest Wannier TB model              #
+#                     get_band: band properties                      #
 #                                                                    #
 # ****************************************************************** #
 
-import click
-
-from symclosestwannier.analyzer.analyzer import analyzer
-from symclosestwannier.util.header import cwin_header
+import numpy as np
 
 
-# ================================================== postcw
-@click.command()
-@click.option("-i", "--input", is_flag=True, help="Show input format, and exit.")
-@click.argument("seedname", nargs=-1)
-def cmd(seedname, input):
-    """
-    run postcw.
-
-        seedname : seedname for seedname.cwin file (w or w/o `.cwin`).
-    """
-    if input:
-        click.echo(cwin_header)
-        exit()
-
-    if len(seedname) < 1:
-        exit()
-    else:
-        seedname = seedname[0]
-
-    seedname = seedname.replace(" ", "")
-    seedname = seedname[:-5] if seedname[-5:] == ".cwin" else seedname
-
-    analyzer(seedname)
+# ==================================================
+def dos_main():
+    pass
 
 
-# ================================================== main
-def main():
-    cmd()
+# ==================================================
+def k_path():
+    pass
 
 
-if __name__ == "__main__":
-    main()
+# ==================================================
+def k_slice():
+    pass
+
+
+# ==================================================
+def spin_get_moment():
+    pass
+
+
+# ==================================================
+def geninterp_main():
+    pass

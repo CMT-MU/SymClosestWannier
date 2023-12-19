@@ -23,6 +23,7 @@ import numpy as np
 
 from gcoreutils.nsarray import NSArray
 
+from symclosestwannier.cw.win import Win
 from symclosestwannier.cw.cwin import CWin
 from symclosestwannier.cw.cw_info import CWInfo
 from symclosestwannier.cw.cw_manager import CWManager
@@ -31,11 +32,14 @@ from symclosestwannier.util.band import output_linear_dispersion
 
 
 from symclosestwannier.util.message import (
+    cw_open_msg,
+    cw_end_msg,
+    system_msg,
     cw_start_output_msg,
     cw_end_output_msg,
 )
 
-from symclosestwannier.cw.get_matrix_R import get_HH_R, get_AA_R, get_SS_R
+from symclosestwannier.util.get_oper_R import get_oper_R
 
 
 # ==================================================
@@ -47,39 +51,53 @@ def cw_creator(seedname="cwannier"):
     Args:
         seedname (str, optional): seedname.
     """
-    cwi = CWInfo(".", seedname)
-    cwm = CWManager(topdir=cwi["outdir"], verbose=cwi["verbose"], parallel=cwi["parallel"], formatter=cwi["formatter"])
+    win = Win(".", seedname)
+    cwin = CWin("./", seedname)
+    cwm = CWManager(
+        topdir=cwin["outdir"], verbose=cwin["verbose"], parallel=cwin["parallel"], formatter=cwin["formatter"]
+    )
 
-    if cwi["restart"] == "sym":
-        filename = os.path.join(cwi["outdir"], "{}".format(f"{seedname}.hdf5"))
-        cw_model = CWModel(cwi, cwm, dic=CWModel.read_data(filename))
+    outfile = f"{seedname}.cwout"
+
+    if cwin["restart"] == "sym":
+        filename = os.path.join(cwin["outdir"], "{}".format(f"{seedname}.hdf5"))
+        info, data = CWModel.read_info_data(filename)
+        cwi = CWInfo("./", seedname, dic=info)
+        cwi |= cwin | win
+        dic = data
     else:
-        cw_model = CWModel(cwi, cwm)
+        cwi = CWInfo("./", seedname)
+        dic = None
 
+    cwm.log(cw_open_msg(), stamp=None, end="\n", file=outfile, mode="w")
+    cwm.log(system_msg(cwi), stamp=None, end="\n", file=outfile, mode="a")
+
+    cw_model = CWModel(cwi, cwm, dic)
     cwi = cw_model._cwi
 
-    cwm.log(cw_start_output_msg(), stamp=None, end="\n", file=cw_model._outfile, mode="a")
+    cwm.log(cw_start_output_msg(), stamp=None, end="\n", file=outfile, mode="a")
+    cwm.set_stamp()
 
     filename = os.path.join(cwi["outdir"], "{}".format(f"{cwi['seedname']}.hdf5"))
     cw_model.write_info_data(filename)
 
     if cwi["write_hr"]:
-        filename = f"{cwi['seedname']}_hr.dat"
-        cw_model.write_or(cw_model["Hr"], filename, CWModel._hr_header())
-        filename = f"{cwi['seedname']}_hr_nonortho.dat"
-        cw_model.write_or(cw_model["Hr_nonortho"], filename, CWModel._hr_header())
+        filename = f"{cwi['seedname']}_hr.dat.cw"
+        cw_model.write_or(cw_model["Hr"], filename, header=CWModel._hr_header())
+        filename = f"{cwi['seedname']}_hr_nonortho.dat.cw"
+        cw_model.write_or(cw_model["Hr_nonortho"], filename, header=CWModel._hr_header())
 
     if cwi["write_sr"]:
-        filename = f"{cwi['seedname']}_sr.dat"
-        cw_model.write_or(cw_model["Sr"], filename, CWModel._sr_header())
+        filename = f"{cwi['seedname']}_sr.dat.cw"
+        cw_model.write_or(cw_model["Sr"], filename, header=CWModel._sr_header())
 
-    # if cwi["write_u_matrices"] and cwi["restart"] != "w90":
-    #     file_names = (f"{cwi['seedname']}_u.mat", f"{cwi['seedname']}_u_dis.mat")
-    #     cw_model.umat.write(file_names)
+    if cwi["write_u_matrices"] and cwi["restart"] != "w90":
+        file_names = (f"{cwi['seedname']}_u.mat.cw", f"{cwi['seedname']}_u_dis.mat.cw")
+        cwi.umat.write(file_names)
 
     if cwi["write_rmn"]:
-        AA_R = get_AA_R(cwi)
-        filename = f"{cwi['seedname']}_r.dat"
+        AA_R = get_oper_R("AA_R", cwi, tb_gauge=False)
+        filename = f"{cwi['seedname']}_r.dat.cw"
         cw_model.write_or(AA_R, filename, vec=True)
 
     if cwi["write_vmn"]:
@@ -93,24 +111,29 @@ def cw_creator(seedname="cwannier"):
 
     if cwi["symmetrization"]:
         if cwi["write_hr"]:
-            filename = os.path.join(cwi["mp_outdir"], "{}".format(f"{cwi['mp_seedname']}_hr_sym.dat"))
-            cw_model.write_or(cw_model["Hr_sym"], filename, CWModel._hr_header())
+            filename = os.path.join(cwi["mp_outdir"], "{}".format(f"{cwi['mp_seedname']}_hr_sym.dat.cw"))
+            cw_model.write_or(cw_model["Hr_sym"], filename, cw_model["rpoints_mp"], header=CWModel._hr_header())
 
-            filename = os.path.join(cwi["mp_outdir"], "{}".format(f"{cwi['mp_seedname']}_hr_nonortho_sym.dat"))
-            cw_model.write_or(cw_model["Hr_nonortho_sym"], filename, CWModel._hr_header())
+            filename = os.path.join(cwi["mp_outdir"], "{}".format(f"{cwi['mp_seedname']}_hr_nonortho_sym.dat.cw"))
+            cw_model.write_or(
+                cw_model["Hr_nonortho_sym"], filename, cw_model["rpoints_mp"], header=CWModel._hr_header()
+            )
 
         if cwi["write_sr"]:
-            filename = os.path.join(cwi["mp_outdir"], "{}".format(f"{cwi['mp_seedname']}_sr_sym.dat"))
-            cw_model.write_or(cw_model["Sr_sym"], filename, CWModel._sr_header())
+            filename = os.path.join(cwi["mp_outdir"], "{}".format(f"{cwi['mp_seedname']}_sr_sym.dat.cw"))
+            cw_model.write_or(cw_model["Sr_sym"], filename, cw_model["rpoints_mp"], header=CWModel._sr_header())
 
-        filename = os.path.join(cwi["mp_outdir"], "{}".format(f"{cwi['mp_seedname']}_z.dat"))
-        cwm.write_samb_coeffs(filename, type="z")
+        filename = os.path.join(cwi["mp_outdir"], "{}".format(f"{cwi['mp_seedname']}_z.dat.cw"))
+        cw_model.write_samb_coeffs(filename, type="z")
 
-        filename = os.path.join(cwi["mp_outdir"], "{}".format(f"{cwi['mp_seedname']}_z_nonortho.dat"))
-        cwm.write_samb_coeffs(filename, type="z_nonortho")
+        filename = os.path.join(cwi["mp_outdir"], "{}".format(f"{cwi['mp_seedname']}_z_nonortho.dat.cw"))
+        cw_model.write_samb_coeffs(filename, type="z_nonortho")
 
-        filename = os.path.join(cwi["mp_outdir"], "{}".format(f"{cwi['mp_seedname']}_s.dat"))
-        cwm.write_samb_coeffs(filename, type="s")
+        filename = os.path.join(cwi["mp_outdir"], "{}".format(f"{cwi['mp_seedname']}_s.dat.cw"))
+        cw_model.write_samb_coeffs(filename, type="s")
+
+    # the order of atoms are different from that of SAMBs
+    # atoms_frac = [cw_model._cwi["atom_pos_r"][i] for i in cw_model._cwi["nw2n"]]
 
     # band calculation
     if cwi["kpoint"] is not None and cwi["kpoint_path"] is not None:
@@ -139,6 +162,13 @@ def cw_creator(seedname="cwannier"):
         )
 
         if cwi["symmetrization"]:
+            ket_samb = cw_model["matrix_dict"]["ket"]
+            cell_site = cw_model["matrix_dict"]["cell_site"]
+            atoms_frac = [
+                NSArray(cell_site[ket_samb[a].split("@")[1]][0], style="vector", fmt="value").tolist()
+                for a in range(cw_model._cwi["num_wann"])
+            ]
+
             rel = os.path.relpath(cwi["outdir"], cwi["mp_outdir"])
 
             if os.path.isfile(f"{seedname}.band.gnu"):
@@ -149,7 +179,7 @@ def cw_creator(seedname="cwannier"):
                 ref_filename = None
 
             Hk_sym_path = cw_model.fourier_transform_r_to_k(
-                cw_model["Hr_sym"], cwi["kpoints_path"], cw_model["rpoints_mp"]
+                cw_model["Hr_sym"], cwi["kpoints_path"], cw_model["rpoints_mp"], atoms_frac=atoms_frac
             )
             Ek, Uk = np.linalg.eigh(Hk_sym_path)
 
@@ -165,6 +195,8 @@ def cw_creator(seedname="cwannier"):
                 k_dis_pos=k_dis_pos,
             )
 
-    cwm.log(f"\n\n  * total elapsed_time:", stamp="start", file=cw_model._outfile, mode="a")
+    cwm.log(f"\n\n  * total elapsed_time:", file=outfile, mode="a")
+    cwm.log(cw_end_output_msg(), stamp=None, end="\n", file=outfile, mode="a")
 
-    cwm.log(cw_end_output_msg(), stamp=None, end="\n", file=cw_model._outfile, mode="a")
+    cwm.log(f"  * total elapsed_time:", stamp="start", file=outfile, mode="a")
+    cwm.log(cw_end_msg(), stamp=None, end="\n", file=outfile, mode="a")
