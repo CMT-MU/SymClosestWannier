@@ -7,7 +7,7 @@ A Python library to create Symmetry-adapted Closest Wannier (SymCW) tight-bindin
 
 DOI: https://doi.org/10.1103/PhysRevB.107.195118.
 
-[2] Taisuke Ozaki, arXiv:2306.15296, (2023).
+[2] Taisuke Ozaki, Closest Wannier functions to a given set of localized orbitals, arXiv:2306.15296, (2023).
 
 URL: https://arxiv.org/abs/2306.15296v2.
 
@@ -51,4 +51,4 @@ Refer to the [documentation](https://cmt-mu.github.io/SymClosestWannier/) for de
 ## To Do
 
 - add function fo automatically set ket_amn.
-- add function to read seedname.mmn, seedname.uHu, and seedname.spn files.
+- add function to read seedname.uHu, seedname.uIu files.
