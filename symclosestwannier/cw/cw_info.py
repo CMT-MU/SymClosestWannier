@@ -86,10 +86,10 @@ class CWInfo(dict):
             if name == "umat" and (d["restart"] != "w90"):
                 continue
             if name == "mmn":
-                if not np.all(d["write_rmn"], d["write_vmn"], d["write_tb"]):
+                if not np.any([d["write_rmn"], d["write_vmn"], d["write_tb"], d["berry"]]):
                     continue
             if name == "spn":
-                if not np.all(d["write_spn"]):
+                if not np.any([d["write_spn"], d["write_spn"], d["spin_decomp"]]):
                     continue
 
             info = C(topdir, seedname)
@@ -117,14 +117,16 @@ class CWInfo(dict):
             N1 = d["N1"]
             B = NSArray(d["unit_cell_cart"], "matrix", fmt="value").inverse()
             kpoints_path, k_linear, k_dis_pos = NSArray.grid_path(kpoint, kpoint_path, N1, B)
+            kpoints_path = kpoints_path.tolist()
+            k_linear = k_linear.tolist()
         else:
             kpoints_path, k_linear, k_dis_pos = None, None, None
 
         d["unit_cell_volume"] = np.dot(A[0], np.cross(A[1], A[2]))
         d["irvec"] = irvec.tolist()
         d["ndegen"] = ndegen.tolist()
-        d["kpoints_path"] = kpoints_path.tolist()
-        d["k_linear"] = k_linear.tolist()
+        d["kpoints_path"] = kpoints_path
+        d["k_linear"] = k_linear
         d["k_dis_pos"] = k_dis_pos
 
         return d
