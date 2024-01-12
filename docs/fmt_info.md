@@ -28,7 +28,7 @@
 - irreps            : list of irreps to be considered (str/list), [None].
 - a                 : lattice parameter (in Ang) used to correct units of k points in reference band data (float, optional), [1.0].
 - N1                : number of divisions for high symmetry lines (int, optional), [50].
-- fermi_energy      : fermi energy used for band shift (float, optional), [None].
+- fermi_energy      : fermi energy used for band shift (float, optional), [0.0].
 - num_k             : # of k points (int), [1].
 - num_bands         : # of bands passed to the code (int), [1].
 - num_wann          : # of WFs (int), [1].

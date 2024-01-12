@@ -4,6 +4,8 @@ Win manages input file for wannier90.x, seedname.win file.
 import os
 import numpy as np
 
+from gcoreutils.nsarray import NSArray
+
 
 _default = {
     "seedname": "cwannier",
@@ -44,7 +46,7 @@ _default = {
     "kubo_freq_max": None,
     "kubo_freq_min": 0.0,
     "kubo_freq_step": 0.01,
-    "kubo_eigval_max": None,
+    "kubo_eigval_max": +100000,
     "kubo_adpt_smr": True,
     "kubo_adpt_smr_fac": np.sqrt(2),
     "kubo_adpt_smr_max": 1.0,
@@ -131,7 +133,7 @@ class Win(dict):
                 - spin_decomp         : If true, extra columns are added to some output files (such as seedname-dos.dat for the dos module, and analogously for the berry and BoltzWann modules) (bool), [False].
             # berry
                 - berry               : Determines whether to enter the berry routines (bool), [False].
-                - berry_task          : The quantity to compute when berry=true, ahc/morb/kubo/sc/shc/kdotp (str).
+                - berry_task          : The quantity to compute when berry=true, ahc/morb/kubo/sc/shc/kdotp/me (str).
                 - berry_kmesh         : Overrides the kmesh global variable.
                 - berry_kmesh_spacing : Overrides the kmesh_spacing global variable.
             # kubo
@@ -277,6 +279,10 @@ class Win(dict):
                 A = d["unit_cell_cart"]
                 d["atoms_cart"] = {k: (np.array(v) @ np.array(A)).tolist() for k, v in d["atoms_frac"].items()}
 
+        # shift
+        dic = {k: NSArray(str(v), style="vector", fmt="sympy", real=True).shift() for k, v in d["atoms_frac"].items()}
+        d["atoms_frac_shift"] = {k: [float(v[0]), float(v[1]), float(v[2])] for k, v in dic.items()}
+
         # postcw
         kmesh = self._get_param_keyword(win_data, "kmesh", "1  1  1", dtype=str)
         d["kmesh"] = [int(x) for x in kmesh.split()]
@@ -299,10 +305,10 @@ class Win(dict):
         berry_kmesh_spacing = self._get_param_keyword(win_data, "berry_kmesh_spacing", "1  1  1", dtype=str)
         d["berry_kmesh_spacing"] = [int(x) for x in berry_kmesh_spacing.split()]
 
-        d["kubo_freq_max"] = self._get_param_keyword(win_data, "kubo_freq_max", None, dtype=float)
+        d["kubo_freq_max"] = self._get_param_keyword(win_data, "kubo_freq_max", 1.0, dtype=float)
         d["kubo_freq_min"] = self._get_param_keyword(win_data, "kubo_freq_min", 0.0, dtype=float)
         d["kubo_freq_step"] = self._get_param_keyword(win_data, "kubo_freq_step", 0.01, dtype=float)
-        d["kubo_eigval_max"] = self._get_param_keyword(win_data, "kubo_eigval_max", None, dtype=float)
+        d["kubo_eigval_max"] = self._get_param_keyword(win_data, "kubo_eigval_max", +100000, dtype=float)
         d["kubo_adpt_smr"] = self._get_param_keyword(win_data, "kubo_adpt_smr", True, dtype=bool)
         d["kubo_adpt_smr_fac"] = self._get_param_keyword(win_data, "kubo_adpt_smr_fac", np.sqrt(2), dtype=float)
         d["kubo_adpt_smr_max"] = self._get_param_keyword(win_data, "kubo_adpt_smr_max", 1.0, dtype=float)
@@ -337,9 +343,9 @@ class Win(dict):
         if data is None:
             data = default_value
         else:
-            if data.lower() in ("true", ".true."):
+            if data.replace(" ", "").lower() in ("true", ".true."):
                 data = True
-            elif data.lower() in ("false", ".false."):
+            elif data.replace(" ", "").lower() in ("false", ".false."):
                 data = False
 
         if data is None:

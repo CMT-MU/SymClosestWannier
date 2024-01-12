@@ -31,7 +31,7 @@ cwin_info = {
     "irreps": "list of irreps to be considered (str/list), [None].",
     "a": "lattice parameter (in Ang) used to correct units of k points in reference band data (float, optional), [1.0].",
     "N1": "number of divisions for high symmetry lines (int, optional), [50].",
-    "fermi_energy": "fermi energy used for band shift (float, optional), [None].",
+    "fermi_energy": "fermi energy used for band shift (float, optional), [0.0].",
 }
 
 win_info = {
@@ -66,7 +66,7 @@ win_info = {
     "spin_decomp": "If true, extra columns are added to some output files (such as seedname-dos.dat for the dos module, and analogously for the berry and BoltzWann modules) (bool), [False].",
     # berry
     "berry": "Determines whether to enter the berry routines (bool), [False].",
-    "berry_task": "The quantity to compute when berry=true, ahc/morb/kubo/sc/shc/kdotp (str).",
+    "berry_task": "The quantity to compute when berry=true, ahc/morb/kubo/sc/shc/kdotp/me (str).",
     "berry_kmesh": "Overrides the kmesh global variable.",
     "berry_kmesh_spacing": "Overrides the kmesh_spacing global variable.",
     # kubo

@@ -75,7 +75,8 @@ def get_HH_R(cwi, tb_gauge=False):
     irvec = np.array(cwi["irvec"])
 
     if tb_gauge:
-        atoms_frac = np.array([cwi["atom_pos_r"][idx] for idx in cwi["nw2n"]])
+        atoms_list = list(cwi["atoms_frac"].values())
+        atoms_frac = np.array([atoms_list[i] for i in cwi["nw2n"]])
     else:
         atoms_frac = None
 
@@ -115,7 +116,8 @@ def get_AA_R(cwi, tb_gauge=False):
     irvec = np.array(cwi["irvec"])
 
     if tb_gauge:
-        atoms_frac = np.array([cwi["atom_pos_r"][idx] for idx in cwi["nw2n"]])
+        atoms_list = list(cwi["atoms_frac"].values())
+        atoms_frac = np.array([atoms_list[i] for i in cwi["nw2n"]])
     else:
         atoms_frac = None
 
@@ -158,7 +160,8 @@ def get_SS_R(cwi, tb_gauge=False):
     irvec = np.array(cwi["irvec"])
 
     if tb_gauge:
-        atoms_frac = np.array([cwi["atom_pos_r"][idx] for idx in cwi["nw2n"]])
+        atoms_list = list(cwi["atoms_frac"].values())
+        atoms_frac = np.array([atoms_list[i] for i in cwi["nw2n"]])
     else:
         atoms_frac = None
 
@@ -233,7 +236,9 @@ def get_berry_phase_R(cwi, tb_gauge=False):
     irvec = np.array(cwi["irvec"])
 
     if tb_gauge:
-        atoms_frac = np.array([cwi["atom_pos_r"][idx] for idx in cwi["nw2n"]])
+        atoms_list = list(cwi["atoms_frac"].values())
+        atoms_frac = np.array([atoms_list[i] for i in cwi["nw2n"]])
+        # atoms_frac = np.array([cwi["atom_pos_r"][idx] for idx in cwi["nw2n"]])
     else:
         atoms_frac = None
 
