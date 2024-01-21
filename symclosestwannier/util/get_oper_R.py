@@ -100,20 +100,21 @@ def get_AA_R(cwi, tb_gauge=False):
     Mkb = np.array(cwi["Mkb"])
     Uk = np.array(cwi["Uk"])
 
-    ### Unitary transform Mkb ###
     kb2k = cwi.nnkp.kb2k()
-    Mkb_w = np.einsum("klm, kblp, kbpn->kbmn", np.conj(Uk), Mkb, Uk[kb2k[:, :], :, :], optimize=True)  # Eq. (61)
-
     bveck = cwi.nnkp.bveck()
     wk = cwi.nnkp.wk()
+
+    kpoints = np.array(cwi["kpoints"])
+    irvec = np.array(cwi["irvec"])
+
+    ### Unitary transform Mkb ###
+    Mkb_w = np.einsum("klm, kblp, kbpn->kbmn", np.conj(Uk), Mkb, Uk[kb2k[:, :], :, :], optimize=True)  # Eq. (61)
 
     AA_k = 1j * np.einsum("kb,kba,kbmn->akmn", wk, bveck, Mkb_w, optimize=True)
     AA_k_diag = -1 * np.einsum("kb,kba,kbnn->akn", wk, bveck, np.imag(np.log(Mkb_w)), optimize=True)
     np.einsum("aknn->akn", AA_k)[:] = AA_k_diag
-    AA_k = 0.5 * (AA_k + np.einsum("akmn->aknm", AA_k.conj()))
 
-    kpoints = np.array(cwi["kpoints"])
-    irvec = np.array(cwi["irvec"])
+    AA_k = 0.5 * (AA_k + np.einsum("akmn->aknm", AA_k).conj())
 
     if tb_gauge:
         atoms_list = list(cwi["atoms_frac"].values())

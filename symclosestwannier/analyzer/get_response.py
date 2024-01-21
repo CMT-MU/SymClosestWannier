@@ -149,8 +149,8 @@ def berry_main(cwi, operators):
     }
 
     # atoms_list = list(cwi["atoms_frac"].values())
-    # atoms_frac = [atoms_list[i] for i in cwi["nw2n"]]
-    atoms_frac = np.array([cwi["atom_pos_r"][idx] for idx in cwi["nw2n"]])
+    # atoms_frac = np.array([atoms_list[i] for i in cwi["nw2n"]])
+    atoms_frac = None
 
     N1, N2, N3 = cwi["berry_kmesh"]
     kpoints = np.array(
@@ -162,6 +162,7 @@ def berry_main(cwi, operators):
     )
 
     E, U = np.linalg.eigh(HH)
+
     D_h = wham_get_D_h(delHH, E, U)
 
     AA = fourier_transform_r_to_k_vec(operators["AA_R"], kpoints, cwi["irvec"], cwi["ndegen"], atoms_frac)
