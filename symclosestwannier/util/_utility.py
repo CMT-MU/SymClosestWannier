@@ -68,7 +68,7 @@ def iterate3dpm(size):
 
 
 # ==================================================
-def wigner_seitz(A, mp_grid, prec=1.0e-5):
+def wigner_seitz(A, mp_grid, prec=1.0e-7):
     """
     wigner seitz cell.
     return irreducible R vectors and number of degeneracy at each R.
@@ -242,7 +242,6 @@ def fourier_transform_r_to_k_new(Or, kpoints, unit_cell_cart, irvec, ndegen=None
         eiktau = np.exp(+2 * np.pi * 1j * ktau)
 
         atoms_cart = np.array([np.array(r) @ np.array(A) for r in atoms_frac])
-        print(atoms_cart.shape)
 
         bond_cart = np.array([[[((R + rm) - rn) for rn in atoms_cart] for rm in atoms_cart] for R in irvec_cart])
 

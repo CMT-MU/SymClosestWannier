@@ -237,7 +237,14 @@ def berry_get_kubo(cwi, E, A):
     """
     ef = cwi["fermi_energy"]
     berry_kmesh = cwi["berry_kmesh"]
-    kubo_eigval_max = cwi["kubo_eigval_max"]
+
+    if cwi["kubo_eigval_max"] < +100000:
+        kubo_eigval_max = cwi["kubo_eigval_max"]
+    elif cwi["dis_froz_max"] < +100000:
+        kubo_eigval_max = cwi["dis_froz_max"] + 0.6667
+    else:
+        kubo_eigval_max = np.max(E) + 0.6667
+
     num_k = np.prod(berry_kmesh)
     num_wann = cwi["num_wann"]
 
@@ -280,7 +287,7 @@ def berry_get_kubo(cwi, E, A):
         kubo_AH_spn = 0.0
 
     for k in range(num_k):
-        print(f"{k+1}/{num_k}")
+        # print(f"{k+1}/{num_k}")
         ek = E[k]
         fk = occ[k]
         ak = A[:, k, :, :]
