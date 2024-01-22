@@ -38,7 +38,7 @@ _default = {
     #
     "a": None,
     "N1": 50,
-    "fermi_energy": None,
+    "fermi_energy": 0.0,
 }
 
 
