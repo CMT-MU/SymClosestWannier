@@ -23,12 +23,15 @@ import click
 from symclosestwannier.cw.cw_creator import cw_creator
 from symclosestwannier.util.header import cwin_header
 
+from symclosestwannier.__init__ import __version__
+
 
 # ================================================== pw2cw
 @click.command()
 @click.option("-i", "--input", is_flag=True, help="Show input format, and exit.")
+@click.option("-v", "--version", is_flag=True, help="Show version, and exit.")
 @click.argument("seedname", nargs=-1)
-def cmd(seedname, input):
+def cmd(seedname, input, version):
     """
     create Closest Wannier tight-binding model from input.
 
@@ -37,6 +40,9 @@ def cmd(seedname, input):
     if input:
         click.echo(cwin_header)
         exit()
+
+    if version:
+        click.echo(f"SymClosestWannier: {__version__}")
 
     if len(seedname) < 1:
         exit()
