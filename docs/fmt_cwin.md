@@ -34,4 +34,4 @@
 - only used for band dispersion calculation.
   - a                 : lattice parameter (in Ang) used to correct units of k points in reference band data, [1.0].
   - N1                : number of divisions for high symmetry lines (int, optional), [50].
-  - fermi_energy      : fermi energy used for band shift, [None].
+  - fermi_energy      : fermi energy used for band shift, [0.0].

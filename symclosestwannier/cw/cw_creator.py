@@ -133,7 +133,8 @@ def cw_creator(seedname="cwannier"):
         cw_model.write_samb_coeffs(filename, type="s")
 
     # the order of atoms are different from that of SAMBs
-    # atoms_frac = [cw_model._cwi["atom_pos_r"][i] for i in cw_model._cwi["nw2n"]]
+    atoms_list = list(cw_model._cwi["atoms_frac_shift"].values())
+    atoms_frac = [atoms_list[i] for i in cw_model._cwi["nw2n"]]
 
     # band calculation
     if cwi["kpoint"] is not None and cwi["kpoint_path"] is not None:
@@ -152,7 +153,9 @@ def cw_creator(seedname="cwannier"):
             A = NSArray(cwi["unit_cell_cart"], "matrix", fmt="value")
             a = A[0].norm()
 
-        Hk_path = cw_model.fourier_transform_r_to_k(cw_model["Hr"], cwi["kpoints_path"], cwi["irvec"], cwi["ndegen"])
+        Hk_path = cw_model.fourier_transform_r_to_k(
+            cw_model["Hr"], cwi["kpoints_path"], cwi["irvec"], cwi["ndegen"], atoms_frac
+        )
         Ek, Uk = np.linalg.eigh(Hk_path)
 
         ef = cwi["fermi_energy"]

@@ -92,9 +92,8 @@ class Eig(dict):
 
         with open(file_name, "w") as fp:
             fp.write("# eig created by eig.py\n")
-            fp.write("# written {}\n".format(t.strftime("on %d%b%Y at %H:%M:%S")))
             for ik, n in itertools.product(range(self["num_k"]), range(self["num_bands"])):
-                fp.write("{:5d}{:5d}{:<18.12f}\n".format(n + 1, ik + 1, Ek[ik, n]))
+                fp.write("{0}  {1}  {2:<18.12f}\n".format(n + 1, ik + 1, Ek[ik, n]))
 
         print(f"  * wrote '{file_name}'.")
 
