@@ -68,7 +68,7 @@ def iterate3dpm(size):
 
 
 # ==================================================
-def wigner_seitz(A, mp_grid, prec=1.0e-7):
+def wigner_seitz(A, mp_grid, prec=1.0e-5):
     """
     wigner seitz cell.
     return irreducible R vectors and number of degeneracy at each R.
@@ -126,7 +126,7 @@ def fourier_transform_k_to_r(Ok, kpoints, irvec, atoms_frac=None):
     num_k = kpoints.shape[0]
 
     kR = np.einsum("ka,Ra->kR", kpoints, irvec, optimize=True)
-    phase_R = np.exp(-2 * np.pi * 1j * kR)
+    phase_R = np.exp(+2 * np.pi * 1j * kR)
 
     if atoms_frac is not None:
         tau = np.array(atoms_frac)
@@ -166,7 +166,7 @@ def fourier_transform_r_to_k(Or, kpoints, irvec, ndegen=None, atoms_frac=None):
     kpoints = np.array(kpoints, dtype=float)
 
     kR = np.einsum("ka,Ra->kR", kpoints, irvec, optimize=True)
-    phase_R = np.exp(+2 * np.pi * 1j * kR)
+    phase_R = np.exp(-2 * np.pi * 1j * kR)
 
     if atoms_frac is not None:
         tau = np.array(atoms_frac)
@@ -178,84 +178,6 @@ def fourier_transform_r_to_k(Or, kpoints, irvec, ndegen=None, atoms_frac=None):
         Ok = np.einsum("R,kR,Rmn->kmn", weight, phase_R, Or, optimize=True)
 
     return Ok
-
-
-# ==================================================
-def fourier_transform_r_to_k_vec(Or_vec, kpoints, irvec, ndegen=None, atoms_frac=None):
-    """
-    fourier transformation of an arbitrary operator from real-space representation into k-space representation.
-
-    Args:
-        Or_vec (ndarray): real-space representation of the given operator, [O_{ab}^{x}(R), O_{ab}^{y}(R), O_{ab}^{z}(R)].
-        kpoints (ndarray): k-points used in DFT calculation, [[k1, k2, k3]] (crystal coordinate).
-        irvec (ndarray): irreducible R vectors (crystal coordinate, [[n1,n2,n3]], nj: integer).
-        ndegen (ndarray, optional): number of degeneracy at each R.
-        atoms_frac (ndarray, optional): atom's position in fractional coordinates.
-
-    Returns:
-        ndarray: k-space representation of the given operator, O_{ab}(k) = <φ_{a}(k)|O|φ_{b}(k)>.
-    """
-    Ok_x = fourier_transform_r_to_k(Or_vec[0], kpoints, irvec, ndegen, atoms_frac)
-    Ok_y = fourier_transform_r_to_k(Or_vec[1], kpoints, irvec, ndegen, atoms_frac)
-    Ok_z = fourier_transform_r_to_k(Or_vec[2], kpoints, irvec, ndegen, atoms_frac)
-
-    Ok_vec = np.array([Ok_x, Ok_y, Ok_z])
-
-    return Ok_vec
-
-
-# ==================================================
-def fourier_transform_r_to_k_new(Or, kpoints, unit_cell_cart, irvec, ndegen=None, atoms_frac=None):
-    """
-    fourier transformation of an arbitrary operator from real-space representation into k-space representation.
-
-    Args:
-        Or (ndarray): real-space representation of the given operator, O_{ab}(R) = <φ_{a}(R)|O|φ_{b}(0)>.
-        kpoints (ndarray): k-points used in DFT calculation, [[k1, k2, k3]] (crystal coordinate).
-        unit_cell_cart (ndarray): transform matrix, [a1,a2,a3], [None].
-        irvec (ndarray): irreducible R vectors (crystal coordinate, [[n1,n2,n3]], nj: integer).
-        ndegen (ndarray, optional): number of degeneracy at each R.
-        atoms_frac (ndarray, optional): atom's position in fractional coordinates.
-
-    Returns:
-        ndarray: k-space representation of the given operator, O_{ab}(k) = <φ_{a}(k)|O|φ_{b}(k)>.
-    """
-    Or = np.array(Or, dtype=complex)
-    irvec = np.array(irvec, dtype=float)
-    Nr = irvec.shape[0]
-    if ndegen is None:
-        weight = np.array([1.0 for _ in range(Nr)])
-    else:
-        ndegen = np.array(ndegen)
-        weight = np.array([1.0 / ndegen[i] for i in range(Nr)])
-    kpoints = np.array(kpoints, dtype=float)
-
-    kR = np.einsum("ka,Ra->kR", kpoints, irvec, optimize=True)
-    phase_R = np.exp(+2 * np.pi * 1j * kR)
-
-    A = np.array(unit_cell_cart)
-    irvec_cart = np.array([np.array(R) @ np.array(A) for R in irvec])
-
-    if atoms_frac is not None:
-        tau = np.array(atoms_frac)
-        ktau = np.einsum("ka,ma->km", kpoints, tau, optimize=True)
-        eiktau = np.exp(+2 * np.pi * 1j * ktau)
-
-        atoms_cart = np.array([np.array(r) @ np.array(A) for r in atoms_frac])
-
-        bond_cart = np.array([[[((R + rm) - rn) for rn in atoms_cart] for rm in atoms_cart] for R in irvec_cart])
-
-        Ok = np.einsum("R,kR,km,Rmn,kn->kmn", weight, phase_R, eiktau, Or, eiktau.conjugate(), optimize=True)
-        Ok_dx, Ok_dy, Ok_dz = 1.0j * np.einsum(
-            "R,kR,Rmna,km,Rmn,kn->akmn", weight, phase_R, bond_cart, eiktau, Or, eiktau.conjugate(), optimize=True
-        )
-    else:
-        Ok = np.einsum("R,kR,Rmn->kmn", weight, phase_R, Or, optimize=True)
-        Ok_dx, Ok_dy, Ok_dz = 1.0j * np.einsum("R,kR,Ra,Rmn->akmn", weight, phase_R, irvec_cart, Or, optimize=True)
-
-    delOk = np.array([Ok_dx, Ok_dy, Ok_dz])
-
-    return Ok, delOk
 
 
 # ==================================================
@@ -446,6 +368,6 @@ def construct_Ok(z, num_wann, kpoints, rpoints, matrix_dict):
     ]
 
     Or = construct_Or(z, num_wann, rpoints, matrix_dict)
-    Ok = fourier_transform_r_to_k(Or, rpoints, kpoints, atoms_frac)
+    Ok = fourier_transform_r_to_k(Or, kpoints, rpoints, atoms_frac=atoms_frac)
 
     return Ok
