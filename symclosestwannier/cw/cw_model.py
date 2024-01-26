@@ -52,6 +52,7 @@ from symclosestwannier.util.header import (
     z_header,
     z_nonortho_header,
     s_header,
+    z_exp_header,
 )
 from symclosestwannier.util._utility import (
     thermal_avg,
@@ -522,7 +523,7 @@ class CWModel(dict):
 
         Zk = construct_samb_matrix(mat, np.array(self._cwi["kpoints"]))
         Ek, Uk = np.linalg.eigh(Hk_sym)
-        Z_exp = thermal_avg(Zk, Ek, Uk, T=0.0)
+        Z_exp = thermal_avg(Zk, Ek, Uk, ef=self._cwi["fermi_energy"], T=0.0)
         z_exp = {key: Z_exp[i] for i, key in enumerate(z.keys())}
 
         self._cwm.log("done", None, end="\n", file=self._outfile, mode="a")
@@ -998,4 +999,4 @@ class CWModel(dict):
             ]
         )
 
-        self._cwm.write(filename, z_exp_str, z_header, None)
+        self._cwm.write(filename, z_exp_str, z_exp_header, None)

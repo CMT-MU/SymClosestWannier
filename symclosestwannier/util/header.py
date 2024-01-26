@@ -302,3 +302,9 @@ s_header = """
     - z_j = \sum_{R} Tr[Z_j(R)*S(R)].
     - z_j is the expansion coefficients.
 """
+
+z_exp_header = """
+=== expectation value of the given operator
+- j z_j TagMultipole expectation value
+- <O> = 1 / Nk * \sum_{n,k} fermi_dirac[E_{n}(k)] O_{nn}(k)
+"""
