@@ -32,6 +32,7 @@ from scipy import linalg as spl
 
 from gcoreutils.nsarray import NSArray
 from multipie.tag.tag_multipole import TagMultipole
+from multipie.model.construct_model import construct_samb_matrix
 
 from symclosestwannier.cw.cw_info import CWInfo
 from symclosestwannier.cw.cw_manager import CWManager
@@ -55,6 +56,7 @@ from symclosestwannier.util.header import (
     s_header,
 )
 from symclosestwannier.util._utility import (
+    thermal_avg,
     weight_proj,
     fourier_transform_k_to_r,
     fourier_transform_r_to_k,
@@ -79,6 +81,8 @@ _default = {
     "s": None,
     "z": None,
     "z_nonortho": None,
+    #
+    "z_exp": None,
     #
     "Sk_sym": None,
     "Hk_sym": None,
@@ -462,9 +466,6 @@ class CWModel(dict):
         Hr_sym = CWModel.construct_Or(list(z.values()), self._cwi["num_wann"], rpoints_mp, mat)
         Hr_nonortho_sym = CWModel.construct_Or(list(z_nonortho.values()), self._cwi["num_wann"], rpoints_mp, mat)
 
-        # the order of atoms are different from that of SAMBs
-        # atoms_frac = [self._cwi["atom_pos_r"][i] for i in self._cwi["nw2n"]]
-
         cell_site = mat["cell_site"]
         atoms_frac = [
             NSArray(cell_site[ket_samb[a].split("@")[1]][0], style="vector", fmt="value").tolist()
@@ -515,11 +516,27 @@ class CWModel(dict):
         else:
             Ek_RMSE_path = None
 
+        #####
+
+        msg = "    - evaluating expectation value of {Zj} at T = 0 ... "
+        self._cwm.log(msg, None, end="\n", file=self._outfile, mode="a")
+        self._cwm.set_stamp()
+
+        Zk = construct_samb_matrix(mat, np.array(self._cwi["kpoints"]))
+        Ek, Uk = np.linalg.eigh(Hk_sym)
+        Z_exp = thermal_avg(Zk, Ek, Uk, T=0.0)
+        z_exp = {key: Z_exp[i] for i, key in enumerate(z.keys())}
+
+        self._cwm.log("done", None, end="\n", file=self._outfile, mode="a")
+
+        #####
+
         self.update(
             {
                 "s": s,
                 "z": z,
                 "z_nonortho": z_nonortho,
+                "z_exp": z_exp,
                 #
                 "Sk_sym": Sk_sym,
                 "Hk_sym": Hk_sym,
@@ -939,7 +956,7 @@ class CWModel(dict):
     # ==================================================
     def write_samb_coeffs(self, filename, type="z"):
         """
-        write seedname_or.dat.
+        write seedname_z.dat.
 
         Args:
             filename (str): file name.
@@ -967,3 +984,20 @@ class CWModel(dict):
         )
 
         self._cwm.write(filename, o_str, header, None)
+
+    # ==================================================
+    def write_samb_exp(self, filename):
+        """
+        write seedname_or.dat.
+
+        Args:
+            filename (str): file name.
+        """
+        z_exp_str = "".join(
+            [
+                "{:>7d}   {:>15}   {:>15}   {:>12.8f} \n ".format(j + 1, zj, tag, v)
+                for j, ((zj, tag), v) in enumerate(self["z_exp"].items())
+            ]
+        )
+
+        self._cwm.write(filename, z_exp_str, z_header, None)

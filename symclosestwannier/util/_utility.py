@@ -32,6 +32,9 @@ def is_zero(x):
 
 # ==================================================
 def fermi(x, T=0.01):
+    if T == 0.0:
+        return x < 0.0
+
     return 0.5 * (1.0 - np.tanh(0.5 * x / T))
 
 
@@ -371,3 +374,72 @@ def construct_Ok(z, num_wann, kpoints, rpoints, matrix_dict):
     Ok = fourier_transform_r_to_k(Or, kpoints, rpoints, atoms_frac=atoms_frac)
 
     return Ok
+
+
+# ==================================================
+def construct_Ok(z, num_wann, kpoints, rpoints, matrix_dict):
+    """
+    arbitrary operator constructed by linear combination of SAMBs in k-space representation.
+
+    Args:
+        z (list): parameter set, [z_j].
+        num_wann (int): # of WFs.
+        kpoints (ndarray): k-points used in DFT calculation, [[k1, k2, k3]] (crystal coordinate).
+        rpoints (ndarray, optional): lattice points (crystal coordinate, [[n1,n2,n3]], nj: integer).
+        matrix_dict (dict): SAMBs.
+
+    Returns:
+        ndarray: matrix, [#k, dim, dim].
+    """
+    kpoints = np.array(kpoints)
+    rpoints = np.array(rpoints)
+    cell_site = matrix_dict["cell_site"]
+    ket = matrix_dict["ket"]
+    atoms_frac = [
+        NSArray(cell_site[ket[a].split("@")[1]][0], style="vector", fmt="value").tolist() for a in range(len(ket))
+    ]
+
+    Or = construct_Or(z, num_wann, rpoints, matrix_dict)
+    Ok = fourier_transform_r_to_k(Or, kpoints, rpoints, atoms_frac=atoms_frac)
+
+    return Ok
+
+
+# ==================================================
+def thermal_avg(O, E, U, ef=0.0, T=0.0):
+    """
+    thermal average of the given operator,
+    <O> = \sum_{n,k} fermi_dirac[E_{n}(k)] O_{nn}(k)
+
+    Args:
+        O (ndarray): operator or list of operator.
+        E (ndarray): eigen values.
+        U (ndarray): eigen vectors.
+        ef (float, optional): fermi energy.
+        T (float, optional): temperature.
+
+    Returns:
+        ndarray: thermal average of the given operator.
+    """
+    fk = fermi(E - ef, T)
+
+    O = np.array(O)
+    E = np.array(E)
+    U = np.array(U)
+
+    if O.ndim == 2:
+        O = np.array([O])
+
+    O_exp = []
+    for Oi in O:
+        UdoU = U.transpose(0, 2, 1).conjugate() @ Oi @ U
+        UdoU_diag = np.diagonal(UdoU.transpose(1, 2, 0))
+        Oi_exp = np.sum(fk * UdoU_diag) / num_k
+        O_exp.append(np.real(Oi_exp))
+
+        if np.imag(Oi_exp) > 1e-7:
+            raise Exception(f"expectation value of {key} is wrong : {Oi_exp}")
+
+    O_exp = np.array(O_exp)
+
+    return O_exp
