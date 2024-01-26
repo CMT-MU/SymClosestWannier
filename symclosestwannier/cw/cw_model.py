@@ -34,8 +34,6 @@ from gcoreutils.nsarray import NSArray
 from multipie.tag.tag_multipole import TagMultipole
 from multipie.model.construct_model import construct_samb_matrix
 
-from symclosestwannier.cw.cw_info import CWInfo
-from symclosestwannier.cw.cw_manager import CWManager
 
 from symclosestwannier.util.message import (
     cw_start_msg,

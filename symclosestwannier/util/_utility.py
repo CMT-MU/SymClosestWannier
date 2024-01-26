@@ -427,6 +427,8 @@ def thermal_avg(O, E, U, ef=0.0, T=0.0):
     E = np.array(E)
     U = np.array(U)
 
+    num_k = E.shape[0]
+
     if O.ndim == 2:
         O = np.array([O])
 
