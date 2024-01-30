@@ -220,7 +220,7 @@ def get_berry_phase_R(cwi, tb_gauge=False):
     """
     Mkb = np.array(cwi["Mkb"])
     Uk = np.array(cwi["Uk"])
-    num_k = cwi["num_k"]
+    num_wann = cwi["num_wann"]
 
     ### Unitary transform Mkb ###
     kb2k = cwi.nnkp.kb2k()
