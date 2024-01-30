@@ -100,10 +100,12 @@ def cw_creator(seedname="cwannier"):
         filename = f"{cwi['seedname']}_r.dat.cw"
         cw_model.write_or(AA_R, filename, vec=True)
 
-    if cwi["write_vmn"]:
-        pass
-
     if cwi["write_tb"]:
+        AA_R = get_oper_R("AA_R", cwi, tb_gauge=False)
+        filename = f"{cwi['seedname']}_tb.dat.cw"
+        cw_model.write_tb(cw_model["Hr"], AA_R, filename)
+
+    if cwi["write_vmn"]:
         pass
 
     if cwi["write_spn"]:
