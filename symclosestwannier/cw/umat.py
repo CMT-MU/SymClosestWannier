@@ -183,6 +183,7 @@ class Umat(dict):
         """
         with open(file_name, "w") as fp:
             fp.write("# created by umat.py\n")
+            fp.write("# written {}\n".format(datetime.datetime.now().strftime("on %d%b%Y at %H:%M:%S")))
             fp.write("{} {} {}\n\n".format(self["num_k"], self["num_wann"], self["num_wann"]))
 
             for k in range(self["num_k"]):

@@ -71,7 +71,7 @@ def iterate3dpm(size):
 
 
 # ==================================================
-def wigner_seitz(A, mp_grid, prec=1.0e-5):
+def wigner_seitz(A, mp_grid, prec=1.0e-7):
     """
     wigner seitz cell.
     return irreducible R vectors and number of degeneracy at each R.
@@ -129,12 +129,12 @@ def fourier_transform_k_to_r(Ok, kpoints, irvec, atoms_frac=None):
     num_k = kpoints.shape[0]
 
     kR = np.einsum("ka,Ra->kR", kpoints, irvec, optimize=True)
-    phase_R = np.exp(+2 * np.pi * 1j * kR)
+    phase_R = np.exp(-2 * np.pi * 1j * kR)
 
     if atoms_frac is not None:
         tau = np.array(atoms_frac)
         ktau = np.einsum("ka,ma->km", kpoints, tau, optimize=True)
-        eiktau = np.exp(+2 * np.pi * 1j * ktau)
+        eiktau = np.exp(-2 * np.pi * 1j * ktau)
 
         Or = np.einsum("kR,km,kmn,kn->Rmn", phase_R, eiktau, Ok, eiktau.conjugate(), optimize=True) / num_k
     else:
@@ -169,12 +169,12 @@ def fourier_transform_r_to_k(Or, kpoints, irvec, ndegen=None, atoms_frac=None):
     kpoints = np.array(kpoints, dtype=float)
 
     kR = np.einsum("ka,Ra->kR", kpoints, irvec, optimize=True)
-    phase_R = np.exp(-2 * np.pi * 1j * kR)
+    phase_R = np.exp(+2 * np.pi * 1j * kR)
 
     if atoms_frac is not None:
         tau = np.array(atoms_frac)
         ktau = np.einsum("ka,ma->km", kpoints, tau, optimize=True)
-        eiktau = np.exp(-2 * np.pi * 1j * ktau)
+        eiktau = np.exp(+2 * np.pi * 1j * ktau)
 
         Ok = np.einsum("R,kR,km,Rmn,kn->kmn", weight, phase_R, eiktau, Or, eiktau.conjugate(), optimize=True)
     else:
