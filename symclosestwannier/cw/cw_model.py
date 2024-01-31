@@ -415,8 +415,6 @@ class CWModel(dict):
 
         #####
 
-        msg = "    - decomposing Hamiltonian as linear combination of SAMBs ... "
-
         atoms_list = list(self._cwi["atoms_frac"].values())
         atoms_frac = np.array([atoms_list[i] for i in self._cwi["nw2n"]])
 
@@ -432,7 +430,7 @@ class CWModel(dict):
             A = None
             A_samb = None
 
-
+        msg = "    - decomposing Hamiltonian as linear combination of SAMBs ... "
         self._cwm.log(msg, None, end="", file=self._outfile, mode="a")
         self._cwm.set_stamp()
 
@@ -446,8 +444,8 @@ class CWModel(dict):
         self._cwm.log(msg, None, end="", file=self._outfile, mode="a")
         self._cwm.set_stamp()
 
-        s = CWModel.samb_decomp_operator(Sr_dict, Zr_dict, A, atoms_frac, ket_amn, A_samb, atoms_frac_samb, ket_samb)
-
+        # s = CWModel.samb_decomp_operator(Sr_dict, Zr_dict, A, atoms_frac, ket_amn, A_samb, atoms_frac_samb, ket_samb)
+        s = z
         self._cwm.log("done", file=self._outfile, mode="a")
 
         #####
@@ -456,8 +454,8 @@ class CWModel(dict):
         self._cwm.log(msg, None, end="", file=self._outfile, mode="a")
         self._cwm.set_stamp()
 
-        z_nonortho = CWModel.samb_decomp_operator(Hr_nonortho_dict, Zr_dict, A, atoms_frac, ket_amn, A_samb, atoms_frac_samb, ket_samb)
-
+        # z_nonortho = CWModel.samb_decomp_operator(Hr_nonortho_dict, Zr_dict, A, atoms_frac, ket_amn, A_samb, atoms_frac_samb, ket_samb)
+        z_nonortho = z
         self._cwm.log("done", file=self._outfile, mode="a")
 
         #####
@@ -658,7 +656,9 @@ class CWModel(dict):
 
     # ==================================================
     @classmethod
-    def samb_decomp_operator(cls, Or_dict, Zr_dict, A=None, atoms_frac=None, ket=None, A_samb=None, atoms_frac_samb=None,ket_samb=None):
+    def samb_decomp_operator(
+        cls, Or_dict, Zr_dict, A=None, atoms_frac=None, ket=None, A_samb=None, atoms_frac_samb=None, ket_samb=None
+    ):
         """
         decompose arbitrary operator into linear combination of SAMBs.
 
@@ -675,7 +675,7 @@ class CWModel(dict):
         Returns:
             z (dict): parameter set, {tag: z_j}.
         """
-        return samb_decomp_operator(Or_dict, Zr_dict, A, atoms_frac, ket, A_samb, atoms_frac_samb,ket_samb)
+        return samb_decomp_operator(Or_dict, Zr_dict, A, atoms_frac, ket, A_samb, atoms_frac_samb, ket_samb)
 
     # ==================================================
     @classmethod
@@ -791,8 +791,6 @@ class CWModel(dict):
     @classmethod
     def _hr_header(cls):
         return hr_header
-
-
 
     # ==================================================
     @classmethod
@@ -961,7 +959,6 @@ class CWModel(dict):
                 Or_str += line
 
         self._cwm.write(filename, Or_str, header, None)
-
 
     # ==================================================
     def write_tb(self, Hr, Ar, filename, rpoints=None):
