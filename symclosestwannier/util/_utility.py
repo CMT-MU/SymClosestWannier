@@ -387,7 +387,7 @@ def samb_decomp_operator(
     """
     Or_dict = sort_ket_matrix_dict(Or_dict, ket, ket_samb)
 
-    if A or (A is not None and np.allclose(A, A_samb, rtol=1e-05, atol=1e-05)):
+    if A is None or (A is not None and np.allclose(A, A_samb, rtol=1e-05, atol=1e-05)):
         z = {
             tag: np.real(np.sum([v * Or_dict.get((-k[0], -k[1], -k[2], k[4], k[3]), 0) for k, v in d.items()]))
             for tag, d in Zr_dict.items()
