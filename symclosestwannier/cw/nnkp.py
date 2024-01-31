@@ -211,7 +211,7 @@ class Nnkp(dict):
     # ==================================================
     def bvec_idx(self, b, type="cart"):
         for ib in range(self["num_b"]):
-            if np.allclose(np.array(self["bvec_" + type][ib]), b):
+            if np.allclose(np.array(self["bvec_" + type][ib]), b, rtol=1e-05, atol=1e-05):
                 return ib
 
         assert False, b

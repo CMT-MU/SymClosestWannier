@@ -32,9 +32,8 @@ from scipy import linalg as spl
 
 from gcoreutils.nsarray import NSArray
 from multipie.tag.tag_multipole import TagMultipole
+from multipie.model.construct_model import construct_samb_matrix
 
-from symclosestwannier.cw.cw_info import CWInfo
-from symclosestwannier.cw.cw_manager import CWManager
 
 from symclosestwannier.util.message import (
     cw_start_msg,
@@ -53,8 +52,10 @@ from symclosestwannier.util.header import (
     z_header,
     z_nonortho_header,
     s_header,
+    z_exp_header,
 )
 from symclosestwannier.util._utility import (
+    thermal_avg,
     weight_proj,
     fourier_transform_k_to_r,
     fourier_transform_r_to_k,
@@ -62,7 +63,9 @@ from symclosestwannier.util._utility import (
     matrix_dict_r,
     matrix_dict_k,
     dict_to_matrix,
-    samb_decomp,
+    sort_ket_matrix_k,
+    sort_ket_matrix_dict,
+    samb_decomp_operator,
     construct_Or,
     construct_Ok,
 )
@@ -79,6 +82,8 @@ _default = {
     "s": None,
     "z": None,
     "z_nonortho": None,
+    #
+    "z_exp": None,
     #
     "Sk_sym": None,
     "Hk_sym": None,
@@ -136,7 +141,7 @@ class CWModel(dict):
             elif self._cwi["restart"] == "sym":
                 self._sym()
             else:
-                raise Exception(f"invalid restart = {v} was given. choose from 'cw'/'w90'/'sym'.")
+                raise Exception(f"invalid restart = {self._cwi['restart']} was given. choose from 'cw'/'w90'/'sym'.")
 
     # ==================================================
     def _w90(self):
@@ -371,21 +376,10 @@ class CWModel(dict):
             )
 
         ket_samb = model["info"]["ket"]
-        ket_amn = self._cwi["ket_amn"]
+        ket_amn = self._cwi.get("ket_amn", ket_samb)
 
         # sort orbitals
-        if ket_amn is not None:
-            idx_list = [ket_amn.index(o) for o in ket_samb]
-            Hk = Hk[:, idx_list, :]
-            Hk = Hk[:, :, idx_list]
-
-            idx_list = [ket_samb.index(o) for o in ket_amn]
-            Hr_dict = {(n1, n2, n3, idx_list[a], idx_list[b]): v for (n1, n2, n3, a, b), v in Hr_dict.items()}
-            Sr_dict = {(n1, n2, n3, idx_list[a], idx_list[b]): v for (n1, n2, n3, a, b), v in Sr_dict.items()}
-
-            Hr_nonortho_dict = {
-                (n1, n2, n3, idx_list[a], idx_list[b]): v for (n1, n2, n3, a, b), v in Hr_nonortho_dict.items()
-            }
+        Hk = sort_ket_matrix_k(Hk, ket_amn, ket_samb)
 
         if self._cwi["irreps"] == "all":
             irreps = model["info"]["generate"]["irrep"]
@@ -421,11 +415,26 @@ class CWModel(dict):
 
         #####
 
+        atoms_list = list(self._cwi["atoms_frac"].values())
+        atoms_frac = np.array([atoms_list[i] for i in self._cwi["nw2n"]])
+
+        atoms_frac_samb = [
+            NSArray(mat["cell_site"][ket_samb[a].split("@")[1]][0], style="vector", fmt="value").tolist()
+            for a in range(self._cwi["num_wann"])
+        ]
+
+        if not mat["molecule"]:
+            A = self._cwi["unit_cell_cart"]
+            A_samb = NSArray(mat["A"], style="matrix", fmt="value").T
+        else:
+            A = None
+            A_samb = None
+
         msg = "    - decomposing Hamiltonian as linear combination of SAMBs ... "
         self._cwm.log(msg, None, end="", file=self._outfile, mode="a")
         self._cwm.set_stamp()
 
-        z = CWModel.samb_decomp(Hr_dict, Zr_dict)
+        z = CWModel.samb_decomp_operator(Hr_dict, Zr_dict, A, atoms_frac, ket_amn, A_samb, atoms_frac_samb, ket_samb)
 
         self._cwm.log("done", file=self._outfile, mode="a")
 
@@ -435,8 +444,8 @@ class CWModel(dict):
         self._cwm.log(msg, None, end="", file=self._outfile, mode="a")
         self._cwm.set_stamp()
 
-        s = CWModel.samb_decomp(Sr_dict, Zr_dict)
-
+        # s = CWModel.samb_decomp_operator(Sr_dict, Zr_dict, A, atoms_frac, ket_amn, A_samb, atoms_frac_samb, ket_samb)
+        s = z
         self._cwm.log("done", file=self._outfile, mode="a")
 
         #####
@@ -445,8 +454,8 @@ class CWModel(dict):
         self._cwm.log(msg, None, end="", file=self._outfile, mode="a")
         self._cwm.set_stamp()
 
-        z_nonortho = CWModel.samb_decomp(Hr_nonortho_dict, Zr_dict)
-
+        # z_nonortho = CWModel.samb_decomp_operator(Hr_nonortho_dict, Zr_dict, A, atoms_frac, ket_amn, A_samb, atoms_frac_samb, ket_samb)
+        z_nonortho = z
         self._cwm.log("done", file=self._outfile, mode="a")
 
         #####
@@ -462,19 +471,10 @@ class CWModel(dict):
         Hr_sym = CWModel.construct_Or(list(z.values()), self._cwi["num_wann"], rpoints_mp, mat)
         Hr_nonortho_sym = CWModel.construct_Or(list(z_nonortho.values()), self._cwi["num_wann"], rpoints_mp, mat)
 
-        # the order of atoms are different from that of SAMBs
-        # atoms_frac = [self._cwi["atom_pos_r"][i] for i in self._cwi["nw2n"]]
-
-        cell_site = mat["cell_site"]
-        atoms_frac = [
-            NSArray(cell_site[ket_samb[a].split("@")[1]][0], style="vector", fmt="value").tolist()
-            for a in range(self._cwi["num_wann"])
-        ]
-
-        Sk_sym = CWModel.fourier_transform_r_to_k(Sr_sym, self._cwi["kpoints"], rpoints_mp, atoms_frac=atoms_frac)
-        Hk_sym = CWModel.fourier_transform_r_to_k(Hr_sym, self._cwi["kpoints"], rpoints_mp, atoms_frac=atoms_frac)
+        Sk_sym = CWModel.fourier_transform_r_to_k(Sr_sym, self._cwi["kpoints"], rpoints_mp, atoms_frac=atoms_frac_samb)
+        Hk_sym = CWModel.fourier_transform_r_to_k(Hr_sym, self._cwi["kpoints"], rpoints_mp, atoms_frac=atoms_frac_samb)
         Hk_nonortho_sym = CWModel.fourier_transform_r_to_k(
-            Hr_nonortho_sym, self._cwi["kpoints"], rpoints_mp, atoms_frac=atoms_frac
+            Hr_nonortho_sym, self._cwi["kpoints"], rpoints_mp, atoms_frac=atoms_frac_samb
         )
 
         self._cwm.log("done", file=self._outfile, mode="a")
@@ -503,7 +503,7 @@ class CWModel(dict):
             Ek_path, _ = np.linalg.eigh(Hk_path)
 
             Hk_sym_path = CWModel.fourier_transform_r_to_k(
-                Hr_sym, self._cwi["kpoints_path"], rpoints_mp, atoms_frac=atoms_frac
+                Hr_sym, self._cwi["kpoints_path"], rpoints_mp, atoms_frac=atoms_frac_samb
             )
             Ek_path_sym, _ = np.linalg.eigh(Hk_sym_path)
 
@@ -515,11 +515,27 @@ class CWModel(dict):
         else:
             Ek_RMSE_path = None
 
+        #####
+
+        msg = "    - evaluating expectation value of {Zj} at T = 0 ... "
+        self._cwm.log(msg, None, end="\n", file=self._outfile, mode="a")
+        self._cwm.set_stamp()
+
+        Zk = construct_samb_matrix(mat, np.array(self._cwi["kpoints"]))
+        Ek, Uk = np.linalg.eigh(Hk_sym)
+        Z_exp = thermal_avg(Zk, Ek, Uk, ef=self._cwi["fermi_energy"], T=0.0)
+        z_exp = {key: Z_exp[i] for i, key in enumerate(z.keys())}
+
+        self._cwm.log("done", None, end="\n", file=self._outfile, mode="a")
+
+        #####
+
         self.update(
             {
                 "s": s,
                 "z": z,
                 "z_nonortho": z_nonortho,
+                "z_exp": z_exp,
                 #
                 "Sk_sym": Sk_sym,
                 "Hk_sym": Hk_sym,
@@ -640,18 +656,26 @@ class CWModel(dict):
 
     # ==================================================
     @classmethod
-    def samb_decomp(cls, Or_dict, Zr_dict):
+    def samb_decomp_operator(
+        cls, Or_dict, Zr_dict, A=None, atoms_frac=None, ket=None, A_samb=None, atoms_frac_samb=None, ket_samb=None
+    ):
         """
         decompose arbitrary operator into linear combination of SAMBs.
 
         Args:
             Or_dict (dict): dictionary form of an arbitrary operator matrix in reak-space/k-space representation.
-            Zr_dict (dict): SAMBs
+            Zr_dict (dict): dictionary form of SAMBs.
+            A (list/ndarray, optional): real lattice vectors for the given operator, A = [a1,a2,a3] (list), [[[1,0,0], [0,1,0], [0,0,1]]].
+            atoms_frac (ndarray, optional): atom's position in fractional coordinates for the given operator.
+            ket (list, optional): ket basis list, orbital@site.
+            A_samb (list/ndarray, optional): real lattice vectors for SAMBs, A = [a1,a2,a3] (list), [[[1,0,0], [0,1,0], [0,0,1]]].
+            atoms_frac_samb (ndarray, optional): atom's position in fractional coordinates for SAMBs.
+            ket_samb (list, optional): ket basis list for SAMBs, orbital@site.
 
         Returns:
-            z (list): parameter set, [z_j].
+            z (dict): parameter set, {tag: z_j}.
         """
-        return samb_decomp(Or_dict, Zr_dict)
+        return samb_decomp_operator(Or_dict, Zr_dict, A, atoms_frac, ket, A_samb, atoms_frac_samb, ket_samb)
 
     # ==================================================
     @classmethod
@@ -900,7 +924,7 @@ class CWModel(dict):
         num_wann = self._cwi["num_wann"]
         unit_cell_cart = np.array(self._cwi["unit_cell_cart"])
         Or = np.array(Or)
-        Or_str = "# *_or.dat created by berry.py\n"
+        Or_str = "# created by pw2cw \n"
         Or_str += "# written {}\n".format(datetime.datetime.now().strftime("on %d%b%Y at %H:%M:%S"))
 
         Or_str += " {0[0]:15.8f} {0[1]:15.8f} {0[2]:15.8f}\n".format(unit_cell_cart[0, :])
@@ -937,9 +961,75 @@ class CWModel(dict):
         self._cwm.write(filename, Or_str, header, None)
 
     # ==================================================
-    def write_samb_coeffs(self, filename, type="z"):
+    def write_tb(self, Hr, Ar, filename, rpoints=None):
         """
         write seedname_or.dat.
+
+        Args:
+            Hr (ndarray): real-space representation of the Hamiltonian, H_{ab}(R) = <φ_{a}(R)|H|φ_{b}(0)>.
+            Ar (ndarray): real-space representation of the Hamiltonian, A_{ab}(R) = <φ_{a}(R)|r|φ_{b}(0)>.
+            filename (str): file name.
+            rpoints (ndarray): rpoints.
+        """
+        num_wann = self._cwi["num_wann"]
+        unit_cell_cart = np.array(self._cwi["unit_cell_cart"])
+        Hr = np.array(Hr)
+        tb_str = "# created by pw2cw \n"
+        tb_str += "# written {}\n".format(datetime.datetime.now().strftime("on %d%b%Y at %H:%M:%S"))
+
+        tb_str += " {0[0]:15.8f} {0[1]:15.8f} {0[2]:15.8f}\n".format(unit_cell_cart[0, :])
+        tb_str += " {0[0]:15.8f} {0[1]:15.8f} {0[2]:15.8f}\n".format(unit_cell_cart[1, :])
+        tb_str += " {0[0]:15.8f} {0[1]:15.8f} {0[2]:15.8f}\n".format(unit_cell_cart[2, :])
+
+        if rpoints is None:
+            rpoints = np.array(self._cwi["irvec"])
+            ndegen = np.array(self._cwi["ndegen"])
+            tb_str += "{:12d}\n{:12d}\n".format(num_wann, len(ndegen))
+            tb_str += textwrap.fill("".join(["{:5d}".format(x) for x in ndegen]), 75, drop_whitespace=False)
+            tb_str += "\n"
+
+        else:
+            rpoints = np.array(rpoints)
+            ndegen = None
+            tb_str += "{:12d}\n".format(num_wann)
+
+        # _hr
+        for irpts in range(len(rpoints)):
+            v = rpoints[irpts, :]
+            tb_str += "{:5d}{:5d}{:5d}".format(int(round(v[0])), int(round(v[1])), int(round(v[2])))
+            tb_str += "\n"
+            for i, j in itertools.product(range(num_wann), repeat=2):
+                v = rpoints[irpts, :]
+                line = "{:5d}{:5d}  ".format(j + 1, i + 1)
+                x = Hr[irpts, j, i]
+                line += " {:>12.8f} {:>12.8f}".format(x.real, x.imag)
+                line += "\n"
+
+                tb_str += line
+
+            tb_str += "\n"
+
+        # _r
+        for irpts in range(len(rpoints)):
+            v = rpoints[irpts, :]
+            tb_str += "{:5d}{:5d}{:5d}".format(int(round(v[0])), int(round(v[1])), int(round(v[2])))
+            tb_str += "\n"
+            for i, j in itertools.product(range(num_wann), repeat=2):
+                v = rpoints[irpts, :]
+                line = "{:5d}{:5d}  ".format(j + 1, i + 1)
+                line += "".join([" {:>12.8f} {:>12.8f}".format(x.real, x.imag) for x in Ar[:, irpts, j, i]])
+                line += "\n"
+
+                tb_str += line
+
+            tb_str += "\n"
+
+        self._cwm.write(filename, tb_str, None, None)
+
+    # ==================================================
+    def write_samb_coeffs(self, filename, type="z"):
+        """
+        write seedname_z.dat.
 
         Args:
             filename (str): file name.
@@ -959,6 +1049,9 @@ class CWModel(dict):
         else:
             raise Exception(f"invalid type = {type} was given. choose from 'z'/'z_nonortho'/'s'.")
 
+        o_str = "# created by pw2cw \n"
+        o_str += "# written {}\n".format(datetime.datetime.now().strftime("on %d%b%Y at %H:%M:%S"))
+
         o_str = "".join(
             [
                 "{:>7d}   {:>15}   {:>15}   {:>12.8f} \n ".format(j + 1, zj, tag, v)
@@ -967,3 +1060,23 @@ class CWModel(dict):
         )
 
         self._cwm.write(filename, o_str, header, None)
+
+    # ==================================================
+    def write_samb_exp(self, filename):
+        """
+        write seedname_or.dat.
+
+        Args:
+            filename (str): file name.
+        """
+        z_exp_str = "# created by pw2cw \n"
+        z_exp_str += "# written {}\n".format(datetime.datetime.now().strftime("on %d%b%Y at %H:%M:%S"))
+
+        z_exp_str = "".join(
+            [
+                "{:>7d}   {:>15}   {:>15}   {:>12.8f} \n ".format(j + 1, zj, tag, v)
+                for j, ((zj, tag), v) in enumerate(self["z_exp"].items())
+            ]
+        )
+
+        self._cwm.write(filename, z_exp_str, z_exp_header, None)

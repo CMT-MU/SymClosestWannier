@@ -191,6 +191,8 @@ class Win(dict):
                 else:
                     d["kpoints"] = kpoints.tolist()
 
+                d["kpoints"] = [kpt[:3] for kpt in kpoints]
+
             if "begin kpoint_path" in line:
                 k_data = win_data[i + 1 : win_data_lower.index("end kpoint_path")]
                 k_data = [[vi for vi in v.split()] for v in k_data]
@@ -267,7 +269,8 @@ class Win(dict):
 
                 d["atoms_cart"] = atoms_cart
 
-        del d["units"]
+        if "units" in d:
+            del d["units"]
 
         if d["atoms_cart"] is not None:
             if d["atoms_frac"] is None:
@@ -328,17 +331,19 @@ class Win(dict):
             line = line.replace("\n", "")
             if line.startswith(keyword):
                 if len(line.split("=")) > 1:
-                    key, data = line.split("=")
+                    key = line.split("=")[0]
                     key = key.replace(" ", "")
                     if key == keyword:
-                        data = data.split("!")[0]
+                        data = line.split("=")[1].split("!")[0]
                     assert key not in keys, key + " is defined more than once"
+                    keys.append(key)
                 elif len(line.split(":")) > 1:
-                    key, data = line.split(":")
+                    key = line.split(":")[0]
                     key = key.replace(" ", "")
                     if key == keyword:
-                        data = data.split("!")[0]
+                        data = line.split(":")[1].split("!")[0]
                     assert key not in keys, key + " is defined more than once"
+                    keys.append(key)
 
         if data is None:
             data = default_value

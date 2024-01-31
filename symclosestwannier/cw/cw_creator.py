@@ -100,10 +100,12 @@ def cw_creator(seedname="cwannier"):
         filename = f"{cwi['seedname']}_r.dat.cw"
         cw_model.write_or(AA_R, filename, vec=True)
 
-    if cwi["write_vmn"]:
-        pass
-
     if cwi["write_tb"]:
+        AA_R = get_oper_R("AA_R", cwi, tb_gauge=False)
+        filename = f"{cwi['seedname']}_tb.dat.cw"
+        cw_model.write_tb(cw_model["Hr"], AA_R, filename)
+
+    if cwi["write_vmn"]:
         pass
 
     if cwi["write_spn"]:
@@ -131,6 +133,9 @@ def cw_creator(seedname="cwannier"):
 
         filename = os.path.join(cwi["mp_outdir"], "{}".format(f"{cwi['mp_seedname']}_s.dat.cw"))
         cw_model.write_samb_coeffs(filename, type="s")
+
+        filename = os.path.join(cwi["mp_outdir"], "{}".format(f"{cwi['mp_seedname']}_z_exp.dat.cw"))
+        cw_model.write_samb_exp(filename)
 
     # the order of atoms are different from that of SAMBs
     atoms_list = list(cw_model._cwi["atoms_frac_shift"].values())

@@ -7,6 +7,7 @@ Umat manages unitary matrix elements in seedname_u.mat (Uopt(k)) and seedname_u_
 import os
 import gzip
 import tarfile
+import datetime
 
 import numpy as np
 
@@ -181,7 +182,7 @@ class Umat(dict):
             file_name (str, optional): file name.
         """
         with open(file_name, "w") as fp:
-            fp.write("# u.mat created by umat.py\n")
+            fp.write("# created by umat.py\n")
             fp.write("{} {} {}\n\n".format(self["num_k"], self["num_wann"], self["num_wann"]))
 
             for k in range(self["num_k"]):
@@ -204,7 +205,8 @@ class Umat(dict):
             file_name (str, optional): file name.
         """
         with open(file_name, "w") as fp:
-            fp.write("# u_dis.mat created by umat.py\n")
+            fp.write("# created by umat.py\n")
+            fp.write("# written {}\n".format(datetime.datetime.now().strftime("on %d%b%Y at %H:%M:%S")))
             fp.write("{} {} {}\n\n".format(self["num_k"], self["num_wann"], self["num_bands"]))
 
             for k in range(self["num_k"]):

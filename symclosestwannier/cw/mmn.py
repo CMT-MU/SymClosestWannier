@@ -6,6 +6,7 @@ import os
 import gzip
 import tarfile
 import itertools
+import datetime
 import multiprocessing
 from itertools import islice
 
@@ -135,7 +136,8 @@ class Mmn(dict):
         Mkb = np.array(self["Mkb"])
 
         with open(file_name, "w") as fp:
-            fp.write("# mmn created by mmn.py\n")
+            fp.write("# created by mmn.py\n")
+            fp.write("# written {}\n".format(datetime.datetime.now().strftime("on %d%b%Y at %H:%M:%S")))
             fp.write("{} {} {}\n".format(self["num_bands"], self["num_k"], self["num_b"]))
             for ik, ib in itertools.product(range(self["num_k"]), range(self["num_b"])):
                 mkb = Mkb[ik, ib, :, :]

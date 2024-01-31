@@ -5,6 +5,7 @@ import os
 import gzip
 import tarfile
 import itertools
+import datetime
 
 import numpy as np
 
@@ -90,8 +91,10 @@ class Eig(dict):
         """
         Ek = np.array(self["Ek"])
 
+
         with open(file_name, "w") as fp:
-            fp.write("# eig created by eig.py\n")
+            fp.write("# created by eig.py\n")
+            fp.write("# written {}\n".format(datetime.datetime.now().strftime("on %d%b%Y at %H:%M:%S")))
             for ik, n in itertools.product(range(self["num_k"]), range(self["num_bands"])):
                 fp.write("{0}  {1}  {2:<18.12f}\n".format(n + 1, ik + 1, Ek[ik, n]))
 
