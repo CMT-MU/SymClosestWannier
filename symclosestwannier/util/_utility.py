@@ -298,21 +298,152 @@ def dict_to_matrix(Or_dict):
 
 
 # ==================================================
-def samb_decomp(Or_dict, Zr_dict):
+def sort_ket_matrix_k(Ok, ket, ket_samb):
+    """
+    sort ket to align with the SAMB definition (ket_samb).
+
+    Args:
+        Ok (ndarray): arbitrary operator in k-space representation, O_{ab}(k) = <φ_{a}(k)|H|φ_{b}(k)>.
+        ket (list): ket basis list, orbital@site.
+        ket_samb (list): ket basis list for SAMBs, orbital@site.
+
+    Returns:
+        Ok (ndarray): operator.
+    """
+    idx_list = [ket.index(o) for o in ket_samb]
+    Ok = Ok[:, idx_list, :]
+    Ok = Ok[:, :, idx_list]
+
+    return Ok
+
+
+# ==================================================
+def sort_ket_matrix_dict(Or_dict, ket, ket_samb):
+    """
+    sort ket to align with the SAMB definition (ket_samb).
+
+    Args:
+        Or_dict (dict): dictionary form of an arbitrary operator matrix in reak-space/k-space representation.
+        ket (list): ket basis list, orbital@site.
+        ket_samb (list): ket basis list for SAMBs, orbital@site.
+
+    Returns:
+        Or_dict (dict):  dictionary form of an arbitrary operator matrix.
+    """
+    idx_list = [ket_samb.index(o) for o in ket]
+    Or_dict = {(n1, n2, n3, idx_list[a], idx_list[b]): v for (n1, n2, n3, a, b), v in Or_dict.items()}
+
+    return Or_dict
+
+
+# ==================================================
+def sort_ket_list(lst, ket, ket_samb):
+    """
+    sort ket to align with the SAMB definition (ket_samb).
+
+    Args:
+        lst (list): arbitrary list that has the same dimensions as the ket.
+        ket (list): ket basis list, orbital@site.
+        ket_samb (list): ket basis list for SAMBs, orbital@site.
+
+    Returns:
+        lst (list): arbitrary list that has the same dimensions as the ket.
+    """
+    idx_list = [ket.index(o) for o in ket_samb]
+
+    lst = np.array(lst)
+
+    if lst.ndim == 1:
+        lst = list(np.array(lst)[idx_list])
+    elif lst.ndim == 2:
+        lst = list(np.array(lst)[idx_list, :])
+    elif lst.ndim == 3:
+        lst = list(np.array(lst)[idx_list, :, :])
+    else:
+        raise Exception(f"invalid dimension of lst = {lst.ndim} was given.")
+
+    return list(lst)
+
+
+# ==================================================
+def samb_decomp_operator(
+    Or_dict, Zr_dict, A=None, atoms_frac=None, ket=None, A_samb=None, atoms_frac_samb=None, ket_samb=None
+):
     """
     decompose arbitrary operator into linear combination of SAMBs.
 
     Args:
         Or_dict (dict): dictionary form of an arbitrary operator matrix in reak-space/k-space representation.
-        Zr_dict (dict): SAMBs
+        Zr_dict (dict): dictionary form of SAMBs.
+        A (list/ndarray, optional): real lattice vectors for the given operator, A = [a1,a2,a3] (list), [[[1,0,0], [0,1,0], [0,0,1]]].
+        atoms_frac (ndarray, optional): atom's position in fractional coordinates for the given operator.
+        ket (list, optional): ket basis list, orbital@site.
+        A_samb (list/ndarray, optional): real lattice vectors for SAMBs, A = [a1,a2,a3] (list), [[[1,0,0], [0,1,0], [0,0,1]]].
+        atoms_frac_samb (ndarray, optional): atom's position in fractional coordinates for SAMBs.
+        ket_samb (list, optional): ket basis list for SAMBs, orbital@site.
 
     Returns:
-        z (list): parameter set, [z_j].
+        z (dict): parameter set, {tag: z_j}.
     """
-    z = {
-        tag: np.real(np.sum([v * Or_dict.get((-k[0], -k[1], -k[2], k[4], k[3]), 0) for k, v in d.items()]))
-        for tag, d in Zr_dict.items()
-    }
+    Or_dict = sort_ket_matrix_dict(Or_dict, ket, ket_samb)
+
+    if A or (A is not None and np.allclose(A, A_samb, rtol=1e-05, atol=1e-05)):
+        z = {
+            tag: np.real(np.sum([v * Or_dict.get((-k[0], -k[1], -k[2], k[4], k[3]), 0) for k, v in d.items()]))
+            for tag, d in Zr_dict.items()
+        }
+    else:
+        A = np.array(A, dtype=float)
+        A_samb = np.array(A_samb, dtype=float)
+        atoms_frac = np.array(sort_ket_list(atoms_frac, ket, ket_samb), dtype=float)
+        atoms_frac_samb = np.array(atoms_frac_samb, dtype=float)
+
+        Or = {}
+        for (R1, R2, R3, m, n), v in Or_dict.items():
+            if np.abs(v) < 1e-12:
+                continue
+
+            R = np.array([R1, R2, R3], dtype=float)
+            rm = atoms_frac[m]
+            rn = atoms_frac[n]
+            bond = (R + rm - rn) @ A
+
+            if (m, n) in Or:
+                Or[(m, n)].append((bond, R1, R2, R3, v))
+            else:
+                Or[(m, n)] = [(bond, R1, R2, R3, v)]
+
+        Zr_dict_ = {}
+        for tag, d in Zr_dict.items():
+            dic = {}
+            for (R1, R2, R3, m, n), v in d.items():
+                if np.abs(v) < 1e-12:
+                    continue
+
+                R = np.array([R1, R2, R3], dtype=float)
+                rm = atoms_frac_samb[m]
+                rn = atoms_frac_samb[n]
+                bond = (R + rm - rn) @ A_samb
+
+                if (m, n) in dic:
+                    dic[(m, n)].append((bond, R1, R2, R3, v))
+                else:
+                    dic[(m, n)] = [(bond, R1, R2, R3, v)]
+
+            Zr_dict_[tag] = dic
+
+        z = {
+            tag: np.sum(
+                [
+                    np.real(v * v_)
+                    for m, n in d.keys()
+                    for bond, R1, R2, R3, v in d[(m, n)]
+                    for bond_, R1_, R2_, R3_, v_ in Or[(n, m)]
+                    if np.allclose(bond, -bond_, rtol=1e-03, atol=1e-03)
+                ]
+            )
+            for tag, d in Zr_dict_.items()
+        }
 
     return z
 
@@ -433,14 +564,14 @@ def thermal_avg(O, E, U, ef=0.0, T=0.0):
         O = np.array([O])
 
     O_exp = []
-    for Oi in O:
+    for i, Oi in enumerate(O):
         UdoU = U.transpose(0, 2, 1).conjugate() @ Oi @ U
         UdoU_diag = np.diagonal(UdoU.transpose(1, 2, 0))
         Oi_exp = np.sum(fk * UdoU_diag) / num_k
         O_exp.append(np.real(Oi_exp))
 
         if np.imag(Oi_exp) > 1e-7:
-            raise Exception(f"expectation value of {key} is wrong : {Oi_exp}")
+            raise Exception(f"expectation value of {i+1}th operator is wrong : {Oi_exp}")
 
     O_exp = np.array(O_exp)
 
