@@ -118,9 +118,8 @@ class Nnkp(dict):
 
                 if "begin kpoints" in line:
                     d["num_k"] = int(nnkp_data[i + 1])
-                    kpoints = np.genfromtxt(nnkp_data[i + 2 : i + 2 + d["num_k"]], dtype=float)
-                    kpoints_wo_shift = kpoints
-                    kpoints = np.mod(kpoints, 1)  # 0 <= kj < 1.0
+                    kpoints_wo_shift = np.genfromtxt(nnkp_data[i + 2 : i + 2 + d["num_k"]], dtype=float)
+                    kpoints = np.mod(kpoints_wo_shift, 1)  # 0 <= kj < 1.0
                     if kpoints.ndim == 1:
                         d["kpoints"] = [kpoints.tolist()]
                         d["kpoints_wo_shift"] = [kpoints_wo_shift.tolist()]
@@ -190,23 +189,14 @@ class Nnkp(dict):
             except:
                 raise Exception("Gamma point must be included.")
 
-            print(f"Gp_idx = {Gp_idx}")
             for i in range(d["num_b"]):
                 kv = d["nnkpts"][Gp_idx][i]
                 k = d["kpoints_wo_shift"][kv[0] - 1]
                 k_b = d["kpoints_wo_shift"][kv[1] - 1]
                 b = np.array(k_b) - np.array(k) + np.array(kv[2:5])
 
-                print("\n", i)
-                print(f"kv = {kv}")
-                print(f"k = {k}")
-                print(f"k_b = {k_b}")
-                print(f"b = {b}")
-
                 bvec_cart[i, :] = self.k_crys2cart(b, d["B"])
-                print(f"bvec_cart = {bvec_cart[i, :]}")
                 bvec_crys[i, :] = self.k_cart2crys(bvec_cart[i, :], d["A"])
-                print(f"bvec_crys = {bvec_crys[i, :]}")
                 bbmat[i, :] = [bvec_cart[i, a] * bvec_cart[i, b] for a, b in itertools.product(range(3), range(3))]
 
             delta_ab = np.array([a == b for a, b in itertools.product(range(3), range(3))]).astype(int)
@@ -221,10 +211,6 @@ class Nnkp(dict):
             print("type:" + str(type(e)))
             print("args:" + str(e.args))
             print(str(e))
-
-        print("check!!!")
-        for i, b in enumerate(np.array(d["bvec_cart"])):
-            print(i, " : ", b)
 
         return d
 
