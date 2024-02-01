@@ -987,7 +987,7 @@ class CWModel(dict):
             ndegen = np.array(self._cwi["ndegen"])
             tb_str += "{:12d}\n{:12d}\n".format(num_wann, len(ndegen))
             tb_str += textwrap.fill("".join(["{:5d}".format(x) for x in ndegen]), 75, drop_whitespace=False)
-            tb_str += "\n"
+            tb_str += "\n\n"
 
         else:
             rpoints = np.array(rpoints)

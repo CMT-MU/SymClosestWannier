@@ -93,6 +93,7 @@ nnkp_info = {
     "num_atom": "# of atoms (int), [1].",
     "num_b": "# of b-vectors (int), [1].",
     "kpoints": "k-points, [[k1, k2, k3]] (crystal coordinate) (list), [[[0, 0, 0]]].",
+    "kpoints_wo_shift": "k-points without shift, [[k1, k2, k3]] (crystal coordinate) (list), [[[0, 0, 0]]].",
     "nnkpts": "nearest-neighbour k-points (list), [None].",
     "nw2n": "atom position index of each WFs (list), [None].",
     "nw2l": "l specifies the angular part Θlm(θ, φ) (list), [None].",
