@@ -20,8 +20,6 @@
 
 import numpy as np
 
-from symclosestwannier.cw.cw_info import CWInfo
-from symclosestwannier.cw.cw_manager import CWManager
 from symclosestwannier.util.get_oper_R import get_oper_R
 from symclosestwannier.analyzer.get_response import berry_main, boltzwann_main, gyrotropic_main
 
@@ -172,7 +170,6 @@ class Response(dict):
         Args:
             filename (str): file name.
         """
-        seedname = self._cwi["seedname"]
         kubo_freq_list = np.arange(self._cwi["kubo_freq_min"], self._cwi["kubo_freq_max"], self._cwi["kubo_freq_step"])
 
         d = {"xx": (0, 0), "yy": (1, 1), "zz": (2, 2), "xy": (0, 1), "xz": (0, 2), "yz": (1, 2)}

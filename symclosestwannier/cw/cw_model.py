@@ -521,10 +521,11 @@ class CWModel(dict):
         self._cwm.log(msg, None, end="\n", file=self._outfile, mode="a")
         self._cwm.set_stamp()
 
-        Zk = construct_samb_matrix(mat, np.array(self._cwi["kpoints"]))
-        Ek, Uk = np.linalg.eigh(Hk_sym)
-        Z_exp = thermal_avg(Zk, Ek, Uk, ef=self._cwi["fermi_energy"], T=0.0)
-        z_exp = {key: Z_exp[i] for i, key in enumerate(z.keys())}
+        # Zk = construct_samb_matrix(mat, np.array(self._cwi["kpoints"]))
+        # Ek, Uk = np.linalg.eigh(Hk_sym)
+        # Z_exp = thermal_avg(Zk, Ek, Uk, ef=self._cwi["fermi_energy"], T=0.0)
+        # z_exp = {key: Z_exp[i] for i, key in enumerate(z.keys())}
+        z_exp = {}
 
         self._cwm.log("done", None, end="\n", file=self._outfile, mode="a")
 
@@ -927,9 +928,9 @@ class CWModel(dict):
         Or_str = "# created by pw2cw \n"
         Or_str += "# written {}\n".format(datetime.datetime.now().strftime("on %d%b%Y at %H:%M:%S"))
 
-        Or_str += " {0[0]:15.8f} {0[1]:15.8f} {0[2]:15.8f}\n".format(unit_cell_cart[0, :])
-        Or_str += " {0[0]:15.8f} {0[1]:15.8f} {0[2]:15.8f}\n".format(unit_cell_cart[1, :])
-        Or_str += " {0[0]:15.8f} {0[1]:15.8f} {0[2]:15.8f}\n".format(unit_cell_cart[2, :])
+        Or_str += " {0[0]:15.6f} {0[1]:15.6f} {0[2]:15.6f}\n".format(unit_cell_cart[0, :])
+        Or_str += " {0[0]:15.6f} {0[1]:15.6f} {0[2]:15.6f}\n".format(unit_cell_cart[1, :])
+        Or_str += " {0[0]:15.6f} {0[1]:15.6f} {0[2]:15.6f}\n".format(unit_cell_cart[2, :])
 
         if rpoints is None:
             rpoints = np.array(self._cwi["irvec"])
@@ -950,10 +951,10 @@ class CWModel(dict):
                     int(round(v[0])), int(round(v[1])), int(round(v[2])), j + 1, i + 1
                 )
                 if vec:
-                    line += "".join([" {:>12.8f} {:>12.8f}".format(x.real, x.imag) for x in Or[:, irpts, j, i]])
+                    line += "".join([" {:>12.6f} {:>12.6f}".format(x.real, x.imag) for x in Or[:, irpts, j, i]])
                 else:
                     x = Or[irpts, j, i]
-                    line += " {:>12.8f} {:>12.8f}".format(x.real, x.imag)
+                    line += " {:>12.6f} {:>12.6f}".format(x.real, x.imag)
                 line += "\n"
 
                 Or_str += line
@@ -977,9 +978,9 @@ class CWModel(dict):
         tb_str = "# created by pw2cw \n"
         tb_str += "# written {}\n".format(datetime.datetime.now().strftime("on %d%b%Y at %H:%M:%S"))
 
-        tb_str += " {0[0]:15.8f} {0[1]:15.8f} {0[2]:15.8f}\n".format(unit_cell_cart[0, :])
-        tb_str += " {0[0]:15.8f} {0[1]:15.8f} {0[2]:15.8f}\n".format(unit_cell_cart[1, :])
-        tb_str += " {0[0]:15.8f} {0[1]:15.8f} {0[2]:15.8f}\n".format(unit_cell_cart[2, :])
+        tb_str += " {0[0]:15.6f} {0[1]:15.6f} {0[2]:15.6f}\n".format(unit_cell_cart[0, :])
+        tb_str += " {0[0]:15.6f} {0[1]:15.6f} {0[2]:15.6f}\n".format(unit_cell_cart[1, :])
+        tb_str += " {0[0]:15.6f} {0[1]:15.6f} {0[2]:15.6f}\n".format(unit_cell_cart[2, :])
 
         if rpoints is None:
             rpoints = np.array(self._cwi["irvec"])
@@ -1002,7 +1003,7 @@ class CWModel(dict):
                 v = rpoints[irpts, :]
                 line = "{:5d}{:5d}  ".format(j + 1, i + 1)
                 x = Hr[irpts, j, i]
-                line += " {:>12.8f} {:>12.8f}".format(x.real, x.imag)
+                line += " {:>12.6f} {:>12.6f}".format(x.real, x.imag)
                 line += "\n"
 
                 tb_str += line
@@ -1017,7 +1018,7 @@ class CWModel(dict):
             for i, j in itertools.product(range(num_wann), repeat=2):
                 v = rpoints[irpts, :]
                 line = "{:5d}{:5d}  ".format(j + 1, i + 1)
-                line += "".join([" {:>12.8f} {:>12.8f}".format(x.real, x.imag) for x in Ar[:, irpts, j, i]])
+                line += "".join([" {:>12.6f} {:>12.6f}".format(x.real, x.imag) for x in Ar[:, irpts, j, i]])
                 line += "\n"
 
                 tb_str += line
@@ -1054,7 +1055,7 @@ class CWModel(dict):
 
         o_str = "".join(
             [
-                "{:>7d}   {:>15}   {:>15}   {:>12.8f} \n ".format(j + 1, zj, tag, v)
+                "{:>7d}   {:>15}   {:>15}   {:>12.6f} \n ".format(j + 1, zj, tag, v)
                 for j, ((zj, tag), v) in enumerate(o.items())
             ]
         )
@@ -1074,7 +1075,7 @@ class CWModel(dict):
 
         z_exp_str = "".join(
             [
-                "{:>7d}   {:>15}   {:>15}   {:>12.8f} \n ".format(j + 1, zj, tag, v)
+                "{:>7d}   {:>15}   {:>15}   {:>12.6f} \n ".format(j + 1, zj, tag, v)
                 for j, ((zj, tag), v) in enumerate(self["z_exp"].items())
             ]
         )
