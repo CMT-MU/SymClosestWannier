@@ -521,10 +521,11 @@ class CWModel(dict):
         self._cwm.log(msg, None, end="\n", file=self._outfile, mode="a")
         self._cwm.set_stamp()
 
-        Zk = construct_samb_matrix(mat, np.array(self._cwi["kpoints"]))
-        Ek, Uk = np.linalg.eigh(Hk_sym)
-        Z_exp = thermal_avg(Zk, Ek, Uk, ef=self._cwi["fermi_energy"], T=0.0)
-        z_exp = {key: Z_exp[i] for i, key in enumerate(z.keys())}
+        # Zk = construct_samb_matrix(mat, np.array(self._cwi["kpoints"]))
+        # Ek, Uk = np.linalg.eigh(Hk_sym)
+        # Z_exp = thermal_avg(Zk, Ek, Uk, ef=self._cwi["fermi_energy"], T=0.0)
+        # z_exp = {key: Z_exp[i] for i, key in enumerate(z.keys())}
+        z_exp = {}
 
         self._cwm.log("done", None, end="\n", file=self._outfile, mode="a")
 

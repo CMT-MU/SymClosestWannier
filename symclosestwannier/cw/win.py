@@ -275,7 +275,7 @@ class Win(dict):
         if d["atoms_cart"] is not None:
             if d["atoms_frac"] is None:
                 A = d["unit_cell_cart"]
-                d["atoms_frac"] = {k: (np.linalg.inv(A) @ np.array(v)).tolist() for k, v in d["atoms_cart"].items()}
+                d["atoms_frac"] = {k: (np.array(v) @ np.linalg.inv(A)).tolist() for k, v in d["atoms_cart"].items()}
 
         if d["atoms_frac"] is not None:
             if d["atoms_cart"] is None:

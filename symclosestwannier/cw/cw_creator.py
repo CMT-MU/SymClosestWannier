@@ -91,7 +91,7 @@ def cw_creator(seedname="cwannier"):
         filename = f"{cwi['seedname']}_sr.dat.cw"
         cw_model.write_or(cw_model["Sr"], filename, header=CWModel._sr_header())
 
-    if cwi["write_u_matrices"]:
+    if cwi["write_u_matrices"] and cwi["restart"] != "w90":
         file_names = (f"{cwi['seedname']}_u.mat.cw", f"{cwi['seedname']}_u_dis.mat.cw")
         cwi.umat.write(file_names)
 
