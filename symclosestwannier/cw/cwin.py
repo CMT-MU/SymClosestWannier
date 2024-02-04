@@ -22,6 +22,9 @@ _default = {
     "parallel": False,
     "formatter": False,
     #
+    "transl_inv": True, # use Eq.(31) of Marzari&Vanderbilt PRB 56, 12847 (1997) for band-diagonal position matrix elements.
+    "tb_gauge": False, # tb gauge?
+    #
     "write_hr": False,
     "write_sr": False,
     "write_u_matrices": False,
@@ -98,6 +101,8 @@ class CWin(dict):
                 - verbose           : verbose calculation info (bool, optional), [False].
                 - parallel          : use parallel code? (bool), [False].
                 - formatter         : format by using black? (bool), [False].
+                - transl_inv        : use Eq.(31) of Marzari&Vanderbilt PRB 56, 12847 (1997) for band-diagonal position matrix elements? (bool), [True].
+                - tb_gauge          : use tb gauge? (bool), [False].
                 - write_hr          : write seedname_hr.py ? (bool), [False].
                 - write_sr          : write seedname_sr.py ? (bool), [False].
                 - write_u_matrices  : write seedname_u.dat and seedname_u_dis.dat ? (bool), [False].

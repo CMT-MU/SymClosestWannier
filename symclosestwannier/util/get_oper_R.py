@@ -24,13 +24,12 @@ from symclosestwannier.util._utility import fourier_transform_k_to_r
 
 
 # ==================================================
-def get_oper_R(name, cwi, tb_gauge=False):
+def get_oper_R(name, cwi):
     """
     wrapper for getting matrix elements of the operator.
 
     Args:
         cwi (SystemInfo): CWInfo.
-        tb_gauge (bool, optional): tb gauge?
 
     Returns:
         ndarray: matrix elements of the operator.
@@ -48,17 +47,16 @@ def get_oper_R(name, cwi, tb_gauge=False):
         "SBB_R": get_SBB_R,  # <0n|sigma_x,y,z.H.(r-R)_alpha|Rm>
     }
 
-    return d[name](cwi, tb_gauge)
+    return d[name](cwi)
 
 
 # ==================================================
-def get_HH_R(cwi, tb_gauge=False):
+def get_HH_R(cwi):
     """
     matrix elements of real-space Hamiltonian, <0n|H|Rm>.
 
     Args:
         cwi (SystemInfo): CWInfo.
-        tb_gauge (bool, optional): tb gauge?
 
     Returns:
         ndarray: Hamiltonian, HH_R(len(irvec), num_wann, num_wann).
@@ -74,7 +72,7 @@ def get_HH_R(cwi, tb_gauge=False):
     kpoints = np.array(cwi["kpoints"])
     irvec = np.array(cwi["irvec"])
 
-    if tb_gauge:
+    if cwi["tb_gauge"]:
         atoms_list = list(cwi["atoms_frac"].values())
         atoms_frac = np.array([atoms_list[i] for i in cwi["nw2n"]])
     else:
@@ -86,13 +84,12 @@ def get_HH_R(cwi, tb_gauge=False):
 
 
 # ==================================================
-def get_AA_R(cwi, tb_gauge=False):
+def get_AA_R(cwi):
     """
     matrix elements of real-space position operator, <0n|r|Rm>.
 
     Args:
         cwi (SystemInfo): CWInfo.
-        tb_gauge (bool, optional): tb gauge?
 
     Returns:
         ndarray: position operator, AA_R(3, len(irvec), num_wann, num_wann).
@@ -109,14 +106,16 @@ def get_AA_R(cwi, tb_gauge=False):
 
     ### Unitary transform Mkb ###
     Mkb_w = np.einsum("klm, kblp, kbpn->kbmn", np.conj(Uk), Mkb, Uk[kb2k[:, :], :, :], optimize=True)  # Eq. (61)
-
     AA_k = 1j * np.einsum("kb,kba,kbmn->akmn", wk, bveck, Mkb_w, optimize=True)
-    AA_k_diag = -1 * np.einsum("kb,kba,kbnn->akn", wk, bveck, np.imag(np.log(Mkb_w)), optimize=True)
-    np.einsum("aknn->akn", AA_k)[:] = AA_k_diag
+
+    # Use Eq.(31) of Marzari&Vanderbilt PRB 56, 12847 (1997) for band-diagonal position matrix.
+    if cwi["transl_inv"]:
+        AA_k_diag = -1 * np.einsum("kb,kba,kbnn->akn", wk, bveck, np.imag(np.log(Mkb_w)), optimize=True)
+        np.einsum("aknn->akn", AA_k)[:] = AA_k_diag
 
     AA_k = 0.5 * (AA_k + np.einsum("akmn->aknm", AA_k).conj())
 
-    if tb_gauge:
+    if cwi["tb_gauge"]:
         atoms_list = list(cwi["atoms_frac"].values())
         atoms_frac = np.array([atoms_list[i] for i in cwi["nw2n"]])
     else:
@@ -140,13 +139,12 @@ def get_CC_R():
 
 
 # ==================================================
-def get_SS_R(cwi, tb_gauge=False):
+def get_SS_R(cwi):
     """
     matrix elements of real-space spin operator, <0n|sigma_x,y,z|Rm>.
 
     Args:
         cwi (SystemInfo): CWInfo.
-        tb_gauge (bool, optional): tb gauge?
 
     Returns:
         ndarray: spin operator, SS_R(3, len(irvec), num_wann, num_wann).
@@ -160,7 +158,7 @@ def get_SS_R(cwi, tb_gauge=False):
     kpoints = np.array(cwi["kpoints"])
     irvec = np.array(cwi["irvec"])
 
-    if tb_gauge:
+    if cwi["tb_gauge"]:
         atoms_list = list(cwi["atoms_frac"].values())
         atoms_frac = np.array([atoms_list[i] for i in cwi["nw2n"]])
     else:
@@ -207,13 +205,12 @@ def get_SBB_R():
 
 
 # ==================================================
-def get_berry_phase_R(cwi, tb_gauge=False):
+def get_berry_phase_R(cwi):
     """
     matrix elements of real-space spin operator, <0n|A_x,y,z|Rm>.
 
     Args:
         cwi (SystemInfo): CWInfo.
-        tb_gauge (bool, optional): tb gauge?
 
     Returns:
         ndarray: spin operator, SS_R(3, len(irvec), num_wann, num_wann).
@@ -236,10 +233,9 @@ def get_berry_phase_R(cwi, tb_gauge=False):
     kpoints = np.array(cwi["kpoints"])
     irvec = np.array(cwi["irvec"])
 
-    if tb_gauge:
+    if cwi["tb_gauge"]:
         atoms_list = list(cwi["atoms_frac"].values())
         atoms_frac = np.array([atoms_list[i] for i in cwi["nw2n"]])
-        # atoms_frac = np.array([cwi["atom_pos_r"][idx] for idx in cwi["nw2n"]])
     else:
         atoms_frac = None
 

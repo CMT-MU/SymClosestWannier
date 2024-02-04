@@ -166,12 +166,37 @@ def berry_main(cwi, operators):
     D_h = wham_get_D_h(delHH, E, U)
 
     AA = fourier_transform_r_to_k_vec(operators["AA_R"], kpoints, cwi["irvec"], cwi["ndegen"], atoms_frac)
-    Ax = U.transpose(0, 2, 1).conjugate() @ AA[0] @ U
-    Ay = U.transpose(0, 2, 1).conjugate() @ AA[1] @ U
-    Az = U.transpose(0, 2, 1).conjugate() @ AA[2] @ U
-    Avec = np.array([Ax, Ay, Az])
+
+    fs5 = open("./Avec_WF.txt", "w")
+
+    for k in range(AA.shape[1]):
+        fs5.write(f"k-point: {kpoints[k]} \n")
+        AA_k = AA[:, k, :, :]
+        for m in range(AA.shape[2]):
+            for n in range(AA.shape[3]):
+                fs5.write(f"AA{m},{n} = {AA_k[0,m,n]}  {AA_k[1,m,n]}  {AA_k[2,m,n]}\n")
+
+    Avec = np.array([U.transpose(0, 2, 1).conjugate() @ AA[i] @ U for i in range(3)])
+
+    fs4 = open("./Avec_Band.txt", "w")
+
+    for k in range(Avec.shape[1]):
+        fs4.write(f"k-point: {kpoints[k]} \n")
+        Avec_k = Avec[:, k, :, :]
+        for m in range(Avec.shape[2]):
+            for n in range(Avec.shape[3]):
+                fs4.write(f"Avec{m},{n} = {Avec_k[0,m,n]}  {Avec_k[1,m,n]}  {Avec_k[2,m,n]}\n")
 
     A = Avec + 1.0j * D_h  # Eq.(25) WYSV06
+
+    fs3 = open("./D_h.txt", "w")
+
+    for k in range(D_h.shape[1]):
+        fs3.write(f"k-point: {kpoints[k]} \n")
+        D_h_k = D_h[:, k, :, :]
+        for m in range(D_h.shape[2]):
+            for n in range(D_h.shape[3]):
+                fs3.write(f"D_h{m},{n} = {D_h_k[0,m,n]}  {D_h_k[1,m,n]}  {D_h_k[2,m,n]}\n")
 
     # (ahc)  Anomalous Hall conductivity (from Berry curvature)
     if cwi["berry_task"] == "ahc":
@@ -235,6 +260,11 @@ def berry_get_kubo(cwi, E, A):
 
     Returns:
     """
+    N1, N2, N3 = cwi["berry_kmesh"]
+    kpoints = np.array(
+        [[i / float(N1), j / float(N2), k / float(N3)] for i in range(N1) for j in range(N2) for k in range(N3)]
+    )
+
     ef = cwi["fermi_energy"]
     berry_kmesh = cwi["berry_kmesh"]
 
@@ -286,11 +316,23 @@ def berry_get_kubo(cwi, E, A):
         kubo_H_spn = 0.0
         kubo_AH_spn = 0.0
 
+    fs1 = open("./E.txt", "a")
+    fs2 = open("./AA.txt", "a")
+
     for k in range(num_k):
         # print(f"{k+1}/{num_k}")
         ek = E[k]
         fk = occ[k]
         ak = A[:, k, :, :]
+
+        fs1.write(f"k-point: {kpoints[k]} \n")
+        for e_idx in range(len(ek)):
+            fs1.write(f"ek{e_idx} = {ek[e_idx]} \n")
+
+        fs2.write(f"k-point: {kpoints[k]} \n")
+        for m in range(num_wann):
+            for n in range(num_wann):
+                fs2.write(f"A{m},{n} = {ak[0,m,n]}  {ak[1,m,n]}  {ak[2,m,n]}\n")
 
         for m in range(num_wann):
             for n in range(num_wann):
