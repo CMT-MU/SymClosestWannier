@@ -31,11 +31,10 @@
 # *  RPS19  = PRB 99, 235113 (2019)  (spin Hall conductivity - SHC)
 # *  IAdJS19 = arXiv:1910.06172 (2019) (quasi-degenerate k.p)
 # ---------------------------------------------------------------
-#
-# * Undocumented, works for limited purposes only:
-#                                 reading k-points and weights from file
 
 import numpy as np
+import multiprocessing
+from joblib import Parallel, delayed
 
 from symclosestwannier.util._utility import (
     fourier_transform_r_to_k,
@@ -43,9 +42,13 @@ from symclosestwannier.util._utility import (
     fourier_transform_r_to_k_vec,
 )
 
+# ==================================================
+# number of cpu cores
+_cpu_num = multiprocessing.cpu_count()
+
 
 # ==================================================
-def wham_get_D_h(delH, E, U):
+def wham_get_D_h(delHH, E, U):
     """
     Compute D^H_a=UU^dag.del_a UU (a=x,y,z)
     using Eq.(24) of WYSV06
@@ -53,16 +56,17 @@ def wham_get_D_h(delH, E, U):
     num_k = E.shape[0]
     num_wann = E.shape[1]
 
-    D_h = 1.0j * np.zeros((3, num_k, num_wann, num_wann))
-    for k in range(num_k):
-        ek = E[k]
-        for i in range(3):
-            delH_i = U[k].transpose().conjugate() @ delH[i, k] @ U[k]
-            for m in range(num_wann):
-                for n in range(num_wann):
-                    if n == m or abs(ek[m] - ek[n]) < 1e-7:
-                        continue
-                    D_h[i, k, n, m] = delH_i[n, m] / (ek[m] - ek[n])
+    delHH_Band = U.transpose(0, 2, 1).conjugate()[np.newaxis, :, :, :] @ delHH @ U[np.newaxis, :, :, :]
+    fac = np.array(
+        [
+            [
+                [0.0 if n == m or abs(E[k, m] - E[k, n]) < 1e-7 else 1.0 / (E[k, n] - E[k, m]) for n in range(num_wann)]
+                for m in range(num_wann)
+            ]
+            for k in range(num_k)
+        ]
+    )
+    D_h = delHH_Band * fac[np.newaxis, :, :, :]
 
     return D_h
 
@@ -89,7 +93,7 @@ def utility_w0gauss(x, n):
         utility_w0gauss = sqrtpm1 * np.exp(-arg) * (2.0 - np.sqrt(2.0) * x)
     # Fermi-Dirac smearing
     elif n == -99:
-        if abs(x) <= 36.0:
+        if np.abs(x) <= 36.0:
             utility_w0gauss = 1.0 / (2.0 + np.exp(-x) + np.exp(+x))
         else:
             utility_w0gauss = 0.0
@@ -169,36 +173,9 @@ def berry_main(cwi, operators):
 
     AA = fourier_transform_r_to_k_vec(operators["AA_R"], kpoints, cwi["irvec"], cwi["ndegen"], atoms_frac)
 
-    fs5 = open("./Avec_WF.txt", "w")
-
-    for k in range(AA.shape[1]):
-        fs5.write(f"k-point: {kpoints[k]} \n")
-        AA_k = AA[:, k, :, :]
-        for m in range(AA.shape[2]):
-            for n in range(AA.shape[3]):
-                fs5.write(f"AA{m},{n} = {AA_k[0,m,n]}  {AA_k[1,m,n]}  {AA_k[2,m,n]}\n")
-
     Avec = np.array([U.transpose(0, 2, 1).conjugate() @ AA[i] @ U for i in range(3)])
 
-    fs4 = open("./Avec_Band.txt", "w")
-
-    for k in range(Avec.shape[1]):
-        fs4.write(f"k-point: {kpoints[k]} \n")
-        Avec_k = Avec[:, k, :, :]
-        for m in range(Avec.shape[2]):
-            for n in range(Avec.shape[3]):
-                fs4.write(f"Avec{m},{n} = {Avec_k[0,m,n]}  {Avec_k[1,m,n]}  {Avec_k[2,m,n]}\n")
-
     A = Avec + 1.0j * D_h  # Eq.(25) WYSV06
-
-    fs3 = open("./D_h.txt", "w")
-
-    for k in range(D_h.shape[1]):
-        fs3.write(f"k-point: {kpoints[k]} \n")
-        D_h_k = D_h[:, k, :, :]
-        for m in range(D_h.shape[2]):
-            for n in range(D_h.shape[3]):
-                fs3.write(f"D_h{m},{n} = {D_h_k[0,m,n]}  {D_h_k[1,m,n]}  {D_h_k[2,m,n]}\n")
 
     # (ahc)  Anomalous Hall conductivity (from Berry curvature)
     if cwi["berry_task"] == "ahc":
@@ -262,21 +239,8 @@ def berry_get_kubo(cwi, E, A):
 
     Returns:
     """
-    N1, N2, N3 = cwi["berry_kmesh"]
-    kpoints = np.array(
-        [[i / float(N1), j / float(N2), k / float(N3)] for i in range(N1) for j in range(N2) for k in range(N3)]
-    )
-
     ef = cwi["fermi_energy"]
     berry_kmesh = cwi["berry_kmesh"]
-
-    if cwi["kubo_eigval_max"] < +100000:
-        kubo_eigval_max = cwi["kubo_eigval_max"]
-    elif cwi["dis_froz_max"] < +100000:
-        kubo_eigval_max = cwi["dis_froz_max"] + 0.6667
-    else:
-        kubo_eigval_max = np.max(E) + 0.6667
-
     num_k = np.prod(berry_kmesh)
     num_wann = cwi["num_wann"]
 
@@ -291,7 +255,6 @@ def berry_get_kubo(cwi, E, A):
     eta_smr = kubo_smr_fixed_en_width
 
     kubo_freq_list = np.arange(cwi["kubo_freq_min"], cwi["kubo_freq_max"], cwi["kubo_freq_step"])
-
     if not kubo_adpt_smr and kubo_smr_fixed_en_width != 0.0:
         kubo_freq_list = kubo_freq_list + 1.0j * kubo_smr_fixed_en_width
 
@@ -306,7 +269,12 @@ def berry_get_kubo(cwi, E, A):
     elif cwi["kubo_smr_type"] == "f-d":
         kubo_smr_type_idx = -99
 
-    occ = np.array([[1.0 if E[k, m] < ef else 0.0 for m in range(num_wann)] for k in range(num_k)])
+    if cwi["kubo_eigval_max"] < +100000:
+        kubo_eigval_max = cwi["kubo_eigval_max"]
+    elif cwi["dis_froz_max"] < +100000:
+        kubo_eigval_max = cwi["dis_froz_max"] + 0.6667
+    else:
+        kubo_eigval_max = np.max(E) + 0.6667
 
     kubo_H = 1.0j * np.zeros((kubo_nfreq, 3, 3))
     kubo_AH = 1.0j * np.zeros((kubo_nfreq, 3, 3))
@@ -318,79 +286,73 @@ def berry_get_kubo(cwi, E, A):
         kubo_H_spn = 0.0
         kubo_AH_spn = 0.0
 
-    fs1 = open("./E.txt", "a")
-    fs2 = open("./AA.txt", "a")
+    k_m_n_list = [
+        (k, m, n)
+        for k in range(num_k)
+        for m in range(num_wann)
+        for n in range(num_wann)
+        if m != n and E[k, m] < kubo_eigval_max and E[k, n] < kubo_eigval_max
+    ]
 
-    for k in range(num_k):
-        ek = E[k]
-        fk = occ[k]
-        ak = A[:, k, :, :]
+    def proc(k, m, n):
+        ekm = E[k, m]
+        ekn = E[k, n]
+        fkm = 1.0 if E[k, m] < ef else 0.0
+        fkn = 1.0 if E[k, n] < ef else 0.0
 
-        fs1.write(f"k-point: {kpoints[k]} \n")
-        for e_idx in range(len(ek)):
-            fs1.write(f"ek{e_idx} = {ek[e_idx]} \n")
+        if spin_decomp:
+            if spn_nk[n] >= 0 and spn_nk[m] >= 0:
+                ispn = 0  # up --> up transition
+            elif spn_nk[n] < 0 and spn_nk[m] < 0:
+                ispn = 1  # down --> down
+            else:
+                ispn = 2  # spin-flip
 
-        fs2.write(f"k-point: {kpoints[k]} \n")
-        for m in range(num_wann):
-            for n in range(num_wann):
-                fs2.write(f"A{m},{n} = {ak[0,m,n]}  {ak[1,m,n]}  {ak[2,m,n]}\n")
+        if kubo_adpt_smr:  # Eq.(35) YWVS07
+            # vdum[:] = del_ek[m, :] - del_ek[n, :]
+            # joint_level_spacing = np.sqrt(np.dot(vdum, vdum))*Delta_k
+            # eta_smr = min(joint_level_spacing*kubo_adpt_smr_fac, kubo_adpt_smr_max)
+            eta_smr = kubo_smr_fixed_en_width
+        else:
+            eta_smr = kubo_smr_fixed_en_width
 
-        for m in range(num_wann):
-            for n in range(num_wann):
-                if n == m:
-                    continue
-                if ek[m] > kubo_eigval_max or ek[n] > kubo_eigval_max:
-                    continue
-                if spin_decomp:
-                    if spn_nk[n] >= 0 and spn_nk[m] >= 0:
-                        ispn = 0  # up --> up transition
-                    elif spn_nk[n] < 0 and spn_nk[m] < 0:
-                        ispn = 1  # down --> down
-                    else:
-                        ispn = 2  # spin-flip
-                if kubo_adpt_smr:  # Eq.(35) YWVS07
-                    # vdum[:] = del_ek[m, :] - del_ek[n, :]
-                    # joint_level_spacing = np.sqrt(np.dot(vdum, vdum))*Delta_k
-                    # eta_smr = min(joint_level_spacing*kubo_adpt_smr_fac, kubo_adpt_smr_max)
-                    eta_smr = kubo_smr_fixed_en_width
-                else:
-                    eta_smr = kubo_smr_fixed_en_width
+        # Complex frequency for the anti-Hermitian conductivity
+        if kubo_adpt_smr:
+            omega_list = np.real(kubo_freq_list) + 1.0j * eta_smr
+        else:
+            omega_list = kubo_freq_list
 
-                rfac1 = (fk[m] - fk[n]) * (ek[m] - ek[n])
+        # Broadened delta function for the Hermitian conductivity and JDOS
+        arg = (ekm - ekn - np.real(omega_list)) / eta_smr
+        delta = np.array([utility_w0gauss(arg[ifreq], kubo_smr_type_idx) for ifreq in range(kubo_nfreq)]) / eta_smr
 
-                for ifreq in range(kubo_nfreq):
-                    #
-                    # Complex frequency for the anti-Hermitian conductivity
-                    #
-                    if kubo_adpt_smr:
-                        omega = np.real(kubo_freq_list[ifreq]) + 1.0j * eta_smr
-                    else:
-                        omega = kubo_freq_list[ifreq]
-                    #
-                    # Broadened delta function for the Hermitian conductivity and JDOS
-                    #
-                    arg = (ek[m] - ek[n] - np.real(omega)) / eta_smr
-                    # If only Hermitean part were computed, could speed up
-                    # by inserting here 'if(abs(arg)>10.0_dp) cycle'
-                    delta = utility_w0gauss(arg, kubo_smr_type_idx) / eta_smr
+        rfac1 = (fkm - fkn) * (ekm - ekn)
+        rfac2 = -np.pi * rfac1 * delta
+        cfac = 1.0j * rfac1 / (ekm - ekn - omega_list)
 
-                    #
-                    # Lorentzian shape (for testing purposes)
-                    # delta = 1.0 / (1.0 + arg * arg) / np.pi
-                    # delta = delta / eta_smr
-                    #
-                    cfac = 1.0j * rfac1 / (ek[m] - ek[n] - omega)
-                    rfac2 = -np.pi * rfac1 * delta
+        aiknm_ajkmn = np.array([[A[i, k, n, m] * A[j, k, m, n] for j in range(3)] for i in range(3)])
 
-                    for j in range(3):
-                        for i in range(3):
-                            ak_inm_ak_jmn = ak[i, n, m] * ak[j, m, n]
-                            kubo_H[ifreq, i, j] += rfac2 * ak_inm_ak_jmn
-                            kubo_AH[ifreq, i, j] += cfac * ak_inm_ak_jmn
+        kubo_H_ = rfac2[:, np.newaxis, np.newaxis] * aiknm_ajkmn[np.newaxis, :, :]
+        kubo_AH_ = cfac[:, np.newaxis, np.newaxis] * aiknm_ajkmn[np.newaxis, :, :]
 
-                            if spin_decomp:
-                                kubo_H_spn[ifreq, i, j, ispn] += rfac2 * ak_inm_ak_jmn
-                                kubo_AH_spn[ifreq, i, j, ispn] += cfac * ak_inm_ak_jmn
+        if spin_decomp:
+            kubo_H_spn_ = rfac2[:, np.newaxis, np.newaxis] * aiknm_ajkmn[np.newaxis, :, :]
+            kubo_AH_spn_ = cfac[:, np.newaxis, np.newaxis] * aiknm_ajkmn[np.newaxis, :, :]
+        else:
+            kubo_H_spn_ = 0
+            kubo_AH_spn_ = 0
+
+        return kubo_H_, kubo_AH_, kubo_H_spn_, kubo_AH_spn_
+
+    n_jobs = _cpu_num - 2  # if self._mpm.parallel else 1
+    print(len(k_m_n_list))
+    res_lst = Parallel(n_jobs=n_jobs, verbose=10)(delayed(proc)(k, m, n) for k, m, n in k_m_n_list)
+
+    for kubo_H_, kubo_AH_, kubo_H_spn_, kubo_AH_spn_ in res_lst:
+        kubo_H += kubo_H_
+        kubo_AH += kubo_AH_
+        kubo_H_spn += kubo_H_spn_
+        kubo_AH_spn += kubo_AH_spn_
 
     # Convert to S/cm
     # ==================================================
@@ -407,6 +369,7 @@ def berry_get_kubo(cwi, E, A):
     fac = 1.0e8 * elem_charge_SI**2 / (hbar_SI * cell_volume) / num_k
     kubo_H *= fac
     kubo_AH *= fac
+
     if spin_decomp:
         kubo_H_spn *= fac
         kubo_AH_spn *= fac
