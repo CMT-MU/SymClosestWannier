@@ -1,6 +1,7 @@
 """
 utility codes.
 """
+
 import numpy as np
 import fortio, scipy.io
 
@@ -517,7 +518,7 @@ def samb_decomp_operator(
                     for m, n in d.keys()
                     for bond, R1, R2, R3, v in d[(m, n)]
                     for bond_, R1_, R2_, R3_, v_ in Or[(n, m)]
-                    if np.allclose(bond, -bond_, rtol=1e-03, atol=1e-03)
+                    if np.allclose(bond, -bond_, rtol=1e-04, atol=1e-04)
                 ]
             )
             for tag, d in Zr_dict_.items()
