@@ -575,7 +575,7 @@ class CWModel(dict):
             atoms_frac (ndarray, optional): atom's position in fractional coordinates.
 
         Returns:
-            (ndarray, ndarray): real-space representation of the given operator, O_{ab}(R) = <φ_{a}(R)|O|φ_{b}(0)>, lattice points.
+            (ndarray, ndarray): real-space representation of the given operator, O_{ab}(R) = <φ_{a}(0)|O|φ_{b}(R)>, lattice points.
         """
         return fourier_transform_k_to_r(Ok, kpoints, irvec, atoms_frac)
 
@@ -586,7 +586,7 @@ class CWModel(dict):
         fourier transformation of an arbitrary operator from real-space representation into k-space representation.
 
         Args:
-        Or (ndarray): real-space representation of the given operator, O_{ab}(R) = <φ_{a}(R)|O|φ_{b}(0)>.
+        Or (ndarray): real-space representation of the given operator, O_{ab}(R) = <φ_{a}(0)|O|φ_{b}(R)>.
         kpoints (ndarray): k-points used in DFT calculation, [[k1, k2, k3]] (crystal coordinate).
         irvec (ndarray): irreducible R vectors (crystal coordinate, [[n1,n2,n3]], nj: integer).
         ndegen (ndarray, optional): number of degeneracy at each R.
@@ -624,7 +624,7 @@ class CWModel(dict):
         dictionary form of an arbitrary operator matrix in real-space representation.
 
         Args:
-            Or (ndarray): real-space representation of the given operator, O_{ab}(R) = <φ_{a}(R)|O|φ_{b}(0)>.
+            Or (ndarray): real-space representation of the given operator, O_{ab}(R) = <φ_{a}(0)|O|φ_{b}(R)>.
             rpoints (ndarray): lattice points (crystal coordinate, [[n1,n2,n3]], nj: integer).
             diagonal (bool, optional): diagonal matrix ?
 
@@ -924,7 +924,7 @@ class CWModel(dict):
         write seedname_or.dat.
 
         Args:
-            Or (ndarray): real-space representation of the given operator, O_{ab}(R) = <φ_{a}(R)|O|φ_{b}(0)>.
+            Or (ndarray): real-space representation of the given operator, O_{ab}(R) = <φ_{a}(0)|O|φ_{b}(R)>.
             filename (str): file name.
             rpoints (ndarray): rpoints.
             header (str, optional): header.
@@ -975,8 +975,8 @@ class CWModel(dict):
         write seedname_or.dat.
 
         Args:
-            Hr (ndarray): real-space representation of the Hamiltonian, H_{ab}(R) = <φ_{a}(R)|H|φ_{b}(0)>.
-            Ar (ndarray): real-space representation of the Hamiltonian, A_{ab}(R) = <φ_{a}(R)|r|φ_{b}(0)>.
+            Hr (ndarray): real-space representation of the Hamiltonian, H_{ab}(R) = <φ_{a}(0)|H|φ_{b}(R)>.
+            Ar (ndarray): real-space representation of the Hamiltonian, A_{ab}(R) = <φ_{a}(0)|r|φ_{b}(R)>.
             filename (str): file name.
             rpoints (ndarray): rpoints.
         """

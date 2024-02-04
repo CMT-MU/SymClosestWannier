@@ -148,9 +148,11 @@ def berry_main(cwi, operators):
         # kdotp
     }
 
-    # atoms_list = list(cwi["atoms_frac"].values())
-    # atoms_frac = np.array([atoms_list[i] for i in cwi["nw2n"]])
-    atoms_frac = None
+    if cwi["tb_gauge"]:
+        atoms_list = list(cwi["atoms_frac"].values())
+        atoms_frac = np.array([atoms_list[i] for i in cwi["nw2n"]])
+    else:
+        atoms_frac = None
 
     N1, N2, N3 = cwi["berry_kmesh"]
     kpoints = np.array(
@@ -320,7 +322,6 @@ def berry_get_kubo(cwi, E, A):
     fs2 = open("./AA.txt", "a")
 
     for k in range(num_k):
-        # print(f"{k+1}/{num_k}")
         ek = E[k]
         fk = occ[k]
         ak = A[:, k, :, :]

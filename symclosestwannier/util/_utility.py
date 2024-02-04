@@ -120,7 +120,7 @@ def fourier_transform_k_to_r(Ok, kpoints, irvec, atoms_frac=None):
         atoms_frac (ndarray, optional): atom's position in fractional coordinates.
 
     Returns:
-        (ndarray, ndarray): real-space representation of the given operator, O_{ab}(R) = <φ_{a}(R)|O|φ_{b}(0)>, lattice points.
+        (ndarray, ndarray): real-space representation of the given operator, O_{ab}(R) = <φ_{a}(0)|O|φ_{b}(R)>, lattice points.
     """
     Ok = np.array(Ok, dtype=complex)
     kpoints = np.array(kpoints, dtype=float)
@@ -149,7 +149,7 @@ def fourier_transform_r_to_k(Or, kpoints, irvec, ndegen=None, atoms_frac=None):
     fourier transformation of an arbitrary operator from real-space representation into k-space representation.
 
     Args:
-        Or (ndarray): real-space representation of the given operator, O_{ab}(R) = <φ_{a}(R)|O|φ_{b}(0)>.
+        Or (ndarray): real-space representation of the given operator, O_{ab}(R) = <φ_{a}(0)|O|φ_{b}(R)>.
         kpoints (ndarray): k-points used in DFT calculation, [[k1, k2, k3]] (crystal coordinate).
         irvec (ndarray): irreducible R vectors (crystal coordinate, [[n1,n2,n3]], nj: integer).
         ndegen (ndarray, optional): number of degeneracy at each R.
@@ -213,7 +213,7 @@ def fourier_transform_r_to_k_new(Or, kpoints, unit_cell_cart, irvec, ndegen=None
     fourier transformation of an arbitrary operator from real-space representation into k-space representation.
 
     Args:
-        Or (ndarray): real-space representation of the given operator, O_{ab}(R) = <φ_{a}(R)|O|φ_{b}(0)>.
+        Or (ndarray): real-space representation of the given operator, O_{ab}(R) = <φ_{a}(0)|O|φ_{b}(R)>.
         kpoints (ndarray): k-points used in DFT calculation, [[k1, k2, k3]] (crystal coordinate).
         unit_cell_cart (ndarray): transform matrix, [a1,a2,a3], [None].
         irvec (ndarray): irreducible R vectors (crystal coordinate, [[n1,n2,n3]], nj: integer).
@@ -245,9 +245,8 @@ def fourier_transform_r_to_k_new(Or, kpoints, unit_cell_cart, irvec, ndegen=None
         eiktau = np.exp(-2 * np.pi * 1j * ktau)
 
         atoms_cart = np.array([np.array(r) @ np.array(A) for r in atoms_frac])
-        print(atoms_cart.shape)
 
-        bond_cart = np.array([[[((R + rm) - rn) for rn in atoms_cart] for rm in atoms_cart] for R in irvec_cart])
+        bond_cart = np.array([[[(R + rn) - rm for rn in atoms_cart] for rm in atoms_cart] for R in irvec_cart])
 
         Ok = np.einsum("R,kR,km,Rmn,kn->kmn", weight, phase_R, eiktau, Or, eiktau.conjugate(), optimize=True)
         Ok_dx, Ok_dy, Ok_dz = 1.0j * np.einsum(
@@ -291,7 +290,7 @@ def matrix_dict_r(Or, rpoints, diagonal=False):
     dictionary form of an arbitrary operator matrix in real-space representation.
 
     Args:
-        Or (ndarray): real-space representation of the given operator, O_{ab}(R) = <φ_{a}(R)|O|φ_{b}(0)>.
+        Or (ndarray): real-space representation of the given operator, O_{ab}(R) = <φ_{a}(0)|O|φ_{b}(R)>.
         rpoints (ndarray): lattice points (crystal coordinate, [[n1,n2,n3]], nj: integer).
         diagonal (bool, optional): diagonal matrix ?
 

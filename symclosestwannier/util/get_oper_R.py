@@ -72,13 +72,13 @@ def get_HH_R(cwi):
     kpoints = np.array(cwi["kpoints"])
     irvec = np.array(cwi["irvec"])
 
-    if cwi["tb_gauge"]:
-        atoms_list = list(cwi["atoms_frac"].values())
-        atoms_frac = np.array([atoms_list[i] for i in cwi["nw2n"]])
-    else:
-        atoms_frac = None
+    # if cwi["tb_gauge"]:
+    #     atoms_list = list(cwi["atoms_frac"].values())
+    #     atoms_frac = np.array([atoms_list[i] for i in cwi["nw2n"]])
+    # else:
+    #     atoms_frac = None
 
-    HH_R = fourier_transform_k_to_r(HH_k, kpoints, irvec, atoms_frac)
+    HH_R = fourier_transform_k_to_r(HH_k, kpoints, irvec)
 
     return HH_R
 
@@ -115,13 +115,13 @@ def get_AA_R(cwi):
 
     AA_k = 0.5 * (AA_k + np.einsum("akmn->aknm", AA_k).conj())
 
-    if cwi["tb_gauge"]:
-        atoms_list = list(cwi["atoms_frac"].values())
-        atoms_frac = np.array([atoms_list[i] for i in cwi["nw2n"]])
-    else:
-        atoms_frac = None
+    # if cwi["tb_gauge"]:
+    #     atoms_list = list(cwi["atoms_frac"].values())
+    #     atoms_frac = np.array([atoms_list[i] for i in cwi["nw2n"]])
+    # else:
+    #     atoms_frac = None
 
-    AA_R = np.array([fourier_transform_k_to_r(AA_k[i], kpoints, irvec, atoms_frac) for i in range(3)])
+    AA_R = np.array([fourier_transform_k_to_r(AA_k[i], kpoints, irvec) for i in range(3)])
 
     return AA_R
 
