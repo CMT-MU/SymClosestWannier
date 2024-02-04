@@ -17,6 +17,8 @@
   - delta             : small constant to avoid ill-conditioning of overlap matrices (float), [1e-12].
   - svd               : implement singular value decomposition ? otherwise adopt Lowdin's orthogonalization method (bool), [False].
   - verbose           : verbose calculation info (bool, optional), [False].
+  - transl_inv        : use Eq.(31) of Marzari&Vanderbilt PRB 56, 12847 (1997) for band-diagonal position matrix elements? (bool), [True].
+  - tb_gauge          : use tb gauge? (bool), [False].
   - write_hr          : write seedname_hr.py ? (bool), [False].
   - write_sr          : write seedname_sr.py ? (bool), [False].
   - write_u_matrices  : write seedname_u.dat and seedname_u_dis.dat ? (bool), [False].

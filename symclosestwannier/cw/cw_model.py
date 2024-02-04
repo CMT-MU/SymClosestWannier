@@ -471,12 +471,16 @@ class CWModel(dict):
         Hr_sym = CWModel.construct_Or(list(z.values()), self._cwi["num_wann"], rpoints_mp, mat)
         Hr_nonortho_sym = CWModel.construct_Or(list(z_nonortho.values()), self._cwi["num_wann"], rpoints_mp, mat)
 
-        Sk_sym = CWModel.fourier_transform_r_to_k(Sr_sym, self._cwi["kpoints"], rpoints_mp, atoms_frac=atoms_frac_samb)
-        Hk_sym = CWModel.fourier_transform_r_to_k(Hr_sym, self._cwi["kpoints"], rpoints_mp, atoms_frac=atoms_frac_samb)
-        Hk_nonortho_sym = CWModel.fourier_transform_r_to_k(
-            Hr_nonortho_sym, self._cwi["kpoints"], rpoints_mp, atoms_frac=atoms_frac_samb
-        )
-
+        if self._cwi["tb_gauge"]:
+            Sk_sym = CWModel.fourier_transform_r_to_k(Sr_sym, self._cwi["kpoints"], rpoints_mp, atoms_frac=atoms_frac_samb)
+            Hk_sym = CWModel.fourier_transform_r_to_k(Hr_sym, self._cwi["kpoints"], rpoints_mp, atoms_frac=atoms_frac_samb)
+            Hk_nonortho_sym = CWModel.fourier_transform_r_to_k(
+                Hr_nonortho_sym, self._cwi["kpoints"], rpoints_mp, atoms_frac=atoms_frac_samb
+            )
+        else:
+            Sk_sym = CWModel.fourier_transform_r_to_k(Sr_sym, self._cwi["kpoints"], rpoints_mp)
+            Hk_sym = CWModel.fourier_transform_r_to_k(Hr_sym, self._cwi["kpoints"], rpoints_mp)
+            Hk_nonortho_sym = CWModel.fourier_transform_r_to_k(Hr_nonortho_sym, self._cwi["kpoints"], rpoints_mp)
         self._cwm.log("done", file=self._outfile, mode="a")
 
         #####
@@ -502,9 +506,13 @@ class CWModel(dict):
             )
             Ek_path, _ = np.linalg.eigh(Hk_path)
 
-            Hk_sym_path = CWModel.fourier_transform_r_to_k(
-                Hr_sym, self._cwi["kpoints_path"], rpoints_mp, atoms_frac=atoms_frac_samb
-            )
+            if self._cwi["tb_gauge"]:
+                Hk_sym_path = CWModel.fourier_transform_r_to_k(
+                    Hr_sym, self._cwi["kpoints_path"], rpoints_mp, atoms_frac=atoms_frac_samb
+                )
+            else:
+                Hk_sym_path = CWModel.fourier_transform_r_to_k(Hr_sym, self._cwi["kpoints_path"], rpoints_mp)
+
             Ek_path_sym, _ = np.linalg.eigh(Hk_sym_path)
 
             num_k, num_wann = Ek_path_sym.shape
@@ -567,7 +575,7 @@ class CWModel(dict):
             atoms_frac (ndarray, optional): atom's position in fractional coordinates.
 
         Returns:
-            (ndarray, ndarray): real-space representation of the given operator, O_{ab}(R) = <φ_{a}(R)|O|φ_{b}(0)>, lattice points.
+            (ndarray, ndarray): real-space representation of the given operator, O_{ab}(R) = <φ_{a}(0)|O|φ_{b}(R)>, lattice points.
         """
         return fourier_transform_k_to_r(Ok, kpoints, irvec, atoms_frac)
 
@@ -578,7 +586,7 @@ class CWModel(dict):
         fourier transformation of an arbitrary operator from real-space representation into k-space representation.
 
         Args:
-        Or (ndarray): real-space representation of the given operator, O_{ab}(R) = <φ_{a}(R)|O|φ_{b}(0)>.
+        Or (ndarray): real-space representation of the given operator, O_{ab}(R) = <φ_{a}(0)|O|φ_{b}(R)>.
         kpoints (ndarray): k-points used in DFT calculation, [[k1, k2, k3]] (crystal coordinate).
         irvec (ndarray): irreducible R vectors (crystal coordinate, [[n1,n2,n3]], nj: integer).
         ndegen (ndarray, optional): number of degeneracy at each R.
@@ -616,7 +624,7 @@ class CWModel(dict):
         dictionary form of an arbitrary operator matrix in real-space representation.
 
         Args:
-            Or (ndarray): real-space representation of the given operator, O_{ab}(R) = <φ_{a}(R)|O|φ_{b}(0)>.
+            Or (ndarray): real-space representation of the given operator, O_{ab}(R) = <φ_{a}(0)|O|φ_{b}(R)>.
             rpoints (ndarray): lattice points (crystal coordinate, [[n1,n2,n3]], nj: integer).
             diagonal (bool, optional): diagonal matrix ?
 
@@ -916,7 +924,7 @@ class CWModel(dict):
         write seedname_or.dat.
 
         Args:
-            Or (ndarray): real-space representation of the given operator, O_{ab}(R) = <φ_{a}(R)|O|φ_{b}(0)>.
+            Or (ndarray): real-space representation of the given operator, O_{ab}(R) = <φ_{a}(0)|O|φ_{b}(R)>.
             filename (str): file name.
             rpoints (ndarray): rpoints.
             header (str, optional): header.
@@ -967,8 +975,8 @@ class CWModel(dict):
         write seedname_or.dat.
 
         Args:
-            Hr (ndarray): real-space representation of the Hamiltonian, H_{ab}(R) = <φ_{a}(R)|H|φ_{b}(0)>.
-            Ar (ndarray): real-space representation of the Hamiltonian, A_{ab}(R) = <φ_{a}(R)|r|φ_{b}(0)>.
+            Hr (ndarray): real-space representation of the Hamiltonian, H_{ab}(R) = <φ_{a}(0)|H|φ_{b}(R)>.
+            Ar (ndarray): real-space representation of the Hamiltonian, A_{ab}(R) = <φ_{a}(0)|r|φ_{b}(R)>.
             filename (str): file name.
             rpoints (ndarray): rpoints.
         """
@@ -987,7 +995,7 @@ class CWModel(dict):
             ndegen = np.array(self._cwi["ndegen"])
             tb_str += "{:12d}\n{:12d}\n".format(num_wann, len(ndegen))
             tb_str += textwrap.fill("".join(["{:5d}".format(x) for x in ndegen]), 75, drop_whitespace=False)
-            tb_str += "\n"
+            tb_str += "\n\n"
 
         else:
             rpoints = np.array(rpoints)
