@@ -133,23 +133,26 @@ class CWin(dict):
         d = CWin._default().copy()
 
         for line in cwin_data:
-            line = [vi for vi in line.replace("\n", "").split(" ") if vi != ""]
-            if len(line) == 0:
+            line = line.replace("\n", "")
+
+            if len([vi for vi in line.split(" ") if vi != ""]) == 0:
                 continue
 
-            if "!" in line[0]:
+            key = line.split("=")[0]
+            key = key.replace(" ", "")
+
+            if "!" in key or "#" in key:
                 continue
 
-            if "#" in line[0]:
-                continue
+            if "=" in line:
+                v = (line.split("=")[1].split("!")[0]).replace(" ", "")
+            elif ":" in line:
+                v = (line.split(":")[1].split("!")[0]).replace(" ", "")
 
-            k = line[0]
-            if k == "ket_amn":
-                v = "".join(line[2:]) if line[1] == "=" else "".join(line[1:])
-            else:
-                v = line[2] if line[1] == "=" else line[1]
+            if key == "ket_amn":
+                v = "".join(v)
 
-            d[k] = self._str_to(k, v)
+            d[key] = self._str_to(key, v)
         assert not (
             d["restart"] == "w90" and d["symmetrization"]
         ), "Symmetrization cannot be performed when restart == w90."
@@ -157,17 +160,17 @@ class CWin(dict):
         return d
 
     # ==================================================
-    def _str_to(self, k, v):
+    def _str_to(self, key, v):
         v = str(v).replace("'", "").replace('"', "")
 
-        if k in ("seedname", "mp_seedname"):
+        if key in ("seedname", "mp_seedname"):
             pass
-        elif k in ("outdir", "mp_outdir"):
+        elif key in ("outdir", "mp_outdir"):
             v = v[:-1] if v[-1] == "/" else v
-        elif k == "restart":
+        elif key == "restart":
             if v not in ("cw", "sym", "w90"):
                 raise Exception(f"invalid restart = {v} was given. choose from 'cw'/'w90'/'sym'.")
-        elif k in (
+        elif key in (
             "proj_min",
             "dis_win_emax",
             "dis_win_emin",
@@ -178,14 +181,14 @@ class CWin(dict):
             "fermi_energy",
         ):
             v = float(v)
-        elif k == "N1":
+        elif key == "N1":
             v = int(v)
-        elif k == "ket_amn":
+        elif key == "ket_amn":
             if "(" in str(v) and ")" in str(v):
                 v = [str(o) if i == 0 else f"({str(o)}" for i, o in enumerate(v[1:-1].split(",("))]
             else:
                 v = [str(o) for o in v[1:-1].split(",")]
-        elif k == "irreps":
+        elif key == "irreps":
             if "[" in v and "]" in v:
                 v = [str(o) for o in v[1:-1].split(",")]
             else:
