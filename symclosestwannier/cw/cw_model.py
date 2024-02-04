@@ -471,12 +471,16 @@ class CWModel(dict):
         Hr_sym = CWModel.construct_Or(list(z.values()), self._cwi["num_wann"], rpoints_mp, mat)
         Hr_nonortho_sym = CWModel.construct_Or(list(z_nonortho.values()), self._cwi["num_wann"], rpoints_mp, mat)
 
-        Sk_sym = CWModel.fourier_transform_r_to_k(Sr_sym, self._cwi["kpoints"], rpoints_mp, atoms_frac=atoms_frac_samb)
-        Hk_sym = CWModel.fourier_transform_r_to_k(Hr_sym, self._cwi["kpoints"], rpoints_mp, atoms_frac=atoms_frac_samb)
-        Hk_nonortho_sym = CWModel.fourier_transform_r_to_k(
-            Hr_nonortho_sym, self._cwi["kpoints"], rpoints_mp, atoms_frac=atoms_frac_samb
-        )
-
+        if self._cwi["tb_gauge"]:
+            Sk_sym = CWModel.fourier_transform_r_to_k(Sr_sym, self._cwi["kpoints"], rpoints_mp, atoms_frac=atoms_frac_samb)
+            Hk_sym = CWModel.fourier_transform_r_to_k(Hr_sym, self._cwi["kpoints"], rpoints_mp, atoms_frac=atoms_frac_samb)
+            Hk_nonortho_sym = CWModel.fourier_transform_r_to_k(
+                Hr_nonortho_sym, self._cwi["kpoints"], rpoints_mp, atoms_frac=atoms_frac_samb
+            )
+        else:
+            Sk_sym = CWModel.fourier_transform_r_to_k(Sr_sym, self._cwi["kpoints"], rpoints_mp)
+            Hk_sym = CWModel.fourier_transform_r_to_k(Hr_sym, self._cwi["kpoints"], rpoints_mp)
+            Hk_nonortho_sym = CWModel.fourier_transform_r_to_k(Hr_nonortho_sym, self._cwi["kpoints"], rpoints_mp)
         self._cwm.log("done", file=self._outfile, mode="a")
 
         #####
@@ -502,9 +506,13 @@ class CWModel(dict):
             )
             Ek_path, _ = np.linalg.eigh(Hk_path)
 
-            Hk_sym_path = CWModel.fourier_transform_r_to_k(
-                Hr_sym, self._cwi["kpoints_path"], rpoints_mp, atoms_frac=atoms_frac_samb
-            )
+            if self._cwi["tb_gauge"]:
+                Hk_sym_path = CWModel.fourier_transform_r_to_k(
+                    Hr_sym, self._cwi["kpoints_path"], rpoints_mp, atoms_frac=atoms_frac_samb
+                )
+            else:
+                Hk_sym_path = CWModel.fourier_transform_r_to_k(Hr_sym, self._cwi["kpoints_path"], rpoints_mp)
+
             Ek_path_sym, _ = np.linalg.eigh(Hk_sym_path)
 
             num_k, num_wann = Ek_path_sym.shape
