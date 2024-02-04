@@ -89,7 +89,7 @@ class CWInfo(dict):
                 if not np.any([d["write_rmn"], d["write_vmn"], d["write_tb"], d["berry"]]):
                     continue
             if name == "spn":
-                if not np.any([d["write_spn"], d["write_spn"], d["spin_decomp"]]):
+                if not np.any([d["write_spn"], d["spin_decomp"]]):
                     continue
 
             info = C(topdir, seedname)
@@ -97,11 +97,12 @@ class CWInfo(dict):
                 for name_, info_ in info_list:
                     if k in info_:
                         v_ = info_[k]
-                        try:
-                            if v != v_:
+
+                        if type(v) == list:
+                            if not np.allclose(v, v_, 1e-6):
                                 raise Exception(f"The value of {k} in {name} and {name_} is inconsistent.")
-                        except:
-                            if not np.sum(np.array(v) - np.array(v_)) < 1e-6:
+                        else:
+                            if v != v_:
                                 raise Exception(f"The value of {k} in {name} and {name_} is inconsistent.")
 
             info_list.append((name, info))

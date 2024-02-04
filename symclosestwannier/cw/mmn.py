@@ -2,6 +2,7 @@
 Mmn manages overlap matrix elements in seedname.mmn file, M_{mn}(k,b) = <u^{KS}_{m}(k)|u^{KS}_{n}(k+b)>.
 - ψ^{KS}_{m}(k) = u^{KS}_{m}(k) e^{ik.r}.
 """
+
 import os
 import gzip
 import tarfile
@@ -116,9 +117,7 @@ class Mmn(dict):
 
         assert np.all(nnkpts_data[:, :, 0] - 1 == np.arange(num_k)[:, None])
 
-        nnkpts = nnkpts_data
-
-        nnkpts = nnkpts.tolist()
+        nnkpts = nnkpts_data.tolist()
         Mkb = Mkb.tolist()
 
         d = {"num_k": num_k, "num_bands": num_bands, "num_b": num_b, "nnkpts": nnkpts, "Mkb": Mkb}

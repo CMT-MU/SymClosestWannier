@@ -18,6 +18,7 @@ _default = {
     "num_atom": 1,
     "num_b": 1,
     "kpoints": [[0, 0, 0]],
+    "kpoints_wo_shift": [[0, 0, 0]],
     "nnkpts": None,
     "nw2n": None,
     "nw2l": None,
@@ -73,24 +74,25 @@ class Nnkp(dict):
 
         Returns:
             dict:
-                - A          : real lattice vectors, A = [a1,a2,a3] (list), [[[1,0,0], [0,1,0], [0,0,1]]].
-                - B          : reciprocal lattice vectors, B = [b1,b2,b3] (list), [[[2*pi,0,0], [0,2*pi,0], [0,0,2*pi]]].
-                - num_k      : # of k points (int), [1].
-                - num_wann   : # of WFs (int), [1].
-                - num_atom   : # of atoms (int), [1].
-                - num_b      : # of b-vectors (int), [1].
-                - kpoints    : k-points, [[k1, k2, k3]] (crystal coordinate) (list), [[[0, 0, 0]]].
-                - nnkpts     : nearest-neighbour k-points (list), [None].
-                - nw2n       : atom position index of each WFs (list), [None].
-                - nw2l       : l specifies the angular part Θlm(θ, φ) (list), [None].
-                - nw2m       : m specifies the angular part Θlm(θ, φ) (list), [None].
-                - nw2r       : r specifies the radial part Rr(r) (list), [None].
-                - atom_orb   : WFs indexes of each atom (list), [None].
-                - atom_pos   : atom position index of each atom (list), [None].
-                - atom_pos_r : atom position of each atom in fractional coordinates with respect to the lattice vectors (list), [None].
-                - bvec_cart  : b-vectors (cartesian coordinate) (list), [None].
-                - bvec_crys  : b-vectors (crystal coordinate) (list), [None].
-                - wb         : weight for each k-points and nearest-neighbour k-points (list), [None].
+                - A                : real lattice vectors, A = [a1,a2,a3] (list), [[[1,0,0], [0,1,0], [0,0,1]]].
+                - B                : reciprocal lattice vectors, B = [b1,b2,b3] (list), [[[2*pi,0,0], [0,2*pi,0], [0,0,2*pi]]].
+                - num_k            : # of k points (int), [1].
+                - num_wann         : # of WFs (int), [1].
+                - num_atom         : # of atoms (int), [1].
+                - num_b            : # of b-vectors (int), [1].
+                - kpoints          : k-points, [[k1, k2, k3]] (crystal coordinate) (list), [[[0, 0, 0]]].
+                - kpoints_wo_shift : k-points without shift, [[k1, k2, k3]] (crystal coordinate) (list), [[[0, 0, 0]]].
+                - nnkpts           : nearest-neighbour k-points (list), [None].
+                - nw2n             : atom position index of each WFs (list), [None].
+                - nw2l             : l specifies the angular part Θlm(θ, φ) (list), [None].
+                - nw2m             : m specifies the angular part Θlm(θ, φ) (list), [None].
+                - nw2r             : r specifies the radial part Rr(r) (list), [None].
+                - atom_orb         : WFs indexes of each atom (list), [None].
+                - atom_pos         : atom position index of each atom (list), [None].
+                - atom_pos_r       : atom position of each atom in fractional coordinates with respect to the lattice vectors (list), [None].
+                - bvec_cart        : b-vectors (cartesian coordinate) (list), [None].
+                - bvec_crys        : b-vectors (crystal coordinate) (list), [None].
+                - wb               : weight for each k-points and nearest-neighbour k-points (list), [None].
         """
         if os.path.exists(file_name):
             with open(file_name) as fp:
@@ -116,12 +118,14 @@ class Nnkp(dict):
 
                 if "begin kpoints" in line:
                     d["num_k"] = int(nnkp_data[i + 1])
-                    kpoints = np.genfromtxt(nnkp_data[i + 2 : i + 2 + d["num_k"]], dtype=float)
-                    kpoints = np.mod(kpoints, 1)  # 0 <= kj < 1.0
+                    kpoints_wo_shift = np.genfromtxt(nnkp_data[i + 2 : i + 2 + d["num_k"]], dtype=float)
+                    kpoints = np.mod(kpoints_wo_shift, 1)  # 0 <= kj < 1.0
                     if kpoints.ndim == 1:
                         d["kpoints"] = [kpoints.tolist()]
+                        d["kpoints_wo_shift"] = [kpoints_wo_shift.tolist()]
                     else:
                         d["kpoints"] = kpoints.tolist()
+                        d["kpoints_wo_shift"] = kpoints_wo_shift.tolist()
 
                 if "begin nnkpts" in line:
                     d["num_b"] = int(nnkp_data[i + 1])
@@ -181,14 +185,16 @@ class Nnkp(dict):
             bvec_crys = np.zeros([d["num_b"], 3])
             bbmat = np.zeros([d["num_b"], 9])
             try:
-                Gp_idx = d["kpoints"].index([0.0, 0.0, 0.0])
+                Gp_idx = d["kpoints_wo_shift"].index([0.0, 0.0, 0.0])
             except:
                 raise Exception("Gamma point must be included.")
+
             for i in range(d["num_b"]):
                 kv = d["nnkpts"][Gp_idx][i]
-                k = d["kpoints"][kv[0] - 1]
-                k_b = d["kpoints"][kv[1] - 1]
+                k = d["kpoints_wo_shift"][kv[0] - 1]
+                k_b = d["kpoints_wo_shift"][kv[1] - 1]
                 b = np.array(k_b) - np.array(k) + np.array(kv[2:5])
+
                 bvec_cart[i, :] = self.k_crys2cart(b, d["B"])
                 bvec_crys[i, :] = self.k_cart2crys(bvec_cart[i, :], d["A"])
                 bbmat[i, :] = [bvec_cart[i, a] * bvec_cart[i, b] for a, b in itertools.product(range(3), range(3))]
@@ -222,8 +228,8 @@ class Nnkp(dict):
         d : array of integer [5]
         return : b vector in cartesian/fractional coordinates
         """
-        k = np.array(self["kpoints"][d[0] - 1])
-        kb = np.array(self["kpoints"][d[1] - 1])
+        k = np.array(self["kpoints_wo_shift"][d[0] - 1])
+        kb = np.array(self["kpoints_wo_shift"][d[1] - 1])
         G = np.array(d[2:5])
         b_crys = kb + G - k
 

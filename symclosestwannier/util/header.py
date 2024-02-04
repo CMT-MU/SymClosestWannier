@@ -17,6 +17,8 @@ cwin_info = {
     "verbose": "verbose calculation info (bool, optional), [False].",
     "parallel": "use parallel code? (bool), [False].",
     "formatter": "format by using black? (bool), [False].",
+    "transl_inv": "use Eq.(31) of Marzari&Vanderbilt PRB 56, 12847 (1997) for band-diagonal position matrix elements? (bool), [True].",
+    "tb_gauge"          : "use tb gauge? (bool), [False].",
     "write_hr": "write seedname_hr.dat ? (bool), [False].",
     "write_sr": "write seedname_sr.dat ? (bool), [False].",
     "write_u_matrices": "write seedname_u.dat and seedname_u_dis.dat ? (bool), [False].",
@@ -93,6 +95,7 @@ nnkp_info = {
     "num_atom": "# of atoms (int), [1].",
     "num_b": "# of b-vectors (int), [1].",
     "kpoints": "k-points, [[k1, k2, k3]] (crystal coordinate) (list), [[[0, 0, 0]]].",
+    "kpoints_wo_shift": "k-points without shift, [[k1, k2, k3]] (crystal coordinate) (list), [[[0, 0, 0]]].",
     "nnkpts": "nearest-neighbour k-points (list), [None].",
     "nw2n": "atom position index of each WFs (list), [None].",
     "nw2l": "l specifies the angular part Θlm(θ, φ) (list), [None].",
@@ -264,7 +267,7 @@ pk_header = """
 hr_header = """
 === Hamiltonian matrix elements in real-space ===
 - n1 n2 n3 a b re(H_{ab}(R)) im(H_{ab}(R))
-    - H_{ab}(R)      : <φ_{a}(R)|H|φ_{b}(0)>.
+    - H_{ab}(R)      : <φ_{a}(0)|H|φ_{b}(R)>.
     - φ_{a}(R)       : orthogonalized pseudo atomic orbital.
     - R = (n1,n2,n3) : lattice points (crystal coordinate, nj: integer).
 """
@@ -272,7 +275,7 @@ hr_header = """
 sr_header = """
 === Overlap matrix elements in real-space ===
 - n1 n2 n3 a b re(S_{ab}(R)) im(S_{ab}(R))
-    - S_{ab}(R)      : <φ_{a}(R)|φ_{b}(0)>.
+    - S_{ab}(R)      : <φ_{a}(0)|φ_{b}(R)>.
     - φ_{a}(R)       : non-orthogonalized pseudo atomic orbital.
     - R = (n1,n2,n3) : lattice points (crystal coordinate, nj: integer).
 """
