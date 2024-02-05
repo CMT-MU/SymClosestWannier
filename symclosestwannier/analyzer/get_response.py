@@ -33,18 +33,12 @@
 # ---------------------------------------------------------------
 
 import numpy as np
-import multiprocessing
-from joblib import Parallel, delayed
 
 from symclosestwannier.util._utility import (
     fourier_transform_r_to_k,
     fourier_transform_r_to_k_new,
     fourier_transform_r_to_k_vec,
 )
-
-# ==================================================
-# number of cpu cores
-_cpu_num = multiprocessing.cpu_count()
 
 
 # ==================================================
@@ -294,7 +288,8 @@ def berry_get_kubo(cwi, E, A):
         if m != n and E[k, m] < kubo_eigval_max and E[k, n] < kubo_eigval_max
     ]
 
-    def proc(k, m, n):
+    for cnt, (k, m, n) in enumerate(k_m_n_list):
+        print(f"{cnt+1}/{len(k_m_n_list)}")
         ekm = E[k, m]
         ekn = E[k, n]
         fkm = 1.0 if E[k, m] < ef else 0.0
@@ -332,27 +327,12 @@ def berry_get_kubo(cwi, E, A):
 
         aiknm_ajkmn = np.array([[A[i, k, n, m] * A[j, k, m, n] for j in range(3)] for i in range(3)])
 
-        kubo_H_ = rfac2[:, np.newaxis, np.newaxis] * aiknm_ajkmn[np.newaxis, :, :]
-        kubo_AH_ = cfac[:, np.newaxis, np.newaxis] * aiknm_ajkmn[np.newaxis, :, :]
+        kubo_H += rfac2[:, np.newaxis, np.newaxis] * aiknm_ajkmn[np.newaxis, :, :]
+        kubo_AH += cfac[:, np.newaxis, np.newaxis] * aiknm_ajkmn[np.newaxis, :, :]
 
         if spin_decomp:
-            kubo_H_spn_ = rfac2[:, np.newaxis, np.newaxis] * aiknm_ajkmn[np.newaxis, :, :]
-            kubo_AH_spn_ = cfac[:, np.newaxis, np.newaxis] * aiknm_ajkmn[np.newaxis, :, :]
-        else:
-            kubo_H_spn_ = 0
-            kubo_AH_spn_ = 0
-
-        return kubo_H_, kubo_AH_, kubo_H_spn_, kubo_AH_spn_
-
-    n_jobs = _cpu_num - 2  # if self._mpm.parallel else 1
-    print(len(k_m_n_list))
-    res_lst = Parallel(n_jobs=n_jobs, verbose=10)(delayed(proc)(k, m, n) for k, m, n in k_m_n_list)
-
-    for kubo_H_, kubo_AH_, kubo_H_spn_, kubo_AH_spn_ in res_lst:
-        kubo_H += kubo_H_
-        kubo_AH += kubo_AH_
-        kubo_H_spn += kubo_H_spn_
-        kubo_AH_spn += kubo_AH_spn_
+            kubo_H_spn += rfac2[:, np.newaxis, np.newaxis] * aiknm_ajkmn[np.newaxis, :, :]
+            kubo_AH_spn += cfac[:, np.newaxis, np.newaxis] * aiknm_ajkmn[np.newaxis, :, :]
 
     # Convert to S/cm
     # ==================================================

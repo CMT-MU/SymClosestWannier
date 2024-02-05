@@ -4,6 +4,7 @@ Umat manages unitary matrix elements in seedname_u.mat (Uopt(k)) and seedname_u_
 - Udis(k): num_wann×num_bands partial unitary matrix.
 - U(k): num_wann×num_bands partial unitary matrix.
 """
+
 import os
 import gzip
 import tarfile
@@ -20,6 +21,7 @@ _default = {
     "num_bands": 1,
     "num_wann": 1,
     "kpoints": [[0, 0, 0]],
+    "kpoints_wo_shift": [[0, 0, 0]],
     "Uoptk": None,
     "Udisk": None,
     "Uk": None,
@@ -69,13 +71,14 @@ class Umat(dict):
 
         Returns:
             dict:
-                - num_k     : # of k points (int), [1].
-                - num_bands : # of bands passed to the code (int), [1].
-                - num_wann  : # of WFs (int), [1].
-                - k-points  : [[k1, k2, k3]] (crystal coordinate) (list), [[[0, 0, 0]]].,
-                - Uoptk     : num_wann×num_wann full unitary matrix (ndarray), [None].
-                - Udisk     : num_wann×num_bands partial unitary matrix (ndarray), [None].
-                - Uk        : num_wann×num_bands full unitary matrix (ndarray), [None].
+                - num_k            : # of k points (int), [1].
+                - num_bands        : # of bands passed to the code (int), [1].
+                - num_wann         : # of WFs (int), [1].
+                - k-points         : [[k1, k2, k3]] (crystal coordinate) (list), [[[0, 0, 0]]].,
+                - kpoints_wo_shift : k-points without shift, [[k1, k2, k3]] (crystal coordinate) (list), [[[0, 0, 0]]].
+                - Uoptk            : num_wann×num_wann full unitary matrix (ndarray), [None].
+                - Udisk            : num_wann×num_bands partial unitary matrix (ndarray), [None].
+                - Uk               : num_wann×num_bands full unitary matrix (ndarray), [None].
         """
         # Uoptk
         if os.path.exists(u_file_name):
@@ -94,11 +97,13 @@ class Umat(dict):
 
         num_k, num_wann, _ = [int(x) for x in u_mat_data[1].split()]
 
-        kpoints = np.zeros([num_k, 3], dtype=float)
+        kpoints_wo_shift = np.zeros([num_k, 3], dtype=float)
         Uoptk = np.zeros([num_k, num_wann, num_wann], dtype=complex)
         u_mat_data = u_mat_data[3:]
         for k in range(num_k):
-            kpoints[k] = np.array([float(vi) for vi in u_mat_data[k * (num_wann * num_wann + 2)].split() if vi != ""])
+            kpoints_wo_shift[k] = np.array(
+                [float(vi) for vi in u_mat_data[k * (num_wann * num_wann + 2)].split() if vi != ""]
+            )
             u = u_mat_data[k * (num_wann * num_wann + 2) + 1 : k * (num_wann * num_wann + 2) + 1 + num_wann * num_wann]
             for j in range(num_wann):  # col
                 for i in range(num_wann):  # row
@@ -161,11 +166,14 @@ class Umat(dict):
 
         Uk = Udisk @ Uoptk
 
+        kpoints = np.mod(kpoints_wo_shift, 1)  # 0 <= kj < 1.0
+
         d = {
             "num_k": num_k,
             "num_bands": num_bands,
             "num_wann": num_wann,
             "kpoints": kpoints.tolist(),
+            "kpoints_wo_shift": kpoints_wo_shift.tolist(),
             "Uoptk": Uoptk.tolist(),
             "Udisk": Udisk.tolist(),
             "Uk": Uk.tolist(),
@@ -187,7 +195,7 @@ class Umat(dict):
             fp.write("{} {} {}\n\n".format(self["num_k"], self["num_wann"], self["num_wann"]))
 
             for k in range(self["num_k"]):
-                kv = self["kpoints"][k]
+                kv = self["kpoints_wo_shift"][k]
                 fp.write("{0:18.12f} {1:18.12f} {2:18.12f} \n".format(kv[0], kv[1], kv[2]))
                 for i in range(self["num_wann"]):
                     for j in range(self["num_wann"]):
@@ -211,7 +219,7 @@ class Umat(dict):
             fp.write("{} {} {}\n\n".format(self["num_k"], self["num_wann"], self["num_bands"]))
 
             for k in range(self["num_k"]):
-                kv = self["kpoints"][k]
+                kv = self["kpoints_wo_shift"][k]
                 fp.write("{0:18.12f} {1:18.12f} {2:18.12f} \n".format(kv[0], kv[1], kv[2]))
                 for i in range(self["num_wann"]):
                     for j in range(self["num_bands"]):
