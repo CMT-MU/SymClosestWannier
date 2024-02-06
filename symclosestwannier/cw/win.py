@@ -1,6 +1,7 @@
 """
 Win manages input file for wannier90.x, seedname.win file.
 """
+
 import os
 import numpy as np
 
@@ -291,7 +292,7 @@ class Win(dict):
         d["kmesh"] = [int(x) for x in kmesh.split()]
         kmesh_spacing = self._get_param_keyword(win_data, "kmesh_spacing", "1  1  1", dtype=str)
         d["kmesh_spacing"] = [int(x) for x in kmesh_spacing.split()]
-        d["adpt_smr"] = self._get_param_keyword(win_data, "adpt_smr", True, dtype=bool)
+        d["adpt_smr"] = self._get_param_keyword(win_data, "adpt_smr", False, dtype=bool)
         d["adpt_smr_fac"] = self._get_param_keyword(win_data, "adpt_smr_fac", np.sqrt(2), dtype=float)
         d["adpt_smr_max"] = self._get_param_keyword(win_data, "adpt_smr_max", 1.0, dtype=float)
         d["smr_type"] = self._get_param_keyword(win_data, "smr_type", "gauss", dtype=str).replace(" ", "")

@@ -66,6 +66,94 @@ def wham_get_D_h(delHH, E, U):
 
 
 # ==================================================
+def wham_get_deleig_a(delHH_a, E, U, use_degen_pert=False, degen_thr=0.0):
+    """
+    Compute band derivatives dE/dk_a.
+    """
+    if use_degen_pert:
+        delHH_bar_a = U.transpose(0, 2, 1).conjugate() @ delHH_a @ U
+        num_k = U.shape[0]
+        num_wann = U.shape[1]
+
+        deleig_a = np.zeros((num_k, num_wann))
+
+        for k in range(num_k):
+            i = 0
+            while i <= num_wann:
+                i = i + 1
+                if i + 1 <= num_wann:
+                    diff = E[k, i + 1] - E[k, i]
+                else:
+                    #
+                    # i-th is the highest band, and it is non-degenerate
+                    #
+                    diff = degen_thr + 1.0
+
+                if diff < degen_thr:
+                    #
+                    # Bands i and i+1 are degenerate
+                    #
+                    degen_min = i
+                    degen_max = degen_min + 1
+                    #
+                    # See if any higher bands are in the same degenerate group
+                    #
+                    while degen_max + 1 <= num_wann and diff < degen_thr:
+                        diff = E[k, degen_max + 1] - E[k, degen_max]
+                        if diff < degen_thr:
+                            degen_max = degen_max + 1
+
+                    #
+                    # Bands from degen_min to degen_max are degenerate. Diagonalize
+                    # the submatrix in Eq.(31) YWVS07 over this degenerate subspace.
+                    # The eigenvalues are the band gradients
+                    #
+                    dim = degen_max - degen_min + 1
+                    deleig_a[k, i : i + dim] = np.linalg.eigh(
+                        delHH_bar_a[degen_min : degen_max + 1, degen_min : degen_max + 1]
+                    )[0]
+
+                    #
+                    # Scanned bands up to degen_max
+                    #
+                    i = degen_max
+                else:
+                    #
+                    # Use non-degenerate form [Eq.(27) YWVS07] for current (i-th) band
+                    #
+                    deleig_a[k, i] = np.real(delHH_bar_a[k, i, i])
+    else:
+        deleig_a = np.real(np.diagonal(U.transpose(0, 2, 1).conjugate() @ delHH_a @ U, axis1=1, axis2=2))
+
+    return deleig_a
+
+
+# ==================================================
+def wham_get_deleig(delHH, E, U, use_degen_pert=False, degen_thr=0.0):
+    """
+    This function returns derivatives of the eigenvalues dE/dk_a, using wham_get_deleig_a.
+    """
+    delE = np.array([wham_get_deleig_a(delHH[a, :, :, :], E, U, use_degen_pert, degen_thr) for a in range(3)])
+
+    return delE
+
+
+# =======================================================================
+def kmesh_spacing_mesh(mesh, B):
+    """
+    Set up the value of the interpolation mesh spacing, needed for
+    adaptive smearing [see Eqs. (34-35) YWVS07]. Choose it as the largest of
+    the three Delta_k's for each of the primitive translations b1, b2, and b3
+    """
+    B = np.array(B)
+    Delta_k_i = np.array([np.sqrt(np.dot(B[i, :], B[i, :])) / mesh[i] for i in range(3)])
+
+    kmesh_spacing_mesh = np.max(Delta_k_i)
+
+    return kmesh_spacing_mesh
+
+
+# ==================================================
 def utility_w0gauss(x, n):
     """
     the derivative of utility_wgauss:  an approximation to the delta function
@@ -152,25 +240,6 @@ def berry_main(cwi, operators):
     else:
         atoms_frac = None
 
-    N1, N2, N3 = cwi["berry_kmesh"]
-    kpoints = np.array(
-        [[i / float(N1), j / float(N2), k / float(N3)] for i in range(N1) for j in range(N2) for k in range(N3)]
-    )
-
-    HH, delHH = fourier_transform_r_to_k_new(
-        operators["HH_R"], kpoints, cwi["unit_cell_cart"], cwi["irvec"], cwi["ndegen"], atoms_frac
-    )
-
-    E, U = np.linalg.eigh(HH)
-
-    D_h = wham_get_D_h(delHH, E, U)
-
-    AA = fourier_transform_r_to_k_vec(operators["AA_R"], kpoints, cwi["irvec"], cwi["ndegen"], atoms_frac)
-
-    Avec = np.array([U.transpose(0, 2, 1).conjugate() @ AA[i] @ U for i in range(3)])
-
-    A = Avec + 1.0j * D_h  # Eq.(25) WYSV06
-
     # (ahc)  Anomalous Hall conductivity (from Berry curvature)
     if cwi["berry_task"] == "ahc":
         pass
@@ -181,7 +250,7 @@ def berry_main(cwi, operators):
 
     # (kubo) Complex optical conductivity (Kubo-Greenwood) & JDOS
     if cwi["berry_task"] == "kubo":
-        kubo_H, kubo_AH, kubo_H_spn, kubo_AH_spn = berry_get_kubo(cwi, E, A)
+        kubo_H, kubo_AH, kubo_H_spn, kubo_AH_spn = berry_get_kubo(cwi, operators)
 
         d["kubo_H"] = kubo_H
         d["kubo_AH"] = kubo_AH
@@ -217,13 +286,74 @@ def berry_main(cwi, operators):
         Sz = U.transpose(0, 2, 1).conjugate() @ SS[2] @ U
         S = np.array([Sx, Sy, Sz])
 
-        me_H_spn, me_H_orb, me_AH_spn, me_AH_orb = berry_get_me(cwi, E, A, S)
+        # me_H_spn, me_H_orb, me_AH_spn, me_AH_orb = berry_get_me(cwi, E, A, S)
 
     return d
 
 
 # ==================================================
-def berry_get_kubo(cwi, E, A):
+def berry_get_imf_klist(kpt, imf_k_list, occ, ladpt):
+    """
+    Calculates the Berry curvature traced over the occupied
+    states, -2Im[f(k)] [Eq.33 CTVR06, Eq.6 LVTS12] for a list
+    of Fermi energies, and stores it in axial-vector form
+    """
+    # real(kind=dp), intent(in)                    :: kpt(3)
+    # real(kind=dp), intent(out), dimension(:, :, :) :: imf_k_list
+    # real(kind=dp), intent(in), optional, dimension(:) :: occ
+    # logical, intent(in), optional, dimension(:) :: ladpt
+
+    # if (present(occ)) then
+    #   call berry_get_imfgh_klist(kpt, imf_k_list, occ=occ)
+    # else
+    #   if (present(ladpt)) then
+    #     call berry_get_imfgh_klist(kpt, imf_k_list, ladpt=ladpt)
+    #   else
+    #     call berry_get_imfgh_klist(kpt, imf_k_list)
+    #   endif
+    # endif
+    pass
+
+
+# ==================================================
+def berry_get_ahc(cwi):
+    """ """
+    # imf_k_list = berry_get_imf_klist(kpt)
+
+    # ladpt = [False]*nfermi
+
+    # for i in range(nfermi):
+    #     vdum = np.array([sum(imf_k_list(:, 0, i)) for a in range(3)])
+
+    #     if berry_curv_unit == 'bohr2':
+    #         vdum = vdum/bohr**2
+    #     rdum = np.sqrt(np.dot(vdum, vdum))
+    #     if rdum > berry_curv_adpt_kmesh_thresh:
+    #         adpt_counter_list[i] = adpt_counter_list[i] + 1
+    #         ladpt[i] = True
+    #     else:
+    #         imf_list[:,:,i] = imf_list[:,:,i] + imf_k_list[:,:,i]*kweight
+
+    #     if np.any(ladpt):
+    #         for loop_adpt in range(berry_curv_adpt_kmesh**3):
+    #             # Using imf_k_list here would corrupt values for other
+    #             # frequencies, hence dummy. Only i-th element is used
+    #             imf_k_list_dummy = berry_get_imf_klist(kpt + adkpt(:, loop_adpt), imf_k_list_dummy, ladpt=ladpt)
+
+    #             if = 1, nfermi
+    #             if (ladpt(if)) then
+    #               imf_list(:, :, if) = imf_list(:, :, if) &
+    #                                    + imf_k_list_dummy(:, :, if)*kweight_adpt
+    #             endif
+    #           enddo
+    #         end do
+    #       endif
+    #     end if
+    pass
+
+
+# ==================================================
+def berry_get_kubo(cwi, operators):
     """
     Contribution from point k to the complex interband optical
     conductivity, separated into Hermitian (H) and anti-Hermitian (AH)
@@ -233,6 +363,28 @@ def berry_get_kubo(cwi, E, A):
 
     Returns:
     """
+    N1, N2, N3 = cwi["berry_kmesh"]
+    kpoints = np.array(
+        [[i / float(N1), j / float(N2), k / float(N3)] for i in range(N1) for j in range(N2) for k in range(N3)]
+    )
+
+    if cwi["tb_gauge"]:
+        atoms_list = list(cwi["atoms_frac"].values())
+        atoms_frac = np.array([atoms_list[i] for i in cwi["nw2n"]])
+    else:
+        atoms_frac = None
+
+    HH, delHH = fourier_transform_r_to_k_new(
+        operators["HH_R"], kpoints, cwi["unit_cell_cart"], cwi["irvec"], cwi["ndegen"], atoms_frac
+    )
+
+    E, U = np.linalg.eigh(HH)
+
+    D_h = wham_get_D_h(delHH, E, U)
+    AA = fourier_transform_r_to_k_vec(operators["AA_R"], kpoints, cwi["irvec"], cwi["ndegen"], atoms_frac)
+    Avec = np.array([U.transpose(0, 2, 1).conjugate() @ AA[i] @ U for i in range(3)])
+    A = Avec + 1.0j * D_h  # Eq.(25) WYSV06
+
     ef = cwi["fermi_energy"]
     berry_kmesh = cwi["berry_kmesh"]
     num_k = np.prod(berry_kmesh)
@@ -244,15 +396,11 @@ def berry_get_kubo(cwi, E, A):
     kubo_adpt_smr = cwi["kubo_adpt_smr"]
     kubo_adpt_smr_fac = cwi["kubo_adpt_smr_fac"]
     kubo_adpt_smr_max = cwi["kubo_adpt_smr_max"]
-
     kubo_smr_fixed_en_width = cwi["kubo_smr_fixed_en_width"]
-    eta_smr = kubo_smr_fixed_en_width
 
-    kubo_freq_list = np.arange(cwi["kubo_freq_min"], cwi["kubo_freq_max"], cwi["kubo_freq_step"])
-    if not kubo_adpt_smr and kubo_smr_fixed_en_width != 0.0:
-        kubo_freq_list = kubo_freq_list + 1.0j * kubo_smr_fixed_en_width
+    use_degen_pert = cwi["use_degen_pert"]
+    degen_thr = cwi["degen_thr"]
 
-    kubo_nfreq = len(kubo_freq_list)
     if cwi["kubo_smr_type"] == "gauss":
         kubo_smr_type_idx = 0
     elif "m-p" in cwi["kubo_smr_type"]:
@@ -269,6 +417,17 @@ def berry_get_kubo(cwi, E, A):
         kubo_eigval_max = cwi["dis_froz_max"] + 0.6667
     else:
         kubo_eigval_max = np.max(E) + 0.6667
+
+    if kubo_adpt_smr:
+        delE = wham_get_deleig(delHH, E, U, use_degen_pert, degen_thr)
+        Delta_k = kmesh_spacing_mesh(berry_kmesh, cwi["B"])
+
+    kubo_freq_list = np.arange(cwi["kubo_freq_min"], cwi["kubo_freq_max"], cwi["kubo_freq_step"])
+    # Replace imaginary part of frequency with a fixed value
+    if not kubo_adpt_smr and kubo_smr_fixed_en_width != 0.0:
+        kubo_freq_list = np.real(kubo_freq_list) + 1.0j * kubo_smr_fixed_en_width
+
+    kubo_nfreq = len(kubo_freq_list)
 
     kubo_H = 1.0j * np.zeros((kubo_nfreq, 3, 3))
     kubo_AH = 1.0j * np.zeros((kubo_nfreq, 3, 3))
@@ -288,8 +447,10 @@ def berry_get_kubo(cwi, E, A):
         if m != n and E[k, m] < kubo_eigval_max and E[k, n] < kubo_eigval_max
     ]
 
+    num = len(k_m_n_list)
     for cnt, (k, m, n) in enumerate(k_m_n_list):
-        print(f"{cnt+1}/{len(k_m_n_list)}")
+        if (cnt + 1) % 1000 == 0:
+            print(f"{cnt+1}/{num}")
         ekm = E[k, m]
         ekn = E[k, n]
         fkm = 1.0 if E[k, m] < ef else 0.0
@@ -303,11 +464,11 @@ def berry_get_kubo(cwi, E, A):
             else:
                 ispn = 2  # spin-flip
 
-        if kubo_adpt_smr:  # Eq.(35) YWVS07
-            # vdum[:] = del_ek[m, :] - del_ek[n, :]
-            # joint_level_spacing = np.sqrt(np.dot(vdum, vdum))*Delta_k
-            # eta_smr = min(joint_level_spacing*kubo_adpt_smr_fac, kubo_adpt_smr_max)
-            eta_smr = kubo_smr_fixed_en_width
+        if kubo_adpt_smr:
+            # Eq.(35) YWVS07
+            vdum = delE[:, k, m] - delE[:, k, n]
+            joint_level_spacing = np.sqrt(np.dot(vdum, vdum)) * Delta_k
+            eta_smr = min(joint_level_spacing * kubo_adpt_smr_fac, kubo_adpt_smr_max)
         else:
             eta_smr = kubo_smr_fixed_en_width
 
