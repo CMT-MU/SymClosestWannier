@@ -107,7 +107,7 @@ class CWModel(dict):
     Closest Wannier (CW) tight-binding (TB) model based on Plane-Wave (PW) DFT calculation.
 
     Attributes:
-        _cwi (SystemInfo): CWInfo.
+        _cwi (CWInfo): CWInfo.
         _cwm (CWManager): CWManager.
         _outfile (str): output file, seedname.cwout.
     """
@@ -118,7 +118,7 @@ class CWModel(dict):
         initialize the class.
 
         Args:
-            cwi (SystemInfo, optional): CWInfo.
+            cwi (CWInfo, optional): CWInfo.
             cwm (CWManager,optional): CWManager.
             dic (dict, optional): dictionary of data.
         """

@@ -73,6 +73,10 @@ win_info = {
     "berry_task": "The quantity to compute when berry=true, ahc/morb/kubo/sc/shc/kdotp/me (str).",
     "berry_kmesh": "Overrides the kmesh global variable.",
     "berry_kmesh_spacing": "Overrides the kmesh_spacing global variable.",
+    # berry curvature, ahc, shc
+    "berry_curv_unit": " Unit of Berry curvature, ang2/bohr2, ['ang2']",
+    "berry_curv_adpt_kmesh": "Linear dimension of the adaptively refined k-mesh used to compute the anomalous/spin Hall conductivity, [1]",
+    "berry_curv_adpt_kmesh_thresh": "Threshold magnitude of the Berry curvature for adaptive refinement, [100]",
     # kubo
     "kubo_freq_max": "Upper limit of the frequency range for computing the optical conductivity, JDOS and ac SHC. (The units are [eV]) (float), [If an inner energy window was specified, the default value is dis_froz_max-fermi_energy+0.6667. Otherwise it is the difference between the maximum and the minimum energy eigenvalue stored in seedname.eig, plus 0.6667.].",
     "kubo_freq_min": "Lower limit of the frequency range for computing the optical conductivity, JDOS and ac SHC. (The units are [eV]) (float), [0.0].",

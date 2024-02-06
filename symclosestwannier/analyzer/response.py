@@ -37,7 +37,7 @@ class Response(dict):
     Analyze external responses of Closest Wannier (CW) tight-binding (TB) model.
 
     Attributes:
-        _cwi (SystemInfo): CWInfo.
+        _cwi (CWInfo): CWInfo.
         _cwm (CWManager): CWManager.
         _outfile (str): output file, seedname.cwout.
     """
@@ -48,7 +48,7 @@ class Response(dict):
         initialize the class.
 
         Args:
-            cwi (SystemInfo): CWInfo.
+            cwi (CWInfo): CWInfo.
             cwm (CWManager): CWManager.
         """
         super().__init__()
