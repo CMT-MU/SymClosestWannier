@@ -35,10 +35,93 @@
 import numpy as np
 
 from symclosestwannier.util._utility import (
+    fermi,
     fourier_transform_r_to_k,
     fourier_transform_r_to_k_new,
     fourier_transform_r_to_k_vec,
 )
+
+
+# ==================================================
+def berry_main(cwi, operators):
+    """
+    Computes the following quantities:
+     (ahc)  Anomalous Hall conductivity (from Berry curvature)
+     (kubo) Complex optical conductivity (Kubo-Greenwood) & JDOS
+     (morb) Orbital magnetization
+     (sc)   Nonlinear shift current
+     (shc)  Spin Hall conductivity
+
+    Args:
+        cwi (CWInfo): CWInfo.
+        operators (dict): operators.
+    """
+    print("Properties calculated in module  b e r r y \n ------------------------------------------")
+
+    # initialization
+    d = {
+        # ahc
+        # morb
+        # kubo
+        "kubo_H": 0.0,
+        "kubo_AH": 0.0,
+        "kubo_H_spn": 0.0,
+        "kubo_AH_spn": 0.0,
+        # sc
+        # shc
+        # kdotp
+    }
+
+    # (ahc)  Anomalous Hall conductivity (from Berry curvature)
+    if cwi["berry_task"] == "ahc":
+        pass
+
+    # (morb) Orbital magnetization
+    if cwi["berry_task"] == "morb":
+        pass
+
+    # (kubo) Complex optical conductivity (Kubo-Greenwood) & JDOS
+    if cwi["berry_task"] == "kubo":
+        kubo_H, kubo_AH, kubo_H_spn, kubo_AH_spn = berry_get_kubo(cwi, operators["HH_R"], operators["AA_R"])
+
+        d["kubo_H"] = kubo_H
+        d["kubo_AH"] = kubo_AH
+        d["kubo_H_spn"] = kubo_H_spn
+        d["kubo_AH_spn"] = kubo_AH_spn
+
+    # (sc)   Nonlinear shift current
+    if cwi["berry_task"] == "sc":
+        kubo_nfreq = round((cwi["kubo_freq_max"] - cwi["kubo_freq_min"]) / cwi["kubo_freq_step"]) + 1
+        sc_k_list = np.zeros((3, 6, kubo_nfreq))
+        sc_list = np.zeros((3, 6, kubo_nfreq))
+        # allocate (shc_fermi(fermi_n))
+        # allocate (shc_k_fermi(fermi_n))
+        # allocate (shc_k_fermi_dummy(fermi_n))
+        # shc_fermi = 0.0_dp
+        # shc_k_fermi = 0.0_dp
+        # !only used for fermiscan & adpt kmesh
+        # shc_k_fermi_dummy = 0.0_dp
+        # adpt_counter_list = 0
+
+    # (shc)  Spin Hall conductivity
+    if cwi["berry_task"] == "shc":
+        pass
+
+    if cwi["berry_task"] == "kdotp":
+        pass
+
+    # (me) magnetoelectric tensor
+    if cwi["berry_task"] == "me":
+        pass
+        # SS = fourier_transform_r_to_k_vec(operators["SS_R"], kpoints, cwi["irvec"], cwi["ndegen"], atoms_frac)
+        # Sx = U.transpose(0, 2, 1).conjugate() @ SS[0] @ U
+        # Sy = U.transpose(0, 2, 1).conjugate() @ SS[1] @ U
+        # Sz = U.transpose(0, 2, 1).conjugate() @ SS[2] @ U
+        # S = np.array([Sx, Sy, Sz])
+
+        # me_H_spn, me_H_orb, me_AH_spn, me_AH_orb = berry_get_me(cwi, E, A, S)
+
+    return d
 
 
 # ==================================================
@@ -205,125 +288,198 @@ def utility_w0gauss(x, n):
 
 
 # ==================================================
-def berry_main(cwi, operators):
+def berry_get_imfgh_klist(kpt, num_fermi, img=False, imh=False, occ=None, ladpt=None):
     """
-    Computes the following quantities:
-     (ahc)  Anomalous Hall conductivity (from Berry curvature)
-     (kubo) Complex optical conductivity (Kubo-Greenwood) & JDOS
-     (morb) Orbital magnetization
-     (sc)   Nonlinear shift current
-     (shc)  Spin Hall conductivity
+    Calculates the three quantities needed for the orbital magnetization:
+        * -2Im[f(k)] [Eq.33 CTVR06, Eq.6 LVTS12]
+        * -2Im[g(k)] [Eq.34 CTVR06, Eq.7 LVTS12]
+        * -2Im[h(k)] [Eq.35 CTVR06, Eq.8 LVTS12]
+
+    They are calculated together (to reduce the number of Fourier calls)
+    for a list of Fermi energies, and stored in axial-vector form.
 
     Args:
-        cwi (SystemInfo): CWInfo.
-        operators (dict): operators.
+        num_fermi (int):
+        img (bool, optional): calculate -2Im[g(k)] ?
+        imh (bool, optional): calculate -2Im[h(k)] ?
+        occ (ndarray, optional): occupancy.
+        ladpt (ndarray, optional): .
     """
-    print("Properties calculated in module  b e r r y \n ------------------------------------------")
+    pass
+    # if occ is not None:
+    #     num_fermi_loc = 1
+    # else:
+    #     num_fermi_loc = num_fermi
 
-    # initialization
-    d = {
-        # ahc
-        # morb
-        # kubo
-        "kubo_H": 0.0,
-        "kubo_AH": 0.0,
-        "kubo_H_spn": 0.0,
-        "kubo_AH_spn": 0.0,
-        # sc
-        # shc
-        # kdotp
-    }
+    # if ladpt sis not None:
+    #     todo = ladpt
+    # else:
+    #     todo = True
 
-    if cwi["tb_gauge"]:
-        atoms_list = list(cwi["atoms_frac"].values())
-        atoms_frac = np.array([atoms_list[i] for i in cwi["nw2n"]])
-    else:
-        atoms_frac = None
+    #
+    # Gather W-gauge matrix objects
+    #
 
-    # (ahc)  Anomalous Hall conductivity (from Berry curvature)
-    if cwi["berry_task"] == "ahc":
-        pass
+    # # E, U, JJp_list, JJm_list
+    # # f_list, g_list
+    # if occ is not None:
+    #     call wham_get_eig_UU_HH_JJlist(kpt, eig, UU, HH, JJp_list, JJm_list, occ=occ)
+    #     call wham_get_occ_mat_list(UU, f_list, g_list, occ=occ)
+    # else:
+    #     call wham_get_eig_UU_HH_JJlist(kpt, eig, UU, HH, JJp_list, JJm_list)
+    #     call wham_get_occ_mat_list(UU, f_list, g_list, eig=eig)
+    # endif
 
-    # (morb) Orbital magnetization
-    if cwi["berry_task"] == "morb":
-        pass
+    # call pw90common_fourier_R_to_k_vec(kpt, AA_R, OO_true=AA, OO_pseudo=OOmega)
 
-    # (kubo) Complex optical conductivity (Kubo-Greenwood) & JDOS
-    if cwi["berry_task"] == "kubo":
-        kubo_H, kubo_AH, kubo_H_spn, kubo_AH_spn = berry_get_kubo(cwi, operators)
+    # if (present(imf_k_list)) then
+    #   ! Trace formula for -2Im[f], Eq.(51) LVTS12
+    #   !
+    #   do ife = 1, num_fermi_loc
+    #     if (todo(ife)) then
+    #       do i = 1, 3
+    #         !
+    #         ! J0 term (Omega_bar term of WYSV06)
+    #         imf_k_list(1, i, ife) = &
+    #           utility_re_tr_prod(f_list(:, :, ife), OOmega(:, :, i))
+    #         !
+    #         ! J1 term (DA term of WYSV06)
+    #         imf_k_list(2, i, ife) = -2.0_dp* &
+    #                                 ( &
+    #                                 utility_im_tr_prod(AA(:, :, alpha_A(i)), JJp_list(:, :, ife, beta_A(i))) &
+    #                                 + utility_im_tr_prod(JJm_list(:, :, ife, alpha_A(i)), AA(:, :, beta_A(i))) &
+    #                                 )
+    #         !
+    #         ! J2 term (DD of WYSV06)
+    #         imf_k_list(3, i, ife) = -2.0_dp* &
+    #                                 utility_im_tr_prod(JJm_list(:, :, ife, alpha_A(i)), JJp_list(:, :, ife, beta_A(i)))
+    #       end do
+    #     endif
+    #   end do
+    # end if
 
-        d["kubo_H"] = kubo_H
-        d["kubo_AH"] = kubo_AH
-        d["kubo_H_spn"] = kubo_H_spn
-        d["kubo_AH_spn"] = kubo_AH_spn
+    # if (present(img_k_list)) img_k_list = 0.0_dp
+    # if (present(imh_k_list)) imh_k_list = 0.0_dp
 
-    # (sc)   Nonlinear shift current
-    if cwi["berry_task"] == "sc":
-        kubo_nfreq = round((cwi["kubo_freq_max"] - cwi["kubo_freq_min"]) / cwi["kubo_freq_step"]) + 1
-        sc_k_list = np.zeros((3, 6, kubo_nfreq))
-        sc_list = np.zeros((3, 6, kubo_nfreq))
-        # allocate (shc_fermi(fermi_n))
-        # allocate (shc_k_fermi(fermi_n))
-        # allocate (shc_k_fermi_dummy(fermi_n))
-        # shc_fermi = 0.0_dp
-        # shc_k_fermi = 0.0_dp
-        # !only used for fermiscan & adpt kmesh
-        # shc_k_fermi_dummy = 0.0_dp
-        # adpt_counter_list = 0
+    # if (present(img_k_list) .and. present(imh_k_list)) then
+    #   allocate (BB(num_wann, num_wann, 3))
+    #   allocate (CC(num_wann, num_wann, 3, 3))
 
-    # (shc)  Spin Hall conductivity
-    if cwi["berry_task"] == "shc":
-        pass
+    #   allocate (tmp(num_wann, num_wann, 5))
+    #   ! tmp(:,:,1:3) ... not dependent on inner loop variables
+    #   ! tmp(:,:,1) ..... HH . AA(:,:,alpha_A(i))
+    #   ! tmp(:,:,2) ..... LLambda_ij [Eq. (37) LVTS12] expressed as a pseudovector
+    #   ! tmp(:,:,3) ..... HH . OOmega(:,:,i)
+    #   ! tmp(:,:,4:5) ... working matrices for matrix products of inner loop
 
-    if cwi["berry_task"] == "kdotp":
-        pass
+    #   call pw90common_fourier_R_to_k_vec(kpt, BB_R, OO_true=BB)
+    #   do j = 1, 3
+    #     do i = 1, j
+    #       call pw90common_fourier_R_to_k(kpt, CC_R(:, :, :, i, j), CC(:, :, i, j), 0)
+    #       CC(:, :, j, i) = conjg(transpose(CC(:, :, i, j)))
+    #     end do
+    #   end do
 
-    # (me) magnetoelectric tensor
-    if cwi["berry_task"] == "me":
-        SS = fourier_transform_r_to_k_vec(operators["SS_R"], kpoints, cwi["irvec"], cwi["ndegen"], atoms_frac)
-        Sx = U.transpose(0, 2, 1).conjugate() @ SS[0] @ U
-        Sy = U.transpose(0, 2, 1).conjugate() @ SS[1] @ U
-        Sz = U.transpose(0, 2, 1).conjugate() @ SS[2] @ U
-        S = np.array([Sx, Sy, Sz])
+    #   ! Trace formula for -2Im[g], Eq.(66) LVTS12
+    #   ! Trace formula for -2Im[h], Eq.(56) LVTS12
+    #   !
+    #   do i = 1, 3
+    #     call utility_zgemm_new(HH, AA(:, :, alpha_A(i)), tmp(:, :, 1))
+    #     call utility_zgemm_new(HH, OOmega(:, :, i), tmp(:, :, 3))
+    #     !
+    #     ! LLambda_ij [Eq. (37) LVTS12] expressed as a pseudovector
+    #     tmp(:, :, 2) = cmplx_i*(CC(:, :, alpha_A(i), beta_A(i)) &
+    #                             - conjg(transpose(CC(:, :, alpha_A(i), beta_A(i)))))
 
-        # me_H_spn, me_H_orb, me_AH_spn, me_AH_orb = berry_get_me(cwi, E, A, S)
+    #     do ife = 1, num_fermi_loc
+    #       !
+    #       ! J0 terms for -2Im[g] and -2Im[h]
+    #       !
+    #       ! tmp(:,:,5) = HH . AA(:,:,alpha_A(i)) . f_list(:,:,ife) . AA(:,:,beta_A(i))
+    #       call utility_zgemm_new(tmp(:, :, 1), f_list(:, :, ife), tmp(:, :, 4))
+    #       call utility_zgemm_new(tmp(:, :, 4), AA(:, :, beta_A(i)), tmp(:, :, 5))
 
-    return d
+    #       s = 2.0_dp*utility_im_tr_prod(f_list(:, :, ife), tmp(:, :, 5));
+    #       img_k_list(1, i, ife) = utility_re_tr_prod(f_list(:, :, ife), tmp(:, :, 2)) - s
+    #       imh_k_list(1, i, ife) = utility_re_tr_prod(f_list(:, :, ife), tmp(:, :, 3)) + s
+
+    #       !
+    #       ! J1 terms for -2Im[g] and -2Im[h]
+    #       !
+    #       ! tmp(:,:,1) = HH . AA(:,:,alpha_A(i))
+    #       ! tmp(:,:,4) = HH . JJm_list(:,:,ife,alpha_A(i))
+    #       call utility_zgemm_new(HH, JJm_list(:, :, ife, alpha_A(i)), tmp(:, :, 4))
+
+    #       img_k_list(2, i, ife) = -2.0_dp* &
+    #                               ( &
+    #                               utility_im_tr_prod(JJm_list(:, :, ife, alpha_A(i)), BB(:, :, beta_A(i))) &
+    #                               - utility_im_tr_prod(JJm_list(:, :, ife, beta_A(i)), BB(:, :, alpha_A(i))) &
+    #                               )
+    #       imh_k_list(2, i, ife) = -2.0_dp* &
+    #                               ( &
+    #                               utility_im_tr_prod(tmp(:, :, 1), JJp_list(:, :, ife, beta_A(i))) &
+    #                               + utility_im_tr_prod(tmp(:, :, 4), AA(:, :, beta_A(i))) &
+    #                               )
+
+    #       !
+    #       ! J2 terms for -2Im[g] and -2Im[h]
+    #       !
+    #       ! tmp(:,:,4) = JJm_list(:,:,ife,alpha_A(i)) . HH
+    #       ! tmp(:,:,5) = HH . JJm_list(:,:,ife,alpha_A(i))
+    #       call utility_zgemm_new(JJm_list(:, :, ife, alpha_A(i)), HH, tmp(:, :, 4))
+    #       call utility_zgemm_new(HH, JJm_list(:, :, ife, alpha_A(i)), tmp(:, :, 5))
+
+    #       img_k_list(3, i, ife) = -2.0_dp* &
+    #                               utility_im_tr_prod(tmp(:, :, 4), JJp_list(:, :, ife, beta_A(i)))
+    #       imh_k_list(3, i, ife) = -2.0_dp* &
+    #                               utility_im_tr_prod(tmp(:, :, 5), JJp_list(:, :, ife, beta_A(i)))
+    #     end do
+    #   end do
+    #   deallocate (tmp)
+    # end if
 
 
 # ==================================================
-def berry_get_imf_klist(kpt, imf_k_list, occ, ladpt):
+def berry_get_imf_klist(kpt, occ=None, ladpt=None):
     """
     Calculates the Berry curvature traced over the occupied
     states, -2Im[f(k)] [Eq.33 CTVR06, Eq.6 LVTS12] for a list
     of Fermi energies, and stores it in axial-vector form
     """
-    # real(kind=dp), intent(in)                    :: kpt(3)
-    # real(kind=dp), intent(out), dimension(:, :, :) :: imf_k_list
-    # real(kind=dp), intent(in), optional, dimension(:) :: occ
-    # logical, intent(in), optional, dimension(:) :: ladpt
+    # if occ is not None:
+    #     imf_k_list = berry_get_imfgh_klist(kpt, occ=occ)
+    # else:
+    #     if ladpt is not None:
+    #         imf_k_list = berry_get_imfgh_klist(kpt, ladpt=ladpt)
+    #     else:
+    #         imf_k_list = berry_get_imfgh_klist(kpt)
 
-    # if (present(occ)) then
-    #   call berry_get_imfgh_klist(kpt, imf_k_list, occ=occ)
-    # else
-    #   if (present(ladpt)) then
-    #     call berry_get_imfgh_klist(kpt, imf_k_list, ladpt=ladpt)
-    #   else
-    #     call berry_get_imfgh_klist(kpt, imf_k_list)
-    #   endif
-    # endif
+    # return imf_k_list
     pass
 
 
 # ==================================================
-def berry_get_ahc(cwi):
-    """ """
-    # imf_k_list = berry_get_imf_klist(kpt)
+def berry_get_ahc(cwi, HH_R, AA_R):
+    """
+    Anomalous Hall conductivity, in S/cm.
+    The three independent components σx = σyz, σy = σzx, and σz = σxy are computed.
+    The real part Re[σ^AH_αβ] describes the anomalous Hall conductivity (AHC), and remains finite in the static limit,
+    while the imaginary part Im[σ^H_αβ] describes magnetic circular dichroism, and vanishes as ω → 0.
 
-    # ladpt = [False]*nfermi
+    Args:
+        cwi (CWInfo): CWInfo.
+        HH_R (ndarray): matrix elements of real-space Hamiltonian, <0n|H|Rm>.
+        AA_R (ndarray): matrix elements of real-space position operator, <0n|r|Rm>.
 
-    # for i in range(nfermi):
-    #     vdum = np.array([sum(imf_k_list(:, 0, i)) for a in range(3)])
+    Returns:
+        tuple: .
+    """
+    # imf_k_list = np.array([berry_get_imf_klist(k) for k in range(num_k)])
+
+    # ladpt = [False]*num_fermi
+
+    # for i in range(num_fermi):
+    #     vdum = np.array([sum(imf_k_list[:, 0, i]) for a in range(3)])
 
     #     if berry_curv_unit == 'bohr2':
     #         vdum = vdum/bohr**2
@@ -340,7 +496,7 @@ def berry_get_ahc(cwi):
     #             # frequencies, hence dummy. Only i-th element is used
     #             imf_k_list_dummy = berry_get_imf_klist(kpt + adkpt(:, loop_adpt), imf_k_list_dummy, ladpt=ladpt)
 
-    #             if = 1, nfermi
+    #             if = 1, num_fermi
     #             if (ladpt(if)) then
     #               imf_list(:, :, if) = imf_list(:, :, if) &
     #                                    + imf_k_list_dummy(:, :, if)*kweight_adpt
@@ -353,15 +509,36 @@ def berry_get_ahc(cwi):
 
 
 # ==================================================
-def berry_get_kubo(cwi, operators):
+def berry_get_kubo_k(cwi, HH_R, AA_R):
     """
-    Contribution from point k to the complex interband optical
-    conductivity, separated into Hermitian (H) and anti-Hermitian (AH)
-    parts.
+    calculate
+    Complex interband optical conductivity, in S/cm,
+    separated into Hermitian (Kubo_H) and anti-Hermitian (Kubo_AH) parts.
 
     Args:
+        cwi (CWInfo): CWInfo.
+        HH_R (ndarray): matrix elements of real-space Hamiltonian, <0n|H|Rm>.
+        AA_R (ndarray): matrix elements of real-space position operator, <0n|r|Rm>.
 
     Returns:
+        tuple: Kubo_H, Kubo_AH, Kubo_H_spn, Kubo_AH_spn.
+    """
+    pass
+
+
+# ==================================================
+def berry_get_kubo(cwi, HH_R, AA_R):
+    """
+    Complex interband optical conductivity, in S/cm,
+    separated into Hermitian (Kubo_H) and anti-Hermitian (Kubo_AH) parts.
+
+    Args:
+        cwi (CWInfo): CWInfo.
+        HH_R (ndarray): matrix elements of real-space Hamiltonian, <0n|H|Rm>.
+        AA_R (ndarray): matrix elements of real-space position operator, <0n|r|Rm>.
+
+    Returns:
+        tuple: Kubo_H, Kubo_AH, Kubo_H_spn, Kubo_AH_spn.
     """
     N1, N2, N3 = cwi["berry_kmesh"]
     kpoints = np.array(
@@ -375,13 +552,13 @@ def berry_get_kubo(cwi, operators):
         atoms_frac = None
 
     HH, delHH = fourier_transform_r_to_k_new(
-        operators["HH_R"], kpoints, cwi["unit_cell_cart"], cwi["irvec"], cwi["ndegen"], atoms_frac
+        HH_R, kpoints, cwi["unit_cell_cart"], cwi["irvec"], cwi["ndegen"], atoms_frac
     )
 
     E, U = np.linalg.eigh(HH)
 
     D_h = wham_get_D_h(delHH, E, U)
-    AA = fourier_transform_r_to_k_vec(operators["AA_R"], kpoints, cwi["irvec"], cwi["ndegen"], atoms_frac)
+    AA = fourier_transform_r_to_k_vec(AA_R, kpoints, cwi["irvec"], cwi["ndegen"], atoms_frac)
     Avec = np.array([U.transpose(0, 2, 1).conjugate() @ AA[i] @ U for i in range(3)])
     A = Avec + 1.0j * D_h  # Eq.(25) WYSV06
 
@@ -508,6 +685,7 @@ def berry_get_kubo(cwi, operators):
     elem_charge_SI = 1.602176565e-19  # wannier90
 
     fac = 1.0e8 * elem_charge_SI**2 / (hbar_SI * cell_volume) / num_k
+
     kubo_H *= fac
     kubo_AH *= fac
 
@@ -557,7 +735,7 @@ def berry_get_me(cwi, E, A):
     elif cwi["me_smr_type"] == "f-d":
         me_smr_type_idx = -99
 
-    occ = np.array([[1.0 if E[k, m] < ef else 0.0 for m in range(num_wann)] for k in range(num_k)])
+    occ = np.array([[fermi(E[k, m] - ef, T=0.0) for m in range(num_wann)] for k in range(num_k)])
 
     me_H_spn = 1.0j * np.zeros((me_nfreq, 3, 3))
     me_H_orb = 1.0j * np.zeros((me_nfreq, 3, 3))
