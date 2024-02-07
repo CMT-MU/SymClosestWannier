@@ -470,9 +470,7 @@ def berry_get_kubo(cwi, HH_R, AA_R):
             phi = cwi["magnetic_field_phi"]
             g_factor = cwi["g_factor"]
 
-            up_dn_list = ["U", "D"] * int(num_wann / 2)
-
-            H_zeeman = spin_zeeman_interaction(B, theta, phi, g_factor, up_dn_list)
+            H_zeeman = spin_zeeman_interaction(B, theta, phi, g_factor, num_wann)
 
             HH += H_zeeman[np.newaxis, :, :]
 
