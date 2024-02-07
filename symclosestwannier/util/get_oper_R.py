@@ -29,7 +29,7 @@ def get_oper_R(name, cwi):
     wrapper for getting matrix elements of the operator.
 
     Args:
-        cwi (SystemInfo): CWInfo.
+        cwi (CWInfo): CWInfo.
 
     Returns:
         ndarray: matrix elements of the operator.
@@ -56,7 +56,7 @@ def get_HH_R(cwi):
     matrix elements of real-space Hamiltonian, <0n|H|Rm>.
 
     Args:
-        cwi (SystemInfo): CWInfo.
+        cwi (CWInfo): CWInfo.
 
     Returns:
         ndarray: Hamiltonian, HH_R(len(irvec), num_wann, num_wann).
@@ -72,12 +72,6 @@ def get_HH_R(cwi):
     kpoints = np.array(cwi["kpoints"])
     irvec = np.array(cwi["irvec"])
 
-    # if cwi["tb_gauge"]:
-    #     atoms_list = list(cwi["atoms_frac"].values())
-    #     atoms_frac = np.array([atoms_list[i] for i in cwi["nw2n"]])
-    # else:
-    #     atoms_frac = None
-
     HH_R = fourier_transform_k_to_r(HH_k, kpoints, irvec)
 
     return HH_R
@@ -89,7 +83,7 @@ def get_AA_R(cwi):
     matrix elements of real-space position operator, <0n|r|Rm>.
 
     Args:
-        cwi (SystemInfo): CWInfo.
+        cwi (CWInfo): CWInfo.
 
     Returns:
         ndarray: position operator, AA_R(3, len(irvec), num_wann, num_wann).
@@ -115,12 +109,6 @@ def get_AA_R(cwi):
 
     AA_k = 0.5 * (AA_k + np.einsum("akmn->aknm", AA_k).conj())
 
-    # if cwi["tb_gauge"]:
-    #     atoms_list = list(cwi["atoms_frac"].values())
-    #     atoms_frac = np.array([atoms_list[i] for i in cwi["nw2n"]])
-    # else:
-    #     atoms_frac = None
-
     AA_R = np.array([fourier_transform_k_to_r(AA_k[i], kpoints, irvec) for i in range(3)])
 
     return AA_R
@@ -144,7 +132,7 @@ def get_SS_R(cwi):
     matrix elements of real-space spin operator, <0n|sigma_x,y,z|Rm>.
 
     Args:
-        cwi (SystemInfo): CWInfo.
+        cwi (CWInfo): CWInfo.
 
     Returns:
         ndarray: spin operator, SS_R(3, len(irvec), num_wann, num_wann).
@@ -158,13 +146,7 @@ def get_SS_R(cwi):
     kpoints = np.array(cwi["kpoints"])
     irvec = np.array(cwi["irvec"])
 
-    if cwi["tb_gauge"]:
-        atoms_list = list(cwi["atoms_frac"].values())
-        atoms_frac = np.array([atoms_list[i] for i in cwi["nw2n"]])
-    else:
-        atoms_frac = None
-
-    SS_R = np.array([fourier_transform_k_to_r(SS_k[i], kpoints, irvec, atoms_frac) for i in range(3)])
+    SS_R = np.array([fourier_transform_k_to_r(SS_k[i], kpoints, irvec) for i in range(3)])
 
     return SS_R
 
@@ -210,7 +192,7 @@ def get_berry_phase_R(cwi):
     matrix elements of real-space spin operator, <0n|A_x,y,z|Rm>.
 
     Args:
-        cwi (SystemInfo): CWInfo.
+        cwi (CWInfo): CWInfo.
 
     Returns:
         ndarray: spin operator, SS_R(3, len(irvec), num_wann, num_wann).

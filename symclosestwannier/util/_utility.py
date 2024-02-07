@@ -167,6 +167,7 @@ def fourier_transform_r_to_k(Or, kpoints, irvec, ndegen=None, atoms_frac=None):
     else:
         ndegen = np.array(ndegen)
         weight = np.array([1.0 / ndegen[i] for i in range(Nr)])
+
     kpoints = np.array(kpoints, dtype=float)
 
     kR = np.einsum("ka,Ra->kR", kpoints, irvec, optimize=True)
@@ -185,7 +186,9 @@ def fourier_transform_r_to_k(Or, kpoints, irvec, ndegen=None, atoms_frac=None):
 
 
 # ==================================================
-def fourier_transform_r_to_k_vec(Or_vec, kpoints, irvec, ndegen=None, atoms_frac=None):
+def fourier_transform_r_to_k_vec(
+    Or_vec, kpoints, irvec, ndegen=None, atoms_frac=None, unit_cell_cart=None, pseudo=False
+):
     """
     fourier transformation of an arbitrary operator from real-space representation into k-space representation.
 
@@ -195,17 +198,75 @@ def fourier_transform_r_to_k_vec(Or_vec, kpoints, irvec, ndegen=None, atoms_frac
         irvec (ndarray): irreducible R vectors (crystal coordinate, [[n1,n2,n3]], nj: integer).
         ndegen (ndarray, optional): number of degeneracy at each R.
         atoms_frac (ndarray, optional): atom's position in fractional coordinates.
+        unit_cell_cart (ndarray): transform matrix, [a1,a2,a3], [None].
+        pseudo (bool, optional): calculate pseudo vector?
 
     Returns:
         ndarray: k-space representation of the given operator, O_{ab}(k) = <φ_{a}(k)|O|φ_{b}(k)>.
     """
-    Ok_x = fourier_transform_r_to_k(Or_vec[0], kpoints, irvec, ndegen, atoms_frac)
-    Ok_y = fourier_transform_r_to_k(Or_vec[1], kpoints, irvec, ndegen, atoms_frac)
-    Ok_z = fourier_transform_r_to_k(Or_vec[2], kpoints, irvec, ndegen, atoms_frac)
+    Or_vec = np.array(Or_vec, dtype=complex)
+    irvec = np.array(irvec, dtype=float)
+    Nr = irvec.shape[0]
+    if ndegen is None:
+        weight = np.array([1.0 for _ in range(Nr)])
+    else:
+        ndegen = np.array(ndegen)
+        weight = np.array([1.0 / ndegen[i] for i in range(Nr)])
+    kpoints = np.array(kpoints, dtype=float)
 
-    Ok_vec = np.array([Ok_x, Ok_y, Ok_z])
+    kR = np.einsum("ka,Ra->kR", kpoints, irvec, optimize=True)
+    phase_R = np.exp(+2 * np.pi * 1j * kR)
 
-    return Ok_vec
+    if atoms_frac is not None:
+        tau = np.array(atoms_frac)
+        ktau = np.einsum("ka,ma->km", kpoints, tau, optimize=True)
+        eiktau = np.exp(-2 * np.pi * 1j * ktau)
+
+        Ok_true_vec = np.einsum(
+            "R,kR,km,aRmn,kn->akmn", weight, phase_R, eiktau, Or_vec, eiktau.conjugate(), optimize=True
+        )
+    else:
+        Ok_true_vec = np.einsum("R,kR,aRmn->akmn", weight, phase_R, Or_vec, optimize=True)
+
+    if not pseudo:
+        return Ok_true_vec
+    else:
+        A = np.array(unit_cell_cart)
+        irvec_cart = np.array([np.array(R) @ np.array(A) for R in irvec])
+        atoms_cart = np.array([np.array(r) @ np.array(A) for r in atoms_frac])
+        bond_cart = np.array([[[(R + rn) - rm for rn in atoms_cart] for rm in atoms_cart] for R in irvec_cart])
+
+        Ok_pseudo_vec = np.zeros(Ok_true_vec)
+        ab_list = [(1, 2), (2, 0), (0, 1)]
+        if atoms_frac is not None:
+            for c, (a, b) in enumerate(ab_list):
+                Ok_pseudo_vec[c] = 1.0j * np.einsum(
+                    "R,kR,Rmn,km,Rmn,kn->kmn",
+                    weight,
+                    phase_R,
+                    bond_cart[a],
+                    eiktau,
+                    Or_vec[b],
+                    eiktau.conjugate(),
+                    optimize=True,
+                )
+                -1.0j * np.einsum(
+                    "R,kR,Rmn,km,Rmn,kn->kmn",
+                    weight,
+                    phase_R,
+                    bond_cart[b],
+                    eiktau,
+                    Or_vec[a],
+                    eiktau.conjugate(),
+                    optimize=True,
+                )
+        else:
+            for c, (a, b) in enumerate(ab_list):
+                Ok_pseudo_vec[c] = 1.0j * np.einsum(
+                    "R,kR,R,Rmn->kmn", weight, phase_R, irvec_cart[a], Or_vec[b], optimize=True
+                ) - 1.0j * np.einsum("R,kR,R,Rmn->kmn", weight, phase_R, irvec_cart[b], Or_vec[a], optimize=True)
+
+        return Ok_true_vec, Ok_pseudo_vec
 
 
 # ==================================================

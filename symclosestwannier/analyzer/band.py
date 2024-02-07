@@ -32,7 +32,7 @@ class Band(dict):
     Analyze band related properties of Closest Wannier (CW) tight-binding (TB) model.
 
     Attributes:
-        _cwi (SystemInfo): CWInfo.
+        _cwi (CWInfo): CWInfo.
         _cwm (CWManager): CWManager.
         _outfile (str): output file, seedname.cwout.
     """
@@ -43,7 +43,7 @@ class Band(dict):
         initialize the class.
 
         Args:
-            cwi (SystemInfo): CWInfo.
+            cwi (CWInfo): CWInfo.
             cwm (CWManager): CWManager.
         """
         self._cwi = cwi
