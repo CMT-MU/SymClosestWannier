@@ -69,7 +69,7 @@ def analyzer(seedname="cwannier"):
     #       Response       #
     # ******************** #
 
-    res = Response(cwi, cwm)
+    res = Response(cwi, cwm, Sr=cw_model["Sr"])
 
     # ******************** #
     #         Band         #
