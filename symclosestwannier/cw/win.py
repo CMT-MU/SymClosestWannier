@@ -328,6 +328,60 @@ class Win(dict):
         d["gyrotropic"] = self._get_param_keyword(win_data, "gyrotropic", False, dtype=bool)
         d["boltzwann"] = self._get_param_keyword(win_data, "boltzwann", False, dtype=bool)
 
+        nfermi = 0
+        found_fermi_energy = False
+        fermi_energy_max = 0.0
+        fermi_energy_min = 0.0
+        fermi_energy_step = 0.0
+        fermi_energy_list = []
+
+        fermi_energy = self._get_param_keyword(win_data, "fermi_energy", None, dtype=float)
+
+        if fermi_energy is not None:
+            found_fermi_energy = True
+            nfermi = 1
+
+        fermi_energy_scan = False
+        fermi_energy_min = self._get_param_keyword(win_data, "fermi_energy_min", None, dtype=float)
+        if fermi_energy_min is not None:
+            if found_fermi_energy:
+                raise Exception("Error: Cannot specify both fermi_energy and fermi_energy_min")
+
+            fermi_energy_scan = True
+            fermi_energy_max = fermi_energy_min + 1.0
+            fermi_energy_max = self._get_param_keyword(win_data, "fermi_energy_max", None, dtype=float)
+
+            if fermi_energy_max is not None and fermi_energy_max <= fermi_energy_min:
+                raise Exception("Error: fermi_energy_max must be larger than fermi_energy_min")
+
+            fermi_energy_step = 0.01
+            fermi_energy_step = self._get_param_keyword(win_data, "fermi_energy_step", None, dtype=float)
+
+            if fermi_energy_step is not None and fermi_energy_step <= 0.0:
+                raise Exception("Error: fermi_energy_step must be positive")
+
+            nfermi = int(abs((fermi_energy_max - fermi_energy_min) / fermi_energy_step)) + 1
+
+        if found_fermi_energy:
+            fermi_energy_list = [fermi_energy]
+        elif fermi_energy_scan:
+            if nfermi == 1:
+                fermi_energy_step = 0.0
+            else:
+                fermi_energy_step = (fermi_energy_max - fermi_energy_min) / float(nfermi - 1)
+
+            fermi_energy_list = []
+            for i in range(nfermi):
+                fermi_energy_list[i] = fermi_energy_min + (i - 1) * fermi_energy_step
+        else:
+            fermi_energy_list = [0.0]
+
+        d["fermi_energy"] = fermi_energy
+        d["fermi_energy_max"] = fermi_energy_max
+        d["fermi_energy_min"] = fermi_energy_min
+        d["fermi_energy_step"] = fermi_energy_step
+        d["fermi_energy_list"] = fermi_energy_list
+
         return d
 
     # ==================================================
