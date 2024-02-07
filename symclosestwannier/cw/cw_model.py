@@ -160,6 +160,21 @@ class CWModel(dict):
         Hk = Uk.transpose(0, 2, 1).conjugate() @ diag_Ek @ Uk
         Hk = 0.5 * (Hk + np.einsum("kmn->knm", Hk).conj())
 
+        if self._cwi["zeeman_interaction"]:
+            if not self._cwi["spinors"]:
+                raise Exception("WFs are not spinors.")
+
+            B = self._cwi["magnetic_field"]
+            theta = self._cwi["magnetic_field_theta"]
+            phi = self._cwi["magnetic_field_phi"]
+            g_factor = self._cwi["g_factor"]
+
+            up_dn_list = ["U", "D"] * int(num_wann / 2)
+
+            H_zeeman = spin_zeeman_interaction(B, theta, phi, g_factor, up_dn_list)
+
+            Hk += H_zeeman[np.newaxis, :, :]
+
         S2k = np.array([spl.sqrtm(Sk[k]) for k in range(self._cwi["num_k"])])
         Hk_nonortho = S2k @ Hk @ S2k
 
@@ -335,6 +350,21 @@ class CWModel(dict):
         diag_Ek = np.array([np.diag(Ek[k]) for k in range(self._cwi["num_k"])])
         Hk = Uk.transpose(0, 2, 1).conjugate() @ diag_Ek @ Uk
         Hk = 0.5 * (Hk + np.einsum("kmn->knm", Hk).conj())
+
+        if self._cwi["zeeman_interaction"]:
+            if not self._cwi["spinors"]:
+                raise Exception("WFs are not spinors.")
+
+            B = self._cwi["magnetic_field"]
+            theta = self._cwi["magnetic_field_theta"]
+            phi = self._cwi["magnetic_field_phi"]
+            g_factor = self._cwi["g_factor"]
+
+            up_dn_list = ["U", "D"] * int(num_wann / 2)
+
+            H_zeeman = spin_zeeman_interaction(B, theta, phi, g_factor, up_dn_list)
+
+            Hk += H_zeeman[np.newaxis, :, :]
 
         S2k = np.array([spl.sqrtm(Sk[k]) for k in range(self._cwi["num_k"])])
         Hk_nonortho = S2k @ Hk @ S2k
