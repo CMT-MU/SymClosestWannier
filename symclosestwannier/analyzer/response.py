@@ -21,13 +21,15 @@
 import numpy as np
 
 from symclosestwannier.util.get_oper_R import get_oper_R
-from symclosestwannier.analyzer.get_response import berry_main, boltzwann_main, gyrotropic_main
+from symclosestwannier.analyzer.get_response import berry_main, boltzwann_main, gyrotropic_main, expectation_main
 
 from symclosestwannier.util.message import (
     cw_start_set_operators_msg,
     cw_end_set_operators_msg,
     cw_start_response_msg,
     cw_end_response_msg,
+    cw_start_expectation_msg,
+    cw_end_expectation_msg,
 )
 
 
@@ -82,9 +84,16 @@ class Response(dict):
         self["me_AH_spn"] = None
         self["me_AH_orb"] = None
 
+        # expectation values
+        self["Ms_x"] = None
+        self["Ms_y"] = None
+        self["Ms_z"] = None
+
         self.set_operators()
 
         self.calc_response()
+
+        self.calc_expectation_values()
 
     # ==================================================
     def set_operators(self):
@@ -158,6 +167,15 @@ class Response(dict):
         self._cwm.log(cw_end_response_msg(), stamp=None, end="\n", file=self._outfile, mode="a")
 
     # ==================================================
+    def calc_expectation_values(self):
+        self._cwm.log(cw_start_expectation_msg(), stamp=None, end="\n", file=self._outfile, mode="a")
+        self._cwm.set_stamp()
+
+        self.update(expectation_main(self._cwi, self.operators))
+
+        self._cwm.log(cw_end_expectation_msg(), stamp=None, end="\n", file=self._outfile, mode="a")
+
+    # ==================================================
     @property
     def operators(self):
         return {k: self[k] for k in ("HH_R", "AA_R", "BB_R", "CC_R", "SS_R", "SR_R", "SHR_R", "SH_R", "SAA_R", "SBB_R")}
@@ -211,3 +229,15 @@ class Response(dict):
 
             filename_A = f"{self._cwi['seedname']}-kubo_A_{k}.dat"
             self._cwm.write(filename_A, kubo_A_str, None, None)
+
+    # ==================================================
+    def write_spin(self):
+        """
+        write seedname-spin.dat.
+
+        Args:
+            filename (str): file name.
+        """
+        spin_str = "{:>15.8f}   {:>15.8f}   {:>15.8f} \n ".format(self["Ms_x"], self["Ms_y"], self["Ms_z"])
+        filename = f"{self._cwi['seedname']}-spin.dat"
+        self._cwm.write(filename, spin_str, None, None)
