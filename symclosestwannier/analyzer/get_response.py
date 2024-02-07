@@ -40,9 +40,66 @@ from symclosestwannier.util._utility import (
     fourier_transform_r_to_k_new,
     fourier_transform_r_to_k_vec,
     spin_zeeman_interaction,
+    spin_mag_moment,
+    thermal_avg,
 )
 
-from symclosestwannier.util.constants import elem_charge_SI, hbar_SI, bohr
+from symclosestwannier.util.constants import elem_charge_SI, hbar_SI, bohr, bohr_magn_SI, joul_to_eV
+
+
+# ==================================================
+def expectation_main(cwi, operators):
+    """
+    Computes the following quantities:
+     (spin)  spin magnetic moments.
+
+
+    Args:
+        cwi (CWInfo): CWInfo.
+        operators (dict): operators.
+    """
+    d = {"Ms_x": 0.0, "Ms_y": 0.0, "Ms_z": 0.0}
+
+    if not cwi["spinors"]:
+        return d
+    else:
+        if cwi["tb_gauge"]:
+            atoms_list = list(cwi["atoms_frac"].values())
+            atoms_frac = np.array([atoms_list[i] for i in cwi["nw2n"]])
+        else:
+            atoms_frac = None
+
+        N1, N2, N3 = cwi["berry_kmesh"]
+        kpoints = np.array(
+            [[i / float(N1), j / float(N2), k / float(N3)] for i in range(N1) for j in range(N2) for k in range(N3)]
+        )
+        HH = fourier_transform_r_to_k(operators["HH_R"], kpoints, cwi["irvec"], cwi["ndegen"], atoms_frac)
+
+        B = cwi["magnetic_field"]
+        theta = cwi["magnetic_field_theta"]
+        phi = cwi["magnetic_field_phi"]
+        g_factor = cwi["g_factor"]
+        dim = cwi["num_wann"]
+
+        if cwi["zeeman_interaction"]:
+            H_zeeman = spin_zeeman_interaction(B, theta, phi, g_factor, dim)
+            HH += H_zeeman[np.newaxis, :, :]
+
+        E, U = np.linalg.eigh(HH)
+
+        mu_B = bohr_magn_SI * joul_to_eV
+
+        Ms_x, Ms_y, Ms_z = spin_mag_moment(g_factor, dim) / mu_B
+
+        Ms_x = Ms_x[np.newaxis, :, :]
+        Ms_y = Ms_y[np.newaxis, :, :]
+        Ms_z = Ms_z[np.newaxis, :, :]
+
+        d["Ms_x"] = thermal_avg(Ms_x, E, U, cwi["fermi_energy"], T=0.0)
+        d["Ms_y"] = thermal_avg(Ms_y, E, U, cwi["fermi_energy"], T=0.0)
+        d["Ms_z"] = thermal_avg(Ms_z, E, U, cwi["fermi_energy"], T=0.0)
+
+        return d
 
 
 # ==================================================

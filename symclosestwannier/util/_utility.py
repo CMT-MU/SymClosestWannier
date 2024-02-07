@@ -4,7 +4,7 @@ utility codes.
 
 import numpy as np
 import fortio, scipy.io
-
+from sympy.physics.quantum import TensorProduct
 from gcoreutils.nsarray import NSArray
 
 from symclosestwannier.util.constants import bohr_magn_SI, joul_to_eV
@@ -665,6 +665,12 @@ def thermal_avg(O, E, U, ef=0.0, T=0.0):
     Returns:
         ndarray: thermal average of the given operator.
     """
+    if type(O) != list:
+        single_operator = True
+        O = [O]
+    else:
+        single_operator = False
+
     fk = fermi(E - ef, T)
 
     O = np.array(O)
@@ -672,9 +678,6 @@ def thermal_avg(O, E, U, ef=0.0, T=0.0):
     U = np.array(U)
 
     num_k = E.shape[0]
-
-    if O.ndim == 2:
-        O = np.array([O])
 
     O_exp = []
     for i, Oi in enumerate(O):
@@ -686,7 +689,10 @@ def thermal_avg(O, E, U, ef=0.0, T=0.0):
         if np.imag(Oi_exp) > 1e-7:
             raise Exception(f"expectation value of {i+1}th operator is wrong : {Oi_exp}")
 
-    O_exp = np.array(O_exp)
+    if single_operator:
+        O_exp = O_exp[0]
+    else:
+        O_exp = np.array(O_exp)
 
     return O_exp
 
@@ -723,36 +729,36 @@ def Rz(theta):
 
 
 # ==================================================
-def sigma_x(up_dn_list=["U", "D"]):
-    sx = np.array([[0.5 if i != j else 0 for j in up_dn_list] for i in up_dn_list])
-    return sx
+def sigma_x(dim):
+    Identity = np.eye(int(dim / 2))
+    sig_x = np.array([[0.0, 1.0], [1.0, 0.0]])
+    return TensorProduct(Identity, sig_x)
 
 
 # ==================================================
-def sigma_y(up_dn_list=["U", "D"]):
-    sy = np.array([[-0.5j if i == "U" and j == "D" else 0 for j in up_dn_list] for i in up_dn_list])
-    sy += np.array([[+0.5j if i == "D" and j == "U" else 0 for j in up_dn_list] for i in up_dn_list])
-
-    return sy
-
-
-# ==================================================
-def sigma_z(up_dn_list=["U", "D"]):
-    sz = np.array([[+0.5 if i == "U" and j == "U" else 0 for j in up_dn_list] for i in up_dn_list])
-    sz += np.array([[-0.5 if i == "D" and j == "D" else 0 for j in up_dn_list] for i in up_dn_list])
-
-    return sz
+def sigma_y(dim):
+    Identity = np.eye(int(dim / 2))
+    sig_y = np.array([[0.0, -1.0j], [1.0j, 0.0]])
+    return TensorProduct(Identity, sig_y)
 
 
 # ==================================================
-def spin_zeeman_interaction(B, theta=0.0, phi=0.0, g_factor=2.0, up_dn_list=["U", "D"]):
+def sigma_z(dim):
+    Identity = np.eye(int(dim / 2))
+    sig_z = np.array([[1.0, 0.0], [0.0, -1.0]])
+    return TensorProduct(Identity, sig_z)
+
+
+# ==================================================
+def spin_mag_moment(g_factor=2.0, dim=2):
     mu_B = bohr_magn_SI * joul_to_eV
-    B_vec = B * np.array([np.sin(theta) * np.cos(phi), np.sin(theta) * np.sin(phi), np.cos(theta)])
-    sx = sigma_x(up_dn_list)
-    sy = sigma_y(up_dn_list)
-    sz = sigma_z(up_dn_list)
-    mag_moment = -g_factor * mu_B * np.array([sx, sy, sz])
+    return -0.5 * g_factor * mu_B * np.array([sigma_x(dim), sigma_y(dim), sigma_z(dim)])
 
-    H_zeeman = -sum([mag_moment[i] * B_vec[i] for i in range(3)])
+
+# ==================================================
+def spin_zeeman_interaction(B, theta=0.0, phi=0.0, g_factor=2.0, dim=2):
+    B_vec = B * np.array([np.sin(theta) * np.cos(phi), np.sin(theta) * np.sin(phi), np.cos(theta)])
+    spin_mag_vec = spin_mag_moment(g_factor, dim)
+    H_zeeman = -sum([spin_mag_vec[i] * B_vec[i] for i in range(3)])
 
     return H_zeeman
