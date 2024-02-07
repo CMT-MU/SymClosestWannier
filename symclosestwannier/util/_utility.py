@@ -186,7 +186,9 @@ def fourier_transform_r_to_k(Or, kpoints, irvec, ndegen=None, atoms_frac=None):
 
 
 # ==================================================
-def fourier_transform_r_to_k_vec(Or_vec, kpoints, irvec, ndegen=None, atoms_frac=None, pseudo=False):
+def fourier_transform_r_to_k_vec(
+    Or_vec, kpoints, irvec, ndegen=None, atoms_frac=None, unit_cell_cart=None, pseudo=False
+):
     """
     fourier transformation of an arbitrary operator from real-space representation into k-space representation.
 
@@ -196,6 +198,7 @@ def fourier_transform_r_to_k_vec(Or_vec, kpoints, irvec, ndegen=None, atoms_frac
         irvec (ndarray): irreducible R vectors (crystal coordinate, [[n1,n2,n3]], nj: integer).
         ndegen (ndarray, optional): number of degeneracy at each R.
         atoms_frac (ndarray, optional): atom's position in fractional coordinates.
+        unit_cell_cart (ndarray): transform matrix, [a1,a2,a3], [None].
         pseudo (bool, optional): calculate pseudo vector?
 
     Returns:
@@ -214,17 +217,10 @@ def fourier_transform_r_to_k_vec(Or_vec, kpoints, irvec, ndegen=None, atoms_frac
     kR = np.einsum("ka,Ra->kR", kpoints, irvec, optimize=True)
     phase_R = np.exp(+2 * np.pi * 1j * kR)
 
-    A = np.array(unit_cell_cart)
-    irvec_cart = np.array([np.array(R) @ np.array(A) for R in irvec])
-
     if atoms_frac is not None:
         tau = np.array(atoms_frac)
         ktau = np.einsum("ka,ma->km", kpoints, tau, optimize=True)
         eiktau = np.exp(-2 * np.pi * 1j * ktau)
-
-        atoms_cart = np.array([np.array(r) @ np.array(A) for r in atoms_frac])
-
-        bond_cart = np.array([[[(R + rn) - rm for rn in atoms_cart] for rm in atoms_cart] for R in irvec_cart])
 
         Ok_true_vec = np.einsum(
             "R,kR,km,aRmn,kn->akmn", weight, phase_R, eiktau, Or_vec, eiktau.conjugate(), optimize=True
@@ -235,6 +231,11 @@ def fourier_transform_r_to_k_vec(Or_vec, kpoints, irvec, ndegen=None, atoms_frac
     if not pseudo:
         return Ok_true_vec
     else:
+        A = np.array(unit_cell_cart)
+        irvec_cart = np.array([np.array(R) @ np.array(A) for R in irvec])
+        atoms_cart = np.array([np.array(r) @ np.array(A) for r in atoms_frac])
+        bond_cart = np.array([[[(R + rn) - rm for rn in atoms_cart] for rm in atoms_cart] for R in irvec_cart])
+
         Ok_pseudo_vec = np.zeros(Ok_true_vec)
         ab_list = [(1, 2), (2, 0), (0, 1)]
         if atoms_frac is not None:
