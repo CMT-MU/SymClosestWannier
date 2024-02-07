@@ -33,6 +33,7 @@
 # ---------------------------------------------------------------
 
 import numpy as np
+from scipy import linalg as spl
 
 from symclosestwannier.util._utility import (
     fermi,
@@ -81,9 +82,16 @@ def expectation_main(cwi, operators):
         g_factor = cwi["g_factor"]
         dim = cwi["num_wann"]
 
+        Sk = fourier_transform_r_to_k(operators["Sr"], kpoints, cwi["irvec"], cwi["ndegen"], atoms_frac)
+
+        S2k = np.array([spl.sqrtm(Sk[k]) for k in range(len(kpoints))])
+
         if cwi["zeeman_interaction"]:
             H_zeeman = spin_zeeman_interaction(B, theta, phi, g_factor, dim)
-            HH += H_zeeman[np.newaxis, :, :]
+
+            H_zeeman = S2k @ H_zeeman[np.newaxis, :, :] @ S2k
+
+            HH += H_zeeman
 
         E, U = np.linalg.eigh(HH)
         HH = None
@@ -92,9 +100,9 @@ def expectation_main(cwi, operators):
 
         Ms_x, Ms_y, Ms_z = spin_mag_moment(g_factor, dim) / mu_B
 
-        Ms_x = Ms_x[np.newaxis, :, :]
-        Ms_y = Ms_y[np.newaxis, :, :]
-        Ms_z = Ms_z[np.newaxis, :, :]
+        Ms_x = S2k @ Ms_x[np.newaxis, :, :] @ S2k
+        Ms_y = S2k @ Ms_y[np.newaxis, :, :] @ S2k
+        Ms_z = S2k @ Ms_z[np.newaxis, :, :] @ S2k
 
         d["Ms_x"] = thermal_avg(Ms_x, E, U, cwi["fermi_energy"], T=0.0)
         d["Ms_y"] = thermal_avg(Ms_y, E, U, cwi["fermi_energy"], T=0.0)
@@ -143,7 +151,9 @@ def berry_main(cwi, operators):
 
     # (kubo) Complex optical conductivity (Kubo-Greenwood) & JDOS
     if cwi["berry_task"] == "kubo":
-        kubo_H, kubo_AH, kubo_H_spn, kubo_AH_spn = berry_get_kubo(cwi, operators["HH_R"], operators["AA_R"])
+        kubo_H, kubo_AH, kubo_H_spn, kubo_AH_spn = berry_get_kubo(
+            cwi, operators["HH_R"], operators["AA_R"], operators["Sr"]
+        )
 
         d["kubo_H"] = kubo_H
         d["kubo_AH"] = kubo_AH
@@ -379,7 +389,7 @@ num_proc = multiprocessing.cpu_count()
 
 
 # ==================================================
-def berry_get_kubo(cwi, HH_R, AA_R):
+def berry_get_kubo(cwi, HH_R, AA_R, Sr=None):
     """
     Complex interband optical conductivity, in S/cm,
     separated into Hermitian (Kubo_H) and anti-Hermitian (Kubo_AH) parts.
@@ -472,7 +482,13 @@ def berry_get_kubo(cwi, HH_R, AA_R):
 
             H_zeeman = spin_zeeman_interaction(B, theta, phi, g_factor, num_wann)
 
-            HH += H_zeeman[np.newaxis, :, :]
+            Sk = fourier_transform_r_to_k(Sr, kpt, cwi["irvec"], cwi["ndegen"], atoms_frac)
+
+            S2k = np.array([spl.sqrtm(Sk[k]) for k in range(len(kpt))])
+
+            H_zeeman = S2k @ H_zeeman[np.newaxis, :, :] @ S2k
+
+            HH += H_zeeman
 
         E, U = np.linalg.eigh(HH)
         HH = None

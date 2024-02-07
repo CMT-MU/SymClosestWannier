@@ -45,7 +45,7 @@ class Response(dict):
     """
 
     # ==================================================
-    def __init__(self, cwi, cwm):
+    def __init__(self, cwi, cwm, Sr=None):
         """
         initialize the class.
 
@@ -60,6 +60,7 @@ class Response(dict):
         self._outfile = f"{self._cwi['seedname']}.cwpout"
 
         # operators
+        self["Sr"] = Sr  # <0n|Rm>
         self["HH_R"] = None  # <0n|H|Rm>
         self["AA_R"] = None  # <0n|r|Rm>
         self["BB_R"] = None  # <0|H(r-R)|R>
@@ -178,7 +179,10 @@ class Response(dict):
     # ==================================================
     @property
     def operators(self):
-        return {k: self[k] for k in ("HH_R", "AA_R", "BB_R", "CC_R", "SS_R", "SR_R", "SHR_R", "SH_R", "SAA_R", "SBB_R")}
+        return {
+            k: self[k]
+            for k in ("Sr", "HH_R", "AA_R", "BB_R", "CC_R", "SS_R", "SR_R", "SHR_R", "SH_R", "SAA_R", "SBB_R")
+        }
 
     # ==================================================
     def write_kubo(self):

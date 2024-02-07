@@ -172,7 +172,11 @@ class CWModel(dict):
 
             H_zeeman = spin_zeeman_interaction(B, theta, phi, g_factor, self._cwi["num_wann"])
 
-            Hk += H_zeeman[np.newaxis, :, :]
+            S2k = np.array([spl.sqrtm(Sk[k]) for k in range(self._cwi["num_k"])])
+
+            H_zeeman = S2k @ H_zeeman[np.newaxis, :, :] @ S2k
+
+            Hk += H_zeeman
 
         S2k = np.array([spl.sqrtm(Sk[k]) for k in range(self._cwi["num_k"])])
         Hk_nonortho = S2k @ Hk @ S2k
@@ -361,7 +365,11 @@ class CWModel(dict):
 
             H_zeeman = spin_zeeman_interaction(B, theta, phi, g_factor, self._cwi["num_wann"])
 
-            Hk += H_zeeman[np.newaxis, :, :]
+            S2k = np.array([spl.sqrtm(Sk[k]) for k in range(self._cwi["num_k"])])
+
+            H_zeeman = S2k @ H_zeeman[np.newaxis, :, :] @ S2k
+
+            Hk += H_zeeman
 
         S2k = np.array([spl.sqrtm(Sk[k]) for k in range(self._cwi["num_k"])])
         Hk_nonortho = S2k @ Hk @ S2k
