@@ -170,9 +170,7 @@ class CWModel(dict):
             phi = self._cwi["magnetic_field_phi"]
             g_factor = self._cwi["g_factor"]
 
-            up_dn_list = ["U", "D"] * int(self._cwi["num_wann"] / 2)
-
-            H_zeeman = spin_zeeman_interaction(B, theta, phi, g_factor, up_dn_list)
+            H_zeeman = spin_zeeman_interaction(B, theta, phi, g_factor, self._cwi["num_wann"])
 
             Hk += H_zeeman[np.newaxis, :, :]
 
@@ -361,9 +359,7 @@ class CWModel(dict):
             phi = self._cwi["magnetic_field_phi"]
             g_factor = self._cwi["g_factor"]
 
-            up_dn_list = ["U", "D"] * int(self._cwi["num_wann"] / 2)
-
-            H_zeeman = spin_zeeman_interaction(B, theta, phi, g_factor, up_dn_list)
+            H_zeeman = spin_zeeman_interaction(B, theta, phi, g_factor, self._cwi["num_wann"])
 
             Hk += H_zeeman[np.newaxis, :, :]
 
