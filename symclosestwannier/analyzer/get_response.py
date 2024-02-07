@@ -288,242 +288,33 @@ def utility_w0gauss(x, n):
 
 
 # ==================================================
-def berry_get_imfgh_klist(kpt, num_fermi, img=False, imh=False, occ=None, ladpt=None):
-    """
-    Calculates the three quantities needed for the orbital magnetization:
-        * -2Im[f(k)] [Eq.33 CTVR06, Eq.6 LVTS12]
-        * -2Im[g(k)] [Eq.34 CTVR06, Eq.7 LVTS12]
-        * -2Im[h(k)] [Eq.35 CTVR06, Eq.8 LVTS12]
+import time
+import multiprocessing
+from joblib import Parallel, delayed, wrap_non_picklable_objects
 
-    They are calculated together (to reduce the number of Fourier calls)
-    for a list of Fermi energies, and stored in axial-vector form.
-
-    Args:
-        num_fermi (int):
-        img (bool, optional): calculate -2Im[g(k)] ?
-        imh (bool, optional): calculate -2Im[h(k)] ?
-        occ (ndarray, optional): occupancy.
-        ladpt (ndarray, optional): .
-    """
-    pass
-    # if occ is not None:
-    #     num_fermi_loc = 1
-    # else:
-    #     num_fermi_loc = num_fermi
-
-    # if ladpt sis not None:
-    #     todo = ladpt
-    # else:
-    #     todo = True
-
-    #
-    # Gather W-gauge matrix objects
-    #
-
-    # # E, U, JJp_list, JJm_list
-    # # f_list, g_list
-    # if occ is not None:
-    #     call wham_get_eig_UU_HH_JJlist(kpt, eig, UU, HH, JJp_list, JJm_list, occ=occ)
-    #     call wham_get_occ_mat_list(UU, f_list, g_list, occ=occ)
-    # else:
-    #     call wham_get_eig_UU_HH_JJlist(kpt, eig, UU, HH, JJp_list, JJm_list)
-    #     call wham_get_occ_mat_list(UU, f_list, g_list, eig=eig)
-    # endif
-
-    # call pw90common_fourier_R_to_k_vec(kpt, AA_R, OO_true=AA, OO_pseudo=OOmega)
-
-    # if (present(imf_k_list)) then
-    #   ! Trace formula for -2Im[f], Eq.(51) LVTS12
-    #   !
-    #   do ife = 1, num_fermi_loc
-    #     if (todo(ife)) then
-    #       do i = 1, 3
-    #         !
-    #         ! J0 term (Omega_bar term of WYSV06)
-    #         imf_k_list(1, i, ife) = &
-    #           utility_re_tr_prod(f_list(:, :, ife), OOmega(:, :, i))
-    #         !
-    #         ! J1 term (DA term of WYSV06)
-    #         imf_k_list(2, i, ife) = -2.0_dp* &
-    #                                 ( &
-    #                                 utility_im_tr_prod(AA(:, :, alpha_A(i)), JJp_list(:, :, ife, beta_A(i))) &
-    #                                 + utility_im_tr_prod(JJm_list(:, :, ife, alpha_A(i)), AA(:, :, beta_A(i))) &
-    #                                 )
-    #         !
-    #         ! J2 term (DD of WYSV06)
-    #         imf_k_list(3, i, ife) = -2.0_dp* &
-    #                                 utility_im_tr_prod(JJm_list(:, :, ife, alpha_A(i)), JJp_list(:, :, ife, beta_A(i)))
-    #       end do
-    #     endif
-    #   end do
-    # end if
-
-    # if (present(img_k_list)) img_k_list = 0.0_dp
-    # if (present(imh_k_list)) imh_k_list = 0.0_dp
-
-    # if (present(img_k_list) .and. present(imh_k_list)) then
-    #   allocate (BB(num_wann, num_wann, 3))
-    #   allocate (CC(num_wann, num_wann, 3, 3))
-
-    #   allocate (tmp(num_wann, num_wann, 5))
-    #   ! tmp(:,:,1:3) ... not dependent on inner loop variables
-    #   ! tmp(:,:,1) ..... HH . AA(:,:,alpha_A(i))
-    #   ! tmp(:,:,2) ..... LLambda_ij [Eq. (37) LVTS12] expressed as a pseudovector
-    #   ! tmp(:,:,3) ..... HH . OOmega(:,:,i)
-    #   ! tmp(:,:,4:5) ... working matrices for matrix products of inner loop
-
-    #   call pw90common_fourier_R_to_k_vec(kpt, BB_R, OO_true=BB)
-    #   do j = 1, 3
-    #     do i = 1, j
-    #       call pw90common_fourier_R_to_k(kpt, CC_R(:, :, :, i, j), CC(:, :, i, j), 0)
-    #       CC(:, :, j, i) = conjg(transpose(CC(:, :, i, j)))
-    #     end do
-    #   end do
-
-    #   ! Trace formula for -2Im[g], Eq.(66) LVTS12
-    #   ! Trace formula for -2Im[h], Eq.(56) LVTS12
-    #   !
-    #   do i = 1, 3
-    #     call utility_zgemm_new(HH, AA(:, :, alpha_A(i)), tmp(:, :, 1))
-    #     call utility_zgemm_new(HH, OOmega(:, :, i), tmp(:, :, 3))
-    #     !
-    #     ! LLambda_ij [Eq. (37) LVTS12] expressed as a pseudovector
-    #     tmp(:, :, 2) = cmplx_i*(CC(:, :, alpha_A(i), beta_A(i)) &
-    #                             - conjg(transpose(CC(:, :, alpha_A(i), beta_A(i)))))
-
-    #     do ife = 1, num_fermi_loc
-    #       !
-    #       ! J0 terms for -2Im[g] and -2Im[h]
-    #       !
-    #       ! tmp(:,:,5) = HH . AA(:,:,alpha_A(i)) . f_list(:,:,ife) . AA(:,:,beta_A(i))
-    #       call utility_zgemm_new(tmp(:, :, 1), f_list(:, :, ife), tmp(:, :, 4))
-    #       call utility_zgemm_new(tmp(:, :, 4), AA(:, :, beta_A(i)), tmp(:, :, 5))
-
-    #       s = 2.0_dp*utility_im_tr_prod(f_list(:, :, ife), tmp(:, :, 5));
-    #       img_k_list(1, i, ife) = utility_re_tr_prod(f_list(:, :, ife), tmp(:, :, 2)) - s
-    #       imh_k_list(1, i, ife) = utility_re_tr_prod(f_list(:, :, ife), tmp(:, :, 3)) + s
-
-    #       !
-    #       ! J1 terms for -2Im[g] and -2Im[h]
-    #       !
-    #       ! tmp(:,:,1) = HH . AA(:,:,alpha_A(i))
-    #       ! tmp(:,:,4) = HH . JJm_list(:,:,ife,alpha_A(i))
-    #       call utility_zgemm_new(HH, JJm_list(:, :, ife, alpha_A(i)), tmp(:, :, 4))
-
-    #       img_k_list(2, i, ife) = -2.0_dp* &
-    #                               ( &
-    #                               utility_im_tr_prod(JJm_list(:, :, ife, alpha_A(i)), BB(:, :, beta_A(i))) &
-    #                               - utility_im_tr_prod(JJm_list(:, :, ife, beta_A(i)), BB(:, :, alpha_A(i))) &
-    #                               )
-    #       imh_k_list(2, i, ife) = -2.0_dp* &
-    #                               ( &
-    #                               utility_im_tr_prod(tmp(:, :, 1), JJp_list(:, :, ife, beta_A(i))) &
-    #                               + utility_im_tr_prod(tmp(:, :, 4), AA(:, :, beta_A(i))) &
-    #                               )
-
-    #       !
-    #       ! J2 terms for -2Im[g] and -2Im[h]
-    #       !
-    #       ! tmp(:,:,4) = JJm_list(:,:,ife,alpha_A(i)) . HH
-    #       ! tmp(:,:,5) = HH . JJm_list(:,:,ife,alpha_A(i))
-    #       call utility_zgemm_new(JJm_list(:, :, ife, alpha_A(i)), HH, tmp(:, :, 4))
-    #       call utility_zgemm_new(HH, JJm_list(:, :, ife, alpha_A(i)), tmp(:, :, 5))
-
-    #       img_k_list(3, i, ife) = -2.0_dp* &
-    #                               utility_im_tr_prod(tmp(:, :, 4), JJp_list(:, :, ife, beta_A(i)))
-    #       imh_k_list(3, i, ife) = -2.0_dp* &
-    #                               utility_im_tr_prod(tmp(:, :, 5), JJp_list(:, :, ife, beta_A(i)))
-    #     end do
-    #   end do
-    #   deallocate (tmp)
-    # end if
+num_proc = multiprocessing.cpu_count()
 
 
-# ==================================================
-def berry_get_imf_klist(kpt, occ=None, ladpt=None):
-    """
-    Calculates the Berry curvature traced over the occupied
-    states, -2Im[f(k)] [Eq.33 CTVR06, Eq.6 LVTS12] for a list
-    of Fermi energies, and stores it in axial-vector form
-    """
-    # if occ is not None:
-    #     imf_k_list = berry_get_imfgh_klist(kpt, occ=occ)
-    # else:
-    #     if ladpt is not None:
-    #         imf_k_list = berry_get_imfgh_klist(kpt, ladpt=ladpt)
-    #     else:
-    #         imf_k_list = berry_get_imfgh_klist(kpt)
-
-    # return imf_k_list
-    pass
-
-
-# ==================================================
-def berry_get_ahc(cwi, HH_R, AA_R):
-    """
-    Anomalous Hall conductivity, in S/cm.
-    The three independent components σx = σyz, σy = σzx, and σz = σxy are computed.
-    The real part Re[σ^AH_αβ] describes the anomalous Hall conductivity (AHC), and remains finite in the static limit,
-    while the imaginary part Im[σ^H_αβ] describes magnetic circular dichroism, and vanishes as ω → 0.
-
-    Args:
-        cwi (CWInfo): CWInfo.
-        HH_R (ndarray): matrix elements of real-space Hamiltonian, <0n|H|Rm>.
-        AA_R (ndarray): matrix elements of real-space position operator, <0n|r|Rm>.
-
-    Returns:
-        tuple: .
-    """
-    # imf_k_list = np.array([berry_get_imf_klist(k) for k in range(num_k)])
-
-    # ladpt = [False]*num_fermi
-
-    # for i in range(num_fermi):
-    #     vdum = np.array([sum(imf_k_list[:, 0, i]) for a in range(3)])
-
-    #     if berry_curv_unit == 'bohr2':
-    #         vdum = vdum/bohr**2
-    #     rdum = np.sqrt(np.dot(vdum, vdum))
-    #     if rdum > berry_curv_adpt_kmesh_thresh:
-    #         adpt_counter_list[i] = adpt_counter_list[i] + 1
-    #         ladpt[i] = True
-    #     else:
-    #         imf_list[:,:,i] = imf_list[:,:,i] + imf_k_list[:,:,i]*kweight
-
-    #     if np.any(ladpt):
-    #         for loop_adpt in range(berry_curv_adpt_kmesh**3):
-    #             # Using imf_k_list here would corrupt values for other
-    #             # frequencies, hence dummy. Only i-th element is used
-    #             imf_k_list_dummy = berry_get_imf_klist(kpt + adkpt(:, loop_adpt), imf_k_list_dummy, ladpt=ladpt)
-
-    #             if = 1, num_fermi
-    #             if (ladpt(if)) then
-    #               imf_list(:, :, if) = imf_list(:, :, if) &
-    #                                    + imf_k_list_dummy(:, :, if)*kweight_adpt
-    #             endif
-    #           enddo
-    #         end do
-    #       endif
-    #     end if
-    pass
-
-
-# ==================================================
-def berry_get_kubo_k(cwi, HH_R, AA_R):
-    """
-    calculate
-    Complex interband optical conductivity, in S/cm,
-    separated into Hermitian (Kubo_H) and anti-Hermitian (Kubo_AH) parts.
-
-    Args:
-        cwi (CWInfo): CWInfo.
-        HH_R (ndarray): matrix elements of real-space Hamiltonian, <0n|H|Rm>.
-        AA_R (ndarray): matrix elements of real-space position operator, <0n|r|Rm>.
-
-    Returns:
-        tuple: Kubo_H, Kubo_AH, Kubo_H_spn, Kubo_AH_spn.
-    """
-    pass
+# def parallel(target, args):
+#     t0 = time.time()
+#     jobs = []
+#     proc = 0
+#     rest = len(args)
+#     for arg in args:
+#         if proc < num_proc:
+#             p = multiprocessing.Process(target=target, args=(arg,))
+#             jobs.append(p)
+#             p.start()
+#             proc += 1
+#             rest -= 1
+#             if proc == num_proc or rest == 0:
+#                 print("%s process was working, and rest process is %s." % (num_proc, rest))
+#                 for job in jobs:
+#                     job.join()
+#                 proc = 0
+#                 jobs = []
+#     t1 = time.time()
+#     print("{:.2f}".format(t1 - t0))
 
 
 # ==================================================
@@ -540,31 +331,14 @@ def berry_get_kubo(cwi, HH_R, AA_R):
     Returns:
         tuple: Kubo_H, Kubo_AH, Kubo_H_spn, Kubo_AH_spn.
     """
-    N1, N2, N3 = cwi["berry_kmesh"]
-    kpoints = np.array(
-        [[i / float(N1), j / float(N2), k / float(N3)] for i in range(N1) for j in range(N2) for k in range(N3)]
-    )
-
     if cwi["tb_gauge"]:
         atoms_list = list(cwi["atoms_frac"].values())
         atoms_frac = np.array([atoms_list[i] for i in cwi["nw2n"]])
     else:
         atoms_frac = None
 
-    HH, delHH = fourier_transform_r_to_k_new(
-        HH_R, kpoints, cwi["unit_cell_cart"], cwi["irvec"], cwi["ndegen"], atoms_frac
-    )
-
-    E, U = np.linalg.eigh(HH)
-
-    D_h = wham_get_D_h(delHH, E, U)
-    AA = fourier_transform_r_to_k_vec(AA_R, kpoints, cwi["irvec"], cwi["ndegen"], atoms_frac)
-    Avec = np.array([U.transpose(0, 2, 1).conjugate() @ AA[i] @ U for i in range(3)])
-    A = Avec + 1.0j * D_h  # Eq.(25) WYSV06
-
     ef = cwi["fermi_energy"]
     berry_kmesh = cwi["berry_kmesh"]
-    num_k = np.prod(berry_kmesh)
     num_wann = cwi["num_wann"]
 
     spin_decomp = cwi["spin_decomp"]
@@ -574,9 +348,6 @@ def berry_get_kubo(cwi, HH_R, AA_R):
     kubo_adpt_smr_fac = cwi["kubo_adpt_smr_fac"]
     kubo_adpt_smr_max = cwi["kubo_adpt_smr_max"]
     kubo_smr_fixed_en_width = cwi["kubo_smr_fixed_en_width"]
-
-    use_degen_pert = cwi["use_degen_pert"]
-    degen_thr = cwi["degen_thr"]
 
     if cwi["kubo_smr_type"] == "gauss":
         kubo_smr_type_idx = 0
@@ -593,11 +364,10 @@ def berry_get_kubo(cwi, HH_R, AA_R):
     elif cwi["dis_froz_max"] < +100000:
         kubo_eigval_max = cwi["dis_froz_max"] + 0.6667
     else:
-        kubo_eigval_max = np.max(E) + 0.6667
+        kubo_eigval_max = 100000
 
-    if kubo_adpt_smr:
-        delE = wham_get_deleig(delHH, E, U, use_degen_pert, degen_thr)
-        Delta_k = kmesh_spacing_mesh(berry_kmesh, cwi["B"])
+    use_degen_pert = cwi["use_degen_pert"]
+    degen_thr = cwi["degen_thr"]
 
     kubo_freq_list = np.arange(cwi["kubo_freq_min"], cwi["kubo_freq_max"], cwi["kubo_freq_step"])
     # Replace imaginary part of frequency with a fixed value
@@ -605,6 +375,124 @@ def berry_get_kubo(cwi, HH_R, AA_R):
         kubo_freq_list = np.real(kubo_freq_list) + 1.0j * kubo_smr_fixed_en_width
 
     kubo_nfreq = len(kubo_freq_list)
+
+    # ==================================================
+    @wrap_non_picklable_objects
+    def berry_get_kubo_k(kpt):
+        """
+        calculate
+        Complex interband optical conductivity, in S/cm,
+        separated into Hermitian (Kubo_H) and anti-Hermitian (Kubo_AH) parts.
+
+        Args:
+            kpt (ndarray): kpoint.
+            cwi (CWInfo): CWInfo.
+            HH_R (ndarray): matrix elements of real-space Hamiltonian, <0n|H|Rm>.
+            AA_R (ndarray): matrix elements of real-space position operator, <0n|r|Rm>.
+
+        Returns:
+            tuple: Kubo_H, Kubo_AH, Kubo_H_spn, Kubo_AH_spn.
+        """
+        if kpt.ndim == 1:
+            kpt = np.array([kpt])
+
+        HH, delHH = fourier_transform_r_to_k_new(
+            HH_R, kpt, cwi["unit_cell_cart"], cwi["irvec"], cwi["ndegen"], atoms_frac
+        )
+        E, U = np.linalg.eigh(HH)
+        HH = None
+        D_h = wham_get_D_h(delHH, E, U)
+        AA = fourier_transform_r_to_k_vec(AA_R, kpt, cwi["irvec"], cwi["ndegen"], atoms_frac)
+        Avec = np.array([U.transpose(0, 2, 1).conjugate() @ AA[i] @ U for i in range(3)])
+        AA = None
+        A = Avec + 1.0j * D_h  # Eq.(25) WYSV06
+        Avec = None
+        D_h = None
+
+        if kubo_adpt_smr:
+            delE = wham_get_deleig(delHH, E, U, use_degen_pert, degen_thr)
+            Delta_k = kmesh_spacing_mesh(berry_kmesh, cwi["B"])
+
+        delHH = None
+        U = None
+
+        kubo_H = 1.0j * np.zeros((kubo_nfreq, 3, 3))
+        kubo_AH = 1.0j * np.zeros((kubo_nfreq, 3, 3))
+
+        if spin_decomp:
+            kubo_H_spn = 1.0j * np.zeros((kubo_nfreq, 3, 3, 3))
+            kubo_AH_spn = 1.0j * np.zeros((kubo_nfreq, 3, 3, 3))
+        else:
+            kubo_H_spn = 0.0
+            kubo_AH_spn = 0.0
+
+        for k in range(len(kpt)):
+            for m in range(num_wann):
+                for n in range(num_wann):
+                    if m == n:
+                        continue
+
+                    if E[k, m] > kubo_eigval_max or E[k, n] > kubo_eigval_max:
+                        continue
+
+                    ekm = E[k, m]
+                    ekn = E[k, n]
+                    fkm = 1.0 if E[k, m] < ef else 0.0
+                    fkn = 1.0 if E[k, n] < ef else 0.0
+
+                    if spin_decomp:
+                        if spn_nk[n] >= 0 and spn_nk[m] >= 0:
+                            ispn = 0  # up --> up transition
+                        elif spn_nk[n] < 0 and spn_nk[m] < 0:
+                            ispn = 1  # down --> down
+                        else:
+                            ispn = 2  # spin-flip
+
+                    if kubo_adpt_smr:
+                        # Eq.(35) YWVS07
+                        vdum = delE[:, k, m] - delE[:, k, n]
+                        joint_level_spacing = np.sqrt(np.dot(vdum, vdum)) * Delta_k
+                        eta_smr = min(joint_level_spacing * kubo_adpt_smr_fac, kubo_adpt_smr_max)
+                        if eta_smr < 1e-6:
+                            eta_smr = 1e-6
+                    else:
+                        eta_smr = kubo_smr_fixed_en_width
+
+                    # Complex frequency for the anti-Hermitian conductivity
+                    if kubo_adpt_smr:
+                        omega_list = np.real(kubo_freq_list) + 1.0j * eta_smr
+                    else:
+                        omega_list = kubo_freq_list
+
+                    # Broadened delta function for the Hermitian conductivity and JDOS
+                    arg = (ekm - ekn - np.real(omega_list)) / eta_smr
+                    delta = (
+                        np.array([utility_w0gauss(arg[ifreq], kubo_smr_type_idx) for ifreq in range(kubo_nfreq)])
+                        / eta_smr
+                    )
+
+                    rfac1 = (fkm - fkn) * (ekm - ekn)
+                    rfac2 = -np.pi * rfac1 * delta
+                    cfac = 1.0j * rfac1 / (ekm - ekn - omega_list)
+
+                    aiknm_ajkmn = np.array([[A[i, k, n, m] * A[j, k, m, n] for j in range(3)] for i in range(3)])
+
+                    kubo_H += rfac2[:, np.newaxis, np.newaxis] * aiknm_ajkmn[np.newaxis, :, :]
+                    kubo_AH += cfac[:, np.newaxis, np.newaxis] * aiknm_ajkmn[np.newaxis, :, :]
+
+                    if spin_decomp:
+                        kubo_H_spn += rfac2[:, np.newaxis, np.newaxis] * aiknm_ajkmn[np.newaxis, :, :]
+                        kubo_AH_spn += cfac[:, np.newaxis, np.newaxis] * aiknm_ajkmn[np.newaxis, :, :]
+
+        return kubo_H, kubo_AH, kubo_H_spn, kubo_AH_spn
+
+    N1, N2, N3 = cwi["berry_kmesh"]
+    kpoints = np.array(
+        [[i / float(N1), j / float(N2), k / float(N3)] for i in range(N1) for j in range(N2) for k in range(N3)]
+    )
+
+    num_k = np.prod(cwi["berry_kmesh"])
+    num_wann = cwi["num_wann"]
 
     kubo_H = 1.0j * np.zeros((kubo_nfreq, 3, 3))
     kubo_AH = 1.0j * np.zeros((kubo_nfreq, 3, 3))
@@ -616,61 +504,38 @@ def berry_get_kubo(cwi, HH_R, AA_R):
         kubo_H_spn = 0.0
         kubo_AH_spn = 0.0
 
-    k_m_n_list = [
-        (k, m, n)
-        for k in range(num_k)
-        for m in range(num_wann)
-        for n in range(num_wann)
-        if m != n and E[k, m] < kubo_eigval_max and E[k, n] < kubo_eigval_max
-    ]
+    # k_m_n_list = [
+    #     (k, m, n)
+    #     for k in range(num_k)
+    #     for m in range(num_wann)
+    #     for n in range(num_wann)
+    #     if m != n and E[k, m] < kubo_eigval_max and E[k, n] < kubo_eigval_max
+    # ]
 
-    num = len(k_m_n_list)
-    for cnt, (k, m, n) in enumerate(k_m_n_list):
-        if (cnt + 1) % 1000 == 0:
-            print(f"{cnt+1}/{num}")
-        ekm = E[k, m]
-        ekn = E[k, n]
-        fkm = 1.0 if E[k, m] < ef else 0.0
-        fkn = 1.0 if E[k, n] < ef else 0.0
+    # args = [{"kpt": kpt, "cwi": cwi, "HH_R": HH_R, "AA_R": AA_R} for kpt in kpoints]
+    # res = parallel(berry_get_kubo_k, args)
 
-        if spin_decomp:
-            if spn_nk[n] >= 0 and spn_nk[m] >= 0:
-                ispn = 0  # up --> up transition
-            elif spn_nk[n] < 0 and spn_nk[m] < 0:
-                ispn = 1  # down --> down
-            else:
-                ispn = 2  # spin-flip
+    kpoints_chunks = np.split(kpoints, [j for j in range(100, len(kpoints), 100)])
 
-        if kubo_adpt_smr:
-            # Eq.(35) YWVS07
-            vdum = delE[:, k, m] - delE[:, k, n]
-            joint_level_spacing = np.sqrt(np.dot(vdum, vdum)) * Delta_k
-            eta_smr = min(joint_level_spacing * kubo_adpt_smr_fac, kubo_adpt_smr_max)
-        else:
-            eta_smr = kubo_smr_fixed_en_width
+    res = Parallel(n_jobs=num_proc, verbose=10)(delayed(berry_get_kubo_k)(kpt) for kpt in kpoints_chunks)
 
-        # Complex frequency for the anti-Hermitian conductivity
-        if kubo_adpt_smr:
-            omega_list = np.real(kubo_freq_list) + 1.0j * eta_smr
-        else:
-            omega_list = kubo_freq_list
+    for kubo_H_k, kubo_AH_k, kubo_H_spn_k, kubo_AH_spn_k in res:
+        kubo_H += kubo_H_k
+        kubo_AH += kubo_AH_k
+        kubo_H_spn += kubo_H_spn_k
+        kubo_AH_spn += kubo_AH_spn_k
 
-        # Broadened delta function for the Hermitian conductivity and JDOS
-        arg = (ekm - ekn - np.real(omega_list)) / eta_smr
-        delta = np.array([utility_w0gauss(arg[ifreq], kubo_smr_type_idx) for ifreq in range(kubo_nfreq)]) / eta_smr
+    # for k in range(num_k):
+    #     if (k + 1) % 1000 == 0:
+    #         print(f"{k+1}/{num_k}")
 
-        rfac1 = (fkm - fkn) * (ekm - ekn)
-        rfac2 = -np.pi * rfac1 * delta
-        cfac = 1.0j * rfac1 / (ekm - ekn - omega_list)
+    #     kpt = kpoints[k]
+    #     kubo_H_k, kubo_AH_k, kubo_H_spn_k, kubo_AH_spn_k = berry_get_kubo_k(kpt, cwi, HH_R, AA_R)
 
-        aiknm_ajkmn = np.array([[A[i, k, n, m] * A[j, k, m, n] for j in range(3)] for i in range(3)])
-
-        kubo_H += rfac2[:, np.newaxis, np.newaxis] * aiknm_ajkmn[np.newaxis, :, :]
-        kubo_AH += cfac[:, np.newaxis, np.newaxis] * aiknm_ajkmn[np.newaxis, :, :]
-
-        if spin_decomp:
-            kubo_H_spn += rfac2[:, np.newaxis, np.newaxis] * aiknm_ajkmn[np.newaxis, :, :]
-            kubo_AH_spn += cfac[:, np.newaxis, np.newaxis] * aiknm_ajkmn[np.newaxis, :, :]
+    #     kubo_H += kubo_H_k
+    #     kubo_AH += kubo_AH_k
+    #     kubo_H_spn += kubo_H_spn_k
+    #     kubo_AH_spn += kubo_AH_spn_k
 
     # Convert to S/cm
     # ==================================================
