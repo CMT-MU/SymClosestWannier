@@ -39,7 +39,10 @@ from symclosestwannier.util._utility import (
     fourier_transform_r_to_k,
     fourier_transform_r_to_k_new,
     fourier_transform_r_to_k_vec,
+    spin_zeeman_interaction,
 )
+
+from symclosestwannier.util.constants import elem_charge_SI, hbar_SI, bohr
 
 
 # ==================================================
@@ -399,6 +402,22 @@ def berry_get_kubo(cwi, HH_R, AA_R):
         HH, delHH = fourier_transform_r_to_k_new(
             HH_R, kpt, cwi["unit_cell_cart"], cwi["irvec"], cwi["ndegen"], atoms_frac
         )
+
+        if cwi["zeeman_interaction"]:
+            if not cwi["spinors"]:
+                raise Exception("WFs are not spinors.")
+
+            B = cwi["magnetic_field"]
+            theta = cwi["magnetic_field_theta"]
+            phi = cwi["magnetic_field_phi"]
+            g_factor = cwi["g_factor"]
+
+            up_dn_list = ["U", "D"] * int(num_wann / 2)
+
+            H_zeeman = spin_zeeman_interaction(B, theta, phi, g_factor, up_dn_list)
+
+            HH += H_zeeman[np.newaxis, :, :]
+
         E, U = np.linalg.eigh(HH)
         HH = None
         D_h = wham_get_D_h(delHH, E, U)
@@ -504,17 +523,6 @@ def berry_get_kubo(cwi, HH_R, AA_R):
         kubo_H_spn = 0.0
         kubo_AH_spn = 0.0
 
-    # k_m_n_list = [
-    #     (k, m, n)
-    #     for k in range(num_k)
-    #     for m in range(num_wann)
-    #     for n in range(num_wann)
-    #     if m != n and E[k, m] < kubo_eigval_max and E[k, n] < kubo_eigval_max
-    # ]
-
-    # args = [{"kpt": kpt, "cwi": cwi, "HH_R": HH_R, "AA_R": AA_R} for kpt in kpoints]
-    # res = parallel(berry_get_kubo_k, args)
-
     kpoints_chunks = np.split(kpoints, [j for j in range(100, len(kpoints), 100)])
 
     res = Parallel(n_jobs=num_proc, verbose=10)(delayed(berry_get_kubo_k)(kpt) for kpt in kpoints_chunks)
@@ -525,18 +533,6 @@ def berry_get_kubo(cwi, HH_R, AA_R):
         kubo_H_spn += kubo_H_spn_k
         kubo_AH_spn += kubo_AH_spn_k
 
-    # for k in range(num_k):
-    #     if (k + 1) % 1000 == 0:
-    #         print(f"{k+1}/{num_k}")
-
-    #     kpt = kpoints[k]
-    #     kubo_H_k, kubo_AH_k, kubo_H_spn_k, kubo_AH_spn_k = berry_get_kubo_k(kpt, cwi, HH_R, AA_R)
-
-    #     kubo_H += kubo_H_k
-    #     kubo_AH += kubo_AH_k
-    #     kubo_H_spn += kubo_H_spn_k
-    #     kubo_AH_spn += kubo_AH_spn_k
-
     # Convert to S/cm
     # ==================================================
     # fac = e^2/(hbar.V_c*10^-8)
@@ -546,8 +542,6 @@ def berry_get_kubo(cwi, HH_R, AA_R):
     # --------------------------------------------------------------------
 
     cell_volume = cwi["unit_cell_volume"]
-    hbar_SI = 1.054571726e-34  # wannier90
-    elem_charge_SI = 1.602176565e-19  # wannier90
 
     fac = 1.0e8 * elem_charge_SI**2 / (hbar_SI * cell_volume) / num_k
 

@@ -19,49 +19,59 @@
 # ****************************************************************** #
 
 
-from scipy.constants import elementary_charge, hbar, electron_mass, physical_constants, angstrom, pi  # , Boltzmann
+from scipy.constants import (
+    speed_of_light,
+    mu_0,
+    epsilon_0,
+    elementary_charge,
+    hbar,
+    electron_mass,
+    physical_constants,
+    angstrom,
+    pi,
+    Boltzmann,
+)
 
-TAU_UNIT = 1e-15  # tau in nanoseconds
-TAU_UNIT_TXT = "fs"
 
-bohr_magneton = elementary_charge * hbar / (2 * electron_mass)
-bohr = physical_constants["Bohr radius"][0] / angstrom
+# e = 1.602176634e-19 [C]
+elem_charge_SI = elementary_charge
+
+# m_e = 9.1093837015e-31 [kg]
+elec_mass_SI = electron_mass
+
+# hbar = 1.0545718176461565e-34 [J * s]
+hbar_SI = hbar
+
+# k_B = 1.380649e-23 [J / K]
+k_B_SI = Boltzmann
+
+# mu_B = 9.274010078362164e-24 [J / T]
+bohr_magn_SI = elem_charge_SI * hbar_SI / (2 * elec_mass_SI)
+
+# epsilon_0 = 8.8541878128e-12  [F / m]
+eps0_SI = epsilon_0
+
+# mu_0 = 1.25663706212e-06 [H / m]
+mu0_SI = mu_0
+
+# c = 299792458.0 [m / s]
+speedlight_SI = speed_of_light
+
+# Electron Volt in atomic units [E_h / eV]
 eV_au = physical_constants["electron volt-hartree relationship"][0]
-Ry_eV = physical_constants["Rydberg constant times hc in eV"][0]  # =13.605693122994
+
+# Electron Volt in seconds []
+eV_seconds = 6.582119e-16
+
+# Rydberg constant times hc in eV = 13.605693122994 [eV]
+Ry_eV = physical_constants["Rydberg constant times hc in eV"][0]
+
+# Ang = 1e-10 [m]
 Ang_SI = angstrom
 
-fac_orb_Z = elementary_charge / 2 / hbar * Ang_SI**2  # change unit of m_orb*B to (eV).
-fac_spin_Z = hbar / (2 * electron_mass)  # change unit of m_spin*B to (eV).
+# Bohr to Ang
+bohr_angstrom_internal = physical_constants["Bohr radius"][0] / angstrom
+bohr = physical_constants["Bohr radius"][0] / angstrom
 
-factor_gme = -(elementary_charge / Ang_SI**2)  # for gme tensor
-factor_ahc = -(elementary_charge**2 / hbar / Ang_SI)  # with tau^0 E^1 B^0
-factor_ohmic = (
-    elementary_charge**2 / hbar / Ang_SI * TAU_UNIT * elementary_charge / hbar  # with tau^1 E^1 B^1
-)  # change velocity unit from eV*m to m/s
-factor_nlahc = elementary_charge**3 / hbar**2 * TAU_UNIT  # with tau^1 E^2 B^0
-factor_hall_classic = -(
-    elementary_charge**3
-    / hbar**2
-    * Ang_SI
-    * TAU_UNIT**2  # with tau^2 E^1 B^1
-    * elementary_charge**2
-    / hbar**2
-)  # change velocity unit from eV*m to m/s
-factor_nldrude = -(
-    elementary_charge**3 / hbar**2 * TAU_UNIT**2 * elementary_charge / hbar  # with tau^2 E^2 B^0
-)  # change velocity unit from eV*m to m/s
-
-factor_opt = -factor_ahc
-factor_shc = -factor_ahc
-#####################
-# for old_API
-fac_ahc = factor_ahc
-factor_Hall_classic = (
-    elementary_charge**2 * Ang_SI / hbar**3
-)  # first, transform to SI, not forgeting hbar in velocities - now in  m/(J*s^3)
-factor_Hall_classic *= (
-    elementary_charge**3 / hbar * TAU_UNIT**2
-)  # multiply by a dimensional factor - now in A^3*s^5*cm/(J^2*tau_unit^2) = S/(T*m*tau_unit^2)
-fac_spin_hall = factor_ahc * -0.5
-factor_shift_current = 1j * hbar / elementary_charge * pi * elementary_charge**3 / (4 * hbar**2)
-factor_injection_current = -pi * elementary_charge**3 / (hbar**2) * TAU_UNIT
+# joule to electron volt [eV / J]
+joul_to_eV = physical_constants["joule-electron volt relationship"][0]
