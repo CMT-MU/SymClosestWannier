@@ -68,6 +68,7 @@ from symclosestwannier.util._utility import (
     samb_decomp_operator,
     construct_Or,
     construct_Ok,
+    spin_zeeman_interaction,
 )
 
 _default = {
