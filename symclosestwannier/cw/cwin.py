@@ -1,6 +1,7 @@
 """
 CWin manages input file for pw2cw, seedname.cwin file.
 """
+
 import os
 
 
@@ -22,8 +23,10 @@ _default = {
     "parallel": False,
     "formatter": False,
     #
-    "transl_inv": True, # use Eq.(31) of Marzari&Vanderbilt PRB 56, 12847 (1997) for band-diagonal position matrix elements.
-    "tb_gauge": False, # tb gauge?
+    "transl_inv": True,
+    "use_degen_pert": False,
+    "degen_thr": 0.0,
+    "tb_gauge": False,
     #
     "write_hr": False,
     "write_sr": False,
@@ -102,6 +105,8 @@ class CWin(dict):
                 - parallel          : use parallel code? (bool), [False].
                 - formatter         : format by using black? (bool), [False].
                 - transl_inv        : use Eq.(31) of Marzari&Vanderbilt PRB 56, 12847 (1997) for band-diagonal position matrix elements? (bool), [True].
+                - use_degen_pert    : use degenerate perturbation theory when bands are degenerate and band derivatives are needed? (bool), [False].
+                - degen_thr         : threshold to exclude degenerate bands from the calculation, [0.0].
                 - tb_gauge          : use tb gauge? (bool), [False].
                 - write_hr          : write seedname_hr.py ? (bool), [False].
                 - write_sr          : write seedname_sr.py ? (bool), [False].
@@ -179,6 +184,7 @@ class CWin(dict):
             "delta",
             "a",
             "fermi_energy",
+            "degen_thr",
         ):
             v = float(v)
         elif key == "N1":

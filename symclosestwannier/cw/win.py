@@ -1,6 +1,7 @@
 """
 Win manages input file for wannier90.x, seedname.win file.
 """
+
 import os
 import numpy as np
 
@@ -31,7 +32,7 @@ _default = {
     #
     "kmesh": [1, 1, 1],
     "kmesh_spacing": [1, 1, 1],
-    "adpt_smr": True,
+    "adpt_smr": False,
     "adpt_smr_fac": np.sqrt(2),
     "adpt_smr_max": 1.0,
     "smr_type": "gauss",
@@ -42,12 +43,16 @@ _default = {
     "berry_task": "",
     "berry_kmesh": [1, 1, 1],
     "berry_kmesh_spacing": [1, 1, 1],
+    # berry curvature, ahc, shc
+    "berry_curv_unit": "ang2",
+    "berry_curv_adpt_kmesh": 1,
+    "berry_curv_adpt_kmesh_thresh": 100,
     # kubo
     "kubo_freq_max": None,
     "kubo_freq_min": 0.0,
     "kubo_freq_step": 0.01,
     "kubo_eigval_max": +100000,
-    "kubo_adpt_smr": True,
+    "kubo_adpt_smr": False,
     "kubo_adpt_smr_fac": np.sqrt(2),
     "kubo_adpt_smr_max": 1.0,
     "kubo_smr_fixed_en_width": 0.0,
@@ -101,54 +106,56 @@ class Win(dict):
 
         Returns:
             dict: dictionary form of seedname.win.
-                - num_k               : # of k points (int), [1].
-                - num_bands           : # of bands passed to the code (int), [1].
-                - num_wann            : # of WFs (int), [1].
-                - kpoint*             : representative k points, [1].
-                - kpoint_path*        : high-symmetry line in k-space, [None].
-                - unit_cell_cart*     : transform matrix, [a1,a2,a3], [None].
-                - atoms_frac*         : atomic positions in fractional coordinates with respect to the lattice vectors, {atom: [r1,r2,r3]} [None].
-                - atoms_cart*         : atomic positions in cartesian coordinates, {atom: [rx,ry,rz]} [None].
-                - dis_num_iter*       : # of iterations for disentanglement (int), [0].
-                - num_iter*           : # of iterations for maximal localization (int), [200].
-                - dis_froz_max        : top of the inner (frozen) energy window (float), [+100000].
-                - dis_froz_min        : bottom of the inner (frozen) energy window (float), [-100000].
-                - dis_win_max         : top of the outer energy window (float), [+100000].
-                - dis_win_min         : bottom of the outer energy window (float), [-100000].
-                - dis_mix_ratio       : mixing ratio during the disentanglement (float), [0.5].
-                - mp_grid             : dimensions of the Monkhorst-Pack grid of k-points (list), [[1, 1, 1]],
-                - kpoints             : k-points used in DFT calculation, [[k1, k2, k3]] (crystal coordinate).
-                - kpoint              : representative k points (dict), [None].
-                - kpoint_path         : k-points along high symmetry line in Brillouin zonen, [[k1, k2, k3]] (crystal coordinate) (str), [None].
-                - unit_cell_cart      : transform matrix, [a1,a2,a3] (list), [None].
+                - num_k           : # of k points (int), [1].
+                - num_bands       : # of bands passed to the code (int), [1].
+                - num_wann        : # of WFs (int), [1].
+                - kpoint*         : representative k points, [1].
+                - kpoint_path*    : high-symmetry line in k-space, [None].
+                - unit_cell_cart* : transform matrix, [a1,a2,a3], [None].
+                - atoms_frac*     : atomic positions in fractional coordinates with respect to the lattice vectors, {atom: [r1,r2,r3]} [None].
+                - atoms_cart*     : atomic positions in cartesian coordinates, {atom: [rx,ry,rz]} [None].
+                - dis_num_iter*   : # of iterations for disentanglement (int), [0].
+                - num_iter*       : # of iterations for maximal localization (int), [200].
+                - dis_froz_max    : top of the inner (frozen) energy window (float), [+100000].
+                - dis_froz_min    : bottom of the inner (frozen) energy window (float), [-100000].
+                - dis_win_max     : top of the outer energy window (float), [+100000].
+                - dis_win_min     : bottom of the outer energy window (float), [-100000].
+                - dis_mix_ratio   : mixing ratio during the disentanglement (float), [0.5].
+                - mp_grid         : dimensions of the Monkhorst-Pack grid of k-points (list), [[1, 1, 1]],
+                - kpoints         : k-points used in DFT calculation, [[k1, k2, k3]] (crystal coordinate).
+                - kpoint          : representative k points (dict), [None].
+                - kpoint_path     : k-points along high symmetry line in Brillouin zonen, [[k1, k2, k3]] (crystal coordinate) (str), [None].
+                - unit_cell_cart  : transform matrix, [a1,a2,a3] (list), [None].
 
             # only used for postcw calculation (same as postw90).
-                - kmesh               : dimensions of the Monkhorst-Pack grid of k-points for response calculation (list), [[1, 1, 1]].
-                - kmesh_spacing       : minimum distance for neighboring k points along each of the three directions in k space (The units are [Ang])(list), [1,1,1]].
-                - adpt_smr            : Determines whether to use an adaptive scheme for broadening the DOS and similar quantities defined on the energy axis (bool), [True].
-                - adpt_smr_fac        : The width ηnk of the broadened delta function used to determine the contribution to the spectral property (DOS, ...) from band n at point k (float), [sqrt(2)].
-                - adpt_smr_max        : Maximum allowed value for the adaptive energy smearing [eV] (float), [1.0].
-                - smr_type            : Defines the analytical form used for the broadened delta function in the computation of the DOS and similar quantities defined on the energy axis, gauss/m-pN/m-v or cold/f-d (str), [gauss].
-                - smr_fixed_en_width  : Energy width for the smearing function for the DOS. Used only if adpt_smr is false (The units are [eV]) (flaot), [0.0].
-                - spin_decomp         : If true, extra columns are added to some output files (such as seedname-dos.dat for the dos module, and analogously for the berry and BoltzWann modules) (bool), [False].
+                - kmesh                        : dimensions of the Monkhorst-Pack grid of k-points for response calculation (list), [[1, 1, 1]].
+                - kmesh_spacing                : minimum distance for neighboring k points along each of the three directions in k space (The units are [Ang])(list), [1,1,1]].
+                - adpt_smr                     : Determines whether to use an adaptive scheme for broadening the DOS and similar quantities defined on the energy axis (bool), [True].
+                - adpt_smr_fac                 : The width ηnk of the broadened delta function used to determine the contribution to the spectral property (DOS, ...) from band n at point k (float), [sqrt(2)].
+                - adpt_smr_max                 : Maximum allowed value for the adaptive energy smearing [eV] (float), [1.0].
+                - smr_type                     : Defines the analytical form used for the broadened delta function in the computation of the DOS and similar quantities defined on the energy axis, gauss/m-pN/m-v or cold/f-d (str), [gauss].
+                - smr_fixed_en_width           : Energy width for the smearing function for the DOS. Used only if adpt_smr is false (The units are [eV]) (flaot), [0.0].
+                - spin_decomp                  : If true, extra columns are added to some output files (such as seedname-dos.dat for the dos module, and analogously for the berry and BoltzWann modules) (bool), [False].
             # berry
-                - berry               : Determines whether to enter the berry routines (bool), [False].
-                - berry_task          : The quantity to compute when berry=true, ahc/morb/kubo/sc/shc/kdotp/me (str).
-                - berry_kmesh         : Overrides the kmesh global variable.
-                - berry_kmesh_spacing : Overrides the kmesh_spacing global variable.
+                - berry                        : Determines whether to enter the berry routines (bool), [False].
+                - berry_task                   : The quantity to compute when berry=true, ahc/morb/kubo/sc/shc/kdotp/me (str).
+                - berry_kmesh                  : Overrides the kmesh global variable.
+                - berry_kmesh_spacing          : Overrides the kmesh_spacing global variable.
+            # berry curvature, ahc, shc
+                - berry_curv_unit              : Unit of Berry curvature, ang2/bohr2, ['ang2'].
+                - berry_curv_adpt_kmesh        : Linear dimension of the adaptively refined k-mesh used to compute the anomalous/spin Hall conductivity, [1].
+                - berry_curv_adpt_kmesh_thresh : Threshold magnitude of the Berry curvature for adaptive refinement, [100].
             # kubo
-                - kubo_freq_max       : Upper limit of the frequency range for computing the optical conductivity, JDOS and ac SHC. (The units are [eV]) (float), [If an inner energy window was specified, the default value is dis_froz_max-fermi_energy+0.6667. Otherwise it is the difference between the maximum and the minimum energy eigenvalue stored in seedname.eig, plus 0.6667.].
-                - kubo_freq_min       : Lower limit of the frequency range for computing the optical conductivity, JDOS and ac SHC. (The units are [eV]) (float), [0.0].
-                - kubo_freq_step      : Difference between consecutive values of the optical frequency between kubo_freq_min and kubo_freq_max. (The units are [eV]) (float), [0.01].
-                - kubo_eigval_max     : Maximum energy eigenvalue of the eigenstates to be included in the evaluation of the optical conductivity, JDOS and ac SHC. (The units are [eV]) (float), [If an inner energy window was specified, the default value is the upper bound of the inner energy window plus 0.6667. Otherwise it is the maximum energy eigenvalue stored in seedname.eig plus 0.6667.].
-                - kubo_adpt_smr       : Overrides the adpt_smr global variable.
-                - kubo_adpt_smr_fac   : Overrides the adpt_smr_fac global variable.
-                - kubo_adpt_smr_max   : Overrides the adpt_smr_max global variable.
+                - kubo_freq_max           : Upper limit of the frequency range for computing the optical conductivity, JDOS and ac SHC. (The units are [eV]) (float), [If an inner energy window was specified, the default value is dis_froz_max-fermi_energy+0.6667. Otherwise it is the difference between the maximum and the minimum energy eigenvalue stored in seedname.eig, plus 0.6667.].
+                - kubo_freq_min           : Lower limit of the frequency range for computing the optical conductivity, JDOS and ac SHC. (The units are [eV]) (float), [0.0].
+                - kubo_freq_step          : Difference between consecutive values of the optical frequency between kubo_freq_min and kubo_freq_max. (The units are [eV]) (float), [0.01].
+                - kubo_eigval_max         : Maximum energy eigenvalue of the eigenstates to be included in the evaluation of the optical conductivity, JDOS and ac SHC. (The units are [eV]) (float), [If an inner energy window was specified, the default value is the upper bound of the inner energy window plus 0.6667. Otherwise it is the maximum energy eigenvalue stored in seedname.eig plus 0.6667.].
+                - kubo_adpt_smr           : Overrides the adpt_smr global variable.
+                - kubo_adpt_smr_fac       : Overrides the adpt_smr_fac global variable.
+                - kubo_adpt_smr_max       : Overrides the adpt_smr_max global variable.
                 - kubo_smr_fixed_en_width : Overrides the smr_fixed_en_width global variable.
-                - kubo_smr_type       : Overrides the smr_type global variable.
-            # ahc
+                - kubo_smr_type           : Overrides the smr_type global variable.
             # morb
-            # shc
             # gyrotropic
                 - gyrotropic          : Determines whether to enter the gyrotropic routines (bool), [False].
             # boltzwann
@@ -291,7 +298,7 @@ class Win(dict):
         d["kmesh"] = [int(x) for x in kmesh.split()]
         kmesh_spacing = self._get_param_keyword(win_data, "kmesh_spacing", "1  1  1", dtype=str)
         d["kmesh_spacing"] = [int(x) for x in kmesh_spacing.split()]
-        d["adpt_smr"] = self._get_param_keyword(win_data, "adpt_smr", True, dtype=bool)
+        d["adpt_smr"] = self._get_param_keyword(win_data, "adpt_smr", False, dtype=bool)
         d["adpt_smr_fac"] = self._get_param_keyword(win_data, "adpt_smr_fac", np.sqrt(2), dtype=float)
         d["adpt_smr_max"] = self._get_param_keyword(win_data, "adpt_smr_max", 1.0, dtype=float)
         d["smr_type"] = self._get_param_keyword(win_data, "smr_type", "gauss", dtype=str).replace(" ", "")
@@ -312,7 +319,7 @@ class Win(dict):
         d["kubo_freq_min"] = self._get_param_keyword(win_data, "kubo_freq_min", 0.0, dtype=float)
         d["kubo_freq_step"] = self._get_param_keyword(win_data, "kubo_freq_step", 0.01, dtype=float)
         d["kubo_eigval_max"] = self._get_param_keyword(win_data, "kubo_eigval_max", +100000, dtype=float)
-        d["kubo_adpt_smr"] = self._get_param_keyword(win_data, "kubo_adpt_smr", True, dtype=bool)
+        d["kubo_adpt_smr"] = self._get_param_keyword(win_data, "kubo_adpt_smr", False, dtype=bool)
         d["kubo_adpt_smr_fac"] = self._get_param_keyword(win_data, "kubo_adpt_smr_fac", np.sqrt(2), dtype=float)
         d["kubo_adpt_smr_max"] = self._get_param_keyword(win_data, "kubo_adpt_smr_max", 1.0, dtype=float)
         d["kubo_smr_type"] = self._get_param_keyword(win_data, "smr_type", "gauss", dtype=str).replace(" ", "")
@@ -320,6 +327,60 @@ class Win(dict):
 
         d["gyrotropic"] = self._get_param_keyword(win_data, "gyrotropic", False, dtype=bool)
         d["boltzwann"] = self._get_param_keyword(win_data, "boltzwann", False, dtype=bool)
+
+        nfermi = 0
+        found_fermi_energy = False
+        fermi_energy_max = 0.0
+        fermi_energy_min = 0.0
+        fermi_energy_step = 0.0
+        fermi_energy_list = []
+
+        fermi_energy = self._get_param_keyword(win_data, "fermi_energy", None, dtype=float)
+
+        if fermi_energy is not None:
+            found_fermi_energy = True
+            nfermi = 1
+
+        fermi_energy_scan = False
+        fermi_energy_min = self._get_param_keyword(win_data, "fermi_energy_min", None, dtype=float)
+        if fermi_energy_min is not None:
+            if found_fermi_energy:
+                raise Exception("Error: Cannot specify both fermi_energy and fermi_energy_min")
+
+            fermi_energy_scan = True
+            fermi_energy_max = fermi_energy_min + 1.0
+            fermi_energy_max = self._get_param_keyword(win_data, "fermi_energy_max", None, dtype=float)
+
+            if fermi_energy_max is not None and fermi_energy_max <= fermi_energy_min:
+                raise Exception("Error: fermi_energy_max must be larger than fermi_energy_min")
+
+            fermi_energy_step = 0.01
+            fermi_energy_step = self._get_param_keyword(win_data, "fermi_energy_step", None, dtype=float)
+
+            if fermi_energy_step is not None and fermi_energy_step <= 0.0:
+                raise Exception("Error: fermi_energy_step must be positive")
+
+            nfermi = int(abs((fermi_energy_max - fermi_energy_min) / fermi_energy_step)) + 1
+
+        if found_fermi_energy:
+            fermi_energy_list = [fermi_energy]
+        elif fermi_energy_scan:
+            if nfermi == 1:
+                fermi_energy_step = 0.0
+            else:
+                fermi_energy_step = (fermi_energy_max - fermi_energy_min) / float(nfermi - 1)
+
+            fermi_energy_list = []
+            for i in range(nfermi):
+                fermi_energy_list[i] = fermi_energy_min + (i - 1) * fermi_energy_step
+        else:
+            fermi_energy_list = [0.0]
+
+        d["fermi_energy"] = fermi_energy
+        d["fermi_energy_max"] = fermi_energy_max
+        d["fermi_energy_min"] = fermi_energy_min
+        d["fermi_energy_step"] = fermi_energy_step
+        d["fermi_energy_list"] = fermi_energy_list
 
         return d
 

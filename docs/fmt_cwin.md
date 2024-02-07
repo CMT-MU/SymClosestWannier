@@ -18,6 +18,8 @@
   - svd               : implement singular value decomposition ? otherwise adopt Lowdin's orthogonalization method (bool), [False].
   - verbose           : verbose calculation info (bool, optional), [False].
   - transl_inv        : use Eq.(31) of Marzari&Vanderbilt PRB 56, 12847 (1997) for band-diagonal position matrix elements? (bool), [True].
+  - use_degen_pert    : use degenerate perturbation theory when bands are degenerate and band derivatives are needed? (bool), [False].
+  - degen_thr         : threshold to exclude degenerate bands from the calculation, [0.0].
   - tb_gauge          : use tb gauge? (bool), [False].
   - write_hr          : write seedname_hr.py ? (bool), [False].
   - write_sr          : write seedname_sr.py ? (bool), [False].
