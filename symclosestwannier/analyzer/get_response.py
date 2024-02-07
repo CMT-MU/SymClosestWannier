@@ -86,6 +86,7 @@ def expectation_main(cwi, operators):
             HH += H_zeeman[np.newaxis, :, :]
 
         E, U = np.linalg.eigh(HH)
+        HH = None
 
         mu_B = bohr_magn_SI * joul_to_eV
 
