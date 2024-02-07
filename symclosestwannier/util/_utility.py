@@ -7,6 +7,8 @@ import fortio, scipy.io
 
 from gcoreutils.nsarray import NSArray
 
+from symclosestwannier.util.constants import bohr_magn_SI, joul_to_eV
+
 M_ZERO = np.finfo(float).eps
 
 
@@ -687,3 +689,70 @@ def thermal_avg(O, E, U, ef=0.0, T=0.0):
     O_exp = np.array(O_exp)
 
     return O_exp
+
+
+# ==================================================
+def Rx(theta):
+    return np.array(
+        [
+            [1, 0, 0],
+            [0, np.cos(theta), -np.sin(theta)],
+            [0, np.sin(theta), np.cos(theta)],
+        ]
+    )
+
+
+def Ry(theta):
+    return np.array(
+        [
+            [np.cos(theta), 0, np.sin(theta)],
+            [0, 1, 0],
+            [-np.sin(theta), 0, np.cos(theta)],
+        ]
+    )
+
+
+def Rz(theta):
+    return np.array(
+        [
+            [np.cos(theta), -np.sin(theta), 0],
+            [np.sin(theta), np.cos(theta), 0],
+            [0, 0, 1],
+        ]
+    )
+
+
+# ==================================================
+def sigma_x(up_dn_list=["U", "D"]):
+    sx = np.array([[0.5 if i != j else 0 for j in up_dn_list] for i in up_dn_list])
+    return sx
+
+
+# ==================================================
+def sigma_y(up_dn_list=["U", "D"]):
+    sy = np.array([[-0.5j if i == "U" and j == "D" else 0 for j in up_dn_list] for i in up_dn_list])
+    sy += np.array([[+0.5j if i == "D" and j == "U" else 0 for j in up_dn_list] for i in up_dn_list])
+
+    return sy
+
+
+# ==================================================
+def sigma_z(up_dn_list=["U", "D"]):
+    sz = np.array([[+0.5 if i == "U" and j == "U" else 0 for j in up_dn_list] for i in up_dn_list])
+    sz += np.array([[-0.5 if i == "D" and j == "D" else 0 for j in up_dn_list] for i in up_dn_list])
+
+    return sz
+
+
+# ==================================================
+def spin_zeeman_interaction(B, theta=0.0, phi=0.0, g_factor=2.0, up_dn_list=["U", "D"]):
+    mu_B = bohr_magn_SI * joul_to_eV
+    B_vec = B * np.array([np.sin(theta) * np.cos(phi), np.sin(theta) * np.sin(phi), np.cos(theta)])
+    sx = sigma_x(up_dn_list)
+    sy = sigma_y(up_dn_list)
+    sz = sigma_z(up_dn_list)
+    mag_moment = -g_factor * mu_B * np.array([sx, sy, sz])
+
+    H_zeeman = -sum([mag_moment[i] * B_vec[i] for i in range(3)])
+
+    return H_zeeman

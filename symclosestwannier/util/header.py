@@ -59,6 +59,7 @@ win_info = {
     "unit_cell_cart": "transform matrix, [a1,a2,a3], [None].",
     "atoms_frac": "atomic positions in fractional coordinates with respect to the lattice vectors, {atom: [r1,r2,r3]} [None].",
     "atoms_cart": "atomic positions in cartesian coordinates, {atom: [rx,ry,rz]} [None].",
+    "spinors": "WFs are spinors? (bool) [False].",
     #
     "kmesh": "dimensions of the Monkhorst-Pack grid of k-points for response calculation (list), [[1, 1, 1]].",
     "kmesh_spacing": "minimum distance for neighboring k points along each of the three directions in k space (list), [1,1,1]].",

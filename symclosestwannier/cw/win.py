@@ -29,6 +29,7 @@ _default = {
     "unit_cell_cart": None,
     "atoms_frac": None,
     "atoms_cart": None,
+    "spinors": False,
     #
     "kmesh": [1, 1, 1],
     "kmesh_spacing": [1, 1, 1],
@@ -114,6 +115,7 @@ class Win(dict):
                 - unit_cell_cart* : transform matrix, [a1,a2,a3], [None].
                 - atoms_frac*     : atomic positions in fractional coordinates with respect to the lattice vectors, {atom: [r1,r2,r3]} [None].
                 - atoms_cart*     : atomic positions in cartesian coordinates, {atom: [rx,ry,rz]} [None].
+                - spinors         : WFs are spinors? (bool) [False].
                 - dis_num_iter*   : # of iterations for disentanglement (int), [0].
                 - num_iter*       : # of iterations for maximal localization (int), [200].
                 - dis_froz_max    : top of the inner (frozen) energy window (float), [+100000].
@@ -188,6 +190,8 @@ class Win(dict):
         d["dis_win_max"] = self._get_param_keyword(win_data, "dis_win_max", +100000, dtype=float)
         d["dis_win_min"] = self._get_param_keyword(win_data, "dis_win_min", -100000, dtype=float)
         d["dis_mix_ratio"] = self._get_param_keyword(win_data, "dis_mix_ratio", 0.5, dtype=float)
+
+        d["spinors"] = self._get_param_keyword(win_data, "spinors", False, dtype=bool)
 
         for i, line in enumerate(win_data_lower):
             if "begin kpoints" in line:

@@ -45,6 +45,12 @@ _default = {
     "a": None,
     "N1": 50,
     "fermi_energy": 0.0,
+    #
+    "zeeman_interaction": False,
+    "magnetic_field": 0.0,
+    "magnetic_field_theta": 0.0,
+    "magnetic_field_phi": 0.0,
+    "g_factor": 2.0,
 }
 
 
@@ -185,6 +191,10 @@ class CWin(dict):
             "a",
             "fermi_energy",
             "degen_thr",
+            "magnetic_field",
+            "magnetic_field_theta",
+            "magnetic_field_phi",
+            "g_factor",
         ):
             v = float(v)
         elif key == "N1":
