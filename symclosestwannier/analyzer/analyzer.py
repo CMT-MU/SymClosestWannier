@@ -86,6 +86,8 @@ def analyzer(seedname="cwannier"):
 
     res.write_kubo()
 
+    res.write_spin()
+
     cwm.log(f"\n\n  * total elapsed_time:", file=outfile, mode="a")
     cwm.log(cw_end_output_msg(), stamp=None, end="\n", file=outfile, mode="a")
 
