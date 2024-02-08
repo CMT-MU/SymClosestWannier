@@ -729,36 +729,40 @@ def Rz(theta):
 
 
 # ==================================================
-def sigma_x(dim):
+def pauli_spn_x(dim):
     Identity = np.eye(int(dim / 2))
     sig_x = np.array([[0.0, 1.0], [1.0, 0.0]])
     return TensorProduct(Identity, sig_x)
 
 
 # ==================================================
-def sigma_y(dim):
+def pauli_spn_y(dim):
     Identity = np.eye(int(dim / 2))
     sig_y = np.array([[0.0, -1.0j], [1.0j, 0.0]])
     return TensorProduct(Identity, sig_y)
 
 
 # ==================================================
-def sigma_z(dim):
+def pauli_spn_z(dim):
     Identity = np.eye(int(dim / 2))
     sig_z = np.array([[1.0, 0.0], [0.0, -1.0]])
     return TensorProduct(Identity, sig_z)
 
 
 # ==================================================
-def spin_mag_moment(g_factor=2.0, dim=2):
+def spn_operator(pauli_spn=None, g_factor=2.0, dim=2):
+    if pauli_spn is None:
+        pauli_spn = np.array([pauli_spn_x(dim), pauli_spn_y(dim), pauli_spn_z(dim)])
+
     mu_B = bohr_magn_SI * joul_to_eV
-    return -0.5 * g_factor * mu_B * np.array([sigma_x(dim), sigma_y(dim), sigma_z(dim)])
+    return -0.5 * g_factor * mu_B * pauli_spn
 
 
 # ==================================================
-def spin_zeeman_interaction(B, theta=0.0, phi=0.0, g_factor=2.0, dim=2):
+def spin_zeeman_interaction(B, theta=0.0, phi=0.0, pauli_spn=None, g_factor=2.0, dim=2):
+    spin_oper = spn_operator(pauli_spn, g_factor, dim)
     B_vec = B * np.array([np.sin(theta) * np.cos(phi), np.sin(theta) * np.sin(phi), np.cos(theta)])
-    spin_mag_vec = spin_mag_moment(g_factor, dim)
-    H_zeeman = -sum([spin_mag_vec[i] * B_vec[i] for i in range(3)])
+
+    H_zeeman = -sum([spin_oper[i] * B_vec[i] for i in range(3)])
 
     return H_zeeman

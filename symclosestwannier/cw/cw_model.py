@@ -70,6 +70,7 @@ from symclosestwannier.util._utility import (
     construct_Ok,
     spin_zeeman_interaction,
 )
+from symclosestwannier.util.get_oper_R import get_oper_R
 
 _default = {
     "Sk": None,
@@ -162,20 +163,13 @@ class CWModel(dict):
         Hk = 0.5 * (Hk + np.einsum("kmn->knm", Hk).conj())
 
         if self._cwi["zeeman_interaction"]:
-            if not self._cwi["spinors"]:
-                raise Exception("WFs are not spinors.")
-
             B = self._cwi["magnetic_field"]
             theta = self._cwi["magnetic_field_theta"]
             phi = self._cwi["magnetic_field_phi"]
             g_factor = self._cwi["g_factor"]
 
-            H_zeeman = spin_zeeman_interaction(B, theta, phi, g_factor, self._cwi["num_wann"])
-
-            S2k = np.array([spl.sqrtm(Sk[k]) for k in range(self._cwi["num_k"])])
-
-            H_zeeman = S2k @ H_zeeman[np.newaxis, :, :] @ S2k
-
+            pauli_spin = Uk.transpose(0, 2, 1).conjugate() @ self._cwi["pauli_spn"] @ Uk
+            H_zeeman = spin_zeeman_interaction(B, theta, phi, pauli_spin, g_factor, self._cwi["num_wann"])
             Hk += H_zeeman
 
         S2k = np.array([spl.sqrtm(Sk[k]) for k in range(self._cwi["num_k"])])
@@ -355,20 +349,13 @@ class CWModel(dict):
         Hk = 0.5 * (Hk + np.einsum("kmn->knm", Hk).conj())
 
         if self._cwi["zeeman_interaction"]:
-            if not self._cwi["spinors"]:
-                raise Exception("WFs are not spinors.")
-
             B = self._cwi["magnetic_field"]
             theta = self._cwi["magnetic_field_theta"]
             phi = self._cwi["magnetic_field_phi"]
             g_factor = self._cwi["g_factor"]
 
-            H_zeeman = spin_zeeman_interaction(B, theta, phi, g_factor, self._cwi["num_wann"])
-
-            S2k = np.array([spl.sqrtm(Sk[k]) for k in range(self._cwi["num_k"])])
-
-            H_zeeman = S2k @ H_zeeman[np.newaxis, :, :] @ S2k
-
+            pauli_spin = Uk.transpose(0, 2, 1).conjugate() @ self._cwi["pauli_spn"] @ Uk
+            H_zeeman = spin_zeeman_interaction(B, theta, phi, pauli_spin, g_factor, self._cwi["num_wann"])
             Hk += H_zeeman
 
         S2k = np.array([spl.sqrtm(Sk[k]) for k in range(self._cwi["num_k"])])
