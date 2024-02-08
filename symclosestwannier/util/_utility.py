@@ -548,7 +548,7 @@ def samb_decomp_operator(
             R = np.array([R1, R2, R3], dtype=float)
             rm = atoms_frac[m]
             rn = atoms_frac[n]
-            bond = (R + rm - rn) @ A
+            bond = ((R + rn) - rm) @ A
 
             if (m, n) in Or:
                 Or[(m, n)].append((bond, R1, R2, R3, v))
@@ -565,7 +565,7 @@ def samb_decomp_operator(
                 R = np.array([R1, R2, R3], dtype=float)
                 rm = atoms_frac_samb[m]
                 rn = atoms_frac_samb[n]
-                bond = (R + rm - rn) @ A_samb
+                bond = ((R + rn) - rm) @ A_samb
 
                 if (m, n) in dic:
                     dic[(m, n)].append((bond, R1, R2, R3, v))
