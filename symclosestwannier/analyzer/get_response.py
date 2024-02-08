@@ -34,6 +34,9 @@
 
 import numpy as np
 from scipy import linalg as spl
+import multiprocessing
+from joblib import Parallel, delayed, wrap_non_picklable_objects
+
 
 from symclosestwannier.util._utility import (
     fermi,
@@ -41,7 +44,7 @@ from symclosestwannier.util._utility import (
     fourier_transform_r_to_k_new,
     fourier_transform_r_to_k_vec,
     spin_zeeman_interaction,
-    spin_mag_moment,
+    spn_operator,
     thermal_avg,
 )
 
@@ -70,7 +73,7 @@ def expectation_main(cwi, operators):
         else:
             atoms_frac = None
 
-        N1, N2, N3 = cwi["berry_kmesh"]
+        N1, N2, N3 = cwi["kmesh"]
         kpoints = np.array(
             [[i / float(N1), j / float(N2), k / float(N3)] for i in range(N1) for j in range(N2) for k in range(N3)]
         )
@@ -82,15 +85,10 @@ def expectation_main(cwi, operators):
         g_factor = cwi["g_factor"]
         dim = cwi["num_wann"]
 
-        Sk = fourier_transform_r_to_k(operators["Sr"], kpoints, cwi["irvec"], cwi["ndegen"], atoms_frac)
-
-        S2k = np.array([spl.sqrtm(Sk[k]) for k in range(len(kpoints))])
+        pauli_spn = fourier_transform_r_to_k_vec(operators["SS_R"], kpoints, cwi["irvec"], cwi["ndegen"], atoms_frac)
 
         if cwi["zeeman_interaction"]:
-            H_zeeman = spin_zeeman_interaction(B, theta, phi, g_factor, dim)
-
-            H_zeeman = S2k @ H_zeeman[np.newaxis, :, :] @ S2k
-
+            H_zeeman = spin_zeeman_interaction(B, theta, phi, pauli_spn, g_factor, cwi["num_wann"])
             HH += H_zeeman
 
         E, U = np.linalg.eigh(HH)
@@ -98,15 +96,9 @@ def expectation_main(cwi, operators):
 
         mu_B = bohr_magn_SI * joul_to_eV
 
-        Ms_x, Ms_y, Ms_z = spin_mag_moment(g_factor, dim) / mu_B
+        spn_x, spn_y, spn_z = spn_operator(pauli_spn, g_factor, dim) / mu_B
 
-        Ms_x = S2k @ Ms_x[np.newaxis, :, :] @ S2k
-        Ms_y = S2k @ Ms_y[np.newaxis, :, :] @ S2k
-        Ms_z = S2k @ Ms_z[np.newaxis, :, :] @ S2k
-
-        d["Ms_x"] = thermal_avg(Ms_x, E, U, cwi["fermi_energy"], T=0.0)
-        d["Ms_y"] = thermal_avg(Ms_y, E, U, cwi["fermi_energy"], T=0.0)
-        d["Ms_z"] = thermal_avg(Ms_z, E, U, cwi["fermi_energy"], T=0.0)
+        d["Ms_x"], d["Ms_y"], d["Ms_z"] = thermal_avg([spn_x, spn_y, spn_z], E, U, cwi["fermi_energy"], T=0.0)
 
         return d
 
@@ -151,9 +143,7 @@ def berry_main(cwi, operators):
 
     # (kubo) Complex optical conductivity (Kubo-Greenwood) & JDOS
     if cwi["berry_task"] == "kubo":
-        kubo_H, kubo_AH, kubo_H_spn, kubo_AH_spn = berry_get_kubo(
-            cwi, operators["HH_R"], operators["AA_R"], operators["Sr"]
-        )
+        kubo_H, kubo_AH, kubo_H_spn, kubo_AH_spn = berry_get_kubo(cwi, operators)
 
         d["kubo_H"] = kubo_H
         d["kubo_AH"] = kubo_AH
@@ -358,38 +348,11 @@ def utility_w0gauss(x, n):
     return utility_w0gauss
 
 
-# ==================================================
-import time
-import multiprocessing
-from joblib import Parallel, delayed, wrap_non_picklable_objects
-
 num_proc = multiprocessing.cpu_count()
 
 
-# def parallel(target, args):
-#     t0 = time.time()
-#     jobs = []
-#     proc = 0
-#     rest = len(args)
-#     for arg in args:
-#         if proc < num_proc:
-#             p = multiprocessing.Process(target=target, args=(arg,))
-#             jobs.append(p)
-#             p.start()
-#             proc += 1
-#             rest -= 1
-#             if proc == num_proc or rest == 0:
-#                 print("%s process was working, and rest process is %s." % (num_proc, rest))
-#                 for job in jobs:
-#                     job.join()
-#                 proc = 0
-#                 jobs = []
-#     t1 = time.time()
-#     print("{:.2f}".format(t1 - t0))
-
-
 # ==================================================
-def berry_get_kubo(cwi, HH_R, AA_R, Sr=None):
+def berry_get_kubo(cwi, operators):
     """
     Complex interband optical conductivity, in S/cm,
     separated into Hermitian (Kubo_H) and anti-Hermitian (Kubo_AH) parts.
@@ -468,32 +431,23 @@ def berry_get_kubo(cwi, HH_R, AA_R, Sr=None):
             kpt = np.array([kpt])
 
         HH, delHH = fourier_transform_r_to_k_new(
-            HH_R, kpt, cwi["unit_cell_cart"], cwi["irvec"], cwi["ndegen"], atoms_frac
+            operators["HH_R"], kpt, cwi["unit_cell_cart"], cwi["irvec"], cwi["ndegen"], atoms_frac
         )
 
         if cwi["zeeman_interaction"]:
-            if not cwi["spinors"]:
-                raise Exception("WFs are not spinors.")
-
             B = cwi["magnetic_field"]
             theta = cwi["magnetic_field_theta"]
             phi = cwi["magnetic_field_phi"]
             g_factor = cwi["g_factor"]
 
-            H_zeeman = spin_zeeman_interaction(B, theta, phi, g_factor, num_wann)
-
-            Sk = fourier_transform_r_to_k(Sr, kpt, cwi["irvec"], cwi["ndegen"], atoms_frac)
-
-            S2k = np.array([spl.sqrtm(Sk[k]) for k in range(len(kpt))])
-
-            H_zeeman = S2k @ H_zeeman[np.newaxis, :, :] @ S2k
-
+            pauli_spin = fourier_transform_r_to_k_vec(operators["SS_R"], kpt, cwi["irvec"], cwi["ndegen"], atoms_frac)
+            H_zeeman = spin_zeeman_interaction(B, theta, phi, pauli_spin, g_factor, cwi["num_wann"])
             HH += H_zeeman
 
         E, U = np.linalg.eigh(HH)
         HH = None
         D_h = wham_get_D_h(delHH, E, U)
-        AA = fourier_transform_r_to_k_vec(AA_R, kpt, cwi["irvec"], cwi["ndegen"], atoms_frac)
+        AA = fourier_transform_r_to_k_vec(operators["AA_R"], kpt, cwi["irvec"], cwi["ndegen"], atoms_frac)
         Avec = np.array([U.transpose(0, 2, 1).conjugate() @ AA[i] @ U for i in range(3)])
         AA = None
         A = Avec + 1.0j * D_h  # Eq.(25) WYSV06

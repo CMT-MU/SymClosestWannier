@@ -1,6 +1,7 @@
 """
-Spn manages matrix elements of Spin operator in seedname.spn file.
+Spn manages matrix elements of Pauli spin operator in seedname.spn file.
 """
+
 import os
 import gzip
 import tarfile
@@ -9,13 +10,13 @@ import numpy as np
 
 from symclosestwannier.util._utility import FortranFileR, FortranFileW
 
-_default = {"num_k": 1, "num_bands": 1, "Sk": None}
+_default = {"num_k": 1, "num_bands": 1, "pauli_spn": None}
 
 
 # ==================================================
 class Spn(dict):
     """
-    Spn manages matrix elements of Spin operator in seedname.spn file.
+    Spn manages matrix elements of Pauli spin operator in seedname.spn file.
 
     Attributes:
         _topdir (str): top directory.
@@ -58,11 +59,7 @@ class Spn(dict):
             dict:
                 - num_k     : # of k points (int), [1].
                 - num_bands : # of bands passed to the code (int), [1].
-                - num_wann  : # of WFs (int), [1].
-                - k-points  : [[k1, k2, k3]] (crystal coordinate) (list), [[[0, 0, 0]]].,
-                - Uoptk     : num_wann×num_wann full unitary matrix (ndarray), [None].
-                - Udisk     : num_wann×num_bands partial unitary matrix (ndarray), [None].
-                - Uk        : num_wann×num_bands full unitary matrix (ndarray), [None].
+                - Spnk      : num_bands×num_bands matrix elementes of Pauli spin operators (ndarray), [None].
         """
         if os.path.exists(file_name):
             pass
@@ -84,7 +81,7 @@ class Spn(dict):
             SPNheader = "".join(a.decode("ascii") for a in SPNheader)
 
         indm, indn = np.tril_indices(num_bands)
-        Sk = np.zeros((3, num_k, num_bands, num_bands), dtype=complex)
+        pauli_spn = np.zeros((3, num_k, num_bands, num_bands), dtype=complex)
 
         for ik in range(num_k):
             A = np.zeros((3, num_bands, num_bands), dtype=complex)
@@ -101,9 +98,9 @@ class Spn(dict):
             if check > 1e-10:
                 raise RuntimeError("REAL DIAG CHECK FAILED : {0}".format(check))
 
-            Sk[:, ik, :, :] = A
+            pauli_spn[:, ik, :, :] = A
 
-        d = {"num_k": num_k, "num_bands": num_bands, "Sk": Sk.tolist()}
+        d = {"num_k": num_k, "num_bands": num_bands, "pauli_spn": pauli_spn.tolist()}
 
         return d
 

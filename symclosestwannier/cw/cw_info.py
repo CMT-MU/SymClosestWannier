@@ -68,7 +68,7 @@ class CWInfo(dict):
     # ==================================================
     def read(self, topdir, seedname):
         """
-        read seedname.cwin/win/eig/amn/mmn/nnkp files.
+        read seedname.cwin/win/nnkp/eig/amn/(mmn)/(umat)/(spn) files.
 
         Args:
             topdir (str): directory of seedname.cwin/win/eig/amn/mmn/nnkp files.
@@ -89,7 +89,7 @@ class CWInfo(dict):
                 if not np.any([d["write_rmn"], d["write_vmn"], d["write_tb"], d["berry"]]):
                     continue
             if name == "spn":
-                if not np.any([d["write_spn"], d["spin_decomp"]]):
+                if not np.any([d["write_spn"], d["spin_decomp"], d["spin_moment"], d["zeeman_interaction"]]):
                     continue
 
             info = C(topdir, seedname)
@@ -107,6 +107,10 @@ class CWInfo(dict):
 
             info_list.append((name, info))
             d.update(info)
+
+        if d["zeeman_interaction"]:
+            if not d["spinors"]:
+                raise Exception("WFs are not spinors.")
 
         # additional information
         A = np.array(d["A"])
