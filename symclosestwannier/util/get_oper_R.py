@@ -137,10 +137,11 @@ def get_SS_R(cwi):
     Returns:
         ndarray: spin operator, SS_R(3, len(irvec), num_wann, num_wann).
     """
-    Sk = np.array(cwi["Sk"])
+    pauli_spn = np.array(cwi["pauli_spn"])
     Uk = np.array(cwi["Uk"])
 
-    SS_k = Uk.transpose(0, 2, 1).conjugate() @ Sk @ Uk
+    SS_k = Uk.transpose(0, 2, 1).conjugate() @ pauli_spn @ Uk
+
     SS_k = 0.5 * (SS_k + np.einsum("akmn->aknm", SS_k).conj())
 
     kpoints = np.array(cwi["kpoints"])
