@@ -44,7 +44,7 @@ _default = {
     #
     "a": None,
     "N1": 50,
-    "fermi_energy": 0.0,
+    "fermi_energy": None,
     #
     "zeeman_interaction": False,
     "magnetic_field": 0.0,
@@ -131,7 +131,7 @@ class CWin(dict):
 
             # only used for band dispersion calculation.
                 - a                 : lattice parameter (in Ang) used to correct units of k points in reference band data, [None].
-                - fermi_energy      : fermi energy used for band shift, [None].
+                - fermi_energy      : fermi energy, [None].
                 - N1                : number of divisions for high symmetry lines (int, optional), [50].
         """
         if os.path.exists(file_name):
@@ -216,7 +216,7 @@ class CWin(dict):
             elif v.lower() in ("false", ".false."):
                 v = False
             else:
-                raise Exception(f"invalid {k} = {v} was given. choose from 'true'/'.true.'/'false'/'.false.'.")
+                raise Exception(f"invalid {key} = {v} was given. choose from 'true'/'.true.'/'false'/'.false.'.")
 
         return v
 

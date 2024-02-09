@@ -49,6 +49,12 @@ _default = {
     "berry_curv_unit": "ang2",
     "berry_curv_adpt_kmesh": 1,
     "berry_curv_adpt_kmesh_thresh": 100,
+    "fermi_energy": 0.0,
+    "fermi_energy_max": None,
+    "fermi_energy_min": None,
+    "fermi_energy_step": 0.01,
+    "fermi_energy_list": None,
+    "num_fermi": 0,
     # kubo
     "kubo_freq_max": None,
     "kubo_freq_min": 0.0,
@@ -149,6 +155,12 @@ class Win(dict):
                 - berry_curv_unit              : Unit of Berry curvature, ang2/bohr2, ['ang2'].
                 - berry_curv_adpt_kmesh        : Linear dimension of the adaptively refined k-mesh used to compute the anomalous/spin Hall conductivity, [1].
                 - berry_curv_adpt_kmesh_thresh : Threshold magnitude of the Berry curvature for adaptive refinement, [100].
+                - fermi_energy                 : fermi energy (float), [None].
+                - fermi_energy_max             : Upper limit of the Fermi energy range (float), [None].
+                - fermi_energy_min             : Lower limit of the Fermi energy range (float), [None].
+                - fermi_energy_step            : Step for increasing the Fermi energy in the specified range. (The units are [eV]) (float), [0.01].
+                - fermi_energy_list            : list of fermi energy (list), [None].
+                - num_fermi                    : number of fermi energies (int), [0].
             # kubo
                 - kubo_freq_max           : Upper limit of the frequency range for computing the optical conductivity, JDOS and ac SHC. (The units are [eV]) (float), [If an inner energy window was specified, the default value is dis_froz_max-fermi_energy+0.6667. Otherwise it is the difference between the maximum and the minimum energy eigenvalue stored in seedname.eig, plus 0.6667.].
                 - kubo_freq_min           : Lower limit of the frequency range for computing the optical conductivity, JDOS and ac SHC. (The units are [eV]) (float), [0.0].
@@ -335,7 +347,7 @@ class Win(dict):
         d["gyrotropic"] = self._get_param_keyword(win_data, "gyrotropic", False, dtype=bool)
         d["boltzwann"] = self._get_param_keyword(win_data, "boltzwann", False, dtype=bool)
 
-        nfermi = 0
+        num_fermi = 0
         found_fermi_energy = False
         fermi_energy_max = 0.0
         fermi_energy_min = 0.0
@@ -346,7 +358,7 @@ class Win(dict):
 
         if fermi_energy is not None:
             found_fermi_energy = True
-            nfermi = 1
+            num_fermi = 1
 
         fermi_energy_scan = False
         fermi_energy_min = self._get_param_keyword(win_data, "fermi_energy_min", None, dtype=float)
@@ -367,18 +379,18 @@ class Win(dict):
             if fermi_energy_step is not None and fermi_energy_step <= 0.0:
                 raise Exception("Error: fermi_energy_step must be positive")
 
-            nfermi = int(abs((fermi_energy_max - fermi_energy_min) / fermi_energy_step)) + 1
+            num_fermi = int(abs((fermi_energy_max - fermi_energy_min) / fermi_energy_step)) + 1
 
         if found_fermi_energy:
             fermi_energy_list = [fermi_energy]
         elif fermi_energy_scan:
-            if nfermi == 1:
+            if num_fermi == 1:
                 fermi_energy_step = 0.0
             else:
-                fermi_energy_step = (fermi_energy_max - fermi_energy_min) / float(nfermi - 1)
+                fermi_energy_step = (fermi_energy_max - fermi_energy_min) / float(num_fermi - 1)
 
             fermi_energy_list = []
-            for i in range(nfermi):
+            for i in range(num_fermi):
                 fermi_energy_list[i] = fermi_energy_min + (i - 1) * fermi_energy_step
         else:
             fermi_energy_list = [0.0]
@@ -388,6 +400,7 @@ class Win(dict):
         d["fermi_energy_min"] = fermi_energy_min
         d["fermi_energy_step"] = fermi_energy_step
         d["fermi_energy_list"] = fermi_energy_list
+        d["num_fermi"] = num_fermi
 
         return d
 

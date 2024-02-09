@@ -21,7 +21,7 @@
 import numpy as np
 
 from symclosestwannier.util.get_oper_R import get_oper_R
-from symclosestwannier.analyzer.get_response import berry_main, boltzwann_main, gyrotropic_main, expectation_main
+from symclosestwannier.analyzer.get_response import berry_main, boltzwann_main, gyrotropic_main, spin_moment_main
 
 from symclosestwannier.util.message import (
     cw_start_set_operators_msg,
@@ -45,7 +45,7 @@ class Response(dict):
     """
 
     # ==================================================
-    def __init__(self, cwi, cwm, Sr=None):
+    def __init__(self, cwi, cwm):
         """
         initialize the class.
 
@@ -60,7 +60,6 @@ class Response(dict):
         self._outfile = f"{self._cwi['seedname']}.cwpout"
 
         # operators
-        self["Sr"] = Sr  # <0n|Rm>
         self["HH_R"] = None  # <0n|H|Rm>
         self["AA_R"] = None  # <0n|r|Rm>
         self["BB_R"] = None  # <0|H(r-R)|R>
@@ -79,6 +78,9 @@ class Response(dict):
         self["kubo_AH"] = None
         self["kubo_AH_spn"] = None
 
+        # ahc
+        self["ahc_list"] = None
+
         # me
         self["me_H_spn"] = None
         self["me_H_orb"] = None
@@ -94,7 +96,7 @@ class Response(dict):
 
         self.calc_response()
 
-        self.calc_expectation_values()
+        self.calc_spinmoment()
 
     # ==================================================
     def set_operators(self):
@@ -192,21 +194,59 @@ class Response(dict):
         self._cwm.log(cw_end_response_msg(), stamp=None, end="\n", file=self._outfile, mode="a")
 
     # ==================================================
-    def calc_expectation_values(self):
+    def calc_spinmoment(self):
         self._cwm.log(cw_start_expectation_msg(), stamp=None, end="\n", file=self._outfile, mode="a")
         self._cwm.set_stamp()
 
-        self.update(expectation_main(self._cwi, self.operators))
+        if self._cwi["spin_moment"]:
+            self.update(spin_moment_main(self._cwi, self.operators))
 
         self._cwm.log(cw_end_expectation_msg(), stamp=None, end="\n", file=self._outfile, mode="a")
 
     # ==================================================
     @property
     def operators(self):
-        return {
-            k: self[k]
-            for k in ("Sr", "HH_R", "AA_R", "BB_R", "CC_R", "SS_R", "SR_R", "SHR_R", "SH_R", "SAA_R", "SBB_R")
-        }
+        return {k: self[k] for k in ("HH_R", "AA_R", "BB_R", "CC_R", "SS_R", "SR_R", "SHR_R", "SH_R", "SAA_R", "SBB_R")}
+
+    # ==================================================
+    def write_ahc(self):
+        """
+        write seedname-ahc.dat, seedname-ahc-fermiscan.dat.
+        """
+        if self._cwi["num_fermi"] == 0:
+            pass
+        elif self._cwi["num_fermi"] == 1:
+            ahc_list = self["ahc_list"]
+            ahc_str = "AHC (S/cm)       x          y          z \n"
+            ahc_str += "==========\n"
+            ahc_str += "J0 term :" + "{:>15.8f}   {:>15.8f}   {:>15.8f} \n".format(
+                ahc_list[0, 0, 0], ahc_list[0, 0, 1], ahc_list[0, 0, 2]
+            )
+            ahc_str += "J1 term :" + "{:>15.8f}   {:>15.8f}   {:>15.8f} \n".format(
+                ahc_list[0, 1, 0], ahc_list[0, 1, 1], ahc_list[0, 1, 2]
+            )
+            ahc_str += "J2 term :" + "{:>15.8f}   {:>15.8f}   {:>15.8f} \n".format(
+                ahc_list[0, 2, 0], ahc_list[0, 2, 1], ahc_list[0, 2, 2]
+            )
+            ahc_str += "-------------------------------------------\n"
+            ahc_str += "Total   :" + "{:>15.8f}   {:>15.8f}   {:>15.8f} \n".format(
+                sum(ahc_list[0, :, 0]), sum(ahc_list[0, :, 1]), sum(ahc_list[0, :, 2])
+            )
+
+            filename = f"{self._cwi['seedname']}-ahc.dat"
+            self._cwm.write(filename, ahc_str, None, None)
+        else:
+            ahc_list = self["ahc_list"]
+            num_fermi = self._cwi["num_fermi"]
+            fermi_energy_list = self._cwi["fermi_energy_list"]
+            ahc_str = ""
+            for ife in range(num_fermi):
+                ahc_str += "{:>15.8f}   {:>15.8f}   {:>15.8f}   {:>15.8f} \n".format(
+                    fermi_energy_list[ife], sum(ahc_list[ife, :, 0]), sum(ahc_list[ife, :, 1]), sum(ahc_list[ife, :, 2])
+                )
+
+            filename = f"{self._cwi['seedname']}-ahc-fermiscan.dat"
+            self._cwm.write(filename, ahc_str, None, None)
 
     # ==================================================
     def write_kubo(self):

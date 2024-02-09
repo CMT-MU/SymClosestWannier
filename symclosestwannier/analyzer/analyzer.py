@@ -69,7 +69,7 @@ def analyzer(seedname="cwannier"):
     #       Response       #
     # ******************** #
 
-    res = Response(cwi, cwm, Sr=cw_model["Sr"])
+    res = Response(cwi, cwm)
 
     # ******************** #
     #         Band         #
@@ -84,9 +84,14 @@ def analyzer(seedname="cwannier"):
     cwm.log(cw_start_output_msg(), stamp=None, end="\n", file=outfile, mode="a")
     cwm.set_stamp()
 
-    res.write_kubo()
+    if cwi["berry_task"] == "ahc":
+        res.write_ahc()
 
-    res.write_spin()
+    if cwi["berry_task"] == "kubo":
+        res.write_kubo()
+
+    if cwi["spin_moment"] == "kubo":
+        res.write_spin()
 
     cwm.log(f"\n\n  * total elapsed_time:", file=outfile, mode="a")
     cwm.log(cw_end_output_msg(), stamp=None, end="\n", file=outfile, mode="a")
