@@ -362,8 +362,6 @@ def wham_get_JJp_JJm_list(cwi, delHH, E, U, occ=None):
     wham_get_JJp_list and wham_getJJm_list.
     It computes both lists at once in a more
     efficient manner.
-
-     Tsirkin:   added the optional occ parameter
     """
     if occ is not None:
         nfermi_loc = 1
@@ -381,7 +379,7 @@ def wham_get_JJp_JJm_list(cwi, delHH, E, U, occ=None):
             [[[fermi(E[k, m] - ef, T=0.0) for m in range(num_wann)] for k in range(num_k)] for ef in fermi_energy_list]
         )
 
-    delHH = U.transpose(0, 2, 1).conjugate()[np.newaxis, :, :, :] @ delHH @ U[np.newaxis, :, :, :]
+    delHH_Band = U.transpose(0, 2, 1).conjugate()[np.newaxis, :, :, :] @ delHH @ U[np.newaxis, :, :, :]
 
     JJp_list = np.zeros((3, nfermi_loc, num_k, num_wann, num_wann), dtype=np.complex128)
     JJm_list = np.zeros((3, nfermi_loc, num_k, num_wann, num_wann), dtype=np.complex128)
@@ -389,21 +387,26 @@ def wham_get_JJp_JJm_list(cwi, delHH, E, U, occ=None):
         ef = fermi_energy_list[ife]
         for k in range(num_k):
             for m in range(num_wann):
+                ekm = E[k, m]
                 for n in range(num_wann):
+                    ekn = E[k, n]
+                    delHH_knm = delHH_Band[:, k, n, m]
+                    delHH_kmn = delHH_Band[:, k, m, n]
+
                     if occ is not None:
                         if occ_list[ife, k, m] < 0.5 and occ_list[ife, k, n] > 0.5:
-                            JJm_list[:, ife, k, n, m] = 1.0j * delHH[:, k, n, m] / (E[k, m] - E[k, n])
-                            JJp_list[:, ife, k, m, n] = 1.0j * delHH[:, k, m, n] / (E[k, n] - E[k, m])
+                            JJm_list[:, ife, k, n, m] = 1.0j * delHH_knm / (ekm - ekn)
+                            JJp_list[:, ife, k, m, n] = 1.0j * delHH_kmn / (ekn - ekm)
                         else:
                             JJm_list[:, ife, k, n, m] = 0.0j
                             JJp_list[:, ife, k, m, n] = 0.0j
                     else:
-                        if E[k, n] > ef and E[k, m] < ef:
-                            JJp_list[:, ife, k, n, m] = 1.0j * delHH[:, k, n, m] / (E[k, m] - E[k, n])
-                            JJm_list[:, ife, k, m, n] = 1.0j * delHH[:, k, m, n] / (E[k, n] - E[k, m])
+                        if ekn > ef and ekm < ef:
+                            JJp_list[:, ife, k, n, m] = 1.0j * delHH_knm / (ekm - ekn)
+                            JJm_list[:, ife, k, m, n] = 1.0j * delHH_kmn / (ekn - ekm)
                         else:
-                            JJm_list[:, ife, k, n, m] = 0.0j
-                            JJp_list[:, ife, k, m, n] = 0.0j
+                            JJp_list[:, ife, k, n, m] = 0.0j
+                            JJm_list[:, ife, k, m, n] = 0.0j
 
     JJp_list = (
         U[np.newaxis, np.newaxis, :, :, :]
