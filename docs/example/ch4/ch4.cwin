@@ -6,8 +6,12 @@ disentangle = false
 proj_min    = 0.5
 verbose     = true
 
-write_hr = .true.
-write_sr = .true.
+write_hr          = .true.
+write_sr          = .true.
+write_u_matrices  = .true.
+write_rmn         = .true.
+write_vmn         = .true.
+write_tb          = .true.
 
 # symmetrization
 symmetrization = true

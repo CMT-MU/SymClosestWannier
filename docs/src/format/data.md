@@ -1,6 +1,4 @@
-# SymClosestWannier
-
-## data for SymCW (* optional [default] or only for crystal value)
+# data for SymCW (* optional [default] or only for crystal value)
 - Sk              : Overlap matrix elements in k-space (ndarray).",
 - Hk              : Hamiltonian matrix elements in k-space (orthogonal) (ndarray).",
 - Hk_nonortho     : Hamiltonian matrix elements in k-space (non-orthogonal) (ndarray).",
