@@ -1,0 +1,556 @@
+
+<!DOCTYPE html>
+
+
+<html lang="jp" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Construction of SymCW tight-binding model &#8212; SymClosestWannier</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.1/css/all.min.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.1/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b76e3c8a" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=384b581d" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
+  <script src="../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
+
+    <script src="../_static/documentation_options.js?v=8cf54648"></script>
+    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=efea14e4"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=36754332"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=afe5de03"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'src/scw_tb';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Examples" href="example.html" />
+    <link rel="prev" title="Construction of SAMBs" href="samb_construction.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="jp"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a id="pst-skip-link" class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+
+<a class="navbar-brand logo" href="../README.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">SymClosestWannier</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">SAMB Construction</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="samb_construction.html">Construction of SAMBs</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Construction of SymCW tight-binding model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="example.html">Examples</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">File Format</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="format/cwin.html">input parameters in the *.cwin file [default]</a></li>
+<li class="toctree-l1"><a class="reference internal" href="format/cwout.html">standard output</a></li>
+<li class="toctree-l1"><a class="reference internal" href="format/info.html">information in CWModel [default]</a></li>
+<li class="toctree-l1"><a class="reference internal" href="format/data.html">data for SymCW (* optional [default] or only for crystal value)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="format/hr.html">Hamiltonian matrix elements in real-space</a></li>
+<li class="toctree-l1"><a class="reference internal" href="format/sr.html">Overlap matrix elements in real-space</a></li>
+<li class="toctree-l1"><a class="reference internal" href="format/z.html">The expansion coefficients of the Hamiltonian matrix (orthogonal) H expressed by a linear combination of SAMBs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="format/s.html">The expansion coefficients of the Overlap matrix expressed by a linear combination of SAMBs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="format/z_exp.html">expectation value of the given operator</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+<a href="https://github.com/CMT-MU/SymClosestWannier.git" target="_blank"
+   class="btn btn-sm btn-source-repository-button"
+   title="Source repository"
+   data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+
+</a>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Construction of SymCW tight-binding model</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="construction-of-symcw-tight-binding-model">
+<h1>Construction of SymCW tight-binding model<a class="headerlink" href="#construction-of-symcw-tight-binding-model" title="Link to this heading">#</a></h1>
+<ol class="arabic">
+<li><p>Calculate overlapes between Kohn-Sham orbitals and pseudo atomic orbitals based on the Plane-Wave (PW) DFT calculation softwares, such as <a class="reference external" href="https://www.quantum-espresso.org/">QuantumEspresso</a> and <a class="reference external" href="https://www.vasp.at/">VASP</a>.</p>
+<ul class="simple">
+<li><p>seedname.win, seedname.amn, seedname.eig, seedname.mmn, seedname.nnkp (generated by <a class="reference external" href="https://wannier.org/">Wannier90</a>)
+(additional files: seedname.spn, seedname.uHu, seedname.uIu, …)</p></li>
+</ul>
+<p>are used for the next step.</p>
+</li>
+<li><p>Prepare input file for construction of SymCW tight-binding model. Example input files for <a class="reference download internal" download="" href="../_downloads/dd2e98c1b414c075453da70995f31384/ch4.cwin"><span class="xref download myst">CH4</span></a> molecule and <a class="reference download internal" download="" href="../_downloads/426bd9b996199c4a85abdc0f26581726/graphene.cwin"><span class="xref download myst">graphene</span></a> are given here.</p>
+<ul class="simple">
+<li><p>CH4 molecule</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>restart = cw ! &#39;cw&#39;/&#39;w90&#39;/&#39;sym&#39;
+
+outdir = &#39;./&#39;
+
+disentangle = false
+proj_min    = 0.5
+verbose     = true
+
+write_hr          = .true.
+write_sr          = .true.
+write_u_matrices  = .true.
+write_rmn         = .true.
+write_vmn         = .true.
+write_tb          = .true.
+
+# symmetrization
+symmetrization = true
+mp_outdir      = &#39;./&#39;
+mp_seedname    = ch4
+ket_amn        = [(s,U)@C_1,(s,D)@C_1,(pz,U)@C_1,(pz,D)@C_1,(px,U)@C_1,(px,D)@C_1,(py,U)@C_1,(py,D)@C_1,(s,U)@H_1,(s,D)@H_1,(s,U)@H_2,(s,D)@H_2,(s,U)@H_3,(s,D)@H_3,(s,U)@H_4,(s,D)@H_4]
+irreps         = full
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>graphene</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>restart = cw ! &#39;cw&#39;/&#39;w90&#39;/&#39;sym&#39;
+
+outdir = &#39;./&#39;
+
+disentangle       = true
+proj_min          = 0.2
+dis_win_emax      = 10
+dis_win_emin      = -30
+smearing_temp_max = 0.1
+smearing_temp_min = 1e-6
+delta             = 1e-12
+svd               = true
+verbose           = true
+
+write_hr          = .true.
+write_sr          = .true.
+write_u_matrices  = .true.
+write_rmn         = .true.
+write_vmn         = .true.
+write_tb          = .true.
+
+N1 = 50
+
+# symmetrization
+symmetrization = true
+mp_outdir      = &#39;./&#39;
+mp_seedname    = graphene
+ket_amn        = [pz@C_1,pz@C_2]
+irreps         = full ! full/all/list
+
+
+</pre></div>
+</div>
+</li>
+<li><p>At the folder where these two input files exist, do the following to create SymCW tight-binding models.
+See for more detail, try “<strong>pw2cw --help</strong>” command.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ cd example/ch4
+$ pw2cw ch4
+
+$ cd example/graphene
+$ pw2cw graphene
+</pre></div>
+</div>
+</li>
+<li><p>The following files are created in <strong>ch4</strong> and <strong>graphene</strong> folders.</p>
+<ul class="simple">
+<li><p>ch4.cwout, ch4_info.py, ch4_data.py, ch4_hr.dat, ch4_sr.dat, ch4_hr_sym.dat, ch4_sr_sym.dat, ch4_z.dat, ch4_s.dat, ch4_r.dat, ch4_v.dat, ch4_tb.dat, ch4_u.mat, ch4_u_dis.mat.</p></li>
+<li><p>graphene.cwout, graphene_info.py, graphene_data.py, graphene_hr.dat, graphene_sr.dat, graphene_hr_sym.dat, graphene_sr_sym.dat, graphene_z.dat, graphene_s.dat, graphene_r.dat, graphene_v.dat, graphene_tb.dat, graphene_u.mat, graphene_u_dis.mat.</p></li>
+</ul>
+<p>Each file contains</p>
+<ul class="simple">
+<li><p><strong>seedname_cwin</strong> : input.</p></li>
+<li><p><strong>seedname_cwout</strong> : standard output.</p></li>
+<li><p><strong>seedname_info.py</strong> : calculation information for CWModel.</p></li>
+<li><p><strong>seedname_data.py</strong> : calculation data for SymCW.</p></li>
+<li><p><strong>seedname_hr.dat</strong> (<strong>_hr_sym.dat</strong>): (Symmetrized) Hamiltonian matrix elements in real-space.</p></li>
+<li><p><strong>seedname_sr.dat</strong> (<strong>_hr_sym.dat</strong>): (Symmetrized) Overlap matrix elements in real-space.</p></li>
+<li><p><strong>seedname_z.dat</strong> : The expansion coefficients of the Hamiltonian matrix expressed by a linear combination of SAMBs.</p></li>
+<li><p><strong>seedname_s.dat</strong> : The expansion coefficients of the Overlap matrix expressed by a linear combination of SAMBs.</p></li>
+<li><p><strong>seedname_band.txt</strong> : band dispersion data of SymCW tight-binding model.</p></li>
+<li><p><strong>plot_band.gnu</strong> : gnuplot file for plotting band dispersion.</p></li>
+<li><p><strong>seedname_band.eps</strong> : gnuplot file for plotting band dispersion.</p></li>
+</ul>
+</li>
+</ol>
+<p>The detailed file formats are given as follows:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="format/cwin.html"><span class="std std-doc">seedname.cwin</span></a></p></li>
+<li><p><a class="reference internal" href="format/cwout.html"><span class="std std-doc">seedname.cwout</span></a></p></li>
+<li><p><a class="reference internal" href="format/info.html"><span class="std std-doc">seedname_info.py</span></a></p></li>
+<li><p><a class="reference internal" href="format/data.html"><span class="std std-doc">seedname_data.py</span></a></p></li>
+<li><p><a class="reference internal" href="format/hr.html"><span class="std std-doc">seedname_hr.dat</span></a></p></li>
+<li><p><a class="reference internal" href="format/sr.html"><span class="std std-doc">seedname_sr.dat</span></a></p></li>
+<li><p><a class="reference internal" href="format/z.html"><span class="std std-doc">mp_seedname_z.dat</span></a></p></li>
+<li><p><a class="reference internal" href="format/s.html"><span class="std std-doc">mp_seedname_s.dat</span></a></p></li>
+<li><p><a class="reference internal" href="format/z_exp.html"><span class="std std-doc">mp_seedname_z.dat</span></a></p></li>
+</ul>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./src"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Rikuto Oiwa
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2021-2024.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
