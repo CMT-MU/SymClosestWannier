@@ -1,0 +1,22 @@
+# Table of contents
+# Learn more at https://jupyterbook.org/customize/toc.html
+
+format: jb-book
+root: README
+parts:
+- caption: SAMB Construction
+  chapters:
+    - file: src/samb_construction
+    - file: src/scw_tb
+    - file: src/example
+- caption: File Format
+  chapters:
+    - file: src/format/cwin
+    - file: src/format/cwout
+    - file: src/format/info
+    - file: src/format/data
+    - file: src/format/hr
+    - file: src/format/sr
+    - file: src/format/z
+    - file: src/format/s
+    - file: src/format/z_exp
