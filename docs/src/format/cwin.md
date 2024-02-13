@@ -1,6 +1,4 @@
-# SymClosestWannier
-
-## input parameters in the *.cwin file [default]
+# input parameters in the *.cwin file [default]
 - For execution use: pw2cw [seedname]
   - If a seedname string is given the code will read its input from a file seedname.cwin. The default value is cwannier.
       One can also equivalently provide the string seedname.cwin instead of seedname.

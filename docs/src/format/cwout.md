@@ -1,7 +1,5 @@
-# SymClosestWannier
-
-## standard output
-Example standard output for [graphene](example/graphene.cwin) is given here.
+# standard output
+Example standard output for [graphene](../../example/graphene/graphene.cwin) is given here.
 ```
 ********************************************************************************
 *                                                                              *
@@ -17,7 +15,7 @@ Example standard output for [graphene](example/graphene.cwin) is given here.
  - disentanglement ... done (0.00 [sec])
  - constructing TB Hamiltonian ... done (0.01 [sec])
  - symmetrization ...
-   - reading output of multiple ...   
+   - reading output of multiple ...
   * read './graphene_model.py'.
   * read './graphene_samb.py'.
   * read './graphene_matrix.py'.

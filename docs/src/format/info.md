@@ -1,6 +1,4 @@
-# SymClosestWannier
-
-## information in CWModel [default]
+# information in CWModel [default]
 - seedname          : seedname (str), [cwannier].
 - restart           : the restart position 'cw'/'w90'/'sym' (str), ['cw'].
 - outdir            : input and output files are found in this directory (str), ['./'].
@@ -49,23 +47,23 @@
 - atoms_frac        : atomic positions in fractional coordinates with respect to the lattice vectors, {atom: [r1,r2,r3]} [None].
 - atoms_cart        : atomic positions in cartesian coordinates, {atom: [rx,ry,rz]} [None].
 - A                 : real lattice vectors, A = [a1,a2,a3] (list), [[[1,0,0], [0,1,0], [0,0,1]]].
-- B                 : reciprocal lattice vectors, B = [b1,b2,b3] (list), [[[2*pi,0,0], [0,2*pi,0], [0,0,2*pi]]].
+- B                 : reciprocal lattice vectors, B = [b1,b2,b3] (list), [[[2pi,0,0], [0,2pi,0], [0,0,2pi]]].
 - num_atom          : # of atoms (int), [1].
 - num_b             : # of b-vectors (int), [1].
 - nnkpts            : nearest-neighbour k-points (list), [None].
 - nw2n              : atom position index of each WFs (list), [None].
-- nw2l              : l specifies the angular part Θlm(θ, φ) (list), [None].
-- nw2m              : m specifies the angular part Θlm(θ, φ) (list), [None].
-- nw2r              : r specifies the radial part Rr(r) (list), [None].
+- nw2l              : $l$ specifies the angular part $\Theta_{lm}(\theta,\phi)$ (list), [None].
+- nw2m              : $m$ specifies the angular part $\Theta_{lm}(\theta,\phi)$ (list), [None].
+- nw2r              : $r$ specifies the radial part $R_r(r)$ (list), [None].
 - atom_orb          : WFs indexes of each atom (list), [None].
 - atom_pos          : atom position index of each atom (list), [None].
 - atom_pos_r        : atom position of each atom in fractional coordinates with respect to the lattice vectors (list), [None].
 - bvec_cart         : b-vectors (cartesian coordinate) (list), [None].
 - bvec_crys         : b-vectors (crystal coordinate) (list), [None].
 - wb                :  weight for each k-points and nearest-neighbour k-points (list), [None].
-- Ek                : Kohn-Sham energies, E_{m}(k) (list), [None].
-- Ak                : Overlap matrix elements, A_{mn}(k) = <ψ^{KS}_{m}(k)|φ_{n}(k)> (list), [None].
-- Mkb               : Overlap matrix elements, M_{mn}(k,b) = <u^{KS}_{m}(k)|u^{KS}_{n}(k+b)> (list), [None].
+- Ek                : Kohn-Sham energies, $ E_{m}(k) $ (list), [None].
+- Ak                : Overlap matrix elements, $ A_{mn}(k) = \langle \psi^{\rm KS}_{m}(k)|\psi_{n}(k)\rangle $ (list), [None].
+- Mkb               : Overlap matrix elements, $ M_{mn}(k,b) = \langle u^{\rm KS}_{m}(k)|u^{\rm KS}_{n}(k+b)\rangle $ (list), [None].
 - Uoptk             : num_wann×num_wann full unitary matrix (ndarray), [None].
 - Udisk             : num_wann×num_bands partial unitary matrix (ndarray), [None].
 - Uk                : num_wann×num_bands full unitary matrix (ndarray), [None].
