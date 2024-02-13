@@ -34,9 +34,9 @@ def is_zero(x):
 
 
 # ==================================================
-def fermi(x, T=0.01):
+def fermi(x, T=0.0):
     if T == 0.0:
-        return x < 0.0
+        return np.vectorize(float)(x < 0.0)
 
     return 0.5 * (1.0 - np.tanh(0.5 * x / T))
 
@@ -235,18 +235,18 @@ def fourier_transform_r_to_k_vec(
     else:
         A = np.array(unit_cell_cart)
         irvec_cart = np.array([np.array(R) @ np.array(A) for R in irvec])
-        atoms_cart = np.array([np.array(r) @ np.array(A) for r in atoms_frac])
-        bond_cart = np.array([[[(R + rn) - rm for rn in atoms_cart] for rm in atoms_cart] for R in irvec_cart])
 
-        Ok_pseudo_vec = np.zeros(Ok_true_vec)
+        Ok_pseudo_vec = np.zeros(Ok_true_vec.shape, dtype=np.complex128)
         ab_list = [(1, 2), (2, 0), (0, 1)]
         if atoms_frac is not None:
+            atoms_cart = np.array([np.array(r) @ np.array(A) for r in atoms_frac])
+            bond_cart = np.array([[[(R + rn) - rm for rn in atoms_cart] for rm in atoms_cart] for R in irvec_cart])
             for c, (a, b) in enumerate(ab_list):
                 Ok_pseudo_vec[c] = 1.0j * np.einsum(
                     "R,kR,Rmn,km,Rmn,kn->kmn",
                     weight,
                     phase_R,
-                    bond_cart[a],
+                    bond_cart[:, :, :, a],
                     eiktau,
                     Or_vec[b],
                     eiktau.conjugate(),
@@ -256,7 +256,7 @@ def fourier_transform_r_to_k_vec(
                     "R,kR,Rmn,km,Rmn,kn->kmn",
                     weight,
                     phase_R,
-                    bond_cart[b],
+                    bond_cart[:, :, :, b],
                     eiktau,
                     Or_vec[a],
                     eiktau.conjugate(),
@@ -265,8 +265,8 @@ def fourier_transform_r_to_k_vec(
         else:
             for c, (a, b) in enumerate(ab_list):
                 Ok_pseudo_vec[c] = 1.0j * np.einsum(
-                    "R,kR,R,Rmn->kmn", weight, phase_R, irvec_cart[a], Or_vec[b], optimize=True
-                ) - 1.0j * np.einsum("R,kR,R,Rmn->kmn", weight, phase_R, irvec_cart[b], Or_vec[a], optimize=True)
+                    "R,kR,R,Rmn->kmn", weight, phase_R, irvec_cart[:, a], Or_vec[b], optimize=True
+                ) - 1.0j * np.einsum("R,kR,R,Rmn->kmn", weight, phase_R, irvec_cart[:, b], Or_vec[a], optimize=True)
 
         return Ok_true_vec, Ok_pseudo_vec
 
@@ -650,7 +650,7 @@ def construct_Ok(z, num_wann, kpoints, rpoints, matrix_dict):
 
 
 # ==================================================
-def thermal_avg(O, E, U, ef=0.0, T=0.0):
+def thermal_avg(O, E, U, ef=0.0, T=0.0, num_k=0):
     """
     thermal average of the given operator,
     <O> = 1 / Nk * \sum_{n,k} fermi_dirac[E_{n}(k)] O_{nn}(k)
@@ -677,7 +677,8 @@ def thermal_avg(O, E, U, ef=0.0, T=0.0):
     E = np.array(E)
     U = np.array(U)
 
-    num_k = E.shape[0]
+    if num_k == 0:
+        num_k = E.shape[0]
 
     O_exp = []
     for i, Oi in enumerate(O):
