@@ -36,7 +36,7 @@ def is_zero(x):
 # ==================================================
 def fermi(x, T=0.0):
     if T == 0.0:
-        return x < 0.0
+        return 1.0 if x < 0.0 else 0.0
 
     return 0.5 * (1.0 - np.tanh(0.5 * x / T))
 
