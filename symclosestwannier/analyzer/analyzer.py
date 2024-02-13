@@ -69,7 +69,14 @@ def analyzer(seedname="cwannier"):
     #       Response       #
     # ******************** #
 
-    res = Response(cwi, cwm)
+    if type(cw_model["Hr_sym"]) == np.ndarray:
+        Hr = np.array(cw_model["Hr_sym"], dtype=np.complex128)
+    elif type(cw_model["Hr"]) == np.ndarray:
+        Hr = np.array(cw_model["Hr"], dtype=np.complex128)
+    else:
+        Hr = None
+
+    res = Response(cwi, cwm, HH_R=Hr)
 
     # ******************** #
     #         Band         #

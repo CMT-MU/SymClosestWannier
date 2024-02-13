@@ -45,13 +45,14 @@ class Response(dict):
     """
 
     # ==================================================
-    def __init__(self, cwi, cwm):
+    def __init__(self, cwi, cwm, HH_R=None):
         """
         initialize the class.
 
         Args:
             cwi (CWInfo): CWInfo.
             cwm (CWManager): CWManager.
+            HH_R (ndarray): matrix elements of real-space Hamiltonian, <0n|H|Rm>.
         """
         super().__init__()
 
@@ -60,7 +61,7 @@ class Response(dict):
         self._outfile = f"{self._cwi['seedname']}.cwpout"
 
         # operators
-        self["HH_R"] = None  # <0n|H|Rm>
+        self["HH_R"] = HH_R  # <0n|H|Rm>
         self["AA_R"] = None  # <0n|r|Rm>
         self["BB_R"] = None  # <0|H(r-R)|R>
         self["CC_R"] = None  # <0|r_alpha.H(r-R)_beta|R>
@@ -96,7 +97,7 @@ class Response(dict):
 
         self.calc_response()
 
-        self.calc_spinmoment()
+        self.calc_spin_moment()
 
     # ==================================================
     def set_operators(self):
@@ -194,7 +195,7 @@ class Response(dict):
         self._cwm.log(cw_end_response_msg(), stamp=None, end="\n", file=self._outfile, mode="a")
 
     # ==================================================
-    def calc_spinmoment(self):
+    def calc_spin_moment(self):
         self._cwm.log(cw_start_expectation_msg(), stamp=None, end="\n", file=self._outfile, mode="a")
         self._cwm.set_stamp()
 
