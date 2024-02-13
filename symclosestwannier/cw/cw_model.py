@@ -489,6 +489,8 @@ class CWModel(dict):
         rpoints_mp = [(n1, n2, n3) for Zj_dict in Zr_dict.values() for (n1, n2, n3, _, _) in Zj_dict.keys()]
         rpoints_mp = sorted(list(set(rpoints_mp)), key=rpoints_mp.index)
 
+        rpoints_mp = np.array(self._cwi["irvec"])
+
         Sr_sym = CWModel.construct_Or(list(s.values()), self._cwi["num_wann"], rpoints_mp, mat)
         Hr_sym = CWModel.construct_Or(list(z.values()), self._cwi["num_wann"], rpoints_mp, mat)
         Hr_nonortho_sym = CWModel.construct_Or(list(z_nonortho.values()), self._cwi["num_wann"], rpoints_mp, mat)
