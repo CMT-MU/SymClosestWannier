@@ -77,32 +77,48 @@ def spin_moment_main(cwi, operators):
         else:
             atoms_frac = None
 
-        N1, N2, N3 = cwi["kmesh"]
-        kpoints = np.array(
-            [[i / float(N1), j / float(N2), k / float(N3)] for i in range(N1) for j in range(N2) for k in range(N3)]
-        )
-        HH = fourier_transform_r_to_k(operators["HH_R"], kpoints, cwi["irvec"], cwi["ndegen"], atoms_frac)
-
         B = cwi["magnetic_field"]
         theta = cwi["magnetic_field_theta"]
         phi = cwi["magnetic_field_phi"]
         g_factor = cwi["g_factor"]
         dim = cwi["num_wann"]
 
-        pauli_spn = fourier_transform_r_to_k_vec(operators["SS_R"], kpoints, cwi["irvec"], cwi["ndegen"], atoms_frac)
+        N1, N2, N3 = cwi["kmesh"]
+        kpoints = np.array(
+            [[i / float(N1), j / float(N2), k / float(N3)] for i in range(N1) for j in range(N2) for k in range(N3)]
+        )
 
-        if cwi["zeeman_interaction"]:
-            H_zeeman = spin_zeeman_interaction(B, theta, phi, pauli_spn, g_factor, cwi["num_wann"])
-            HH += H_zeeman
-
-        E, U = np.linalg.eigh(HH)
-        HH = None
+        num_k = np.prod(cwi["kmesh"])
 
         mu_B = bohr_magn_SI * joul_to_eV
 
-        spn_x, spn_y, spn_z = spn_operator(pauli_spn, g_factor, dim) / mu_B
+        # ==================================================
+        @wrap_non_picklable_objects
+        def spin_moment_main_k(kpt):
+            HH = fourier_transform_r_to_k(operators["HH_R"], kpt, cwi["irvec"], cwi["ndegen"], atoms_frac)
 
-        d["Ms_x"], d["Ms_y"], d["Ms_z"] = thermal_avg([spn_x, spn_y, spn_z], E, U, cwi["fermi_energy"], T=0.0)
+            pauli_spn = fourier_transform_r_to_k_vec(operators["SS_R"], kpt, cwi["irvec"], cwi["ndegen"], atoms_frac)
+
+            if cwi["zeeman_interaction"]:
+                H_zeeman = spin_zeeman_interaction(B, theta, phi, pauli_spn, g_factor, cwi["num_wann"])
+                HH += H_zeeman
+
+            E, U = np.linalg.eigh(HH)
+            HH = None
+
+            spn_x, spn_y, spn_z = spn_operator(pauli_spn, g_factor, dim) / mu_B
+
+            return thermal_avg([spn_x, spn_y, spn_z], E, U, cwi["fermi_energy"], T=0.0, num_k=num_k)
+
+        # ==================================================
+        kpoints_chunks = np.split(kpoints, [j for j in range(100, len(kpoints), 100)])
+
+        res = Parallel(n_jobs=_num_proc, verbose=10)(delayed(spin_moment_main_k)(kpt) for kpt in kpoints_chunks)
+
+        for Ms_x_k, Ms_y_k, Ms_z_k in res:
+            d["Ms_x"] += Ms_x_k
+            d["Ms_y"] += Ms_y_k
+            d["Ms_z"] += Ms_z_k
 
         return d
 
@@ -375,9 +391,7 @@ def wham_get_JJp_JJm_list(cwi, delHH, E, U, occ=None):
     if occ is not None:
         occ_list = [occ]
     else:
-        occ_list = np.array(
-            [[[fermi(E[k, m] - ef, T=0.0) for m in range(num_wann)] for k in range(num_k)] for ef in fermi_energy_list]
-        )
+        occ_list = np.array([fermi(E - ef, T=0.0) for ef in fermi_energy_list])
 
     delHH_Band = U.transpose(0, 2, 1).conjugate()[np.newaxis, :, :, :] @ delHH @ U[np.newaxis, :, :, :]
 
@@ -461,9 +475,7 @@ def wham_get_occ_mat_list(cwi, U, E=None, occ=None):
     if occ is not None:
         occ_list = [occ]
     else:
-        occ_list = np.array(
-            [[[fermi(E[k, m] - ef, T=0.0) for m in range(num_wann)] for k in range(num_k)] for ef in fermi_energy_list]
-        )
+        occ_list = np.array([fermi(E - ef, T=0.0) for ef in fermi_energy_list])
 
     f_list = np.zeros((nfermi_loc, num_k, num_wann, num_wann), dtype=np.complex128)
     g_list = np.zeros((nfermi_loc, num_k, num_wann, num_wann), dtype=np.complex128)
@@ -925,6 +937,8 @@ def berry_get_kubo(cwi, operators):
             kubo_H_spn = 0.0
             kubo_AH_spn = 0.0
 
+        occ = fermi(E - ef, T=0.0)
+
         for k in range(len(kpt)):
             for m in range(num_wann):
                 for n in range(num_wann):
@@ -936,8 +950,8 @@ def berry_get_kubo(cwi, operators):
 
                     ekm = E[k, m]
                     ekn = E[k, n]
-                    fkm = fermi(E[k, m] - ef, T=0.0)
-                    fkn = fermi(E[k, n] - ef, T=0.0)
+                    fkm = occ[k, m]
+                    fkn = occ[k, n]
 
                     if spin_decomp:
                         if spn_nk[n] >= 0 and spn_nk[m] >= 0:
