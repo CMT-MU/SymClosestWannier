@@ -36,7 +36,7 @@ def is_zero(x):
 # ==================================================
 def fermi(x, T=0.0):
     if T == 0.0:
-        return 1.0 if x < 0.0 else 0.0
+        return np.vectorize(float)(x < 0.0)
 
     return 0.5 * (1.0 - np.tanh(0.5 * x / T))
 
@@ -650,7 +650,7 @@ def construct_Ok(z, num_wann, kpoints, rpoints, matrix_dict):
 
 
 # ==================================================
-def thermal_avg(O, E, U, ef=0.0, T=0.0):
+def thermal_avg(O, E, U, ef=0.0, T=0.0, num_k=0):
     """
     thermal average of the given operator,
     <O> = 1 / Nk * \sum_{n,k} fermi_dirac[E_{n}(k)] O_{nn}(k)
@@ -677,7 +677,8 @@ def thermal_avg(O, E, U, ef=0.0, T=0.0):
     E = np.array(E)
     U = np.array(U)
 
-    num_k = E.shape[0]
+    if num_k == 0:
+        num_k = E.shape[0]
 
     O_exp = []
     for i, Oi in enumerate(O):
