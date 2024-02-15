@@ -1,4 +1,4 @@
-restart = cw ! 'cw'/'w90'/'sym'
+restart = cw ! symmetrize
 
 outdir = './'
 
@@ -14,6 +14,6 @@ N1 = 50
 # symmetrization
 symmetrization = true
 mp_outdir      = 'sym'
-mp_seedname    = mos2_11orbs_10
+mp_seedname    = mos2_11orbs_50
 ket_amn        = [du@Mo_1,dzx@Mo_1,dyz@Mo_1,dv@Mo_1,dxy@Mo_1,pz@S_1,px@S_1,py@S_1,pz@S_2,px@S_2,py@S_2]
 irreps         = full ! full/all/list
