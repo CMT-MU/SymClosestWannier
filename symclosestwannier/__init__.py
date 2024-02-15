@@ -1,4 +1,4 @@
 import os
 
-__version__ = "1.1.16"
+__version__ = "1.1.17"
 __top_dir__ = os.path.normpath(os.path.dirname(__file__) + "/../") + "/"
