@@ -456,7 +456,12 @@ class CWModel(dict):
         self._cwm.log(msg, None, end="", file=self._outfile, mode="a")
         self._cwm.set_stamp()
 
-        z = CWModel.samb_decomp_operator(Hr_dict, Zr_dict, A, atoms_frac, ket_amn, A_samb, atoms_frac_samb, ket_samb)
+        if mat["molecule"]:
+            z = CWModel.samb_decomp_operator(Hr_dict, Zr_dict, ket=ket_amn, ket_samb=ket_samb)
+        else:
+            z = CWModel.samb_decomp_operator(
+                Hr_dict, Zr_dict, A, atoms_frac, ket_amn, A_samb, atoms_frac_samb, ket_samb
+            )
 
         self._cwm.log("done", file=self._outfile, mode="a")
 
@@ -489,7 +494,7 @@ class CWModel(dict):
         rpoints_mp = [(n1, n2, n3) for Zj_dict in Zr_dict.values() for (n1, n2, n3, _, _) in Zj_dict.keys()]
         rpoints_mp = sorted(list(set(rpoints_mp)), key=rpoints_mp.index)
 
-        rpoints_mp = np.array(self._cwi["irvec"])
+        # rpoints_mp = np.array(self._cwi["irvec"])
 
         Sr_sym = CWModel.construct_Or(list(s.values()), self._cwi["num_wann"], rpoints_mp, mat)
         Hr_sym = CWModel.construct_Or(list(z.values()), self._cwi["num_wann"], rpoints_mp, mat)

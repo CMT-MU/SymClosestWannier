@@ -20,6 +20,7 @@ N1 = 50
 # symmetrization
 symmetrization = true
 mp_outdir      = './sym'
-mp_seedname    = graphene_sp_50
+mp_seedname    = graphene_sp_100
 ket_amn        = [s@C_1, pz@C_1, px@C_1, py@C_1, s@C_2, pz@C_2, px@C_2, py@C_2]
 irreps         = full ! full/all/list
+

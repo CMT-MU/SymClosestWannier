@@ -1,5 +1,5 @@
 num_bands = 60
-num_wann = 3
+num_wann = 12
 
 !dis_num_iter = 200
 !num_iter = 100
@@ -13,7 +13,6 @@ num_iter     = 0
 !dis_froz_min = 11.0
 
 write_hr     = .true.
-write_tb     = .true.
 
 bands_plot   = .true.
 bands_num_points = 100
@@ -28,7 +27,6 @@ End Unit_Cell_Cart
 
 Begin Atoms_Cart
 Ang
-Sr      0.00000   0.00000   0.00000
 V       1.92045   1.92045   1.92045
 O       0.00000   1.92045   1.92045
 O       1.92045   0.00000   1.92045

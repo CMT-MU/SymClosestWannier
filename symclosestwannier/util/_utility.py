@@ -3,13 +3,18 @@ utility codes.
 """
 
 import numpy as np
-import fortio, scipy.io
 from sympy.physics.quantum import TensorProduct
+import fortio, scipy.io
+import multiprocessing
+from joblib import Parallel, delayed, wrap_non_picklable_objects
+
 from gcoreutils.nsarray import NSArray
 
 from symclosestwannier.util.constants import bohr_magn_SI, joul_to_eV
 
 M_ZERO = np.finfo(float).eps
+
+_num_proc = multiprocessing.cpu_count()
 
 
 # ==================================================
@@ -529,63 +534,55 @@ def samb_decomp_operator(
     """
     Or_dict = sort_ket_matrix_dict(Or_dict, ket, ket_samb)
 
-    if A is None or (A is not None and np.allclose(A, A_samb, rtol=1e-05, atol=1e-05)):
-        z = {
-            tag: np.real(np.sum([v * Or_dict.get((-k[0], -k[1], -k[2], k[4], k[3]), 0) for k, v in d.items()]))
-            for tag, d in Zr_dict.items()
-        }
-    else:
-        A = np.array(A, dtype=float)
-        A_samb = np.array(A_samb, dtype=float)
-        atoms_frac = np.array(sort_ket_list(atoms_frac, ket, ket_samb), dtype=float)
-        atoms_frac_samb = np.array(atoms_frac_samb, dtype=float)
+    if A is not None:
+        if not np.allclose(A, A_samb, rtol=1e-05, atol=1e-05):
+            A = np.array(A, dtype=float)
+            A_samb = np.array(A_samb, dtype=float)
+            atoms_frac = np.array(sort_ket_list(atoms_frac, ket, ket_samb), dtype=float)
+            atoms_frac_samb = np.array(atoms_frac_samb, dtype=float)
 
-        Or = {}
-        for (R1, R2, R3, m, n), v in Or_dict.items():
-            if np.abs(v) < 1e-12:
-                continue
-
-            R = np.array([R1, R2, R3], dtype=float)
-            rm = atoms_frac[m]
-            rn = atoms_frac[n]
-            bond = ((R + rn) - rm) @ A
-
-            if (m, n) in Or:
-                Or[(m, n)].append((bond, R1, R2, R3, v))
-            else:
-                Or[(m, n)] = [(bond, R1, R2, R3, v)]
-
-        Zr_dict_ = {}
-        for tag, d in Zr_dict.items():
-            dic = {}
-            for (R1, R2, R3, m, n), v in d.items():
+            Or_dict_ = {}
+            for (R1, R2, R3, m, n), v in Or_dict.items():
                 if np.abs(v) < 1e-12:
                     continue
 
                 R = np.array([R1, R2, R3], dtype=float)
-                rm = atoms_frac_samb[m]
-                rn = atoms_frac_samb[n]
-                bond = ((R + rn) - rm) @ A_samb
+                rm = atoms_frac[m]
+                rn = atoms_frac[n]
+                bond = ((R + rn) - rm) @ A
 
-                if (m, n) in dic:
-                    dic[(m, n)].append((bond, R1, R2, R3, v))
-                else:
-                    dic[(m, n)] = [(bond, R1, R2, R3, v)]
+                bond = tuple([format(bi, ".3f") for bi in bond])
+                bond = tuple([float(bi) for bi in bond])
 
-            Zr_dict_[tag] = dic
+                Or_dict_[(*bond, m, n)] = v
 
-        z = {
-            tag: np.sum(
-                [
-                    np.real(v * v_)
-                    for m, n in d.keys()
-                    for bond, R1, R2, R3, v in d[(m, n)]
-                    for bond_, R1_, R2_, R3_, v_ in Or[(n, m)]
-                    if np.allclose(bond, -bond_, rtol=1e-04, atol=1e-04)
-                ]
-            )
-            for tag, d in Zr_dict_.items()
-        }
+            Or_dict = Or_dict_
+
+            Zr_dict_ = {}
+            for tag, d in Zr_dict.items():
+                dic = {}
+                for (R1, R2, R3, m, n), v in d.items():
+                    if np.abs(v) < 1e-12:
+                        continue
+
+                    R = np.array([R1, R2, R3], dtype=float)
+                    rm = atoms_frac_samb[m]
+                    rn = atoms_frac_samb[n]
+                    bond = ((R + rn) - rm) @ A_samb
+
+                    bond = tuple([format(bi, ".3f") for bi in bond])
+                    bond = tuple([float(bi) for bi in bond])
+
+                    dic[(*bond, m, n)] = v
+
+                Zr_dict_[tag] = dic
+
+            Zr_dict = Zr_dict_
+
+    z = {
+        tag: np.real(np.sum([v * Or_dict.get((-k[0], -k[1], -k[2], k[4], k[3]), 0) for k, v in d.items()]))
+        for tag, d in Zr_dict.items()
+    }
 
     return z
 
