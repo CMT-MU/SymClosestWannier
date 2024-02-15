@@ -17,10 +17,3 @@ write_sr = .true.
 a  = 3.3279000 ! (in Ang)
 N1 = 100
 fermi_energy = 17.4948
-
-# symmetrization
-symmetrization = true
-mp_outdir      = 'sym'
-mp_seedname    = nb_200
-ket_amn        = [s@Nb_1, pz@Nb_1, px@Nb_1, py@Nb_1, du@Nb_1, dzx@Nb_1, dyz@Nb_1, dv@Nb_1, dxy@Nb_1]
-irreps         = full ! full/all/list
