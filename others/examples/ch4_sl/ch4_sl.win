@@ -1,4 +1,4 @@
-num_bands = target
+num_bands = 30 
 num_wann = 8 ! C: 4, H: 4
 num_print_cycles = 0
 

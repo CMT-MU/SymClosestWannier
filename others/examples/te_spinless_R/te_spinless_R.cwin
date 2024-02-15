@@ -3,8 +3,8 @@ restart = cw ! 'cw'/'w90'/'sym'
 outdir = './'
 
 disentangle       = true
-proj_min          = 0.2
-dis_win_emax      = 9
+proj_min          = 0.27
+dis_win_emax      = 9.0
 dis_win_emin      = 0
 smearing_temp_max = 3.0
 smearing_temp_min = 1e-6

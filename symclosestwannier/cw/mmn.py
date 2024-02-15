@@ -71,7 +71,7 @@ class Mmn(dict):
                 - num_k     : # of k points (int), [1].
                 - num_bands : # of bands passed to the code (int), [1].
                 - num_b     : # of b-vectors (int), [1].
-                - nnkpts    : nearest-nmmnhbour k-points (list), [None].
+                - nnkpts    : nearest-neighbor k-points (list), [None].
                 - Mkb       : Overlap matrix elements, M_{mn}(k,b) = <u^{KS}_{m}(k)|u^{KS}_{n}(k+b)> (list), [None].
         """
         if os.path.exists(file_name):

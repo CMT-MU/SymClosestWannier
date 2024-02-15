@@ -38,11 +38,18 @@ K   0.33333  0.33333  0.0000  H   0.33333  0.33333  0.5000
 end kpoint_path
 
 guiding_centres = T
+use_ws_distance = .false.
 
 bands_plot =T
-write_hr = T
+write_hr = .true.
+write_u_matrices = .true.
+write_rmn = .true.
+write_tb = .true.
 
 spinors = .true.
+!spin_moment = .true.
+!kmesh = 3 3 3
+
 dis_win_min = 4.6
 dis_win_max = 32.0
 dis_froz_min = 4.6
@@ -68,32 +75,31 @@ translate_home_cell = .true.
 ##
 ## Optical conductivity
 ##
-berry = true
-berry_task = kubo
-berry_kmesh = 50 50 50
-iprint=2
-kubo_freq_max = 4
-kubo_freq_min = 0
-kubo_freq_step = 0.05
-kubo_smr_type = gauss
-adpt_smr = false
-smr_fixed_en_width = 0.4 ! koretsune-san's calc.
+!berry = true
+!berry_task = kubo
+!berry_kmesh = 3 3 3
+!iprint=2
+!kubo_freq_max = 4
+!kubo_freq_min = 0
+!kubo_freq_step = 0.05
+!kubo_smr_type = gauss
+!adpt_smr = false
+!kubo_smr_fixed_en_width = 0.4 ! koretsune-san's calc.
 
-fermi_energy=15.4731
 
 ##
 ## Anomalous conductivity
 ##
-#berry = true
-#berry_task = ahc
-#berry_kmesh = 50 50 50
-#iprint=2
+berry = true
+berry_task = ahc
+berry_kmesh = 10 10 10
+iprint=2
 
 ##
 ## Orbital magnetization
 ##
 #berry = true
-#berry_task = morb 
+#berry_task = morb
 #berry_kmesh = 50 50 50
 #iprint=2
 

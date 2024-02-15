@@ -1,4 +1,4 @@
-num_bands         =   target
+num_bands         =   60
 num_wann          =   8
 num_iter          =   0
 dis_num_iter      =   0

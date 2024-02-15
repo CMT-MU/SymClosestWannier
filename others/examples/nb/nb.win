@@ -1,4 +1,4 @@
-num_bands = target
+num_bands = 28
 num_wann  = 9
 
 dis_num_iter = 0
@@ -7,7 +7,7 @@ num_iter     = 0
 !dis_froz_max = 19.6649
 !dis_froz_min = -200
 
-fermi_energy     = 17.4948
+fermi_energy = 17.4948
 
 write_hr         = .true.
 write_tb         = .true.

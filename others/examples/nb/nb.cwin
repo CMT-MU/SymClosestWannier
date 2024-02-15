@@ -3,10 +3,10 @@ restart = cw ! 'cw'/'w90'/'sym'
 outdir = './'
 
 disentangle       = true
-dis_win_emax      = 25
-dis_win_emin      = 5
-smearing_temp_max = 6
-smearing_temp_min = 1e-6
+dis_win_emax      = 24
+dis_win_emin      = 10
+smearing_temp_max = 5.5
+smearing_temp_min = 1e-12
 delta             = 1e-12
 svd               = true
 verbose           = true
@@ -15,5 +15,5 @@ write_hr = .true.
 write_sr = .true.
 
 a  = 3.3279000 ! (in Ang)
-N1 = 50
-
+N1 = 100
+fermi_energy = 17.4948
