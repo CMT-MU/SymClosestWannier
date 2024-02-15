@@ -20,6 +20,6 @@ N1 = 50
 # symmetrization
 symmetrization = true
 mp_outdir      = 'sym'
-mp_seedname    = te_spinful_R_50
+mp_seedname    = te_spinful_R_200
 ket_amn        = [(pz,U)@Te_1,(pz,D)@Te_1,(px,U)@Te_1,(px,D)@Te_1,(py,U)@Te_1,(py,D)@Te_1,(pz,U)@Te_2,(pz,D)@Te_2,(px,U)@Te_2,(px,D)@Te_2,(py,U)@Te_2,(py,D)@Te_2,(pz,U)@Te_3,(pz,D)@Te_3,(px,U)@Te_3,(px,D)@Te_3,(py,U)@Te_3,(py,D)@Te_3]
 irreps         = full ! full/all/list

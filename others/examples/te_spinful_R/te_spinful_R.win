@@ -1,4 +1,4 @@
-num_bands         = target
+num_bands         = 20
 num_wann          =  18  ! set to NBANDS by VASP
 exclude_bands     = 1-6 !, 13-target
 spinors           = .true.
@@ -23,7 +23,6 @@ end projections
 
 bands_plot   = .true.
 write_hr     = .true.
-write_tb     = .true.
 wannier_plot = .true.
 bands_num_points = 200
 bands_plot_format gnuplot
