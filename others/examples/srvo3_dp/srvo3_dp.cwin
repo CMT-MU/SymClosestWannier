@@ -14,6 +14,6 @@ N1 = 50
 # symmetrization
 symmetrization = true
 mp_outdir      = 'sym'
-mp_seedname    = srvo3_dp_8
+mp_seedname    = srvo3_dp_30
 ket_amn        = [dzx@V_1,dyz@V_1,dxy@V_1,pz@O_2,px@O_2,py@O_2,pz@O_3,px@O_3,py@O_3,pz@O_1,px@O_1,py@O_1]
 irreps         = full ! full/all/list
