@@ -1,20 +1,26 @@
-num_bands = target
+num_bands = 60
 num_wann = 3
 
-!dis_num_iter = 200
-!num_iter = 100
+#exclude_bands = 1-20, 24-60
 
-!dis_win_max = 14.5
-!dis_win_min = 11.0
-!dis_froz_max = 13.5
-!dis_froz_min = 11.0
+dis_num_iter = 2000
+num_iter = 1000
 
-write_hr     = .true.
-write_tb     = .true.
+dis_win_max = 14.5
+dis_win_min = 11.0
+dis_froz_max = 13.5
+dis_froz_min = 11.0
 
-bands_plot   = .true.
+write_hr         = .true.
+write_bvec       = .true.
+write_tb         = .true.
+bands_plot       = .true.
 bands_num_points = 100
-wannier_plot = .true.
+!bands_plot_mode  = cut
+wannier_plot     = .true.
+wannier_plot_supercell = 2
+
+fermi_energy = 12.5953
 
 Begin Unit_Cell_Cart
 Ang
