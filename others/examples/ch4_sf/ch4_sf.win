@@ -57,7 +57,7 @@ bohr
   0.00000000     0.00000000     18.897259886
 end unit_cell_cart
 
-mp_grid : 1 1 1 
+mp_grid : 1 1 1
 
 begin kpoints
 0.00000000  0.00000000  0.00000000
