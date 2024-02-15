@@ -1,14 +1,14 @@
-num_bands         =   target
+num_bands         =   32
 !num_wann         =   5
 num_wann          =   2
-num_iter          =   0
-dis_num_iter      =   0
 
+num_iter          =   1000
+dis_num_iter      =   2000
+
+#dis_win_max       =  12
 dis_win_min       = -30
-dis_win_max       =  12
-dis_froz_min      = -3
-dis_froz_max      = 2.6
-
+dis_froz_max      =  2.3
+dis_froz_min      = -2.5
 
 begin projections
 !C: s;px;py;pz
@@ -19,15 +19,21 @@ C: pz
 end projections
 
 write_hr         = .true.
+write_bvec       = .true.
 bands_plot       = .true.
+!bands_plot_mode  = cut
 wannier_plot     = .true.
-
 wannier_plot_supercell = 2
 
+
+
+fermi_energy = -0.1863
+
+
 begin kpoint_path
-G   0.00000     0.00000     0.00000   M   0.50000     0.00000     0.00000
-M   0.50000     0.00000     0.00000   K   0.33333     0.33333     0.00000
-K   0.33333     0.33333     0.00000   G   0.00000     0.00000     0.00000
+G   0.00000     0.00000     0.00000   K   0.33333     0.33333     0.00000
+K   0.33333     0.33333     0.00000   M   0.50000     0.00000     0.00000
+M   0.50000     0.00000     0.00000   G   0.00000     0.00000     0.00000
 end kpoint_path
 
 begin unit_cell_cart
