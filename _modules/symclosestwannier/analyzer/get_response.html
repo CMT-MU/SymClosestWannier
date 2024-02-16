@@ -1,0 +1,1165 @@
+
+<!DOCTYPE html>
+
+
+<html lang="jp" data-content_root="../../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>symclosestwannier.analyzer.get_response &#8212; SymClosestWannier</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../_static/styles/theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../../../_static/styles/bootstrap.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+
+  
+  <link href="../../../_static/vendor/fontawesome/6.5.1/css/all.min.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.1/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b76e3c8a" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/sphinx-book-theme.css?v=384b581d" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
+  <script src="../../../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
+
+    <script src="../../../_static/documentation_options.js?v=8cf54648"></script>
+    <script src="../../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../../_static/scripts/sphinx-book-theme.js?v=efea14e4"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../../_static/design-tabs.js?v=36754332"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../../../_static/sphinx-thebe.js?v=afe5de03"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/symclosestwannier/analyzer/get_response';</script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="jp"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a id="pst-skip-link" class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+
+<a class="navbar-brand logo" href="../../../README.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">SymClosestWannier</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">SAMB Construction</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../../src/samb_construction.html">Construction of SAMBs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/scw_tb.html">Construction of SymCW tight-binding model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/example.html">Examples</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">File Format</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../../src/format/cwin.html">input parameters in the *.cwin file [default]</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/format/cwout.html">standard output</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/format/info.html">information in CWModel [default]</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/format/data.html">data for SymCW (* optional [default] or only for crystal value)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/format/hr.html">Hamiltonian matrix elements in real-space</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/format/sr.html">Overlap matrix elements in real-space</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/format/z.html">The expansion coefficients of the Hamiltonian matrix (orthogonal) H expressed by a linear combination of SAMBs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/format/s.html">The expansion coefficients of the Overlap matrix expressed by a linear combination of SAMBs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/format/z_exp.html">expectation value of the given operator</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">API</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../../src/api/analyzer.html">Utility</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/api/cw.html">Closest Wannier</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/api/util.html">Utility</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+<a href="https://github.com/CMT-MU/SymClosestWannier.git" target="_blank"
+   class="btn btn-sm btn-source-repository-button"
+   title="Source repository"
+   data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+
+</a>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1></h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <h1>Source code for symclosestwannier.analyzer.get_response</h1><div class="highlight"><pre>
+<span></span><span class="c1"># ****************************************************************** #</span>
+<span class="c1">#                                                                    #</span>
+<span class="c1"># This file is distributed as part of the symclosestwannier code and #</span>
+<span class="c1">#     under the terms of the GNU General Public License. See the     #</span>
+<span class="c1">#     file LICENSE in the root directory of the symclosestwannier    #</span>
+<span class="c1">#      distribution, or http://www.gnu.org/licenses/gpl-3.0.txt      #</span>
+<span class="c1">#                                                                    #</span>
+<span class="c1">#          The symclosestwannier code is hosted on GitHub:           #</span>
+<span class="c1">#                                                                    #</span>
+<span class="c1">#            https://github.com/CMT-MU/SymClosestWannier             #</span>
+<span class="c1">#                                                                    #</span>
+<span class="c1">#                            written by                              #</span>
+<span class="c1">#                        Rikuto Oiwa, RIKEN                          #</span>
+<span class="c1">#                                                                    #</span>
+<span class="c1"># ------------------------------------------------------------------ #</span>
+<span class="c1">#                                                                    #</span>
+<span class="c1">#             get_response: external response properties             #</span>
+<span class="c1">#                                                                    #</span>
+<span class="c1"># ****************************************************************** #</span>
+
+<span class="c1"># This module computes various &quot;Berry phase&quot; related properties</span>
+<span class="c1">#</span>
+<span class="c1"># Key REFERENCES</span>
+<span class="c1">#</span>
+<span class="c1"># *  WYSV06 = PRB 74, 195118 (2006)  (anomalous Hall conductivity - AHC)</span>
+<span class="c1"># *  YWVS07 = PRB 75, 195121 (2007)  (Kubo frequency-dependent conductivity)</span>
+<span class="c1"># *  LVTS12 = PRB 85, 014435 (2012)  (orbital magnetization and AHC)</span>
+<span class="c1"># *  CTVR06 = PRB 74, 024408 (2006)  (  &quot;          &quot;       )</span>
+<span class="c1"># *  IATS18 = PRB 97, 245143 (2018)  (nonlinear shift current)</span>
+<span class="c1"># *  QZYZ18 = PRB 98, 214402 (2018)  (spin Hall conductivity - SHC)</span>
+<span class="c1"># *  RPS19  = PRB 99, 235113 (2019)  (spin Hall conductivity - SHC)</span>
+<span class="c1"># *  IAdJS19 = arXiv:1910.06172 (2019) (quasi-degenerate k.p)</span>
+<span class="c1"># ---------------------------------------------------------------</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">scipy</span> <span class="kn">import</span> <span class="n">linalg</span> <span class="k">as</span> <span class="n">spl</span>
+<span class="kn">import</span> <span class="nn">multiprocessing</span>
+<span class="kn">from</span> <span class="nn">joblib</span> <span class="kn">import</span> <span class="n">Parallel</span><span class="p">,</span> <span class="n">delayed</span><span class="p">,</span> <span class="n">wrap_non_picklable_objects</span>
+
+
+<span class="kn">from</span> <span class="nn">symclosestwannier.util._utility</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">fermi</span><span class="p">,</span>
+    <span class="n">fourier_transform_r_to_k</span><span class="p">,</span>
+    <span class="n">fourier_transform_r_to_k_new</span><span class="p">,</span>
+    <span class="n">fourier_transform_r_to_k_vec</span><span class="p">,</span>
+    <span class="n">spin_zeeman_interaction</span><span class="p">,</span>
+    <span class="n">spn_operator</span><span class="p">,</span>
+    <span class="n">thermal_avg</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="kn">from</span> <span class="nn">symclosestwannier.util.constants</span> <span class="kn">import</span> <span class="n">elem_charge_SI</span><span class="p">,</span> <span class="n">hbar_SI</span><span class="p">,</span> <span class="n">bohr</span><span class="p">,</span> <span class="n">bohr_magn_SI</span><span class="p">,</span> <span class="n">joul_to_eV</span>
+
+
+<span class="c1"># ==================================================</span>
+<div class="viewcode-block" id="expectation_main">
+<a class="viewcode-back" href="../../../src/api/analyzer.html#symclosestwannier.analyzer.get_response.expectation_main">[docs]</a>
+<span class="k">def</span> <span class="nf">expectation_main</span><span class="p">(</span><span class="n">cwi</span><span class="p">,</span> <span class="n">operators</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Computes the following quantities:</span>
+<span class="sd">     (spin)  spin magnetic moments.</span>
+
+
+<span class="sd">    Args:</span>
+<span class="sd">        cwi (CWInfo): CWInfo.</span>
+<span class="sd">        operators (dict): operators.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;Ms_x&quot;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span> <span class="s2">&quot;Ms_y&quot;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span> <span class="s2">&quot;Ms_z&quot;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">}</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;spinors&quot;</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="n">d</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;tb_gauge&quot;</span><span class="p">]:</span>
+            <span class="n">atoms_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;atoms_frac&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+            <span class="n">atoms_frac</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">atoms_list</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;nw2n&quot;</span><span class="p">]])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">atoms_frac</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="n">N1</span><span class="p">,</span> <span class="n">N2</span><span class="p">,</span> <span class="n">N3</span> <span class="o">=</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;kmesh&quot;</span><span class="p">]</span>
+        <span class="n">kpoints</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+            <span class="p">[[</span><span class="n">i</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="n">N1</span><span class="p">),</span> <span class="n">j</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="n">N2</span><span class="p">),</span> <span class="n">k</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="n">N3</span><span class="p">)]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N1</span><span class="p">)</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N2</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N3</span><span class="p">)]</span>
+        <span class="p">)</span>
+        <span class="n">HH</span> <span class="o">=</span> <span class="n">fourier_transform_r_to_k</span><span class="p">(</span><span class="n">operators</span><span class="p">[</span><span class="s2">&quot;HH_R&quot;</span><span class="p">],</span> <span class="n">kpoints</span><span class="p">,</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;irvec&quot;</span><span class="p">],</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;ndegen&quot;</span><span class="p">],</span> <span class="n">atoms_frac</span><span class="p">)</span>
+
+        <span class="n">B</span> <span class="o">=</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;magnetic_field&quot;</span><span class="p">]</span>
+        <span class="n">theta</span> <span class="o">=</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;magnetic_field_theta&quot;</span><span class="p">]</span>
+        <span class="n">phi</span> <span class="o">=</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;magnetic_field_phi&quot;</span><span class="p">]</span>
+        <span class="n">g_factor</span> <span class="o">=</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;g_factor&quot;</span><span class="p">]</span>
+        <span class="n">dim</span> <span class="o">=</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;num_wann&quot;</span><span class="p">]</span>
+
+        <span class="n">pauli_spn</span> <span class="o">=</span> <span class="n">fourier_transform_r_to_k_vec</span><span class="p">(</span><span class="n">operators</span><span class="p">[</span><span class="s2">&quot;SS_R&quot;</span><span class="p">],</span> <span class="n">kpoints</span><span class="p">,</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;irvec&quot;</span><span class="p">],</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;ndegen&quot;</span><span class="p">],</span> <span class="n">atoms_frac</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;zeeman_interaction&quot;</span><span class="p">]:</span>
+            <span class="n">H_zeeman</span> <span class="o">=</span> <span class="n">spin_zeeman_interaction</span><span class="p">(</span><span class="n">B</span><span class="p">,</span> <span class="n">theta</span><span class="p">,</span> <span class="n">phi</span><span class="p">,</span> <span class="n">pauli_spn</span><span class="p">,</span> <span class="n">g_factor</span><span class="p">,</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;num_wann&quot;</span><span class="p">])</span>
+            <span class="n">HH</span> <span class="o">+=</span> <span class="n">H_zeeman</span>
+
+        <span class="n">E</span><span class="p">,</span> <span class="n">U</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">eigh</span><span class="p">(</span><span class="n">HH</span><span class="p">)</span>
+        <span class="n">HH</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="n">mu_B</span> <span class="o">=</span> <span class="n">bohr_magn_SI</span> <span class="o">*</span> <span class="n">joul_to_eV</span>
+
+        <span class="n">spn_x</span><span class="p">,</span> <span class="n">spn_y</span><span class="p">,</span> <span class="n">spn_z</span> <span class="o">=</span> <span class="n">spn_operator</span><span class="p">(</span><span class="n">pauli_spn</span><span class="p">,</span> <span class="n">g_factor</span><span class="p">,</span> <span class="n">dim</span><span class="p">)</span> <span class="o">/</span> <span class="n">mu_B</span>
+
+        <span class="n">d</span><span class="p">[</span><span class="s2">&quot;Ms_x&quot;</span><span class="p">],</span> <span class="n">d</span><span class="p">[</span><span class="s2">&quot;Ms_y&quot;</span><span class="p">],</span> <span class="n">d</span><span class="p">[</span><span class="s2">&quot;Ms_z&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">thermal_avg</span><span class="p">([</span><span class="n">spn_x</span><span class="p">,</span> <span class="n">spn_y</span><span class="p">,</span> <span class="n">spn_z</span><span class="p">],</span> <span class="n">E</span><span class="p">,</span> <span class="n">U</span><span class="p">,</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;fermi_energy&quot;</span><span class="p">],</span> <span class="n">T</span><span class="o">=</span><span class="mf">0.0</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">d</span></div>
+
+
+
+<span class="c1"># ==================================================</span>
+<div class="viewcode-block" id="berry_main">
+<a class="viewcode-back" href="../../../src/api/analyzer.html#symclosestwannier.analyzer.get_response.berry_main">[docs]</a>
+<span class="k">def</span> <span class="nf">berry_main</span><span class="p">(</span><span class="n">cwi</span><span class="p">,</span> <span class="n">operators</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Computes the following quantities:</span>
+<span class="sd">     (ahc)  Anomalous Hall conductivity (from Berry curvature)</span>
+<span class="sd">     (kubo) Complex optical conductivity (Kubo-Greenwood) &amp; JDOS</span>
+<span class="sd">     (morb) Orbital magnetization</span>
+<span class="sd">     (sc)   Nonlinear shift current</span>
+<span class="sd">     (shc)  Spin Hall conductivity</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        cwi (CWInfo): CWInfo.</span>
+<span class="sd">        operators (dict): operators.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Properties calculated in module  b e r r y </span><span class="se">\n</span><span class="s2"> ------------------------------------------&quot;</span><span class="p">)</span>
+
+    <span class="c1"># initialization</span>
+    <span class="n">d</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="c1"># ahc</span>
+        <span class="c1"># morb</span>
+        <span class="c1"># kubo</span>
+        <span class="s2">&quot;kubo_H&quot;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+        <span class="s2">&quot;kubo_AH&quot;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+        <span class="s2">&quot;kubo_H_spn&quot;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+        <span class="s2">&quot;kubo_AH_spn&quot;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+        <span class="c1"># sc</span>
+        <span class="c1"># shc</span>
+        <span class="c1"># kdotp</span>
+    <span class="p">}</span>
+
+    <span class="c1"># (ahc)  Anomalous Hall conductivity (from Berry curvature)</span>
+    <span class="k">if</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;berry_task&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;ahc&quot;</span><span class="p">:</span>
+        <span class="k">pass</span>
+
+    <span class="c1"># (morb) Orbital magnetization</span>
+    <span class="k">if</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;berry_task&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;morb&quot;</span><span class="p">:</span>
+        <span class="k">pass</span>
+
+    <span class="c1"># (kubo) Complex optical conductivity (Kubo-Greenwood) &amp; JDOS</span>
+    <span class="k">if</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;berry_task&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;kubo&quot;</span><span class="p">:</span>
+        <span class="n">kubo_H</span><span class="p">,</span> <span class="n">kubo_AH</span><span class="p">,</span> <span class="n">kubo_H_spn</span><span class="p">,</span> <span class="n">kubo_AH_spn</span> <span class="o">=</span> <span class="n">berry_get_kubo</span><span class="p">(</span><span class="n">cwi</span><span class="p">,</span> <span class="n">operators</span><span class="p">)</span>
+
+        <span class="n">d</span><span class="p">[</span><span class="s2">&quot;kubo_H&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">kubo_H</span>
+        <span class="n">d</span><span class="p">[</span><span class="s2">&quot;kubo_AH&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">kubo_AH</span>
+        <span class="n">d</span><span class="p">[</span><span class="s2">&quot;kubo_H_spn&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">kubo_H_spn</span>
+        <span class="n">d</span><span class="p">[</span><span class="s2">&quot;kubo_AH_spn&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">kubo_AH_spn</span>
+
+    <span class="c1"># (sc)   Nonlinear shift current</span>
+    <span class="k">if</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;berry_task&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;sc&quot;</span><span class="p">:</span>
+        <span class="n">kubo_nfreq</span> <span class="o">=</span> <span class="nb">round</span><span class="p">((</span><span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;kubo_freq_max&quot;</span><span class="p">]</span> <span class="o">-</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;kubo_freq_min&quot;</span><span class="p">])</span> <span class="o">/</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;kubo_freq_step&quot;</span><span class="p">])</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="n">sc_k_list</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="n">kubo_nfreq</span><span class="p">))</span>
+        <span class="n">sc_list</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="n">kubo_nfreq</span><span class="p">))</span>
+        <span class="c1"># allocate (shc_fermi(fermi_n))</span>
+        <span class="c1"># allocate (shc_k_fermi(fermi_n))</span>
+        <span class="c1"># allocate (shc_k_fermi_dummy(fermi_n))</span>
+        <span class="c1"># shc_fermi = 0.0_dp</span>
+        <span class="c1"># shc_k_fermi = 0.0_dp</span>
+        <span class="c1"># !only used for fermiscan &amp; adpt kmesh</span>
+        <span class="c1"># shc_k_fermi_dummy = 0.0_dp</span>
+        <span class="c1"># adpt_counter_list = 0</span>
+
+    <span class="c1"># (shc)  Spin Hall conductivity</span>
+    <span class="k">if</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;berry_task&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;shc&quot;</span><span class="p">:</span>
+        <span class="k">pass</span>
+
+    <span class="k">if</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;berry_task&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;kdotp&quot;</span><span class="p">:</span>
+        <span class="k">pass</span>
+
+    <span class="c1"># (me) magnetoelectric tensor</span>
+    <span class="k">if</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;berry_task&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;me&quot;</span><span class="p">:</span>
+        <span class="k">pass</span>
+        <span class="c1"># SS = fourier_transform_r_to_k_vec(operators[&quot;SS_R&quot;], kpoints, cwi[&quot;irvec&quot;], cwi[&quot;ndegen&quot;], atoms_frac)</span>
+        <span class="c1"># Sx = U.transpose(0, 2, 1).conjugate() @ SS[0] @ U</span>
+        <span class="c1"># Sy = U.transpose(0, 2, 1).conjugate() @ SS[1] @ U</span>
+        <span class="c1"># Sz = U.transpose(0, 2, 1).conjugate() @ SS[2] @ U</span>
+        <span class="c1"># S = np.array([Sx, Sy, Sz])</span>
+
+        <span class="c1"># me_H_spn, me_H_orb, me_AH_spn, me_AH_orb = berry_get_me(cwi, E, A, S)</span>
+
+    <span class="k">return</span> <span class="n">d</span></div>
+
+
+
+<span class="c1"># ==================================================</span>
+<div class="viewcode-block" id="wham_get_D_h">
+<a class="viewcode-back" href="../../../src/api/analyzer.html#symclosestwannier.analyzer.get_response.wham_get_D_h">[docs]</a>
+<span class="k">def</span> <span class="nf">wham_get_D_h</span><span class="p">(</span><span class="n">delHH</span><span class="p">,</span> <span class="n">E</span><span class="p">,</span> <span class="n">U</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Compute D^H_a=UU^dag.del_a UU (a=x,y,z)</span>
+<span class="sd">    using Eq.(24) of WYSV06</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">num_k</span> <span class="o">=</span> <span class="n">E</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">num_wann</span> <span class="o">=</span> <span class="n">E</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="n">delHH_Band</span> <span class="o">=</span> <span class="n">U</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">conjugate</span><span class="p">()[</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:,</span> <span class="p">:]</span> <span class="o">@</span> <span class="n">delHH</span> <span class="o">@</span> <span class="n">U</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:,</span> <span class="p">:]</span>
+    <span class="n">fac</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+        <span class="p">[</span>
+            <span class="p">[</span>
+                <span class="p">[</span><span class="mf">0.0</span> <span class="k">if</span> <span class="n">n</span> <span class="o">==</span> <span class="n">m</span> <span class="ow">or</span> <span class="nb">abs</span><span class="p">(</span><span class="n">E</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="n">m</span><span class="p">]</span> <span class="o">-</span> <span class="n">E</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="n">n</span><span class="p">])</span> <span class="o">&lt;</span> <span class="mf">1e-7</span> <span class="k">else</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="p">(</span><span class="n">E</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="n">n</span><span class="p">]</span> <span class="o">-</span> <span class="n">E</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="n">m</span><span class="p">])</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_wann</span><span class="p">)]</span>
+                <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_wann</span><span class="p">)</span>
+            <span class="p">]</span>
+            <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_k</span><span class="p">)</span>
+        <span class="p">]</span>
+    <span class="p">)</span>
+    <span class="n">D_h</span> <span class="o">=</span> <span class="n">delHH_Band</span> <span class="o">*</span> <span class="n">fac</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:,</span> <span class="p">:]</span>
+
+    <span class="k">return</span> <span class="n">D_h</span></div>
+
+
+
+<span class="c1"># ==================================================</span>
+<div class="viewcode-block" id="wham_get_deleig_a">
+<a class="viewcode-back" href="../../../src/api/analyzer.html#symclosestwannier.analyzer.get_response.wham_get_deleig_a">[docs]</a>
+<span class="k">def</span> <span class="nf">wham_get_deleig_a</span><span class="p">(</span><span class="n">delHH_a</span><span class="p">,</span> <span class="n">E</span><span class="p">,</span> <span class="n">U</span><span class="p">,</span> <span class="n">use_degen_pert</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">degen_thr</span><span class="o">=</span><span class="mf">0.0</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Compute band derivatives dE/dk_a.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">use_degen_pert</span><span class="p">:</span>
+        <span class="n">delHH_bar_a</span> <span class="o">=</span> <span class="n">U</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">conjugate</span><span class="p">()</span> <span class="o">@</span> <span class="n">delHH_a</span> <span class="o">@</span> <span class="n">U</span>
+        <span class="n">num_k</span> <span class="o">=</span> <span class="n">U</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">num_wann</span> <span class="o">=</span> <span class="n">U</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+        <span class="n">deleig_a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">num_k</span><span class="p">,</span> <span class="n">num_wann</span><span class="p">))</span>
+
+        <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_k</span><span class="p">):</span>
+            <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="k">while</span> <span class="n">i</span> <span class="o">&lt;=</span> <span class="n">num_wann</span><span class="p">:</span>
+                <span class="n">i</span> <span class="o">=</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span>
+                <span class="k">if</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">&lt;=</span> <span class="n">num_wann</span><span class="p">:</span>
+                    <span class="n">diff</span> <span class="o">=</span> <span class="n">E</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">E</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="c1">#</span>
+                    <span class="c1"># i-th is the highest band, and it is non-degenerate</span>
+                    <span class="c1">#</span>
+                    <span class="n">diff</span> <span class="o">=</span> <span class="n">degen_thr</span> <span class="o">+</span> <span class="mf">1.0</span>
+
+                <span class="k">if</span> <span class="n">diff</span> <span class="o">&lt;</span> <span class="n">degen_thr</span><span class="p">:</span>
+                    <span class="c1">#</span>
+                    <span class="c1"># Bands i and i+1 are degenerate</span>
+                    <span class="c1">#</span>
+                    <span class="n">degen_min</span> <span class="o">=</span> <span class="n">i</span>
+                    <span class="n">degen_max</span> <span class="o">=</span> <span class="n">degen_min</span> <span class="o">+</span> <span class="mi">1</span>
+                    <span class="c1">#</span>
+                    <span class="c1"># See if any higher bands are in the same degenerate group</span>
+                    <span class="c1">#</span>
+                    <span class="k">while</span> <span class="n">degen_max</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">&lt;=</span> <span class="n">num_wann</span> <span class="ow">and</span> <span class="n">diff</span> <span class="o">&lt;</span> <span class="n">degen_thr</span><span class="p">:</span>
+                        <span class="n">diff</span> <span class="o">=</span> <span class="n">E</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="n">degen_max</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">E</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="n">degen_max</span><span class="p">]</span>
+                        <span class="k">if</span> <span class="n">diff</span> <span class="o">&lt;</span> <span class="n">degen_thr</span><span class="p">:</span>
+                            <span class="n">degen_max</span> <span class="o">=</span> <span class="n">degen_max</span> <span class="o">+</span> <span class="mi">1</span>
+
+                    <span class="c1">#</span>
+                    <span class="c1"># Bands from degen_min to degen_max are degenerate. Diagonalize</span>
+                    <span class="c1"># the submatrix in Eq.(31) YWVS07 over this degenerate subspace.</span>
+                    <span class="c1"># The eigenvalues are the band gradients</span>
+                    <span class="c1">#</span>
+                    <span class="n">dim</span> <span class="o">=</span> <span class="n">degen_max</span> <span class="o">-</span> <span class="n">degen_min</span> <span class="o">+</span> <span class="mi">1</span>
+                    <span class="n">deleig_a</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="n">i</span> <span class="p">:</span> <span class="n">i</span> <span class="o">+</span> <span class="n">dim</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">eigh</span><span class="p">(</span>
+                        <span class="n">delHH_bar_a</span><span class="p">[</span><span class="n">degen_min</span> <span class="p">:</span> <span class="n">degen_max</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">degen_min</span> <span class="p">:</span> <span class="n">degen_max</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+                    <span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+
+                    <span class="c1">#</span>
+                    <span class="c1"># Scanned bands up to degen_max</span>
+                    <span class="c1">#</span>
+                    <span class="n">i</span> <span class="o">=</span> <span class="n">degen_max</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="c1">#</span>
+                    <span class="c1"># Use non-degenerate form [Eq.(27) YWVS07] for current (i-th) band</span>
+                    <span class="c1">#</span>
+                    <span class="n">deleig_a</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">real</span><span class="p">(</span><span class="n">delHH_bar_a</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">i</span><span class="p">])</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">deleig_a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">real</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diagonal</span><span class="p">(</span><span class="n">U</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">conjugate</span><span class="p">()</span> <span class="o">@</span> <span class="n">delHH_a</span> <span class="o">@</span> <span class="n">U</span><span class="p">,</span> <span class="n">axis1</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">axis2</span><span class="o">=</span><span class="mi">2</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="n">deleig_a</span></div>
+
+
+
+<span class="c1"># ==================================================</span>
+<div class="viewcode-block" id="wham_get_deleig">
+<a class="viewcode-back" href="../../../src/api/analyzer.html#symclosestwannier.analyzer.get_response.wham_get_deleig">[docs]</a>
+<span class="k">def</span> <span class="nf">wham_get_deleig</span><span class="p">(</span><span class="n">delHH</span><span class="p">,</span> <span class="n">E</span><span class="p">,</span> <span class="n">U</span><span class="p">,</span> <span class="n">use_degen_pert</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">degen_thr</span><span class="o">=</span><span class="mf">0.0</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This function returns derivatives of the eigenvalues dE/dk_a, using wham_get_deleig_a.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">delE</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">wham_get_deleig_a</span><span class="p">(</span><span class="n">delHH</span><span class="p">[</span><span class="n">a</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:,</span> <span class="p">:],</span> <span class="n">E</span><span class="p">,</span> <span class="n">U</span><span class="p">,</span> <span class="n">use_degen_pert</span><span class="p">,</span> <span class="n">degen_thr</span><span class="p">)</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">)])</span>
+
+    <span class="k">return</span> <span class="n">delE</span></div>
+
+
+
+<span class="c1"># =======================================================================</span>
+<div class="viewcode-block" id="kmesh_spacing_mesh">
+<a class="viewcode-back" href="../../../src/api/analyzer.html#symclosestwannier.analyzer.get_response.kmesh_spacing_mesh">[docs]</a>
+<span class="k">def</span> <span class="nf">kmesh_spacing_mesh</span><span class="p">(</span><span class="n">mesh</span><span class="p">,</span> <span class="n">B</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Set up the value of the interpolation mesh spacing, needed for</span>
+<span class="sd">    adaptive smearing [see Eqs. (34-35) YWVS07]. Choose it as the largest of</span>
+<span class="sd">    the three Delta_k&#39;s for each of the primitive translations b1, b2, and b3</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">B</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">B</span><span class="p">)</span>
+    <span class="n">Delta_k_i</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">B</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="p">:],</span> <span class="n">B</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="p">:]))</span> <span class="o">/</span> <span class="n">mesh</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">)])</span>
+
+    <span class="n">kmesh_spacing_mesh</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">Delta_k_i</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">kmesh_spacing_mesh</span></div>
+
+
+
+<span class="c1"># ==================================================</span>
+<div class="viewcode-block" id="utility_w0gauss">
+<a class="viewcode-back" href="../../../src/api/analyzer.html#symclosestwannier.analyzer.get_response.utility_w0gauss">[docs]</a>
+<span class="k">def</span> <span class="nf">utility_w0gauss</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    the derivative of utility_wgauss:  an approximation to the delta function</span>
+
+<span class="sd">    (n&gt;=0) : derivative of the corresponding Methfessel-Paxton utility_wgauss</span>
+
+<span class="sd">    (n=-1 ): derivative of cold smearing:</span>
+<span class="sd">                 1/sqrt(pi)*exp(-(x-1/sqrt(2))**2)*(2-sqrt(2)*x)</span>
+
+<span class="sd">    (n=-99): derivative of Fermi-Dirac function: 0.5/(1.0+cosh(x))</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">utility_w0gauss</span> <span class="o">=</span> <span class="mf">0.0</span>  <span class="c1"># in case of error return</span>
+
+    <span class="n">sqrtpm1</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span>
+
+    <span class="c1"># cold smearing  (Marzari-Vanderbilt)</span>
+    <span class="k">if</span> <span class="n">n</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+        <span class="n">arg</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="n">utility_w0gauss</span> <span class="o">=</span> <span class="n">sqrtpm1</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">arg</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mf">2.0</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mf">2.0</span><span class="p">)</span> <span class="o">*</span> <span class="n">x</span><span class="p">)</span>
+    <span class="c1"># Fermi-Dirac smearing</span>
+    <span class="k">elif</span> <span class="n">n</span> <span class="o">==</span> <span class="o">-</span><span class="mi">99</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mf">36.0</span><span class="p">:</span>
+            <span class="n">utility_w0gauss</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="p">(</span><span class="mf">2.0</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">x</span><span class="p">)</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">+</span><span class="n">x</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">utility_w0gauss</span> <span class="o">=</span> <span class="mf">0.0</span>
+    <span class="c1"># Gaussian</span>
+    <span class="k">elif</span> <span class="n">n</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">arg</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="n">x</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+        <span class="n">utility_w0gauss</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">arg</span><span class="p">)</span> <span class="o">*</span> <span class="n">sqrtpm1</span>
+    <span class="k">elif</span> <span class="n">n</span> <span class="o">&gt;</span> <span class="mi">10</span> <span class="ow">or</span> <span class="n">n</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;utility_w0gauss higher order (n&gt;10) smearing is untested and unstable&quot;</span><span class="p">)</span>
+    <span class="c1"># Methfessel-Paxton</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">arg</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="n">x</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+        <span class="n">utility_w0gauss</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">arg</span><span class="p">)</span> <span class="o">*</span> <span class="n">sqrtpm1</span>
+        <span class="n">hd</span> <span class="o">=</span> <span class="mf">0.0</span>
+        <span class="n">hp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">arg</span><span class="p">)</span>
+        <span class="n">ni</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">a</span> <span class="o">=</span> <span class="n">sqrtpm1</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="n">hd</span> <span class="o">=</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">x</span> <span class="o">*</span> <span class="n">hp</span> <span class="o">-</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="nb">float</span><span class="p">(</span><span class="n">ni</span><span class="p">)</span> <span class="o">*</span> <span class="n">hd</span>
+            <span class="n">ni</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="n">a</span> <span class="o">=</span> <span class="o">-</span><span class="n">a</span> <span class="o">/</span> <span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="o">*</span> <span class="mf">4.0</span><span class="p">)</span>
+            <span class="n">hp</span> <span class="o">=</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">x</span> <span class="o">*</span> <span class="n">hd</span> <span class="o">-</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="nb">float</span><span class="p">(</span><span class="n">ni</span><span class="p">)</span> <span class="o">*</span> <span class="n">hp</span>
+            <span class="n">ni</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="n">utility_w0gauss</span> <span class="o">+=</span> <span class="n">a</span> <span class="o">*</span> <span class="n">hp</span>
+
+    <span class="k">return</span> <span class="n">utility_w0gauss</span></div>
+
+
+
+<span class="n">num_proc</span> <span class="o">=</span> <span class="n">multiprocessing</span><span class="o">.</span><span class="n">cpu_count</span><span class="p">()</span>
+
+
+<span class="c1"># ==================================================</span>
+<div class="viewcode-block" id="berry_get_kubo">
+<a class="viewcode-back" href="../../../src/api/analyzer.html#symclosestwannier.analyzer.get_response.berry_get_kubo">[docs]</a>
+<span class="k">def</span> <span class="nf">berry_get_kubo</span><span class="p">(</span><span class="n">cwi</span><span class="p">,</span> <span class="n">operators</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Complex interband optical conductivity, in S/cm,</span>
+<span class="sd">    separated into Hermitian (Kubo_H) and anti-Hermitian (Kubo_AH) parts.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        cwi (CWInfo): CWInfo.</span>
+<span class="sd">        HH_R (ndarray): matrix elements of real-space Hamiltonian, &lt;0n|H|Rm&gt;.</span>
+<span class="sd">        AA_R (ndarray): matrix elements of real-space position operator, &lt;0n|r|Rm&gt;.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        tuple: Kubo_H, Kubo_AH, Kubo_H_spn, Kubo_AH_spn.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;tb_gauge&quot;</span><span class="p">]:</span>
+        <span class="n">atoms_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;atoms_frac&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+        <span class="n">atoms_frac</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">atoms_list</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;nw2n&quot;</span><span class="p">]])</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">atoms_frac</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="n">ef</span> <span class="o">=</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;fermi_energy&quot;</span><span class="p">]</span>
+    <span class="n">berry_kmesh</span> <span class="o">=</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;berry_kmesh&quot;</span><span class="p">]</span>
+    <span class="n">num_wann</span> <span class="o">=</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;num_wann&quot;</span><span class="p">]</span>
+
+    <span class="n">spin_decomp</span> <span class="o">=</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;spin_decomp&quot;</span><span class="p">]</span>
+    <span class="n">spn_nk</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">num_wann</span><span class="p">)</span>
+
+    <span class="n">kubo_adpt_smr</span> <span class="o">=</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;kubo_adpt_smr&quot;</span><span class="p">]</span>
+    <span class="n">kubo_adpt_smr_fac</span> <span class="o">=</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;kubo_adpt_smr_fac&quot;</span><span class="p">]</span>
+    <span class="n">kubo_adpt_smr_max</span> <span class="o">=</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;kubo_adpt_smr_max&quot;</span><span class="p">]</span>
+    <span class="n">kubo_smr_fixed_en_width</span> <span class="o">=</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;kubo_smr_fixed_en_width&quot;</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;kubo_smr_type&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;gauss&quot;</span><span class="p">:</span>
+        <span class="n">kubo_smr_type_idx</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">elif</span> <span class="s2">&quot;m-p&quot;</span> <span class="ow">in</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;kubo_smr_type&quot;</span><span class="p">]:</span>
+        <span class="n">m_pN</span> <span class="o">=</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;kubo_smr_type&quot;</span><span class="p">]</span>
+        <span class="n">kubo_smr_type_idx</span> <span class="o">=</span> <span class="n">m_pN</span><span class="p">[</span><span class="mi">2</span><span class="p">:]</span>
+    <span class="k">elif</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;kubo_smr_type&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;m-v&quot;</span> <span class="ow">or</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;kubo_smr_type&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;cold&quot;</span><span class="p">:</span>
+        <span class="n">kubo_smr_type_idx</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+    <span class="k">elif</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;kubo_smr_type&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;f-d&quot;</span><span class="p">:</span>
+        <span class="n">kubo_smr_type_idx</span> <span class="o">=</span> <span class="o">-</span><span class="mi">99</span>
+
+    <span class="k">if</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;kubo_eigval_max&quot;</span><span class="p">]</span> <span class="o">&lt;</span> <span class="o">+</span><span class="mi">100000</span><span class="p">:</span>
+        <span class="n">kubo_eigval_max</span> <span class="o">=</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;kubo_eigval_max&quot;</span><span class="p">]</span>
+    <span class="k">elif</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;dis_froz_max&quot;</span><span class="p">]</span> <span class="o">&lt;</span> <span class="o">+</span><span class="mi">100000</span><span class="p">:</span>
+        <span class="n">kubo_eigval_max</span> <span class="o">=</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;dis_froz_max&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="mf">0.6667</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">kubo_eigval_max</span> <span class="o">=</span> <span class="mi">100000</span>
+
+    <span class="n">use_degen_pert</span> <span class="o">=</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;use_degen_pert&quot;</span><span class="p">]</span>
+    <span class="n">degen_thr</span> <span class="o">=</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;degen_thr&quot;</span><span class="p">]</span>
+
+    <span class="n">kubo_freq_list</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;kubo_freq_min&quot;</span><span class="p">],</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;kubo_freq_max&quot;</span><span class="p">],</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;kubo_freq_step&quot;</span><span class="p">])</span>
+    <span class="c1"># Replace imaginary part of frequency with a fixed value</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">kubo_adpt_smr</span> <span class="ow">and</span> <span class="n">kubo_smr_fixed_en_width</span> <span class="o">!=</span> <span class="mf">0.0</span><span class="p">:</span>
+        <span class="n">kubo_freq_list</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">real</span><span class="p">(</span><span class="n">kubo_freq_list</span><span class="p">)</span> <span class="o">+</span> <span class="mf">1.0</span><span class="n">j</span> <span class="o">*</span> <span class="n">kubo_smr_fixed_en_width</span>
+
+    <span class="n">kubo_nfreq</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">kubo_freq_list</span><span class="p">)</span>
+
+    <span class="c1"># ==================================================</span>
+    <span class="nd">@wrap_non_picklable_objects</span>
+    <span class="k">def</span> <span class="nf">berry_get_kubo_k</span><span class="p">(</span><span class="n">kpt</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        calculate</span>
+<span class="sd">        Complex interband optical conductivity, in S/cm,</span>
+<span class="sd">        separated into Hermitian (Kubo_H) and anti-Hermitian (Kubo_AH) parts.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            kpt (ndarray): kpoint.</span>
+<span class="sd">            cwi (CWInfo): CWInfo.</span>
+<span class="sd">            HH_R (ndarray): matrix elements of real-space Hamiltonian, &lt;0n|H|Rm&gt;.</span>
+<span class="sd">            AA_R (ndarray): matrix elements of real-space position operator, &lt;0n|r|Rm&gt;.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            tuple: Kubo_H, Kubo_AH, Kubo_H_spn, Kubo_AH_spn.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">kpt</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">kpt</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">kpt</span><span class="p">])</span>
+
+        <span class="n">HH</span><span class="p">,</span> <span class="n">delHH</span> <span class="o">=</span> <span class="n">fourier_transform_r_to_k_new</span><span class="p">(</span>
+            <span class="n">operators</span><span class="p">[</span><span class="s2">&quot;HH_R&quot;</span><span class="p">],</span> <span class="n">kpt</span><span class="p">,</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;unit_cell_cart&quot;</span><span class="p">],</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;irvec&quot;</span><span class="p">],</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;ndegen&quot;</span><span class="p">],</span> <span class="n">atoms_frac</span>
+        <span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;zeeman_interaction&quot;</span><span class="p">]:</span>
+            <span class="n">B</span> <span class="o">=</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;magnetic_field&quot;</span><span class="p">]</span>
+            <span class="n">theta</span> <span class="o">=</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;magnetic_field_theta&quot;</span><span class="p">]</span>
+            <span class="n">phi</span> <span class="o">=</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;magnetic_field_phi&quot;</span><span class="p">]</span>
+            <span class="n">g_factor</span> <span class="o">=</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;g_factor&quot;</span><span class="p">]</span>
+
+            <span class="n">pauli_spin</span> <span class="o">=</span> <span class="n">fourier_transform_r_to_k_vec</span><span class="p">(</span><span class="n">operators</span><span class="p">[</span><span class="s2">&quot;SS_R&quot;</span><span class="p">],</span> <span class="n">kpt</span><span class="p">,</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;irvec&quot;</span><span class="p">],</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;ndegen&quot;</span><span class="p">],</span> <span class="n">atoms_frac</span><span class="p">)</span>
+            <span class="n">H_zeeman</span> <span class="o">=</span> <span class="n">spin_zeeman_interaction</span><span class="p">(</span><span class="n">B</span><span class="p">,</span> <span class="n">theta</span><span class="p">,</span> <span class="n">phi</span><span class="p">,</span> <span class="n">pauli_spin</span><span class="p">,</span> <span class="n">g_factor</span><span class="p">,</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;num_wann&quot;</span><span class="p">])</span>
+            <span class="n">HH</span> <span class="o">+=</span> <span class="n">H_zeeman</span>
+
+        <span class="n">E</span><span class="p">,</span> <span class="n">U</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">eigh</span><span class="p">(</span><span class="n">HH</span><span class="p">)</span>
+        <span class="n">HH</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">D_h</span> <span class="o">=</span> <span class="n">wham_get_D_h</span><span class="p">(</span><span class="n">delHH</span><span class="p">,</span> <span class="n">E</span><span class="p">,</span> <span class="n">U</span><span class="p">)</span>
+        <span class="n">AA</span> <span class="o">=</span> <span class="n">fourier_transform_r_to_k_vec</span><span class="p">(</span><span class="n">operators</span><span class="p">[</span><span class="s2">&quot;AA_R&quot;</span><span class="p">],</span> <span class="n">kpt</span><span class="p">,</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;irvec&quot;</span><span class="p">],</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;ndegen&quot;</span><span class="p">],</span> <span class="n">atoms_frac</span><span class="p">)</span>
+        <span class="n">Avec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">U</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">conjugate</span><span class="p">()</span> <span class="o">@</span> <span class="n">AA</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">@</span> <span class="n">U</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">)])</span>
+        <span class="n">AA</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">A</span> <span class="o">=</span> <span class="n">Avec</span> <span class="o">+</span> <span class="mf">1.0</span><span class="n">j</span> <span class="o">*</span> <span class="n">D_h</span>  <span class="c1"># Eq.(25) WYSV06</span>
+        <span class="n">Avec</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">D_h</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="k">if</span> <span class="n">kubo_adpt_smr</span><span class="p">:</span>
+            <span class="n">delE</span> <span class="o">=</span> <span class="n">wham_get_deleig</span><span class="p">(</span><span class="n">delHH</span><span class="p">,</span> <span class="n">E</span><span class="p">,</span> <span class="n">U</span><span class="p">,</span> <span class="n">use_degen_pert</span><span class="p">,</span> <span class="n">degen_thr</span><span class="p">)</span>
+            <span class="n">Delta_k</span> <span class="o">=</span> <span class="n">kmesh_spacing_mesh</span><span class="p">(</span><span class="n">berry_kmesh</span><span class="p">,</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;B&quot;</span><span class="p">])</span>
+
+        <span class="n">delHH</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">U</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="n">kubo_H</span> <span class="o">=</span> <span class="mf">1.0</span><span class="n">j</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">kubo_nfreq</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+        <span class="n">kubo_AH</span> <span class="o">=</span> <span class="mf">1.0</span><span class="n">j</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">kubo_nfreq</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+
+        <span class="k">if</span> <span class="n">spin_decomp</span><span class="p">:</span>
+            <span class="n">kubo_H_spn</span> <span class="o">=</span> <span class="mf">1.0</span><span class="n">j</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">kubo_nfreq</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+            <span class="n">kubo_AH_spn</span> <span class="o">=</span> <span class="mf">1.0</span><span class="n">j</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">kubo_nfreq</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">kubo_H_spn</span> <span class="o">=</span> <span class="mf">0.0</span>
+            <span class="n">kubo_AH_spn</span> <span class="o">=</span> <span class="mf">0.0</span>
+
+        <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">kpt</span><span class="p">)):</span>
+            <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_wann</span><span class="p">):</span>
+                <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_wann</span><span class="p">):</span>
+                    <span class="k">if</span> <span class="n">m</span> <span class="o">==</span> <span class="n">n</span><span class="p">:</span>
+                        <span class="k">continue</span>
+
+                    <span class="k">if</span> <span class="n">E</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="n">m</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">kubo_eigval_max</span> <span class="ow">or</span> <span class="n">E</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="n">n</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">kubo_eigval_max</span><span class="p">:</span>
+                        <span class="k">continue</span>
+
+                    <span class="n">ekm</span> <span class="o">=</span> <span class="n">E</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="n">m</span><span class="p">]</span>
+                    <span class="n">ekn</span> <span class="o">=</span> <span class="n">E</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="n">n</span><span class="p">]</span>
+                    <span class="n">fkm</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="k">if</span> <span class="n">E</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="n">m</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">ef</span> <span class="k">else</span> <span class="mf">0.0</span>
+                    <span class="n">fkn</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="k">if</span> <span class="n">E</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="n">n</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">ef</span> <span class="k">else</span> <span class="mf">0.0</span>
+
+                    <span class="k">if</span> <span class="n">spin_decomp</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="n">spn_nk</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">spn_nk</span><span class="p">[</span><span class="n">m</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">:</span>
+                            <span class="n">ispn</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># up --&gt; up transition</span>
+                        <span class="k">elif</span> <span class="n">spn_nk</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">spn_nk</span><span class="p">[</span><span class="n">m</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+                            <span class="n">ispn</span> <span class="o">=</span> <span class="mi">1</span>  <span class="c1"># down --&gt; down</span>
+                        <span class="k">else</span><span class="p">:</span>
+                            <span class="n">ispn</span> <span class="o">=</span> <span class="mi">2</span>  <span class="c1"># spin-flip</span>
+
+                    <span class="k">if</span> <span class="n">kubo_adpt_smr</span><span class="p">:</span>
+                        <span class="c1"># Eq.(35) YWVS07</span>
+                        <span class="n">vdum</span> <span class="o">=</span> <span class="n">delE</span><span class="p">[:,</span> <span class="n">k</span><span class="p">,</span> <span class="n">m</span><span class="p">]</span> <span class="o">-</span> <span class="n">delE</span><span class="p">[:,</span> <span class="n">k</span><span class="p">,</span> <span class="n">n</span><span class="p">]</span>
+                        <span class="n">joint_level_spacing</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">vdum</span><span class="p">,</span> <span class="n">vdum</span><span class="p">))</span> <span class="o">*</span> <span class="n">Delta_k</span>
+                        <span class="n">eta_smr</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">joint_level_spacing</span> <span class="o">*</span> <span class="n">kubo_adpt_smr_fac</span><span class="p">,</span> <span class="n">kubo_adpt_smr_max</span><span class="p">)</span>
+                        <span class="k">if</span> <span class="n">eta_smr</span> <span class="o">&lt;</span> <span class="mf">1e-6</span><span class="p">:</span>
+                            <span class="n">eta_smr</span> <span class="o">=</span> <span class="mf">1e-6</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">eta_smr</span> <span class="o">=</span> <span class="n">kubo_smr_fixed_en_width</span>
+
+                    <span class="c1"># Complex frequency for the anti-Hermitian conductivity</span>
+                    <span class="k">if</span> <span class="n">kubo_adpt_smr</span><span class="p">:</span>
+                        <span class="n">omega_list</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">real</span><span class="p">(</span><span class="n">kubo_freq_list</span><span class="p">)</span> <span class="o">+</span> <span class="mf">1.0</span><span class="n">j</span> <span class="o">*</span> <span class="n">eta_smr</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">omega_list</span> <span class="o">=</span> <span class="n">kubo_freq_list</span>
+
+                    <span class="c1"># Broadened delta function for the Hermitian conductivity and JDOS</span>
+                    <span class="n">arg</span> <span class="o">=</span> <span class="p">(</span><span class="n">ekm</span> <span class="o">-</span> <span class="n">ekn</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">real</span><span class="p">(</span><span class="n">omega_list</span><span class="p">))</span> <span class="o">/</span> <span class="n">eta_smr</span>
+                    <span class="n">delta</span> <span class="o">=</span> <span class="p">(</span>
+                        <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">utility_w0gauss</span><span class="p">(</span><span class="n">arg</span><span class="p">[</span><span class="n">ifreq</span><span class="p">],</span> <span class="n">kubo_smr_type_idx</span><span class="p">)</span> <span class="k">for</span> <span class="n">ifreq</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">kubo_nfreq</span><span class="p">)])</span>
+                        <span class="o">/</span> <span class="n">eta_smr</span>
+                    <span class="p">)</span>
+
+                    <span class="n">rfac1</span> <span class="o">=</span> <span class="p">(</span><span class="n">fkm</span> <span class="o">-</span> <span class="n">fkn</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">ekm</span> <span class="o">-</span> <span class="n">ekn</span><span class="p">)</span>
+                    <span class="n">rfac2</span> <span class="o">=</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">rfac1</span> <span class="o">*</span> <span class="n">delta</span>
+                    <span class="n">cfac</span> <span class="o">=</span> <span class="mf">1.0</span><span class="n">j</span> <span class="o">*</span> <span class="n">rfac1</span> <span class="o">/</span> <span class="p">(</span><span class="n">ekm</span> <span class="o">-</span> <span class="n">ekn</span> <span class="o">-</span> <span class="n">omega_list</span><span class="p">)</span>
+
+                    <span class="n">aiknm_ajkmn</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="n">A</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">m</span><span class="p">]</span> <span class="o">*</span> <span class="n">A</span><span class="p">[</span><span class="n">j</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">]</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">)]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">)])</span>
+
+                    <span class="n">kubo_H</span> <span class="o">+=</span> <span class="n">rfac2</span><span class="p">[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span> <span class="o">*</span> <span class="n">aiknm_ajkmn</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:]</span>
+                    <span class="n">kubo_AH</span> <span class="o">+=</span> <span class="n">cfac</span><span class="p">[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span> <span class="o">*</span> <span class="n">aiknm_ajkmn</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:]</span>
+
+                    <span class="k">if</span> <span class="n">spin_decomp</span><span class="p">:</span>
+                        <span class="n">kubo_H_spn</span> <span class="o">+=</span> <span class="n">rfac2</span><span class="p">[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span> <span class="o">*</span> <span class="n">aiknm_ajkmn</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:]</span>
+                        <span class="n">kubo_AH_spn</span> <span class="o">+=</span> <span class="n">cfac</span><span class="p">[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span> <span class="o">*</span> <span class="n">aiknm_ajkmn</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:]</span>
+
+        <span class="k">return</span> <span class="n">kubo_H</span><span class="p">,</span> <span class="n">kubo_AH</span><span class="p">,</span> <span class="n">kubo_H_spn</span><span class="p">,</span> <span class="n">kubo_AH_spn</span>
+
+    <span class="n">N1</span><span class="p">,</span> <span class="n">N2</span><span class="p">,</span> <span class="n">N3</span> <span class="o">=</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;berry_kmesh&quot;</span><span class="p">]</span>
+    <span class="n">kpoints</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+        <span class="p">[[</span><span class="n">i</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="n">N1</span><span class="p">),</span> <span class="n">j</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="n">N2</span><span class="p">),</span> <span class="n">k</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="n">N3</span><span class="p">)]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N1</span><span class="p">)</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N2</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N3</span><span class="p">)]</span>
+    <span class="p">)</span>
+
+    <span class="n">num_k</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">prod</span><span class="p">(</span><span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;berry_kmesh&quot;</span><span class="p">])</span>
+    <span class="n">num_wann</span> <span class="o">=</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;num_wann&quot;</span><span class="p">]</span>
+
+    <span class="n">kubo_H</span> <span class="o">=</span> <span class="mf">1.0</span><span class="n">j</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">kubo_nfreq</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+    <span class="n">kubo_AH</span> <span class="o">=</span> <span class="mf">1.0</span><span class="n">j</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">kubo_nfreq</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+
+    <span class="k">if</span> <span class="n">spin_decomp</span><span class="p">:</span>
+        <span class="n">kubo_H_spn</span> <span class="o">=</span> <span class="mf">1.0</span><span class="n">j</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">kubo_nfreq</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+        <span class="n">kubo_AH_spn</span> <span class="o">=</span> <span class="mf">1.0</span><span class="n">j</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">kubo_nfreq</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">kubo_H_spn</span> <span class="o">=</span> <span class="mf">0.0</span>
+        <span class="n">kubo_AH_spn</span> <span class="o">=</span> <span class="mf">0.0</span>
+
+    <span class="n">kpoints_chunks</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">kpoints</span><span class="p">,</span> <span class="p">[</span><span class="n">j</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">kpoints</span><span class="p">),</span> <span class="mi">100</span><span class="p">)])</span>
+
+    <span class="n">res</span> <span class="o">=</span> <span class="n">Parallel</span><span class="p">(</span><span class="n">n_jobs</span><span class="o">=</span><span class="n">num_proc</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">10</span><span class="p">)(</span><span class="n">delayed</span><span class="p">(</span><span class="n">berry_get_kubo_k</span><span class="p">)(</span><span class="n">kpt</span><span class="p">)</span> <span class="k">for</span> <span class="n">kpt</span> <span class="ow">in</span> <span class="n">kpoints_chunks</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">kubo_H_k</span><span class="p">,</span> <span class="n">kubo_AH_k</span><span class="p">,</span> <span class="n">kubo_H_spn_k</span><span class="p">,</span> <span class="n">kubo_AH_spn_k</span> <span class="ow">in</span> <span class="n">res</span><span class="p">:</span>
+        <span class="n">kubo_H</span> <span class="o">+=</span> <span class="n">kubo_H_k</span>
+        <span class="n">kubo_AH</span> <span class="o">+=</span> <span class="n">kubo_AH_k</span>
+        <span class="n">kubo_H_spn</span> <span class="o">+=</span> <span class="n">kubo_H_spn_k</span>
+        <span class="n">kubo_AH_spn</span> <span class="o">+=</span> <span class="n">kubo_AH_spn_k</span>
+
+    <span class="c1"># Convert to S/cm</span>
+    <span class="c1"># ==================================================</span>
+    <span class="c1"># fac = e^2/(hbar.V_c*10^-8)</span>
+    <span class="c1"># ==================================================</span>
+    <span class="c1">#</span>
+    <span class="c1"># with &#39;V_c&#39; in Angstroms^3, and &#39;e&#39;, &#39;hbar&#39; in SI units</span>
+    <span class="c1"># --------------------------------------------------------------------</span>
+
+    <span class="n">cell_volume</span> <span class="o">=</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;unit_cell_volume&quot;</span><span class="p">]</span>
+
+    <span class="n">fac</span> <span class="o">=</span> <span class="mf">1.0e8</span> <span class="o">*</span> <span class="n">elem_charge_SI</span><span class="o">**</span><span class="mi">2</span> <span class="o">/</span> <span class="p">(</span><span class="n">hbar_SI</span> <span class="o">*</span> <span class="n">cell_volume</span><span class="p">)</span> <span class="o">/</span> <span class="n">num_k</span>
+
+    <span class="n">kubo_H</span> <span class="o">*=</span> <span class="n">fac</span>
+    <span class="n">kubo_AH</span> <span class="o">*=</span> <span class="n">fac</span>
+
+    <span class="k">if</span> <span class="n">spin_decomp</span><span class="p">:</span>
+        <span class="n">kubo_H_spn</span> <span class="o">*=</span> <span class="n">fac</span>
+        <span class="n">kubo_AH_spn</span> <span class="o">*=</span> <span class="n">fac</span>
+
+    <span class="k">return</span> <span class="n">kubo_H</span><span class="p">,</span> <span class="n">kubo_AH</span><span class="p">,</span> <span class="n">kubo_H_spn</span><span class="p">,</span> <span class="n">kubo_AH_spn</span></div>
+
+
+
+<span class="c1"># ==================================================</span>
+<div class="viewcode-block" id="berry_get_me">
+<a class="viewcode-back" href="../../../src/api/analyzer.html#symclosestwannier.analyzer.get_response.berry_get_me">[docs]</a>
+<span class="k">def</span> <span class="nf">berry_get_me</span><span class="p">(</span><span class="n">cwi</span><span class="p">,</span> <span class="n">E</span><span class="p">,</span> <span class="n">A</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Contribution from point k to the complex interband optical</span>
+<span class="sd">    conductivity, separated into Hermitian (H) and anti-Hermitian (AH)</span>
+<span class="sd">    parts.</span>
+
+<span class="sd">    Args:</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">ef</span> <span class="o">=</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;fermi_energy&quot;</span><span class="p">]</span>
+    <span class="n">berry_kmesh</span> <span class="o">=</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;berry_kmesh&quot;</span><span class="p">]</span>
+    <span class="n">me_eigval_max</span> <span class="o">=</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;me_eigval_max&quot;</span><span class="p">]</span>
+    <span class="n">num_k</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">berry_kmesh</span><span class="p">)</span>
+    <span class="n">num_wann</span> <span class="o">=</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;num_wann&quot;</span><span class="p">]</span>
+
+    <span class="n">spin_decomp</span> <span class="o">=</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;spin_decomp&quot;</span><span class="p">]</span>
+    <span class="n">spn_nk</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">num_wann</span><span class="p">)</span>
+
+    <span class="n">me_adpt_smr</span> <span class="o">=</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;me_adpt_smr&quot;</span><span class="p">]</span>
+    <span class="n">me_adpt_smr_fac</span> <span class="o">=</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;me_adpt_smr_fac&quot;</span><span class="p">]</span>
+    <span class="n">me_adpt_smr_max</span> <span class="o">=</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;me_adpt_smr_max&quot;</span><span class="p">]</span>
+
+    <span class="n">me_smr_fixed_en_width</span> <span class="o">=</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;me_smr_fixed_en_width&quot;</span><span class="p">]</span>
+    <span class="n">eta_smr</span> <span class="o">=</span> <span class="n">me_smr_fixed_en_width</span>
+
+    <span class="n">me_freq_list</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;me_freq_min&quot;</span><span class="p">],</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;me_freq_max&quot;</span><span class="p">],</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;me_freq_step&quot;</span><span class="p">])</span>
+    <span class="n">me_nfreq</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">me_freq_list</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;me_smr_type&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;gauss&quot;</span><span class="p">:</span>
+        <span class="n">me_smr_type_idx</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">elif</span> <span class="s2">&quot;m-p&quot;</span> <span class="ow">in</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;me_smr_type&quot;</span><span class="p">]:</span>
+        <span class="n">m_pN</span> <span class="o">=</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;me_smr_type&quot;</span><span class="p">]</span>
+        <span class="n">me_smr_type_idx</span> <span class="o">=</span> <span class="n">m_pN</span><span class="p">[</span><span class="mi">2</span><span class="p">:]</span>
+    <span class="k">elif</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;me_smr_type&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;m-v&quot;</span> <span class="ow">or</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;me_smr_type&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;cold&quot;</span><span class="p">:</span>
+        <span class="n">me_smr_type_idx</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+    <span class="k">elif</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;me_smr_type&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;f-d&quot;</span><span class="p">:</span>
+        <span class="n">me_smr_type_idx</span> <span class="o">=</span> <span class="o">-</span><span class="mi">99</span>
+
+    <span class="n">occ</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="n">fermi</span><span class="p">(</span><span class="n">E</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="n">m</span><span class="p">]</span> <span class="o">-</span> <span class="n">ef</span><span class="p">,</span> <span class="n">T</span><span class="o">=</span><span class="mf">0.0</span><span class="p">)</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_wann</span><span class="p">)]</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_k</span><span class="p">)])</span>
+
+    <span class="n">me_H_spn</span> <span class="o">=</span> <span class="mf">1.0</span><span class="n">j</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">me_nfreq</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+    <span class="n">me_H_orb</span> <span class="o">=</span> <span class="mf">1.0</span><span class="n">j</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">me_nfreq</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+    <span class="n">me_AH_spn</span> <span class="o">=</span> <span class="mf">1.0</span><span class="n">j</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">me_nfreq</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+    <span class="n">me_AH_orb</span> <span class="o">=</span> <span class="mf">1.0</span><span class="n">j</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">me_nfreq</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+
+    <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_k</span><span class="p">):</span>
+        <span class="n">ek</span> <span class="o">=</span> <span class="n">E</span><span class="p">[</span><span class="n">k</span><span class="p">]</span>
+        <span class="n">fk</span> <span class="o">=</span> <span class="n">occ</span><span class="p">[</span><span class="n">k</span><span class="p">]</span>
+        <span class="n">ak</span> <span class="o">=</span> <span class="n">A</span><span class="p">[</span><span class="n">k</span><span class="p">]</span>
+        <span class="n">sk</span> <span class="o">=</span> <span class="n">S</span><span class="p">[</span><span class="n">k</span><span class="p">]</span>
+
+        <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_wann</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_wann</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">n</span> <span class="o">==</span> <span class="n">m</span><span class="p">:</span>
+                    <span class="k">continue</span>
+                <span class="k">if</span> <span class="n">ek</span><span class="p">[</span><span class="n">m</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">me_eigval_max</span> <span class="ow">or</span> <span class="n">ek</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">me_eigval_max</span><span class="p">:</span>
+                    <span class="k">continue</span>
+                <span class="k">if</span> <span class="n">spin_decomp</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">spn_nk</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">spn_nk</span><span class="p">[</span><span class="n">m</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">:</span>
+                        <span class="n">ispn</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># up --&gt; up transition</span>
+                    <span class="k">elif</span> <span class="n">spn_nk</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">spn_nk</span><span class="p">[</span><span class="n">m</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+                        <span class="n">ispn</span> <span class="o">=</span> <span class="mi">1</span>  <span class="c1"># down --&gt; down</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">ispn</span> <span class="o">=</span> <span class="mi">2</span>  <span class="c1"># spin-flip</span>
+                <span class="k">if</span> <span class="n">me_adpt_smr</span><span class="p">:</span>  <span class="c1"># Eq.(35) YWVS07</span>
+                    <span class="c1"># vdum[:] = del_ek[m, :] - del_ek[n, :]</span>
+                    <span class="c1"># joint_level_spacing = np.sqrt(np.dot(vdum, vdum))*Delta_k</span>
+                    <span class="c1"># eta_smr = min(joint_level_spacing*me_adpt_smr_fac, me_adpt_smr_max)</span>
+                    <span class="k">pass</span>
+
+                <span class="n">rfac1</span> <span class="o">=</span> <span class="p">(</span><span class="n">fk</span><span class="p">[</span><span class="n">m</span><span class="p">]</span> <span class="o">-</span> <span class="n">fk</span><span class="p">[</span><span class="n">n</span><span class="p">])</span> <span class="o">*</span> <span class="p">(</span><span class="n">ek</span><span class="p">[</span><span class="n">m</span><span class="p">]</span> <span class="o">-</span> <span class="n">ek</span><span class="p">[</span><span class="n">n</span><span class="p">])</span>
+
+                <span class="k">for</span> <span class="n">ifreq</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">me_nfreq</span><span class="p">):</span>
+                    <span class="c1">#</span>
+                    <span class="c1"># Complex frequency for the anti-Hermitian conductivity</span>
+                    <span class="c1">#</span>
+                    <span class="k">if</span> <span class="n">me_adpt_smr</span><span class="p">:</span>
+                        <span class="n">omega</span> <span class="o">=</span> <span class="n">me_freq_list</span><span class="p">[</span><span class="n">ifreq</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="n">eta_smr</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">omega</span> <span class="o">=</span> <span class="n">me_freq_list</span><span class="p">[</span><span class="n">ifreq</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="n">me_smr_fixed_en_width</span>
+                    <span class="c1">#</span>
+                    <span class="c1"># Broadened delta function for the Hermitian conductivity and JDOS</span>
+                    <span class="c1">#</span>
+                    <span class="n">arg</span> <span class="o">=</span> <span class="p">(</span><span class="n">ek</span><span class="p">[</span><span class="n">m</span><span class="p">]</span> <span class="o">-</span> <span class="n">ek</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">real</span><span class="p">(</span><span class="n">omega</span><span class="p">))</span> <span class="o">/</span> <span class="n">eta_smr</span>
+                    <span class="c1"># If only Hermitean part were computed, could speed up</span>
+                    <span class="c1"># by inserting here &#39;if(abs(arg)&gt;10.0_dp) cycle&#39;</span>
+                    <span class="n">delta</span> <span class="o">=</span> <span class="n">utility_w0gauss</span><span class="p">(</span><span class="n">arg</span><span class="p">,</span> <span class="n">me_smr_type_idx</span><span class="p">)</span> <span class="o">/</span> <span class="n">eta_smr</span>
+
+                    <span class="c1">#</span>
+                    <span class="c1"># Lorentzian shape (for testing purposes)</span>
+                    <span class="c1"># delta=1.0_dp/(1.0_dp+arg*arg)/pi</span>
+                    <span class="c1"># delta=delta/eta_smr</span>
+                    <span class="c1">#</span>
+                    <span class="n">cfac</span> <span class="o">=</span> <span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="n">rfac1</span> <span class="o">/</span> <span class="p">(</span><span class="n">ek</span><span class="p">[</span><span class="n">m</span><span class="p">]</span> <span class="o">-</span> <span class="n">ek</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="o">-</span> <span class="n">omega</span><span class="p">)</span>
+                    <span class="n">rfac2</span> <span class="o">=</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">rfac1</span> <span class="o">*</span> <span class="n">delta</span>
+                    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
+                        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">j</span><span class="p">,</span> <span class="mi">3</span><span class="p">):</span>
+                            <span class="n">me_H</span><span class="p">[</span><span class="n">ifreq</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">+=</span> <span class="n">rfac2</span> <span class="o">*</span> <span class="n">ak</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">m</span><span class="p">]</span> <span class="o">*</span> <span class="n">ak</span><span class="p">[</span><span class="n">j</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">]</span>
+                            <span class="n">me_AH</span><span class="p">[</span><span class="n">ifreq</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">+=</span> <span class="n">cfac</span> <span class="o">*</span> <span class="n">ak</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">m</span><span class="p">]</span> <span class="o">*</span> <span class="n">ak</span><span class="p">[</span><span class="n">j</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">]</span>
+                            <span class="k">if</span> <span class="n">spin_decomp</span><span class="p">:</span>
+                                <span class="n">me_H_spn</span><span class="p">[</span><span class="n">ifreq</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">ispn</span><span class="p">]</span> <span class="o">+=</span> <span class="n">rfac2</span> <span class="o">*</span> <span class="n">ak</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">m</span><span class="p">]</span> <span class="o">*</span> <span class="n">ak</span><span class="p">[</span><span class="n">j</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">]</span>
+                                <span class="n">me_AH_spn</span><span class="p">[</span><span class="n">ifreq</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">ispn</span><span class="p">]</span> <span class="o">+=</span> <span class="n">cfac</span> <span class="o">*</span> <span class="n">ak</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">m</span><span class="p">]</span> <span class="o">*</span> <span class="n">ak</span><span class="p">[</span><span class="n">j</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">]</span>
+
+    <span class="n">me_H_spn</span> <span class="o">/=</span> <span class="n">num_k</span>
+    <span class="n">me_H_orb</span> <span class="o">/=</span> <span class="n">num_k</span>
+    <span class="n">me_AH_spn</span> <span class="o">/=</span> <span class="n">num_k</span>
+    <span class="n">me_AH_orb</span> <span class="o">/=</span> <span class="n">num_k</span>
+
+    <span class="k">return</span> <span class="n">me_H_spn</span><span class="p">,</span> <span class="n">me_H_orb</span><span class="p">,</span> <span class="n">me_AH_spn</span><span class="p">,</span> <span class="n">me_AH_orb</span></div>
+
+
+
+<span class="c1"># *************************************************************************** #</span>
+<span class="c1">#     dc Anomalous Hall conductivity and eventually (if &#39;mcd&#39; string also     #</span>
+<span class="c1">#       present in addition to &#39;ahe&#39;, e.g., &#39;ahe+mcd&#39;) dichroic optical       #</span>
+<span class="c1">#     conductivity, both calculated on the same (adaptively-refined) mesh     #</span>
+<span class="c1"># *************************************************************************** #</span>
+<span class="c1"># ==================================================</span>
+<span class="k">def</span> <span class="nf">absorptive_dichroic_optical_cond_main</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Absorptive dichroic optical conductivity &amp; JDOS on uniform mesh</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">pass</span>
+
+
+<span class="c1"># ==================================================</span>
+<div class="viewcode-block" id="absorptive_dichroic_optical_cond_main">
+<a class="viewcode-back" href="../../../src/api/analyzer.html#symclosestwannier.analyzer.get_response.absorptive_dichroic_optical_cond_main">[docs]</a>
+<span class="k">def</span> <span class="nf">absorptive_dichroic_optical_cond_main</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Absorptive dichroic optical conductivity &amp; JDOS on uniform mesh</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">pass</span></div>
+
+
+
+<span class="c1"># ==================================================</span>
+<div class="viewcode-block" id="abs_ordinary_optical_cond_main">
+<a class="viewcode-back" href="../../../src/api/analyzer.html#symclosestwannier.analyzer.get_response.abs_ordinary_optical_cond_main">[docs]</a>
+<span class="k">def</span> <span class="nf">abs_ordinary_optical_cond_main</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Absorptive ordinary optical conductivity &amp; JDOS on a uniform mesh</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">pass</span></div>
+
+
+
+<span class="c1"># ==================================================</span>
+<div class="viewcode-block" id="orbital_magnetization_main">
+<a class="viewcode-back" href="../../../src/api/analyzer.html#symclosestwannier.analyzer.get_response.orbital_magnetization_main">[docs]</a>
+<span class="k">def</span> <span class="nf">orbital_magnetization_main</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Orbital magnetization</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">pass</span></div>
+
+
+
+<span class="c1"># ==================================================</span>
+<div class="viewcode-block" id="boltzwann_main">
+<a class="viewcode-back" href="../../../src/api/analyzer.html#symclosestwannier.analyzer.get_response.boltzwann_main">[docs]</a>
+<span class="k">def</span> <span class="nf">boltzwann_main</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Boltzmann transport coefficients (BoltzWann module)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">pass</span></div>
+
+
+
+<span class="c1"># ==================================================</span>
+<div class="viewcode-block" id="gyrotropic_main">
+<a class="viewcode-back" href="../../../src/api/analyzer.html#symclosestwannier.analyzer.get_response.gyrotropic_main">[docs]</a>
+<span class="k">def</span> <span class="nf">gyrotropic_main</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Gyrotropic transport coefficients (Gyrotropic module)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">pass</span></div>
+
+</pre></div>
+
+                </article>
+              
+
+              
+              
+              
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Rikuto Oiwa
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2021-2024.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae"></script>
+<script src="../../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

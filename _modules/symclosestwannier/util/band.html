@@ -1,0 +1,512 @@
+
+<!DOCTYPE html>
+
+
+<html lang="jp" data-content_root="../../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>symclosestwannier.util.band &#8212; SymClosestWannier</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../_static/styles/theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../../../_static/styles/bootstrap.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+
+  
+  <link href="../../../_static/vendor/fontawesome/6.5.1/css/all.min.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.1/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b76e3c8a" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/sphinx-book-theme.css?v=384b581d" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
+  <script src="../../../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
+
+    <script src="../../../_static/documentation_options.js?v=8cf54648"></script>
+    <script src="../../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../../_static/scripts/sphinx-book-theme.js?v=efea14e4"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../../_static/design-tabs.js?v=36754332"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../../../_static/sphinx-thebe.js?v=afe5de03"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/symclosestwannier/util/band';</script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="jp"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a id="pst-skip-link" class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+
+<a class="navbar-brand logo" href="../../../README.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">SymClosestWannier</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">SAMB Construction</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../../src/samb_construction.html">Construction of SAMBs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/scw_tb.html">Construction of SymCW tight-binding model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/example.html">Examples</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">File Format</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../../src/format/cwin.html">input parameters in the *.cwin file [default]</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/format/cwout.html">standard output</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/format/info.html">information in CWModel [default]</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/format/data.html">data for SymCW (* optional [default] or only for crystal value)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/format/hr.html">Hamiltonian matrix elements in real-space</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/format/sr.html">Overlap matrix elements in real-space</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/format/z.html">The expansion coefficients of the Hamiltonian matrix (orthogonal) H expressed by a linear combination of SAMBs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/format/s.html">The expansion coefficients of the Overlap matrix expressed by a linear combination of SAMBs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/format/z_exp.html">expectation value of the given operator</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">API</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../../src/api/analyzer.html">Utility</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/api/cw.html">Closest Wannier</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/api/util.html">Utility</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+<a href="https://github.com/CMT-MU/SymClosestWannier.git" target="_blank"
+   class="btn btn-sm btn-source-repository-button"
+   title="Source repository"
+   data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+
+</a>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1></h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <h1>Source code for symclosestwannier.util.band</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">utility codes for CW.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">subprocess</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+
+<span class="c1"># ==================================================</span>
+<div class="viewcode-block" id="output_linear_dispersion">
+<a class="viewcode-back" href="../../../src/api/util.html#symclosestwannier.util.band.output_linear_dispersion">[docs]</a>
+<span class="k">def</span> <span class="nf">output_linear_dispersion</span><span class="p">(</span><span class="n">outdir</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    output band dispersion along high-symmetry lines.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        outdir (str): input and output files are found in this directory.</span>
+<span class="sd">        filename (str): file name.</span>
+<span class="sd">        k (str): k points along high-symmetry lines.</span>
+<span class="sd">        e (ndarray): eigen values.</span>
+<span class="sd">        u (ndarray): eigen vectors.</span>
+<span class="sd">        kwargs (dict, optional): kwargs for generate_band_gnuplot.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">kmax</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
+    <span class="n">emax</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+    <span class="n">emin</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+    <span class="n">num_wann</span> <span class="o">=</span> <span class="n">e</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="n">filename</span> <span class="o">=</span> <span class="n">filename</span><span class="p">[:</span><span class="o">-</span><span class="mi">4</span><span class="p">]</span> <span class="k">if</span> <span class="n">filename</span><span class="p">[</span><span class="o">-</span><span class="mi">4</span><span class="p">:]</span> <span class="o">==</span> <span class="s2">&quot;.txt&quot;</span> <span class="k">else</span> <span class="n">filename</span>
+
+    <span class="n">fs</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">outdir</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span> <span class="o">+</span> <span class="n">filename</span> <span class="o">+</span> <span class="s2">&quot;.txt&quot;</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span>
+    <span class="n">fs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;# n = band, j = orbital, E_n: energy, W_jn: weight</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">fs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;# k E_0 W_00 W_10 ... 1qW_M0 E_1 W_01 W_11 W_M1 ... E_n W_jn ... E_d W_0d W_1d ... W_dd</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">fs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;# Emax = </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">emax</span><span class="p">)</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">fs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;# Emin = </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">emin</span><span class="p">)</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">fs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;# num_wann = </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">num_wann</span><span class="p">)</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="n">ef</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;ef&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">ef</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">ef</span> <span class="o">=</span> <span class="mf">0.0</span>
+        <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;ef&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span>
+        <span class="n">fs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;# ef = ? (no shift) </span><span class="se">\n\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">fs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;# shifted by fermi energy = </span><span class="si">{</span><span class="n">ef</span><span class="si">}</span><span class="s2"> [eV] </span><span class="se">\n\n</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="n">num_k</span><span class="p">,</span> <span class="n">Nm</span> <span class="o">=</span> <span class="n">e</span><span class="o">.</span><span class="n">shape</span>
+    <span class="n">e</span> <span class="o">=</span> <span class="n">e</span><span class="o">.</span><span class="n">T</span>
+    <span class="n">u</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">u</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_k</span><span class="p">):</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">k</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+        <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">Nm</span><span class="p">):</span>
+            <span class="n">en</span> <span class="o">=</span> <span class="n">e</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="o">-</span> <span class="n">ef</span>
+            <span class="n">s</span> <span class="o">+=</span> <span class="s2">&quot; &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">en</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+            <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">Nm</span><span class="p">):</span>
+                <span class="n">s</span> <span class="o">+=</span> <span class="s2">&quot; &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">u</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">n</span><span class="p">])</span>
+        <span class="n">s</span> <span class="o">+=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="n">fs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+
+    <span class="n">fs</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+    <span class="c1"># generate gnuplot file</span>
+    <span class="n">generate_band_gnuplot</span><span class="p">(</span><span class="n">outdir</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">kmax</span><span class="p">,</span> <span class="n">emax</span><span class="p">,</span> <span class="n">emin</span><span class="p">,</span> <span class="n">num_wann</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+
+
+<span class="c1"># ==================================================</span>
+<div class="viewcode-block" id="generate_band_gnuplot">
+<a class="viewcode-back" href="../../../src/api/util.html#symclosestwannier.util.band.generate_band_gnuplot">[docs]</a>
+<span class="k">def</span> <span class="nf">generate_band_gnuplot</span><span class="p">(</span><span class="n">outdir</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">kmax</span><span class="p">,</span> <span class="n">emax</span><span class="p">,</span> <span class="n">emin</span><span class="p">,</span> <span class="n">num_wann</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    generate gnuplot file to plot band dispersion.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        outdir (str): input and output files are found in this directory.</span>
+<span class="sd">        filename (str): file name.</span>
+<span class="sd">        kmax (float): maximum value in kpoints.</span>
+<span class="sd">        emax (float): maximum value of eigen values.</span>
+<span class="sd">        emin (float): minimum value of eigen values.</span>
+<span class="sd">        num_wann (int): # of wannier functions.</span>
+<span class="sd">        kwargs (dict, optional): kwargs.</span>
+<span class="sd">            - a (float): length of lattice vector.</span>
+<span class="sd">            - ef (float): fermi energy.</span>
+<span class="sd">            - k_dis_pos (dict): {disconnected linear position:label}.</span>
+<span class="sd">            - lwidth (float): line width.</span>
+<span class="sd">            - lc (str): line color.</span>
+<span class="sd">            - ref_filename (str): file name of reference band data.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">offset</span> <span class="o">=</span> <span class="p">(</span><span class="n">emax</span> <span class="o">-</span> <span class="n">emin</span><span class="p">)</span> <span class="o">*</span> <span class="mf">0.1</span>
+
+    <span class="n">a</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+    <span class="n">ef</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;ef&quot;</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span>
+    <span class="n">k_dis_pos</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;k_dis_pos&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+    <span class="n">ref_filename</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;ref_filename&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+    <span class="n">lwidth</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;lwidth&quot;</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+    <span class="n">lc</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;lc&quot;</span><span class="p">,</span> <span class="s2">&quot;salmon&quot;</span><span class="p">)</span>
+
+    <span class="n">fs</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">outdir</span><span class="si">}</span><span class="s2">/plot_band.gnu&quot;</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span>
+    <span class="n">fs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;unset key </span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">fs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;unset grid </span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">fs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;lwidth = </span><span class="si">{</span><span class="n">lwidth</span><span class="si">}</span><span class="s2"> </span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">fs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;set xrange [:</span><span class="si">{</span><span class="n">kmax</span><span class="si">}</span><span class="s2">] </span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">fs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;set yrange [</span><span class="si">{</span><span class="n">emin</span><span class="o">-</span><span class="n">ef</span><span class="o">-</span><span class="n">offset</span><span class="si">}</span><span class="s2">:</span><span class="si">{</span><span class="n">emax</span><span class="o">-</span><span class="n">ef</span><span class="o">+</span><span class="n">offset</span><span class="si">}</span><span class="s2">] </span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">fs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;set tics font &#39;Times Roman, 30&#39; </span><span class="se">\n\n</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">k_dis_pos</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">pos</span><span class="p">,</span> <span class="n">label</span> <span class="ow">in</span> <span class="n">k_dis_pos</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">fs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;set arrow from  </span><span class="si">{</span><span class="n">pos</span><span class="si">}</span><span class="s2">,  </span><span class="si">{</span><span class="n">emin</span><span class="o">-</span><span class="n">ef</span><span class="o">-</span><span class="n">offset</span><span class="si">}</span><span class="s2"> to  </span><span class="si">{</span><span class="n">pos</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">emax</span><span class="o">-</span><span class="n">ef</span><span class="o">+</span><span class="n">offset</span><span class="si">}</span><span class="s2"> nohead </span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="n">k_dis_pos</span> <span class="o">=</span> <span class="p">{</span><span class="n">pos</span><span class="p">:</span> <span class="s2">&quot;{/Symbol G}&quot;</span> <span class="k">if</span> <span class="n">label</span> <span class="o">==</span> <span class="s2">&quot;G&quot;</span> <span class="k">else</span> <span class="n">label</span> <span class="k">for</span> <span class="n">pos</span><span class="p">,</span> <span class="n">label</span> <span class="ow">in</span> <span class="n">k_dis_pos</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+        <span class="n">fs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;set xtics (&quot;</span> <span class="o">+</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="sa">f</span><span class="s2">&quot;&#39;</span><span class="si">{</span><span class="n">label</span><span class="si">}</span><span class="s2">&#39; </span><span class="si">{</span><span class="n">pos</span><span class="si">}</span><span class="s2">,&quot;</span> <span class="k">for</span> <span class="n">pos</span><span class="p">,</span> <span class="n">label</span> <span class="ow">in</span> <span class="n">k_dis_pos</span><span class="o">.</span><span class="n">items</span><span class="p">()])</span> <span class="o">+</span> <span class="s2">&quot;) </span><span class="se">\n\n</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">a</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">fs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;a = </span><span class="si">{</span><span class="n">a</span><span class="si">}</span><span class="s2"> </span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="n">fs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;set terminal postscript eps color enhanced </span><span class="se">\n\n</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="n">fs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;set output &#39;</span><span class="si">{</span><span class="n">filename</span><span class="si">}</span><span class="s2">.eps&#39; </span><span class="se">\n\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">fs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;plot &quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">ref_filename</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="c1"># fs.write(f&quot;&#39;{ref_filename}&#39; u ($1/(2*pi)):2 w l lw lwidth lc &#39;dark-grey&#39;, &quot;)</span>
+        <span class="n">fs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&#39;</span><span class="si">{</span><span class="n">ref_filename</span><span class="si">}</span><span class="s2">&#39; u ($1/a):2 w l lw lwidth lc &#39;dark-grey&#39;, &quot;</span><span class="p">)</span>
+
+    <span class="n">fs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span>
+        <span class="sa">f</span><span class="s2">&quot;for [j=2:</span><span class="si">{</span><span class="n">num_wann</span><span class="o">*</span><span class="p">(</span><span class="n">num_wann</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="si">}</span><span class="s2">:</span><span class="si">{</span><span class="n">num_wann</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2">] &#39;</span><span class="si">{</span><span class="n">filename</span><span class="si">}</span><span class="s2">.txt&#39; u 1:j w l lw lwidth dt (3,1) lc &#39;</span><span class="si">{</span><span class="n">lc</span><span class="si">}</span><span class="s2">&#39; </span><span class="se">\n</span><span class="s2">&quot;</span>
+    <span class="p">)</span>
+
+    <span class="n">fs</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+    <span class="n">os</span><span class="o">.</span><span class="n">chdir</span><span class="p">(</span><span class="n">outdir</span><span class="p">)</span>
+
+    <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="s2">&quot;gnuplot plot_band.gnu&quot;</span><span class="p">,</span> <span class="n">shell</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+
+</pre></div>
+
+                </article>
+              
+
+              
+              
+              
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Rikuto Oiwa
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2021-2024.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae"></script>
+<script src="../../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

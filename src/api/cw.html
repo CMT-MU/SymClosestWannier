@@ -1,0 +1,1654 @@
+
+<!DOCTYPE html>
+
+
+<html lang="jp" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Closest Wannier &#8212; SymClosestWannier</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.1/css/all.min.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.1/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b76e3c8a" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=384b581d" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
+  <script src="../../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
+
+    <script src="../../_static/documentation_options.js?v=8cf54648"></script>
+    <script src="../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=efea14e4"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js?v=36754332"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../../_static/sphinx-thebe.js?v=afe5de03"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'src/api/cw';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Utility" href="util.html" />
+    <link rel="prev" title="Utility" href="analyzer.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="jp"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a id="pst-skip-link" class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+
+<a class="navbar-brand logo" href="../../README.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">SymClosestWannier</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">SAMB Construction</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../samb_construction.html">Construction of SAMBs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../scw_tb.html">Construction of SymCW tight-binding model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../example.html">Examples</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">File Format</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../format/cwin.html">input parameters in the *.cwin file [default]</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../format/cwout.html">standard output</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../format/info.html">information in CWModel [default]</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../format/data.html">data for SymCW (* optional [default] or only for crystal value)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../format/hr.html">Hamiltonian matrix elements in real-space</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../format/sr.html">Overlap matrix elements in real-space</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../format/z.html">The expansion coefficients of the Hamiltonian matrix (orthogonal) H expressed by a linear combination of SAMBs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../format/s.html">The expansion coefficients of the Overlap matrix expressed by a linear combination of SAMBs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../format/z_exp.html">expectation value of the given operator</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">API</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="analyzer.html">Utility</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Closest Wannier</a></li>
+<li class="toctree-l1"><a class="reference internal" href="util.html">Utility</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+<a href="https://github.com/CMT-MU/SymClosestWannier.git" target="_blank"
+   class="btn btn-sm btn-source-repository-button"
+   title="Source repository"
+   data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+
+</a>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Closest Wannier</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.cw.amn.Amn"><code class="docutils literal notranslate"><span class="pre">Amn</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.cw.amn.Amn.read"><code class="docutils literal notranslate"><span class="pre">Amn.read()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.cw.cw_info.CWInfo"><code class="docutils literal notranslate"><span class="pre">CWInfo</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.cw.cw_info.CWInfo.read"><code class="docutils literal notranslate"><span class="pre">CWInfo.read()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.cw.cw_info.CWInfo.write"><code class="docutils literal notranslate"><span class="pre">CWInfo.write()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.cw.cw_model.CWModel"><code class="docutils literal notranslate"><span class="pre">CWModel</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.cw.cw_model.CWModel.construct_Ok"><code class="docutils literal notranslate"><span class="pre">CWModel.construct_Ok()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.cw.cw_model.CWModel.construct_Or"><code class="docutils literal notranslate"><span class="pre">CWModel.construct_Or()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.cw.cw_model.CWModel.dict_to_matrix"><code class="docutils literal notranslate"><span class="pre">CWModel.dict_to_matrix()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.cw.cw_model.CWModel.fourier_transform_k_to_r"><code class="docutils literal notranslate"><span class="pre">CWModel.fourier_transform_k_to_r()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.cw.cw_model.CWModel.fourier_transform_r_to_k"><code class="docutils literal notranslate"><span class="pre">CWModel.fourier_transform_r_to_k()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.cw.cw_model.CWModel.interpolate"><code class="docutils literal notranslate"><span class="pre">CWModel.interpolate()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.cw.cw_model.CWModel.matrix_dict_k"><code class="docutils literal notranslate"><span class="pre">CWModel.matrix_dict_k()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.cw.cw_model.CWModel.matrix_dict_r"><code class="docutils literal notranslate"><span class="pre">CWModel.matrix_dict_r()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.cw.cw_model.CWModel.read_data"><code class="docutils literal notranslate"><span class="pre">CWModel.read_data()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.cw.cw_model.CWModel.read_info"><code class="docutils literal notranslate"><span class="pre">CWModel.read_info()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.cw.cw_model.CWModel.read_info_data"><code class="docutils literal notranslate"><span class="pre">CWModel.read_info_data()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.cw.cw_model.CWModel.samb_decomp_operator"><code class="docutils literal notranslate"><span class="pre">CWModel.samb_decomp_operator()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.cw.cw_model.CWModel.write_info_data"><code class="docutils literal notranslate"><span class="pre">CWModel.write_info_data()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.cw.cw_model.CWModel.write_or"><code class="docutils literal notranslate"><span class="pre">CWModel.write_or()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.cw.cw_model.CWModel.write_samb_coeffs"><code class="docutils literal notranslate"><span class="pre">CWModel.write_samb_coeffs()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.cw.cw_model.CWModel.write_samb_exp"><code class="docutils literal notranslate"><span class="pre">CWModel.write_samb_exp()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.cw.cw_model.CWModel.write_tb"><code class="docutils literal notranslate"><span class="pre">CWModel.write_tb()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.cw.eig.Eig"><code class="docutils literal notranslate"><span class="pre">Eig</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.cw.eig.Eig.read"><code class="docutils literal notranslate"><span class="pre">Eig.read()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.cw.eig.Eig.write"><code class="docutils literal notranslate"><span class="pre">Eig.write()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.cw.nnkp.Nnkp"><code class="docutils literal notranslate"><span class="pre">Nnkp</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.cw.nnkp.Nnkp.bvec"><code class="docutils literal notranslate"><span class="pre">Nnkp.bvec()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.cw.nnkp.Nnkp.read"><code class="docutils literal notranslate"><span class="pre">Nnkp.read()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.cw.umat.Umat"><code class="docutils literal notranslate"><span class="pre">Umat</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.cw.umat.Umat.read"><code class="docutils literal notranslate"><span class="pre">Umat.read()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.cw.umat.Umat.write"><code class="docutils literal notranslate"><span class="pre">Umat.write()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.cw.umat.Umat.write_u_dis_mat"><code class="docutils literal notranslate"><span class="pre">Umat.write_u_dis_mat()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.cw.umat.Umat.write_u_opt_mat"><code class="docutils literal notranslate"><span class="pre">Umat.write_u_opt_mat()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.cw.cw_creator.cw_creator"><code class="docutils literal notranslate"><span class="pre">cw_creator()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.cw.cw_manager.CWManager"><code class="docutils literal notranslate"><span class="pre">CWManager</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.cw.cw_manager.CWManager.create_subdir"><code class="docutils literal notranslate"><span class="pre">CWManager.create_subdir()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.cw.cw_manager.CWManager.elapsed"><code class="docutils literal notranslate"><span class="pre">CWManager.elapsed()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.cw.cw_manager.CWManager.filename"><code class="docutils literal notranslate"><span class="pre">CWManager.filename()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.cw.cw_manager.CWManager.log"><code class="docutils literal notranslate"><span class="pre">CWManager.log()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.cw.cw_manager.CWManager.read"><code class="docutils literal notranslate"><span class="pre">CWManager.read()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.cw.cw_manager.CWManager.set_stamp"><code class="docutils literal notranslate"><span class="pre">CWManager.set_stamp()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.cw.cw_manager.CWManager.write"><code class="docutils literal notranslate"><span class="pre">CWManager.write()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.cw.cwin.CWin"><code class="docutils literal notranslate"><span class="pre">CWin</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.cw.cwin.CWin.read"><code class="docutils literal notranslate"><span class="pre">CWin.read()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.cw.mmn.Mmn"><code class="docutils literal notranslate"><span class="pre">Mmn</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.cw.mmn.Mmn.read"><code class="docutils literal notranslate"><span class="pre">Mmn.read()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.cw.mmn.Mmn.write"><code class="docutils literal notranslate"><span class="pre">Mmn.write()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.cw.spn.Spn"><code class="docutils literal notranslate"><span class="pre">Spn</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.cw.spn.Spn.read"><code class="docutils literal notranslate"><span class="pre">Spn.read()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.cw.win.Win"><code class="docutils literal notranslate"><span class="pre">Win</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.cw.win.Win.read"><code class="docutils literal notranslate"><span class="pre">Win.read()</span></code></a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="module-symclosestwannier.cw.amn">
+<span id="closest-wannier"></span><h1>Closest Wannier<a class="headerlink" href="#module-symclosestwannier.cw.amn" title="Link to this heading">#</a></h1>
+<p>Amn manages overlap matrix elements in seedname.amn file, A_{mn}(k) = &lt;ψ^{KS}_{m}(k)|φ_{n}(k)&gt;.
+- ψ^{KS}_{m}(k): Kohn-Sham orbitals (KSOs).
+- φ_{n}(k): pseudo atomic (PAOs) orbitals.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="symclosestwannier.cw.amn.Amn">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Amn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">topdir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seedname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'cwannier'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dic</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/cw/amn.html#Amn"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.cw.amn.Amn" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></p>
+<p>initialize the class.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>topdir</strong> (<em>str</em><em>, </em><em>optional</em>) -- directory of seedname.amn file.</p></li>
+<li><p><strong>seedname</strong> (<em>str</em><em>, </em><em>optional</em>) -- seedname.</p></li>
+<li><p><strong>dic</strong> (<em>dict</em><em>, </em><em>optional</em>) -- dictionary of Amn.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="symclosestwannier.cw.amn.Amn.read">
+<span class="sig-name descname"><span class="pre">read</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'cwannier.amn'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/cw/amn.html#Amn.read"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.cw.amn.Amn.read" title="Link to this definition">#</a></dt>
+<dd><p>read seedname.amn file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>file_name</strong> (<em>str</em><em>, </em><em>optional</em>) -- file name.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p>num_k     : # of k points (int), [1].</p></li>
+<li><p>num_bands : # of bands passed to the code (int), [1].</p></li>
+<li><p>num_wann  : # of WFs (int), [1].</p></li>
+<li><p>Ak        : Overlap matrix elements, A_{mn}(k) = &lt;ψ^{KS}_{m}(k)|φ_{n}(k)&gt; (list), [None].</p></li>
+</ul>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class" id="module-symclosestwannier.cw.cw_info">
+<dt class="sig sig-object py" id="symclosestwannier.cw.cw_info.CWInfo">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">CWInfo</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">topdir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seedname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'cwannier'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dic</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/cw/cw_info.html#CWInfo"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.cw.cw_info.CWInfo" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></p>
+<p>initialize the class.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>topdir</strong> (<em>str</em><em>, </em><em>optional</em>) -- directory of seedname.cwin file.</p></li>
+<li><p><strong>seedname</strong> (<em>str</em><em>, </em><em>optional</em>) -- seedname.</p></li>
+<li><p><strong>dic</strong> (<em>dict</em><em>, </em><em>optional</em>) -- dictionary of CWin.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="symclosestwannier.cw.cw_info.CWInfo.read">
+<span class="sig-name descname"><span class="pre">read</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">topdir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seedname</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/cw/cw_info.html#CWInfo.read"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.cw.cw_info.CWInfo.read" title="Link to this definition">#</a></dt>
+<dd><p>read seedname.cwin/win/nnkp/eig/amn/(mmn)/(umat)/(spn) files.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>topdir</strong> (<em>str</em>) -- directory of seedname.cwin/win/eig/amn/mmn/nnkp files.</p></li>
+<li><p><strong>seedname</strong> (<em>str</em>) -- seedname.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>system information.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="symclosestwannier.cw.cw_info.CWInfo.write">
+<span class="sig-name descname"><span class="pre">write</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">topdir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seedname</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/cw/cw_info.html#CWInfo.write"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.cw.cw_info.CWInfo.write" title="Link to this definition">#</a></dt>
+<dd><p>read seedname.cwin/win/eig/amn/mmn/nnkp files.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>topdir</strong> (<em>str</em>) -- directory of seedname.cwin/win/eig/amn/mmn/nnkp files.</p></li>
+<li><p><strong>seedname</strong> (<em>str</em>) -- seedname.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>system information.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class" id="module-symclosestwannier.cw.cw_model">
+<dt class="sig sig-object py" id="symclosestwannier.cw.cw_model.CWModel">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">CWModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cwi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cwm</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dic</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/cw/cw_model.html#CWModel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.cw.cw_model.CWModel" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></p>
+<p>initialize the class.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>cwi</strong> (<a class="reference internal" href="#symclosestwannier.cw.cw_info.CWInfo" title="symclosestwannier.cw.cw_info.CWInfo"><em>CWInfo</em></a><em>, </em><em>optional</em>) -- CWInfo.</p></li>
+<li><p><strong>cwm</strong> (<a class="reference internal" href="#symclosestwannier.cw.cw_manager.CWManager" title="symclosestwannier.cw.cw_manager.CWManager"><em>CWManager</em></a><em>,</em><em>optional</em>) -- CWManager.</p></li>
+<li><p><strong>dic</strong> (<em>dict</em><em>, </em><em>optional</em>) -- dictionary of data.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="symclosestwannier.cw.cw_model.CWModel.construct_Ok">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">construct_Ok</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">z</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_wann</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kpoints</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rpoints</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">matrix_dict</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/cw/cw_model.html#CWModel.construct_Ok"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.cw.cw_model.CWModel.construct_Ok" title="Link to this definition">#</a></dt>
+<dd><p>arbitrary operator constructed by linear combination of SAMBs in k-space representation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>z</strong> (<em>list</em>) -- parameter set, [z_j].</p></li>
+<li><p><strong>num_wann</strong> (<em>int</em>) -- # of WFs.</p></li>
+<li><p><strong>kpoints</strong> (<em>ndarray</em>) -- k-points used in DFT calculation, [[k1, k2, k3]] (crystal coordinate).</p></li>
+<li><p><strong>rpoints</strong> (<em>ndarray</em><em>, </em><em>optional</em>) -- lattice points (crystal coordinate, [[n1,n2,n3]], nj: integer).</p></li>
+<li><p><strong>matrix_dict</strong> (<em>dict</em>) -- SAMBs.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>matrix, [#k, dim, dim].</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="symclosestwannier.cw.cw_model.CWModel.construct_Or">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">construct_Or</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">z</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_wann</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rpoints</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">matrix_dict</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/cw/cw_model.html#CWModel.construct_Or"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.cw.cw_model.CWModel.construct_Or" title="Link to this definition">#</a></dt>
+<dd><p>arbitrary operator constructed by linear combination of SAMBs in real-space representation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>z</strong> (<em>list</em>) -- parameter set, [z_j].</p></li>
+<li><p><strong>num_wann</strong> (<em>int</em>) -- # of WFs.</p></li>
+<li><p><strong>rpoints</strong> (<em>ndarray</em><em>, </em><em>optional</em>) -- lattice points (crystal coordinate, [[n1,n2,n3]], nj: integer).</p></li>
+<li><p><strong>matrix_dict</strong> (<em>dict</em>) -- SAMBs.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>matrix, [#r, dim, dim].</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="symclosestwannier.cw.cw_model.CWModel.dict_to_matrix">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">dict_to_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Or_dict</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/cw/cw_model.html#CWModel.dict_to_matrix"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.cw.cw_model.CWModel.dict_to_matrix" title="Link to this definition">#</a></dt>
+<dd><p>convert dictionary form to matrix form of an arbitrary operator matrix.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>dic</strong> (<em>dict</em>) -- dictionary form of an arbitrary operator matrix in reak-space/k-space representation.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>matrix form of the given operator.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="symclosestwannier.cw.cw_model.CWModel.fourier_transform_k_to_r">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">fourier_transform_k_to_r</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Ok</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kpoints</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">irvec</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">atoms_frac</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/cw/cw_model.html#CWModel.fourier_transform_k_to_r"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.cw.cw_model.CWModel.fourier_transform_k_to_r" title="Link to this definition">#</a></dt>
+<dd><p>inverse fourier transformation of an arbitrary operator from k-space representation into real-space representation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>Ok</strong> (<em>ndarray</em>) -- arbitrary operator in k-space representation, O_{ab}(k) = &lt;φ_{a}(k)|O|φ_{b}(k)&gt;.</p></li>
+<li><p><strong>kpoints</strong> (<em>ndarray</em>) -- k-points used in DFT calculation, [[k1, k2, k3]] (crystal coordinate).</p></li>
+<li><p><strong>irvec</strong> (<em>ndarray</em><em>, </em><em>optional</em>) -- irreducible R vectors (crystal coordinate, [[n1,n2,n3]], nj: integer).</p></li>
+<li><p><strong>atoms_frac</strong> (<em>ndarray</em><em>, </em><em>optional</em>) -- atom's position in fractional coordinates.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>real-space representation of the given operator, O_{ab}(R) = &lt;φ_{a}(0)|O|φ_{b}(R)&gt;, lattice points.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>(ndarray, ndarray)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="symclosestwannier.cw.cw_model.CWModel.fourier_transform_r_to_k">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">fourier_transform_r_to_k</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Or</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kpoints</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">irvec</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ndegen</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">atoms_frac</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/cw/cw_model.html#CWModel.fourier_transform_r_to_k"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.cw.cw_model.CWModel.fourier_transform_r_to_k" title="Link to this definition">#</a></dt>
+<dd><p>fourier transformation of an arbitrary operator from real-space representation into k-space representation.</p>
+<p>Args:
+Or (ndarray): real-space representation of the given operator, O_{ab}(R) = &lt;φ_{a}(0)|O|φ_{b}(R)&gt;.
+kpoints (ndarray): k-points used in DFT calculation, [[k1, k2, k3]] (crystal coordinate).
+irvec (ndarray): irreducible R vectors (crystal coordinate, [[n1,n2,n3]], nj: integer).
+ndegen (ndarray, optional): number of degeneracy at each R.
+atoms_frac (ndarray, optional): atom's position in fractional coordinates.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>k-space representation of the given operator, O_{ab}(k) = &lt;φ_{a}(k)|O|φ_{b}(k)&gt;.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="symclosestwannier.cw.cw_model.CWModel.interpolate">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">interpolate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Ok</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kpoints_0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kpoints</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">irvec</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ndegen</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">atoms_frac</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/cw/cw_model.html#CWModel.interpolate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.cw.cw_model.CWModel.interpolate" title="Link to this definition">#</a></dt>
+<dd><p>interpolate an arbitrary operator by implementing
+fourier transformation from real-space representation into k-space representation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>Ok</strong> (<em>ndarray</em>) -- arbitrary operator in k-space representation, O_{ab}(k) = &lt;φ_{a}(k)|O|φ_{b}(k)&gt;.</p></li>
+<li><p><strong>kpoints_0</strong> (<em>ndarray</em>) -- k points before interpolated (crystal coordinate, [[k1,k2,k3]]).</p></li>
+<li><p><strong>kpoints</strong> (<em>ndarray</em>) -- k points after interpolated (crystal coordinate, [[k1,k2,k3]]).</p></li>
+<li><p><strong>irvec</strong> (<em>ndarray</em>) -- irreducible R vectors (crystal coordinate, [[n1,n2,n3]], nj: integer).</p></li>
+<li><p><strong>ndegen</strong> (<em>ndarray</em><em>, </em><em>optional</em>) -- number of degeneracy at each R.</p></li>
+<li><p><strong>atoms_frac</strong> (<em>ndarray</em><em>, </em><em>optional</em>) -- atom's position in fractional coordinates.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>matrix elements at each k point, O_{ab}(k) = &lt;φ_{a}(k)|O|φ_{b}(k)&gt;.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="symclosestwannier.cw.cw_model.CWModel.matrix_dict_k">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">matrix_dict_k</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Ok</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kpoints</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">diagonal</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/cw/cw_model.html#CWModel.matrix_dict_k"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.cw.cw_model.CWModel.matrix_dict_k" title="Link to this definition">#</a></dt>
+<dd><p>dictionary form of an arbitrary operator matrix in k-space representation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>Ok</strong> (<em>ndarray</em>) -- arbitrary operator in k-space representation, O_{ab}(k) = &lt;φ_{a}(k)|H|φ_{b}(k)&gt;.</p></li>
+<li><p><strong>kpoints</strong> (<em>ndarray</em>) -- k-points used in DFT calculation, [[k1, k2, k3]] (crystal coordinate).</p></li>
+<li><p><strong>diagonal</strong> (<em>bool</em><em>, </em><em>optional</em>) -- diagonal matrix ?</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>k-space representation of the given operator, {(k2,k2,k3,a,b) = O_{ab}(k)}.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="symclosestwannier.cw.cw_model.CWModel.matrix_dict_r">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">matrix_dict_r</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Or</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rpoints</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">diagonal</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/cw/cw_model.html#CWModel.matrix_dict_r"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.cw.cw_model.CWModel.matrix_dict_r" title="Link to this definition">#</a></dt>
+<dd><p>dictionary form of an arbitrary operator matrix in real-space representation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>Or</strong> (<em>ndarray</em>) -- real-space representation of the given operator, O_{ab}(R) = &lt;φ_{a}(0)|O|φ_{b}(R)&gt;.</p></li>
+<li><p><strong>rpoints</strong> (<em>ndarray</em>) -- lattice points (crystal coordinate, [[n1,n2,n3]], nj: integer).</p></li>
+<li><p><strong>diagonal</strong> (<em>bool</em><em>, </em><em>optional</em>) -- diagonal matrix ?</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>real-space representation of the given operator, {(n2,n2,n3,a,b) = O_{ab}(R)}.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="symclosestwannier.cw.cw_model.CWModel.read_data">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">read_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/cw/cw_model.html#CWModel.read_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.cw.cw_model.CWModel.read_data" title="Link to this definition">#</a></dt>
+<dd><p>read data from seedname.hdf5 (hdf5 format).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>filename</strong> (<em>str</em>) -- file name.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>dictionary of data.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="symclosestwannier.cw.cw_model.CWModel.read_info">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">read_info</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/cw/cw_model.html#CWModel.read_info"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.cw.cw_model.CWModel.read_info" title="Link to this definition">#</a></dt>
+<dd><p>read info from seedname.hdf5 (hdf5 format).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>filename</strong> (<em>str</em>) -- file name.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>info.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#symclosestwannier.cw.cw_info.CWInfo" title="symclosestwannier.cw.cw_info.CWInfo">CWInfo</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="symclosestwannier.cw.cw_model.CWModel.read_info_data">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">read_info_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/cw/cw_model.html#CWModel.read_info_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.cw.cw_model.CWModel.read_info_data" title="Link to this definition">#</a></dt>
+<dd><p>read info and data from seedname.hdf5 (hdf5 format).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>filename</strong> (<em>str</em>) -- file name.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>CWInfo, dictionary of data.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="symclosestwannier.cw.cw_model.CWModel.samb_decomp_operator">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">samb_decomp_operator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Or_dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Zr_dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">A</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">atoms_frac</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ket</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">A_samb</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">atoms_frac_samb</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ket_samb</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/cw/cw_model.html#CWModel.samb_decomp_operator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.cw.cw_model.CWModel.samb_decomp_operator" title="Link to this definition">#</a></dt>
+<dd><p>decompose arbitrary operator into linear combination of SAMBs.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>Or_dict</strong> (<em>dict</em>) -- dictionary form of an arbitrary operator matrix in reak-space/k-space representation.</p></li>
+<li><p><strong>Zr_dict</strong> (<em>dict</em>) -- dictionary form of SAMBs.</p></li>
+<li><p><strong>A</strong> (<em>list/ndarray</em><em>, </em><em>optional</em>) -- real lattice vectors for the given operator, A = [a1,a2,a3] (list), [[[1,0,0], [0,1,0], [0,0,1]]].</p></li>
+<li><p><strong>atoms_frac</strong> (<em>ndarray</em><em>, </em><em>optional</em>) -- atom's position in fractional coordinates for the given operator.</p></li>
+<li><p><strong>ket</strong> (<em>list</em><em>, </em><em>optional</em>) -- ket basis list, <a class="reference external" href="mailto:orbital&#37;&#52;&#48;site">orbital<span>&#64;</span>site</a>.</p></li>
+<li><p><strong>A_samb</strong> (<em>list/ndarray</em><em>, </em><em>optional</em>) -- real lattice vectors for SAMBs, A = [a1,a2,a3] (list), [[[1,0,0], [0,1,0], [0,0,1]]].</p></li>
+<li><p><strong>atoms_frac_samb</strong> (<em>ndarray</em><em>, </em><em>optional</em>) -- atom's position in fractional coordinates for SAMBs.</p></li>
+<li><p><strong>ket_samb</strong> (<em>list</em><em>, </em><em>optional</em>) -- ket basis list for SAMBs, <a class="reference external" href="mailto:orbital&#37;&#52;&#48;site">orbital<span>&#64;</span>site</a>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>parameter set, {tag: z_j}.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>z (dict)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="symclosestwannier.cw.cw_model.CWModel.write_info_data">
+<span class="sig-name descname"><span class="pre">write_info_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/cw/cw_model.html#CWModel.write_info_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.cw.cw_model.CWModel.write_info_data" title="Link to this definition">#</a></dt>
+<dd><p>write info and data to seedname.hdf5 (hdf5 format).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>filename</strong> (<em>str</em>) -- file name.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="symclosestwannier.cw.cw_model.CWModel.write_or">
+<span class="sig-name descname"><span class="pre">write_or</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Or</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rpoints</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">header</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vec</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/cw/cw_model.html#CWModel.write_or"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.cw.cw_model.CWModel.write_or" title="Link to this definition">#</a></dt>
+<dd><p>write seedname_or.dat.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>Or</strong> (<em>ndarray</em>) -- real-space representation of the given operator, O_{ab}(R) = &lt;φ_{a}(0)|O|φ_{b}(R)&gt;.</p></li>
+<li><p><strong>filename</strong> (<em>str</em>) -- file name.</p></li>
+<li><p><strong>rpoints</strong> (<em>ndarray</em>) -- rpoints.</p></li>
+<li><p><strong>header</strong> (<em>str</em><em>, </em><em>optional</em>) -- header.</p></li>
+<li><p><strong>vec</strong> (<em>bool</em><em>, </em><em>optional</em>) -- vector ?</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="symclosestwannier.cw.cw_model.CWModel.write_samb_coeffs">
+<span class="sig-name descname"><span class="pre">write_samb_coeffs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'z'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/cw/cw_model.html#CWModel.write_samb_coeffs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.cw.cw_model.CWModel.write_samb_coeffs" title="Link to this definition">#</a></dt>
+<dd><p>write seedname_z.dat.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>filename</strong> (<em>str</em>) -- file name.</p></li>
+<li><p><strong>type</strong> (<em>str</em>) -- 'z'/'z_nonortho'/'s'.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="symclosestwannier.cw.cw_model.CWModel.write_samb_exp">
+<span class="sig-name descname"><span class="pre">write_samb_exp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/cw/cw_model.html#CWModel.write_samb_exp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.cw.cw_model.CWModel.write_samb_exp" title="Link to this definition">#</a></dt>
+<dd><p>write seedname_or.dat.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>filename</strong> (<em>str</em>) -- file name.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="symclosestwannier.cw.cw_model.CWModel.write_tb">
+<span class="sig-name descname"><span class="pre">write_tb</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Hr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Ar</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rpoints</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/cw/cw_model.html#CWModel.write_tb"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.cw.cw_model.CWModel.write_tb" title="Link to this definition">#</a></dt>
+<dd><p>write seedname_or.dat.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>Hr</strong> (<em>ndarray</em>) -- real-space representation of the Hamiltonian, H_{ab}(R) = &lt;φ_{a}(0)|H|φ_{b}(R)&gt;.</p></li>
+<li><p><strong>Ar</strong> (<em>ndarray</em>) -- real-space representation of the Hamiltonian, A_{ab}(R) = &lt;φ_{a}(0)|r|φ_{b}(R)&gt;.</p></li>
+<li><p><strong>filename</strong> (<em>str</em>) -- file name.</p></li>
+<li><p><strong>rpoints</strong> (<em>ndarray</em>) -- rpoints.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<p id="module-symclosestwannier.cw.eig">Eig manages Kohn-Sham energies in seedname.eig file, E_{m}(k).</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="symclosestwannier.cw.eig.Eig">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Eig</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">topdir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seedname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'cwannier'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dic</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/cw/eig.html#Eig"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.cw.eig.Eig" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></p>
+<p>initialize the class.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>topdir</strong> (<em>str</em><em>, </em><em>optional</em>) -- directory of seedname.eig file.</p></li>
+<li><p><strong>seedname</strong> (<em>str</em><em>, </em><em>optional</em>) -- seedname.</p></li>
+<li><p><strong>dic</strong> (<em>dict</em><em>, </em><em>optional</em>) -- dictionary of Eig.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="symclosestwannier.cw.eig.Eig.read">
+<span class="sig-name descname"><span class="pre">read</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'cwannier.eig'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/cw/eig.html#Eig.read"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.cw.eig.Eig.read" title="Link to this definition">#</a></dt>
+<dd><p>read seedname.eig file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>file_name</strong> (<em>str</em><em>, </em><em>optional</em>) -- file name.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p>num_k     : # of k points (int), [1].</p></li>
+<li><p>num_bands : # of bands passed to the code (int), [1].</p></li>
+<li><p>Ek        : Kohn-Sham energies, E_{m}(k) (list), [None].</p></li>
+</ul>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="symclosestwannier.cw.eig.Eig.write">
+<span class="sig-name descname"><span class="pre">write</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'cwannier.eig'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/cw/eig.html#Eig.write"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.cw.eig.Eig.write" title="Link to this definition">#</a></dt>
+<dd><p>write eig data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>file_name</strong> (<em>str</em><em>, </em><em>optional</em>) -- file name.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<p id="module-symclosestwannier.cw.nnkp">Nnkp manages information needed to determine the required overlap elements Mmn(k,b) and projections A_{mn}(k).</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="symclosestwannier.cw.nnkp.Nnkp">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Nnkp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">topdir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seedname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'cwannier'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dic</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/cw/nnkp.html#Nnkp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.cw.nnkp.Nnkp" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></p>
+<p>initialize the class.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>topdir</strong> (<em>str</em><em>, </em><em>optional</em>) -- directory of seedname.nnkp file.</p></li>
+<li><p><strong>seedname</strong> (<em>str</em><em>, </em><em>optional</em>) -- seedname.</p></li>
+<li><p><strong>dic</strong> (<em>dict</em><em>, </em><em>optional</em>) -- dictionary of Nnkp.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="symclosestwannier.cw.nnkp.Nnkp.bvec">
+<span class="sig-name descname"><span class="pre">bvec</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">d</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'cart'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/cw/nnkp.html#Nnkp.bvec"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.cw.nnkp.Nnkp.bvec" title="Link to this definition">#</a></dt>
+<dd><p>d : array of integer [5]
+return : b vector in cartesian/fractional coordinates</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="symclosestwannier.cw.nnkp.Nnkp.read">
+<span class="sig-name descname"><span class="pre">read</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'cwannier.nnkp'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/cw/nnkp.html#Nnkp.read"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.cw.nnkp.Nnkp.read" title="Link to this definition">#</a></dt>
+<dd><p>read seedname.nnkp file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>file_name</strong> (<em>str</em><em>, </em><em>optional</em>) -- file name.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p>A                : real lattice vectors, A = [a1,a2,a3] (list), [[[1,0,0], [0,1,0], [0,0,1]]].</p></li>
+<li><p>B                : reciprocal lattice vectors, B = [b1,b2,b3] (list), [[[2*pi,0,0], [0,2*pi,0], [0,0,2*pi]]].</p></li>
+<li><p>num_k            : # of k points (int), [1].</p></li>
+<li><p>num_wann         : # of WFs (int), [1].</p></li>
+<li><p>num_atom         : # of atoms (int), [1].</p></li>
+<li><p>num_b            : # of b-vectors (int), [1].</p></li>
+<li><p>kpoints          : k-points, [[k1, k2, k3]] (crystal coordinate) (list), [[[0, 0, 0]]].</p></li>
+<li><p>kpoints_wo_shift : k-points without shift, [[k1, k2, k3]] (crystal coordinate) (list), [[[0, 0, 0]]].</p></li>
+<li><p>nnkpts           : nearest-neighbour k-points (list), [None].</p></li>
+<li><p>nw2n             : atom position index of each WFs (list), [None].</p></li>
+<li><p>nw2l             : l specifies the angular part Θlm(θ, φ) (list), [None].</p></li>
+<li><p>nw2m             : m specifies the angular part Θlm(θ, φ) (list), [None].</p></li>
+<li><p>nw2r             : r specifies the radial part Rr(r) (list), [None].</p></li>
+<li><p>atom_orb         : WFs indexes of each atom (list), [None].</p></li>
+<li><p>atom_pos         : atom position index of each atom (list), [None].</p></li>
+<li><p>atom_pos_r       : atom position of each atom in fractional coordinates with respect to the lattice vectors (list), [None].</p></li>
+<li><p>bvec_cart        : b-vectors (cartesian coordinate) (list), [None].</p></li>
+<li><p>bvec_crys        : b-vectors (crystal coordinate) (list), [None].</p></li>
+<li><p>wb               : weight for each k-points and nearest-neighbour k-points (list), [None].</p></li>
+</ul>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<p id="module-symclosestwannier.cw.umat">Umat manages unitary matrix elements in seedname_u.mat (Uopt(k)) and seedname_u_dis.mat (Udis(k)) files, U(k) = Uopt(k)&#64;Udis(k).
+- Uopt(k): num_wann×num_wann unitary matrix.
+- Udis(k): num_wann×num_bands partial unitary matrix.
+- U(k): num_wann×num_bands partial unitary matrix.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="symclosestwannier.cw.umat.Umat">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Umat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">topdir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seedname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'cwannier'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dic</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/cw/umat.html#Umat"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.cw.umat.Umat" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></p>
+<p>initialize the class.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>topdir</strong> (<em>str</em><em>, </em><em>optional</em>) -- directory of seedname.amn file.</p></li>
+<li><p><strong>seedname</strong> (<em>str</em><em>, </em><em>optional</em>) -- seedname.</p></li>
+<li><p><strong>dic</strong> (<em>dict</em><em>, </em><em>optional</em>) -- dictionary of Amn.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="symclosestwannier.cw.umat.Umat.read">
+<span class="sig-name descname"><span class="pre">read</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">u_file_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'cwannier_u.mat'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">u_dis_file_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/cw/umat.html#Umat.read"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.cw.umat.Umat.read" title="Link to this definition">#</a></dt>
+<dd><p>read seedname.amn file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>u_file_name</strong> (<em>str</em><em>, </em><em>optional</em>) -- file name for seedname_u.mat.</p></li>
+<li><p><strong>u_dis_file_name</strong> (<em>str</em><em>, </em><em>optional</em>) -- file name for seedname_u_dis.mat.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p>num_k            : # of k points (int), [1].</p></li>
+<li><p>num_bands        : # of bands passed to the code (int), [1].</p></li>
+<li><p>num_wann         : # of WFs (int), [1].</p></li>
+<li><p>k-points         : [[k1, k2, k3]] (crystal coordinate) (list), [[[0, 0, 0]]].,</p></li>
+<li><p>kpoints_wo_shift : k-points without shift, [[k1, k2, k3]] (crystal coordinate) (list), [[[0, 0, 0]]].</p></li>
+<li><p>Uoptk            : num_wann×num_wann full unitary matrix (ndarray), [None].</p></li>
+<li><p>Udisk            : num_wann×num_bands partial unitary matrix (ndarray), [None].</p></li>
+<li><p>Uk               : num_wann×num_bands full unitary matrix (ndarray), [None].</p></li>
+</ul>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="symclosestwannier.cw.umat.Umat.write">
+<span class="sig-name descname"><span class="pre">write</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">('cwannier_u.mat',</span> <span class="pre">'cwannier_u_dis.mat')</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/cw/umat.html#Umat.write"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.cw.umat.Umat.write" title="Link to this definition">#</a></dt>
+<dd><p>write Uoptk and Udisk data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>file_names</strong> (<em>str</em><em>, </em><em>optional</em>) -- file names.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="symclosestwannier.cw.umat.Umat.write_u_dis_mat">
+<span class="sig-name descname"><span class="pre">write_u_dis_mat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'cwannier_u_dis.mat'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/cw/umat.html#Umat.write_u_dis_mat"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.cw.umat.Umat.write_u_dis_mat" title="Link to this definition">#</a></dt>
+<dd><p>write Udisk data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>file_name</strong> (<em>str</em><em>, </em><em>optional</em>) -- file name.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="symclosestwannier.cw.umat.Umat.write_u_opt_mat">
+<span class="sig-name descname"><span class="pre">write_u_opt_mat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'cwannier_u.mat'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/cw/umat.html#Umat.write_u_opt_mat"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.cw.umat.Umat.write_u_opt_mat" title="Link to this definition">#</a></dt>
+<dd><p>write Uoptk data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>file_name</strong> (<em>str</em><em>, </em><em>optional</em>) -- file name.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function" id="module-symclosestwannier.cw.cw_creator">
+<dt class="sig sig-object py" id="symclosestwannier.cw.cw_creator.cw_creator">
+<span class="sig-name descname"><span class="pre">cw_creator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">seedname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'cwannier'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/cw/cw_creator.html#cw_creator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.cw.cw_creator.cw_creator" title="Link to this definition">#</a></dt>
+<dd><p>Closest Wannier (CW) tight-binding (TB) model based on Plane-Wave (PW) DFT calculation.
+CW TB model can be symmetrized by using Symmetry-Adapted Multipole Basis (SAMB).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>seedname</strong> (<em>str</em><em>, </em><em>optional</em>) -- seedname.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<p id="module-symclosestwannier.cw.cw_manager">CWManager manages current directory and formatter.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="symclosestwannier.cw.cw_manager.CWManager">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">CWManager</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">topdir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parallel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">formatter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/cw/cw_manager.html#CWManager"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.cw.cw_manager.CWManager" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>initialize the class.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>topdir</strong> (<em>str</em><em>, </em><em>optional</em>) -- top directory for output, ends without slash.</p></li>
+<li><p><strong>verbose</strong> (<em>bool</em><em>, </em><em>optional</em>) -- verbose parallel info. ?</p></li>
+<li><p><strong>parallel</strong> (<em>bool</em><em>, </em><em>optional</em>) -- use parallel code ?</p></li>
+<li><p><strong>formatter</strong> (<em>bool</em><em>, </em><em>optional</em>) -- format by using black ?</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="symclosestwannier.cw.cw_manager.CWManager.create_subdir">
+<span class="sig-name descname"><span class="pre">create_subdir</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">subdir</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/cw/cw_manager.html#CWManager.create_subdir"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.cw.cw_manager.CWManager.create_subdir" title="Link to this definition">#</a></dt>
+<dd><p>create sub directory under topdir.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="symclosestwannier.cw.cw_manager.CWManager.elapsed">
+<span class="sig-name descname"><span class="pre">elapsed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">from_stamp</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/cw/cw_manager.html#CWManager.elapsed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.cw.cw_manager.CWManager.elapsed" title="Link to this definition">#</a></dt>
+<dd><p>elapsed time.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>from_stamp</strong> (<em>bool</em><em>, </em><em>optional</em>) -- if True, return difference from lap.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>elapsed time.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="symclosestwannier.cw.cw_manager.CWManager.filename">
+<span class="sig-name descname"><span class="pre">filename</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">full</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/cw/cw_manager.html#CWManager.filename"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.cw.cw_manager.CWManager.filename" title="Link to this definition">#</a></dt>
+<dd><p>get (full) file name.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>filename</strong> (<em>str</em>) -- file name.</p></li>
+<li><p><strong>full</strong> (<em>bool</em><em>, </em><em>optional</em>) -- with full path ?</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>full file name (with full path).</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="symclosestwannier.cw.cw_manager.CWManager.log">
+<span class="sig-name descname"><span class="pre">log</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stamp</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'w'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/cw/cw_manager.html#CWManager.log"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.cw.cw_manager.CWManager.log" title="Link to this definition">#</a></dt>
+<dd><p>write log if verbose is True.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>text</strong> (<em>str</em>) -- text to write.</p></li>
+<li><p><strong>stamp</strong> (<em>str</em><em> or </em><em>None</em><em>, </em><em>optional</em>) -- attach elapsed time if &quot;start&quot; or &quot;&quot;, otherwise no stamp is attached.</p></li>
+<li><p><strong>end</strong> (<em>str</em><em>, </em><em>optional</em>) -- same as print end option.</p></li>
+<li><p><strong>file</strong> (<em>str</em><em>, </em><em>optional</em>) -- same as print file option.</p></li>
+<li><p><strong>mode</strong> (<em>str</em><em>, </em><em>optional</em>) -- mode, &quot;w&quot;/&quot;a&quot;.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="symclosestwannier.cw.cw_manager.CWManager.read">
+<span class="sig-name descname"><span class="pre">read</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_dict</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/cw/cw_manager.html#CWManager.read"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.cw.cw_manager.CWManager.read" title="Link to this definition">#</a></dt>
+<dd><p>read dict file or dict itself.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>file_dict</strong> (<em>str</em><em> or </em><em>dict</em>) -- filename of dict. or dict.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>read dict.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="symclosestwannier.cw.cw_manager.CWManager.set_stamp">
+<span class="sig-name descname"><span class="pre">set_stamp</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/cw/cw_manager.html#CWManager.set_stamp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.cw.cw_manager.CWManager.set_stamp" title="Link to this definition">#</a></dt>
+<dd><p>set current time.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="symclosestwannier.cw.cw_manager.CWManager.write">
+<span class="sig-name descname"><span class="pre">write</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dic</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">header</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">var</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/cw/cw_manager.html#CWManager.write"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.cw.cw_manager.CWManager.write" title="Link to this definition">#</a></dt>
+<dd><p>write dict to file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>filename</strong> (<em>str</em>) -- file name.</p></li>
+<li><p><strong>dic</strong> (<em>dict</em>) -- dict to write.</p></li>
+<li><p><strong>header</strong> (<em>str</em><em>, </em><em>optional</em>) -- header of dict.</p></li>
+<li><p><strong>var</strong> (<em>str</em><em>, </em><em>optional</em>) -- variable name for dict.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<p id="module-symclosestwannier.cw.cwin">CWin manages input file for pw2cw, seedname.cwin file.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="symclosestwannier.cw.cwin.CWin">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">CWin</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">topdir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seedname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'cwannier'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dic</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/cw/cwin.html#CWin"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.cw.cwin.CWin" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></p>
+<p>initialize the class.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>topdir</strong> (<em>str</em><em>, </em><em>optional</em>) -- directory of seedname.cwin file.</p></li>
+<li><p><strong>seedname</strong> (<em>str</em><em>, </em><em>optional</em>) -- seedname.</p></li>
+<li><p><strong>dic</strong> (<em>dict</em><em>, </em><em>optional</em>) -- dictionary of CWin.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="symclosestwannier.cw.cwin.CWin.read">
+<span class="sig-name descname"><span class="pre">read</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'cwannier.cwin'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/cw/cwin.html#CWin.read"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.cw.cwin.CWin.read" title="Link to this definition">#</a></dt>
+<dd><p>read seedname.cwin file.</p>
+<dl class="simple">
+<dt>Args:d</dt><dd><p>file_name (str, optional): file name.</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><dl class="simple">
+<dt>dictionary form of seedname.cwin.</dt><dd><ul class="simple">
+<li><p>seedname          : seedname (str), [&quot;cwannier&quot;].</p></li>
+<li><p>outdir            : output files are found in this directory (str), [&quot;./&quot;].</p></li>
+<li><p>restart           : the restart position 'cw'/'w90'/'sym' (str), [&quot;wannierize&quot;].</p></li>
+<li><p>disentangle       : disentagle bands ? (bool), [False].</p></li>
+<li><p>proj_min          : minimum value of projectability: [0.0].</p></li>
+<li><p>dis_win_emax      : upper energy window (float), [None].</p></li>
+<li><p>dis_win_emin      : lower energy window (float), [None].</p></li>
+<li><p>smearing_temp_max : smearing temperature for upper window (float), [5.0].</p></li>
+<li><p>smearing_temp_min : smearing temperature for lower window (float), [0.01].</p></li>
+<li><p>delta             : small constant to avoid ill-conditioning of overlap matrices (float), [1e-12].</p></li>
+<li><p>svd               : implement singular value decomposition ? otherwise adopt Lowdin's orthogonalization method (bool), [False].</p></li>
+<li><p>verbose           : verbose calculation info (bool, optional), [False].</p></li>
+<li><p>parallel          : use parallel code? (bool), [False].</p></li>
+<li><p>formatter         : format by using black? (bool), [False].</p></li>
+<li><p>transl_inv        : use Eq.(31) of Marzari&amp;Vanderbilt PRB 56, 12847 (1997) for band-diagonal position matrix elements? (bool), [True].</p></li>
+<li><p>use_degen_pert    : use degenerate perturbation theory when bands are degenerate and band derivatives are needed? (bool), [False].</p></li>
+<li><p>degen_thr         : threshold to exclude degenerate bands from the calculation, [0.0].</p></li>
+<li><p>tb_gauge          : use tb gauge? (bool), [False].</p></li>
+<li><p>write_hr          : write seedname_hr.py ? (bool), [False].</p></li>
+<li><p>write_sr          : write seedname_sr.py ? (bool), [False].</p></li>
+<li><p>write_u_matrices  : write seedname_u.dat and seedname_u_dis.dat ? (bool), [False].</p></li>
+<li><p>write_rmn         : write seedname_r.dat ? (bool), [False].</p></li>
+<li><p>write_vmn         : write seedname_v.dat ? (bool), [False].</p></li>
+<li><p>write_tb          : write seedname_tb.dat ? (bool), [False].</p></li>
+<li><p>write_spn         : write seedname.spn.cw ? (bool), [False].</p></li>
+</ul>
+</dd>
+<dt># only used for symmetrization.</dt><dd><ul class="simple">
+<li><p>symmetrization    : symmetrize ? (bool), [False].</p></li>
+<li><p>mp_outdir         : output files for multipie are found in this directory (str). [&quot;./&quot;].</p></li>
+<li><p>mp_seedname       : seedname for seedname_model.py, seedname_samb.py and seedname_matrix.py files (str), [&quot;default&quot;].</p></li>
+<li><p>ket_amn           : ket basis list in the seedname.amn file. The format of each ket must be same as the &quot;ket&quot; in sambname_model.py file. See sambname[&quot;info&quot;][&quot;ket&quot;] in sambname_model.py file for the format (list), [None].</p></li>
+<li><p>irreps            : list of irreps to be considered (str/list), [&quot;all&quot;].</p></li>
+</ul>
+</dd>
+<dt># only used for band dispersion calculation.</dt><dd><ul class="simple">
+<li><p>a                 : lattice parameter (in Ang) used to correct units of k points in reference band data, [None].</p></li>
+<li><p>fermi_energy      : fermi energy used for band shift, [None].</p></li>
+<li><p>N1                : number of divisions for high symmetry lines (int, optional), [50].</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<p id="module-symclosestwannier.cw.mmn">Mmn manages overlap matrix elements in seedname.mmn file, M_{mn}(k,b) = &lt;u^{KS}_{m}(k)|u^{KS}_{n}(k+b)&gt;.
+- ψ^{KS}_{m}(k) = u^{KS}_{m}(k) e^{ik.r}.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="symclosestwannier.cw.mmn.Mmn">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Mmn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">topdir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seedname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'cwannier'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dic</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">npar</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">8</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/cw/mmn.html#Mmn"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.cw.mmn.Mmn" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></p>
+<p>initialize the class.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>topdir</strong> (<em>str</em><em>, </em><em>optional</em>) -- directory of seedname.mmn file.</p></li>
+<li><p><strong>seedname</strong> (<em>str</em><em>, </em><em>optional</em>) -- seedname.</p></li>
+<li><p><strong>dic</strong> (<em>dict</em><em>, </em><em>optional</em>) -- dictionary of Mmn.</p></li>
+<li><p><strong>npar</strong> (<em>int</em><em>, </em><em>optional</em>) -- # of cpu core.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="symclosestwannier.cw.mmn.Mmn.read">
+<span class="sig-name descname"><span class="pre">read</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'cwannier.mmn'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/cw/mmn.html#Mmn.read"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.cw.mmn.Mmn.read" title="Link to this definition">#</a></dt>
+<dd><p>read seedname.mmn file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>file_name</strong> (<em>str</em><em>, </em><em>optional</em>) -- file name.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p>num_k     : # of k points (int), [1].</p></li>
+<li><p>num_bands : # of bands passed to the code (int), [1].</p></li>
+<li><p>num_b     : # of b-vectors (int), [1].</p></li>
+<li><p>nnkpts    : nearest-nmmnhbour k-points (list), [None].</p></li>
+<li><p>Mkb       : Overlap matrix elements, M_{mn}(k,b) = &lt;u^{KS}_{m}(k)|u^{KS}_{n}(k+b)&gt; (list), [None].</p></li>
+</ul>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="symclosestwannier.cw.mmn.Mmn.write">
+<span class="sig-name descname"><span class="pre">write</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'cwannier.mmn'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/cw/mmn.html#Mmn.write"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.cw.mmn.Mmn.write" title="Link to this definition">#</a></dt>
+<dd><p>write mmn data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>file_name</strong> (<em>str</em><em>, </em><em>optional</em>) -- file name.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<p id="module-symclosestwannier.cw.spn">Spn manages matrix elements of Pauli spin operator in seedname.spn file.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="symclosestwannier.cw.spn.Spn">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Spn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">topdir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seedname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'cwannier'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spn_formatted</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dic</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/cw/spn.html#Spn"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.cw.spn.Spn" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></p>
+<p>initialize the class.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>topdir</strong> (<em>str</em><em>, </em><em>optional</em>) -- directory of seedname.spn file.</p></li>
+<li><p><strong>seedname</strong> (<em>str</em><em>, </em><em>optional</em>) -- seedname.</p></li>
+<li><p><strong>spn_formatted</strong> (<em>bool</em><em>, </em><em>optional</em>) -- formatted file?</p></li>
+<li><p><strong>dic</strong> (<em>dict</em><em>, </em><em>optional</em>) -- dictionary of Spn.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="symclosestwannier.cw.spn.Spn.read">
+<span class="sig-name descname"><span class="pre">read</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'cwannier.spn'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/cw/spn.html#Spn.read"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.cw.spn.Spn.read" title="Link to this definition">#</a></dt>
+<dd><p>read seedname.spn file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>file_name</strong> (<em>str</em><em>, </em><em>optional</em>) -- file name.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p>num_k     : # of k points (int), [1].</p></li>
+<li><p>num_bands : # of bands passed to the code (int), [1].</p></li>
+<li><p>Spnk      : num_bands×num_bands matrix elementes of Pauli spin operators (ndarray), [None].</p></li>
+</ul>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<p id="module-symclosestwannier.cw.win">Win manages input file for wannier90.x, seedname.win file.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="symclosestwannier.cw.win.Win">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Win</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">topdir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seedname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'cwannier'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dic</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/cw/win.html#Win"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.cw.win.Win" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></p>
+<p>initialize the class.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>topdir</strong> (<em>str</em><em>, </em><em>optional</em>) -- directory of seedname.win file.</p></li>
+<li><p><strong>seedname</strong> (<em>str</em><em>, </em><em>optional</em>) -- seedname.</p></li>
+<li><p><strong>dic</strong> (<em>dict</em><em>, </em><em>optional</em>) -- dictionary of Win.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="symclosestwannier.cw.win.Win.read">
+<span class="sig-name descname"><span class="pre">read</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'cwannier.win'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/cw/win.html#Win.read"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.cw.win.Win.read" title="Link to this definition">#</a></dt>
+<dd><p>read seedname.win file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>file_name</strong> (<em>str</em><em>, </em><em>optional</em>) -- file name.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>dictionary form of seedname.win.</dt><dd><ul class="simple">
+<li><p>num_k           : # of k points (int), [1].</p></li>
+<li><p>num_bands       : # of bands passed to the code (int), [1].</p></li>
+<li><p>num_wann        : # of WFs (int), [1].</p></li>
+<li><p>kpoint*         : representative k points, [1].</p></li>
+<li><p>kpoint_path*    : high-symmetry line in k-space, [None].</p></li>
+<li><p>unit_cell_cart* : transform matrix, [a1,a2,a3], [None].</p></li>
+<li><p>atoms_frac*     : atomic positions in fractional coordinates with respect to the lattice vectors, {atom: [r1,r2,r3]} [None].</p></li>
+<li><p>atoms_cart*     : atomic positions in cartesian coordinates, {atom: [rx,ry,rz]} [None].</p></li>
+<li><p>spinors         : WFs are spinors? (bool) [False].</p></li>
+<li><p>spin_moment     : Determines whether to evaluate the spin moment (bool), [False].</p></li>
+<li><p>dis_num_iter*   : # of iterations for disentanglement (int), [0].</p></li>
+<li><p>num_iter*       : # of iterations for maximal localization (int), [200].</p></li>
+<li><p>dis_froz_max    : top of the inner (frozen) energy window (float), [+100000].</p></li>
+<li><p>dis_froz_min    : bottom of the inner (frozen) energy window (float), [-100000].</p></li>
+<li><p>dis_win_max     : top of the outer energy window (float), [+100000].</p></li>
+<li><p>dis_win_min     : bottom of the outer energy window (float), [-100000].</p></li>
+<li><p>dis_mix_ratio   : mixing ratio during the disentanglement (float), [0.5].</p></li>
+<li><p>mp_grid         : dimensions of the Monkhorst-Pack grid of k-points (list), [[1, 1, 1]],</p></li>
+<li><p>kpoints         : k-points used in DFT calculation, [[k1, k2, k3]] (crystal coordinate).</p></li>
+<li><p>kpoint          : representative k points (dict), [None].</p></li>
+<li><p>kpoint_path     : k-points along high symmetry line in Brillouin zonen, [[k1, k2, k3]] (crystal coordinate) (str), [None].</p></li>
+<li><p>unit_cell_cart  : transform matrix, [a1,a2,a3] (list), [None].</p></li>
+</ul>
+</dd>
+<dt># only used for postcw calculation (same as postw90).</dt><dd><ul class="simple">
+<li><p>kmesh                        : dimensions of the Monkhorst-Pack grid of k-points for response calculation (list), [[1, 1, 1]].</p></li>
+<li><p>kmesh_spacing                : minimum distance for neighboring k points along each of the three directions in k space (The units are [Ang])(list), [1,1,1]].</p></li>
+<li><p>adpt_smr                     : Determines whether to use an adaptive scheme for broadening the DOS and similar quantities defined on the energy axis (bool), [True].</p></li>
+<li><p>adpt_smr_fac                 : The width ηnk of the broadened delta function used to determine the contribution to the spectral property (DOS, ...) from band n at point k (float), [sqrt(2)].</p></li>
+<li><p>adpt_smr_max                 : Maximum allowed value for the adaptive energy smearing [eV] (float), [1.0].</p></li>
+<li><p>smr_type                     : Defines the analytical form used for the broadened delta function in the computation of the DOS and similar quantities defined on the energy axis, gauss/m-pN/m-v or cold/f-d (str), [gauss].</p></li>
+<li><p>smr_fixed_en_width           : Energy width for the smearing function for the DOS. Used only if adpt_smr is false (The units are [eV]) (flaot), [0.0].</p></li>
+<li><p>spin_decomp                  : If true, extra columns are added to some output files (such as seedname-dos.dat for the dos module, and analogously for the berry and BoltzWann modules) (bool), [False].</p></li>
+</ul>
+</dd>
+<dt># berry</dt><dd><ul class="simple">
+<li><p>berry                        : Determines whether to enter the berry routines (bool), [False].</p></li>
+<li><p>berry_task                   : The quantity to compute when berry=true, ahc/morb/kubo/sc/shc/kdotp/me (str).</p></li>
+<li><p>berry_kmesh                  : Overrides the kmesh global variable.</p></li>
+<li><p>berry_kmesh_spacing          : Overrides the kmesh_spacing global variable.</p></li>
+</ul>
+</dd>
+<dt># berry curvature, ahc, shc</dt><dd><ul class="simple">
+<li><p>berry_curv_unit              : Unit of Berry curvature, ang2/bohr2, ['ang2'].</p></li>
+<li><p>berry_curv_adpt_kmesh        : Linear dimension of the adaptively refined k-mesh used to compute the anomalous/spin Hall conductivity, [1].</p></li>
+<li><p>berry_curv_adpt_kmesh_thresh : Threshold magnitude of the Berry curvature for adaptive refinement, [100].</p></li>
+</ul>
+</dd>
+<dt># kubo</dt><dd><ul class="simple">
+<li><p>kubo_freq_max           : Upper limit of the frequency range for computing the optical conductivity, JDOS and ac SHC. (The units are [eV]) (float), [If an inner energy window was specified, the default value is dis_froz_max-fermi_energy+0.6667. Otherwise it is the difference between the maximum and the minimum energy eigenvalue stored in seedname.eig, plus 0.6667.].</p></li>
+<li><p>kubo_freq_min           : Lower limit of the frequency range for computing the optical conductivity, JDOS and ac SHC. (The units are [eV]) (float), [0.0].</p></li>
+<li><p>kubo_freq_step          : Difference between consecutive values of the optical frequency between kubo_freq_min and kubo_freq_max. (The units are [eV]) (float), [0.01].</p></li>
+<li><p>kubo_eigval_max         : Maximum energy eigenvalue of the eigenstates to be included in the evaluation of the optical conductivity, JDOS and ac SHC. (The units are [eV]) (float), [If an inner energy window was specified, the default value is the upper bound of the inner energy window plus 0.6667. Otherwise it is the maximum energy eigenvalue stored in seedname.eig plus 0.6667.].</p></li>
+<li><p>kubo_adpt_smr           : Overrides the adpt_smr global variable.</p></li>
+<li><p>kubo_adpt_smr_fac       : Overrides the adpt_smr_fac global variable.</p></li>
+<li><p>kubo_adpt_smr_max       : Overrides the adpt_smr_max global variable.</p></li>
+<li><p>kubo_smr_fixed_en_width : Overrides the smr_fixed_en_width global variable.</p></li>
+<li><p>kubo_smr_type           : Overrides the smr_type global variable.</p></li>
+</ul>
+</dd>
+</dl>
+<p># morb
+# gyrotropic</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>gyrotropic          : Determines whether to enter the gyrotropic routines (bool), [False].</p></li>
+</ul>
+</div></blockquote>
+<dl class="simple">
+<dt># boltzwann</dt><dd><ul class="simple">
+<li><p>boltzwann           : Determines whether to enter the boltzwann routines (bool), [False].</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./src/api"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.cw.amn.Amn"><code class="docutils literal notranslate"><span class="pre">Amn</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.cw.amn.Amn.read"><code class="docutils literal notranslate"><span class="pre">Amn.read()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.cw.cw_info.CWInfo"><code class="docutils literal notranslate"><span class="pre">CWInfo</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.cw.cw_info.CWInfo.read"><code class="docutils literal notranslate"><span class="pre">CWInfo.read()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.cw.cw_info.CWInfo.write"><code class="docutils literal notranslate"><span class="pre">CWInfo.write()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.cw.cw_model.CWModel"><code class="docutils literal notranslate"><span class="pre">CWModel</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.cw.cw_model.CWModel.construct_Ok"><code class="docutils literal notranslate"><span class="pre">CWModel.construct_Ok()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.cw.cw_model.CWModel.construct_Or"><code class="docutils literal notranslate"><span class="pre">CWModel.construct_Or()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.cw.cw_model.CWModel.dict_to_matrix"><code class="docutils literal notranslate"><span class="pre">CWModel.dict_to_matrix()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.cw.cw_model.CWModel.fourier_transform_k_to_r"><code class="docutils literal notranslate"><span class="pre">CWModel.fourier_transform_k_to_r()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.cw.cw_model.CWModel.fourier_transform_r_to_k"><code class="docutils literal notranslate"><span class="pre">CWModel.fourier_transform_r_to_k()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.cw.cw_model.CWModel.interpolate"><code class="docutils literal notranslate"><span class="pre">CWModel.interpolate()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.cw.cw_model.CWModel.matrix_dict_k"><code class="docutils literal notranslate"><span class="pre">CWModel.matrix_dict_k()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.cw.cw_model.CWModel.matrix_dict_r"><code class="docutils literal notranslate"><span class="pre">CWModel.matrix_dict_r()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.cw.cw_model.CWModel.read_data"><code class="docutils literal notranslate"><span class="pre">CWModel.read_data()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.cw.cw_model.CWModel.read_info"><code class="docutils literal notranslate"><span class="pre">CWModel.read_info()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.cw.cw_model.CWModel.read_info_data"><code class="docutils literal notranslate"><span class="pre">CWModel.read_info_data()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.cw.cw_model.CWModel.samb_decomp_operator"><code class="docutils literal notranslate"><span class="pre">CWModel.samb_decomp_operator()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.cw.cw_model.CWModel.write_info_data"><code class="docutils literal notranslate"><span class="pre">CWModel.write_info_data()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.cw.cw_model.CWModel.write_or"><code class="docutils literal notranslate"><span class="pre">CWModel.write_or()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.cw.cw_model.CWModel.write_samb_coeffs"><code class="docutils literal notranslate"><span class="pre">CWModel.write_samb_coeffs()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.cw.cw_model.CWModel.write_samb_exp"><code class="docutils literal notranslate"><span class="pre">CWModel.write_samb_exp()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.cw.cw_model.CWModel.write_tb"><code class="docutils literal notranslate"><span class="pre">CWModel.write_tb()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.cw.eig.Eig"><code class="docutils literal notranslate"><span class="pre">Eig</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.cw.eig.Eig.read"><code class="docutils literal notranslate"><span class="pre">Eig.read()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.cw.eig.Eig.write"><code class="docutils literal notranslate"><span class="pre">Eig.write()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.cw.nnkp.Nnkp"><code class="docutils literal notranslate"><span class="pre">Nnkp</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.cw.nnkp.Nnkp.bvec"><code class="docutils literal notranslate"><span class="pre">Nnkp.bvec()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.cw.nnkp.Nnkp.read"><code class="docutils literal notranslate"><span class="pre">Nnkp.read()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.cw.umat.Umat"><code class="docutils literal notranslate"><span class="pre">Umat</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.cw.umat.Umat.read"><code class="docutils literal notranslate"><span class="pre">Umat.read()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.cw.umat.Umat.write"><code class="docutils literal notranslate"><span class="pre">Umat.write()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.cw.umat.Umat.write_u_dis_mat"><code class="docutils literal notranslate"><span class="pre">Umat.write_u_dis_mat()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.cw.umat.Umat.write_u_opt_mat"><code class="docutils literal notranslate"><span class="pre">Umat.write_u_opt_mat()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.cw.cw_creator.cw_creator"><code class="docutils literal notranslate"><span class="pre">cw_creator()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.cw.cw_manager.CWManager"><code class="docutils literal notranslate"><span class="pre">CWManager</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.cw.cw_manager.CWManager.create_subdir"><code class="docutils literal notranslate"><span class="pre">CWManager.create_subdir()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.cw.cw_manager.CWManager.elapsed"><code class="docutils literal notranslate"><span class="pre">CWManager.elapsed()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.cw.cw_manager.CWManager.filename"><code class="docutils literal notranslate"><span class="pre">CWManager.filename()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.cw.cw_manager.CWManager.log"><code class="docutils literal notranslate"><span class="pre">CWManager.log()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.cw.cw_manager.CWManager.read"><code class="docutils literal notranslate"><span class="pre">CWManager.read()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.cw.cw_manager.CWManager.set_stamp"><code class="docutils literal notranslate"><span class="pre">CWManager.set_stamp()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.cw.cw_manager.CWManager.write"><code class="docutils literal notranslate"><span class="pre">CWManager.write()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.cw.cwin.CWin"><code class="docutils literal notranslate"><span class="pre">CWin</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.cw.cwin.CWin.read"><code class="docutils literal notranslate"><span class="pre">CWin.read()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.cw.mmn.Mmn"><code class="docutils literal notranslate"><span class="pre">Mmn</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.cw.mmn.Mmn.read"><code class="docutils literal notranslate"><span class="pre">Mmn.read()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.cw.mmn.Mmn.write"><code class="docutils literal notranslate"><span class="pre">Mmn.write()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.cw.spn.Spn"><code class="docutils literal notranslate"><span class="pre">Spn</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.cw.spn.Spn.read"><code class="docutils literal notranslate"><span class="pre">Spn.read()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.cw.win.Win"><code class="docutils literal notranslate"><span class="pre">Win</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.cw.win.Win.read"><code class="docutils literal notranslate"><span class="pre">Win.read()</span></code></a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Rikuto Oiwa
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2021-2024.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

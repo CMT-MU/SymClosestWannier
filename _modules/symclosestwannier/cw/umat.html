@@ -1,0 +1,638 @@
+
+<!DOCTYPE html>
+
+
+<html lang="jp" data-content_root="../../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>symclosestwannier.cw.umat &#8212; SymClosestWannier</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../_static/styles/theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../../../_static/styles/bootstrap.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+
+  
+  <link href="../../../_static/vendor/fontawesome/6.5.1/css/all.min.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.1/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b76e3c8a" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/sphinx-book-theme.css?v=384b581d" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
+  <script src="../../../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
+
+    <script src="../../../_static/documentation_options.js?v=8cf54648"></script>
+    <script src="../../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../../_static/scripts/sphinx-book-theme.js?v=efea14e4"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../../_static/design-tabs.js?v=36754332"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../../../_static/sphinx-thebe.js?v=afe5de03"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/symclosestwannier/cw/umat';</script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="jp"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a id="pst-skip-link" class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+
+<a class="navbar-brand logo" href="../../../README.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">SymClosestWannier</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">SAMB Construction</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../../src/samb_construction.html">Construction of SAMBs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/scw_tb.html">Construction of SymCW tight-binding model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/example.html">Examples</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">File Format</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../../src/format/cwin.html">input parameters in the *.cwin file [default]</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/format/cwout.html">standard output</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/format/info.html">information in CWModel [default]</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/format/data.html">data for SymCW (* optional [default] or only for crystal value)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/format/hr.html">Hamiltonian matrix elements in real-space</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/format/sr.html">Overlap matrix elements in real-space</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/format/z.html">The expansion coefficients of the Hamiltonian matrix (orthogonal) H expressed by a linear combination of SAMBs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/format/s.html">The expansion coefficients of the Overlap matrix expressed by a linear combination of SAMBs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/format/z_exp.html">expectation value of the given operator</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">API</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../../src/api/analyzer.html">Utility</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/api/cw.html">Closest Wannier</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/api/util.html">Utility</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+<a href="https://github.com/CMT-MU/SymClosestWannier.git" target="_blank"
+   class="btn btn-sm btn-source-repository-button"
+   title="Source repository"
+   data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+
+</a>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1></h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <h1>Source code for symclosestwannier.cw.umat</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Umat manages unitary matrix elements in seedname_u.mat (Uopt(k)) and seedname_u_dis.mat (Udis(k)) files, U(k) = Uopt(k)@Udis(k).</span>
+<span class="sd">- Uopt(k): num_wann×num_wann unitary matrix.</span>
+<span class="sd">- Udis(k): num_wann×num_bands partial unitary matrix.</span>
+<span class="sd">- U(k): num_wann×num_bands partial unitary matrix.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">gzip</span>
+<span class="kn">import</span> <span class="nn">tarfile</span>
+<span class="kn">import</span> <span class="nn">datetime</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="kn">from</span> <span class="nn">symclosestwannier.cw.win</span> <span class="kn">import</span> <span class="n">Win</span>
+<span class="kn">from</span> <span class="nn">symclosestwannier.cw.eig</span> <span class="kn">import</span> <span class="n">Eig</span>
+
+
+<span class="n">_default</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;num_k&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="s2">&quot;num_bands&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="s2">&quot;num_wann&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="s2">&quot;kpoints&quot;</span><span class="p">:</span> <span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]],</span>
+    <span class="s2">&quot;kpoints_wo_shift&quot;</span><span class="p">:</span> <span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]],</span>
+    <span class="s2">&quot;Uoptk&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="s2">&quot;Udisk&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="s2">&quot;Uk&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">}</span>
+
+
+<span class="c1"># ==================================================</span>
+<div class="viewcode-block" id="Umat">
+<a class="viewcode-back" href="../../../src/api/cw.html#symclosestwannier.cw.umat.Umat">[docs]</a>
+<span class="k">class</span> <span class="nc">Umat</span><span class="p">(</span><span class="nb">dict</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Umat manages unitary matrix elements in seedname_u.mat (Uopt(k)) and seedname_u_dis.mat (Udis(k)) files, U(k) = Uopt(k)@Udis(k).</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">        _topdir (str): top directory.</span>
+<span class="sd">        _seedname (str): seedname.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># ==================================================</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">topdir</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">seedname</span><span class="o">=</span><span class="s2">&quot;cwannier&quot;</span><span class="p">,</span> <span class="n">dic</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        initialize the class.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            topdir (str, optional): directory of seedname.amn file.</span>
+<span class="sd">            seedname (str, optional): seedname.</span>
+<span class="sd">            dic (dict, optional): dictionary of Amn.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_topdir</span> <span class="o">=</span> <span class="n">topdir</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_seedname</span> <span class="o">=</span> <span class="n">seedname</span>
+
+        <span class="k">if</span> <span class="n">dic</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">u_file_name</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">topdir</span><span class="p">,</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">.</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">seedname</span><span class="si">}</span><span class="s2">_u&quot;</span><span class="p">,</span> <span class="s2">&quot;mat&quot;</span><span class="p">))</span>
+            <span class="n">u_dis_file_name</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">topdir</span><span class="p">,</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">.</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">seedname</span><span class="si">}</span><span class="s2">_u_dis&quot;</span><span class="p">,</span> <span class="s2">&quot;mat&quot;</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">u_file_name</span><span class="p">,</span> <span class="n">u_dis_file_name</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">dic</span><span class="p">)</span>
+
+    <span class="c1"># ==================================================</span>
+<div class="viewcode-block" id="Umat.read">
+<a class="viewcode-back" href="../../../src/api/cw.html#symclosestwannier.cw.umat.Umat.read">[docs]</a>
+    <span class="k">def</span> <span class="nf">read</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u_file_name</span><span class="o">=</span><span class="s2">&quot;cwannier_u.mat&quot;</span><span class="p">,</span> <span class="n">u_dis_file_name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        read seedname.amn file.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            u_file_name (str, optional): file name for seedname_u.mat.</span>
+<span class="sd">            u_dis_file_name (str, optional): file name for seedname_u_dis.mat.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            dict:</span>
+<span class="sd">                - num_k            : # of k points (int), [1].</span>
+<span class="sd">                - num_bands        : # of bands passed to the code (int), [1].</span>
+<span class="sd">                - num_wann         : # of WFs (int), [1].</span>
+<span class="sd">                - k-points         : [[k1, k2, k3]] (crystal coordinate) (list), [[[0, 0, 0]]].,</span>
+<span class="sd">                - kpoints_wo_shift : k-points without shift, [[k1, k2, k3]] (crystal coordinate) (list), [[[0, 0, 0]]].</span>
+<span class="sd">                - Uoptk            : num_wann×num_wann full unitary matrix (ndarray), [None].</span>
+<span class="sd">                - Udisk            : num_wann×num_bands partial unitary matrix (ndarray), [None].</span>
+<span class="sd">                - Uk               : num_wann×num_bands full unitary matrix (ndarray), [None].</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Uoptk</span>
+        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">u_file_name</span><span class="p">):</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">u_file_name</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
+                <span class="n">u_mat_data</span> <span class="o">=</span> <span class="n">fp</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">u_file_name</span> <span class="o">+</span> <span class="s2">&quot;.gz&quot;</span><span class="p">):</span>
+            <span class="k">with</span> <span class="n">gzip</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">u_file_name</span> <span class="o">+</span> <span class="s2">&quot;.gz&quot;</span><span class="p">,</span> <span class="s2">&quot;rt&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
+                <span class="n">u_mat_data</span> <span class="o">=</span> <span class="n">fp</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">u_file_name</span> <span class="o">+</span> <span class="s2">&quot;.tar.gz&quot;</span><span class="p">):</span>
+            <span class="k">with</span> <span class="n">tarfile</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">u_file_name</span> <span class="o">+</span> <span class="s2">&quot;tar.gz&quot;</span><span class="p">,</span> <span class="s2">&quot;rt&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
+                <span class="n">u_mat_data</span> <span class="o">=</span> <span class="n">fp</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;failed to read u.mat file: &quot;</span> <span class="o">+</span> <span class="n">u_file_name</span><span class="p">)</span>
+
+        <span class="n">d</span> <span class="o">=</span> <span class="n">Umat</span><span class="o">.</span><span class="n">_default</span><span class="p">()</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+        <span class="n">num_k</span><span class="p">,</span> <span class="n">num_wann</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">u_mat_data</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">()]</span>
+
+        <span class="n">kpoints_wo_shift</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">([</span><span class="n">num_k</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+        <span class="n">Uoptk</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">([</span><span class="n">num_k</span><span class="p">,</span> <span class="n">num_wann</span><span class="p">,</span> <span class="n">num_wann</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">complex</span><span class="p">)</span>
+        <span class="n">u_mat_data</span> <span class="o">=</span> <span class="n">u_mat_data</span><span class="p">[</span><span class="mi">3</span><span class="p">:]</span>
+        <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_k</span><span class="p">):</span>
+            <span class="n">kpoints_wo_shift</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+                <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">vi</span><span class="p">)</span> <span class="k">for</span> <span class="n">vi</span> <span class="ow">in</span> <span class="n">u_mat_data</span><span class="p">[</span><span class="n">k</span> <span class="o">*</span> <span class="p">(</span><span class="n">num_wann</span> <span class="o">*</span> <span class="n">num_wann</span> <span class="o">+</span> <span class="mi">2</span><span class="p">)]</span><span class="o">.</span><span class="n">split</span><span class="p">()</span> <span class="k">if</span> <span class="n">vi</span> <span class="o">!=</span> <span class="s2">&quot;&quot;</span><span class="p">]</span>
+            <span class="p">)</span>
+            <span class="n">u</span> <span class="o">=</span> <span class="n">u_mat_data</span><span class="p">[</span><span class="n">k</span> <span class="o">*</span> <span class="p">(</span><span class="n">num_wann</span> <span class="o">*</span> <span class="n">num_wann</span> <span class="o">+</span> <span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span> <span class="p">:</span> <span class="n">k</span> <span class="o">*</span> <span class="p">(</span><span class="n">num_wann</span> <span class="o">*</span> <span class="n">num_wann</span> <span class="o">+</span> <span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">+</span> <span class="n">num_wann</span> <span class="o">*</span> <span class="n">num_wann</span><span class="p">]</span>
+            <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_wann</span><span class="p">):</span>  <span class="c1"># col</span>
+                <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_wann</span><span class="p">):</span>  <span class="c1"># row</span>
+                    <span class="n">v</span> <span class="o">=</span> <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">vi</span><span class="p">)</span> <span class="k">for</span> <span class="n">vi</span> <span class="ow">in</span> <span class="n">u</span><span class="p">[</span><span class="n">j</span> <span class="o">*</span> <span class="n">num_wann</span> <span class="o">+</span> <span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">()</span> <span class="k">if</span> <span class="n">vi</span> <span class="o">!=</span> <span class="s2">&quot;&quot;</span><span class="p">]</span>
+                    <span class="n">Uoptk</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="n">v</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+        <span class="c1"># Udisk</span>
+        <span class="k">if</span> <span class="n">u_dis_file_name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">Udisk</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">identity</span><span class="p">(</span><span class="n">num_wann</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">complex</span><span class="p">)]</span> <span class="o">*</span> <span class="n">num_k</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">u_dis_file_name</span><span class="p">):</span>
+                <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">u_dis_file_name</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
+                    <span class="n">u_dis_mat_data</span> <span class="o">=</span> <span class="n">fp</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
+            <span class="k">elif</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">u_dis_file_name</span> <span class="o">+</span> <span class="s2">&quot;.gz&quot;</span><span class="p">):</span>
+                <span class="k">with</span> <span class="n">gzip</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">u_dis_file_name</span> <span class="o">+</span> <span class="s2">&quot;.gz&quot;</span><span class="p">,</span> <span class="s2">&quot;rt&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
+                    <span class="n">u_dis_mat_data</span> <span class="o">=</span> <span class="n">fp</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
+            <span class="k">elif</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">u_dis_file_name</span> <span class="o">+</span> <span class="s2">&quot;.tar.gz&quot;</span><span class="p">):</span>
+                <span class="k">with</span> <span class="n">tarfile</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">u_dis_file_name</span> <span class="o">+</span> <span class="s2">&quot;tar.gz&quot;</span><span class="p">,</span> <span class="s2">&quot;rt&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
+                    <span class="n">u_dis_mat_data</span> <span class="o">=</span> <span class="n">fp</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;failed to read u_dis.mat file: &quot;</span> <span class="o">+</span> <span class="n">u_dis_file_name</span><span class="p">)</span>
+
+            <span class="n">num_k_</span><span class="p">,</span> <span class="n">num_wann_</span><span class="p">,</span> <span class="n">num_bands</span> <span class="o">=</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">u_dis_mat_data</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">()]</span>
+
+            <span class="k">assert</span> <span class="n">num_k</span> <span class="o">==</span> <span class="n">num_k_</span><span class="p">,</span> <span class="s2">&quot;#k points must be identical for *.inp and *_u_dis.mat&quot;</span>
+            <span class="k">assert</span> <span class="n">num_wann</span> <span class="o">==</span> <span class="n">num_wann_</span><span class="p">,</span> <span class="s2">&quot;#WFs must be identical for *_u.mat and *_hr.dat&quot;</span>
+
+            <span class="n">Udisk</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">([</span><span class="n">num_k</span><span class="p">,</span> <span class="n">num_bands</span><span class="p">,</span> <span class="n">num_wann</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">complex</span><span class="p">)</span>
+            <span class="n">u_dis_mat_data</span> <span class="o">=</span> <span class="n">u_dis_mat_data</span><span class="p">[</span><span class="mi">3</span><span class="p">:]</span>
+            <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_k</span><span class="p">):</span>
+                <span class="n">u</span> <span class="o">=</span> <span class="n">u_dis_mat_data</span><span class="p">[</span>
+                    <span class="n">k</span> <span class="o">*</span> <span class="p">(</span><span class="n">num_wann</span> <span class="o">*</span> <span class="n">num_bands</span> <span class="o">+</span> <span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span> <span class="p">:</span> <span class="n">k</span> <span class="o">*</span> <span class="p">(</span><span class="n">num_wann</span> <span class="o">*</span> <span class="n">num_bands</span> <span class="o">+</span> <span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">+</span> <span class="n">num_wann</span> <span class="o">*</span> <span class="n">num_bands</span>
+                <span class="p">]</span>
+                <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_wann</span><span class="p">):</span>  <span class="c1"># col</span>
+                    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_bands</span><span class="p">):</span>  <span class="c1"># row</span>
+                        <span class="n">v</span> <span class="o">=</span> <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">vi</span><span class="p">)</span> <span class="k">for</span> <span class="n">vi</span> <span class="ow">in</span> <span class="n">u</span><span class="p">[</span><span class="n">j</span> <span class="o">*</span> <span class="n">num_bands</span> <span class="o">+</span> <span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">()</span> <span class="k">if</span> <span class="n">vi</span> <span class="o">!=</span> <span class="s2">&quot;&quot;</span><span class="p">]</span>
+                        <span class="n">Udisk</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="n">v</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Since seedname_u_dis.mat contains only the bands inside the outer window and the rest is given as zeros,</span>
+<span class="sd">        we need to put the entry for udis_data in the correct position in Udisk. In other words, reshape band_data by shifting it by the number of bands below dis_window_min.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">win</span> <span class="o">=</span> <span class="n">Win</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_topdir</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_seedname</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">win</span><span class="p">[</span><span class="s2">&quot;dis_num_iter&quot;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">eig</span> <span class="o">=</span> <span class="n">Eig</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_topdir</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_seedname</span><span class="p">)</span>
+            <span class="n">Ek</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">eig</span><span class="p">[</span><span class="s2">&quot;Ek&quot;</span><span class="p">])</span>
+
+            <span class="n">inside_win_true_or_false</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">logical_and</span><span class="p">(</span><span class="n">Ek</span> <span class="o">&gt;=</span> <span class="n">win</span><span class="p">[</span><span class="s2">&quot;dis_win_min&quot;</span><span class="p">],</span> <span class="n">Ek</span> <span class="o">&lt;=</span> <span class="n">win</span><span class="p">[</span><span class="s2">&quot;dis_win_max&quot;</span><span class="p">])</span>
+            <span class="n">num_inside_win_k</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">inside_win_true_or_false</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+            <span class="n">Udisk_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">([</span><span class="n">num_k</span><span class="p">,</span> <span class="n">num_bands</span><span class="p">,</span> <span class="n">num_wann</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">complex</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">ik</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_k</span><span class="p">):</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">Udisk</span><span class="p">[</span><span class="n">ik</span><span class="p">,</span> <span class="n">num_inside_win_k</span><span class="p">[</span><span class="n">ik</span><span class="p">]</span> <span class="p">:,</span> <span class="p">:],</span> <span class="mi">0</span><span class="p">):</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                        <span class="s2">&quot;This error may be due to rounding of the band window in seedname.wout. Do not use the default outer window, use a wider one and make sure the outer window is not near the band energy.&quot;</span>
+                    <span class="p">)</span>
+                <span class="n">Udisk_</span><span class="p">[</span><span class="n">ik</span><span class="p">,</span> <span class="n">inside_win_true_or_false</span><span class="p">[</span><span class="n">ik</span><span class="p">]]</span> <span class="o">=</span> <span class="n">Udisk</span><span class="p">[</span><span class="n">ik</span><span class="p">,</span> <span class="p">:</span> <span class="n">num_inside_win_k</span><span class="p">[</span><span class="n">ik</span><span class="p">],</span> <span class="p">:]</span>
+
+            <span class="n">Udisk</span> <span class="o">=</span> <span class="n">Udisk_</span>
+
+        <span class="n">Uk</span> <span class="o">=</span> <span class="n">Udisk</span> <span class="o">@</span> <span class="n">Uoptk</span>
+
+        <span class="n">kpoints</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mod</span><span class="p">(</span><span class="n">kpoints_wo_shift</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>  <span class="c1"># 0 &lt;= kj &lt; 1.0</span>
+
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;num_k&quot;</span><span class="p">:</span> <span class="n">num_k</span><span class="p">,</span>
+            <span class="s2">&quot;num_bands&quot;</span><span class="p">:</span> <span class="n">num_bands</span><span class="p">,</span>
+            <span class="s2">&quot;num_wann&quot;</span><span class="p">:</span> <span class="n">num_wann</span><span class="p">,</span>
+            <span class="s2">&quot;kpoints&quot;</span><span class="p">:</span> <span class="n">kpoints</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span>
+            <span class="s2">&quot;kpoints_wo_shift&quot;</span><span class="p">:</span> <span class="n">kpoints_wo_shift</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span>
+            <span class="s2">&quot;Uoptk&quot;</span><span class="p">:</span> <span class="n">Uoptk</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span>
+            <span class="s2">&quot;Udisk&quot;</span><span class="p">:</span> <span class="n">Udisk</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span>
+            <span class="s2">&quot;Uk&quot;</span><span class="p">:</span> <span class="n">Uk</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span>
+        <span class="p">}</span>
+
+        <span class="k">return</span> <span class="n">d</span></div>
+
+
+    <span class="c1"># ==================================================</span>
+<div class="viewcode-block" id="Umat.write_u_opt_mat">
+<a class="viewcode-back" href="../../../src/api/cw.html#symclosestwannier.cw.umat.Umat.write_u_opt_mat">[docs]</a>
+    <span class="k">def</span> <span class="nf">write_u_opt_mat</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_name</span><span class="o">=</span><span class="s2">&quot;cwannier_u.mat&quot;</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        write Uoptk data.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            file_name (str, optional): file name.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">file_name</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
+            <span class="n">fp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;# created by umat.py</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">fp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;# written </span><span class="si">{}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;on </span><span class="si">%d</span><span class="s2">%b%Y at %H:%M:%S&quot;</span><span class="p">)))</span>
+            <span class="n">fp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2"> </span><span class="si">{}</span><span class="s2"> </span><span class="si">{}</span><span class="se">\n\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="p">[</span><span class="s2">&quot;num_k&quot;</span><span class="p">],</span> <span class="bp">self</span><span class="p">[</span><span class="s2">&quot;num_wann&quot;</span><span class="p">],</span> <span class="bp">self</span><span class="p">[</span><span class="s2">&quot;num_wann&quot;</span><span class="p">]))</span>
+
+            <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="p">[</span><span class="s2">&quot;num_k&quot;</span><span class="p">]):</span>
+                <span class="n">kv</span> <span class="o">=</span> <span class="bp">self</span><span class="p">[</span><span class="s2">&quot;kpoints_wo_shift&quot;</span><span class="p">][</span><span class="n">k</span><span class="p">]</span>
+                <span class="n">fp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{0:18.12f}</span><span class="s2"> </span><span class="si">{1:18.12f}</span><span class="s2"> </span><span class="si">{2:18.12f}</span><span class="s2"> </span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">kv</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">kv</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">kv</span><span class="p">[</span><span class="mi">2</span><span class="p">]))</span>
+                <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="p">[</span><span class="s2">&quot;num_wann&quot;</span><span class="p">]):</span>
+                    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="p">[</span><span class="s2">&quot;num_wann&quot;</span><span class="p">]):</span>
+                        <span class="n">fp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{0.real:18.12f}</span><span class="s2">  </span><span class="si">{0.imag:18.12f}</span><span class="s2"> </span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="p">[</span><span class="s2">&quot;Uoptk&quot;</span><span class="p">][</span><span class="n">k</span><span class="p">][</span><span class="n">j</span><span class="p">][</span><span class="n">i</span><span class="p">]))</span>
+
+                <span class="n">fp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  * wrote &#39;</span><span class="si">{</span><span class="n">file_name</span><span class="si">}</span><span class="s2">&#39;.&quot;</span><span class="p">)</span></div>
+
+
+    <span class="c1"># ==================================================</span>
+<div class="viewcode-block" id="Umat.write_u_dis_mat">
+<a class="viewcode-back" href="../../../src/api/cw.html#symclosestwannier.cw.umat.Umat.write_u_dis_mat">[docs]</a>
+    <span class="k">def</span> <span class="nf">write_u_dis_mat</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_name</span><span class="o">=</span><span class="s2">&quot;cwannier_u_dis.mat&quot;</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        write Udisk data.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            file_name (str, optional): file name.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">file_name</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
+            <span class="n">fp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;# created by umat.py</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">fp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;# written </span><span class="si">{}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;on </span><span class="si">%d</span><span class="s2">%b%Y at %H:%M:%S&quot;</span><span class="p">)))</span>
+            <span class="n">fp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2"> </span><span class="si">{}</span><span class="s2"> </span><span class="si">{}</span><span class="se">\n\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="p">[</span><span class="s2">&quot;num_k&quot;</span><span class="p">],</span> <span class="bp">self</span><span class="p">[</span><span class="s2">&quot;num_wann&quot;</span><span class="p">],</span> <span class="bp">self</span><span class="p">[</span><span class="s2">&quot;num_bands&quot;</span><span class="p">]))</span>
+
+            <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="p">[</span><span class="s2">&quot;num_k&quot;</span><span class="p">]):</span>
+                <span class="n">kv</span> <span class="o">=</span> <span class="bp">self</span><span class="p">[</span><span class="s2">&quot;kpoints_wo_shift&quot;</span><span class="p">][</span><span class="n">k</span><span class="p">]</span>
+                <span class="n">fp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{0:18.12f}</span><span class="s2"> </span><span class="si">{1:18.12f}</span><span class="s2"> </span><span class="si">{2:18.12f}</span><span class="s2"> </span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">kv</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">kv</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">kv</span><span class="p">[</span><span class="mi">2</span><span class="p">]))</span>
+                <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="p">[</span><span class="s2">&quot;num_wann&quot;</span><span class="p">]):</span>
+                    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="p">[</span><span class="s2">&quot;num_bands&quot;</span><span class="p">]):</span>
+                        <span class="n">fp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{0.real:18.12f}</span><span class="s2">  </span><span class="si">{0.imag:18.12f}</span><span class="s2"> </span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="p">[</span><span class="s2">&quot;Udisk&quot;</span><span class="p">][</span><span class="n">k</span><span class="p">][</span><span class="n">j</span><span class="p">][</span><span class="n">i</span><span class="p">]))</span>
+
+                <span class="n">fp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  * wrote &#39;</span><span class="si">{</span><span class="n">file_name</span><span class="si">}</span><span class="s2">&#39;.&quot;</span><span class="p">)</span></div>
+
+
+    <span class="c1"># ==================================================</span>
+<div class="viewcode-block" id="Umat.write">
+<a class="viewcode-back" href="../../../src/api/cw.html#symclosestwannier.cw.umat.Umat.write">[docs]</a>
+    <span class="k">def</span> <span class="nf">write</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_names</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;cwannier_u.mat&quot;</span><span class="p">,</span> <span class="s2">&quot;cwannier_u_dis.mat&quot;</span><span class="p">)):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        write Uoptk and Udisk data.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            file_names (str, optional): file names.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">write_u_opt_mat</span><span class="p">(</span><span class="n">file_name</span><span class="o">=</span><span class="n">file_names</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">write_u_dis_mat</span><span class="p">(</span><span class="n">file_name</span><span class="o">=</span><span class="n">file_names</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span></div>
+
+
+    <span class="c1"># ==================================================</span>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">_default</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">_default</span></div>
+
+</pre></div>
+
+                </article>
+              
+
+              
+              
+              
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Rikuto Oiwa
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2021-2024.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae"></script>
+<script src="../../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

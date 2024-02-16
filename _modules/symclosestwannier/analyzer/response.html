@@ -1,0 +1,660 @@
+
+<!DOCTYPE html>
+
+
+<html lang="jp" data-content_root="../../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>symclosestwannier.analyzer.response &#8212; SymClosestWannier</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../_static/styles/theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../../../_static/styles/bootstrap.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+
+  
+  <link href="../../../_static/vendor/fontawesome/6.5.1/css/all.min.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.1/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b76e3c8a" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/sphinx-book-theme.css?v=384b581d" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
+  <script src="../../../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
+
+    <script src="../../../_static/documentation_options.js?v=8cf54648"></script>
+    <script src="../../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../../_static/scripts/sphinx-book-theme.js?v=efea14e4"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../../_static/design-tabs.js?v=36754332"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../../../_static/sphinx-thebe.js?v=afe5de03"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/symclosestwannier/analyzer/response';</script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="jp"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a id="pst-skip-link" class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+
+<a class="navbar-brand logo" href="../../../README.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">SymClosestWannier</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">SAMB Construction</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../../src/samb_construction.html">Construction of SAMBs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/scw_tb.html">Construction of SymCW tight-binding model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/example.html">Examples</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">File Format</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../../src/format/cwin.html">input parameters in the *.cwin file [default]</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/format/cwout.html">standard output</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/format/info.html">information in CWModel [default]</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/format/data.html">data for SymCW (* optional [default] or only for crystal value)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/format/hr.html">Hamiltonian matrix elements in real-space</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/format/sr.html">Overlap matrix elements in real-space</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/format/z.html">The expansion coefficients of the Hamiltonian matrix (orthogonal) H expressed by a linear combination of SAMBs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/format/s.html">The expansion coefficients of the Overlap matrix expressed by a linear combination of SAMBs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/format/z_exp.html">expectation value of the given operator</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">API</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../../src/api/analyzer.html">Utility</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/api/cw.html">Closest Wannier</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/api/util.html">Utility</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+<a href="https://github.com/CMT-MU/SymClosestWannier.git" target="_blank"
+   class="btn btn-sm btn-source-repository-button"
+   title="Source repository"
+   data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+
+</a>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1></h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <h1>Source code for symclosestwannier.analyzer.response</h1><div class="highlight"><pre>
+<span></span><span class="c1"># ****************************************************************** #</span>
+<span class="c1">#                                                                    #</span>
+<span class="c1"># This file is distributed as part of the symclosestwannier code and #</span>
+<span class="c1">#     under the terms of the GNU General Public License. See the     #</span>
+<span class="c1">#     file LICENSE in the root directory of the symclosestwannier    #</span>
+<span class="c1">#      distribution, or http://www.gnu.org/licenses/gpl-3.0.txt      #</span>
+<span class="c1">#                                                                    #</span>
+<span class="c1">#          The symclosestwannier code is hosted on GitHub:           #</span>
+<span class="c1">#                                                                    #</span>
+<span class="c1">#            https://github.com/CMT-MU/SymClosestWannier             #</span>
+<span class="c1">#                                                                    #</span>
+<span class="c1">#                            written by                              #</span>
+<span class="c1">#                        Rikuto Oiwa, RIKEN                          #</span>
+<span class="c1">#                                                                    #</span>
+<span class="c1"># ------------------------------------------------------------------ #</span>
+<span class="c1">#                                                                    #</span>
+<span class="c1">#               response: external response properties               #</span>
+<span class="c1">#                                                                    #</span>
+<span class="c1"># ****************************************************************** #</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="kn">from</span> <span class="nn">symclosestwannier.util.get_oper_R</span> <span class="kn">import</span> <span class="n">get_oper_R</span>
+<span class="kn">from</span> <span class="nn">symclosestwannier.analyzer.get_response</span> <span class="kn">import</span> <span class="n">berry_main</span><span class="p">,</span> <span class="n">boltzwann_main</span><span class="p">,</span> <span class="n">gyrotropic_main</span><span class="p">,</span> <span class="n">expectation_main</span>
+
+<span class="kn">from</span> <span class="nn">symclosestwannier.util.message</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">cw_start_set_operators_msg</span><span class="p">,</span>
+    <span class="n">cw_end_set_operators_msg</span><span class="p">,</span>
+    <span class="n">cw_start_response_msg</span><span class="p">,</span>
+    <span class="n">cw_end_response_msg</span><span class="p">,</span>
+    <span class="n">cw_start_expectation_msg</span><span class="p">,</span>
+    <span class="n">cw_end_expectation_msg</span><span class="p">,</span>
+<span class="p">)</span>
+
+
+<span class="c1"># ==================================================</span>
+<div class="viewcode-block" id="Response">
+<a class="viewcode-back" href="../../../src/api/analyzer.html#symclosestwannier.analyzer.response.Response">[docs]</a>
+<span class="k">class</span> <span class="nc">Response</span><span class="p">(</span><span class="nb">dict</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Analyze external responses of Closest Wannier (CW) tight-binding (TB) model.</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">        _cwi (CWInfo): CWInfo.</span>
+<span class="sd">        _cwm (CWManager): CWManager.</span>
+<span class="sd">        _outfile (str): output file, seedname.cwout.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># ==================================================</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cwi</span><span class="p">,</span> <span class="n">cwm</span><span class="p">,</span> <span class="n">Sr</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        initialize the class.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            cwi (CWInfo): CWInfo.</span>
+<span class="sd">            cwm (CWManager): CWManager.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span> <span class="o">=</span> <span class="n">cwi</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_cwm</span> <span class="o">=</span> <span class="n">cwm</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_outfile</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s1">&#39;seedname&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">.cwpout&quot;</span>
+
+        <span class="c1"># operators</span>
+        <span class="bp">self</span><span class="p">[</span><span class="s2">&quot;Sr&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Sr</span>  <span class="c1"># &lt;0n|Rm&gt;</span>
+        <span class="bp">self</span><span class="p">[</span><span class="s2">&quot;HH_R&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># &lt;0n|H|Rm&gt;</span>
+        <span class="bp">self</span><span class="p">[</span><span class="s2">&quot;AA_R&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># &lt;0n|r|Rm&gt;</span>
+        <span class="bp">self</span><span class="p">[</span><span class="s2">&quot;BB_R&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># &lt;0|H(r-R)|R&gt;</span>
+        <span class="bp">self</span><span class="p">[</span><span class="s2">&quot;CC_R&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># &lt;0|r_alpha.H(r-R)_beta|R&gt;</span>
+        <span class="bp">self</span><span class="p">[</span><span class="s2">&quot;SS_R&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># &lt;0n|sigma_x,y,z|Rm&gt;</span>
+        <span class="bp">self</span><span class="p">[</span><span class="s2">&quot;SR_R&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># &lt;0n|sigma_x,y,z.(r-R)_alpha|Rm&gt;</span>
+        <span class="bp">self</span><span class="p">[</span><span class="s2">&quot;SHR_R&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># &lt;0n|sigma_x,y,z.H.(r-R)_alpha|Rm&gt;</span>
+        <span class="bp">self</span><span class="p">[</span><span class="s2">&quot;SH_R&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># &lt;0n|sigma_x,y,z.H|Rm&gt;</span>
+        <span class="bp">self</span><span class="p">[</span><span class="s2">&quot;SAA_R&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># &lt;0n|sigma_x,y,z.(r-R)_alpha|Rm&gt;</span>
+        <span class="bp">self</span><span class="p">[</span><span class="s2">&quot;SBB_R&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># &lt;0n|sigma_x,y,z.H.(r-R)_alpha|Rm&gt;</span>
+
+        <span class="c1"># responses</span>
+        <span class="c1"># kubo</span>
+        <span class="bp">self</span><span class="p">[</span><span class="s2">&quot;kubo_H&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="p">[</span><span class="s2">&quot;kubo_H_spn&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="p">[</span><span class="s2">&quot;kubo_AH&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="p">[</span><span class="s2">&quot;kubo_AH_spn&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="c1"># me</span>
+        <span class="bp">self</span><span class="p">[</span><span class="s2">&quot;me_H_spn&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="p">[</span><span class="s2">&quot;me_H_orb&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="p">[</span><span class="s2">&quot;me_AH_spn&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="p">[</span><span class="s2">&quot;me_AH_orb&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="c1"># expectation values</span>
+        <span class="bp">self</span><span class="p">[</span><span class="s2">&quot;Ms_x&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="p">[</span><span class="s2">&quot;Ms_y&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="p">[</span><span class="s2">&quot;Ms_z&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_operators</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">calc_response</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">calc_expectation_values</span><span class="p">()</span>
+
+    <span class="c1"># ==================================================</span>
+<div class="viewcode-block" id="Response.set_operators">
+<a class="viewcode-back" href="../../../src/api/analyzer.html#symclosestwannier.analyzer.response.Response.set_operators">[docs]</a>
+    <span class="k">def</span> <span class="nf">set_operators</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Wannier matrix elements, allocations and initializations.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_cwm</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">cw_start_set_operators_msg</span><span class="p">(),</span> <span class="n">stamp</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_outfile</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;a&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_cwm</span><span class="o">.</span><span class="n">set_stamp</span><span class="p">()</span>
+
+        <span class="c1"># (ahc)  Anomalous Hall conductivity (from Berry curvature)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;berry_task&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;ahc&quot;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="p">[</span><span class="s2">&quot;HH_R&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="bp">self</span><span class="p">[</span><span class="s2">&quot;HH_R&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">get_oper_R</span><span class="p">(</span><span class="s2">&quot;HH_R&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="p">[</span><span class="s2">&quot;AA_R&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="bp">self</span><span class="p">[</span><span class="s2">&quot;AA_R&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">get_oper_R</span><span class="p">(</span><span class="s2">&quot;AA_R&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">)</span>
+
+        <span class="c1"># (morb) Orbital magnetization</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;berry_task&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;morb&quot;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="p">[</span><span class="s2">&quot;HH_R&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="bp">self</span><span class="p">[</span><span class="s2">&quot;HH_R&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">get_oper_R</span><span class="p">(</span><span class="s2">&quot;HH_R&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="p">[</span><span class="s2">&quot;AA_R&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="bp">self</span><span class="p">[</span><span class="s2">&quot;AA_R&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">get_oper_R</span><span class="p">(</span><span class="s2">&quot;AA_R&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="p">[</span><span class="s2">&quot;BB_R&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="bp">self</span><span class="p">[</span><span class="s2">&quot;BB_R&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">get_oper_R</span><span class="p">(</span><span class="s2">&quot;BB_R&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="p">[</span><span class="s2">&quot;CC_R&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="bp">self</span><span class="p">[</span><span class="s2">&quot;CC_R&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">get_oper_R</span><span class="p">(</span><span class="s2">&quot;CC_R&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">)</span>
+
+        <span class="c1"># (kubo) Complex optical conductivity (Kubo-Greenwood) &amp; JDOS</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;berry_task&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;kubo&quot;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="p">[</span><span class="s2">&quot;HH_R&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="bp">self</span><span class="p">[</span><span class="s2">&quot;HH_R&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">get_oper_R</span><span class="p">(</span><span class="s2">&quot;HH_R&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="p">[</span><span class="s2">&quot;AA_R&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="bp">self</span><span class="p">[</span><span class="s2">&quot;AA_R&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">get_oper_R</span><span class="p">(</span><span class="s2">&quot;AA_R&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;spin_decomp&quot;</span><span class="p">]</span> <span class="ow">and</span> <span class="bp">self</span><span class="p">[</span><span class="s2">&quot;SS_R&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="bp">self</span><span class="p">[</span><span class="s2">&quot;SS_R&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">get_oper_R</span><span class="p">(</span><span class="s2">&quot;SS_R&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">)</span>
+
+        <span class="c1"># (sc)   Nonlinear shift current</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;berry_task&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;sc&quot;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="p">[</span><span class="s2">&quot;HH_R&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="bp">self</span><span class="p">[</span><span class="s2">&quot;HH_R&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">get_oper_R</span><span class="p">(</span><span class="s2">&quot;HH_R&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="p">[</span><span class="s2">&quot;AA_R&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="bp">self</span><span class="p">[</span><span class="s2">&quot;AA_R&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">get_oper_R</span><span class="p">(</span><span class="s2">&quot;AA_R&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">)</span>
+
+        <span class="c1"># (shc)  Spin Hall conductivity</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;berry_task&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;shc&quot;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="p">[</span><span class="s2">&quot;HH_R&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="bp">self</span><span class="p">[</span><span class="s2">&quot;HH_R&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">get_oper_R</span><span class="p">(</span><span class="s2">&quot;HH_R&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="p">[</span><span class="s2">&quot;AA_R&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="bp">self</span><span class="p">[</span><span class="s2">&quot;AA_R&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">get_oper_R</span><span class="p">(</span><span class="s2">&quot;AA_R&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="p">[</span><span class="s2">&quot;SS_R&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="bp">self</span><span class="p">[</span><span class="s2">&quot;SS_R&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">get_oper_R</span><span class="p">(</span><span class="s2">&quot;SS_R&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;shc_method&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;qiao&quot;</span><span class="p">:</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="p">[</span><span class="s2">&quot;SHC_R&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="p">[</span><span class="s2">&quot;SHC_R&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">get_oper_R</span><span class="p">(</span><span class="s2">&quot;SHC_R&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>  <span class="c1"># ryoo</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="p">[</span><span class="s2">&quot;SAA_R&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="p">[</span><span class="s2">&quot;SAA_R&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">get_oper_R</span><span class="p">(</span><span class="s2">&quot;SAA_R&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">)</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="p">[</span><span class="s2">&quot;SBB_R&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="p">[</span><span class="s2">&quot;SBB_R&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">get_oper_R</span><span class="p">(</span><span class="s2">&quot;SBB_R&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;berry_task&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;kdotp&quot;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="p">[</span><span class="s2">&quot;HH_R&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="bp">self</span><span class="p">[</span><span class="s2">&quot;HH_R&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">get_oper_R</span><span class="p">(</span><span class="s2">&quot;HH_R&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">)</span>
+
+        <span class="c1"># (me) magnetoelectric tensor</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;berry_task&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;me&quot;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="p">[</span><span class="s2">&quot;HH_R&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="bp">self</span><span class="p">[</span><span class="s2">&quot;HH_R&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">get_oper_R</span><span class="p">(</span><span class="s2">&quot;HH_R&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="p">[</span><span class="s2">&quot;AA_R&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="bp">self</span><span class="p">[</span><span class="s2">&quot;AA_R&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">get_oper_R</span><span class="p">(</span><span class="s2">&quot;AA_R&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="p">[</span><span class="s2">&quot;SS_R&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="bp">self</span><span class="p">[</span><span class="s2">&quot;SS_R&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">get_oper_R</span><span class="p">(</span><span class="s2">&quot;SS_R&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;spin_moment&quot;</span><span class="p">]:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="p">[</span><span class="s2">&quot;SS_R&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="bp">self</span><span class="p">[</span><span class="s2">&quot;SS_R&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">get_oper_R</span><span class="p">(</span><span class="s2">&quot;SS_R&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_cwm</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">cw_end_set_operators_msg</span><span class="p">(),</span> <span class="n">stamp</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_outfile</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;a&quot;</span><span class="p">)</span></div>
+
+
+    <span class="c1"># ==================================================</span>
+    <span class="k">def</span> <span class="nf">calc_response</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_cwm</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">cw_start_response_msg</span><span class="p">(),</span> <span class="n">stamp</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_outfile</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;a&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_cwm</span><span class="o">.</span><span class="n">set_stamp</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;berry&quot;</span><span class="p">]:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">berry_main</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">operators</span><span class="p">))</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;gyrotropic&quot;</span><span class="p">]:</span>
+            <span class="n">boltzwann_main</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;boltzwann&quot;</span><span class="p">]:</span>
+            <span class="n">gyrotropic_main</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_cwm</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">cw_end_response_msg</span><span class="p">(),</span> <span class="n">stamp</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_outfile</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;a&quot;</span><span class="p">)</span>
+
+    <span class="c1"># ==================================================</span>
+    <span class="k">def</span> <span class="nf">calc_expectation_values</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_cwm</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">cw_start_expectation_msg</span><span class="p">(),</span> <span class="n">stamp</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_outfile</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;a&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_cwm</span><span class="o">.</span><span class="n">set_stamp</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">expectation_main</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">operators</span><span class="p">))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_cwm</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">cw_end_expectation_msg</span><span class="p">(),</span> <span class="n">stamp</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_outfile</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;a&quot;</span><span class="p">)</span>
+
+    <span class="c1"># ==================================================</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">operators</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="n">k</span><span class="p">:</span> <span class="bp">self</span><span class="p">[</span><span class="n">k</span><span class="p">]</span>
+            <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;Sr&quot;</span><span class="p">,</span> <span class="s2">&quot;HH_R&quot;</span><span class="p">,</span> <span class="s2">&quot;AA_R&quot;</span><span class="p">,</span> <span class="s2">&quot;BB_R&quot;</span><span class="p">,</span> <span class="s2">&quot;CC_R&quot;</span><span class="p">,</span> <span class="s2">&quot;SS_R&quot;</span><span class="p">,</span> <span class="s2">&quot;SR_R&quot;</span><span class="p">,</span> <span class="s2">&quot;SHR_R&quot;</span><span class="p">,</span> <span class="s2">&quot;SH_R&quot;</span><span class="p">,</span> <span class="s2">&quot;SAA_R&quot;</span><span class="p">,</span> <span class="s2">&quot;SBB_R&quot;</span><span class="p">)</span>
+        <span class="p">}</span>
+
+    <span class="c1"># ==================================================</span>
+<div class="viewcode-block" id="Response.write_kubo">
+<a class="viewcode-back" href="../../../src/api/analyzer.html#symclosestwannier.analyzer.response.Response.write_kubo">[docs]</a>
+    <span class="k">def</span> <span class="nf">write_kubo</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        write seedname-kubo_H_*.dat, seedname-kubo_A_*.dat.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            filename (str): file name.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">kubo_freq_list</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;kubo_freq_min&quot;</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;kubo_freq_max&quot;</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;kubo_freq_step&quot;</span><span class="p">])</span>
+
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;xx&quot;</span><span class="p">:</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="s2">&quot;yy&quot;</span><span class="p">:</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="s2">&quot;zz&quot;</span><span class="p">:</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="s2">&quot;xy&quot;</span><span class="p">:</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="s2">&quot;xz&quot;</span><span class="p">:</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="s2">&quot;yz&quot;</span><span class="p">:</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)}</span>
+
+        <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">)</span> <span class="ow">in</span> <span class="n">d</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">kubo_H_ij</span> <span class="o">=</span> <span class="bp">self</span><span class="p">[</span><span class="s2">&quot;kubo_H&quot;</span><span class="p">][:,</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span>
+            <span class="n">kubo_H_ji</span> <span class="o">=</span> <span class="bp">self</span><span class="p">[</span><span class="s2">&quot;kubo_H&quot;</span><span class="p">][:,</span> <span class="n">j</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span>
+            <span class="n">kubo_AH_ij</span> <span class="o">=</span> <span class="bp">self</span><span class="p">[</span><span class="s2">&quot;kubo_AH&quot;</span><span class="p">][:,</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span>
+            <span class="n">kubo_AH_ji</span> <span class="o">=</span> <span class="bp">self</span><span class="p">[</span><span class="s2">&quot;kubo_AH&quot;</span><span class="p">][:,</span> <span class="n">j</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span>
+
+            <span class="n">kubo_S_str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+                <span class="p">[</span>
+                    <span class="s2">&quot;</span><span class="si">{:&gt;15.8f}</span><span class="s2">   </span><span class="si">{:&gt;15.8f}</span><span class="s2">   </span><span class="si">{:&gt;15.8f}</span><span class="s2"> </span><span class="se">\n</span><span class="s2"> &quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                        <span class="n">o</span><span class="p">,</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">H_ij</span> <span class="o">+</span> <span class="n">H_ji</span><span class="p">)</span><span class="o">.</span><span class="n">real</span><span class="p">,</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">AH_ij</span> <span class="o">+</span> <span class="n">AH_ji</span><span class="p">)</span><span class="o">.</span><span class="n">imag</span>
+                    <span class="p">)</span>
+                    <span class="k">for</span> <span class="n">o</span><span class="p">,</span> <span class="n">H_ij</span><span class="p">,</span> <span class="n">H_ji</span><span class="p">,</span> <span class="n">AH_ij</span><span class="p">,</span> <span class="n">AH_ji</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">kubo_freq_list</span><span class="p">,</span> <span class="n">kubo_H_ij</span><span class="p">,</span> <span class="n">kubo_H_ji</span><span class="p">,</span> <span class="n">kubo_AH_ij</span><span class="p">,</span> <span class="n">kubo_AH_ji</span><span class="p">)</span>
+                <span class="p">]</span>
+            <span class="p">)</span>
+
+            <span class="n">filename_S</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s1">&#39;seedname&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">-kubo_S_</span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2">.dat&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_cwm</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">filename_S</span><span class="p">,</span> <span class="n">kubo_S_str</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;yz&quot;</span><span class="p">:</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="s2">&quot;zx&quot;</span><span class="p">:</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="s2">&quot;xy&quot;</span><span class="p">:</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)}</span>
+
+        <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">)</span> <span class="ow">in</span> <span class="n">d</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">kubo_H_ij</span> <span class="o">=</span> <span class="bp">self</span><span class="p">[</span><span class="s2">&quot;kubo_H&quot;</span><span class="p">][:,</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span>
+            <span class="n">kubo_H_ji</span> <span class="o">=</span> <span class="bp">self</span><span class="p">[</span><span class="s2">&quot;kubo_H&quot;</span><span class="p">][:,</span> <span class="n">j</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span>
+            <span class="n">kubo_AH_ij</span> <span class="o">=</span> <span class="bp">self</span><span class="p">[</span><span class="s2">&quot;kubo_AH&quot;</span><span class="p">][:,</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span>
+            <span class="n">kubo_AH_ji</span> <span class="o">=</span> <span class="bp">self</span><span class="p">[</span><span class="s2">&quot;kubo_AH&quot;</span><span class="p">][:,</span> <span class="n">j</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span>
+
+            <span class="n">kubo_A_str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+                <span class="p">[</span>
+                    <span class="s2">&quot;</span><span class="si">{:&gt;15.8f}</span><span class="s2">   </span><span class="si">{:&gt;15.8f}</span><span class="s2">   </span><span class="si">{:&gt;15.8f}</span><span class="s2"> </span><span class="se">\n</span><span class="s2"> &quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                        <span class="n">o</span><span class="p">,</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">AH_ij</span> <span class="o">-</span> <span class="n">AH_ji</span><span class="p">)</span><span class="o">.</span><span class="n">real</span><span class="p">,</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">H_ij</span> <span class="o">-</span> <span class="n">H_ji</span><span class="p">)</span><span class="o">.</span><span class="n">imag</span>
+                    <span class="p">)</span>
+                    <span class="k">for</span> <span class="n">o</span><span class="p">,</span> <span class="n">H_ij</span><span class="p">,</span> <span class="n">H_ji</span><span class="p">,</span> <span class="n">AH_ij</span><span class="p">,</span> <span class="n">AH_ji</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">kubo_freq_list</span><span class="p">,</span> <span class="n">kubo_H_ij</span><span class="p">,</span> <span class="n">kubo_H_ji</span><span class="p">,</span> <span class="n">kubo_AH_ij</span><span class="p">,</span> <span class="n">kubo_AH_ji</span><span class="p">)</span>
+                <span class="p">]</span>
+            <span class="p">)</span>
+
+            <span class="n">filename_A</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s1">&#39;seedname&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">-kubo_A_</span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2">.dat&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_cwm</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">filename_A</span><span class="p">,</span> <span class="n">kubo_A_str</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span></div>
+
+
+    <span class="c1"># ==================================================</span>
+<div class="viewcode-block" id="Response.write_spin">
+<a class="viewcode-back" href="../../../src/api/analyzer.html#symclosestwannier.analyzer.response.Response.write_spin">[docs]</a>
+    <span class="k">def</span> <span class="nf">write_spin</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        write seedname-spin.dat.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            filename (str): file name.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">spin_str</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{:&gt;15.8f}</span><span class="s2">   </span><span class="si">{:&gt;15.8f}</span><span class="s2">   </span><span class="si">{:&gt;15.8f}</span><span class="s2"> </span><span class="se">\n</span><span class="s2"> &quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="p">[</span><span class="s2">&quot;Ms_x&quot;</span><span class="p">],</span> <span class="bp">self</span><span class="p">[</span><span class="s2">&quot;Ms_y&quot;</span><span class="p">],</span> <span class="bp">self</span><span class="p">[</span><span class="s2">&quot;Ms_z&quot;</span><span class="p">])</span>
+        <span class="n">filename</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s1">&#39;seedname&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">-spin.dat&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_cwm</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">spin_str</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span></div>
+</div>
+
+</pre></div>
+
+                </article>
+              
+
+              
+              
+              
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Rikuto Oiwa
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2021-2024.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae"></script>
+<script src="../../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
