@@ -161,7 +161,8 @@ class CWin(dict):
                 v = (line.split(":")[1].split("!")[0]).replace(" ", "")
 
             if key == "ket_amn":
-                v = "".join(v)
+                if "[" in v or "]" in v:
+                    v = "".join(v)
 
             d[key] = self._str_to(key, v)
         assert not (
@@ -200,10 +201,11 @@ class CWin(dict):
         elif key == "N1":
             v = int(v)
         elif key == "ket_amn":
-            if "(" in str(v) and ")" in str(v):
-                v = [str(o) if i == 0 else f"({str(o)}" for i, o in enumerate(v[1:-1].split(",("))]
-            else:
-                v = [str(o) for o in v[1:-1].split(",")]
+            if "[" in v or "]" in v:
+                if "(" in str(v) and ")" in str(v):
+                    v = [str(o) if i == 0 else f"({str(o)}" for i, o in enumerate(v[1:-1].split(",("))]
+                else:
+                    v = [str(o) for o in v[1:-1].split(",")]
         elif key == "irreps":
             if "[" in v and "]" in v:
                 v = [str(o) for o in v[1:-1].split(",")]
