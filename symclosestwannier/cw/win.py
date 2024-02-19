@@ -85,7 +85,7 @@ class Win(dict):
     # ==================================================
     def __init__(self, topdir=None, seedname="cwannier", dic=None):
         """
-        initialize the class.
+        Win manages input file for wannier90.x, seedname.win file.
 
         Args:
             topdir (str, optional): directory of seedname.win file.

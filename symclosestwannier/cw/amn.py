@@ -3,6 +3,7 @@ Amn manages overlap matrix elements in seedname.amn file, A_{mn}(k) = <ψ^{KS}_{
 - ψ^{KS}_{m}(k): Kohn-Sham orbitals (KSOs).
 - φ_{n}(k): pseudo atomic (PAOs) orbitals.
 """
+
 import os
 import gzip
 import tarfile
@@ -27,7 +28,7 @@ class Amn(dict):
     # ==================================================
     def __init__(self, topdir=None, seedname="cwannier", dic=None):
         """
-        initialize the class.
+        Amn manages overlap matrix elements in seedname.amn file, A_{mn}(k) = <ψ^{KS}_{m}(k)|φ_{n}(k)>.
 
         Args:
             topdir (str, optional): directory of seedname.amn file.

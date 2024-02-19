@@ -67,7 +67,7 @@ class CWin(dict):
     # ==================================================
     def __init__(self, topdir=None, seedname="cwannier", dic=None):
         """
-        initialize the class.
+        CWin manages input file for pw2cw, seedname.cwin file.
 
         Args:
             topdir (str, optional): directory of seedname.cwin file.

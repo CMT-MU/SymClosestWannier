@@ -48,7 +48,7 @@ class CWInfo(dict):
     # ==================================================
     def __init__(self, topdir=None, seedname="cwannier", dic=None):
         """
-        initialize the class.
+        CWInfo manages information for CWModel, CWin, Win, Nnkp, Eig, Amn, Mmn, Umat, Spn.
 
         Args:
             topdir (str, optional): directory of seedname.cwin file.

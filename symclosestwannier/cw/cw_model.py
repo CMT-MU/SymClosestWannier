@@ -117,7 +117,7 @@ class CWModel(dict):
     # ==================================================
     def __init__(self, cwi, cwm, dic=None):
         """
-        initialize the class.
+        Closest Wannier (CW) tight-binding (TB) model based on Plane-Wave (PW) DFT calculation.
 
         Args:
             cwi (CWInfo, optional): CWInfo.
