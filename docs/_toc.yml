@@ -20,3 +20,8 @@ parts:
     - file: src/format/z
     - file: src/format/s
     - file: src/format/z_exp
+- caption: API
+  chapters:
+    - file: src/api/analyzer
+    - file: src/api/cw
+    - file: src/api/util
