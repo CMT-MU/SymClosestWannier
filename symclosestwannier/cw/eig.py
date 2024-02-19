@@ -1,6 +1,7 @@
 """
 Eig manages Kohn-Sham energies in seedname.eig file, E_{m}(k).
 """
+
 import os
 import gzip
 import tarfile
@@ -26,7 +27,7 @@ class Eig(dict):
     # ==================================================
     def __init__(self, topdir=None, seedname="cwannier", dic=None):
         """
-        initialize the class.
+        Eig manages Kohn-Sham energies in seedname.eig file, E_{m}(k).
 
         Args:
             topdir (str, optional): directory of seedname.eig file.
@@ -90,7 +91,6 @@ class Eig(dict):
             file_name (str, optional): file name.
         """
         Ek = np.array(self["Ek"])
-
 
         with open(file_name, "w") as fp:
             fp.write("# created by eig.py\n")

@@ -27,7 +27,7 @@ class Spn(dict):
     # ==================================================
     def __init__(self, topdir=None, seedname="cwannier", spn_formatted=False, dic=None):
         """
-        initialize the class.
+        Spn manages matrix elements of Pauli spin operator in seedname.spn file.
 
         Args:
             topdir (str, optional): directory of seedname.spn file.

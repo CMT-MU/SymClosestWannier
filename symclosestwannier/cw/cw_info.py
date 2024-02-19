@@ -30,7 +30,7 @@ from symclosestwannier.cw.mmn import Mmn
 from symclosestwannier.cw.umat import Umat
 from symclosestwannier.cw.spn import Spn
 
-from symclosestwannier.util._utility import wigner_seitz
+from symclosestwannier.util._utility import wigner_seitz, convert_w90_orbital
 
 _class_map = {"cwin": CWin, "win": Win, "nnkp": Nnkp, "eig": Eig, "amn": Amn, "mmn": Mmn, "umat": Umat, "spn": Spn}
 
@@ -48,7 +48,7 @@ class CWInfo(dict):
     # ==================================================
     def __init__(self, topdir=None, seedname="cwannier", dic=None):
         """
-        initialize the class.
+        CWInfo manages information for CWModel, CWin, Win, Nnkp, Eig, Amn, Mmn, Umat, Spn.
 
         Args:
             topdir (str, optional): directory of seedname.cwin file.
@@ -112,7 +112,9 @@ class CWInfo(dict):
             if not d["spinors"]:
                 raise Exception("WFs are not spinors.")
 
+        #
         # additional information
+        #
         A = np.array(d["A"])
         irvec, ndegen = wigner_seitz(A, d["mp_grid"])
 
@@ -133,6 +135,22 @@ class CWInfo(dict):
         d["kpoints_path"] = kpoints_path
         d["k_linear"] = k_linear
         d["k_dis_pos"] = k_dis_pos
+
+        # ket
+        if d["ket_amn"] == "auto":
+            ket_amn = [] * d["num_wann"]
+            for pos_idx, l, m, r, s in zip(d["nw2n"], d["nw2l"], d["nw2m"], d["nw2r"], d["nw2s"]):
+                pos = d["atom_pos_r"][pos_idx]
+
+                name = ""
+                for name_, pos_ in d["atoms_frac"].items():
+                    if np.allclose(np.array(pos), np.array(pos_), rtol=1e-04, atol=1e-04):
+                        name = f"{name_[0]}_{name_[1]}"
+
+                orb = convert_w90_orbital(l, m, r, s)
+                ket_amn.append(f"{orb}@{name}")
+
+            d["ket_amn"] = ket_amn
 
         return d
 

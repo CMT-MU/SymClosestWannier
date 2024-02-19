@@ -33,6 +33,8 @@ from symclosestwannier.__init__ import __version__
 @click.argument("seedname", nargs=-1)
 def cmd(seedname, input, version):
     """
+    run pw2cw.
+
     create Closest Wannier tight-binding model from input.
 
         seedname : seedname for seedname.cwin file (w or w/o `.cwin`).

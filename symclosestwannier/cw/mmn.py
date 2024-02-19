@@ -38,7 +38,7 @@ class Mmn(dict):
     # ==================================================
     def __init__(self, topdir=None, seedname="cwannier", dic=None, npar=multiprocessing.cpu_count()):
         """
-        initialize the class.
+        Mmn manages overlap matrix elements in seedname.mmn file, M_{mn}(k,b) = <u^{KS}_{m}(k)|u^{KS}_{n}(k+b)>.
 
         Args:
             topdir (str, optional): directory of seedname.mmn file.

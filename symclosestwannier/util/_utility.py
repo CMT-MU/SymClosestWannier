@@ -63,6 +63,69 @@ def weight_proj(e, e0, e1, T0, T1, delta=10e-12):
 
 
 # ==================================================
+def convert_w90_orbital(l, m, r, s):
+    """
+    convert orbital in the Wannier90 format into the MultiPie format.
+
+    Args:
+        nw2l (list): l specifies the angular part Θlm(θ, φ).
+        nw2m (list): m specifies the angular part Θlm(θ, φ).
+        nw2r (list): r specifies the radial part Rr(r).
+        nw2s (list): s specifies the spin, 1(up)/-1(dn).
+
+    Returns:
+        str: converted orbital.
+    """
+    orbital = ""
+
+    if l == 0 and m == 1:
+        orbital = "s"
+    elif l == 1:
+        if m == 1:
+            orbital = "pz"
+        elif m == 2:
+            orbital = "px"
+        elif m == 3:
+            orbital = "py"
+    elif l == 2:
+        if m == 1:
+            orbital = "du"  # dz2
+        elif m == 2:
+            orbital = "dzx"  # dxz
+        elif m == 3:
+            orbital = "dyz"
+        elif m == 4:
+            orbital = "dv"  # dx2-y2
+        elif m == 5:
+            orbital = "dxy"
+    elif l == 3:
+        if m == 1:
+            orbital = "faz"  # fz3
+        elif m == 2:
+            orbital = "fx"  # fxz2
+        elif m == 3:
+            orbital = "fy"  # fyz2
+        elif m == 4:
+            orbital = "fbz"  # fz(x2-y2)
+        elif m == 5:
+            orbital = "fxyz"
+        elif m == 6:
+            orbital = "f2"  # fx(x2-3y2)
+        elif m == 7:
+            orbital = "f1"  # fy(3x2-y2)
+
+    if orbital == "":
+        raise Exception(f"invalid orbital projection was given, (l={l},m={m},r={r},s={s}).")
+
+    if s == 1:
+        orbital = f"({orbital},U)".replace("'", "")
+    elif s == -1:
+        orbital = f"({orbital},D)".replace("'", "")
+
+    return orbital
+
+
+# ==================================================
 def iterate_nd(size, pm=False):
     a = -size[0] if pm else 0
     b = size[0] + 1 if pm else size[0]
@@ -551,7 +614,7 @@ def samb_decomp_operator(
                 rn = atoms_frac[n]
                 bond = ((R + rn) - rm) @ A
 
-                bond = tuple([format(bi, ".3f") for bi in bond])
+                bond = tuple([format(bi, ".4f") for bi in bond])
                 bond = tuple([float(bi) for bi in bond])
 
                 Or_dict_[(*bond, m, n)] = v
@@ -570,7 +633,7 @@ def samb_decomp_operator(
                     rn = atoms_frac_samb[n]
                     bond = ((R + rn) - rm) @ A_samb
 
-                    bond = tuple([format(bi, ".3f") for bi in bond])
+                    bond = tuple([format(bi, ".4f") for bi in bond])
                     bond = tuple([float(bi) for bi in bond])
 
                     dic[(*bond, m, n)] = v
