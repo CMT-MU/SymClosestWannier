@@ -8,6 +8,7 @@
 - s               : The expansion coefficients of Sk expressed by a linear combination of SAMBs (ndarray).",
 - z               : The expansion coefficients of Hk expressed by a linear combination of SAMBs (ndarray).",
 - z_nonortho      : The expansion coefficients of Hk_nonortho expressed by a linear combination of SAMBs (ndarray).",
+- z_exp           : The expectation value of the SAMBs (dict),
 - Sk_sym          : Symmetrized overlap matrix elements in k-space (ndarray).",
 - Hk_sym          : Symmetrized Hamiltonian matrix elements in k-space (orthogonal) (ndarray).",
 - Hk_nonortho_sym : Symmetrized Hamiltonian matrix elements in k-space (non-orthogonal) (ndarray).",

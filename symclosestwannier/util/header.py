@@ -31,11 +31,15 @@ cwin_info = {
     "symmetrization": "symmetrize ? (bool), [False].",
     "mp_outdir": "output files for multipie are found in this directory (str). ['./'].",
     "mp_seedname": "seedname for seedname_model.py, seedname_samb.py and seedname_matrix.py files (str), ['default'].",
-    "ket_amn": "ket basis list in the seedname.amn file. The format of each ket must be same as the 'ket' in sambname_model.py file. See sambname['info']['ket'] in sambname_model.py file for the format (list), [None].",
-    "irreps": "list of irreps to be considered (str/list), [None].",
+    "ket_amn": "ket basis list in the seedname.amn file. If ket_amn == auto, the list of orbitals are set automatically, or it can be set manually. The format of each ket must be same as the 'ket' in sambname_model.py file. See sambname['info']['ket'] in sambname_model.py file for the format (list), [None].",
     "a": "lattice parameter (in Ang) used to correct units of k points in reference band data (float, optional), [1.0].",
     "N1": "number of divisions for high symmetry lines (int, optional), [50].",
     "fermi_energy": "fermi energy (float, optional), [0.0].",
+    "zeeman_interaction": "consider zeeman interaction ? (bool), [False].",
+    "magnetic_field": "strength of the magnetic field (float), [0.0].",
+    "magnetic_field_theta": "angle from the z-axis of the magnetic field (float), [0.0].",
+    "magnetic_field_phi": "angle from the x-axis of the magnetic field (float), [0.0].",
+    "g_factor": "spin g factor (float), [2.0].",
 }
 
 win_info = {
