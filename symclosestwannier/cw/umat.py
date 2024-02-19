@@ -41,7 +41,7 @@ class Umat(dict):
     # ==================================================
     def __init__(self, topdir=None, seedname="cwannier", dic=None):
         """
-        initialize the class.
+        Umat manages unitary matrix elements in seedname_u.mat (Uopt(k)) and seedname_u_dis.mat (Udis(k)) files, U(k) = Uopt(k)@Udis(k).
 
         Args:
             topdir (str, optional): directory of seedname.amn file.

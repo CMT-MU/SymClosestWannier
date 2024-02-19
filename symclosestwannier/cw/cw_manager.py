@@ -1,6 +1,7 @@
 """
 CWManager manages current directory and formatter.
 """
+
 import os
 import sys
 import codecs
@@ -19,7 +20,7 @@ class CWManager:
     # ==================================================
     def __init__(self, topdir=None, verbose=False, parallel=True, formatter=True):
         """
-        initialize the class.
+        manage directory, read, write etc.
 
         Args:
             topdir (str, optional): top directory for output, ends without slash.

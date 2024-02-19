@@ -44,7 +44,7 @@ _default = {
     #
     "a": None,
     "N1": 50,
-    "fermi_energy": None,
+    "fermi_energy": 0.0,
     #
     "zeeman_interaction": False,
     "magnetic_field": 0.0,
@@ -67,7 +67,7 @@ class CWin(dict):
     # ==================================================
     def __init__(self, topdir=None, seedname="cwannier", dic=None):
         """
-        initialize the class.
+        CWin manages input file for pw2cw, seedname.cwin file.
 
         Args:
             topdir (str, optional): directory of seedname.cwin file.
@@ -126,13 +126,20 @@ class CWin(dict):
                 - symmetrization    : symmetrize ? (bool), [False].
                 - mp_outdir         : output files for multipie are found in this directory (str). ["./"].
                 - mp_seedname       : seedname for seedname_model.py, seedname_samb.py and seedname_matrix.py files (str), ["default"].
-                - ket_amn           : ket basis list in the seedname.amn file. The format of each ket must be same as the "ket" in sambname_model.py file. See sambname["info"]["ket"] in sambname_model.py file for the format (list), [None].
+                - ket_amn           : ket basis list in the seedname.amn file. If ket_amn == auto, the list of orbitals are set automatically, or it can be set manually. The format of each ket must be same as the "ket" in sambname_model.py file. See sambname["info"]["ket"] in sambname_model.py file for the format (list), [None].
                 - irreps            : list of irreps to be considered (str/list), ["all"].
 
             # only used for band dispersion calculation.
                 - a                 : lattice parameter (in Ang) used to correct units of k points in reference band data, [None].
-                - fermi_energy      : fermi energy, [None].
                 - N1                : number of divisions for high symmetry lines (int, optional), [50].
+                - fermi_energy      : fermi energy, [0.0].
+
+            # only used for when zeeman interaction is considered.
+                - zeeman_interaction   : consider zeeman interaction ? (bool), [False].
+                - magnetic_field       : strength of the magnetic field (float), [0.0].
+                - magnetic_field_theta : angle from the z-axis of the magnetic field (float), [0.0].
+                - magnetic_field_phi   : angle from the x-axis of the magnetic field (float), [0.0].
+                - g_factor             : spin g factor (float), [2.0].
         """
         if os.path.exists(file_name):
             with open(file_name) as fp:

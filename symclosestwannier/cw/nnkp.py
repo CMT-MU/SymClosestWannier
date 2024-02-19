@@ -48,7 +48,7 @@ class Nnkp(dict):
     # ==================================================
     def __init__(self, topdir=None, seedname="cwannier", dic=None):
         """
-        initialize the class.
+        Nnkp manages information needed to determine the required overlap elements Mmn(k,b) and projections A_{mn}(k).
 
         Args:
             topdir (str, optional): directory of seedname.nnkp file.

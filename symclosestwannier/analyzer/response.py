@@ -47,7 +47,7 @@ class Response(dict):
     # ==================================================
     def __init__(self, cwi, cwm, HH_R=None):
         """
-        initialize the class.
+        Analyze external responses of Closest Wannier (CW) tight-binding (TB) model.
 
         Args:
             cwi (CWInfo): CWInfo.
