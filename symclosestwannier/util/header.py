@@ -109,6 +109,7 @@ nnkp_info = {
     "nw2l": "l specifies the angular part Θlm(θ, φ) (list), [None].",
     "nw2m": "m specifies the angular part Θlm(θ, φ) (list), [None].",
     "nw2r": "r specifies the radial part Rr(r) (list), [None].",
+    "nw2s": "s specifies the spin, 1(up)/-1(dn) (list), [None].",
     "atom_orb": "WFs indexes of each atom (list), [None].",
     "atom_pos": "atom position index of each atom (list), [None].",
     "atom_pos_r": "atom position of each atom in fractional coordinates with respect to the lattice vectors (list), [None].",
