@@ -217,7 +217,7 @@ class Win(dict):
                 else:
                     d["kpoints"] = kpoints.tolist()
 
-                d["kpoints"] = [kpt[:3] for kpt in kpoints]
+                d["kpoints"] = [kpt[:3] for kpt in d["kpoints"]]
 
             if "begin kpoint_path" in line:
                 k_data = win_data[i + 1 : win_data_lower.index("end kpoint_path")]

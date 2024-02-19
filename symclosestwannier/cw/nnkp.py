@@ -25,6 +25,7 @@ _default = {
     "nw2l": None,
     "nw2m": None,
     "nw2r": None,
+    "nw2s": None,
     "atom_orb": None,
     "atom_pos": None,
     "atom_pos_r": None,
@@ -88,6 +89,7 @@ class Nnkp(dict):
                 - nw2l             : l specifies the angular part Θlm(θ, φ) (list), [None].
                 - nw2m             : m specifies the angular part Θlm(θ, φ) (list), [None].
                 - nw2r             : r specifies the radial part Rr(r) (list), [None].
+                - nw2s             : s specifies the spin, 1(up)/-1(dn) (list), [None].
                 - atom_orb         : WFs indexes of each atom (list), [None].
                 - atom_pos         : atom position index of each atom (list), [None].
                 - atom_pos_r       : atom position of each atom in fractional coordinates with respect to the lattice vectors (list), [None].
@@ -140,6 +142,7 @@ class Nnkp(dict):
                     nw2l = np.zeros([d["num_wann"]], dtype=int)
                     nw2m = np.zeros([d["num_wann"]], dtype=int)
                     nw2r = np.zeros([d["num_wann"]], dtype=int)
+                    nw2s = np.zeros([d["num_wann"]], dtype=int)
                     atom_orb_strlist = []
                     atom_pos_strlist = []
                     # read projections
@@ -152,8 +155,12 @@ class Nnkp(dict):
                         nw2l[j] = int(proj_dat[3])
                         nw2m[j] = int(proj_dat[4])
                         nw2r[j] = int(proj_dat[5])
+                        if spinors:
+                            spn_dat = nnkp_data[i + 2 + 3 * j + 2].split()[0]
+                            nw2s[j] = int(spn_dat)
                         atom_orb_strlist.append(proj_str[0:40])
                         atom_pos_strlist.append(proj_str[0:35])
+
                     atom_orb_uniq = sorted(set(atom_orb_strlist), key=atom_orb_strlist.index)
                     atom_pos_uniq = sorted(set(atom_pos_strlist), key=atom_pos_strlist.index)
                     atom_orb = []
@@ -178,6 +185,7 @@ class Nnkp(dict):
                     d["nw2l"] = nw2l.tolist()
                     d["nw2m"] = nw2m.tolist()
                     d["nw2r"] = nw2r.tolist()
+                    d["nw2s"] = nw2s.tolist()
                     d["atom_orb"] = atom_orb
                     d["atom_pos"] = atom_pos
                     d["atom_pos_r"] = atom_pos_r
