@@ -146,11 +146,13 @@ class Win(dict):
                 - smr_type                     : Defines the analytical form used for the broadened delta function in the computation of the DOS and similar quantities defined on the energy axis, gauss/m-pN/m-v or cold/f-d (str), [gauss].
                 - smr_fixed_en_width           : Energy width for the smearing function for the DOS. Used only if adpt_smr is false (The units are [eV]) (flaot), [0.0].
                 - spin_decomp                  : If true, extra columns are added to some output files (such as seedname-dos.dat for the dos module, and analogously for the berry and BoltzWann modules) (bool), [False].
+
             # berry
                 - berry                        : Determines whether to enter the berry routines (bool), [False].
                 - berry_task                   : The quantity to compute when berry=true, ahc/morb/kubo/sc/shc/kdotp/me (str).
                 - berry_kmesh                  : Overrides the kmesh global variable.
                 - berry_kmesh_spacing          : Overrides the kmesh_spacing global variable.
+
             # berry curvature, ahc, shc
                 - berry_curv_unit              : Unit of Berry curvature, ang2/bohr2, ['ang2'].
                 - berry_curv_adpt_kmesh        : Linear dimension of the adaptively refined k-mesh used to compute the anomalous/spin Hall conductivity, [1].
@@ -161,6 +163,7 @@ class Win(dict):
                 - fermi_energy_step            : Step for increasing the Fermi energy in the specified range. (The units are [eV]) (float), [0.01].
                 - fermi_energy_list            : list of fermi energy (list), [None].
                 - num_fermi                    : number of fermi energies (int), [0].
+
             # kubo
                 - kubo_freq_max           : Upper limit of the frequency range for computing the optical conductivity, JDOS and ac SHC. (The units are [eV]) (float), [If an inner energy window was specified, the default value is dis_froz_max-fermi_energy+0.6667. Otherwise it is the difference between the maximum and the minimum energy eigenvalue stored in seedname.eig, plus 0.6667.].
                 - kubo_freq_min           : Lower limit of the frequency range for computing the optical conductivity, JDOS and ac SHC. (The units are [eV]) (float), [0.0].
@@ -171,9 +174,12 @@ class Win(dict):
                 - kubo_adpt_smr_max       : Overrides the adpt_smr_max global variable.
                 - kubo_smr_fixed_en_width : Overrides the smr_fixed_en_width global variable.
                 - kubo_smr_type           : Overrides the smr_type global variable.
+
             # morb
+
             # gyrotropic
                 - gyrotropic          : Determines whether to enter the gyrotropic routines (bool), [False].
+
             # boltzwann
                 - boltzwann           : Determines whether to enter the boltzwann routines (bool), [False].
         """
