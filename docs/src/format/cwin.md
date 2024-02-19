@@ -39,7 +39,7 @@
 - only used for band dispersion calculation.
   - a                 : lattice parameter (in Ang) used to correct units of k points in reference band data, [1.0].
   - N1                : number of divisions for high symmetry lines (int, optional), [50].
-  - fermi_energy      : fermi energy, [None].
+  - fermi_energy      : fermi energy, [0.0].
 
 - only used for when zeeman interaction is considered.
   - zeeman_interaction   : consider zeeman interaction ? (bool), [False].

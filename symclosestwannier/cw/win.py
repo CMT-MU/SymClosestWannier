@@ -157,7 +157,7 @@ class Win(dict):
                 - berry_curv_unit              : Unit of Berry curvature, ang2/bohr2, ['ang2'].
                 - berry_curv_adpt_kmesh        : Linear dimension of the adaptively refined k-mesh used to compute the anomalous/spin Hall conductivity, [1].
                 - berry_curv_adpt_kmesh_thresh : Threshold magnitude of the Berry curvature for adaptive refinement, [100].
-                - fermi_energy                 : fermi energy (float), [None].
+                - fermi_energy                 : fermi energy (float), [0.0].
                 - fermi_energy_max             : Upper limit of the Fermi energy range (float), [None].
                 - fermi_energy_min             : Lower limit of the Fermi energy range (float), [None].
                 - fermi_energy_step            : Step for increasing the Fermi energy in the specified range. (The units are [eV]) (float), [0.01].
@@ -360,7 +360,7 @@ class Win(dict):
         fermi_energy_step = 0.0
         fermi_energy_list = []
 
-        fermi_energy = self._get_param_keyword(win_data, "fermi_energy", None, dtype=float)
+        fermi_energy = self._get_param_keyword(win_data, "fermi_energy", 0.0, dtype=float)
 
         if fermi_energy is not None:
             found_fermi_energy = True
