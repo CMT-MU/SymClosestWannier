@@ -551,7 +551,7 @@ def samb_decomp_operator(
                 rn = atoms_frac[n]
                 bond = ((R + rn) - rm) @ A
 
-                bond = tuple([format(bi, ".3f") for bi in bond])
+                bond = tuple([format(bi, ".4f") for bi in bond])
                 bond = tuple([float(bi) for bi in bond])
 
                 Or_dict_[(*bond, m, n)] = v
@@ -570,7 +570,7 @@ def samb_decomp_operator(
                     rn = atoms_frac_samb[n]
                     bond = ((R + rn) - rm) @ A_samb
 
-                    bond = tuple([format(bi, ".3f") for bi in bond])
+                    bond = tuple([format(bi, ".4f") for bi in bond])
                     bond = tuple([float(bi) for bi in bond])
 
                     dic[(*bond, m, n)] = v
