@@ -33,6 +33,7 @@ from scipy import linalg as spl
 from gcoreutils.nsarray import NSArray
 from multipie.tag.tag_multipole import TagMultipole
 from multipie.model.construct_model import construct_samb_matrix
+from multipie.data.data_transform_matrix import _data_trans_lattice_p
 
 
 from symclosestwannier.util.message import (
@@ -423,6 +424,9 @@ class CWModel(dict):
             zj: {tuple(sp.sympify(k)): complex(sp.sympify(v)) for k, v in d.items()} for zj, d in mat["matrix"].items()
         }
 
+        A = None
+        A_samb = None
+
         lattice = model["info"]["group"][1].split("/")[1].replace(" ", "")[0]
         if lattice != "P":
             cell_site = {}
@@ -435,6 +439,17 @@ class CWModel(dict):
 
             mat["cell_site"] = cell_site
 
+        if not mat["molecule"]:
+            A = self._cwi["unit_cell_cart"]
+            A_samb = NSArray(mat["A"], style="matrix", fmt="value").T
+            if lattice != "P":
+                # 4x4 matrix to convert from conventioanl to primitive coordinate.
+                latticeP = {
+                    lat: np.array(NSArray(d).numpy().tolist(), dtype=float) for lat, d in _data_trans_lattice_p.items()
+                }
+                lattice_const = model["info"]["cell"]["a"]
+                A_samb = lattice_const * latticeP[lattice][:-1, :-1]
+                print(A_samb)
         #####
 
         atoms_list = list(self._cwi["atoms_frac"].values())
@@ -444,13 +459,6 @@ class CWModel(dict):
             NSArray(mat["cell_site"][ket_samb[a].split("@")[1]][0], style="vector", fmt="value").tolist()
             for a in range(self._cwi["num_wann"])
         ]
-
-        if not mat["molecule"]:
-            A = self._cwi["unit_cell_cart"]
-            A_samb = NSArray(mat["A"], style="matrix", fmt="value").T
-        else:
-            A = None
-            A_samb = None
 
         msg = "    - decomposing Hamiltonian as linear combination of SAMBs ... "
         self._cwm.log(msg, None, end="", file=self._outfile, mode="a")
@@ -562,10 +570,11 @@ class CWModel(dict):
         self._cwm.log(msg, None, end="\n", file=self._outfile, mode="a")
         self._cwm.set_stamp()
 
-        Zk = construct_samb_matrix(mat, np.array(self._cwi["kpoints"]))
-        Ek, Uk = np.linalg.eigh(Hk_sym)
-        Z_exp = thermal_avg(Zk.tolist(), Ek, Uk, self._cwi["fermi_energy"], T=0.0)
-        z_exp = {key: Z_exp[i] for i, key in enumerate(z.keys())}
+        # Zk = construct_samb_matrix(mat, np.array(self._cwi["kpoints"]))
+        # Ek, Uk = np.linalg.eigh(Hk_sym)
+        # Z_exp = thermal_avg(Zk.tolist(), Ek, Uk, self._cwi["fermi_energy"], T=0.0)
+        # z_exp = {key: Z_exp[i] for i, key in enumerate(z.keys())}
+        z_exp = {}
 
         self._cwm.log("done", None, end="\n", file=self._outfile, mode="a")
 

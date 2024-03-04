@@ -100,6 +100,9 @@ class Spn(dict):
 
             pauli_spn[:, ik, :, :] = A
 
+        pauli_spn = pauli_spn[:, :, 120:, 120:]
+        num_bands = pauli_spn.shape[2]
+
         d = {"num_k": num_k, "num_bands": num_bands, "pauli_spn": pauli_spn.tolist()}
 
         return d
