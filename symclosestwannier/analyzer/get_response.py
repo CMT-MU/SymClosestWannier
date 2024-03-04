@@ -111,11 +111,10 @@ def spin_moment_main(cwi, operators):
             return thermal_avg([spn_x, spn_y, spn_z], E, U, cwi["fermi_energy"], T=0.0, num_k=num_k)
 
         # ==================================================
-        kpoints_chunks = np.split(kpoints, [j for j in range(100, len(kpoints), 100)])
+        kpoints_chunks = np.split(kpoints, [j for j in range(300, len(kpoints), 300)])
 
-        res = Parallel(n_jobs=_num_proc, verbose=10)(delayed(spin_moment_main_k)(kpt) for kpt in kpoints_chunks)
-
-        for Ms_x_k, Ms_y_k, Ms_z_k in res:
+        for kpoints in kpoints_chunks:
+            Ms_x_k, Ms_y_k, Ms_z_k = spin_moment_main_k(kpoints)
             d["Ms_x"] += Ms_x_k
             d["Ms_y"] += Ms_y_k
             d["Ms_z"] += Ms_z_k
@@ -393,34 +392,99 @@ def wham_get_JJp_JJm_list(cwi, delHH, E, U, occ=None):
     else:
         occ_list = np.array([fermi(E - ef, T=0.0) for ef in fermi_energy_list])
 
+    if occ is not None:
+        fac_m = np.array(
+            [
+                [
+                    [
+                        [
+                            (
+                                1.0 / (E[k, m] - E[k, n])
+                                if occ_list[ife, k, m] < 0.5 and occ_list[ife, k, n] > 0.5
+                                else 0.0
+                            )
+                            for m in range(num_wann)
+                        ]
+                        for n in range(num_wann)
+                    ]
+                    for k in range(num_k)
+                ]
+                for ife in range(nfermi_loc)
+            ],
+            dtype=float,
+        )
+        fac_p = np.array(
+            [
+                [
+                    [
+                        [
+                            (
+                                1.0 / (E[k, n] - E[k, m])
+                                if occ_list[ife, k, m] < 0.5 and occ_list[ife, k, n] > 0.5
+                                else 0.0
+                            )
+                            for n in range(num_wann)
+                        ]
+                        for m in range(num_wann)
+                    ]
+                    for k in range(num_k)
+                ]
+                for ife in range(nfermi_loc)
+            ],
+            dtype=float,
+        )
+    else:
+        fac_m = np.array(
+            [
+                [
+                    [
+                        [
+                            (
+                                1.0 / (E[k, n] - E[k, m])
+                                if E[k, n] > fermi_energy_list[ife] and E[k, m] < fermi_energy_list[ife]
+                                else 0.0
+                            )
+                            for n in range(num_wann)
+                        ]
+                        for m in range(num_wann)
+                    ]
+                    for k in range(num_k)
+                ]
+                for ife in range(nfermi_loc)
+            ],
+            dtype=float,
+        )
+        fac_p = np.array(
+            [
+                [
+                    [
+                        [
+                            (
+                                1.0 / (E[k, m] - E[k, n])
+                                if E[k, n] > fermi_energy_list[ife] and E[k, m] < fermi_energy_list[ife]
+                                else 0.0
+                            )
+                            for m in range(num_wann)
+                        ]
+                        for n in range(num_wann)
+                    ]
+                    for k in range(num_k)
+                ]
+                for ife in range(nfermi_loc)
+            ],
+            dtype=float,
+        )
+
+    del E
+
     delHH_Band = U.transpose(0, 2, 1).conjugate()[np.newaxis, :, :, :] @ delHH @ U[np.newaxis, :, :, :]
 
-    JJp_list = np.zeros((3, nfermi_loc, num_k, num_wann, num_wann), dtype=np.complex128)
-    JJm_list = np.zeros((3, nfermi_loc, num_k, num_wann, num_wann), dtype=np.complex128)
-    for ife in range(nfermi_loc):
-        ef = fermi_energy_list[ife]
-        for k in range(num_k):
-            for m in range(num_wann):
-                ekm = E[k, m]
-                for n in range(num_wann):
-                    ekn = E[k, n]
-                    delHH_knm = delHH_Band[:, k, n, m]
-                    delHH_kmn = delHH_Band[:, k, m, n]
+    JJp_list = 1.0j * np.einsum("akmn,wkmn->awkmn", delHH_Band, fac_p, optimize=True)
+    JJm_list = 1.0j * np.einsum("akmn,wkmn->awkmn", delHH_Band, fac_m, optimize=True)
 
-                    if occ is not None:
-                        if occ_list[ife, k, m] < 0.5 and occ_list[ife, k, n] > 0.5:
-                            JJm_list[:, ife, k, n, m] = 1.0j * delHH_knm / (ekm - ekn)
-                            JJp_list[:, ife, k, m, n] = 1.0j * delHH_kmn / (ekn - ekm)
-                        else:
-                            JJm_list[:, ife, k, n, m] = 0.0j
-                            JJp_list[:, ife, k, m, n] = 0.0j
-                    else:
-                        if ekn > ef and ekm < ef:
-                            JJp_list[:, ife, k, n, m] = 1.0j * delHH_knm / (ekm - ekn)
-                            JJm_list[:, ife, k, m, n] = 1.0j * delHH_kmn / (ekn - ekm)
-                        else:
-                            JJp_list[:, ife, k, n, m] = 0.0j
-                            JJm_list[:, ife, k, m, n] = 0.0j
+    del fac_p
+    del fac_m
+    del delHH_Band
 
     JJp_list = (
         U[np.newaxis, np.newaxis, :, :, :]
@@ -480,22 +544,17 @@ def wham_get_occ_mat_list(cwi, U, E=None, occ=None):
     f_list = np.zeros((nfermi_loc, num_k, num_wann, num_wann), dtype=np.complex128)
     g_list = np.zeros((nfermi_loc, num_k, num_wann, num_wann), dtype=np.complex128)
 
-    for ife in range(nfermi_loc):
-        for k in range(num_k):
-            for n in range(num_wann):
-                for m in range(num_wann):
-                    for i in range(num_wann):
-                        f_list[ife, k, n, m] += U[k, n, i] * occ_list[ife, k, i] * np.conjugate(U[k, m, i])
+    f_list = np.einsum("kni,wki,kmi->wknm", U, occ_list, np.conjugate(U), optimize=True)
 
-                    g_list[ife, k, n, m] = -f_list[ife, k, n, m]
-                    if m == n:
-                        g_list[ife, k, n, n] += 1.0
+    g_list = -f_list
+    for n in range(num_wann):
+        g_list[:, :, n, n] += 1.0
 
     return f_list, g_list
 
 
 # ==================================================
-def berry_get_imfgh_klist(cwi, kpoints, HH_R, AA_R, imf=False, img=False, imh=False, occ=None, ladpt=None):
+def berry_get_imfgh_klist(cwi, operators, kpoints, imf=False, img=False, imh=False, occ=None, ladpt=None):
     """
     Calculates the three quantities needed for the orbital magnetization:
         * -2Im[f(k)] [Eq.33 CTVR06, Eq.6 LVTS12]
@@ -532,11 +591,21 @@ def berry_get_imfgh_klist(cwi, kpoints, HH_R, AA_R, imf=False, img=False, imh=Fa
         todo = [True] * num_fermi_loc
 
     HH, delHH = fourier_transform_r_to_k_new(
-        HH_R, kpoints, cwi["unit_cell_cart"], cwi["irvec"], cwi["ndegen"], atoms_frac
+        operators["HH_R"], kpoints, cwi["unit_cell_cart"], cwi["irvec"], cwi["ndegen"], atoms_frac
     )
 
+    if cwi["zeeman_interaction"]:
+        B = cwi["magnetic_field"]
+        theta = cwi["magnetic_field_theta"]
+        phi = cwi["magnetic_field_phi"]
+        g_factor = cwi["g_factor"]
+
+        pauli_spin = fourier_transform_r_to_k_vec(operators["SS_R"], kpoints, cwi["irvec"], cwi["ndegen"], atoms_frac)
+        H_zeeman = spin_zeeman_interaction(B, theta, phi, pauli_spin, g_factor, cwi["num_wann"])
+        HH += H_zeeman
+
     E, U = np.linalg.eigh(HH)
-    HH = None
+    del HH
 
     #
     # Gather W-gauge matrix objects
@@ -548,8 +617,13 @@ def berry_get_imfgh_klist(cwi, kpoints, HH_R, AA_R, imf=False, img=False, imh=Fa
         JJp_list, JJm_list = wham_get_eig_UU_HH_JJlist(cwi, delHH, E, U)
         f_list, g_list = wham_get_occ_mat_list(cwi, U, E=E)
 
+    del delHH
+    del E
+    del U
+    del occ
+
     AA, OOmega = fourier_transform_r_to_k_vec(
-        AA_R, kpoints, cwi["irvec"], cwi["ndegen"], atoms_frac, cwi["unit_cell_cart"], pseudo=True
+        operators["AA_R"], kpoints, cwi["irvec"], cwi["ndegen"], atoms_frac, cwi["unit_cell_cart"], pseudo=True
     )
 
     if imf:
@@ -557,21 +631,24 @@ def berry_get_imfgh_klist(cwi, kpoints, HH_R, AA_R, imf=False, img=False, imh=Fa
         # Trace formula for -2Im[f], Eq.(51) LVTS12
         for ife in range(num_fermi_loc):
             if todo[ife]:
-                for k in range(len(kpoints)):
-                    for i in range(3):
-                        # J0 term (Omega_bar term of WYSV06)
-                        imf_k_list[ife, k, 0, i] = np.real(np.trace(f_list[ife, k, :, :] @ OOmega[i, k, :, :]))
-                        #
-                        # J1 term (DA term of WYSV06)
-                        imf_k_list[ife, k, 1, i] = -2.0 * np.imag(
-                            np.trace(AA[_alpha_A[i], k, :, :] @ JJp_list[_beta_A[i], ife, k, :, :])
-                            + np.trace(JJm_list[_alpha_A[i], ife, k, :, :] @ AA[_beta_A[i], k, :, :])
+                for i in range(3):
+                    # J0 term (Omega_bar term of WYSV06)
+                    imf_k_list[ife, :, 0, i] = np.real(
+                        np.trace(f_list[ife, :, :, :] @ OOmega[i, :, :, :], axis1=1, axis2=2)
+                    )
+                    #
+                    # J1 term (DA term of WYSV06)
+                    imf_k_list[ife, :, 1, i] = -2.0 * np.imag(
+                        np.trace(AA[_alpha_A[i], :, :, :] @ JJp_list[_beta_A[i], ife, :, :, :], axis1=1, axis2=2)
+                        + np.trace(JJm_list[_alpha_A[i], ife, :, :, :] @ AA[_beta_A[i], :, :, :], axis1=1, axis2=2)
+                    )
+                    #
+                    # J2 term (DD of WYSV06)
+                    imf_k_list[ife, :, 2, i] = -2.0 * np.imag(
+                        np.trace(
+                            JJm_list[_alpha_A[i], ife, :, :, :] @ JJp_list[_beta_A[i], ife, :, :, :], axis1=1, axis2=2
                         )
-                        #
-                        # J2 term (DD of WYSV06)
-                        imf_k_list[ife, k, 2, i] = -2.0 * np.imag(
-                            np.trace(JJm_list[_alpha_A[i], ife, k, :, :] @ JJp_list[_beta_A[i], ife, k, :, :])
-                        )
+                    )
 
     else:
         imf_k_list = None
@@ -667,19 +744,19 @@ def berry_get_imfgh_klist(cwi, kpoints, HH_R, AA_R, imf=False, img=False, imh=Fa
 
 
 # ==================================================
-def berry_get_imf_klist(cwi, kpoints, HH_R, AA_R, occ=None, ladpt=None):
+def berry_get_imf_klist(cwi, operators, kpoints, occ=None, ladpt=None):
     """
     Calculates the Berry curvature traced over the occupied
     states, -2Im[f(k)] [Eq.33 CTVR06, Eq.6 LVTS12] for a list
     of Fermi energies, and stores it in axial-vector form
     """
     if occ is not None:
-        imf_k_list, _, _ = berry_get_imfgh_klist(cwi, kpoints, HH_R, AA_R, imf=True, occ=occ)
+        imf_k_list, _, _ = berry_get_imfgh_klist(cwi, operators, kpoints, imf=True, occ=occ)
     else:
         if ladpt is not None:
-            imf_k_list, _, _ = berry_get_imfgh_klist(cwi, kpoints, HH_R, AA_R, imf=True, ladpt=ladpt)
+            imf_k_list, _, _ = berry_get_imfgh_klist(cwi, operators, kpoints, imf=True, ladpt=ladpt)
         else:
-            imf_k_list, _, _ = berry_get_imfgh_klist(cwi, kpoints, HH_R, AA_R, imf=True)
+            imf_k_list, _, _ = berry_get_imfgh_klist(cwi, operators, kpoints, imf=True)
 
     return imf_k_list
 
@@ -726,19 +803,21 @@ def berry_get_ahc(cwi, operators):
         berry_get_imf_klist
 
         """
-        ladpt = [False] * num_fermi
-        adpt_counter_list = [0] * num_fermi
-
-        imf_k_list = berry_get_imf_klist(cwi, kpoints, operators["HH_R"], operators["AA_R"])
+        imf_k_list = berry_get_imf_klist(cwi, operators, kpoints)
         imf_list = np.zeros((num_fermi, 3, 3))
 
-        for ife in range(num_fermi):
-            for k in range(len(kpoints)):
-                kpt = kpoints[k]
+        for k in range(len(kpoints)):
+            print(f"* {k+1}/{len(kpoints)}")
+            kpt = kpoints[k]
+            ladpt = [False] * num_fermi
+            adpt_counter_list = [0] * num_fermi
+
+            for ife in range(num_fermi):
                 vdum = np.array([sum(imf_k_list[ife, k, :, a]) for a in range(3)])
 
                 if berry_curv_unit == "bohr2":
                     vdum = vdum / bohr**2
+
                 rdum = np.sqrt(np.dot(vdum, vdum))
                 if rdum > berry_curv_adpt_kmesh_thresh:
                     adpt_counter_list[ife] = adpt_counter_list[ife] + 1
@@ -746,17 +825,19 @@ def berry_get_ahc(cwi, operators):
                 else:
                     imf_list[ife, :, :] += imf_k_list[ife, k, :, :] * kweight
 
-                if np.any(ladpt):
-                    for loop_adpt in range(berry_curv_adpt_kmesh**3):
-                        # Using imf_k_list here would corrupt values for other
-                        # frequencies, hence dummy. Only i-th element is used
-                        imf_k_list_dummy = berry_get_imf_klist(
-                            cwi, kpt + adkpt[:, loop_adpt], operators["HH_R"], operators["AA_R"], ladpt=ladpt
-                        )
+            if np.any(ladpt):
+                # for loop_adpt in range(berry_curv_adpt_kmesh**3):
+                # Using imf_k_list here would corrupt values for other
+                # frequencies, hence dummy. Only i-th element is used
 
-                        for ife_ in range(num_fermi):
-                            if ladpt[ife_]:
-                                imf_list[ife_, :, :] += imf_k_list_dummy[ife_, k, :, :] * kweight_adpt
+                imf_k_list_dummy = berry_get_imf_klist(cwi, operators, kpt[np.newaxis, :] + adkpt.T, ladpt=ladpt)
+
+                for ife_ in range(num_fermi):
+                    if ladpt[ife_]:
+                        for loop_adpt in range(berry_curv_adpt_kmesh**3):
+                            imf_list[ife_, :, :] += imf_k_list_dummy[ife_, loop_adpt, :, :] * kweight_adpt
+
+        del imf_k_list
 
         return imf_list
 
@@ -768,14 +849,12 @@ def berry_get_ahc(cwi, operators):
 
     num_k = np.prod(cwi["berry_kmesh"])
 
-    kpoints_chunks = np.split(kpoints, [j for j in range(100, len(kpoints), 100)])
-
-    res = Parallel(n_jobs=_num_proc, verbose=10)(delayed(berry_get_ahc_k)(kpt) for kpt in kpoints_chunks)
+    kpoints_chunks = np.split(kpoints, [j for j in range(300, len(kpoints), 300)])
 
     imf_list = np.zeros((num_fermi, 3, 3), dtype=float)
 
-    for imf_k_list in res:
-        imf_list += imf_k_list
+    for kpoints in kpoints_chunks:
+        imf_list += berry_get_ahc_k(kpoints)
 
     """
     --------------------------------------------------------------------

@@ -187,10 +187,10 @@ class Response(dict):
             self.update(berry_main(self._cwi, self.operators))
 
         if self._cwi["gyrotropic"]:
-            boltzwann_main()
+            self.update(gyrotropic_main(self._cwi, self.operators))
 
         if self._cwi["boltzwann"]:
-            gyrotropic_main()
+            self.update(boltzwann_main(self._cwi, self.operators))
 
         self._cwm.log(cw_end_response_msg(), stamp=None, end="\n", file=self._outfile, mode="a")
 

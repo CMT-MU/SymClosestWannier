@@ -97,7 +97,7 @@ def analyzer(seedname="cwannier"):
     if cwi["berry_task"] == "kubo":
         res.write_kubo()
 
-    if cwi["spin_moment"] == "kubo":
+    if cwi["spin_moment"]:
         res.write_spin()
 
     cwm.log(f"\n\n  * total elapsed_time:", file=outfile, mode="a")
