@@ -21,6 +21,7 @@ _default = {
     "dis_win_max": +100000,
     "dis_win_min": -100000,
     "dis_mix_ratio": 0.5,
+    "exclude_bands": None,
     #
     "mp_grid": [1, 1, 1],
     "kpoints": [[0, 0, 0]],
@@ -210,6 +211,7 @@ class Win(dict):
         d["dis_win_max"] = self._get_param_keyword(win_data, "dis_win_max", +100000, dtype=float)
         d["dis_win_min"] = self._get_param_keyword(win_data, "dis_win_min", -100000, dtype=float)
         d["dis_mix_ratio"] = self._get_param_keyword(win_data, "dis_mix_ratio", 0.5, dtype=float)
+        d["exclude_bands"] = self._get_param_keyword(win_data, "exclude_bands", None, dtype=str)
 
         d["spinors"] = self._get_param_keyword(win_data, "spinors", False, dtype=bool)
         d["spin_moment"] = self._get_param_keyword(win_data, "spin_moment", False, dtype=bool)
@@ -363,7 +365,7 @@ class Win(dict):
         fermi_energy = self._get_param_keyword(win_data, "fermi_energy", 0.0, dtype=float)
 
         if fermi_energy is not None:
-            found_fermi_energy = True
+            # found_fermi_energy = True
             num_fermi = 1
 
         fermi_energy_scan = False
@@ -395,9 +397,7 @@ class Win(dict):
             else:
                 fermi_energy_step = (fermi_energy_max - fermi_energy_min) / float(num_fermi - 1)
 
-            fermi_energy_list = []
-            for i in range(num_fermi):
-                fermi_energy_list[i] = fermi_energy_min + (i - 1) * fermi_energy_step
+            fermi_energy_list = [fermi_energy_min + i * fermi_energy_step for i in range(num_fermi)]
         else:
             fermi_energy_list = [0.0]
 

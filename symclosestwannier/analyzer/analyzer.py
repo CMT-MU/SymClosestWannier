@@ -56,6 +56,10 @@ def analyzer(seedname="cwannier"):
     info, data = CWModel.read_info_data(filename)
     cwi = CWInfo("./", seedname, dic=info)
     cwi |= cwin | win
+
+    if cwi["restart"] == "sym":
+        cwi["restart"] = "cw"
+
     cw_model = CWModel(cwi, cwm, dic=data)
 
     cwi = cw_model._cwi
@@ -97,7 +101,7 @@ def analyzer(seedname="cwannier"):
     if cwi["berry_task"] == "kubo":
         res.write_kubo()
 
-    if cwi["spin_moment"] == "kubo":
+    if cwi["spin_moment"]:
         res.write_spin()
 
     cwm.log(f"\n\n  * total elapsed_time:", file=outfile, mode="a")
