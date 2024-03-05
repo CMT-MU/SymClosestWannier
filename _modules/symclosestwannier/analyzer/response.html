@@ -185,7 +185,7 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l1"><a class="reference internal" href="../../../src/format/sr.html">Overlap matrix elements in real-space</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../src/format/z.html">The expansion coefficients of the Hamiltonian matrix (orthogonal) H expressed by a linear combination of SAMBs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../src/format/s.html">The expansion coefficients of the Overlap matrix expressed by a linear combination of SAMBs</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../src/format/z_exp.html">expectation value of the given operator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/format/z_exp.html">expectation value of the SAMBs.</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">API</span></p>
 <ul class="nav bd-sidenav">
@@ -333,7 +333,7 @@ document.write(`
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
 <span class="kn">from</span> <span class="nn">symclosestwannier.util.get_oper_R</span> <span class="kn">import</span> <span class="n">get_oper_R</span>
-<span class="kn">from</span> <span class="nn">symclosestwannier.analyzer.get_response</span> <span class="kn">import</span> <span class="n">berry_main</span><span class="p">,</span> <span class="n">boltzwann_main</span><span class="p">,</span> <span class="n">gyrotropic_main</span><span class="p">,</span> <span class="n">expectation_main</span>
+<span class="kn">from</span> <span class="nn">symclosestwannier.analyzer.get_response</span> <span class="kn">import</span> <span class="n">berry_main</span><span class="p">,</span> <span class="n">boltzwann_main</span><span class="p">,</span> <span class="n">gyrotropic_main</span><span class="p">,</span> <span class="n">spin_moment_main</span>
 
 <span class="kn">from</span> <span class="nn">symclosestwannier.util.message</span> <span class="kn">import</span> <span class="p">(</span>
     <span class="n">cw_start_set_operators_msg</span><span class="p">,</span>
@@ -359,13 +359,14 @@ document.write(`
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="c1"># ==================================================</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cwi</span><span class="p">,</span> <span class="n">cwm</span><span class="p">,</span> <span class="n">Sr</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cwi</span><span class="p">,</span> <span class="n">cwm</span><span class="p">,</span> <span class="n">HH_R</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        initialize the class.</span>
+<span class="sd">        Analyze external responses of Closest Wannier (CW) tight-binding (TB) model.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            cwi (CWInfo): CWInfo.</span>
 <span class="sd">            cwm (CWManager): CWManager.</span>
+<span class="sd">            HH_R (ndarray): matrix elements of real-space Hamiltonian, &lt;0n|H|Rm&gt;.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
 
@@ -374,8 +375,7 @@ document.write(`
         <span class="bp">self</span><span class="o">.</span><span class="n">_outfile</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s1">&#39;seedname&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">.cwpout&quot;</span>
 
         <span class="c1"># operators</span>
-        <span class="bp">self</span><span class="p">[</span><span class="s2">&quot;Sr&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Sr</span>  <span class="c1"># &lt;0n|Rm&gt;</span>
-        <span class="bp">self</span><span class="p">[</span><span class="s2">&quot;HH_R&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># &lt;0n|H|Rm&gt;</span>
+        <span class="bp">self</span><span class="p">[</span><span class="s2">&quot;HH_R&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">HH_R</span>  <span class="c1"># &lt;0n|H|Rm&gt;</span>
         <span class="bp">self</span><span class="p">[</span><span class="s2">&quot;AA_R&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># &lt;0n|r|Rm&gt;</span>
         <span class="bp">self</span><span class="p">[</span><span class="s2">&quot;BB_R&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># &lt;0|H(r-R)|R&gt;</span>
         <span class="bp">self</span><span class="p">[</span><span class="s2">&quot;CC_R&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># &lt;0|r_alpha.H(r-R)_beta|R&gt;</span>
@@ -393,6 +393,9 @@ document.write(`
         <span class="bp">self</span><span class="p">[</span><span class="s2">&quot;kubo_AH&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="p">[</span><span class="s2">&quot;kubo_AH_spn&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 
+        <span class="c1"># ahc</span>
+        <span class="bp">self</span><span class="p">[</span><span class="s2">&quot;ahc_list&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+
         <span class="c1"># me</span>
         <span class="bp">self</span><span class="p">[</span><span class="s2">&quot;me_H_spn&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="p">[</span><span class="s2">&quot;me_H_orb&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
@@ -408,7 +411,7 @@ document.write(`
 
         <span class="bp">self</span><span class="o">.</span><span class="n">calc_response</span><span class="p">()</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">calc_expectation_values</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">calc_spin_moment</span><span class="p">()</span>
 
     <span class="c1"># ==================================================</span>
 <div class="viewcode-block" id="Response.set_operators">
@@ -509,21 +512,62 @@ document.write(`
         <span class="bp">self</span><span class="o">.</span><span class="n">_cwm</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">cw_end_response_msg</span><span class="p">(),</span> <span class="n">stamp</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_outfile</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;a&quot;</span><span class="p">)</span>
 
     <span class="c1"># ==================================================</span>
-    <span class="k">def</span> <span class="nf">calc_expectation_values</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">calc_spin_moment</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_cwm</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">cw_start_expectation_msg</span><span class="p">(),</span> <span class="n">stamp</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_outfile</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;a&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_cwm</span><span class="o">.</span><span class="n">set_stamp</span><span class="p">()</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">expectation_main</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">operators</span><span class="p">))</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;spin_moment&quot;</span><span class="p">]:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">spin_moment_main</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">operators</span><span class="p">))</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_cwm</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">cw_end_expectation_msg</span><span class="p">(),</span> <span class="n">stamp</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_outfile</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;a&quot;</span><span class="p">)</span>
 
     <span class="c1"># ==================================================</span>
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">operators</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="p">{</span>
-            <span class="n">k</span><span class="p">:</span> <span class="bp">self</span><span class="p">[</span><span class="n">k</span><span class="p">]</span>
-            <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;Sr&quot;</span><span class="p">,</span> <span class="s2">&quot;HH_R&quot;</span><span class="p">,</span> <span class="s2">&quot;AA_R&quot;</span><span class="p">,</span> <span class="s2">&quot;BB_R&quot;</span><span class="p">,</span> <span class="s2">&quot;CC_R&quot;</span><span class="p">,</span> <span class="s2">&quot;SS_R&quot;</span><span class="p">,</span> <span class="s2">&quot;SR_R&quot;</span><span class="p">,</span> <span class="s2">&quot;SHR_R&quot;</span><span class="p">,</span> <span class="s2">&quot;SH_R&quot;</span><span class="p">,</span> <span class="s2">&quot;SAA_R&quot;</span><span class="p">,</span> <span class="s2">&quot;SBB_R&quot;</span><span class="p">)</span>
-        <span class="p">}</span>
+        <span class="k">return</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="bp">self</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;HH_R&quot;</span><span class="p">,</span> <span class="s2">&quot;AA_R&quot;</span><span class="p">,</span> <span class="s2">&quot;BB_R&quot;</span><span class="p">,</span> <span class="s2">&quot;CC_R&quot;</span><span class="p">,</span> <span class="s2">&quot;SS_R&quot;</span><span class="p">,</span> <span class="s2">&quot;SR_R&quot;</span><span class="p">,</span> <span class="s2">&quot;SHR_R&quot;</span><span class="p">,</span> <span class="s2">&quot;SH_R&quot;</span><span class="p">,</span> <span class="s2">&quot;SAA_R&quot;</span><span class="p">,</span> <span class="s2">&quot;SBB_R&quot;</span><span class="p">)}</span>
+
+    <span class="c1"># ==================================================</span>
+<div class="viewcode-block" id="Response.write_ahc">
+<a class="viewcode-back" href="../../../src/api/analyzer.html#symclosestwannier.analyzer.response.Response.write_ahc">[docs]</a>
+    <span class="k">def</span> <span class="nf">write_ahc</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        write seedname-ahc.dat, seedname-ahc-fermiscan.dat.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;num_fermi&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">pass</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;num_fermi&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">ahc_list</span> <span class="o">=</span> <span class="bp">self</span><span class="p">[</span><span class="s2">&quot;ahc_list&quot;</span><span class="p">]</span>
+            <span class="n">ahc_str</span> <span class="o">=</span> <span class="s2">&quot;AHC (S/cm)       x          y          z </span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="n">ahc_str</span> <span class="o">+=</span> <span class="s2">&quot;==========</span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="n">ahc_str</span> <span class="o">+=</span> <span class="s2">&quot;J0 term :&quot;</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="si">{:&gt;15.8f}</span><span class="s2">   </span><span class="si">{:&gt;15.8f}</span><span class="s2">   </span><span class="si">{:&gt;15.8f}</span><span class="s2"> </span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="n">ahc_list</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">ahc_list</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">ahc_list</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
+            <span class="p">)</span>
+            <span class="n">ahc_str</span> <span class="o">+=</span> <span class="s2">&quot;J1 term :&quot;</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="si">{:&gt;15.8f}</span><span class="s2">   </span><span class="si">{:&gt;15.8f}</span><span class="s2">   </span><span class="si">{:&gt;15.8f}</span><span class="s2"> </span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="n">ahc_list</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">ahc_list</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">ahc_list</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
+            <span class="p">)</span>
+            <span class="n">ahc_str</span> <span class="o">+=</span> <span class="s2">&quot;J2 term :&quot;</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="si">{:&gt;15.8f}</span><span class="s2">   </span><span class="si">{:&gt;15.8f}</span><span class="s2">   </span><span class="si">{:&gt;15.8f}</span><span class="s2"> </span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="n">ahc_list</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">ahc_list</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">ahc_list</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
+            <span class="p">)</span>
+            <span class="n">ahc_str</span> <span class="o">+=</span> <span class="s2">&quot;-------------------------------------------</span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="n">ahc_str</span> <span class="o">+=</span> <span class="s2">&quot;Total   :&quot;</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="si">{:&gt;15.8f}</span><span class="s2">   </span><span class="si">{:&gt;15.8f}</span><span class="s2">   </span><span class="si">{:&gt;15.8f}</span><span class="s2"> </span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="nb">sum</span><span class="p">(</span><span class="n">ahc_list</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:,</span> <span class="mi">0</span><span class="p">]),</span> <span class="nb">sum</span><span class="p">(</span><span class="n">ahc_list</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:,</span> <span class="mi">1</span><span class="p">]),</span> <span class="nb">sum</span><span class="p">(</span><span class="n">ahc_list</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:,</span> <span class="mi">2</span><span class="p">])</span>
+            <span class="p">)</span>
+
+            <span class="n">filename</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s1">&#39;seedname&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">-ahc.dat&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_cwm</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">ahc_str</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">ahc_list</span> <span class="o">=</span> <span class="bp">self</span><span class="p">[</span><span class="s2">&quot;ahc_list&quot;</span><span class="p">]</span>
+            <span class="n">num_fermi</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;num_fermi&quot;</span><span class="p">]</span>
+            <span class="n">fermi_energy_list</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;fermi_energy_list&quot;</span><span class="p">]</span>
+            <span class="n">ahc_str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+            <span class="k">for</span> <span class="n">ife</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_fermi</span><span class="p">):</span>
+                <span class="n">ahc_str</span> <span class="o">+=</span> <span class="s2">&quot;</span><span class="si">{:&gt;15.8f}</span><span class="s2">   </span><span class="si">{:&gt;15.8f}</span><span class="s2">   </span><span class="si">{:&gt;15.8f}</span><span class="s2">   </span><span class="si">{:&gt;15.8f}</span><span class="s2"> </span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                    <span class="n">fermi_energy_list</span><span class="p">[</span><span class="n">ife</span><span class="p">],</span> <span class="nb">sum</span><span class="p">(</span><span class="n">ahc_list</span><span class="p">[</span><span class="n">ife</span><span class="p">,</span> <span class="p">:,</span> <span class="mi">0</span><span class="p">]),</span> <span class="nb">sum</span><span class="p">(</span><span class="n">ahc_list</span><span class="p">[</span><span class="n">ife</span><span class="p">,</span> <span class="p">:,</span> <span class="mi">1</span><span class="p">]),</span> <span class="nb">sum</span><span class="p">(</span><span class="n">ahc_list</span><span class="p">[</span><span class="n">ife</span><span class="p">,</span> <span class="p">:,</span> <span class="mi">2</span><span class="p">])</span>
+                <span class="p">)</span>
+
+            <span class="n">filename</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s1">&#39;seedname&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">-ahc-fermiscan.dat&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_cwm</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">ahc_str</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span></div>
+
 
     <span class="c1"># ==================================================</span>
 <div class="viewcode-block" id="Response.write_kubo">

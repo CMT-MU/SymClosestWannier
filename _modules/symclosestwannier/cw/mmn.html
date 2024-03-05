@@ -185,7 +185,7 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l1"><a class="reference internal" href="../../../src/format/sr.html">Overlap matrix elements in real-space</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../src/format/z.html">The expansion coefficients of the Hamiltonian matrix (orthogonal) H expressed by a linear combination of SAMBs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../src/format/s.html">The expansion coefficients of the Overlap matrix expressed by a linear combination of SAMBs</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../src/format/z_exp.html">expectation value of the given operator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/format/z_exp.html">expectation value of the SAMBs.</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">API</span></p>
 <ul class="nav bd-sidenav">
@@ -352,7 +352,7 @@ document.write(`
     <span class="c1"># ==================================================</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">topdir</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">seedname</span><span class="o">=</span><span class="s2">&quot;cwannier&quot;</span><span class="p">,</span> <span class="n">dic</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">npar</span><span class="o">=</span><span class="n">multiprocessing</span><span class="o">.</span><span class="n">cpu_count</span><span class="p">()):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        initialize the class.</span>
+<span class="sd">        Mmn manages overlap matrix elements in seedname.mmn file, M_{mn}(k,b) = &lt;u^{KS}_{m}(k)|u^{KS}_{n}(k+b)&gt;.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            topdir (str, optional): directory of seedname.mmn file.</span>
@@ -387,7 +387,7 @@ document.write(`
 <span class="sd">                - num_k     : # of k points (int), [1].</span>
 <span class="sd">                - num_bands : # of bands passed to the code (int), [1].</span>
 <span class="sd">                - num_b     : # of b-vectors (int), [1].</span>
-<span class="sd">                - nnkpts    : nearest-nmmnhbour k-points (list), [None].</span>
+<span class="sd">                - nnkpts    : nearest-neighbor k-points (list), [None].</span>
 <span class="sd">                - Mkb       : Overlap matrix elements, M_{mn}(k,b) = &lt;u^{KS}_{m}(k)|u^{KS}_{n}(k+b)&gt; (list), [None].</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">file_name</span><span class="p">):</span>

@@ -186,7 +186,7 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l1"><a class="reference internal" href="../format/sr.html">Overlap matrix elements in real-space</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../format/z.html">The expansion coefficients of the Hamiltonian matrix (orthogonal) H expressed by a linear combination of SAMBs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../format/s.html">The expansion coefficients of the Overlap matrix expressed by a linear combination of SAMBs</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../format/z_exp.html">expectation value of the given operator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../format/z_exp.html">expectation value of the SAMBs.</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">API</span></p>
 <ul class="current nav bd-sidenav">
@@ -450,7 +450,7 @@ document.write(`
 <dt class="sig sig-object py" id="symclosestwannier.cw.amn.Amn">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Amn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">topdir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seedname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'cwannier'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dic</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/cw/amn.html#Amn"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.cw.amn.Amn" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></p>
-<p>initialize the class.</p>
+<p>Amn manages overlap matrix elements in seedname.amn file, A_{mn}(k) = &lt;ψ^{KS}_{m}(k)|φ_{n}(k)&gt;.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -489,7 +489,7 @@ document.write(`
 <dt class="sig sig-object py" id="symclosestwannier.cw.cw_info.CWInfo">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">CWInfo</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">topdir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seedname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'cwannier'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dic</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/cw/cw_info.html#CWInfo"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.cw.cw_info.CWInfo" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></p>
-<p>initialize the class.</p>
+<p>CWInfo manages information for CWModel, CWin, Win, Nnkp, Eig, Amn, Mmn, Umat, Spn.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -545,7 +545,7 @@ document.write(`
 <dt class="sig sig-object py" id="symclosestwannier.cw.cw_model.CWModel">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">CWModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cwi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cwm</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dic</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/cw/cw_model.html#CWModel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.cw.cw_model.CWModel" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></p>
-<p>initialize the class.</p>
+<p>Closest Wannier (CW) tight-binding (TB) model based on Plane-Wave (PW) DFT calculation.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -879,7 +879,7 @@ fourier transformation from real-space representation into k-space representatio
 <dt class="sig sig-object py" id="symclosestwannier.cw.eig.Eig">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Eig</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">topdir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seedname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'cwannier'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dic</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/cw/eig.html#Eig"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.cw.eig.Eig" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></p>
-<p>initialize the class.</p>
+<p>Eig manages Kohn-Sham energies in seedname.eig file, E_{m}(k).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -929,7 +929,7 @@ fourier transformation from real-space representation into k-space representatio
 <dt class="sig sig-object py" id="symclosestwannier.cw.nnkp.Nnkp">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Nnkp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">topdir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seedname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'cwannier'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dic</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/cw/nnkp.html#Nnkp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.cw.nnkp.Nnkp" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></p>
-<p>initialize the class.</p>
+<p>Nnkp manages information needed to determine the required overlap elements Mmn(k,b) and projections A_{mn}(k).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -969,6 +969,7 @@ return : b vector in cartesian/fractional coordinates</p>
 <li><p>nw2l             : l specifies the angular part Θlm(θ, φ) (list), [None].</p></li>
 <li><p>nw2m             : m specifies the angular part Θlm(θ, φ) (list), [None].</p></li>
 <li><p>nw2r             : r specifies the radial part Rr(r) (list), [None].</p></li>
+<li><p>nw2s             : s specifies the spin, 1(up)/-1(dn) (list), [None].</p></li>
 <li><p>atom_orb         : WFs indexes of each atom (list), [None].</p></li>
 <li><p>atom_pos         : atom position index of each atom (list), [None].</p></li>
 <li><p>atom_pos_r       : atom position of each atom in fractional coordinates with respect to the lattice vectors (list), [None].</p></li>
@@ -994,7 +995,7 @@ return : b vector in cartesian/fractional coordinates</p>
 <dt class="sig sig-object py" id="symclosestwannier.cw.umat.Umat">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Umat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">topdir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seedname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'cwannier'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dic</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/cw/umat.html#Umat"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.cw.umat.Umat" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></p>
-<p>initialize the class.</p>
+<p>Umat manages unitary matrix elements in seedname_u.mat (Uopt(k)) and seedname_u_dis.mat (Udis(k)) files, U(k) = Uopt(k)&#64;Udis(k).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -1086,7 +1087,7 @@ CW TB model can be symmetrized by using Symmetry-Adapted Multipole Basis (SAMB).
 <dt class="sig sig-object py" id="symclosestwannier.cw.cw_manager.CWManager">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">CWManager</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">topdir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parallel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">formatter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/cw/cw_manager.html#CWManager"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.cw.cw_manager.CWManager" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>initialize the class.</p>
+<p>manage directory, read, write etc.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -1203,7 +1204,7 @@ CW TB model can be symmetrized by using Symmetry-Adapted Multipole Basis (SAMB).
 <dt class="sig sig-object py" id="symclosestwannier.cw.cwin.CWin">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">CWin</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">topdir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seedname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'cwannier'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dic</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/cw/cwin.html#CWin"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.cw.cwin.CWin" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></p>
-<p>initialize the class.</p>
+<p>CWin manages input file for pw2cw, seedname.cwin file.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -1256,14 +1257,22 @@ CW TB model can be symmetrized by using Symmetry-Adapted Multipole Basis (SAMB).
 <li><p>symmetrization    : symmetrize ? (bool), [False].</p></li>
 <li><p>mp_outdir         : output files for multipie are found in this directory (str). [&quot;./&quot;].</p></li>
 <li><p>mp_seedname       : seedname for seedname_model.py, seedname_samb.py and seedname_matrix.py files (str), [&quot;default&quot;].</p></li>
-<li><p>ket_amn           : ket basis list in the seedname.amn file. The format of each ket must be same as the &quot;ket&quot; in sambname_model.py file. See sambname[&quot;info&quot;][&quot;ket&quot;] in sambname_model.py file for the format (list), [None].</p></li>
+<li><p>ket_amn           : ket basis list in the seedname.amn file. If ket_amn == auto, the list of orbitals are set automatically, or it can be set manually. The format of each ket must be same as the &quot;ket&quot; in sambname_model.py file. See sambname[&quot;info&quot;][&quot;ket&quot;] in sambname_model.py file for the format (list), [None].</p></li>
 <li><p>irreps            : list of irreps to be considered (str/list), [&quot;all&quot;].</p></li>
 </ul>
 </dd>
 <dt># only used for band dispersion calculation.</dt><dd><ul class="simple">
 <li><p>a                 : lattice parameter (in Ang) used to correct units of k points in reference band data, [None].</p></li>
-<li><p>fermi_energy      : fermi energy used for band shift, [None].</p></li>
 <li><p>N1                : number of divisions for high symmetry lines (int, optional), [50].</p></li>
+<li><p>fermi_energy      : fermi energy, [0.0].</p></li>
+</ul>
+</dd>
+<dt># only used for when zeeman interaction is considered.</dt><dd><ul class="simple">
+<li><p>zeeman_interaction   : consider zeeman interaction ? (bool), [False].</p></li>
+<li><p>magnetic_field       : strength of the magnetic field (float), [0.0].</p></li>
+<li><p>magnetic_field_theta : angle from the z-axis of the magnetic field (float), [0.0].</p></li>
+<li><p>magnetic_field_phi   : angle from the x-axis of the magnetic field (float), [0.0].</p></li>
+<li><p>g_factor             : spin g factor (float), [2.0].</p></li>
 </ul>
 </dd>
 </dl>
@@ -1283,7 +1292,7 @@ CW TB model can be symmetrized by using Symmetry-Adapted Multipole Basis (SAMB).
 <dt class="sig sig-object py" id="symclosestwannier.cw.mmn.Mmn">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Mmn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">topdir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seedname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'cwannier'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dic</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">npar</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">8</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/cw/mmn.html#Mmn"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.cw.mmn.Mmn" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></p>
-<p>initialize the class.</p>
+<p>Mmn manages overlap matrix elements in seedname.mmn file, M_{mn}(k,b) = &lt;u^{KS}_{m}(k)|u^{KS}_{n}(k+b)&gt;.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -1307,7 +1316,7 @@ CW TB model can be symmetrized by using Symmetry-Adapted Multipole Basis (SAMB).
 <li><p>num_k     : # of k points (int), [1].</p></li>
 <li><p>num_bands : # of bands passed to the code (int), [1].</p></li>
 <li><p>num_b     : # of b-vectors (int), [1].</p></li>
-<li><p>nnkpts    : nearest-nmmnhbour k-points (list), [None].</p></li>
+<li><p>nnkpts    : nearest-neighbor k-points (list), [None].</p></li>
 <li><p>Mkb       : Overlap matrix elements, M_{mn}(k,b) = &lt;u^{KS}_{m}(k)|u^{KS}_{n}(k+b)&gt; (list), [None].</p></li>
 </ul>
 </p>
@@ -1336,7 +1345,7 @@ CW TB model can be symmetrized by using Symmetry-Adapted Multipole Basis (SAMB).
 <dt class="sig sig-object py" id="symclosestwannier.cw.spn.Spn">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Spn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">topdir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seedname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'cwannier'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spn_formatted</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dic</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/cw/spn.html#Spn"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.cw.spn.Spn" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></p>
-<p>initialize the class.</p>
+<p>Spn manages matrix elements of Pauli spin operator in seedname.spn file.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -1376,7 +1385,7 @@ CW TB model can be symmetrized by using Symmetry-Adapted Multipole Basis (SAMB).
 <dt class="sig sig-object py" id="symclosestwannier.cw.win.Win">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Win</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">topdir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seedname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'cwannier'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dic</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/cw/win.html#Win"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.cw.win.Win" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></p>
-<p>initialize the class.</p>
+<p>Win manages input file for wannier90.x, seedname.win file.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -1443,6 +1452,12 @@ CW TB model can be symmetrized by using Symmetry-Adapted Multipole Basis (SAMB).
 <li><p>berry_curv_unit              : Unit of Berry curvature, ang2/bohr2, ['ang2'].</p></li>
 <li><p>berry_curv_adpt_kmesh        : Linear dimension of the adaptively refined k-mesh used to compute the anomalous/spin Hall conductivity, [1].</p></li>
 <li><p>berry_curv_adpt_kmesh_thresh : Threshold magnitude of the Berry curvature for adaptive refinement, [100].</p></li>
+<li><p>fermi_energy                 : fermi energy (float), [0.0].</p></li>
+<li><p>fermi_energy_max             : Upper limit of the Fermi energy range (float), [None].</p></li>
+<li><p>fermi_energy_min             : Lower limit of the Fermi energy range (float), [None].</p></li>
+<li><p>fermi_energy_step            : Step for increasing the Fermi energy in the specified range. (The units are [eV]) (float), [0.01].</p></li>
+<li><p>fermi_energy_list            : list of fermi energy (list), [None].</p></li>
+<li><p>num_fermi                    : number of fermi energies (int), [0].</p></li>
 </ul>
 </dd>
 <dt># kubo</dt><dd><ul class="simple">
@@ -1458,14 +1473,12 @@ CW TB model can be symmetrized by using Symmetry-Adapted Multipole Basis (SAMB).
 </ul>
 </dd>
 </dl>
-<p># morb
-# gyrotropic</p>
-<blockquote>
-<div><ul class="simple">
+<p># morb</p>
+<dl class="simple">
+<dt># gyrotropic</dt><dd><ul class="simple">
 <li><p>gyrotropic          : Determines whether to enter the gyrotropic routines (bool), [False].</p></li>
 </ul>
-</div></blockquote>
-<dl class="simple">
+</dd>
 <dt># boltzwann</dt><dd><ul class="simple">
 <li><p>boltzwann           : Determines whether to enter the boltzwann routines (bool), [False].</p></li>
 </ul>

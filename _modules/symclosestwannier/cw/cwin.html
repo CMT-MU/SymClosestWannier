@@ -185,7 +185,7 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l1"><a class="reference internal" href="../../../src/format/sr.html">Overlap matrix elements in real-space</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../src/format/z.html">The expansion coefficients of the Hamiltonian matrix (orthogonal) H expressed by a linear combination of SAMBs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../src/format/s.html">The expansion coefficients of the Overlap matrix expressed by a linear combination of SAMBs</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../src/format/z_exp.html">expectation value of the given operator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/format/z_exp.html">expectation value of the SAMBs.</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">API</span></p>
 <ul class="nav bd-sidenav">
@@ -381,7 +381,7 @@ document.write(`
     <span class="c1"># ==================================================</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">topdir</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">seedname</span><span class="o">=</span><span class="s2">&quot;cwannier&quot;</span><span class="p">,</span> <span class="n">dic</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        initialize the class.</span>
+<span class="sd">        CWin manages input file for pw2cw, seedname.cwin file.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            topdir (str, optional): directory of seedname.cwin file.</span>
@@ -442,13 +442,20 @@ document.write(`
 <span class="sd">                - symmetrization    : symmetrize ? (bool), [False].</span>
 <span class="sd">                - mp_outdir         : output files for multipie are found in this directory (str). [&quot;./&quot;].</span>
 <span class="sd">                - mp_seedname       : seedname for seedname_model.py, seedname_samb.py and seedname_matrix.py files (str), [&quot;default&quot;].</span>
-<span class="sd">                - ket_amn           : ket basis list in the seedname.amn file. The format of each ket must be same as the &quot;ket&quot; in sambname_model.py file. See sambname[&quot;info&quot;][&quot;ket&quot;] in sambname_model.py file for the format (list), [None].</span>
+<span class="sd">                - ket_amn           : ket basis list in the seedname.amn file. If ket_amn == auto, the list of orbitals are set automatically, or it can be set manually. The format of each ket must be same as the &quot;ket&quot; in sambname_model.py file. See sambname[&quot;info&quot;][&quot;ket&quot;] in sambname_model.py file for the format (list), [None].</span>
 <span class="sd">                - irreps            : list of irreps to be considered (str/list), [&quot;all&quot;].</span>
 
 <span class="sd">            # only used for band dispersion calculation.</span>
 <span class="sd">                - a                 : lattice parameter (in Ang) used to correct units of k points in reference band data, [None].</span>
-<span class="sd">                - fermi_energy      : fermi energy used for band shift, [None].</span>
 <span class="sd">                - N1                : number of divisions for high symmetry lines (int, optional), [50].</span>
+<span class="sd">                - fermi_energy      : fermi energy, [0.0].</span>
+
+<span class="sd">            # only used for when zeeman interaction is considered.</span>
+<span class="sd">                - zeeman_interaction   : consider zeeman interaction ? (bool), [False].</span>
+<span class="sd">                - magnetic_field       : strength of the magnetic field (float), [0.0].</span>
+<span class="sd">                - magnetic_field_theta : angle from the z-axis of the magnetic field (float), [0.0].</span>
+<span class="sd">                - magnetic_field_phi   : angle from the x-axis of the magnetic field (float), [0.0].</span>
+<span class="sd">                - g_factor             : spin g factor (float), [2.0].</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">file_name</span><span class="p">):</span>
             <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">file_name</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
@@ -477,7 +484,8 @@ document.write(`
                 <span class="n">v</span> <span class="o">=</span> <span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;:&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;!&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
 
             <span class="k">if</span> <span class="n">key</span> <span class="o">==</span> <span class="s2">&quot;ket_amn&quot;</span><span class="p">:</span>
-                <span class="n">v</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+                <span class="k">if</span> <span class="s2">&quot;[&quot;</span> <span class="ow">in</span> <span class="n">v</span> <span class="ow">or</span> <span class="s2">&quot;]&quot;</span> <span class="ow">in</span> <span class="n">v</span><span class="p">:</span>
+                    <span class="n">v</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
 
             <span class="n">d</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_str_to</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
         <span class="k">assert</span> <span class="ow">not</span> <span class="p">(</span>
@@ -517,10 +525,11 @@ document.write(`
         <span class="k">elif</span> <span class="n">key</span> <span class="o">==</span> <span class="s2">&quot;N1&quot;</span><span class="p">:</span>
             <span class="n">v</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
         <span class="k">elif</span> <span class="n">key</span> <span class="o">==</span> <span class="s2">&quot;ket_amn&quot;</span><span class="p">:</span>
-            <span class="k">if</span> <span class="s2">&quot;(&quot;</span> <span class="ow">in</span> <span class="nb">str</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="ow">and</span> <span class="s2">&quot;)&quot;</span> <span class="ow">in</span> <span class="nb">str</span><span class="p">(</span><span class="n">v</span><span class="p">):</span>
-                <span class="n">v</span> <span class="o">=</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">o</span><span class="p">)</span> <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="sa">f</span><span class="s2">&quot;(</span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">o</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">o</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">v</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,(&quot;</span><span class="p">))]</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="n">v</span> <span class="o">=</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">o</span><span class="p">)</span> <span class="k">for</span> <span class="n">o</span> <span class="ow">in</span> <span class="n">v</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">)]</span>
+            <span class="k">if</span> <span class="s2">&quot;[&quot;</span> <span class="ow">in</span> <span class="n">v</span> <span class="ow">or</span> <span class="s2">&quot;]&quot;</span> <span class="ow">in</span> <span class="n">v</span><span class="p">:</span>
+                <span class="k">if</span> <span class="s2">&quot;(&quot;</span> <span class="ow">in</span> <span class="nb">str</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="ow">and</span> <span class="s2">&quot;)&quot;</span> <span class="ow">in</span> <span class="nb">str</span><span class="p">(</span><span class="n">v</span><span class="p">):</span>
+                    <span class="n">v</span> <span class="o">=</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">o</span><span class="p">)</span> <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="sa">f</span><span class="s2">&quot;(</span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">o</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">o</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">v</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,(&quot;</span><span class="p">))]</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">v</span> <span class="o">=</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">o</span><span class="p">)</span> <span class="k">for</span> <span class="n">o</span> <span class="ow">in</span> <span class="n">v</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">)]</span>
         <span class="k">elif</span> <span class="n">key</span> <span class="o">==</span> <span class="s2">&quot;irreps&quot;</span><span class="p">:</span>
             <span class="k">if</span> <span class="s2">&quot;[&quot;</span> <span class="ow">in</span> <span class="n">v</span> <span class="ow">and</span> <span class="s2">&quot;]&quot;</span> <span class="ow">in</span> <span class="n">v</span><span class="p">:</span>
                 <span class="n">v</span> <span class="o">=</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">o</span><span class="p">)</span> <span class="k">for</span> <span class="n">o</span> <span class="ow">in</span> <span class="n">v</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">)]</span>
@@ -533,7 +542,7 @@ document.write(`
             <span class="k">elif</span> <span class="n">v</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;false&quot;</span><span class="p">,</span> <span class="s2">&quot;.false.&quot;</span><span class="p">):</span>
                 <span class="n">v</span> <span class="o">=</span> <span class="kc">False</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;invalid </span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2"> = </span><span class="si">{</span><span class="n">v</span><span class="si">}</span><span class="s2"> was given. choose from &#39;true&#39;/&#39;.true.&#39;/&#39;false&#39;/&#39;.false.&#39;.&quot;</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;invalid </span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2"> = </span><span class="si">{</span><span class="n">v</span><span class="si">}</span><span class="s2"> was given. choose from &#39;true&#39;/&#39;.true.&#39;/&#39;false&#39;/&#39;.false.&#39;.&quot;</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">v</span>
 

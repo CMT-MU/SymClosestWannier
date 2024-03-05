@@ -186,7 +186,7 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l1"><a class="reference internal" href="sr.html">Overlap matrix elements in real-space</a></li>
 <li class="toctree-l1"><a class="reference internal" href="z.html">The expansion coefficients of the Hamiltonian matrix (orthogonal) H expressed by a linear combination of SAMBs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="s.html">The expansion coefficients of the Overlap matrix expressed by a linear combination of SAMBs</a></li>
-<li class="toctree-l1"><a class="reference internal" href="z_exp.html">expectation value of the given operator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="z_exp.html">expectation value of the SAMBs.</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">API</span></p>
 <ul class="nav bd-sidenav">
@@ -370,13 +370,13 @@ document.write(`
 <li><p>s               : The expansion coefficients of Sk expressed by a linear combination of SAMBs (ndarray).&quot;,</p></li>
 <li><p>z               : The expansion coefficients of Hk expressed by a linear combination of SAMBs (ndarray).&quot;,</p></li>
 <li><p>z_nonortho      : The expansion coefficients of Hk_nonortho expressed by a linear combination of SAMBs (ndarray).&quot;,</p></li>
+<li><p>z_exp           : The expectation value of the SAMBs (dict),</p></li>
 <li><p>Sk_sym          : Symmetrized overlap matrix elements in k-space (ndarray).&quot;,</p></li>
 <li><p>Hk_sym          : Symmetrized Hamiltonian matrix elements in k-space (orthogonal) (ndarray).&quot;,</p></li>
 <li><p>Hk_nonortho_sym : Symmetrized Hamiltonian matrix elements in k-space (non-orthogonal) (ndarray).&quot;,</p></li>
 <li><p>Sr_sym          : Symmetrized overlap matrix elements in real-space (ndarray).&quot;,</p></li>
 <li><p>Hr_sym          : Symmetrized Hamiltonian matrix elements in real-space (orthogonal) (ndarray).&quot;,</p></li>
 <li><p>Hr_nonortho_sym : Symmetrized Hamiltonian matrix elements in real-space (non-orthogonal) (ndarray).&quot;,</p></li>
-<li><p>rpoints_mp      : lattice points data included in matrix_dict, [[r1, r2, r3]] (crystal coordinate) (ndarray).&quot;,</p></li>
 <li><p>Ek_RMSE_grid    : mean squared error of eigen energies between symmetrized and non-symmetrized closed wannier TB model (grid) (float).&quot;,</p></li>
 <li><p>Ek_RMSE_path    : mean squared error of eigen energies between symmetrized and non-symmetrized closed wannier TB model (path) (float).&quot;,</p></li>
 <li><p>matrix_dict     : dictionary form of the real-space representation of symmetry-adapted multipole basis (SAMB) (dict).&quot;,</p></li>

@@ -185,7 +185,7 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l1"><a class="reference internal" href="../../../src/format/sr.html">Overlap matrix elements in real-space</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../src/format/z.html">The expansion coefficients of the Hamiltonian matrix (orthogonal) H expressed by a linear combination of SAMBs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../src/format/s.html">The expansion coefficients of the Overlap matrix expressed by a linear combination of SAMBs</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../src/format/z_exp.html">expectation value of the given operator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/format/z_exp.html">expectation value of the SAMBs.</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">API</span></p>
 <ul class="nav bd-sidenav">
@@ -361,6 +361,12 @@ document.write(`
     <span class="s2">&quot;berry_curv_unit&quot;</span><span class="p">:</span> <span class="s2">&quot;ang2&quot;</span><span class="p">,</span>
     <span class="s2">&quot;berry_curv_adpt_kmesh&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
     <span class="s2">&quot;berry_curv_adpt_kmesh_thresh&quot;</span><span class="p">:</span> <span class="mi">100</span><span class="p">,</span>
+    <span class="s2">&quot;fermi_energy&quot;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+    <span class="s2">&quot;fermi_energy_max&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="s2">&quot;fermi_energy_min&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="s2">&quot;fermi_energy_step&quot;</span><span class="p">:</span> <span class="mf">0.01</span><span class="p">,</span>
+    <span class="s2">&quot;fermi_energy_list&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="s2">&quot;num_fermi&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
     <span class="c1"># kubo</span>
     <span class="s2">&quot;kubo_freq_max&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
     <span class="s2">&quot;kubo_freq_min&quot;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
@@ -393,7 +399,7 @@ document.write(`
     <span class="c1"># ==================================================</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">topdir</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">seedname</span><span class="o">=</span><span class="s2">&quot;cwannier&quot;</span><span class="p">,</span> <span class="n">dic</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        initialize the class.</span>
+<span class="sd">        Win manages input file for wannier90.x, seedname.win file.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            topdir (str, optional): directory of seedname.win file.</span>
@@ -456,15 +462,24 @@ document.write(`
 <span class="sd">                - smr_type                     : Defines the analytical form used for the broadened delta function in the computation of the DOS and similar quantities defined on the energy axis, gauss/m-pN/m-v or cold/f-d (str), [gauss].</span>
 <span class="sd">                - smr_fixed_en_width           : Energy width for the smearing function for the DOS. Used only if adpt_smr is false (The units are [eV]) (flaot), [0.0].</span>
 <span class="sd">                - spin_decomp                  : If true, extra columns are added to some output files (such as seedname-dos.dat for the dos module, and analogously for the berry and BoltzWann modules) (bool), [False].</span>
+
 <span class="sd">            # berry</span>
 <span class="sd">                - berry                        : Determines whether to enter the berry routines (bool), [False].</span>
 <span class="sd">                - berry_task                   : The quantity to compute when berry=true, ahc/morb/kubo/sc/shc/kdotp/me (str).</span>
 <span class="sd">                - berry_kmesh                  : Overrides the kmesh global variable.</span>
 <span class="sd">                - berry_kmesh_spacing          : Overrides the kmesh_spacing global variable.</span>
+
 <span class="sd">            # berry curvature, ahc, shc</span>
 <span class="sd">                - berry_curv_unit              : Unit of Berry curvature, ang2/bohr2, [&#39;ang2&#39;].</span>
 <span class="sd">                - berry_curv_adpt_kmesh        : Linear dimension of the adaptively refined k-mesh used to compute the anomalous/spin Hall conductivity, [1].</span>
 <span class="sd">                - berry_curv_adpt_kmesh_thresh : Threshold magnitude of the Berry curvature for adaptive refinement, [100].</span>
+<span class="sd">                - fermi_energy                 : fermi energy (float), [0.0].</span>
+<span class="sd">                - fermi_energy_max             : Upper limit of the Fermi energy range (float), [None].</span>
+<span class="sd">                - fermi_energy_min             : Lower limit of the Fermi energy range (float), [None].</span>
+<span class="sd">                - fermi_energy_step            : Step for increasing the Fermi energy in the specified range. (The units are [eV]) (float), [0.01].</span>
+<span class="sd">                - fermi_energy_list            : list of fermi energy (list), [None].</span>
+<span class="sd">                - num_fermi                    : number of fermi energies (int), [0].</span>
+
 <span class="sd">            # kubo</span>
 <span class="sd">                - kubo_freq_max           : Upper limit of the frequency range for computing the optical conductivity, JDOS and ac SHC. (The units are [eV]) (float), [If an inner energy window was specified, the default value is dis_froz_max-fermi_energy+0.6667. Otherwise it is the difference between the maximum and the minimum energy eigenvalue stored in seedname.eig, plus 0.6667.].</span>
 <span class="sd">                - kubo_freq_min           : Lower limit of the frequency range for computing the optical conductivity, JDOS and ac SHC. (The units are [eV]) (float), [0.0].</span>
@@ -475,9 +490,12 @@ document.write(`
 <span class="sd">                - kubo_adpt_smr_max       : Overrides the adpt_smr_max global variable.</span>
 <span class="sd">                - kubo_smr_fixed_en_width : Overrides the smr_fixed_en_width global variable.</span>
 <span class="sd">                - kubo_smr_type           : Overrides the smr_type global variable.</span>
+
 <span class="sd">            # morb</span>
+
 <span class="sd">            # gyrotropic</span>
 <span class="sd">                - gyrotropic          : Determines whether to enter the gyrotropic routines (bool), [False].</span>
+
 <span class="sd">            # boltzwann</span>
 <span class="sd">                - boltzwann           : Determines whether to enter the boltzwann routines (bool), [False].</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -521,7 +539,7 @@ document.write(`
                 <span class="k">else</span><span class="p">:</span>
                     <span class="n">d</span><span class="p">[</span><span class="s2">&quot;kpoints&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">kpoints</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
 
-                <span class="n">d</span><span class="p">[</span><span class="s2">&quot;kpoints&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">kpt</span><span class="p">[:</span><span class="mi">3</span><span class="p">]</span> <span class="k">for</span> <span class="n">kpt</span> <span class="ow">in</span> <span class="n">kpoints</span><span class="p">]</span>
+                <span class="n">d</span><span class="p">[</span><span class="s2">&quot;kpoints&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">kpt</span><span class="p">[:</span><span class="mi">3</span><span class="p">]</span> <span class="k">for</span> <span class="n">kpt</span> <span class="ow">in</span> <span class="n">d</span><span class="p">[</span><span class="s2">&quot;kpoints&quot;</span><span class="p">]]</span>
 
             <span class="k">if</span> <span class="s2">&quot;begin kpoint_path&quot;</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
                 <span class="n">k_data</span> <span class="o">=</span> <span class="n">win_data</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span> <span class="p">:</span> <span class="n">win_data_lower</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">&quot;end kpoint_path&quot;</span><span class="p">)]</span>
@@ -651,18 +669,18 @@ document.write(`
         <span class="n">d</span><span class="p">[</span><span class="s2">&quot;gyrotropic&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_param_keyword</span><span class="p">(</span><span class="n">win_data</span><span class="p">,</span> <span class="s2">&quot;gyrotropic&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">bool</span><span class="p">)</span>
         <span class="n">d</span><span class="p">[</span><span class="s2">&quot;boltzwann&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_param_keyword</span><span class="p">(</span><span class="n">win_data</span><span class="p">,</span> <span class="s2">&quot;boltzwann&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">bool</span><span class="p">)</span>
 
-        <span class="n">nfermi</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">num_fermi</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="n">found_fermi_energy</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="n">fermi_energy_max</span> <span class="o">=</span> <span class="mf">0.0</span>
         <span class="n">fermi_energy_min</span> <span class="o">=</span> <span class="mf">0.0</span>
         <span class="n">fermi_energy_step</span> <span class="o">=</span> <span class="mf">0.0</span>
         <span class="n">fermi_energy_list</span> <span class="o">=</span> <span class="p">[]</span>
 
-        <span class="n">fermi_energy</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_param_keyword</span><span class="p">(</span><span class="n">win_data</span><span class="p">,</span> <span class="s2">&quot;fermi_energy&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+        <span class="n">fermi_energy</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_param_keyword</span><span class="p">(</span><span class="n">win_data</span><span class="p">,</span> <span class="s2">&quot;fermi_energy&quot;</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">fermi_energy</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">found_fermi_energy</span> <span class="o">=</span> <span class="kc">True</span>
-            <span class="n">nfermi</span> <span class="o">=</span> <span class="mi">1</span>
+            <span class="n">num_fermi</span> <span class="o">=</span> <span class="mi">1</span>
 
         <span class="n">fermi_energy_scan</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="n">fermi_energy_min</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_param_keyword</span><span class="p">(</span><span class="n">win_data</span><span class="p">,</span> <span class="s2">&quot;fermi_energy_min&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
@@ -683,18 +701,18 @@ document.write(`
             <span class="k">if</span> <span class="n">fermi_energy_step</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">fermi_energy_step</span> <span class="o">&lt;=</span> <span class="mf">0.0</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Error: fermi_energy_step must be positive&quot;</span><span class="p">)</span>
 
-            <span class="n">nfermi</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">abs</span><span class="p">((</span><span class="n">fermi_energy_max</span> <span class="o">-</span> <span class="n">fermi_energy_min</span><span class="p">)</span> <span class="o">/</span> <span class="n">fermi_energy_step</span><span class="p">))</span> <span class="o">+</span> <span class="mi">1</span>
+            <span class="n">num_fermi</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">abs</span><span class="p">((</span><span class="n">fermi_energy_max</span> <span class="o">-</span> <span class="n">fermi_energy_min</span><span class="p">)</span> <span class="o">/</span> <span class="n">fermi_energy_step</span><span class="p">))</span> <span class="o">+</span> <span class="mi">1</span>
 
         <span class="k">if</span> <span class="n">found_fermi_energy</span><span class="p">:</span>
             <span class="n">fermi_energy_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">fermi_energy</span><span class="p">]</span>
         <span class="k">elif</span> <span class="n">fermi_energy_scan</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">nfermi</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">num_fermi</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
                 <span class="n">fermi_energy_step</span> <span class="o">=</span> <span class="mf">0.0</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">fermi_energy_step</span> <span class="o">=</span> <span class="p">(</span><span class="n">fermi_energy_max</span> <span class="o">-</span> <span class="n">fermi_energy_min</span><span class="p">)</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="n">nfermi</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+                <span class="n">fermi_energy_step</span> <span class="o">=</span> <span class="p">(</span><span class="n">fermi_energy_max</span> <span class="o">-</span> <span class="n">fermi_energy_min</span><span class="p">)</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="n">num_fermi</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
 
             <span class="n">fermi_energy_list</span> <span class="o">=</span> <span class="p">[]</span>
-            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nfermi</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_fermi</span><span class="p">):</span>
                 <span class="n">fermi_energy_list</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">fermi_energy_min</span> <span class="o">+</span> <span class="p">(</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">fermi_energy_step</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">fermi_energy_list</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">]</span>
@@ -704,6 +722,7 @@ document.write(`
         <span class="n">d</span><span class="p">[</span><span class="s2">&quot;fermi_energy_min&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">fermi_energy_min</span>
         <span class="n">d</span><span class="p">[</span><span class="s2">&quot;fermi_energy_step&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">fermi_energy_step</span>
         <span class="n">d</span><span class="p">[</span><span class="s2">&quot;fermi_energy_list&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">fermi_energy_list</span>
+        <span class="n">d</span><span class="p">[</span><span class="s2">&quot;num_fermi&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">num_fermi</span>
 
         <span class="k">return</span> <span class="n">d</span></div>
 

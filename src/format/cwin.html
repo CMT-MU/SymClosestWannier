@@ -186,7 +186,7 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l1"><a class="reference internal" href="sr.html">Overlap matrix elements in real-space</a></li>
 <li class="toctree-l1"><a class="reference internal" href="z.html">The expansion coefficients of the Hamiltonian matrix (orthogonal) H expressed by a linear combination of SAMBs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="s.html">The expansion coefficients of the Overlap matrix expressed by a linear combination of SAMBs</a></li>
-<li class="toctree-l1"><a class="reference internal" href="z_exp.html">expectation value of the given operator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="z_exp.html">expectation value of the SAMBs.</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">API</span></p>
 <ul class="nav bd-sidenav">
@@ -380,6 +380,8 @@ One can also equivalently provide the string seedname.cwin instead of seedname.<
 <li><p>delta             : small constant to avoid ill-conditioning of overlap matrices (float), [1e-12].</p></li>
 <li><p>svd               : implement singular value decomposition ? otherwise adopt Lowdin’s orthogonalization method (bool), [False].</p></li>
 <li><p>verbose           : verbose calculation info (bool, optional), [False].</p></li>
+<li><p>parallel          : use parallel code? (bool), [False].</p></li>
+<li><p>formatter         : format by using black? (bool), [False].</p></li>
 <li><p>transl_inv        : use Eq.(31) of Marzari&amp;Vanderbilt PRB 56, 12847 (1997) for band-diagonal position matrix elements? (bool), [True].</p></li>
 <li><p>use_degen_pert    : use degenerate perturbation theory when bands are degenerate and band derivatives are needed? (bool), [False].</p></li>
 <li><p>degen_thr         : threshold to exclude degenerate bands from the calculation, [0.0].</p></li>
@@ -390,6 +392,7 @@ One can also equivalently provide the string seedname.cwin instead of seedname.<
 <li><p>write_rmn         : write seedname_r.dat ? (bool), [False].</p></li>
 <li><p>write_vmn         : write seedname_v.dat ? (bool), [False].</p></li>
 <li><p>write_tb          : write seedname_tb.dat ? (bool), [False].</p></li>
+<li><p>write_spn         : write <a class="reference external" href="http://seedname.spn.cw">seedname.spn.cw</a> ? (bool), [False].</p></li>
 </ul>
 </li>
 <li><p>only used for symmetrization.</p>
@@ -397,7 +400,7 @@ One can also equivalently provide the string seedname.cwin instead of seedname.<
 <li><p>symmetrization    : symmetrize ? (bool), [False].</p></li>
 <li><p>mp_outdir         : output files for multipie are found in this directory (str). [“./”].</p></li>
 <li><p>mp_seedname       : seedname for seedname_model.py, seedname_samb.py and seedname_matrix.py files (str).</p></li>
-<li><p>ket_amn           : ket basis list in the seedname.amn file. The format of each ket must be same as the “ket” in sambname_model.py file. See sambname[“info”][“ket”] in sambname_model.py file for the format (list), [None].</p></li>
+<li><p>ket_amn           : ket basis list in the seedname.amn file. If ket_amn == auto, the list of orbitals are set automatically, or it can be set manually. The format of each ket must be same as the “ket” in sambname_model.py file. See sambname[“info”][“ket”] in sambname_model.py file for the format (list), [None].</p></li>
 <li><p>irreps            : list of irreps to be considered (str/list), [None].</p></li>
 </ul>
 </li>
@@ -406,6 +409,15 @@ One can also equivalently provide the string seedname.cwin instead of seedname.<
 <li><p>a                 : lattice parameter (in Ang) used to correct units of k points in reference band data, [1.0].</p></li>
 <li><p>N1                : number of divisions for high symmetry lines (int, optional), [50].</p></li>
 <li><p>fermi_energy      : fermi energy, [0.0].</p></li>
+</ul>
+</li>
+<li><p>only used for when zeeman interaction is considered.</p>
+<ul>
+<li><p>zeeman_interaction   : consider zeeman interaction ? (bool), [False].</p></li>
+<li><p>magnetic_field       : strength of the magnetic field (float), [0.0].</p></li>
+<li><p>magnetic_field_theta : angle from the z-axis of the magnetic field (float), [0.0].</p></li>
+<li><p>magnetic_field_phi   : angle from the x-axis of the magnetic field (float), [0.0].</p></li>
+<li><p>g_factor             : spin g factor (float), [2.0].</p></li>
 </ul>
 </li>
 </ul>

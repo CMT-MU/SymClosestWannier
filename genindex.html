@@ -185,7 +185,7 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l1"><a class="reference internal" href="src/format/sr.html">Overlap matrix elements in real-space</a></li>
 <li class="toctree-l1"><a class="reference internal" href="src/format/z.html">The expansion coefficients of the Hamiltonian matrix (orthogonal) H expressed by a linear combination of SAMBs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="src/format/s.html">The expansion coefficients of the Overlap matrix expressed by a linear combination of SAMBs</a></li>
-<li class="toctree-l1"><a class="reference internal" href="src/format/z_exp.html">expectation value of the given operator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="src/format/z_exp.html">expectation value of the SAMBs.</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">API</span></p>
 <ul class="nav bd-sidenav">
@@ -354,12 +354,18 @@ document.write(`
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="src/api/analyzer.html#symclosestwannier.analyzer.band.Band">Band (class in symclosestwannier.analyzer.band)</a>
 </li>
+      <li><a href="src/api/analyzer.html#symclosestwannier.analyzer.get_response.berry_get_ahc">berry_get_ahc() (in module symclosestwannier.analyzer.get_response)</a>
+</li>
+      <li><a href="src/api/analyzer.html#symclosestwannier.analyzer.get_response.berry_get_imf_klist">berry_get_imf_klist() (in module symclosestwannier.analyzer.get_response)</a>
+</li>
+      <li><a href="src/api/analyzer.html#symclosestwannier.analyzer.get_response.berry_get_imfgh_klist">berry_get_imfgh_klist() (in module symclosestwannier.analyzer.get_response)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="src/api/analyzer.html#symclosestwannier.analyzer.get_response.berry_get_kubo">berry_get_kubo() (in module symclosestwannier.analyzer.get_response)</a>
 </li>
       <li><a href="src/api/analyzer.html#symclosestwannier.analyzer.get_response.berry_get_me">berry_get_me() (in module symclosestwannier.analyzer.get_response)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="src/api/analyzer.html#symclosestwannier.analyzer.get_response.berry_main">berry_main() (in module symclosestwannier.analyzer.get_response)</a>
 </li>
       <li><a href="src/api/analyzer.html#symclosestwannier.analyzer.get_response.boltzwann_main">boltzwann_main() (in module symclosestwannier.analyzer.get_response)</a>
@@ -386,6 +392,8 @@ document.write(`
         <li><a href="src/api/util.html#symclosestwannier.util._utility.construct_Or">(in module symclosestwannier.util._utility)</a>
 </li>
       </ul></li>
+      <li><a href="src/api/util.html#symclosestwannier.util._utility.convert_w90_orbital">convert_w90_orbital() (in module symclosestwannier.util._utility)</a>
+</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="src/api/cw.html#symclosestwannier.cw.cw_manager.CWManager.create_subdir">create_subdir() (CWManager method)</a>
@@ -423,8 +431,6 @@ document.write(`
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="src/api/cw.html#symclosestwannier.cw.cw_manager.CWManager.elapsed">elapsed() (CWManager method)</a>
-</li>
-      <li><a href="src/api/analyzer.html#symclosestwannier.analyzer.get_response.expectation_main">expectation_main() (in module symclosestwannier.analyzer.get_response)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -683,6 +689,8 @@ document.write(`
 </li>
       <li><a href="src/api/util.html#symclosestwannier.util._utility.sort_ket_matrix_k">sort_ket_matrix_k() (in module symclosestwannier.util._utility)</a>
 </li>
+      <li><a href="src/api/analyzer.html#symclosestwannier.analyzer.get_response.spin_moment_main">spin_moment_main() (in module symclosestwannier.analyzer.get_response)</a>
+</li>
       <li><a href="src/api/cw.html#symclosestwannier.cw.spn.Spn">Spn (class in symclosestwannier.cw.spn)</a>
 </li>
       <li>
@@ -748,6 +756,8 @@ document.write(`
         <li><a href="src/api/cw.html#module-symclosestwannier.cw.cw_manager">module</a>
 </li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li>
     symclosestwannier.cw.cw_model
 
@@ -755,8 +765,6 @@ document.write(`
         <li><a href="src/api/cw.html#module-symclosestwannier.cw.cw_model">module</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li>
     symclosestwannier.cw.cwin
 
@@ -882,6 +890,12 @@ document.write(`
 </li>
       <li><a href="src/api/analyzer.html#symclosestwannier.analyzer.get_response.wham_get_deleig_a">wham_get_deleig_a() (in module symclosestwannier.analyzer.get_response)</a>
 </li>
+      <li><a href="src/api/analyzer.html#symclosestwannier.analyzer.get_response.wham_get_eig_UU_HH_JJlist">wham_get_eig_UU_HH_JJlist() (in module symclosestwannier.analyzer.get_response)</a>
+</li>
+      <li><a href="src/api/analyzer.html#symclosestwannier.analyzer.get_response.wham_get_JJp_JJm_list">wham_get_JJp_JJm_list() (in module symclosestwannier.analyzer.get_response)</a>
+</li>
+      <li><a href="src/api/analyzer.html#symclosestwannier.analyzer.get_response.wham_get_occ_mat_list">wham_get_occ_mat_list() (in module symclosestwannier.analyzer.get_response)</a>
+</li>
       <li><a href="src/api/util.html#symclosestwannier.util._utility.wigner_seitz">wigner_seitz() (in module symclosestwannier.util._utility)</a>
 </li>
       <li><a href="src/api/cw.html#symclosestwannier.cw.win.Win">Win (class in symclosestwannier.cw.win)</a>
@@ -900,6 +914,8 @@ document.write(`
       </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="src/api/analyzer.html#symclosestwannier.analyzer.response.Response.write_ahc">write_ahc() (Response method)</a>
+</li>
       <li><a href="src/api/cw.html#symclosestwannier.cw.cw_model.CWModel.write_info_data">write_info_data() (CWModel method)</a>
 </li>
       <li><a href="src/api/analyzer.html#symclosestwannier.analyzer.response.Response.write_kubo">write_kubo() (Response method)</a>

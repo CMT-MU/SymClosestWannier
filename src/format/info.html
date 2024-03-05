@@ -188,7 +188,7 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l1"><a class="reference internal" href="sr.html">Overlap matrix elements in real-space</a></li>
 <li class="toctree-l1"><a class="reference internal" href="z.html">The expansion coefficients of the Hamiltonian matrix (orthogonal) H expressed by a linear combination of SAMBs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="s.html">The expansion coefficients of the Overlap matrix expressed by a linear combination of SAMBs</a></li>
-<li class="toctree-l1"><a class="reference internal" href="z_exp.html">expectation value of the given operator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="z_exp.html">expectation value of the SAMBs.</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">API</span></p>
 <ul class="nav bd-sidenav">
@@ -388,11 +388,16 @@ document.write(`
 <li><p>symmetrization    : symmetrize ? (bool), [False].</p></li>
 <li><p>mp_outdir         : output files for multipie are found in this directory (str). [‘./’].</p></li>
 <li><p>mp_seedname       : seedname for seedname_model.py, seedname_samb.py and seedname_matrix.py files (str), [‘default’].</p></li>
-<li><p>ket_amn           : ket basis list in the seedname.amn file. The format of each ket must be same as the ‘ket’ in sambname_model.py file. See sambname[‘info’][‘ket’] in sambname_model.py file for the format (list), [None].</p></li>
+<li><p>ket_amn           : ket basis list in the seedname.amn file. If ket_amn == auto, the list of orbitals are set automatically, or it can be set manually. The format of each ket must be same as the “ket” in sambname_model.py file. See sambname[“info”][“ket”] in sambname_model.py file for the format (list), [None].</p></li>
 <li><p>irreps            : list of irreps to be considered (str/list), [None].</p></li>
 <li><p>a                 : lattice parameter (in Ang) used to correct units of k points in reference band data (float, optional), [1.0].</p></li>
 <li><p>N1                : number of divisions for high symmetry lines (int, optional), [50].</p></li>
 <li><p>fermi_energy      : fermi energy (float, optional), [0.0].</p></li>
+<li><p>zeeman_interaction   : consider zeeman interaction ? (bool), [False].</p></li>
+<li><p>magnetic_field       : strength of the magnetic field (float), [0.0].</p></li>
+<li><p>magnetic_field_theta : angle from the z-axis of the magnetic field (float), [0.0].</p></li>
+<li><p>magnetic_field_phi   : angle from the x-axis of the magnetic field (float), [0.0].</p></li>
+<li><p>g_factor             : spin g factor (float), [2.0].</p></li>
 <li><p>num_k             : # of k points (int), [1].</p></li>
 <li><p>num_bands         : # of bands passed to the code (int), [1].</p></li>
 <li><p>num_wann          : # of WFs (int), [1].</p></li>
@@ -419,6 +424,7 @@ document.write(`
 <li><p>nw2l              : <span class="math notranslate nohighlight">\(l\)</span> specifies the angular part <span class="math notranslate nohighlight">\(\Theta_{lm}(\theta,\phi)\)</span> (list), [None].</p></li>
 <li><p>nw2m              : <span class="math notranslate nohighlight">\(m\)</span> specifies the angular part <span class="math notranslate nohighlight">\(\Theta_{lm}(\theta,\phi)\)</span> (list), [None].</p></li>
 <li><p>nw2r              : <span class="math notranslate nohighlight">\(r\)</span> specifies the radial part <span class="math notranslate nohighlight">\(R_r(r)\)</span> (list), [None].</p></li>
+<li><p>nw2s              : <span class="math notranslate nohighlight">\(s\)</span> specifies the spin, 1(up)/-1(dn) (list), [None].</p></li>
 <li><p>atom_orb          : WFs indexes of each atom (list), [None].</p></li>
 <li><p>atom_pos          : atom position index of each atom (list), [None].</p></li>
 <li><p>atom_pos_r        : atom position of each atom in fractional coordinates with respect to the lattice vectors (list), [None].</p></li>

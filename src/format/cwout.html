@@ -186,7 +186,7 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l1"><a class="reference internal" href="sr.html">Overlap matrix elements in real-space</a></li>
 <li class="toctree-l1"><a class="reference internal" href="z.html">The expansion coefficients of the Hamiltonian matrix (orthogonal) H expressed by a linear combination of SAMBs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="s.html">The expansion coefficients of the Overlap matrix expressed by a linear combination of SAMBs</a></li>
-<li class="toctree-l1"><a class="reference internal" href="z_exp.html">expectation value of the given operator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="z_exp.html">expectation value of the SAMBs.</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">API</span></p>
 <ul class="nav bd-sidenav">
@@ -361,51 +361,167 @@ document.write(`
   <section class="tex2jax_ignore mathjax_ignore" id="standard-output">
 <h1>standard output<a class="headerlink" href="#standard-output" title="Link to this heading">#</a></h1>
 <p>Example standard output for <a class="reference download internal" download="" href="../../_downloads/426bd9b996199c4a85abdc0f26581726/graphene.cwin"><span class="xref download myst">graphene</span></a> is given here.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">********************************************************************************</span>
-<span class="o">*</span>                                                                              <span class="o">*</span>
-<span class="o">*</span>  <span class="n">Create</span> <span class="n">Closest</span> <span class="n">Wannier</span> <span class="n">Tight</span><span class="o">-</span><span class="n">Binding</span> <span class="n">Model</span> <span class="kn">from</span> <span class="nn">Plane</span><span class="o">-</span><span class="n">Wave</span> <span class="n">DFT</span> <span class="n">Calculation</span>  <span class="o">*</span>
-<span class="o">*</span>                                                                              <span class="o">*</span>
-<span class="o">********************************************************************************</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>             <span class="o">+---------------------------------------------------+</span>
+             <span class="o">|</span>                                                   <span class="o">|</span>
+             <span class="o">|</span>                <span class="n">SymClosestWwannier</span>                 <span class="o">|</span>
+             <span class="o">|</span>                                                   <span class="o">|</span>
+             <span class="o">+---------------------------------------------------+</span>
+             <span class="o">|</span>                                                   <span class="o">|</span>
+             <span class="o">|</span>         <span class="n">Welcome</span> <span class="n">to</span> <span class="n">the</span> <span class="n">Symmetry</span><span class="o">-</span><span class="n">Adapted</span>           <span class="o">|</span>
+             <span class="o">|</span>        <span class="n">Closest</span> <span class="n">Wannier</span> <span class="n">Tight</span><span class="o">-</span><span class="n">Binding</span> <span class="n">code</span>         <span class="o">|</span>
+             <span class="o">|</span>    <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">CMT</span><span class="o">-</span><span class="n">MU</span><span class="o">/</span><span class="n">SymClosestWannier</span>    <span class="o">|</span>
+             <span class="o">|</span>                                                   <span class="o">|</span>
+             <span class="o">|</span>                                                   <span class="o">|</span>
+             <span class="o">|</span>        <span class="n">SymClosestWwannier</span> <span class="n">Developer</span> <span class="n">Group</span><span class="p">:</span>        <span class="o">|</span>
+             <span class="o">|</span>          <span class="n">Rikuto</span> <span class="n">Oiwa</span>      <span class="p">(</span><span class="n">RIKEN</span><span class="p">)</span>                 <span class="o">|</span>
+             <span class="o">|</span>          <span class="n">Hiroaki</span> <span class="n">Kusunose</span> <span class="p">(</span><span class="n">Meiji</span> <span class="n">Univ</span><span class="o">.</span><span class="p">)</span>           <span class="o">|</span>
+             <span class="o">|</span>                                                   <span class="o">|</span>
+             <span class="o">|</span>    <span class="n">For</span> <span class="n">more</span> <span class="n">detailed</span> <span class="n">information</span><span class="p">,</span>                 <span class="o">|</span>
+             <span class="o">|</span>    <span class="n">please</span> <span class="n">check</span> <span class="n">the</span> <span class="n">code</span> <span class="n">documentation</span> <span class="ow">and</span> <span class="n">the</span>    <span class="o">|</span>
+             <span class="o">|</span>    <span class="n">README</span> <span class="n">on</span> <span class="n">the</span> <span class="n">GitHub</span> <span class="n">page</span> <span class="n">of</span> <span class="n">the</span> <span class="n">code</span>          <span class="o">|</span>
+             <span class="o">|</span>                                                   <span class="o">|</span>
+             <span class="o">|</span>  <span class="n">Please</span> <span class="n">cite</span>                                      <span class="o">|</span>
+             <span class="o">|</span>                                                   <span class="o">|</span>
+             <span class="o">|</span>  <span class="p">[</span><span class="n">ref</span><span class="p">]</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>                                        <span class="o">|</span>
+             <span class="o">|</span>        <span class="n">Rikuto</span> <span class="n">Oiwa</span><span class="p">,</span> <span class="n">Akane</span> <span class="n">Inda</span><span class="p">,</span> <span class="n">Satoru</span> <span class="n">Hayami</span><span class="p">,</span>    <span class="o">|</span>
+             <span class="o">|</span>        <span class="n">Takuya</span> <span class="n">Nomoto</span><span class="p">,</span> <span class="n">Ryotaro</span> <span class="n">Arita</span><span class="p">,</span>              <span class="o">|</span>
+             <span class="o">|</span>        <span class="n">Hiroaki</span> <span class="n">Kusunose</span><span class="p">,</span> <span class="ow">in</span> <span class="n">preparation</span><span class="o">.</span>          <span class="o">|</span>
+             <span class="o">|</span>        <span class="n">url</span>                                        <span class="o">|</span>
+             <span class="o">|</span>                                                   <span class="o">|</span>
+             <span class="o">|</span>  <span class="ow">in</span> <span class="nb">any</span> <span class="n">publications</span> <span class="n">arising</span> <span class="kn">from</span> <span class="nn">the</span> <span class="n">use</span> <span class="n">of</span>      <span class="o">|</span>
+             <span class="o">|</span>  <span class="n">this</span> <span class="n">code</span><span class="o">.</span> <span class="n">For</span> <span class="n">the</span> <span class="n">method</span> <span class="n">please</span> <span class="n">cite</span>            <span class="o">|</span>
+             <span class="o">|</span>                                                   <span class="o">|</span>
+             <span class="o">|</span>  <span class="p">[</span><span class="n">ref</span><span class="p">]</span> <span class="s2">&quot;Closest Wannier functions to              |</span>
+             <span class="o">|</span>         <span class="n">a</span> <span class="n">given</span> <span class="nb">set</span> <span class="n">of</span> <span class="n">localized</span> <span class="n">orbitals</span><span class="s2">&quot;        |</span>
+             <span class="o">|</span>         <span class="n">Taisuke</span> <span class="n">Ozaki</span><span class="p">,</span>                            <span class="o">|</span>
+             <span class="o">|</span>         <span class="n">arXiv</span><span class="p">:</span><span class="mf">2306.15296</span><span class="p">,</span> <span class="p">(</span><span class="mi">2023</span><span class="p">)</span><span class="o">.</span>                 <span class="o">|</span>
+             <span class="o">|</span>                                                   <span class="o">|</span>
+             <span class="o">|</span>  <span class="p">[</span><span class="n">ref</span><span class="p">]</span> <span class="s2">&quot;Symmetry-adapted modeling for             |</span>
+             <span class="o">|</span>         <span class="n">molecules</span> <span class="ow">and</span> <span class="n">crystals</span><span class="s2">&quot;                   |</span>
+             <span class="o">|</span>  <span class="n">Hiroaki</span> <span class="n">Kusunose</span><span class="p">,</span> <span class="n">Rikuto</span> <span class="n">Oiwa</span><span class="p">,</span> <span class="ow">and</span> <span class="n">Satoru</span> <span class="n">Hayami</span> <span class="o">|</span>
+             <span class="o">|</span>         <span class="n">Phys</span><span class="o">.</span> <span class="n">Rev</span><span class="o">.</span> <span class="n">B</span> <span class="mi">107</span><span class="p">,</span> <span class="mi">195118</span> <span class="p">(</span><span class="mi">2023</span><span class="p">)</span>           <span class="o">|</span>
+             <span class="o">|</span>                                                   <span class="o">|</span>
+             <span class="o">|</span>                                                   <span class="o">|</span>
+             <span class="o">|</span> <span class="n">Copyright</span> <span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="mi">2023</span><span class="o">-</span>                               <span class="o">|</span>
+             <span class="o">|</span>     <span class="n">The</span> <span class="n">SymClosestWwannier</span> <span class="n">Developer</span> <span class="n">Group</span> <span class="ow">and</span>    <span class="o">|</span>
+             <span class="o">|</span>        <span class="n">individual</span> <span class="n">contributors</span>                    <span class="o">|</span>
+             <span class="o">|</span>                                                   <span class="o">|</span>
+             <span class="o">|</span>       <span class="n">Release</span><span class="p">:</span> <span class="mf">1.1.19</span>       <span class="mi">22</span><span class="n">th</span> <span class="n">January</span> <span class="mi">2024</span>      <span class="o">|</span>
+             <span class="o">|</span>                                                   <span class="o">|</span>
+             <span class="o">|</span> <span class="n">This</span> <span class="n">program</span> <span class="ow">is</span> <span class="n">free</span> <span class="n">software</span><span class="p">;</span> <span class="n">you</span> <span class="n">can</span>            <span class="o">|</span>
+             <span class="o">|</span> <span class="n">redistribute</span> <span class="n">it</span> <span class="ow">and</span><span class="o">/</span><span class="ow">or</span> <span class="n">modify</span> <span class="n">it</span> <span class="n">under</span> <span class="n">the</span> <span class="n">terms</span>  <span class="o">|</span>
+             <span class="o">|</span> <span class="n">of</span> <span class="n">the</span> <span class="n">GNU</span> <span class="n">General</span> <span class="n">Public</span> <span class="n">License</span> <span class="k">as</span> <span class="n">published</span> <span class="n">by</span> <span class="o">|</span>
+             <span class="o">|</span> <span class="n">the</span> <span class="n">Free</span> <span class="n">Software</span> <span class="n">Foundation</span><span class="p">;</span> <span class="n">either</span> <span class="n">version</span> <span class="mi">2</span> <span class="n">of</span> <span class="o">|</span>
+             <span class="o">|</span> <span class="n">the</span> <span class="n">License</span><span class="p">,</span> <span class="ow">or</span> <span class="p">(</span><span class="n">at</span> <span class="n">your</span> <span class="n">option</span><span class="p">)</span> <span class="nb">any</span> <span class="n">later</span> <span class="n">version</span><span class="o">|</span>
+             <span class="o">|</span>                                                   <span class="o">|</span>
+             <span class="o">|</span> <span class="n">This</span> <span class="n">program</span> <span class="ow">is</span> <span class="n">distributed</span> <span class="ow">in</span> <span class="n">the</span> <span class="n">hope</span> <span class="n">that</span> <span class="n">it</span>   <span class="o">|</span>
+             <span class="o">|</span> <span class="n">will</span> <span class="n">be</span> <span class="n">useful</span><span class="p">,</span> <span class="n">but</span> <span class="n">WITHOUT</span> <span class="n">ANY</span> <span class="n">WARRANTY</span><span class="p">;</span> <span class="n">without</span> <span class="o">|</span>
+             <span class="o">|</span> <span class="n">even</span> <span class="n">the</span> <span class="n">implied</span> <span class="n">warranty</span> <span class="n">of</span> <span class="n">MERCHANTABILITY</span> <span class="ow">or</span>   <span class="o">|</span>
+             <span class="o">|</span> <span class="n">FITNESS</span> <span class="n">FOR</span> <span class="n">A</span> <span class="n">PARTICULAR</span> <span class="n">PURPOSE</span><span class="o">.</span> <span class="n">See</span> <span class="n">the</span> <span class="n">GNU</span>     <span class="o">|</span>
+             <span class="o">|</span> <span class="n">General</span> <span class="n">Public</span> <span class="n">License</span> <span class="k">for</span> <span class="n">more</span> <span class="n">details</span><span class="o">.</span>          <span class="o">|</span>
+             <span class="o">|</span>                                                   <span class="o">|</span>
+             <span class="o">|</span> <span class="n">You</span> <span class="n">should</span> <span class="n">have</span> <span class="n">received</span> <span class="n">a</span> <span class="n">copy</span> <span class="n">of</span> <span class="n">the</span> <span class="n">GNU</span> <span class="n">General</span><span class="o">|</span>
+             <span class="o">|</span> <span class="n">Public</span> <span class="n">License</span> <span class="n">along</span> <span class="k">with</span> <span class="n">this</span> <span class="n">program</span><span class="p">;</span> <span class="k">if</span> <span class="ow">not</span><span class="p">,</span>   <span class="o">|</span>
+             <span class="o">|</span> <span class="n">write</span> <span class="n">to</span> <span class="n">the</span> <span class="n">Free</span> <span class="n">Software</span> <span class="n">Foundation</span><span class="p">,</span> <span class="n">Inc</span><span class="o">.</span><span class="p">,</span>      <span class="o">|</span>
+             <span class="o">|</span> <span class="mi">675</span> <span class="n">Mass</span> <span class="n">Ave</span><span class="p">,</span> <span class="n">Cambridge</span><span class="p">,</span> <span class="n">MA</span> <span class="mi">02139</span><span class="p">,</span> <span class="n">USA</span><span class="o">.</span>           <span class="o">|</span>
+             <span class="o">|</span>                                                   <span class="o">|</span>
+             <span class="o">+---------------------------------------------------+</span>
+             <span class="o">|</span>    <span class="n">Execution</span> <span class="n">started</span> <span class="n">on</span> <span class="mi">2024</span><span class="o">/</span><span class="mi">02</span><span class="o">/</span><span class="mi">19</span> <span class="mi">18</span><span class="p">:</span><span class="mi">24</span><span class="p">:</span><span class="mi">57</span>       <span class="o">|</span>
+             <span class="o">+---------------------------------------------------+</span>
 
 
-<span class="o">*</span> <span class="n">graphene</span>
 
- <span class="o">-</span> <span class="n">reading</span> <span class="n">output</span> <span class="n">of</span> <span class="n">DFT</span> <span class="n">calculation</span> <span class="o">...</span> <span class="n">done</span> <span class="p">(</span><span class="mf">0.05</span> <span class="p">[</span><span class="n">sec</span><span class="p">])</span>
- <span class="o">-</span> <span class="n">eliminating</span> <span class="n">bands</span> <span class="k">with</span> <span class="n">low</span> <span class="n">projectability</span> <span class="p">(</span><span class="n">proj_min</span> <span class="o">=</span> <span class="mf">0.2</span><span class="p">)</span> <span class="o">...</span> <span class="n">done</span> <span class="p">(</span><span class="mf">0.00</span> <span class="p">[</span><span class="n">sec</span><span class="p">])</span>
- <span class="o">-</span> <span class="n">disentanglement</span> <span class="o">...</span> <span class="n">done</span> <span class="p">(</span><span class="mf">0.00</span> <span class="p">[</span><span class="n">sec</span><span class="p">])</span>
- <span class="o">-</span> <span class="n">constructing</span> <span class="n">TB</span> <span class="n">Hamiltonian</span> <span class="o">...</span> <span class="n">done</span> <span class="p">(</span><span class="mf">0.01</span> <span class="p">[</span><span class="n">sec</span><span class="p">])</span>
- <span class="o">-</span> <span class="n">symmetrization</span> <span class="o">...</span>
-   <span class="o">-</span> <span class="n">reading</span> <span class="n">output</span> <span class="n">of</span> <span class="n">multiple</span> <span class="o">...</span>
-  <span class="o">*</span> <span class="n">read</span> <span class="s1">&#39;./graphene_model.py&#39;</span><span class="o">.</span>
-  <span class="o">*</span> <span class="n">read</span> <span class="s1">&#39;./graphene_samb.py&#39;</span><span class="o">.</span>
-  <span class="o">*</span> <span class="n">read</span> <span class="s1">&#39;./graphene_matrix.py&#39;</span><span class="o">.</span>
-<span class="n">done</span> <span class="p">(</span><span class="mf">0.03</span> <span class="p">[</span><span class="n">sec</span><span class="p">])</span>
-   <span class="o">-</span> <span class="n">decomposing</span> <span class="n">Hamiltonian</span> <span class="n">Hr</span> <span class="k">as</span> <span class="n">linear</span> <span class="n">combination</span> <span class="n">of</span> <span class="n">SAMBs</span> <span class="o">...</span> <span class="n">done</span> <span class="p">(</span><span class="mf">0.00</span> <span class="p">[</span><span class="n">sec</span><span class="p">])</span>
-   <span class="o">-</span> <span class="n">decomposing</span> <span class="n">overlap</span> <span class="n">Sr</span> <span class="k">as</span> <span class="n">linear</span> <span class="n">combination</span> <span class="n">of</span> <span class="n">SAMBs</span> <span class="o">...</span> <span class="n">done</span> <span class="p">(</span><span class="mf">0.00</span> <span class="p">[</span><span class="n">sec</span><span class="p">])</span>
-   <span class="o">-</span> <span class="n">evaluating</span> <span class="n">fitting</span> <span class="n">accuracy</span> <span class="o">...</span>
-     <span class="o">*</span> <span class="n">RMSE</span> <span class="n">of</span> <span class="n">eigen</span> <span class="n">values</span> <span class="n">between</span> <span class="n">CW</span> <span class="ow">and</span> <span class="n">Symmetry</span><span class="o">-</span><span class="n">Adapted</span> <span class="n">CW</span> <span class="n">models</span> <span class="p">(</span><span class="n">grid</span><span class="p">)</span> <span class="o">=</span> <span class="mf">47.6916</span> <span class="p">[</span><span class="n">meV</span><span class="p">]</span>
-     <span class="o">*</span> <span class="n">RMSE</span> <span class="n">of</span> <span class="n">eigen</span> <span class="n">values</span> <span class="n">between</span> <span class="n">CW</span> <span class="ow">and</span> <span class="n">Symmetry</span><span class="o">-</span><span class="n">Adapted</span> <span class="n">CW</span> <span class="n">models</span> <span class="p">(</span><span class="n">path</span><span class="p">)</span> <span class="o">=</span> <span class="mf">51.6997</span> <span class="p">[</span><span class="n">meV</span><span class="p">]</span>
-    <span class="n">done</span> <span class="p">(</span><span class="mf">0.04</span> <span class="p">[</span><span class="n">sec</span><span class="p">])</span>
-  <span class="n">done</span> <span class="p">(</span><span class="mf">0.14</span> <span class="p">[</span><span class="n">sec</span><span class="p">])</span>
+                                   <span class="o">------</span>
+                                   <span class="n">SYSTEM</span>
+                                   <span class="o">------</span>
 
- <span class="o">-</span> <span class="n">total</span> <span class="n">elapsed_time</span><span class="p">:</span> <span class="mf">0.21</span> <span class="p">[</span><span class="n">sec</span><span class="p">]</span>
+                            <span class="n">Lattice</span> <span class="n">Vectors</span> <span class="p">(</span><span class="n">Ang</span><span class="p">)</span>
+                <span class="n">a_1</span>    <span class="mf">2.435000</span>   <span class="mf">0.000000</span>   <span class="mf">0.000000</span>
+                <span class="n">a_2</span>    <span class="o">-</span><span class="mf">1.217500</span>   <span class="mf">2.108772</span>   <span class="mf">0.000000</span>
+                <span class="n">a_3</span>    <span class="mf">0.000000</span>   <span class="mf">0.000000</span>   <span class="mf">9.739999</span>
+
+                <span class="n">Unit</span> <span class="n">Cell</span> <span class="n">Volume</span><span class="p">:</span>      <span class="mf">50.01352</span>  <span class="p">(</span><span class="n">Ang</span><span class="o">^</span><span class="mi">3</span><span class="p">)</span>
+
+                      <span class="n">Reciprocal</span><span class="o">-</span><span class="n">Space</span> <span class="n">Vectors</span> <span class="p">(</span><span class="n">Ang</span><span class="o">^-</span><span class="mi">1</span><span class="p">)</span>
+                <span class="n">b_1</span>    <span class="mf">2.580364</span>   <span class="mf">1.489774</span>   <span class="mf">0.000000</span>
+                <span class="n">b_2</span>    <span class="mf">0.000000</span>   <span class="mf">2.979547</span>   <span class="mf">0.000000</span>
+                <span class="n">b_3</span>    <span class="mf">0.000000</span>   <span class="mf">0.000000</span>   <span class="mf">0.645091</span>
 
 
-<span class="o">********************************************************************************</span>
-<span class="o">*</span>                                                                              <span class="o">*</span>
-<span class="o">*</span>                            <span class="n">Successfully</span> <span class="n">Completed</span>                            <span class="o">*</span>
-<span class="o">*</span>                                                                              <span class="o">*</span>
-<span class="o">********************************************************************************</span>
+<span class="o">*----------------------------------------------------------------------------*</span>
+<span class="o">|</span>   <span class="n">Site</span>       <span class="n">Fractional</span> <span class="n">Coordinate</span>          <span class="n">Cartesian</span> <span class="n">Coordinate</span> <span class="p">(</span><span class="n">Ang</span><span class="p">)</span>     <span class="o">|</span>
+<span class="o">+----------------------------------------------------------------------------+</span>
+
+  <span class="n">C</span>   <span class="mi">1</span>   <span class="mf">0.66667</span>   <span class="mf">0.33333</span>   <span class="mf">0.00000</span>    <span class="o">|</span>    <span class="mf">1.21750</span>   <span class="mf">0.70292</span>   <span class="mf">0.00000</span>
+
+  <span class="n">C</span>   <span class="mi">2</span>   <span class="mf">0.33333</span>   <span class="mf">0.66667</span>   <span class="mf">0.00000</span>    <span class="o">|</span>    <span class="mf">0.00000</span>   <span class="mf">1.40585</span>   <span class="mf">0.00000</span>
+
+<span class="o">*----------------------------------------------------------------------------*</span>
 
 
-  <span class="o">*</span> <span class="n">wrote</span> <span class="s1">&#39;graphene_info.py&#39;</span><span class="o">.</span>
-  <span class="o">*</span> <span class="n">wrote</span> <span class="s1">&#39;graphene_data.py&#39;</span><span class="o">.</span>
-  <span class="o">*</span> <span class="n">wrote</span> <span class="s1">&#39;graphene_hr.dat&#39;</span><span class="o">.</span>
-  <span class="o">*</span> <span class="n">wrote</span> <span class="s1">&#39;graphene_sr.dat&#39;</span><span class="o">.</span>
-  <span class="o">*</span> <span class="n">wrote</span> <span class="s1">&#39;graphene_hr_sym.dat&#39;</span><span class="o">.</span>
-  <span class="o">*</span> <span class="n">wrote</span> <span class="s1">&#39;graphene_sr_sym.dat&#39;</span><span class="o">.</span>
-  <span class="o">*</span> <span class="n">wrote</span> <span class="s1">&#39;graphene_z.dat&#39;</span><span class="o">.</span>
-  <span class="o">*</span> <span class="n">wrote</span> <span class="s1">&#39;graphene_s.dat&#39;</span><span class="o">.</span>
+                                <span class="o">------------</span>
+                                <span class="n">K</span><span class="o">-</span><span class="n">POINT</span> <span class="n">GRID</span>
+                                <span class="o">------------</span>
+
+              <span class="n">Grid</span> <span class="n">size</span> <span class="o">=</span>  <span class="mi">19</span> <span class="n">x</span> <span class="mi">19</span> <span class="n">x</span> <span class="mi">1</span>      <span class="n">Total</span> <span class="n">points</span> <span class="o">=</span> <span class="mi">361</span>
+
+
+
+<span class="o">*----------------------------------------------------------------------------*</span>
+       <span class="n">Starting</span> <span class="n">a</span> <span class="n">new</span> <span class="n">SymClosestWannier</span> <span class="n">calculation</span> <span class="n">of</span> <span class="s1">&#39;&#39;</span><span class="n">graphene_pz</span><span class="s1">&#39;&#39;</span>
+<span class="o">*----------------------------------------------------------------------------*</span>
+
+
+   <span class="o">-</span> <span class="n">disentanglement</span> <span class="o">...</span> <span class="n">done</span> <span class="p">(</span> <span class="mf">0.0</span> <span class="p">[</span><span class="n">sec</span><span class="p">]</span> <span class="p">)</span><span class="o">.</span>
+   <span class="o">-</span> <span class="n">constructing</span> <span class="n">TB</span> <span class="n">Hamiltonian</span> <span class="o">...</span> <span class="n">done</span> <span class="p">(</span> <span class="mf">0.068</span> <span class="p">[</span><span class="n">sec</span><span class="p">]</span> <span class="p">)</span><span class="o">.</span>
+   <span class="o">-</span> <span class="n">symmetrization</span> <span class="o">...</span>
+    <span class="o">-</span> <span class="n">reading</span> <span class="n">output</span> <span class="n">of</span> <span class="n">multipie</span> <span class="o">...</span>
+  <span class="o">*</span> <span class="n">read</span> <span class="s1">&#39;./sym/graphene_pz_20_model.py&#39;</span><span class="o">.</span>
+  <span class="o">*</span> <span class="n">read</span> <span class="s1">&#39;./sym/graphene_pz_20_samb.py&#39;</span><span class="o">.</span>
+  <span class="o">*</span> <span class="n">read</span> <span class="s1">&#39;./sym/graphene_pz_20_matrix.py&#39;</span><span class="o">.</span>
+    <span class="o">-</span> <span class="n">decomposing</span> <span class="n">Hamiltonian</span> <span class="k">as</span> <span class="n">linear</span> <span class="n">combination</span> <span class="n">of</span> <span class="n">SAMBs</span> <span class="o">...</span> <span class="n">done</span> <span class="p">(</span> <span class="mf">0.008</span> <span class="p">[</span><span class="n">sec</span><span class="p">]</span> <span class="p">)</span><span class="o">.</span>
+    <span class="o">-</span> <span class="n">decomposing</span> <span class="n">overlap</span> <span class="k">as</span> <span class="n">linear</span> <span class="n">combination</span> <span class="n">of</span> <span class="n">SAMBs</span> <span class="o">...</span> <span class="n">done</span> <span class="p">(</span> <span class="mf">0.0</span> <span class="p">[</span><span class="n">sec</span><span class="p">]</span> <span class="p">)</span><span class="o">.</span>
+    <span class="o">-</span> <span class="n">decomposing</span> <span class="n">non</span><span class="o">-</span><span class="n">orthogonal</span> <span class="n">Hamiltonian</span> <span class="k">as</span> <span class="n">linear</span> <span class="n">combination</span> <span class="n">of</span> <span class="n">SAMBs</span> <span class="o">...</span> <span class="n">done</span> <span class="p">(</span> <span class="mf">0.0</span> <span class="p">[</span><span class="n">sec</span><span class="p">]</span> <span class="p">)</span><span class="o">.</span>
+    <span class="o">-</span> <span class="n">constructing</span> <span class="n">symmetrized</span> <span class="n">TB</span> <span class="n">Hamiltonian</span> <span class="o">...</span> <span class="n">done</span> <span class="p">(</span> <span class="mf">0.025</span> <span class="p">[</span><span class="n">sec</span><span class="p">]</span> <span class="p">)</span><span class="o">.</span>
+    <span class="o">-</span> <span class="n">evaluating</span> <span class="n">fitting</span> <span class="n">accuracy</span> <span class="o">...</span>
+     <span class="o">*</span> <span class="n">RMSE</span> <span class="n">of</span> <span class="n">eigen</span> <span class="n">values</span> <span class="n">between</span> <span class="n">CW</span> <span class="ow">and</span> <span class="n">Symmetry</span><span class="o">-</span><span class="n">Adapted</span> <span class="n">CW</span> <span class="n">models</span> <span class="p">(</span><span class="n">grid</span><span class="p">)</span> <span class="o">=</span> <span class="mf">2.6820</span> <span class="p">[</span><span class="n">meV</span><span class="p">]</span>
+     <span class="o">*</span> <span class="n">RMSE</span> <span class="n">of</span> <span class="n">eigen</span> <span class="n">values</span> <span class="n">between</span> <span class="n">CW</span> <span class="ow">and</span> <span class="n">Symmetry</span><span class="o">-</span><span class="n">Adapted</span> <span class="n">CW</span> <span class="n">models</span> <span class="p">(</span><span class="n">path</span><span class="p">)</span> <span class="o">=</span> <span class="mf">3.7451</span> <span class="p">[</span><span class="n">meV</span><span class="p">]</span>
+    <span class="o">-</span> <span class="n">evaluating</span> <span class="n">expectation</span> <span class="n">value</span> <span class="n">of</span> <span class="p">{</span><span class="n">Zj</span><span class="p">}</span> <span class="n">at</span> <span class="n">T</span> <span class="o">=</span> <span class="mi">0</span> <span class="o">...</span>
+<span class="n">done</span>
+
+
+<span class="o">*----------------------------------------------------------------------------*</span>
+                               <span class="n">Output</span> <span class="n">results</span>
+<span class="o">*----------------------------------------------------------------------------*</span>
+
+
+  <span class="o">*</span> <span class="n">wrote</span> <span class="s1">&#39;graphene_pz_hr.dat.cw&#39;</span><span class="o">.</span>
+  <span class="o">*</span> <span class="n">wrote</span> <span class="s1">&#39;graphene_pz_hr_nonortho.dat.cw&#39;</span><span class="o">.</span>
+  <span class="o">*</span> <span class="n">wrote</span> <span class="s1">&#39;graphene_pz_sr.dat.cw&#39;</span><span class="o">.</span>
+  <span class="o">*</span> <span class="n">wrote</span> <span class="s1">&#39;graphene_pz_r.dat.cw&#39;</span><span class="o">.</span>
+  <span class="o">*</span> <span class="n">wrote</span> <span class="s1">&#39;./sym/graphene_pz_20_hr_sym.dat.cw&#39;</span><span class="o">.</span>
+  <span class="o">*</span> <span class="n">wrote</span> <span class="s1">&#39;./sym/graphene_pz_20_hr_nonortho_sym.dat.cw&#39;</span><span class="o">.</span>
+  <span class="o">*</span> <span class="n">wrote</span> <span class="s1">&#39;./sym/graphene_pz_20_sr_sym.dat.cw&#39;</span><span class="o">.</span>
+  <span class="o">*</span> <span class="n">wrote</span> <span class="s1">&#39;./sym/graphene_pz_20_z.dat.cw&#39;</span><span class="o">.</span>
+  <span class="o">*</span> <span class="n">wrote</span> <span class="s1">&#39;./sym/graphene_pz_20_z_nonortho.dat.cw&#39;</span><span class="o">.</span>
+  <span class="o">*</span> <span class="n">wrote</span> <span class="s1">&#39;./sym/graphene_pz_20_s.dat.cw&#39;</span><span class="o">.</span>
+  <span class="o">*</span> <span class="n">wrote</span> <span class="s1">&#39;./sym/graphene_pz_20_z_exp.dat.cw&#39;</span><span class="o">.</span>
+
+
+  <span class="o">*</span> <span class="n">total</span> <span class="n">elapsed_time</span><span class="p">:</span> <span class="p">(</span> <span class="mf">1.175</span> <span class="p">[</span><span class="n">sec</span><span class="p">]</span> <span class="p">)</span><span class="o">.</span>
+
+
+<span class="o">*----------------------------------------------------------------------------*</span>
+                              <span class="n">Output</span><span class="p">:</span> <span class="n">All</span> <span class="n">done</span>
+<span class="o">*----------------------------------------------------------------------------*</span>
+
+
+  <span class="o">*</span> <span class="n">total</span> <span class="n">elapsed_time</span><span class="p">:</span> <span class="p">(</span> <span class="mf">5.717</span> <span class="p">[</span><span class="n">sec</span><span class="p">]</span> <span class="p">)</span><span class="o">.</span>
+
+
+<span class="o">*----------------------------------------------------------------------------*</span>
+                             <span class="n">cw_model</span><span class="p">:</span> <span class="n">All</span> <span class="n">done</span>
+<span class="o">*----------------------------------------------------------------------------*</span>
 </pre></div>
 </div>
 </section>

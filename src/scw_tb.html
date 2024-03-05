@@ -186,7 +186,7 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l1"><a class="reference internal" href="format/sr.html">Overlap matrix elements in real-space</a></li>
 <li class="toctree-l1"><a class="reference internal" href="format/z.html">The expansion coefficients of the Hamiltonian matrix (orthogonal) H expressed by a linear combination of SAMBs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="format/s.html">The expansion coefficients of the Overlap matrix expressed by a linear combination of SAMBs</a></li>
-<li class="toctree-l1"><a class="reference internal" href="format/z_exp.html">expectation value of the given operator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="format/z_exp.html">expectation value of the SAMBs.</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">API</span></p>
 <ul class="nav bd-sidenav">
@@ -414,10 +414,6 @@ verbose           = true
 
 write_hr          = .true.
 write_sr          = .true.
-write_u_matrices  = .true.
-write_rmn         = .true.
-write_vmn         = .true.
-write_tb          = .true.
 
 N1 = 50
 
@@ -444,22 +440,23 @@ $ pw2cw graphene
 </li>
 <li><p>The following files are created in <strong>ch4</strong> and <strong>graphene</strong> folders.</p>
 <ul class="simple">
-<li><p>ch4.cwout, ch4_info.py, ch4_data.py, ch4_hr.dat, ch4_sr.dat, ch4_hr_sym.dat, ch4_sr_sym.dat, ch4_z.dat, ch4_s.dat, ch4_r.dat, ch4_v.dat, ch4_tb.dat, ch4_u.mat, ch4_u_dis.mat.</p></li>
-<li><p>graphene.cwout, graphene_info.py, graphene_data.py, graphene_hr.dat, graphene_sr.dat, graphene_hr_sym.dat, graphene_sr_sym.dat, graphene_z.dat, graphene_s.dat, graphene_r.dat, graphene_v.dat, graphene_tb.dat, graphene_u.mat, graphene_u_dis.mat.</p></li>
+<li><p>ch4.cwout, ch4.hdf5, ch4_hr.dat, ch4_sr.dat, ch4_hr_sym.dat, ch4_sr_sym.dat, ch4_z.dat, ch4_s.dat, ch4_z_exp.dat, ch4_r.dat, ch4_v.dat, ch4_tb.dat.</p></li>
+<li><p>graphene.cwout, graphene_info.py, graphene_data.py, graphene_hr.dat, graphene_sr.dat, graphene_hr_sym.dat, graphene_sr_sym.dat, graphene_z.dat, graphene_s.dat, graphene_z_exp.dat, graphene_band.txt, plot_band.gnu, graphene_band.eps.</p></li>
+<li></li>
 </ul>
 <p>Each file contains</p>
 <ul class="simple">
-<li><p><strong>seedname_cwin</strong> : input.</p></li>
-<li><p><strong>seedname_cwout</strong> : standard output.</p></li>
-<li><p><strong>seedname_info.py</strong> : calculation information for CWModel.</p></li>
-<li><p><strong>seedname_data.py</strong> : calculation data for SymCW.</p></li>
+<li><p><strong>seedname.cwin</strong> : input.</p></li>
+<li><p><strong>seedname.cwout</strong> : standard output.</p></li>
+<li><p><strong>seedname.hdf5</strong> : calculation information and data for CWModel.</p></li>
 <li><p><strong>seedname_hr.dat</strong> (<strong>_hr_sym.dat</strong>): (Symmetrized) Hamiltonian matrix elements in real-space.</p></li>
 <li><p><strong>seedname_sr.dat</strong> (<strong>_hr_sym.dat</strong>): (Symmetrized) Overlap matrix elements in real-space.</p></li>
 <li><p><strong>seedname_z.dat</strong> : The expansion coefficients of the Hamiltonian matrix expressed by a linear combination of SAMBs.</p></li>
 <li><p><strong>seedname_s.dat</strong> : The expansion coefficients of the Overlap matrix expressed by a linear combination of SAMBs.</p></li>
+<li><p><strong>seedname_z_exp.dat</strong> : The expectation value of the SAMBs (dict),</p></li>
 <li><p><strong>seedname_band.txt</strong> : band dispersion data of SymCW tight-binding model.</p></li>
 <li><p><strong>plot_band.gnu</strong> : gnuplot file for plotting band dispersion.</p></li>
-<li><p><strong>seedname_band.eps</strong> : gnuplot file for plotting band dispersion.</p></li>
+<li><p><strong>seedname_band.eps</strong> : band dispersion.</p></li>
 </ul>
 </li>
 </ol>
@@ -467,13 +464,13 @@ $ pw2cw graphene
 <ul class="simple">
 <li><p><a class="reference internal" href="format/cwin.html"><span class="std std-doc">seedname.cwin</span></a></p></li>
 <li><p><a class="reference internal" href="format/cwout.html"><span class="std std-doc">seedname.cwout</span></a></p></li>
-<li><p><a class="reference internal" href="format/info.html"><span class="std std-doc">seedname_info.py</span></a></p></li>
-<li><p><a class="reference internal" href="format/data.html"><span class="std std-doc">seedname_data.py</span></a></p></li>
+<li><p><a class="reference internal" href="format/info.html"><span class="std std-doc">seedname.hdf5(info)</span></a></p></li>
+<li><p><a class="reference internal" href="format/data.html"><span class="std std-doc">seedname.hdf5(data)</span></a></p></li>
 <li><p><a class="reference internal" href="format/hr.html"><span class="std std-doc">seedname_hr.dat</span></a></p></li>
 <li><p><a class="reference internal" href="format/sr.html"><span class="std std-doc">seedname_sr.dat</span></a></p></li>
 <li><p><a class="reference internal" href="format/z.html"><span class="std std-doc">mp_seedname_z.dat</span></a></p></li>
 <li><p><a class="reference internal" href="format/s.html"><span class="std std-doc">mp_seedname_s.dat</span></a></p></li>
-<li><p><a class="reference internal" href="format/z_exp.html"><span class="std std-doc">mp_seedname_z.dat</span></a></p></li>
+<li><p><a class="reference internal" href="format/z_exp.html"><span class="std std-doc">mp_seedname_z_exp.dat</span></a></p></li>
 </ul>
 </section>
 

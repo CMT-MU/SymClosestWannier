@@ -185,7 +185,7 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l1"><a class="reference internal" href="../format/sr.html">Overlap matrix elements in real-space</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../format/z.html">The expansion coefficients of the Hamiltonian matrix (orthogonal) H expressed by a linear combination of SAMBs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../format/s.html">The expansion coefficients of the Overlap matrix expressed by a linear combination of SAMBs</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../format/z_exp.html">expectation value of the given operator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../format/z_exp.html">expectation value of the SAMBs.</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">API</span></p>
 <ul class="current nav bd-sidenav">
@@ -359,6 +359,7 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util._utility.FortranFileW"><code class="docutils literal notranslate"><span class="pre">FortranFileW</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util._utility.construct_Ok"><code class="docutils literal notranslate"><span class="pre">construct_Ok()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util._utility.construct_Or"><code class="docutils literal notranslate"><span class="pre">construct_Or()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util._utility.convert_w90_orbital"><code class="docutils literal notranslate"><span class="pre">convert_w90_orbital()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util._utility.dict_to_matrix"><code class="docutils literal notranslate"><span class="pre">dict_to_matrix()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util._utility.fourier_transform_k_to_r"><code class="docutils literal notranslate"><span class="pre">fourier_transform_k_to_r()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util._utility.fourier_transform_r_to_k"><code class="docutils literal notranslate"><span class="pre">fourier_transform_r_to_k()</span></code></a></li>
@@ -477,6 +478,28 @@ Once checking is finished, record jumping will be faster.</p></li>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="symclosestwannier.util._utility.convert_w90_orbital">
+<span class="sig-name descname"><span class="pre">convert_w90_orbital</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">l</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">r</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">s</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/util/_utility.html#convert_w90_orbital"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.util._utility.convert_w90_orbital" title="Link to this definition">#</a></dt>
+<dd><p>convert orbital in the Wannier90 format into the MultiPie format.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>nw2l</strong> (<em>list</em>) -- l specifies the angular part Θlm(θ, φ).</p></li>
+<li><p><strong>nw2m</strong> (<em>list</em>) -- m specifies the angular part Θlm(θ, φ).</p></li>
+<li><p><strong>nw2r</strong> (<em>list</em>) -- r specifies the radial part Rr(r).</p></li>
+<li><p><strong>nw2s</strong> (<em>list</em>) -- s specifies the spin, 1(up)/-1(dn).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>converted orbital.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
 </dd>
 </dl>
 </dd></dl>
@@ -750,7 +773,7 @@ fourier transformation from real-space representation into k-space representatio
 
 <dl class="py function">
 <dt class="sig sig-object py" id="symclosestwannier.util._utility.thermal_avg">
-<span class="sig-name descname"><span class="pre">thermal_avg</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">O</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">E</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">U</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ef</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">T</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/util/_utility.html#thermal_avg"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.util._utility.thermal_avg" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">thermal_avg</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">O</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">E</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">U</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ef</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">T</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_k</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/util/_utility.html#thermal_avg"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.util._utility.thermal_avg" title="Link to this definition">#</a></dt>
 <dd><p>thermal average of the given operator,
 &lt;O&gt; = 1 / Nk * sum_{n,k} fermi_dirac[E_{n}(k)] O_{nn}(k)</p>
 <dl class="field-list simple">
@@ -1060,6 +1083,7 @@ return irreducible R vectors and number of degeneracy at each R.</p>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util._utility.FortranFileW"><code class="docutils literal notranslate"><span class="pre">FortranFileW</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util._utility.construct_Ok"><code class="docutils literal notranslate"><span class="pre">construct_Ok()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util._utility.construct_Or"><code class="docutils literal notranslate"><span class="pre">construct_Or()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util._utility.convert_w90_orbital"><code class="docutils literal notranslate"><span class="pre">convert_w90_orbital()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util._utility.dict_to_matrix"><code class="docutils literal notranslate"><span class="pre">dict_to_matrix()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util._utility.fourier_transform_k_to_r"><code class="docutils literal notranslate"><span class="pre">fourier_transform_k_to_r()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util._utility.fourier_transform_r_to_k"><code class="docutils literal notranslate"><span class="pre">fourier_transform_r_to_k()</span></code></a></li>

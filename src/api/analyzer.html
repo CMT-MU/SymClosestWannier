@@ -69,7 +69,7 @@ const thebe_selector_output = ".output, .cell_output"
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="Closest Wannier" href="cw.html" />
-    <link rel="prev" title="expectation value of the given operator" href="../format/z_exp.html" />
+    <link rel="prev" title="expectation value of the SAMBs." href="../format/z_exp.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="jp"/>
   </head>
@@ -186,7 +186,7 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l1"><a class="reference internal" href="../format/sr.html">Overlap matrix elements in real-space</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../format/z.html">The expansion coefficients of the Hamiltonian matrix (orthogonal) H expressed by a linear combination of SAMBs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../format/s.html">The expansion coefficients of the Overlap matrix expressed by a linear combination of SAMBs</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../format/z_exp.html">expectation value of the given operator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../format/z_exp.html">expectation value of the SAMBs.</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">API</span></p>
 <ul class="current nav bd-sidenav">
@@ -363,20 +363,27 @@ document.write(`
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.get_response.abs_ordinary_optical_cond_main"><code class="docutils literal notranslate"><span class="pre">abs_ordinary_optical_cond_main()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.get_response.absorptive_dichroic_optical_cond_main"><code class="docutils literal notranslate"><span class="pre">absorptive_dichroic_optical_cond_main()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.get_response.berry_get_ahc"><code class="docutils literal notranslate"><span class="pre">berry_get_ahc()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.get_response.berry_get_imf_klist"><code class="docutils literal notranslate"><span class="pre">berry_get_imf_klist()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.get_response.berry_get_imfgh_klist"><code class="docutils literal notranslate"><span class="pre">berry_get_imfgh_klist()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.get_response.berry_get_kubo"><code class="docutils literal notranslate"><span class="pre">berry_get_kubo()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.get_response.berry_get_me"><code class="docutils literal notranslate"><span class="pre">berry_get_me()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.get_response.berry_main"><code class="docutils literal notranslate"><span class="pre">berry_main()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.get_response.boltzwann_main"><code class="docutils literal notranslate"><span class="pre">boltzwann_main()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.get_response.expectation_main"><code class="docutils literal notranslate"><span class="pre">expectation_main()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.get_response.gyrotropic_main"><code class="docutils literal notranslate"><span class="pre">gyrotropic_main()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.get_response.kmesh_spacing_mesh"><code class="docutils literal notranslate"><span class="pre">kmesh_spacing_mesh()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.get_response.orbital_magnetization_main"><code class="docutils literal notranslate"><span class="pre">orbital_magnetization_main()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.get_response.spin_moment_main"><code class="docutils literal notranslate"><span class="pre">spin_moment_main()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.get_response.utility_w0gauss"><code class="docutils literal notranslate"><span class="pre">utility_w0gauss()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.get_response.wham_get_D_h"><code class="docutils literal notranslate"><span class="pre">wham_get_D_h()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.get_response.wham_get_JJp_JJm_list"><code class="docutils literal notranslate"><span class="pre">wham_get_JJp_JJm_list()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.get_response.wham_get_deleig"><code class="docutils literal notranslate"><span class="pre">wham_get_deleig()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.get_response.wham_get_deleig_a"><code class="docutils literal notranslate"><span class="pre">wham_get_deleig_a()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.get_response.wham_get_eig_UU_HH_JJlist"><code class="docutils literal notranslate"><span class="pre">wham_get_eig_UU_HH_JJlist()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.get_response.wham_get_occ_mat_list"><code class="docutils literal notranslate"><span class="pre">wham_get_occ_mat_list()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.response.Response"><code class="docutils literal notranslate"><span class="pre">Response</span></code></a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.response.Response.set_operators"><code class="docutils literal notranslate"><span class="pre">Response.set_operators()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.response.Response.write_ahc"><code class="docutils literal notranslate"><span class="pre">Response.write_ahc()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.response.Response.write_kubo"><code class="docutils literal notranslate"><span class="pre">Response.write_kubo()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.response.Response.write_spin"><code class="docutils literal notranslate"><span class="pre">Response.write_spin()</span></code></a></li>
 </ul>
@@ -439,6 +446,50 @@ document.write(`
 </dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="symclosestwannier.analyzer.get_response.berry_get_ahc">
+<span class="sig-name descname"><span class="pre">berry_get_ahc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cwi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">operators</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/analyzer/get_response.html#berry_get_ahc"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.analyzer.get_response.berry_get_ahc" title="Link to this definition">#</a></dt>
+<dd><p>Anomalous Hall conductivity, in S/cm.
+The three independent components σx = σyz, σy = σzx, and σz = σxy are computed.
+The real part Re[σ^AH_αβ] describes the anomalous Hall conductivity (AHC), and remains finite in the static limit,
+while the imaginary part Im[σ^H_αβ] describes magnetic circular dichroism, and vanishes as ω → 0.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="symclosestwannier.analyzer.get_response.berry_get_imf_klist">
+<span class="sig-name descname"><span class="pre">berry_get_imf_klist</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cwi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kpoints</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">HH_R</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">AA_R</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">occ</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ladpt</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/analyzer/get_response.html#berry_get_imf_klist"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.analyzer.get_response.berry_get_imf_klist" title="Link to this definition">#</a></dt>
+<dd><p>Calculates the Berry curvature traced over the occupied
+states, -2Im[f(k)] [Eq.33 CTVR06, Eq.6 LVTS12] for a list
+of Fermi energies, and stores it in axial-vector form</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="symclosestwannier.analyzer.get_response.berry_get_imfgh_klist">
+<span class="sig-name descname"><span class="pre">berry_get_imfgh_klist</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cwi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kpoints</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">HH_R</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">AA_R</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">imf</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">img</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">imh</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">occ</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ladpt</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/analyzer/get_response.html#berry_get_imfgh_klist"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.analyzer.get_response.berry_get_imfgh_klist" title="Link to this definition">#</a></dt>
+<dd><dl class="simple">
+<dt>Calculates the three quantities needed for the orbital magnetization:</dt><dd><ul class="simple">
+<li><p>-2Im[f(k)] [Eq.33 CTVR06, Eq.6 LVTS12]</p></li>
+<li><p>-2Im[g(k)] [Eq.34 CTVR06, Eq.7 LVTS12]</p></li>
+<li><p>-2Im[h(k)] [Eq.35 CTVR06, Eq.8 LVTS12]</p></li>
+</ul>
+</dd>
+</dl>
+<p>They are calculated together (to reduce the number of Fourier calls)
+for a list of Fermi energies, and stored in axial-vector form.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>imf</strong> (<em>bool</em><em>, </em><em>optional</em>) -- calculate -2Im[f(k)] ?</p></li>
+<li><p><strong>img</strong> (<em>bool</em><em>, </em><em>optional</em>) -- calculate -2Im[g(k)] ?</p></li>
+<li><p><strong>imh</strong> (<em>bool</em><em>, </em><em>optional</em>) -- calculate -2Im[h(k)] ?</p></li>
+<li><p><strong>occ</strong> (<em>ndarray</em><em>, </em><em>optional</em>) -- occupancy.</p></li>
+<li><p><strong>ladpt</strong> (<em>ndarray</em><em>, </em><em>optional</em>) -- <p>.</p>
+</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="symclosestwannier.analyzer.get_response.berry_get_kubo">
 <span class="sig-name descname"><span class="pre">berry_get_kubo</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cwi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">operators</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/analyzer/get_response.html#berry_get_kubo"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.analyzer.get_response.berry_get_kubo" title="Link to this definition">#</a></dt>
 <dd><p>Complex interband optical conductivity, in S/cm,
@@ -498,23 +549,6 @@ parts.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="symclosestwannier.analyzer.get_response.expectation_main">
-<span class="sig-name descname"><span class="pre">expectation_main</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cwi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">operators</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/analyzer/get_response.html#expectation_main"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.analyzer.get_response.expectation_main" title="Link to this definition">#</a></dt>
-<dd><dl class="simple">
-<dt>Computes the following quantities:</dt><dd><p>(spin)  spin magnetic moments.</p>
-</dd>
-</dl>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>cwi</strong> (<a class="reference internal" href="cw.html#symclosestwannier.cw.cw_info.CWInfo" title="symclosestwannier.cw.cw_info.CWInfo"><em>CWInfo</em></a>) -- CWInfo.</p></li>
-<li><p><strong>operators</strong> (<em>dict</em>) -- operators.</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
 <dt class="sig sig-object py" id="symclosestwannier.analyzer.get_response.gyrotropic_main">
 <span class="sig-name descname"><span class="pre">gyrotropic_main</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/analyzer/get_response.html#gyrotropic_main"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.analyzer.get_response.gyrotropic_main" title="Link to this definition">#</a></dt>
 <dd><p>Gyrotropic transport coefficients (Gyrotropic module)</p>
@@ -532,6 +566,23 @@ the three Delta_k's for each of the primitive translations b1, b2, and b3</p>
 <dt class="sig sig-object py" id="symclosestwannier.analyzer.get_response.orbital_magnetization_main">
 <span class="sig-name descname"><span class="pre">orbital_magnetization_main</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/analyzer/get_response.html#orbital_magnetization_main"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.analyzer.get_response.orbital_magnetization_main" title="Link to this definition">#</a></dt>
 <dd><p>Orbital magnetization</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="symclosestwannier.analyzer.get_response.spin_moment_main">
+<span class="sig-name descname"><span class="pre">spin_moment_main</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cwi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">operators</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/analyzer/get_response.html#spin_moment_main"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.analyzer.get_response.spin_moment_main" title="Link to this definition">#</a></dt>
+<dd><dl class="simple">
+<dt>Computes the following quantities:</dt><dd><p>(spin)  spin magnetic moments.</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>cwi</strong> (<a class="reference internal" href="cw.html#symclosestwannier.cw.cw_info.CWInfo" title="symclosestwannier.cw.cw_info.CWInfo"><em>CWInfo</em></a>) -- CWInfo.</p></li>
+<li><p><strong>operators</strong> (<em>dict</em>) -- operators.</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py function">
@@ -554,6 +605,17 @@ using Eq.(24) of WYSV06</p>
 </dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="symclosestwannier.analyzer.get_response.wham_get_JJp_JJm_list">
+<span class="sig-name descname"><span class="pre">wham_get_JJp_JJm_list</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cwi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delHH</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">E</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">U</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">occ</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/analyzer/get_response.html#wham_get_JJp_JJm_list"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.analyzer.get_response.wham_get_JJp_JJm_list" title="Link to this definition">#</a></dt>
+<dd><p>Compute JJ^+_a and JJ^-_a (a=Cartesian index)
+for a list of Fermi energies</p>
+<p>This routine is a replacement for
+wham_get_JJp_list and wham_getJJm_list.
+It computes both lists at once in a more
+efficient manner.</p>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="symclosestwannier.analyzer.get_response.wham_get_deleig">
 <span class="sig-name descname"><span class="pre">wham_get_deleig</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">delHH</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">E</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">U</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_degen_pert</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">degen_thr</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/analyzer/get_response.html#wham_get_deleig"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.analyzer.get_response.wham_get_deleig" title="Link to this definition">#</a></dt>
 <dd><p>This function returns derivatives of the eigenvalues dE/dk_a, using wham_get_deleig_a.</p>
@@ -565,16 +627,33 @@ using Eq.(24) of WYSV06</p>
 <dd><p>Compute band derivatives dE/dk_a.</p>
 </dd></dl>
 
+<dl class="py function">
+<dt class="sig sig-object py" id="symclosestwannier.analyzer.get_response.wham_get_eig_UU_HH_JJlist">
+<span class="sig-name descname"><span class="pre">wham_get_eig_UU_HH_JJlist</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cwi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delHH</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">E</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">U</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">occ</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/analyzer/get_response.html#wham_get_eig_UU_HH_JJlist"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.analyzer.get_response.wham_get_eig_UU_HH_JJlist" title="Link to this definition">#</a></dt>
+<dd><p>Wrapper routine used to reduce number of Fourier calls
+Added the optional occ parameter</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="symclosestwannier.analyzer.get_response.wham_get_occ_mat_list">
+<span class="sig-name descname"><span class="pre">wham_get_occ_mat_list</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cwi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">U</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">E</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">occ</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/analyzer/get_response.html#wham_get_occ_mat_list"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.analyzer.get_response.wham_get_occ_mat_list" title="Link to this definition">#</a></dt>
+<dd><p>Occupation matrix f, and g=1-f
+for a list of Fermi energies
+Tsirkin: !now optionally either E or occ parameters may be supplied
+(Changed consistently the calls from the Berry module)</p>
+</dd></dl>
+
 <dl class="py class" id="module-symclosestwannier.analyzer.response">
 <dt class="sig sig-object py" id="symclosestwannier.analyzer.response.Response">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Response</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cwi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cwm</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Sr</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/analyzer/response.html#Response"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.analyzer.response.Response" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Response</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cwi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cwm</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">HH_R</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/analyzer/response.html#Response"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.analyzer.response.Response" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></p>
-<p>initialize the class.</p>
+<p>Analyze external responses of Closest Wannier (CW) tight-binding (TB) model.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>cwi</strong> (<a class="reference internal" href="cw.html#symclosestwannier.cw.cw_info.CWInfo" title="symclosestwannier.cw.cw_info.CWInfo"><em>CWInfo</em></a>) -- CWInfo.</p></li>
 <li><p><strong>cwm</strong> (<a class="reference internal" href="cw.html#symclosestwannier.cw.cw_manager.CWManager" title="symclosestwannier.cw.cw_manager.CWManager"><em>CWManager</em></a>) -- CWManager.</p></li>
+<li><p><strong>HH_R</strong> (<em>ndarray</em>) -- matrix elements of real-space Hamiltonian, &lt;0n|H|Rm&gt;.</p></li>
 </ul>
 </dd>
 </dl>
@@ -582,6 +661,12 @@ using Eq.(24) of WYSV06</p>
 <dt class="sig sig-object py" id="symclosestwannier.analyzer.response.Response.set_operators">
 <span class="sig-name descname"><span class="pre">set_operators</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/analyzer/response.html#Response.set_operators"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.analyzer.response.Response.set_operators" title="Link to this definition">#</a></dt>
 <dd><p>Wannier matrix elements, allocations and initializations.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="symclosestwannier.analyzer.response.Response.write_ahc">
+<span class="sig-name descname"><span class="pre">write_ahc</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/analyzer/response.html#Response.write_ahc"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.analyzer.response.Response.write_ahc" title="Link to this definition">#</a></dt>
+<dd><p>write seedname-ahc.dat, seedname-ahc-fermiscan.dat.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -657,20 +742,27 @@ using Eq.(24) of WYSV06</p>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.get_response.abs_ordinary_optical_cond_main"><code class="docutils literal notranslate"><span class="pre">abs_ordinary_optical_cond_main()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.get_response.absorptive_dichroic_optical_cond_main"><code class="docutils literal notranslate"><span class="pre">absorptive_dichroic_optical_cond_main()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.get_response.berry_get_ahc"><code class="docutils literal notranslate"><span class="pre">berry_get_ahc()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.get_response.berry_get_imf_klist"><code class="docutils literal notranslate"><span class="pre">berry_get_imf_klist()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.get_response.berry_get_imfgh_klist"><code class="docutils literal notranslate"><span class="pre">berry_get_imfgh_klist()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.get_response.berry_get_kubo"><code class="docutils literal notranslate"><span class="pre">berry_get_kubo()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.get_response.berry_get_me"><code class="docutils literal notranslate"><span class="pre">berry_get_me()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.get_response.berry_main"><code class="docutils literal notranslate"><span class="pre">berry_main()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.get_response.boltzwann_main"><code class="docutils literal notranslate"><span class="pre">boltzwann_main()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.get_response.expectation_main"><code class="docutils literal notranslate"><span class="pre">expectation_main()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.get_response.gyrotropic_main"><code class="docutils literal notranslate"><span class="pre">gyrotropic_main()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.get_response.kmesh_spacing_mesh"><code class="docutils literal notranslate"><span class="pre">kmesh_spacing_mesh()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.get_response.orbital_magnetization_main"><code class="docutils literal notranslate"><span class="pre">orbital_magnetization_main()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.get_response.spin_moment_main"><code class="docutils literal notranslate"><span class="pre">spin_moment_main()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.get_response.utility_w0gauss"><code class="docutils literal notranslate"><span class="pre">utility_w0gauss()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.get_response.wham_get_D_h"><code class="docutils literal notranslate"><span class="pre">wham_get_D_h()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.get_response.wham_get_JJp_JJm_list"><code class="docutils literal notranslate"><span class="pre">wham_get_JJp_JJm_list()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.get_response.wham_get_deleig"><code class="docutils literal notranslate"><span class="pre">wham_get_deleig()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.get_response.wham_get_deleig_a"><code class="docutils literal notranslate"><span class="pre">wham_get_deleig_a()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.get_response.wham_get_eig_UU_HH_JJlist"><code class="docutils literal notranslate"><span class="pre">wham_get_eig_UU_HH_JJlist()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.get_response.wham_get_occ_mat_list"><code class="docutils literal notranslate"><span class="pre">wham_get_occ_mat_list()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.response.Response"><code class="docutils literal notranslate"><span class="pre">Response</span></code></a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.response.Response.set_operators"><code class="docutils literal notranslate"><span class="pre">Response.set_operators()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.response.Response.write_ahc"><code class="docutils literal notranslate"><span class="pre">Response.write_ahc()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.response.Response.write_kubo"><code class="docutils literal notranslate"><span class="pre">Response.write_kubo()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.response.Response.write_spin"><code class="docutils literal notranslate"><span class="pre">Response.write_spin()</span></code></a></li>
 </ul>

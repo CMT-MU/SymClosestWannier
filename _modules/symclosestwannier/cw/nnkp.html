@@ -185,7 +185,7 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l1"><a class="reference internal" href="../../../src/format/sr.html">Overlap matrix elements in real-space</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../src/format/z.html">The expansion coefficients of the Hamiltonian matrix (orthogonal) H expressed by a linear combination of SAMBs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../src/format/s.html">The expansion coefficients of the Overlap matrix expressed by a linear combination of SAMBs</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../src/format/z_exp.html">expectation value of the given operator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/format/z_exp.html">expectation value of the SAMBs.</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">API</span></p>
 <ul class="nav bd-sidenav">
@@ -337,6 +337,7 @@ document.write(`
     <span class="s2">&quot;nw2l&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
     <span class="s2">&quot;nw2m&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
     <span class="s2">&quot;nw2r&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="s2">&quot;nw2s&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
     <span class="s2">&quot;atom_orb&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
     <span class="s2">&quot;atom_pos&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
     <span class="s2">&quot;atom_pos_r&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
@@ -361,7 +362,7 @@ document.write(`
     <span class="c1"># ==================================================</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">topdir</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">seedname</span><span class="o">=</span><span class="s2">&quot;cwannier&quot;</span><span class="p">,</span> <span class="n">dic</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        initialize the class.</span>
+<span class="sd">        Nnkp manages information needed to determine the required overlap elements Mmn(k,b) and projections A_{mn}(k).</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            topdir (str, optional): directory of seedname.nnkp file.</span>
@@ -404,6 +405,7 @@ document.write(`
 <span class="sd">                - nw2l             : l specifies the angular part Θlm(θ, φ) (list), [None].</span>
 <span class="sd">                - nw2m             : m specifies the angular part Θlm(θ, φ) (list), [None].</span>
 <span class="sd">                - nw2r             : r specifies the radial part Rr(r) (list), [None].</span>
+<span class="sd">                - nw2s             : s specifies the spin, 1(up)/-1(dn) (list), [None].</span>
 <span class="sd">                - atom_orb         : WFs indexes of each atom (list), [None].</span>
 <span class="sd">                - atom_pos         : atom position index of each atom (list), [None].</span>
 <span class="sd">                - atom_pos_r       : atom position of each atom in fractional coordinates with respect to the lattice vectors (list), [None].</span>
@@ -456,6 +458,7 @@ document.write(`
                     <span class="n">nw2l</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">([</span><span class="n">d</span><span class="p">[</span><span class="s2">&quot;num_wann&quot;</span><span class="p">]],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
                     <span class="n">nw2m</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">([</span><span class="n">d</span><span class="p">[</span><span class="s2">&quot;num_wann&quot;</span><span class="p">]],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
                     <span class="n">nw2r</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">([</span><span class="n">d</span><span class="p">[</span><span class="s2">&quot;num_wann&quot;</span><span class="p">]],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
+                    <span class="n">nw2s</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">([</span><span class="n">d</span><span class="p">[</span><span class="s2">&quot;num_wann&quot;</span><span class="p">]],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
                     <span class="n">atom_orb_strlist</span> <span class="o">=</span> <span class="p">[]</span>
                     <span class="n">atom_pos_strlist</span> <span class="o">=</span> <span class="p">[]</span>
                     <span class="c1"># read projections</span>
@@ -468,8 +471,12 @@ document.write(`
                         <span class="n">nw2l</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">proj_dat</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>
                         <span class="n">nw2m</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">proj_dat</span><span class="p">[</span><span class="mi">4</span><span class="p">])</span>
                         <span class="n">nw2r</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">proj_dat</span><span class="p">[</span><span class="mi">5</span><span class="p">])</span>
+                        <span class="k">if</span> <span class="n">spinors</span><span class="p">:</span>
+                            <span class="n">spn_dat</span> <span class="o">=</span> <span class="n">nnkp_data</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">+</span> <span class="mi">3</span> <span class="o">*</span> <span class="n">j</span> <span class="o">+</span> <span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+                            <span class="n">nw2s</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">spn_dat</span><span class="p">)</span>
                         <span class="n">atom_orb_strlist</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">proj_str</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">40</span><span class="p">])</span>
                         <span class="n">atom_pos_strlist</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">proj_str</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">35</span><span class="p">])</span>
+
                     <span class="n">atom_orb_uniq</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">atom_orb_strlist</span><span class="p">),</span> <span class="n">key</span><span class="o">=</span><span class="n">atom_orb_strlist</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
                     <span class="n">atom_pos_uniq</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">atom_pos_strlist</span><span class="p">),</span> <span class="n">key</span><span class="o">=</span><span class="n">atom_pos_strlist</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
                     <span class="n">atom_orb</span> <span class="o">=</span> <span class="p">[]</span>
@@ -494,6 +501,7 @@ document.write(`
                     <span class="n">d</span><span class="p">[</span><span class="s2">&quot;nw2l&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">nw2l</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
                     <span class="n">d</span><span class="p">[</span><span class="s2">&quot;nw2m&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">nw2m</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
                     <span class="n">d</span><span class="p">[</span><span class="s2">&quot;nw2r&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">nw2r</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+                    <span class="n">d</span><span class="p">[</span><span class="s2">&quot;nw2s&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">nw2s</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
                     <span class="n">d</span><span class="p">[</span><span class="s2">&quot;atom_orb&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">atom_orb</span>
                     <span class="n">d</span><span class="p">[</span><span class="s2">&quot;atom_pos&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">atom_pos</span>
                     <span class="n">d</span><span class="p">[</span><span class="s2">&quot;atom_pos_r&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">atom_pos_r</span>
