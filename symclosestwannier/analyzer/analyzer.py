@@ -56,6 +56,10 @@ def analyzer(seedname="cwannier"):
     info, data = CWModel.read_info_data(filename)
     cwi = CWInfo("./", seedname, dic=info)
     cwi |= cwin | win
+
+    if cwi["restart"] == "sym":
+        cwi["restart"] = "cw"
+
     cw_model = CWModel(cwi, cwm, dic=data)
 
     cwi = cw_model._cwi
