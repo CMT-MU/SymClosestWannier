@@ -1086,7 +1086,7 @@ def berry_get_kubo(cwi, operators):
 
     num_k = np.prod(cwi["berry_kmesh"])
 
-    kpoints_chunks = np.split(kpoints, [j for j in range(100, len(kpoints), 100)])
+    kpoints_chunks = np.split(kpoints, [j for j in range(1000, len(kpoints), 1000)])
 
     res = Parallel(n_jobs=_num_proc, verbose=10)(delayed(berry_get_kubo_k)(kpt) for kpt in kpoints_chunks)
 

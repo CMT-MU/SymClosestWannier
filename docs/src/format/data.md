@@ -15,7 +15,6 @@
 - Sr_sym          : Symmetrized overlap matrix elements in real-space (ndarray).",
 - Hr_sym          : Symmetrized Hamiltonian matrix elements in real-space (orthogonal) (ndarray).",
 - Hr_nonortho_sym : Symmetrized Hamiltonian matrix elements in real-space (non-orthogonal) (ndarray).",
-- rpoints_mp      : lattice points data included in matrix_dict, [[r1, r2, r3]] (crystal coordinate) (ndarray).",
 - Ek_RMSE_grid    : mean squared error of eigen energies between symmetrized and non-symmetrized closed wannier TB model (grid) (float).",
 - Ek_RMSE_path    : mean squared error of eigen energies between symmetrized and non-symmetrized closed wannier TB model (path) (float).",
 - matrix_dict     : dictionary form of the real-space representation of symmetry-adapted multipole basis (SAMB) (dict).",

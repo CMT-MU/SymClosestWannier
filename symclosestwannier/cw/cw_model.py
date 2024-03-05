@@ -95,8 +95,6 @@ _default = {
     "Hr_sym": None,
     "Hr_nonortho_sym": None,
     #
-    "rpoints_mp": None,
-    #
     "Ek_RMSE_grid": None,
     "Ek_RMSE_path": None,
     #
@@ -499,29 +497,36 @@ class CWModel(dict):
         self._cwm.log(msg, None, end="", file=self._outfile, mode="a")
         self._cwm.set_stamp()
 
-        rpoints_mp = [(n1, n2, n3) for Zj_dict in Zr_dict.values() for (n1, n2, n3, _, _) in Zj_dict.keys()]
-        rpoints_mp = sorted(list(set(rpoints_mp)), key=rpoints_mp.index)
-
-        # rpoints_mp = np.array(self._cwi["irvec"])
-
-        Sr_sym = CWModel.construct_Or(list(s.values()), self._cwi["num_wann"], rpoints_mp, mat)
-        Hr_sym = CWModel.construct_Or(list(z.values()), self._cwi["num_wann"], rpoints_mp, mat)
-        Hr_nonortho_sym = CWModel.construct_Or(list(z_nonortho.values()), self._cwi["num_wann"], rpoints_mp, mat)
+        Sr_sym = CWModel.construct_Or(list(s.values()), self._cwi["num_wann"], self._cwi["irvec"], mat)
+        Hr_sym = CWModel.construct_Or(list(z.values()), self._cwi["num_wann"], self._cwi["irvec"], mat)
+        Hr_nonortho_sym = CWModel.construct_Or(
+            list(z_nonortho.values()), self._cwi["num_wann"], self._cwi["irvec"], mat
+        )
 
         if self._cwi["tb_gauge"]:
             Sk_sym = CWModel.fourier_transform_r_to_k(
-                Sr_sym, self._cwi["kpoints"], rpoints_mp, atoms_frac=atoms_frac_samb
+                Sr_sym, self._cwi["kpoints"], self._cwi["irvec"], self._cwi["ndegen"], atoms_frac=atoms_frac_samb
             )
             Hk_sym = CWModel.fourier_transform_r_to_k(
-                Hr_sym, self._cwi["kpoints"], rpoints_mp, atoms_frac=atoms_frac_samb
+                Hr_sym, self._cwi["kpoints"], self._cwi["irvec"], self._cwi["ndegen"], atoms_frac=atoms_frac_samb
             )
             Hk_nonortho_sym = CWModel.fourier_transform_r_to_k(
-                Hr_nonortho_sym, self._cwi["kpoints"], rpoints_mp, atoms_frac=atoms_frac_samb
+                Hr_nonortho_sym,
+                self._cwi["kpoints"],
+                self._cwi["irvec"],
+                self._cwi["ndegen"],
+                atoms_frac=atoms_frac_samb,
             )
         else:
-            Sk_sym = CWModel.fourier_transform_r_to_k(Sr_sym, self._cwi["kpoints"], rpoints_mp)
-            Hk_sym = CWModel.fourier_transform_r_to_k(Hr_sym, self._cwi["kpoints"], rpoints_mp)
-            Hk_nonortho_sym = CWModel.fourier_transform_r_to_k(Hr_nonortho_sym, self._cwi["kpoints"], rpoints_mp)
+            Sk_sym = CWModel.fourier_transform_r_to_k(
+                Sr_sym, self._cwi["kpoints"], self._cwi["irvec"], self._cwi["ndegen"]
+            )
+            Hk_sym = CWModel.fourier_transform_r_to_k(
+                Hr_sym, self._cwi["kpoints"], self._cwi["irvec"], self._cwi["ndegen"]
+            )
+            Hk_nonortho_sym = CWModel.fourier_transform_r_to_k(
+                Hr_nonortho_sym, self._cwi["kpoints"], self._cwi["irvec"], self._cwi["ndegen"]
+            )
         self._cwm.log("done", file=self._outfile, mode="a")
 
         #####
@@ -549,10 +554,16 @@ class CWModel(dict):
 
             if self._cwi["tb_gauge"]:
                 Hk_sym_path = CWModel.fourier_transform_r_to_k(
-                    Hr_sym, self._cwi["kpoints_path"], rpoints_mp, atoms_frac=atoms_frac_samb
+                    Hr_sym,
+                    self._cwi["kpoints_path"],
+                    self._cwi["irvec"],
+                    self._cwi["ndegen"],
+                    atoms_frac=atoms_frac_samb,
                 )
             else:
-                Hk_sym_path = CWModel.fourier_transform_r_to_k(Hr_sym, self._cwi["kpoints_path"], rpoints_mp)
+                Hk_sym_path = CWModel.fourier_transform_r_to_k(
+                    Hr_sym, self._cwi["kpoints_path"], self._cwi["irvec"], self._cwi["ndegen"]
+                )
 
             Ek_path_sym, _ = np.linalg.eigh(Hk_sym_path)
 
@@ -593,8 +604,6 @@ class CWModel(dict):
                 "Sr_sym": Sr_sym,
                 "Hr_sym": Hr_sym,
                 "Hr_nonortho_sym": Hr_nonortho_sym,
-                #
-                "rpoints_mp": rpoints_mp,
                 #
                 "Ek_RMSE_grid": Ek_RMSE_grid,
                 "Ek_RMSE_path": Ek_RMSE_path,
