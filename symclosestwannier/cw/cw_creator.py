@@ -123,6 +123,11 @@ def cw_creator(seedname="cwannier"):
             filename = os.path.join(cwi["mp_outdir"], "{}".format(f"{cwi['mp_seedname']}_sr_sym.dat.cw"))
             cw_model.write_or(cw_model["Sr_sym"], filename, header=CWModel._sr_header())
 
+        if cwi["write_tb"]:
+            AA_R = get_oper_R("AA_R", cwi)
+            filename = os.path.join(cwi["mp_outdir"], "{}".format(f"{cwi['mp_seedname']}_tb_sym.dat.cw"))
+            cw_model.write_tb(cw_model["Hr_sym"], AA_R, filename)
+
         filename = os.path.join(cwi["mp_outdir"], "{}".format(f"{cwi['mp_seedname']}_z.dat.cw"))
         cw_model.write_samb_coeffs(filename, type="z")
 
