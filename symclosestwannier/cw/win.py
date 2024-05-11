@@ -416,6 +416,7 @@ class Win(dict):
         keys = []
         for line in lines:
             line = line.replace("\n", "")
+            line = line.lstrip()
             if line.startswith(keyword):
                 if len(line.split("=")) > 1:
                     key = line.split("=")[0]

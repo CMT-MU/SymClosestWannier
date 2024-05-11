@@ -152,6 +152,7 @@ class CWin(dict):
 
         for line in cwin_data:
             line = line.replace("\n", "")
+            line = line.lstrip()
 
             if len([vi for vi in line.split(" ") if vi != ""]) == 0:
                 continue
