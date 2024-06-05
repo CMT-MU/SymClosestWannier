@@ -292,16 +292,16 @@ class Win(dict):
                 cnt_X = {}
                 for X, r1, r2, r3 in ap_data:
                     if X not in cnt_X:
-                        atoms_cart[(X, 1)] = [float(r1), float(r2), float(r3)]
+                        atoms_cart[(X, 1)] = np.array([float(r1), float(r2), float(r3)])
                         cnt_X[X] = 1
                     else:
-                        atoms_cart[(X, cnt_X[X] + 1)] = [float(r1), float(r2), float(r3)]
+                        atoms_cart[(X, cnt_X[X] + 1)] = np.array([float(r1), float(r2), float(r3)])
                         cnt_X[X] += 1
 
                 if units == "bohr":
                     atoms_cart = {k: v * 0.529177249 for k, v in atoms_cart.items()}
 
-                d["atoms_cart"] = atoms_cart
+                d["atoms_cart"] = {k: v.tolist() for k, v in atoms_cart.items()}
 
         if "units" in d:
             del d["units"]
