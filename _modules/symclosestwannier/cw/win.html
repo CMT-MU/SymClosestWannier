@@ -31,7 +31,7 @@
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/sphinx-book-theme.css?v=384b581d" />
     <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css?v=13237357" />
     <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="../../../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
   
@@ -333,6 +333,7 @@ document.write(`
     <span class="s2">&quot;dis_win_max&quot;</span><span class="p">:</span> <span class="o">+</span><span class="mi">100000</span><span class="p">,</span>
     <span class="s2">&quot;dis_win_min&quot;</span><span class="p">:</span> <span class="o">-</span><span class="mi">100000</span><span class="p">,</span>
     <span class="s2">&quot;dis_mix_ratio&quot;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span>
+    <span class="s2">&quot;exclude_bands&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
     <span class="c1">#</span>
     <span class="s2">&quot;mp_grid&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
     <span class="s2">&quot;kpoints&quot;</span><span class="p">:</span> <span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]],</span>
@@ -526,6 +527,7 @@ document.write(`
         <span class="n">d</span><span class="p">[</span><span class="s2">&quot;dis_win_max&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_param_keyword</span><span class="p">(</span><span class="n">win_data</span><span class="p">,</span> <span class="s2">&quot;dis_win_max&quot;</span><span class="p">,</span> <span class="o">+</span><span class="mi">100000</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
         <span class="n">d</span><span class="p">[</span><span class="s2">&quot;dis_win_min&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_param_keyword</span><span class="p">(</span><span class="n">win_data</span><span class="p">,</span> <span class="s2">&quot;dis_win_min&quot;</span><span class="p">,</span> <span class="o">-</span><span class="mi">100000</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
         <span class="n">d</span><span class="p">[</span><span class="s2">&quot;dis_mix_ratio&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_param_keyword</span><span class="p">(</span><span class="n">win_data</span><span class="p">,</span> <span class="s2">&quot;dis_mix_ratio&quot;</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+        <span class="n">d</span><span class="p">[</span><span class="s2">&quot;exclude_bands&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_param_keyword</span><span class="p">(</span><span class="n">win_data</span><span class="p">,</span> <span class="s2">&quot;exclude_bands&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">str</span><span class="p">)</span>
 
         <span class="n">d</span><span class="p">[</span><span class="s2">&quot;spinors&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_param_keyword</span><span class="p">(</span><span class="n">win_data</span><span class="p">,</span> <span class="s2">&quot;spinors&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">bool</span><span class="p">)</span>
         <span class="n">d</span><span class="p">[</span><span class="s2">&quot;spin_moment&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_param_keyword</span><span class="p">(</span><span class="n">win_data</span><span class="p">,</span> <span class="s2">&quot;spin_moment&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">bool</span><span class="p">)</span>
@@ -679,7 +681,7 @@ document.write(`
         <span class="n">fermi_energy</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_param_keyword</span><span class="p">(</span><span class="n">win_data</span><span class="p">,</span> <span class="s2">&quot;fermi_energy&quot;</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">fermi_energy</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">found_fermi_energy</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="c1"># found_fermi_energy = True</span>
             <span class="n">num_fermi</span> <span class="o">=</span> <span class="mi">1</span>
 
         <span class="n">fermi_energy_scan</span> <span class="o">=</span> <span class="kc">False</span>
@@ -711,9 +713,7 @@ document.write(`
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">fermi_energy_step</span> <span class="o">=</span> <span class="p">(</span><span class="n">fermi_energy_max</span> <span class="o">-</span> <span class="n">fermi_energy_min</span><span class="p">)</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="n">num_fermi</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
 
-            <span class="n">fermi_energy_list</span> <span class="o">=</span> <span class="p">[]</span>
-            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_fermi</span><span class="p">):</span>
-                <span class="n">fermi_energy_list</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">fermi_energy_min</span> <span class="o">+</span> <span class="p">(</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">fermi_energy_step</span>
+            <span class="n">fermi_energy_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">fermi_energy_min</span> <span class="o">+</span> <span class="n">i</span> <span class="o">*</span> <span class="n">fermi_energy_step</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_fermi</span><span class="p">)]</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">fermi_energy_list</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">]</span>
 
@@ -733,6 +733,7 @@ document.write(`
         <span class="n">keys</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">:</span>
             <span class="n">line</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+            <span class="n">line</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">lstrip</span><span class="p">()</span>
             <span class="k">if</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">keyword</span><span class="p">):</span>
                 <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;=&quot;</span><span class="p">))</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
                     <span class="n">key</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;=&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>

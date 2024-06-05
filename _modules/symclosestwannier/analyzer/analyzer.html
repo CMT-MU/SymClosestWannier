@@ -31,7 +31,7 @@
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/sphinx-book-theme.css?v=384b581d" />
     <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css?v=13237357" />
     <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="../../../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
   
@@ -370,6 +370,10 @@ document.write(`
     <span class="n">info</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="n">CWModel</span><span class="o">.</span><span class="n">read_info_data</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
     <span class="n">cwi</span> <span class="o">=</span> <span class="n">CWInfo</span><span class="p">(</span><span class="s2">&quot;./&quot;</span><span class="p">,</span> <span class="n">seedname</span><span class="p">,</span> <span class="n">dic</span><span class="o">=</span><span class="n">info</span><span class="p">)</span>
     <span class="n">cwi</span> <span class="o">|=</span> <span class="n">cwin</span> <span class="o">|</span> <span class="n">win</span>
+
+    <span class="k">if</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;restart&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;sym&quot;</span><span class="p">:</span>
+        <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;restart&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;cw&quot;</span>
+
     <span class="n">cw_model</span> <span class="o">=</span> <span class="n">CWModel</span><span class="p">(</span><span class="n">cwi</span><span class="p">,</span> <span class="n">cwm</span><span class="p">,</span> <span class="n">dic</span><span class="o">=</span><span class="n">data</span><span class="p">)</span>
 
     <span class="n">cwi</span> <span class="o">=</span> <span class="n">cw_model</span><span class="o">.</span><span class="n">_cwi</span>
@@ -411,7 +415,7 @@ document.write(`
     <span class="k">if</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;berry_task&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;kubo&quot;</span><span class="p">:</span>
         <span class="n">res</span><span class="o">.</span><span class="n">write_kubo</span><span class="p">()</span>
 
-    <span class="k">if</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;spin_moment&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;kubo&quot;</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;spin_moment&quot;</span><span class="p">]:</span>
         <span class="n">res</span><span class="o">.</span><span class="n">write_spin</span><span class="p">()</span>
 
     <span class="n">cwm</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2">  * total elapsed_time:&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">outfile</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;a&quot;</span><span class="p">)</span>

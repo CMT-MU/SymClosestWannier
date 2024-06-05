@@ -31,7 +31,7 @@
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/sphinx-book-theme.css?v=384b581d" />
     <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css?v=13237357" />
     <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="../../../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
   
@@ -389,7 +389,13 @@ document.write(`
     <span class="n">kpoints</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;kpoints&quot;</span><span class="p">])</span>
     <span class="n">irvec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;irvec&quot;</span><span class="p">])</span>
 
-    <span class="n">HH_R</span> <span class="o">=</span> <span class="n">fourier_transform_k_to_r</span><span class="p">(</span><span class="n">HH_k</span><span class="p">,</span> <span class="n">kpoints</span><span class="p">,</span> <span class="n">irvec</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;tb_gauge&quot;</span><span class="p">]:</span>
+        <span class="n">atoms_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;atoms_frac&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+        <span class="n">atoms_frac</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">atoms_list</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;nw2n&quot;</span><span class="p">]])</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">atoms_frac</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="n">HH_R</span> <span class="o">=</span> <span class="n">fourier_transform_k_to_r</span><span class="p">(</span><span class="n">HH_k</span><span class="p">,</span> <span class="n">kpoints</span><span class="p">,</span> <span class="n">irvec</span><span class="p">,</span> <span class="n">atoms_frac</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">HH_R</span></div>
 
@@ -429,7 +435,13 @@ document.write(`
 
     <span class="n">AA_k</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">AA_k</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">&quot;akmn-&gt;aknm&quot;</span><span class="p">,</span> <span class="n">AA_k</span><span class="p">)</span><span class="o">.</span><span class="n">conj</span><span class="p">())</span>
 
-    <span class="n">AA_R</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">fourier_transform_k_to_r</span><span class="p">(</span><span class="n">AA_k</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">kpoints</span><span class="p">,</span> <span class="n">irvec</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">)])</span>
+    <span class="k">if</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;tb_gauge&quot;</span><span class="p">]:</span>
+        <span class="n">atoms_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;atoms_frac&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+        <span class="n">atoms_frac</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">atoms_list</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;nw2n&quot;</span><span class="p">]])</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">atoms_frac</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="n">AA_R</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">fourier_transform_k_to_r</span><span class="p">(</span><span class="n">AA_k</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">kpoints</span><span class="p">,</span> <span class="n">irvec</span><span class="p">,</span> <span class="n">atoms_frac</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">)])</span>
 
     <span class="k">return</span> <span class="n">AA_R</span></div>
 
@@ -476,7 +488,13 @@ document.write(`
     <span class="n">kpoints</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;kpoints&quot;</span><span class="p">])</span>
     <span class="n">irvec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;irvec&quot;</span><span class="p">])</span>
 
-    <span class="n">SS_R</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">fourier_transform_k_to_r</span><span class="p">(</span><span class="n">SS_k</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">kpoints</span><span class="p">,</span> <span class="n">irvec</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">)])</span>
+    <span class="k">if</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;tb_gauge&quot;</span><span class="p">]:</span>
+        <span class="n">atoms_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;atoms_frac&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+        <span class="n">atoms_frac</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">atoms_list</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;nw2n&quot;</span><span class="p">]])</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">atoms_frac</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="n">SS_R</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">fourier_transform_k_to_r</span><span class="p">(</span><span class="n">SS_k</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">kpoints</span><span class="p">,</span> <span class="n">irvec</span><span class="p">,</span> <span class="n">atoms_frac</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">)])</span>
 
     <span class="k">return</span> <span class="n">SS_R</span></div>
 
