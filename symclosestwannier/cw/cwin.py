@@ -34,6 +34,9 @@ _default = {
     "write_rmn": False,
     "write_vmn": False,
     "write_tb": False,
+    "write_eig": False,
+    "write_amn": False,
+    "write_mmn": False,
     "write_spn": False,
     #
     "symmetrization": False,
@@ -120,6 +123,9 @@ class CWin(dict):
                 - write_rmn         : write seedname_r.dat ? (bool), [False].
                 - write_vmn         : write seedname_v.dat ? (bool), [False].
                 - write_tb          : write seedname_tb.dat ? (bool), [False].
+                - write_eig         : write seedname.eig.cw ? (bool), [False].
+                - write_amn         : write seedname.amn.cw ? (bool), [False].
+                - write_mmn         : write seedname.mmn.cw ? (bool), [False].
                 - write_spn         : write seedname.spn.cw ? (bool), [False].
 
             # only used for symmetrization.
