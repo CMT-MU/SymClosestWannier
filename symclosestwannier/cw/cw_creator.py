@@ -108,6 +108,18 @@ def cw_creator(seedname="cwannier"):
     if cwi["write_vmn"]:
         pass
 
+    if cwi["write_eig"]:
+        filename = f"{cwi['seedname']}.eig.cw"
+        cwi.eig.write(filename)
+
+    if cwi["write_amn"]:
+        filename = f"{cwi['seedname']}.amn.cw"
+        cwi.amn.write(filename)
+
+    if cwi["write_mmn"]:
+        filename = f"{cwi['seedname']}.mmn.cw"
+        cwi.mmn.write(filename)
+
     if cwi["write_spn"]:
         pass
 

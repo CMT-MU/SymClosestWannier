@@ -255,7 +255,7 @@ class CWModel(dict):
     # ==================================================
     def _exclude_bands(self, Ak):
         """
-        exlude bands by setting the matrix elements of Ak with low projectability to zero.
+        exclude bands by setting the matrix elements of Ak with low projectability to zero.
 
         Args:
             Ak (ndarray): Overlap matrix elements.
@@ -1009,10 +1009,10 @@ class CWModel(dict):
                     int(round(v[0])), int(round(v[1])), int(round(v[2])), j + 1, i + 1
                 )
                 if vec:
-                    line += "".join([" {:>15.8E} {:>15.8E}".format(x.real, x.imag) for x in Or[:, irpts, j, i]])
+                    line += "".join([" {:>15.8E}  {:>15.8E}".format(x.real, x.imag) for x in Or[:, irpts, j, i]])
                 else:
                     x = Or[irpts, j, i]
-                    line += " {:>15.8E} {:>15.8E}".format(x.real, x.imag)
+                    line += " {:>15.8E}  {:>15.8E}".format(x.real, x.imag)
                 line += "\n"
 
                 Or_str += line
@@ -1061,7 +1061,7 @@ class CWModel(dict):
                 v = rpoints[irpts, :]
                 line = "{:5d}{:5d}  ".format(j + 1, i + 1)
                 x = Hr[irpts, j, i]
-                line += " {:>15.8E} {:>15.8E}".format(x.real, x.imag)
+                line += " {:>15.8E}  {:>15.8E}".format(x.real, x.imag)
                 line += "\n"
 
                 tb_str += line
@@ -1076,7 +1076,7 @@ class CWModel(dict):
             for i, j in itertools.product(range(num_wann), repeat=2):
                 v = rpoints[irpts, :]
                 line = "{:5d}{:5d}  ".format(j + 1, i + 1)
-                line += "".join([" {:>15.8E} {:>15.8E}".format(x.real, x.imag) for x in Ar[:, irpts, j, i]])
+                line += "".join([" {:>15.8E}  {:>15.8E}".format(x.real, x.imag) for x in Ar[:, irpts, j, i]])
                 line += "\n"
 
                 tb_str += line
