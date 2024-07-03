@@ -111,9 +111,10 @@ def spin_moment_main(cwi, operators):
             return thermal_avg([spn_x, spn_y, spn_z], E, U, cwi["fermi_energy"], T=0.0, num_k=num_k)
 
         # ==================================================
-        kpoints_chunks = np.split(kpoints, [j for j in range(300, len(kpoints), 300)])
+        kpoints_chunks = np.split(kpoints, [j for j in range(1000, len(kpoints), 1000)])
 
-        for kpoints in kpoints_chunks:
+        for idx, kpoints in enumerate(kpoints_chunks):
+            print(f"* {idx+1}/{len(kpoints_chunks)}")
             Ms_x_k, Ms_y_k, Ms_z_k = spin_moment_main_k(kpoints)
             d["Ms_x"] += Ms_x_k
             d["Ms_y"] += Ms_y_k
@@ -807,7 +808,6 @@ def berry_get_ahc(cwi, operators):
         imf_list = np.zeros((num_fermi, 3, 3))
 
         for k in range(len(kpoints)):
-            print(f"* {k+1}/{len(kpoints)}")
             kpt = kpoints[k]
             ladpt = [False] * num_fermi
             adpt_counter_list = [0] * num_fermi
@@ -849,12 +849,25 @@ def berry_get_ahc(cwi, operators):
 
     num_k = np.prod(cwi["berry_kmesh"])
 
-    kpoints_chunks = np.split(kpoints, [j for j in range(300, len(kpoints), 300)])
+    kpoints_chunks = np.split(kpoints, [j for j in range(1000000, len(kpoints), 1000000)])
 
     imf_list = np.zeros((num_fermi, 3, 3), dtype=float)
 
-    for kpoints in kpoints_chunks:
-        imf_list += berry_get_ahc_k(kpoints)
+    res = Parallel(n_jobs=_num_proc, verbose=50)(delayed(berry_get_ahc_k)(kpoints) for kpoints in kpoints_chunks)
+
+    for v in res:
+        imf_list += v
+
+    # import time
+
+    # for idx, kpoints in enumerate(kpoints_chunks):
+    #     time_sta = time.time()
+    #     imf_list += berry_get_ahc_k(kpointse)
+    #     time_end = time.time()
+
+    #     tim = time_end - time_sta
+
+    #     print(f"* {idx+1}/{len(kpoints_chunks)}  ({tim} [s])")
 
     """
     --------------------------------------------------------------------
