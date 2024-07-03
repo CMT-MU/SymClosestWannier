@@ -59,7 +59,7 @@ class Spn(dict):
             dict:
                 - num_k     : # of k points (int), [1].
                 - num_bands : # of bands passed to the code (int), [1].
-                - Spnk      : num_bands×num_bands matrix elementes of Pauli spin operators (ndarray), [None].
+                - pauli_spn : num_bands×num_bands matrix elements of Pauli spin operators (ndarray), [None].
         """
         if os.path.exists(file_name):
             pass
@@ -101,7 +101,6 @@ class Spn(dict):
             pauli_spn[:, ik, :, :] = A
 
         pauli_spn = pauli_spn[:, :, 120:, 120:]
-        num_bands = pauli_spn.shape[2]
 
         d = {"num_k": num_k, "num_bands": num_bands, "pauli_spn": pauli_spn.tolist()}
 
