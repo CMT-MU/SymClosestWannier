@@ -1,6 +1,7 @@
 """
 utility codes for CW.
 """
+
 import os
 import subprocess
 import numpy as np
@@ -98,6 +99,7 @@ def generate_band_gnuplot(outdir, filename, kmax, emax, emin, num_wann, **kwargs
     fs.write(f"set xrange [:{kmax}] \n")
     fs.write(f"set yrange [{emin-ef-offset}:{emax-ef+offset}] \n")
     fs.write("set tics font 'Times Roman, 30' \n\n")
+    fs.write("set size ratio 0.7 \n\n")
 
     if k_dis_pos is not None:
         for pos, label in k_dis_pos.items():
@@ -105,6 +107,8 @@ def generate_band_gnuplot(outdir, filename, kmax, emax, emin, num_wann, **kwargs
 
         k_dis_pos = {pos: "{/Symbol G}" if label == "G" else label for pos, label in k_dis_pos.items()}
         fs.write("set xtics (" + "".join([f"'{label}' {pos}," for pos, label in k_dis_pos.items()]) + ") \n\n")
+
+    fs.write(f"ef = {ef} \n")
 
     if a is not None:
         fs.write(f"a = {a} \n")
@@ -116,10 +120,14 @@ def generate_band_gnuplot(outdir, filename, kmax, emax, emin, num_wann, **kwargs
 
     if ref_filename is not None:
         # fs.write(f"'{ref_filename}' u ($1/(2*pi)):2 w l lw lwidth lc 'dark-grey', ")
-        fs.write(f"'{ref_filename}' u ($1/a):2 w l lw lwidth lc 'dark-grey', ")
+        fs.write(f"'{ref_filename}' u ($1/a):($2-ef) w l lw lwidth lc 'dark-grey', ")
 
     fs.write(
-        f"for [j=2:{num_wann*(num_wann+1)}:{num_wann+1}] '{filename}.txt' u 1:j w l lw lwidth dt (3,1) lc '{lc}' \n"
+        f"for [j=2:{num_wann*(num_wann+1)}:{num_wann+1}] '{filename}.txt' u 1:j w l lw lwidth dt (3,1) lc '{lc}', "
+    )
+
+    fs.write(
+        f"{0.0} lw 0.5 dt (2,1) lc 'black'"
     )
 
     fs.close()
