@@ -152,7 +152,7 @@ def get_SS_R(cwi):
     pauli_spn = np.array(cwi["pauli_spn"])
     Uk = np.array(cwi["Uk"])
 
-    SS_k = Uk.transpose(0, 2, 1).conjugate() @ pauli_spn @ Uk
+    SS_k = np.einsum("klm,aklp,kpn->akmn", np.conj(Uk), pauli_spn, Uk, optimize=True)
 
     SS_k = 0.5 * (SS_k + np.einsum("akmn->aknm", SS_k).conj())
 

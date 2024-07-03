@@ -100,10 +100,12 @@ class CWInfo(dict):
 
                         if type(v) == list:
                             if not np.allclose(v, v_, 1e-6):
-                                raise Exception(f"The value of {k} in {name} and {name_} is inconsistent.")
+                                msg = str(f"The values of {k} in {name} and {name_} files are inconsistent.")
+                                raise Exception(msg)
                         else:
                             if v != v_:
-                                raise Exception(f"The value of {k} in {name} and {name_} is inconsistent.")
+                                msg = str(f"The values of {k} in {name} and {name_} files are inconsistent.")
+                                raise Exception(msg)
 
             info_list.append((name, info))
             d.update(info)
