@@ -591,7 +591,7 @@ class CWModel(dict):
 
             Hk_sym = CWModel.construct_Ok(list(z.values()), self._cwi["num_wann"], self._cwi["kpoints"], self._cwi["irvec"], mat)
             Ek, Uk = np.linalg.eigh(Hk_sym)
-            Z_exp = [thermal_avg(Zki, Ek, Uk, self._cwi["fermi_energy"], T=self._cwi["R"],) for Zki in Zk]
+            Z_exp = [thermal_avg(Zki, Ek, Uk, self._cwi["fermi_energy"], T=self._cwi["T"],) for Zki in Zk]
             z_exp = {key: Z_exp[i] for i, key in enumerate(z.keys())}
 
             self._cwm.log("done", None, end="\n", file=self._outfile, mode="a")

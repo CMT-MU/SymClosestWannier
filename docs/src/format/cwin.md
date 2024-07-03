@@ -38,7 +38,8 @@
   - mp_seedname       : seedname for seedname_model.py, seedname_samb.py and seedname_matrix.py files (str).
   - ket_amn           : ket basis list in the seedname.amn file. If ket_amn == auto, the list of orbitals are set automatically, or it can be set manually. The format of each ket must be same as the "ket" in sambname_model.py file. See sambname["info"]["ket"] in sambname_model.py file for the format (list), [None].
   - irreps            : list of irreps to be considered (str/list), [None].
-  - calc_z_exp        : calculate expectation value of the SAMB operators? (bool), [False].
+  - calc_z_exp        : calculate the expectation value of the SAMB operators? (bool), [False].
+  - T                 : temperature T for which we want to calculate the expectation value of the SAMB operators (float), [0.0].
 
 - only used for band dispersion calculation.
   - a                 : lattice parameter (in Ang) used to correct units of k points in reference band data, [1.0].
