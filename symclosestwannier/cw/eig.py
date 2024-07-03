@@ -1,6 +1,7 @@
 """
 Eig manages Kohn-Sham energies in seedname.eig file, E_{m}(k).
 """
+
 import os
 import gzip
 import tarfile
@@ -26,7 +27,7 @@ class Eig(dict):
     # ==================================================
     def __init__(self, topdir=None, seedname="cwannier", dic=None):
         """
-        initialize the class.
+        Eig manages Kohn-Sham energies in seedname.eig file, E_{m}(k).
 
         Args:
             topdir (str, optional): directory of seedname.eig file.
@@ -82,7 +83,7 @@ class Eig(dict):
         return d
 
     # ==================================================
-    def write(self, file_name="cwannier.eig"):
+    def write(self, file_name="cwannier.eig.cw"):
         """
         write eig data.
 
@@ -91,12 +92,9 @@ class Eig(dict):
         """
         Ek = np.array(self["Ek"])
 
-
         with open(file_name, "w") as fp:
-            fp.write("# created by eig.py\n")
-            fp.write("# written {}\n".format(datetime.datetime.now().strftime("on %d%b%Y at %H:%M:%S")))
             for ik, n in itertools.product(range(self["num_k"]), range(self["num_bands"])):
-                fp.write("{0}  {1}  {2:<18.12f}\n".format(n + 1, ik + 1, Ek[ik, n]))
+                fp.write("{:5d}{:5d}{:>18.12f}\n".format(n + 1, ik + 1, Ek[ik, n]))
 
         print(f"  * wrote '{file_name}'.")
 

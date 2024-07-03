@@ -3,10 +3,12 @@ Amn manages overlap matrix elements in seedname.amn file, A_{mn}(k) = <ψ^{KS}_{
 - ψ^{KS}_{m}(k): Kohn-Sham orbitals (KSOs).
 - φ_{n}(k): pseudo atomic (PAOs) orbitals.
 """
+
 import os
 import gzip
 import tarfile
 import itertools
+import datetime
 
 import numpy as np
 
@@ -27,7 +29,7 @@ class Amn(dict):
     # ==================================================
     def __init__(self, topdir=None, seedname="cwannier", dic=None):
         """
-        initialize the class.
+        Amn manages overlap matrix elements in seedname.amn file, A_{mn}(k) = <ψ^{KS}_{m}(k)|φ_{n}(k)>.
 
         Args:
             topdir (str, optional): directory of seedname.amn file.
@@ -79,6 +81,29 @@ class Amn(dict):
         d = {"num_k": num_k, "num_bands": num_bands, "num_wann": num_wann, "Ak": Ak}
 
         return d
+
+    # ==================================================
+    def write(self, file_name="cwannier.amn.cw"):
+        """
+        write amn data.
+
+        Args:
+            file_name (str, optional): file name.
+        """
+        Ak = np.array(self["Ak"])
+
+        with open(file_name, "w") as fp:
+            fp.write("Created by amn.py {}\n".format(datetime.datetime.now().strftime("on %d%b%Y at %H:%M:%S")))
+            fp.write(
+                "       {:5d}       {:5d}       {:5d}\n".format(self["num_bands"], self["num_k"], self["num_wann"])
+            )
+            for ik, m, n in itertools.product(range(self["num_k"]), range(self["num_wann"]), range(self["num_bands"])):
+                # num_bands, num_wann, nk
+                fp.write(
+                    "{0:5d}{1:5d}{2:5d}{3.real:18.12f}{3.imag:18.12f}\n".format(n + 1, m + 1, ik + 1, Ak[ik, n, m])
+                )
+
+        print(f"  * wrote '{file_name}'.")
 
     # ==================================================
     @classmethod

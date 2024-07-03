@@ -34,6 +34,9 @@ _default = {
     "write_rmn": False,
     "write_vmn": False,
     "write_tb": False,
+    "write_eig": False,
+    "write_amn": False,
+    "write_mmn": False,
     "write_spn": False,
     #
     "symmetrization": False,
@@ -44,7 +47,7 @@ _default = {
     #
     "a": None,
     "N1": 50,
-    "fermi_energy": None,
+    "fermi_energy": 0.0,
     #
     "zeeman_interaction": False,
     "magnetic_field": 0.0,
@@ -67,7 +70,7 @@ class CWin(dict):
     # ==================================================
     def __init__(self, topdir=None, seedname="cwannier", dic=None):
         """
-        initialize the class.
+        CWin manages input file for pw2cw, seedname.cwin file.
 
         Args:
             topdir (str, optional): directory of seedname.cwin file.
@@ -120,19 +123,29 @@ class CWin(dict):
                 - write_rmn         : write seedname_r.dat ? (bool), [False].
                 - write_vmn         : write seedname_v.dat ? (bool), [False].
                 - write_tb          : write seedname_tb.dat ? (bool), [False].
+                - write_eig         : write seedname.eig.cw ? (bool), [False].
+                - write_amn         : write seedname.amn.cw ? (bool), [False].
+                - write_mmn         : write seedname.mmn.cw ? (bool), [False].
                 - write_spn         : write seedname.spn.cw ? (bool), [False].
 
             # only used for symmetrization.
                 - symmetrization    : symmetrize ? (bool), [False].
                 - mp_outdir         : output files for multipie are found in this directory (str). ["./"].
                 - mp_seedname       : seedname for seedname_model.py, seedname_samb.py and seedname_matrix.py files (str), ["default"].
-                - ket_amn           : ket basis list in the seedname.amn file. The format of each ket must be same as the "ket" in sambname_model.py file. See sambname["info"]["ket"] in sambname_model.py file for the format (list), [None].
+                - ket_amn           : ket basis list in the seedname.amn file. If ket_amn == auto, the list of orbitals are set automatically, or it can be set manually. The format of each ket must be same as the "ket" in sambname_model.py file. See sambname["info"]["ket"] in sambname_model.py file for the format (list), [None].
                 - irreps            : list of irreps to be considered (str/list), ["all"].
 
             # only used for band dispersion calculation.
                 - a                 : lattice parameter (in Ang) used to correct units of k points in reference band data, [None].
-                - fermi_energy      : fermi energy, [None].
                 - N1                : number of divisions for high symmetry lines (int, optional), [50].
+                - fermi_energy      : fermi energy, [0.0].
+
+            # only used for when zeeman interaction is considered.
+                - zeeman_interaction   : consider zeeman interaction ? (bool), [False].
+                - magnetic_field       : strength of the magnetic field (float), [0.0].
+                - magnetic_field_theta : angle from the z-axis of the magnetic field (float), [0.0].
+                - magnetic_field_phi   : angle from the x-axis of the magnetic field (float), [0.0].
+                - g_factor             : spin g factor (float), [2.0].
         """
         if os.path.exists(file_name):
             with open(file_name) as fp:
@@ -145,6 +158,7 @@ class CWin(dict):
 
         for line in cwin_data:
             line = line.replace("\n", "")
+            line = line.lstrip()
 
             if len([vi for vi in line.split(" ") if vi != ""]) == 0:
                 continue
@@ -161,12 +175,17 @@ class CWin(dict):
                 v = (line.split(":")[1].split("!")[0]).replace(" ", "")
 
             if key == "ket_amn":
-                v = "".join(v)
+                if "[" in v or "]" in v:
+                    v = "".join(v)
 
             d[key] = self._str_to(key, v)
         assert not (
             d["restart"] == "w90" and d["symmetrization"]
         ), "Symmetrization cannot be performed when restart == w90."
+
+        assert not (
+            d["disentangle"] and d["dis_win_emax"] is None or d["dis_win_emin"] is None
+        ), "dis_win_emax and dis_win_emin must be specified when disentangle == true."
 
         return d
 
@@ -200,10 +219,11 @@ class CWin(dict):
         elif key == "N1":
             v = int(v)
         elif key == "ket_amn":
-            if "(" in str(v) and ")" in str(v):
-                v = [str(o) if i == 0 else f"({str(o)}" for i, o in enumerate(v[1:-1].split(",("))]
-            else:
-                v = [str(o) for o in v[1:-1].split(",")]
+            if "[" in v or "]" in v:
+                if "(" in str(v) and ")" in str(v):
+                    v = [str(o) if i == 0 else f"({str(o)}" for i, o in enumerate(v[1:-1].split(",("))]
+                else:
+                    v = [str(o) for o in v[1:-1].split(",")]
         elif key == "irreps":
             if "[" in v and "]" in v:
                 v = [str(o) for o in v[1:-1].split(",")]

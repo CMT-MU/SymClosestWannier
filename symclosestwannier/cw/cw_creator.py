@@ -108,22 +108,37 @@ def cw_creator(seedname="cwannier"):
     if cwi["write_vmn"]:
         pass
 
+    if cwi["write_eig"]:
+        filename = f"{cwi['seedname']}.eig.cw"
+        cwi.eig.write(filename)
+
+    if cwi["write_amn"]:
+        filename = f"{cwi['seedname']}.amn.cw"
+        cwi.amn.write(filename)
+
+    if cwi["write_mmn"]:
+        filename = f"{cwi['seedname']}.mmn.cw"
+        cwi.mmn.write(filename)
+
     if cwi["write_spn"]:
         pass
 
     if cwi["symmetrization"]:
         if cwi["write_hr"]:
             filename = os.path.join(cwi["mp_outdir"], "{}".format(f"{cwi['mp_seedname']}_hr_sym.dat.cw"))
-            cw_model.write_or(cw_model["Hr_sym"], filename, cw_model["rpoints_mp"], header=CWModel._hr_header())
+            cw_model.write_or(cw_model["Hr_sym"], filename, header=CWModel._hr_header())
 
             filename = os.path.join(cwi["mp_outdir"], "{}".format(f"{cwi['mp_seedname']}_hr_nonortho_sym.dat.cw"))
-            cw_model.write_or(
-                cw_model["Hr_nonortho_sym"], filename, cw_model["rpoints_mp"], header=CWModel._hr_header()
-            )
+            cw_model.write_or(cw_model["Hr_nonortho_sym"], filename, header=CWModel._hr_header())
 
         if cwi["write_sr"]:
             filename = os.path.join(cwi["mp_outdir"], "{}".format(f"{cwi['mp_seedname']}_sr_sym.dat.cw"))
-            cw_model.write_or(cw_model["Sr_sym"], filename, cw_model["rpoints_mp"], header=CWModel._sr_header())
+            cw_model.write_or(cw_model["Sr_sym"], filename, header=CWModel._sr_header())
+
+        if cwi["write_tb"]:
+            AA_R = get_oper_R("AA_R", cwi)
+            filename = os.path.join(cwi["mp_outdir"], "{}".format(f"{cwi['mp_seedname']}_tb_sym.dat.cw"))
+            cw_model.write_tb(cw_model["Hr_sym"], AA_R, filename)
 
         filename = os.path.join(cwi["mp_outdir"], "{}".format(f"{cwi['mp_seedname']}_z.dat.cw"))
         cw_model.write_samb_coeffs(filename, type="z")
@@ -187,7 +202,7 @@ def cw_creator(seedname="cwannier"):
                 ref_filename = None
 
             Hk_sym_path = cw_model.fourier_transform_r_to_k(
-                cw_model["Hr_sym"], cwi["kpoints_path"], cw_model["rpoints_mp"], atoms_frac=atoms_frac
+                cw_model["Hr_sym"], cwi["kpoints_path"], cwi["irvec"], cwi["ndegen"], atoms_frac=atoms_frac
             )
             Ek, Uk = np.linalg.eigh(Hk_sym_path)
 

@@ -21,6 +21,7 @@ _default = {
     "dis_win_max": +100000,
     "dis_win_min": -100000,
     "dis_mix_ratio": 0.5,
+    "exclude_bands": None,
     #
     "mp_grid": [1, 1, 1],
     "kpoints": [[0, 0, 0]],
@@ -85,7 +86,7 @@ class Win(dict):
     # ==================================================
     def __init__(self, topdir=None, seedname="cwannier", dic=None):
         """
-        initialize the class.
+        Win manages input file for wannier90.x, seedname.win file.
 
         Args:
             topdir (str, optional): directory of seedname.win file.
@@ -146,21 +147,24 @@ class Win(dict):
                 - smr_type                     : Defines the analytical form used for the broadened delta function in the computation of the DOS and similar quantities defined on the energy axis, gauss/m-pN/m-v or cold/f-d (str), [gauss].
                 - smr_fixed_en_width           : Energy width for the smearing function for the DOS. Used only if adpt_smr is false (The units are [eV]) (flaot), [0.0].
                 - spin_decomp                  : If true, extra columns are added to some output files (such as seedname-dos.dat for the dos module, and analogously for the berry and BoltzWann modules) (bool), [False].
+
             # berry
                 - berry                        : Determines whether to enter the berry routines (bool), [False].
                 - berry_task                   : The quantity to compute when berry=true, ahc/morb/kubo/sc/shc/kdotp/me (str).
                 - berry_kmesh                  : Overrides the kmesh global variable.
                 - berry_kmesh_spacing          : Overrides the kmesh_spacing global variable.
+
             # berry curvature, ahc, shc
                 - berry_curv_unit              : Unit of Berry curvature, ang2/bohr2, ['ang2'].
                 - berry_curv_adpt_kmesh        : Linear dimension of the adaptively refined k-mesh used to compute the anomalous/spin Hall conductivity, [1].
                 - berry_curv_adpt_kmesh_thresh : Threshold magnitude of the Berry curvature for adaptive refinement, [100].
-                - fermi_energy                 : fermi energy (float), [None].
+                - fermi_energy                 : fermi energy (float), [0.0].
                 - fermi_energy_max             : Upper limit of the Fermi energy range (float), [None].
                 - fermi_energy_min             : Lower limit of the Fermi energy range (float), [None].
                 - fermi_energy_step            : Step for increasing the Fermi energy in the specified range. (The units are [eV]) (float), [0.01].
                 - fermi_energy_list            : list of fermi energy (list), [None].
                 - num_fermi                    : number of fermi energies (int), [0].
+
             # kubo
                 - kubo_freq_max           : Upper limit of the frequency range for computing the optical conductivity, JDOS and ac SHC. (The units are [eV]) (float), [If an inner energy window was specified, the default value is dis_froz_max-fermi_energy+0.6667. Otherwise it is the difference between the maximum and the minimum energy eigenvalue stored in seedname.eig, plus 0.6667.].
                 - kubo_freq_min           : Lower limit of the frequency range for computing the optical conductivity, JDOS and ac SHC. (The units are [eV]) (float), [0.0].
@@ -171,9 +175,12 @@ class Win(dict):
                 - kubo_adpt_smr_max       : Overrides the adpt_smr_max global variable.
                 - kubo_smr_fixed_en_width : Overrides the smr_fixed_en_width global variable.
                 - kubo_smr_type           : Overrides the smr_type global variable.
+
             # morb
+
             # gyrotropic
                 - gyrotropic          : Determines whether to enter the gyrotropic routines (bool), [False].
+
             # boltzwann
                 - boltzwann           : Determines whether to enter the boltzwann routines (bool), [False].
         """
@@ -204,6 +211,7 @@ class Win(dict):
         d["dis_win_max"] = self._get_param_keyword(win_data, "dis_win_max", +100000, dtype=float)
         d["dis_win_min"] = self._get_param_keyword(win_data, "dis_win_min", -100000, dtype=float)
         d["dis_mix_ratio"] = self._get_param_keyword(win_data, "dis_mix_ratio", 0.5, dtype=float)
+        d["exclude_bands"] = self._get_param_keyword(win_data, "exclude_bands", None, dtype=str)
 
         d["spinors"] = self._get_param_keyword(win_data, "spinors", False, dtype=bool)
         d["spin_moment"] = self._get_param_keyword(win_data, "spin_moment", False, dtype=bool)
@@ -217,7 +225,7 @@ class Win(dict):
                 else:
                     d["kpoints"] = kpoints.tolist()
 
-                d["kpoints"] = [kpt[:3] for kpt in kpoints]
+                d["kpoints"] = [kpt[:3] for kpt in d["kpoints"]]
 
             if "begin kpoint_path" in line:
                 k_data = win_data[i + 1 : win_data_lower.index("end kpoint_path")]
@@ -284,16 +292,16 @@ class Win(dict):
                 cnt_X = {}
                 for X, r1, r2, r3 in ap_data:
                     if X not in cnt_X:
-                        atoms_cart[(X, 1)] = [float(r1), float(r2), float(r3)]
+                        atoms_cart[(X, 1)] = np.array([float(r1), float(r2), float(r3)])
                         cnt_X[X] = 1
                     else:
-                        atoms_cart[(X, cnt_X[X] + 1)] = [float(r1), float(r2), float(r3)]
+                        atoms_cart[(X, cnt_X[X] + 1)] = np.array([float(r1), float(r2), float(r3)])
                         cnt_X[X] += 1
 
                 if units == "bohr":
                     atoms_cart = {k: v * 0.529177249 for k, v in atoms_cart.items()}
 
-                d["atoms_cart"] = atoms_cart
+                d["atoms_cart"] = {k: v.tolist() for k, v in atoms_cart.items()}
 
         if "units" in d:
             del d["units"]
@@ -354,10 +362,10 @@ class Win(dict):
         fermi_energy_step = 0.0
         fermi_energy_list = []
 
-        fermi_energy = self._get_param_keyword(win_data, "fermi_energy", None, dtype=float)
+        fermi_energy = self._get_param_keyword(win_data, "fermi_energy", 0.0, dtype=float)
 
         if fermi_energy is not None:
-            found_fermi_energy = True
+            # found_fermi_energy = True
             num_fermi = 1
 
         fermi_energy_scan = False
@@ -389,9 +397,7 @@ class Win(dict):
             else:
                 fermi_energy_step = (fermi_energy_max - fermi_energy_min) / float(num_fermi - 1)
 
-            fermi_energy_list = []
-            for i in range(num_fermi):
-                fermi_energy_list[i] = fermi_energy_min + (i - 1) * fermi_energy_step
+            fermi_energy_list = [fermi_energy_min + i * fermi_energy_step for i in range(num_fermi)]
         else:
             fermi_energy_list = [0.0]
 
@@ -410,6 +416,7 @@ class Win(dict):
         keys = []
         for line in lines:
             line = line.replace("\n", "")
+            line = line.lstrip()
             if line.startswith(keyword):
                 if len(line.split("=")) > 1:
                     key = line.split("=")[0]

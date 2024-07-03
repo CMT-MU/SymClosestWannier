@@ -27,7 +27,7 @@ class Spn(dict):
     # ==================================================
     def __init__(self, topdir=None, seedname="cwannier", spn_formatted=False, dic=None):
         """
-        initialize the class.
+        Spn manages matrix elements of Pauli spin operator in seedname.spn file.
 
         Args:
             topdir (str, optional): directory of seedname.spn file.
@@ -99,6 +99,9 @@ class Spn(dict):
                 raise RuntimeError("REAL DIAG CHECK FAILED : {0}".format(check))
 
             pauli_spn[:, ik, :, :] = A
+
+        pauli_spn = pauli_spn[:, :, 120:, 120:]
+        num_bands = pauli_spn.shape[2]
 
         d = {"num_k": num_k, "num_bands": num_bands, "pauli_spn": pauli_spn.tolist()}
 

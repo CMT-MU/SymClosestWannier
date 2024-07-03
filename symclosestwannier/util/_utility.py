@@ -63,6 +63,69 @@ def weight_proj(e, e0, e1, T0, T1, delta=10e-12):
 
 
 # ==================================================
+def convert_w90_orbital(l, m, r, s):
+    """
+    convert orbital in the Wannier90 format into the MultiPie format.
+
+    Args:
+        nw2l (list): l specifies the angular part Θlm(θ, φ).
+        nw2m (list): m specifies the angular part Θlm(θ, φ).
+        nw2r (list): r specifies the radial part Rr(r).
+        nw2s (list): s specifies the spin, 1(up)/-1(dn).
+
+    Returns:
+        str: converted orbital.
+    """
+    orbital = ""
+
+    if l == 0 and m == 1:
+        orbital = "s"
+    elif l == 1:
+        if m == 1:
+            orbital = "pz"
+        elif m == 2:
+            orbital = "px"
+        elif m == 3:
+            orbital = "py"
+    elif l == 2:
+        if m == 1:
+            orbital = "du"  # dz2
+        elif m == 2:
+            orbital = "dzx"  # dxz
+        elif m == 3:
+            orbital = "dyz"
+        elif m == 4:
+            orbital = "dv"  # dx2-y2
+        elif m == 5:
+            orbital = "dxy"
+    elif l == 3:
+        if m == 1:
+            orbital = "faz"  # fz3
+        elif m == 2:
+            orbital = "fx"  # fxz2
+        elif m == 3:
+            orbital = "fy"  # fyz2
+        elif m == 4:
+            orbital = "fbz"  # fz(x2-y2)
+        elif m == 5:
+            orbital = "fxyz"
+        elif m == 6:
+            orbital = "f2"  # fx(x2-3y2)
+        elif m == 7:
+            orbital = "f1"  # fy(3x2-y2)
+
+    if orbital == "":
+        raise Exception(f"invalid orbital projection was given, (l={l},m={m},r={r},s={s}).")
+
+    if s == 1:
+        orbital = f"({orbital},U)".replace("'", "")
+    elif s == -1:
+        orbital = f"({orbital},D)".replace("'", "")
+
+    return orbital
+
+
+# ==================================================
 def iterate_nd(size, pm=False):
     a = -size[0] if pm else 0
     b = size[0] + 1 if pm else size[0]
@@ -520,7 +583,7 @@ def samb_decomp_operator(
     decompose arbitrary operator into linear combination of SAMBs.
 
     Args:
-        Or_dict (dict): dictionary form of an arbitrary operator matrix in reak-space/k-space representation.
+        Or_dict (dict): dictionary form of an arbitrary operator matrix in real-space/k-space representation.
         Zr_dict (dict): dictionary form of SAMBs.
         A (list/ndarray, optional): real lattice vectors for the given operator, A = [a1,a2,a3] (list), [[[1,0,0], [0,1,0], [0,0,1]]].
         atoms_frac (ndarray, optional): atom's position in fractional coordinates for the given operator.
@@ -535,7 +598,7 @@ def samb_decomp_operator(
     Or_dict = sort_ket_matrix_dict(Or_dict, ket, ket_samb)
 
     if A is not None:
-        if not np.allclose(A, A_samb, rtol=1e-05, atol=1e-05):
+        if not np.allclose(A, A_samb, rtol=1e-03, atol=1e-03):
             A = np.array(A, dtype=float)
             A_samb = np.array(A_samb, dtype=float)
             atoms_frac = np.array(sort_ket_list(atoms_frac, ket, ket_samb), dtype=float)
@@ -551,7 +614,7 @@ def samb_decomp_operator(
                 rn = atoms_frac[n]
                 bond = ((R + rn) - rm) @ A
 
-                bond = tuple([format(bi, ".3f") for bi in bond])
+                bond = tuple([format(bi, ".2f") for bi in bond])
                 bond = tuple([float(bi) for bi in bond])
 
                 Or_dict_[(*bond, m, n)] = v
@@ -570,7 +633,7 @@ def samb_decomp_operator(
                     rn = atoms_frac_samb[n]
                     bond = ((R + rn) - rm) @ A_samb
 
-                    bond = tuple([format(bi, ".3f") for bi in bond])
+                    bond = tuple([format(bi, ".2f") for bi in bond])
                     bond = tuple([float(bi) for bi in bond])
 
                     dic[(*bond, m, n)] = v
@@ -605,7 +668,8 @@ def construct_Or(z, num_wann, rpoints, matrix_dict):
     for j, d in enumerate(matrix_dict["matrix"].values()):
         zj = z[j]
         for (n1, n2, n3, a, b), v in d.items():
-            Or_dict[(n1, n2, n3, a, b)] += zj * v
+            if (n1, n2, n3, a, b) in Or_dict:
+                Or_dict[(n1, n2, n3, a, b)] += zj * v
 
     Or = np.array(
         [
@@ -667,6 +731,9 @@ def thermal_avg(O, E, U, ef=0.0, T=0.0, num_k=0):
         O = [O]
     else:
         single_operator = False
+
+    if ef is None:
+        ef = 0.0
 
     fk = fermi(E - ef, T)
 

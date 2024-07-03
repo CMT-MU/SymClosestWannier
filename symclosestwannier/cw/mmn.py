@@ -38,7 +38,7 @@ class Mmn(dict):
     # ==================================================
     def __init__(self, topdir=None, seedname="cwannier", dic=None, npar=multiprocessing.cpu_count()):
         """
-        initialize the class.
+        Mmn manages overlap matrix elements in seedname.mmn file, M_{mn}(k,b) = <u^{KS}_{m}(k)|u^{KS}_{n}(k+b)>.
 
         Args:
             topdir (str, optional): directory of seedname.mmn file.
@@ -118,14 +118,13 @@ class Mmn(dict):
         assert np.all(nnkpts_data[:, :, 0] - 1 == np.arange(num_k)[:, None])
 
         nnkpts = nnkpts_data.tolist()
-        Mkb = Mkb.tolist()
 
         d = {"num_k": num_k, "num_bands": num_bands, "num_b": num_b, "nnkpts": nnkpts, "Mkb": Mkb}
 
         return d
 
     # ==================================================
-    def write(self, file_name="cwannier.mmn"):
+    def write(self, file_name="cwannier.mmn.cw"):
         """
         write mmn data.
 
@@ -135,15 +134,14 @@ class Mmn(dict):
         Mkb = np.array(self["Mkb"])
 
         with open(file_name, "w") as fp:
-            fp.write("# created by mmn.py\n")
-            fp.write("# written {}\n".format(datetime.datetime.now().strftime("on %d%b%Y at %H:%M:%S")))
-            fp.write("{} {} {}\n".format(self["num_bands"], self["num_k"], self["num_b"]))
+            fp.write("Created by mmn.py {}\n".format(datetime.datetime.now().strftime("on %d%b%Y at %H:%M:%S")))
+            fp.write("       {:5d}       {:5d}       {:5d}\n".format(self["num_bands"], self["num_k"], self["num_b"]))
             for ik, ib in itertools.product(range(self["num_k"]), range(self["num_b"])):
                 mkb = Mkb[ik, ib, :, :]
                 ik, ib, g0, g1, g2 = self["nnkpts"][ik][ib][:]
-                fp.write("{0}  {1}  {2}  {3}  {4}\n".format(ik, ib, g0, g1, g2))
+                fp.write("    {0}    {1}    {2}    {3}    {4}\n".format(ik, ib, g0, g1, g2))
                 for m, n in itertools.product(range(self["num_bands"]), repeat=2):
-                    fp.write("{0.real:18.12f}  {0.imag:18.12f}\n".format(mkb[n, m]))
+                    fp.write("{0.real:18.12f}{0.imag:18.12f}\n".format(mkb[n, m]))
 
         print(f"  * wrote '{file_name}'.")
 

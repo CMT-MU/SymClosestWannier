@@ -25,29 +25,29 @@ See for more detail, try "**pw2cw --help**" command.
     ```
 
 1. The following files are created in **ch4** and **graphene** folders.
-    - ch4.cwout, ch4_info.py, ch4_data.py, ch4_hr.dat, ch4_sr.dat, ch4_hr_sym.dat, ch4_sr_sym.dat, ch4_z.dat, ch4_s.dat, ch4_r.dat, ch4_v.dat, ch4_tb.dat, ch4_u.mat, ch4_u_dis.mat.
-    - graphene.cwout, graphene_info.py, graphene_data.py, graphene_hr.dat, graphene_sr.dat, graphene_hr_sym.dat, graphene_sr_sym.dat, graphene_z.dat, graphene_s.dat, graphene_r.dat, graphene_v.dat, graphene_tb.dat, graphene_u.mat, graphene_u_dis.mat.
-
+    - ch4.cwout, ch4.hdf5, ch4_hr.dat, ch4_sr.dat, ch4_hr_sym.dat, ch4_sr_sym.dat, ch4_z.dat, ch4_s.dat, ch4_z_exp.dat, ch4_r.dat, ch4_v.dat, ch4_tb.dat.
+    - graphene.cwout, graphene_info.py, graphene_data.py, graphene_hr.dat, graphene_sr.dat, graphene_hr_sym.dat, graphene_sr_sym.dat, graphene_z.dat, graphene_s.dat, graphene_z_exp.dat, graphene_band.txt, plot_band.gnu, graphene_band.eps.
+    -
     Each file contains
-    - **seedname_cwin** : input.
-    - **seedname_cwout** : standard output.
-    - **seedname_info.py** : calculation information for CWModel.
-    - **seedname_data.py** : calculation data for SymCW.
+    - **seedname.cwin** : input.
+    - **seedname.cwout** : standard output.
+    - **seedname.hdf5** : calculation information and data for CWModel.
     - **seedname_hr.dat** (**_hr_sym.dat**): (Symmetrized) Hamiltonian matrix elements in real-space.
     - **seedname_sr.dat** (**_hr_sym.dat**): (Symmetrized) Overlap matrix elements in real-space.
     - **seedname_z.dat** : The expansion coefficients of the Hamiltonian matrix expressed by a linear combination of SAMBs.
     - **seedname_s.dat** : The expansion coefficients of the Overlap matrix expressed by a linear combination of SAMBs.
+    - **seedname_z_exp.dat** : The expectation value of the SAMBs (dict),
     - **seedname_band.txt** : band dispersion data of SymCW tight-binding model.
     - **plot_band.gnu** : gnuplot file for plotting band dispersion.
-    - **seedname_band.eps** : gnuplot file for plotting band dispersion.
+    - **seedname_band.eps** : band dispersion.
 
 The detailed file formats are given as follows:
 - [seedname.cwin](format/cwin.md)
 - [seedname.cwout](format/cwout.md)
-- [seedname_info.py](format/info.md)
-- [seedname_data.py](format/data.md)
+- [seedname.hdf5(info)](format/info.md)
+- [seedname.hdf5(data)](format/data.md)
 - [seedname_hr.dat](format/hr.md)
 - [seedname_sr.dat](format/sr.md)
 - [mp_seedname_z.dat](format/z.md)
 - [mp_seedname_s.dat](format/s.md)
-- [mp_seedname_z.dat](format/z_exp.md)
+- [mp_seedname_z_exp.dat](format/z_exp.md)

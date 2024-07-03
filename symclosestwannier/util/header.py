@@ -27,15 +27,23 @@ cwin_info = {
     "write_rmn": "write seedname_r.dat ? (bool), [False].",
     "write_vmn": "write seedname_v.dat ? (bool), [False].",
     "write_tb": "write seedname_tb.dat ? (bool), [False].",
+    "write_eig": "write seedname.eig.cw ? (bool), [False].",
+    "write_amn": "write seedname.amn.cw ? (bool), [False].",
+    "write_mmn": "write seedname.mmn.cw ? (bool), [False].",
+    "write_spn": "write seedname.spn.cw ? (bool), [False].",
     "write_spn": "write seedname.spn.cw ? (bool), [False].",
     "symmetrization": "symmetrize ? (bool), [False].",
     "mp_outdir": "output files for multipie are found in this directory (str). ['./'].",
     "mp_seedname": "seedname for seedname_model.py, seedname_samb.py and seedname_matrix.py files (str), ['default'].",
-    "ket_amn": "ket basis list in the seedname.amn file. The format of each ket must be same as the 'ket' in sambname_model.py file. See sambname['info']['ket'] in sambname_model.py file for the format (list), [None].",
-    "irreps": "list of irreps to be considered (str/list), [None].",
+    "ket_amn": "ket basis list in the seedname.amn file. If ket_amn == auto, the list of orbitals are set automatically, or it can be set manually. The format of each ket must be same as the 'ket' in sambname_model.py file. See sambname['info']['ket'] in sambname_model.py file for the format (list), [None].",
     "a": "lattice parameter (in Ang) used to correct units of k points in reference band data (float, optional), [1.0].",
     "N1": "number of divisions for high symmetry lines (int, optional), [50].",
     "fermi_energy": "fermi energy (float, optional), [0.0].",
+    "zeeman_interaction": "consider zeeman interaction ? (bool), [False].",
+    "magnetic_field": "strength of the magnetic field (float), [0.0].",
+    "magnetic_field_theta": "angle from the z-axis of the magnetic field (float), [0.0].",
+    "magnetic_field_phi": "angle from the x-axis of the magnetic field (float), [0.0].",
+    "g_factor": "spin g factor (float), [2.0].",
 }
 
 win_info = {
@@ -109,6 +117,7 @@ nnkp_info = {
     "nw2l": "l specifies the angular part Θlm(θ, φ) (list), [None].",
     "nw2m": "m specifies the angular part Θlm(θ, φ) (list), [None].",
     "nw2r": "r specifies the radial part Rr(r) (list), [None].",
+    "nw2s": "s specifies the spin, 1(up)/-1(dn) (list), [None].",
     "atom_orb": "WFs indexes of each atom (list), [None].",
     "atom_pos": "atom position index of each atom (list), [None].",
     "atom_pos_r": "atom position of each atom in fractional coordinates with respect to the lattice vectors (list), [None].",
@@ -223,8 +232,6 @@ cw_data = {
     "Sr_sym": "Symmetrized overlap matrix elements in real-space (ndarray).",
     "Hr_sym": "Symmetrized Hamiltonian matrix elements in real-space (orthogonal) (ndarray).",
     "Hr_nonortho_sym": "Symmetrized Hamiltonian matrix elements in real-space (non-orthogonal) (ndarray).",
-    #
-    "rpoints_mp": "lattice points data included in matrix_dict, [[r1, r2, r3]] (crystal coordinate) (ndarray).",
     #
     "Ek_RMSE_grid": "mean squared error of eigen energies between symmetrized and non-symmetrized closed wannier TB model (grid) (float).",
     "Ek_RMSE_path": "mean squared error of eigen energies between symmetrized and non-symmetrized closed wannier TB model (path) (float).",
