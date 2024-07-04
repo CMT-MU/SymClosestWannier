@@ -100,6 +100,11 @@ class Response(dict):
         self.calc_spin_moment()
 
     # ==================================================
+    @property
+    def operators(self):
+        return {k: self[k] for k in ("HH_R", "AA_R", "BB_R", "CC_R", "SS_R", "SR_R", "SHR_R", "SH_R", "SAA_R", "SBB_R")}
+
+    # ==================================================
     def set_operators(self):
         """
         Wannier matrix elements, allocations and initializations.
@@ -203,11 +208,6 @@ class Response(dict):
             self.update(spin_moment_main(self._cwi, self.operators))
 
         self._cwm.log(cw_end_expectation_msg(), stamp=None, end="\n", file=self._outfile, mode="a")
-
-    # ==================================================
-    @property
-    def operators(self):
-        return {k: self[k] for k in ("HH_R", "AA_R", "BB_R", "CC_R", "SS_R", "SR_R", "SHR_R", "SH_R", "SAA_R", "SBB_R")}
 
     # ==================================================
     def write_ahc(self):

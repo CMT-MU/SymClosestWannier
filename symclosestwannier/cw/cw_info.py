@@ -30,7 +30,7 @@ from symclosestwannier.cw.mmn import Mmn
 from symclosestwannier.cw.umat import Umat
 from symclosestwannier.cw.spn import Spn
 
-from symclosestwannier.util._utility import wigner_seitz, convert_w90_orbital
+from symclosestwannier.util.utility import wigner_seitz, convert_w90_orbital
 
 _class_map = {"cwin": CWin, "win": Win, "nnkp": Nnkp, "eig": Eig, "amn": Amn, "mmn": Mmn, "umat": Umat, "spn": Spn}
 

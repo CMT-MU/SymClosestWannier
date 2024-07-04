@@ -37,7 +37,7 @@ import multiprocessing
 from joblib import Parallel, delayed, wrap_non_picklable_objects
 
 
-from symclosestwannier.util._utility import (
+from symclosestwannier.util.utility import (
     fermi,
     fourier_transform_r_to_k,
     fourier_transform_r_to_k_new,
@@ -108,7 +108,7 @@ def spin_moment_main(cwi, operators):
 
             spn_x, spn_y, spn_z = spn_operator(pauli_spn, g_factor, dim) / mu_B
 
-            return thermal_avg([spn_x, spn_y, spn_z], E, U, cwi["fermi_energy"], T=0.0, num_k=num_k)
+            return thermal_avg([spn_x, spn_y, spn_z], E, U, cwi["fermi_energy"], T_Kelvin=0.0, num_k=num_k)
 
         # ==================================================
         kpoints_chunks = np.split(kpoints, [j for j in range(1000, len(kpoints), 1000)])
@@ -391,7 +391,7 @@ def wham_get_JJp_JJm_list(cwi, delHH, E, U, occ=None):
     if occ is not None:
         occ_list = [occ]
     else:
-        occ_list = np.array([fermi(E - ef, T=0.0) for ef in fermi_energy_list])
+        occ_list = np.array([fermi(E - ef, T_Kelvin=0.0) for ef in fermi_energy_list])
 
     if occ is not None:
         fac_m = np.array(
@@ -540,7 +540,7 @@ def wham_get_occ_mat_list(cwi, U, E=None, occ=None):
     if occ is not None:
         occ_list = [occ]
     else:
-        occ_list = np.array([fermi(E - ef, T=0.0) for ef in fermi_energy_list])
+        occ_list = np.array([fermi(E - ef, T_Kelvin=0.0) for ef in fermi_energy_list])
 
     f_list = np.zeros((nfermi_loc, num_k, num_wann, num_wann), dtype=np.complex128)
     g_list = np.zeros((nfermi_loc, num_k, num_wann, num_wann), dtype=np.complex128)
@@ -1029,7 +1029,7 @@ def berry_get_kubo(cwi, operators):
             kubo_H_spn = 0.0
             kubo_AH_spn = 0.0
 
-        occ = fermi(E - ef, T=0.0)
+        occ = fermi(E - ef, T_Kelvin=0.0)
 
         for k in range(len(kpt)):
             for m in range(num_wann):
@@ -1184,7 +1184,7 @@ def berry_get_me(cwi, E, A):
     # elif cwi["me_smr_type"] == "f-d":
     #     me_smr_type_idx = -99
 
-    # occ = np.array([[fermi(E[k, m] - ef, T=0.0) for m in range(num_wann)] for k in range(num_k)])
+    # occ = np.array([[fermi(E[k, m] - ef, T_Kelvin=0.0) for m in range(num_wann)] for k in range(num_k)])
 
     # me_H_spn = 1.0j * np.zeros((me_nfreq, 3, 3))
     # me_H_orb = 1.0j * np.zeros((me_nfreq, 3, 3))

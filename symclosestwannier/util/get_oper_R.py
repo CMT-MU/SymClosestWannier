@@ -20,7 +20,7 @@
 
 import numpy as np
 
-from symclosestwannier.util._utility import fourier_transform_k_to_r
+from symclosestwannier.util.utility import fourier_transform_k_to_r
 
 
 # ==================================================

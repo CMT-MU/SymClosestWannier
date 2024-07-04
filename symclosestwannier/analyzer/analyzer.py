@@ -57,11 +57,7 @@ def analyzer(seedname="cwannier"):
     cwi = CWInfo("./", seedname, dic=info)
     cwi |= cwin | win
 
-    if cwi["restart"] == "sym":
-        cwi["restart"] = "cw"
-
     cw_model = CWModel(cwi, cwm, dic=data)
-
     cwi = cw_model._cwi
 
     outfile = f"{seedname}.cwpout"
@@ -73,12 +69,14 @@ def analyzer(seedname="cwannier"):
     #       Response       #
     # ******************** #
 
-    if type(cw_model["Hr_sym"]) == np.ndarray:
-        Hr = np.array(cw_model["Hr_sym"], dtype=np.complex128)
-    elif type(cw_model["Hr"]) == np.ndarray:
+    if type(cw_model["Hr"]) == np.ndarray:
         Hr = np.array(cw_model["Hr"], dtype=np.complex128)
     else:
         Hr = None
+
+    if cwi["symmetrization"]:
+        if type(cw_model["Hr_sym"]) == np.ndarray:
+            Hr = np.array(cw_model["Hr_sym"], dtype=np.complex128)
 
     res = Response(cwi, cwm, HH_R=Hr)
 
@@ -109,3 +107,5 @@ def analyzer(seedname="cwannier"):
 
     cwm.log(f"  * total elapsed_time:", stamp="start", file=outfile, mode="a")
     cwm.log(postcw_end_msg(), stamp=None, end="\n", file=outfile, mode="a")
+
+    return res, band
