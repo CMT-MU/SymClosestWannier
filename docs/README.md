@@ -28,3 +28,5 @@
 
 - **To Do**:
   - add function to read seedname.uHu, seedname.uIu files.
+  - add SHC, ME response functions.
+  - add lindhard function.
