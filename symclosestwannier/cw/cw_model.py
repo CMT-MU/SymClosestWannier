@@ -157,8 +157,7 @@ class CWModel(dict):
         Sk = Ak.transpose(0, 2, 1).conjugate() @ Ak
         Sk = 0.5 * (Sk + np.einsum("kmn->knm", Sk).conj())
 
-        diag_Ek = np.array([np.diag(Ek[k]) for k in range(self._cwi["num_k"])])
-        Hk = Uk.transpose(0, 2, 1).conjugate() @ diag_Ek @ Uk
+        Hk = np.einsum("klm,kl,kln->kmn", np.conj(Uk), Ek, Uk, optimize=True)
         Hk = 0.5 * (Hk + np.einsum("kmn->knm", Hk).conj())
 
         if self._cwi["zeeman_interaction"]:
@@ -343,8 +342,7 @@ class CWModel(dict):
             Uk = Ak @ S2k_inv
 
         # projection from KS energies to Closest Wannnier Hamiltonian
-        diag_Ek = np.array([np.diag(Ek[k]) for k in range(self._cwi["num_k"])])
-        Hk = Uk.transpose(0, 2, 1).conjugate() @ diag_Ek @ Uk
+        Hk = np.einsum("klm,kl,kln-akmn", np.conj(Uk), Ek, Uk, optimize=True)
         Hk = 0.5 * (Hk + np.einsum("kmn->knm", Hk).conj())
 
         if self._cwi["zeeman_interaction"]:

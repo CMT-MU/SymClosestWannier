@@ -149,7 +149,7 @@ def berry_main(cwi, operators):
         "kubo_H_spn": 0.0,
         "kubo_AH_spn": 0.0,
         # sc
-        # shc
+        "shc": 0.0,
         # kdotp
     }
 
@@ -186,7 +186,10 @@ def berry_main(cwi, operators):
 
     # (shc)  Spin Hall conductivity
     if cwi["berry_task"] == "shc":
-        pass
+        if cwi["shc_freq_scan"]:
+            d["shc_freq"] = berry_get_shc_freq(cwi, operators)
+        else:
+            d["shc_fermi"] = berry_get_shc_fermi(cwi, operators)
 
     if cwi["berry_task"] == "kdotp":
         pass
@@ -391,7 +394,7 @@ def wham_get_JJp_JJm_list(cwi, delHH, E, U, occ=None):
     if occ is not None:
         occ_list = [occ]
     else:
-        occ_list = np.array([fermi(E - ef, T_Kelvin=0.0) for ef in fermi_energy_list])
+        occ_list = np.array([fermi(E - ef, T=0.0) for ef in fermi_energy_list])
 
     if occ is not None:
         fac_m = np.array(
@@ -540,7 +543,7 @@ def wham_get_occ_mat_list(cwi, U, E=None, occ=None):
     if occ is not None:
         occ_list = [occ]
     else:
-        occ_list = np.array([fermi(E - ef, T_Kelvin=0.0) for ef in fermi_energy_list])
+        occ_list = np.array([fermi(E - ef, T=0.0) for ef in fermi_energy_list])
 
     f_list = np.zeros((nfermi_loc, num_k, num_wann, num_wann), dtype=np.complex128)
     g_list = np.zeros((nfermi_loc, num_k, num_wann, num_wann), dtype=np.complex128)
@@ -849,7 +852,7 @@ def berry_get_ahc(cwi, operators):
 
     num_k = np.prod(cwi["berry_kmesh"])
 
-    kpoints_chunks = np.split(kpoints, [j for j in range(1000000, len(kpoints), 1000000)])
+    kpoints_chunks = np.split(kpoints, [j for j in range(100000, len(kpoints), 100000)])
 
     imf_list = np.zeros((num_fermi, 3, 3), dtype=float)
 
@@ -857,17 +860,6 @@ def berry_get_ahc(cwi, operators):
 
     for v in res:
         imf_list += v
-
-    # import time
-
-    # for idx, kpoints in enumerate(kpoints_chunks):
-    #     time_sta = time.time()
-    #     imf_list += berry_get_ahc_k(kpointse)
-    #     time_end = time.time()
-
-    #     tim = time_end - time_sta
-
-    #     print(f"* {idx+1}/{len(kpoints_chunks)}  ({tim} [s])")
 
     """
     --------------------------------------------------------------------
@@ -1029,7 +1021,7 @@ def berry_get_kubo(cwi, operators):
             kubo_H_spn = 0.0
             kubo_AH_spn = 0.0
 
-        occ = fermi(E - ef, T_Kelvin=0.0)
+        occ = fermi(E - ef, T=0.0)
 
         for k in range(len(kpt)):
             for m in range(num_wann):
@@ -1122,10 +1114,9 @@ def berry_get_kubo(cwi, operators):
     """
     --------------------------------------------------------------------
     Convert to S/cm
-    ==================================================
+
     fac = e^2/(hbar.V_c*10^-8)
-    ==================================================
-    #
+
     with 'V_c' in Angstroms^3, and 'e', 'hbar' in SI units
     --------------------------------------------------------------------
     """
@@ -1142,6 +1133,404 @@ def berry_get_kubo(cwi, operators):
         kubo_AH_spn *= fac
 
     return kubo_H, kubo_AH, kubo_H_spn, kubo_AH_spn
+
+
+# ==================================================
+def berry_get_js_k(cwi, operators, kpoints, E, del_alpha_E, D_alpha_h, U):
+    """
+    ontribution from point k to the
+    <psi_k | 1/2*(sigma_gamma*v_alpha + v_alpha*sigma_gamma) | psi_k>
+
+    QZYZ18 Eq.(23) without hbar/2 (required by spin operator) and
+    not divided by hbar (required by velocity operator)
+
+    Junfeng Qiao (8/7/2018)
+    """
+    if cwi["tb_gauge"]:
+        atoms_list = list(cwi["atoms_frac"].values())
+        atoms_frac = np.array([atoms_list[i] for i in cwi["nw2n"]])
+    else:
+        atoms_frac = None
+
+    shc_alpha = cwi["shc_alpha"]
+    shc_gamma = cwi["shc_gamma"]
+
+    # =========== S_k ===========
+    #  < u_k | sigma_gamma | u_k >, QZYZ18 Eq.(25)
+    #  QZYZ18 Eq.(36)
+    S_gamma_w = fourier_transform_r_to_k(
+        operators["SS_R"][shc_gamma - 1], kpoints, cwi["irvec"], cwi["ndegen"], atoms_frac
+    )
+    #  QZYZ18 Eq.(30)
+    S_gamma_k = U.transpose(0, 2, 1).conjugate() @ S_gamma_w @ U
+
+    # =========== K_k ===========
+    #  < u_k | sigma_gamma | \partial_alpha u_k >, QZYZ18 Eq.(26)
+    #  QZYZ18 Eq.(37)
+    S_gamma_R_gamma_w = fourier_transform_r_to_k(
+        operators["SR_R"][shc_gamma - 1, shc_alpha - 1], kpoints, cwi["irvec"], cwi["ndegen"], atoms_frac
+    )
+    #   ! QZYZ18 Eq.(31)
+    S_gamma_R_alpha_k = -1.0j * U.transpose(0, 2, 1).conjugate() @ S_gamma_R_gamma_w @ U
+    K_k = S_gamma_R_alpha_k + S_gamma_k @ D_alpha_h
+
+    # =========== L_k ===========
+    # < u_k | sigma_gamma.H | \partial_alpha u_k >, QZYZ18 Eq.(27)
+    # QZYZ18 Eq.(38)
+    S_gamma_HR_alpha_w = fourier_transform_r_to_k(
+        operators["SHR_R"][shc_gamma - 1, shc_alpha - 1], kpoints, cwi["irvec"], cwi["ndegen"], atoms_frac
+    )
+    # QZYZ18 Eq.(39)
+    S_gamma_H_w = fourier_transform_r_to_k(
+        operators["SH_R"][shc_gamma - 1], kpoints, cwi["irvec"], cwi["ndegen"], atoms_frac
+    )
+    # QZYZ18 Eq.(32)
+    S_gamma_HR_alpha_k = -1.0j * U.transpose(0, 2, 1).conjugate() @ S_gamma_HR_alpha_w @ U
+    S_gamma_H_k = -1.0j * U.transpose(0, 2, 1).conjugate() @ S_gamma_H_w @ U
+    L_k = S_gamma_HR_alpha_k + S_gamma_H_k @ D_alpha_h
+
+    # =========== B_k ===========
+    #  < \psi_nk | sigma_gamma v_alpha | \psi_mk >, QZYZ18 Eq.(24)
+    B_k = (
+        np.einsum("km, knm->knm", del_alpha_E, S_gamma_k, optimize=True)
+        + np.einsum("km, knm->knm", E, K_k, optimize=True)
+        - L_k
+    )
+
+    # =========== js_k ===========
+    #  QZYZ18 Eq.(23)
+    #  note the S in SR_R,SHR_R,SH_R of get_SHC_R is sigma,
+    #  to get spin current, we need to multiply it by hbar/2,
+    #  also we need to divide it by hbar to recover the velocity
+    #  operator, these are done outside of this subroutine
+    js_k = 1.0 / 2.0 * (B_k + B_k.transpose(0, 2, 1).conjugate())
+
+    return js_k
+
+
+# ==================================================
+def berry_get_shc_klist(cwi, operators, kpoints, band=False):
+    """
+    Contribution from a k-point to the spin Hall conductivity on a list
+    of Fermi energies or a list of frequencies or a list of energy bands
+      sigma_{alpha,beta}^{gamma}(k), alpha, beta, gamma = 1, 2, 3
+                                                         (x, y, z, respectively)
+    i.e. the Berry curvature-like term of QZYZ18 Eq.(3) & (4).
+    The unit is angstrom^2, similar to that of Berry curvature of AHC.
+
+    Note the berry_get_js_k() has not been multiplied by hbar/2 (as
+    required by spin operator) and not been divided by hbar (as required
+    by the velocity operator). The second velocity operator has not been
+    divided by hbar as well. But these two hbar required by velocity
+    operators are canceled by the preceding hbar^2 of QZYZ18 Eq.(3).
+
+       shc_k_fermi: return a list for different Fermi energies
+       shc_k_freq:  return a list for different frequencies
+       shc_k_band:  return a list for each energy band
+
+    Junfeng Qiao (18/8/2018)
+    """
+    if kpoints.ndim == 1:
+        kpoints = np.array([kpoints])
+
+    if cwi["tb_gauge"]:
+        atoms_list = list(cwi["atoms_frac"].values())
+        atoms_frac = np.array([atoms_list[i] for i in cwi["nw2n"]])
+    else:
+        atoms_frac = None
+
+    kubo_adpt_smr = cwi["kubo_adpt_smr"]
+    kubo_adpt_smr_fac = cwi["kubo_adpt_smr_fac"]
+    kubo_adpt_smr_max = cwi["kubo_adpt_smr_max"]
+    kubo_smr_fixed_en_width = cwi["kubo_smr_fixed_en_width"]
+
+    if cwi["kubo_smr_type"] == "gauss":
+        kubo_smr_type_idx = 0
+    elif "m-p" in cwi["kubo_smr_type"]:
+        m_pN = cwi["kubo_smr_type"]
+        kubo_smr_type_idx = m_pN[2:]
+    elif cwi["kubo_smr_type"] == "m-v" or cwi["kubo_smr_type"] == "cold":
+        kubo_smr_type_idx = -1
+    elif cwi["kubo_smr_type"] == "f-d":
+        kubo_smr_type_idx = -99
+
+    if cwi["kubo_eigval_max"] < +100000:
+        kubo_eigval_max = cwi["kubo_eigval_max"]
+    elif cwi["dis_froz_max"] < +100000:
+        kubo_eigval_max = cwi["dis_froz_max"] + 0.6667
+    else:
+        kubo_eigval_max = 100000
+
+    kubo_freq_list = np.arange(cwi["kubo_freq_min"], cwi["kubo_freq_max"], cwi["kubo_freq_step"])
+    # Replace imaginary part of frequency with a fixed value
+    if not kubo_adpt_smr and kubo_smr_fixed_en_width != 0.0:
+        kubo_freq_list = np.real(kubo_freq_list) + 1.0j * kubo_smr_fixed_en_width
+
+    kubo_nfreq = len(kubo_freq_list)
+
+    # Hamiltonian
+
+    HH, delHH = fourier_transform_r_to_k_new(
+        operators["HH_R"], kpoints, cwi["unit_cell_cart"], cwi["irvec"], cwi["ndegen"], atoms_frac
+    )
+
+    # if cwi["zeeman_interaction"]:
+    #     B = cwi["magnetic_field"]
+    #     theta = cwi["magnetic_field_theta"]
+    #     phi = cwi["magnetic_field_phi"]
+    #     g_factor = cwi["g_factor"]
+
+    #     pauli_spin = fourier_transform_r_to_k_vec(operators["SS_R"], kpoints, cwi["irvec"], cwi["ndegen"], atoms_frac)
+    #     H_zeeman = spin_zeeman_interaction(B, theta, phi, pauli_spin, g_factor, cwi["num_wann"])
+    #     HH += H_zeeman
+
+    E, U = np.linalg.eigh(HH)
+    HH = None
+
+    use_degen_pert = cwi["use_degen_pert"]
+    degen_thr = cwi["degen_thr"]
+
+    delE = wham_get_deleig(delHH, E, U, use_degen_pert, degen_thr)
+    D_h = wham_get_D_h(delHH, E, U)
+
+    AA = fourier_transform_r_to_k_vec(operators["AA_R"], kpoints, cwi["irvec"], cwi["ndegen"], atoms_frac)
+    Avec = np.array([U.transpose(0, 2, 1).conjugate() @ AA[i] @ U for i in range(3)])
+    AA = None
+    AA = Avec + 1.0j * D_h  # Eq.(25) WYSV06
+    Avec = None
+
+    # SHC
+
+    shc_alpha = cwi["shc_alpha"]
+    shc_beta = cwi["shc_beta"]
+    shc_gamma = cwi["shc_gamma"]
+
+    shc_bandshift = cwi["shc_bandshift"]
+    shc_bandshift_firstband = cwi["shc_bandshift_firstband"]
+    shc_bandshift_energyshift = cwi["shc_bandshift_energyshift"]
+
+    if shc_bandshift:
+        E[:, shc_bandshift_firstband:] = E[:, shc_bandshift_firstband:] + shc_bandshift_energyshift
+
+    del_alpha_E = delE[shc_alpha - 1]
+    D_alpha_h = D_h[shc_alpha - 1]
+    js_k = berry_get_js_k(cwi, operators, kpoints, E, del_alpha_E, D_alpha_h, U)
+
+    kubo_adpt_smr = cwi["kubo_adpt_smr"]
+    berry_kmesh = cwi["berry_kmesh"]
+    if kubo_adpt_smr:
+        Delta_k = kmesh_spacing_mesh(berry_kmesh, cwi["B"])
+
+    lfreq = False
+    lfermi = False
+    if cwi["shc_freq_scan"]:
+        shc_k_freq = np.zeros(kubo_nfreq)
+        lfreq = True
+    else:
+        shc_k_fermi = np.zeros(cwi["num_fermi"])
+        lfermi = True
+
+    lband = False
+    # if cwi["kpath_bands_colour"] == "shc" and band:
+    if band:
+        shc_k_band = np.zeros(cwi["num_wann"])
+        lband = True
+        lfreq = False
+        lfermi = False
+
+    if lfreq:
+        ef = cwi["fermi_energy"]
+        occ_freq = fermi(E - ef, T=0.0)
+    elif lfermi:
+        fermi_energy_list = cwi["fermi_energy_list"]
+        occ_fermi = np.array([fermi(E - ef, T=0.0) for ef in fermi_energy_list])
+
+    num_wann = cwi["num_wann"]
+
+    for k in range(len(kpoints)):
+        for n in range(num_wann):
+            # get Omega_{n,alpha beta}^{gamma}
+            if lfreq:
+                omega_list = np.zeros(kubo_nfreq)
+            elif lfermi or lband:
+                omega = 0.0
+
+            for m in range(num_wann):
+                if m == n:
+                    continue
+
+                if E[k, m] > kubo_eigval_max or E[k, n] > kubo_eigval_max:
+                    continue
+
+                ekm = E[k, m]
+                ekn = E[k, n]
+                rfac = ekm - ekn
+
+                # this will calculate AHC
+                # prod = -rfac*cmplx_i*AA(n, m, shc_alpha) * rfac*cmplx_i*AA(m, n, shc_beta)
+                prod = js_k[k, n, m] * 1.0j * rfac * AA[shc_beta, k, m, n]
+                if kubo_adpt_smr:
+                    # Eq.(35) YWVS07
+                    vdum = delE[:, k, m] - delE[:, k, n]
+                    joint_level_spacing = np.sqrt(np.dot(vdum, vdum)) * Delta_k
+                    eta_smr = min(joint_level_spacing * kubo_adpt_smr_fac, kubo_adpt_smr_max)
+                    if eta_smr < 1e-6:
+                        eta_smr = 1e-6
+                else:
+                    eta_smr = kubo_smr_fixed_en_width
+
+                if lfreq:
+                    for ifreq in range(kubo_nfreq):
+                        cdum = np.real(kubo_freq_list(ifreq)) + 1.0j * eta_smr
+                        cfac = -2.0 / (rfac**2 - cdum**2)
+                        omega_list[ifreq] += cfac * np.imag(prod)
+                elif lfermi or lband:
+                    rfac = -2.0 / (rfac**2 + eta_smr**2)
+                    omega += rfac * np.imag(prod)
+
+            if lfermi:
+                shc_k_fermi += occ_fermi[:, k, n] * omega
+            elif lfreq:
+                shc_k_freq += occ_freq[k, n] * omega_list
+            elif lband:
+                shc_k_band[n] = omega
+
+    if lfermi:
+        return shc_k_fermi
+    elif lfreq:
+        return shc_k_freq
+    elif lband:
+        return shc_k_band
+
+
+# ==================================================
+def berry_get_shc_freq(cwi, operators):
+    """
+    Spin Hall conductivity, in (hbar/e)*S/cm.
+    """
+    pass
+
+
+# ==================================================
+def berry_get_shc_fermi(cwi, operators):
+    """
+    Spin Hall conductivity, in (hbar/e)*S/cm.
+    """
+    num_fermi = cwi["num_fermi"]
+
+    berry_kmesh = cwi["berry_kmesh"]
+
+    berry_curv_unit = cwi["berry_curv_unit"]
+    berry_curv_adpt_kmesh = cwi["berry_curv_adpt_kmesh"]
+    berry_curv_adpt_kmesh_thresh = cwi["berry_curv_adpt_kmesh_thresh"]
+
+    # Mesh spacing in reduced coordinates
+    db1 = 1.0 / float(berry_kmesh[0])
+    db2 = 1.0 / float(berry_kmesh[1])
+    db3 = 1.0 / float(berry_kmesh[2])
+
+    kweight = db1 * db2 * db3
+    kweight_adpt = kweight / berry_curv_adpt_kmesh**3
+
+    adkpt = np.zeros((3, berry_curv_adpt_kmesh**3))
+    ikpt = 0
+    for i in range(berry_curv_adpt_kmesh):
+        for j in range(berry_curv_adpt_kmesh):
+            for k in range(berry_curv_adpt_kmesh):
+                adkpt[0, ikpt] = db1 * ((i + 0.5) / berry_curv_adpt_kmesh - 0.5)
+                adkpt[1, ikpt] = db2 * ((j + 0.5) / berry_curv_adpt_kmesh - 0.5)
+                adkpt[2, ikpt] = db3 * ((k + 0.5) / berry_curv_adpt_kmesh - 0.5)
+                ikpt = ikpt + 1
+
+    # ==================================================
+    @wrap_non_picklable_objects
+    def berry_get_shc_k(kpoints):
+        """
+        berry_get_imf_klist
+        """
+        shc_k_list = berry_get_shc_klist(cwi, operators, kpoints)
+        shc_list = np.zeros((num_fermi, 3, 3))
+
+        for k in range(len(kpoints)):
+            kpt = kpoints[k]
+            ladpt = [False] * num_fermi
+            adpt_counter_list = [0] * num_fermi
+
+            for ife in range(num_fermi):
+                vdum = np.array([sum(shc_k_list[ife, k, :, a]) for a in range(3)])
+
+                if berry_curv_unit == "bohr2":
+                    vdum = vdum / bohr**2
+
+                rdum = np.sqrt(np.dot(vdum, vdum))
+                if rdum > berry_curv_adpt_kmesh_thresh:
+                    adpt_counter_list[ife] = adpt_counter_list[ife] + 1
+                    ladpt[ife] = True
+                else:
+                    shc_list[ife, :, :] += shc_k_list[ife, k, :, :] * kweight
+
+            if np.any(ladpt):
+                # for loop_adpt in range(berry_curv_adpt_kmesh**3):
+                # !Using shc_k here would corrupt values for other
+                # !kpt, hence dummy. Only if-th element is used.
+                shc_k_list_dummy = berry_get_shc_klist(cwi, operators, kpt[np.newaxis, :] + adkpt.T, ladpt=ladpt)
+
+                for ife_ in range(num_fermi):
+                    if ladpt[ife_]:
+                        for loop_adpt in range(berry_curv_adpt_kmesh**3):
+                            shc_list[ife_, :, :] += shc_k_list_dummy[ife_, loop_adpt, :, :] * kweight_adpt
+
+        del shc_k_list
+
+        return shc_list
+
+    # ==================================================
+    N1, N2, N3 = cwi["berry_kmesh"]
+    kpoints = np.array(
+        [[i / float(N1), j / float(N2), k / float(N3)] for i in range(N1) for j in range(N2) for k in range(N3)]
+    )
+
+    num_k = np.prod(cwi["berry_kmesh"])
+
+    kpoints_chunks = np.split(kpoints, [j for j in range(100000, len(kpoints), 100000)])
+
+    shc_fermi = np.zeros((num_fermi, 3, 3), dtype=float)
+
+    res = Parallel(n_jobs=_num_proc, verbose=50)(delayed(berry_get_shc_k)(kpoints) for kpoints in kpoints_chunks)
+
+    for v in res:
+        shc_fermi += v
+
+    """
+    --------------------------------------------------------------------
+    Convert to the unit: (hbar/e) S/cm
+
+    at this point, we need to
+        (i)   multiply -e^2/hbar/(V*N_k) as in the QZYZ18 Eq.(5),
+              note 1/N_k has already been applied by the kweight
+
+        (ii)  convert charge current to spin current:
+              divide the result by -e and multiply hbar/2 to
+              recover the spin current, so the overall
+              effect is -hbar/2/e
+
+        (iii) multiply 1e8 to convert it to the unit S/cm
+
+    So, the overall factor is
+
+    fac = 1.0e8 * e^2 / hbar / V / 2.0
+
+    and the final unit of spin Hall conductivity is (hbar/e)S/cm
+     -------------------------------------------------------------------
+    """
+
+    cell_volume = cwi["unit_cell_volume"]
+
+    fac = 1.0e8 * elem_charge_SI**2 / (hbar_SI * cell_volume) / 2.0
+
+    shc_fermi = shc_fermi * fac
+
+    return shc_fermi
 
 
 # ==================================================

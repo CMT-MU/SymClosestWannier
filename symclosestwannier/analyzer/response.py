@@ -155,15 +155,20 @@ class Response(dict):
             if self["SS_R"] is None:
                 self["SS_R"] = get_oper_R("SS_R", self._cwi)
 
-            if self._cwi["shc_method"] == "qiao":
-                if self["SHC_R"] is None:
-                    self["SHC_R"] = get_oper_R("SHC_R", self._cwi)
-            else:  # ryoo
-                if self["SAA_R"] is None:
-                    self["SAA_R"] = get_oper_R("SAA_R", self._cwi)
-                if self["SBB_R"] is None:
-                    self["SBB_R"] = get_oper_R("SBB_R", self._cwi)
+            # if self._cwi["shc_method"] == "qiao":
+            if self["SR_R"] is None:
+                SR_R, SHR_R, SH_R = get_oper_R("get_SHC_R", self._cwi)
+                self["SR_R"] = SR_R
+                self["SHR_R"] = SHR_R
+                self["SH_R"] = SH_R
 
+            # else:  # ryoo
+            #     if self["SAA_R"] is None:
+            #         self["SAA_R"] = get_oper_R("SAA_R", self._cwi)
+            #     if self["SBB_R"] is None:
+            #         self["SBB_R"] = get_oper_R("SBB_R", self._cwi)
+
+        # (kdotp) joint density of states
         if self._cwi["berry_task"] == "kdotp":
             if self["HH_R"] is None:
                 self["HH_R"] = get_oper_R("HH_R", self._cwi)
@@ -177,6 +182,7 @@ class Response(dict):
             if self["SS_R"] is None:
                 self["SS_R"] = get_oper_R("SS_R", self._cwi)
 
+        # spin magnetic moment
         if self._cwi["spin_moment"]:
             if self["SS_R"] is None:
                 self["SS_R"] = get_oper_R("SS_R", self._cwi)
@@ -246,7 +252,7 @@ class Response(dict):
                     fermi_energy_list[ife], sum(ahc_list[ife, :, 0]), sum(ahc_list[ife, :, 1]), sum(ahc_list[ife, :, 2])
                 )
 
-            filename = f"{self._cwi['seedname']}-ahc-fermiscan.dat"
+            filename = f"{self._cwi['seedname']}-ahc-fermiscan_cw.dat"
             self._cwm.write(filename, ahc_str, None, None)
 
     # ==================================================
@@ -254,8 +260,6 @@ class Response(dict):
         """
         write seedname-kubo_H_*.dat, seedname-kubo_A_*.dat.
 
-        Args:
-            filename (str): file name.
         """
         kubo_freq_list = np.arange(self._cwi["kubo_freq_min"], self._cwi["kubo_freq_max"], self._cwi["kubo_freq_step"])
 
@@ -276,7 +280,7 @@ class Response(dict):
                 ]
             )
 
-            filename_S = f"{self._cwi['seedname']}-kubo_S_{k}.dat"
+            filename_S = f"{self._cwi['seedname']}-kubo_S_{k}_cw.dat"
             self._cwm.write(filename_S, kubo_S_str, None, None)
 
         d = {"yz": (1, 2), "zx": (2, 0), "xy": (0, 1)}
@@ -296,8 +300,57 @@ class Response(dict):
                 ]
             )
 
-            filename_A = f"{self._cwi['seedname']}-kubo_A_{k}.dat"
+            filename_A = f"{self._cwi['seedname']}-kubo_A_{k}_cw.dat"
             self._cwm.write(filename_A, kubo_A_str, None, None)
+
+    # ==================================================
+    def write_shc(self):
+        """
+        write seedname-shc.dat, seedname-shc-fermiscan.dat.
+        """
+        # !
+        # ! Convert to the unit: (hbar/e) S/cm
+        # ! at this point, we need to
+        # ! (i)   multiply -e^2/hbar/(V*N_k) as in the QZYZ18 Eq.(5),
+        # !       note 1/N_k has already been applied by the kweight
+        # ! (ii)  convert charge current to spin current:
+        # !       divide the result by -e and multiply hbar/2 to
+        # !       recover the spin current, so the overall
+        # !       effect is -hbar/2/e
+        # ! (iii) multiply 1e8 to convert it to the unit S/cm
+        # ! So, the overall factor is
+        # !   fac = 1.0e8 * e^2 / hbar / V / 2.0
+        # ! and the final unit of spin Hall conductivity is (hbar/e)S/cm
+        # !
+
+        if self._cwi["shc_freq_scan"]:
+            shc_freq = self["shc_freq"]
+            kubo_freq_list = np.arange(
+                self._cwi["kubo_freq_min"], self._cwi["kubo_freq_max"], self._cwi["kubo_freq_step"]
+            )
+            kubo_nfreq = len(kubo_freq_list)
+
+            shc_str = "#No.   Frequency(eV)   Re(sigma)((hbar/e)*S/cm)   Im(sigma)((hbar/e)*S/cm) \n"
+            for ifreq in range(kubo_nfreq):
+                shc_str += "{:>15.8f}   {:>15.8f}   {:>15.8f}   {:>15.8f} \n".format(
+                    ifreq, np.real(kubo_freq_list[ifreq]), np.real(shc_freq[ifreq]), np.imag(shc_freq[ifreq])
+                )
+
+            filename = f"{self._cwi['seedname']}-shc-freqscan_cw.dat"
+            self._cwm.write(filename, shc_str, None, None)
+        else:
+            shc_fermi = self["shc_fermi"]
+
+            shc_str = "#No.   Fermi energy(eV)   SHC((hbar/e)*S/cm) \n"
+            num_fermi = self._cwi["num_fermi"]
+            fermi_energy_list = self._cwi["fermi_energy_list"]
+            for ife in range(num_fermi):
+                shc_str += "{:>15.8f}   {:>15.8f}   {:>15.8f} \n".format(
+                    ife, fermi_energy_list[ife], np.real(shc_fermi[ife])
+                )
+
+            filename = f"{self._cwi['seedname']}-shc-fermiscan_cw.dat"
+            self._cwm.write(filename, shc_str, None, None)
 
     # ==================================================
     def write_spin(self):

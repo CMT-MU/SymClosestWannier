@@ -30,6 +30,10 @@ def Kelvin_to_eV(T_Kelvin):
 # ==================================================
 def fermi(x, T=0.0, unit="Kelvin"):
     T_eV = Kelvin_to_eV(T) if unit == "Kelvin" else T
+
+    if T == 0.0:
+        return 1.0 * np.vectorize(float)(x < 0.0)
+
     return 0.5 * (1.0 - np.tanh(0.5 * x / T_eV))
 
 
@@ -586,50 +590,51 @@ def samb_decomp_operator(
     """
     Or_dict = sort_ket_matrix_dict(Or_dict, ket, ket_samb)
 
-    if A is not None:
-        if not np.allclose(A, A_samb, rtol=1e-03, atol=1e-03):
-            A = np.array(A, dtype=float)
-            A_samb = np.array(A_samb, dtype=float)
-            atoms_frac = np.array(sort_ket_list(atoms_frac, ket, ket_samb), dtype=float)
-            atoms_frac_samb = np.array(atoms_frac_samb, dtype=float)
+    # if A is not None:
+    #     if np.allclose(A, A_samb, rtol=1e-03, atol=1e-03):
+    #         print("ok!!!")
+    #         A = np.array(A, dtype=float)
+    #         A_samb = np.array(A_samb, dtype=float)
+    #         atoms_frac = np.array(sort_ket_list(atoms_frac, ket, ket_samb), dtype=float)
+    #         atoms_frac_samb = np.array(atoms_frac_samb, dtype=float)
 
-            Or_dict_ = {}
-            for (R1, R2, R3, m, n), v in Or_dict.items():
-                if np.abs(v) < 1e-12:
-                    continue
+    #         Or_dict_ = {}
+    #         for (R1, R2, R3, m, n), v in Or_dict.items():
+    #             if np.abs(v) < 1e-12:
+    #                 continue
 
-                R = np.array([R1, R2, R3], dtype=float)
-                rm = atoms_frac[m]
-                rn = atoms_frac[n]
-                bond = ((R + rn) - rm) @ A
+    #             R = np.array([R1, R2, R3], dtype=float)
+    #             rm = atoms_frac[m]
+    #             rn = atoms_frac[n]
+    #             bond = ((R + rn) - rm) @ A
 
-                bond = tuple([format(bi, ".2f") for bi in bond])
-                bond = tuple([float(bi) for bi in bond])
+    #             bond = tuple([format(bi, ".3f") for bi in bond])
+    #             bond = tuple([float(bi) for bi in bond])
 
-                Or_dict_[(*bond, m, n)] = v
+    #             Or_dict_[(*bond, m, n)] = v
 
-            Or_dict = Or_dict_
+    #         Or_dict = Or_dict_
 
-            Zr_dict_ = {}
-            for tag, d in Zr_dict.items():
-                dic = {}
-                for (R1, R2, R3, m, n), v in d.items():
-                    if np.abs(v) < 1e-12:
-                        continue
+    #         Zr_dict_ = {}
+    #         for tag, d in Zr_dict.items():
+    #             dic = {}
+    #             for (R1, R2, R3, m, n), v in d.items():
+    #                 if np.abs(v) < 1e-12:
+    #                     continue
 
-                    R = np.array([R1, R2, R3], dtype=float)
-                    rm = atoms_frac_samb[m]
-                    rn = atoms_frac_samb[n]
-                    bond = ((R + rn) - rm) @ A_samb
+    #                 R = np.array([R1, R2, R3], dtype=float)
+    #                 rm = atoms_frac_samb[m]
+    #                 rn = atoms_frac_samb[n]
+    #                 bond = ((R + rn) - rm) @ A_samb
 
-                    bond = tuple([format(bi, ".2f") for bi in bond])
-                    bond = tuple([float(bi) for bi in bond])
+    #                 bond = tuple([format(bi, ".3f") for bi in bond])
+    #                 bond = tuple([float(bi) for bi in bond])
 
-                    dic[(*bond, m, n)] = v
+    #                 dic[(*bond, m, n)] = v
 
-                Zr_dict_[tag] = dic
+    #             Zr_dict_[tag] = dic
 
-            Zr_dict = Zr_dict_
+    #         Zr_dict = Zr_dict_
 
     z = {
         tag: np.real(np.sum([v * Or_dict.get((-k[0], -k[1], -k[2], k[4], k[3]), 0) for k, v in d.items()]))

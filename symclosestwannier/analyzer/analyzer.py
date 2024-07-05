@@ -99,6 +99,9 @@ def analyzer(seedname="cwannier"):
     if cwi["berry_task"] == "kubo":
         res.write_kubo()
 
+    if cwi["berry_task"] == "shc":
+        res.write_shc()
+
     if cwi["spin_moment"]:
         res.write_spin()
 
