@@ -187,9 +187,9 @@ def berry_main(cwi, operators):
     # (shc)  Spin Hall conductivity
     if cwi["berry_task"] == "shc":
         if cwi["shc_freq_scan"]:
-            d["shc_freq"] = berry_get_shc_freq(cwi, operators)
+            d["shc_freq"] = berry_get_shc(cwi, operators)
         else:
-            d["shc_fermi"] = berry_get_shc_fermi(cwi, operators)
+            d["shc_fermi"] = berry_get_shc(cwi, operators)
 
     if cwi["berry_task"] == "kdotp":
         pass
@@ -856,7 +856,7 @@ def berry_get_ahc(cwi, operators):
 
     imf_list = np.zeros((num_fermi, 3, 3), dtype=float)
 
-    res = Parallel(n_jobs=_num_proc, verbose=50)(delayed(berry_get_ahc_k)(kpoints) for kpoints in kpoints_chunks)
+    res = Parallel(n_jobs=_num_proc, verbose=10)(delayed(berry_get_ahc_k)(kpoints) for kpoints in kpoints_chunks)
 
     for v in res:
         imf_list += v
@@ -1378,7 +1378,7 @@ def berry_get_shc_klist(cwi, operators, kpoints, band=False):
 
                 if lfreq:
                     for ifreq in range(kubo_nfreq):
-                        cdum = np.real(kubo_freq_list(ifreq)) + 1.0j * eta_smr
+                        cdum = np.real(kubo_freq_list[ifreq]) + 1.0j * eta_smr
                         cfac = -2.0 / (rfac**2 - cdum**2)
                         omega_list[ifreq] += cfac * np.imag(prod)
                 elif lfermi or lband:
@@ -1401,15 +1401,7 @@ def berry_get_shc_klist(cwi, operators, kpoints, band=False):
 
 
 # ==================================================
-def berry_get_shc_freq(cwi, operators):
-    """
-    Spin Hall conductivity, in (hbar/e)*S/cm.
-    """
-    pass
-
-
-# ==================================================
-def berry_get_shc_fermi(cwi, operators):
+def berry_get_shc(cwi, operators):
     """
     Spin Hall conductivity, in (hbar/e)*S/cm.
     """
@@ -1446,35 +1438,41 @@ def berry_get_shc_fermi(cwi, operators):
         berry_get_imf_klist
         """
         shc_k_list = berry_get_shc_klist(cwi, operators, kpoints)
-        shc_list = np.zeros((num_fermi))
 
-        for k in range(len(kpoints)):
-            kpt = kpoints[k]
-            ladpt = [False] * num_fermi
-            adpt_counter_list = [0] * num_fermi
+        shc_list = 0.0
 
-            for ife in range(num_fermi):
-                rdum = abs(shc_k_list[ife, k])
+        if cwi["shc_freq_scan"]:
+            shc_list = np.sum(shc_k_list, axis=1) * kweight
+        else:
+            shc_list = np.zeros((num_fermi))
 
-                if berry_curv_unit == "bohr2":
-                    rdum = rdum / bohr**2
+            for k in range(len(kpoints)):
+                kpt = kpoints[k]
+                ladpt = [False] * num_fermi
+                adpt_counter_list = [0] * num_fermi
 
-                if rdum > berry_curv_adpt_kmesh_thresh:
-                    adpt_counter_list[ife] = adpt_counter_list[ife] + 1
-                    ladpt[ife] = True
-                else:
-                    shc_list[ife] += shc_k_list[ife, k] * kweight
+                for ife in range(num_fermi):
+                    rdum = abs(shc_k_list[ife, k])
 
-            if np.any(ladpt):
-                # for loop_adpt in range(berry_curv_adpt_kmesh**3):
-                # !Using shc_k here would corrupt values for other
-                # !kpt, hence dummy. Only if-th element is used.
-                shc_k_list_dummy = berry_get_shc_klist(cwi, operators, kpt[np.newaxis, :] + adkpt.T)
+                    if berry_curv_unit == "bohr2":
+                        rdum = rdum / bohr**2
 
-                for ife_ in range(num_fermi):
-                    if ladpt[ife_]:
-                        for loop_adpt in range(berry_curv_adpt_kmesh**3):
-                            shc_list[ife_] += shc_k_list_dummy[ife_, loop_adpt] * kweight_adpt
+                    if rdum > berry_curv_adpt_kmesh_thresh:
+                        adpt_counter_list[ife] = adpt_counter_list[ife] + 1
+                        ladpt[ife] = True
+                    else:
+                        shc_list[ife] += shc_k_list[ife, k] * kweight
+
+                if np.any(ladpt):
+                    # for loop_adpt in range(berry_curv_adpt_kmesh**3):
+                    # !Using shc_k here would corrupt values for other
+                    # !kpt, hence dummy. Only if-th element is used.
+                    shc_k_list_dummy = berry_get_shc_klist(cwi, operators, kpt[np.newaxis, :] + adkpt.T)
+
+                    for ife_ in range(num_fermi):
+                        if ladpt[ife_]:
+                            for loop_adpt in range(berry_curv_adpt_kmesh**3):
+                                shc_list[ife_] += shc_k_list_dummy[ife_, loop_adpt] * kweight_adpt
 
         del shc_k_list
 
@@ -1490,12 +1488,9 @@ def berry_get_shc_fermi(cwi, operators):
 
     kpoints_chunks = np.split(kpoints, [j for j in range(100000, len(kpoints), 100000)])
 
-    shc_fermi = np.zeros((num_fermi), dtype=float)
+    res = Parallel(n_jobs=_num_proc, verbose=10)(delayed(berry_get_shc_k)(kpoints) for kpoints in kpoints_chunks)
 
-    res = Parallel(n_jobs=_num_proc, verbose=50)(delayed(berry_get_shc_k)(kpoints) for kpoints in kpoints_chunks)
-
-    for v in res:
-        shc_fermi += v
+    shc_list = np.sum(res, axis=0)
 
     """
     --------------------------------------------------------------------
@@ -1524,9 +1519,9 @@ def berry_get_shc_fermi(cwi, operators):
 
     fac = 1.0e8 * elem_charge_SI**2 / (hbar_SI * cell_volume) / 2.0
 
-    shc_fermi = shc_fermi * fac
+    shc_list = shc_list * fac
 
-    return shc_fermi
+    return shc_list
 
 
 # ==================================================
