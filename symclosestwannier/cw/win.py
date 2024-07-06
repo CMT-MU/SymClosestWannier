@@ -216,6 +216,7 @@ class Win(dict):
                 - gyrotropic_freq_min           : Lower limit of the frequency range for computing the optical activity. (The units are [eV]) (float), [0.0].
                 - gyrotropic_freq_step          : Difference between consecutive values of the optical frequency between gyrotropic_freq_min and gyrotropic_freq_max. (The units are [eV]) (float), [0.01].
                 - gyrotropic_eigval_max         : Maximum energy eigenvalue of the eigenstates to be included in the evaluation of the Natural optical activity. (The units are [eV]) (float), [If an inner energy window was specified, the default value is the upper bound of the inner energy window plus 0.6667. Otherwise it is the maximum energy eigenvalue stored in seedname.eig plus 0.6667.].
+                - gyrotropic_smr_max_arg        : Maximum value of smearing arg (float), [5.0].
                 - gyrotropic_degen_thresh       : The threshould to eliminate degenerate bands from the calculation in order to avoid divergences. (Units are [eV]) (float), [0.0].
                 - gyrotropic_smr_fixed_en_width : Overrides the smr_fixed_en_width global variable.
                 - gyrotropic_smr_type           : Overrides the smr_type global variable.
@@ -399,8 +400,10 @@ class Win(dict):
         d["gyrotropic"] = self._get_param_keyword(win_data, "gyrotropic", False, dtype=bool)
         gyrotropic_task = self._get_param_keyword(win_data, "gyrotropic_task", None, dtype=str)
         if gyrotropic_task is not None:
-            gyrotropic_task = gyrotropic_task.replace(" ", "")
-        d["gyrotropic_task"] = gyrotropic_task
+            d["gyrotropic_task"] = gyrotropic_task.replace(" ", "")
+        else:
+            d["gyrotropic_task"] = None
+
         gyrotropic_kmesh = self._get_param_keyword(win_data, "gyrotropic_kmesh", "1  1  1", dtype=str)
         d["gyrotropic_kmesh"] = [int(x) for x in gyrotropic_kmesh.split()]
         gyrotropic_kmesh_spacing = self._get_param_keyword(win_data, "gyrotropic_kmesh_spacing", "1  1  1", dtype=str)
@@ -414,6 +417,7 @@ class Win(dict):
         d["gyrotropic_smr_fixed_en_width"] = self._get_param_keyword(
             win_data, "gyrotropic_smr_fixed_en_width", 0.0, dtype=float
         )
+        d["gyrotropic_smr_max_arg"] = self._get_param_keyword(win_data, "gyrotropic_smr_max_arg", 5.0, dtype=float)
         d["gyrotropic_degen_thresh"] = self._get_param_keyword(win_data, "gyrotropic_degen_thresh", 0.0, dtype=float)
         d["gyrotropic_band_list"] = self._get_param_keyword(win_data, "gyrotropic_band_list", None, dtype=str)
         gyrotropic_box_center = self._get_param_keyword(win_data, "gyrotropic_box_center", "0.5 0.5 0.5", dtype=str)
@@ -528,6 +532,74 @@ class Win(dict):
             return None
 
         return dtype(data)
+
+    # ==================================================
+    @property
+    def gyrotropic_task_list(self):
+        if self["gyrotropic_task"] is None:
+            return []
+        else:
+            return [task.lower() for task in self["gyrotropic_task"].split("-")]
+
+    # ==================================================
+    @property
+    def eval_K(self):
+        return "k" in self.gyrotropic_task_list or "all" in self.gyrotropic_task_list
+
+    # ==================================================
+    @property
+    def eval_C(self):
+        return "c" in self.gyrotropic_task_list or "all" in self.gyrotropic_task_list
+
+    # ==================================================
+    @property
+    def eval_D(self):
+        return "d0" in self.gyrotropic_task_list or "all" in self.gyrotropic_task_list
+
+    # ==================================================
+    @property
+    def eval_Dw(self):
+        return "dw" in self.gyrotropic_task_list or "all" in self.gyrotropic_task_list
+
+    # ==================================================
+    @property
+    def eval_spn(self):
+        eval_spn = "spin" in self.gyrotropic_task_list or ("all" in self.gyrotropic_task_list and self["spinors"])
+        if not (self.eval_K or self.eval_NOA):
+            eval_spn = False
+        return eval_spn
+
+    # ==================================================
+    @property
+    def eval_NOA(self):
+        return "noa" in self.gyrotropic_task_list or "all" in self.gyrotropic_task_list
+
+    # ==================================================
+    @property
+    def eval_DOS(self):
+        return "dos" in self.gyrotropic_task_list or "all" in self.gyrotropic_task_list
+
+    # ==================================================
+    @property
+    def eval_DOS(self):
+        return "dos" in self.gyrotropic_task_list or "all" in self.gyrotropic_task_list
+
+    # ==================================================
+    @property
+    def gyrotropic_box(self):
+        return np.array([self["gyrotropic_box_b1"], self["gyrotropic_box_b2"], self["gyrotropic_box_b3"]])
+
+    # ==================================================
+    @property
+    def gyrotropic_box_center(self):
+        return np.array(self["gyrotropic_box_center"])
+
+    # ==================================================
+    @property
+    def gyrotropic_box_corner(self):
+        return self.gyrotropic_box_center - 0.5 * (
+            self.gyrotropic_box[0] + self.gyrotropic_box[1] + self.gyrotropic_box[2]
+        )
 
     # ==================================================
     @classmethod

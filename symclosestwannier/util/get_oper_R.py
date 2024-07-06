@@ -125,13 +125,13 @@ def get_AA_R(cwi):
 
 
 # ==================================================
-def get_BB_R():
+def get_BB_R(cwi):
     """<0|H(r-R)|R>"""
     pass
 
 
 # ==================================================
-def get_CC_R():
+def get_CC_R(cwi):
     """<0|r_alpha.H(r-R)_beta|R>"""
     pass
 
@@ -257,13 +257,13 @@ def get_SHC_R(cwi):
 
 
 # ==================================================
-def get_SAA_R():
+def get_SAA_R(cwi):
     """<0n|sigma_x,y,z.(r-R)_alpha|Rm>"""
     pass
 
 
 # ==================================================
-def get_SBB_R():
+def get_SBB_R(cwi):
     """<0n|sigma_x,y,z.H.(r-R)_alpha|Rm>"""
     pass
 
@@ -314,33 +314,33 @@ def get_berry_phase_R(cwi):
 
 
 # ==================================================
-def get_berry_Curvature_R():
+def get_berry_Curvature_R(cwi):
     """<0n|Ω|Rm>"""
     pass
 
 
 # ==================================================
-def get_der_berry_Curvature_R():
+def get_der_berry_Curvature_Rcwi():
     """<0n|∇Ω|Rm>"""
 
     pass
 
 
 # ==================================================
-def get_orbital_moment_R():
+def get_orbital_moment_R(cwi):
     """<0n|Morb|Rm>"""
 
     pass
 
 
 # ==================================================
-def get_der_orbital_moment_R():
+def get_der_orbital_moment_R(cwi):
     """<0n|∇Morb|Rm>"""
 
     pass
 
 
 # ==================================================
-def get_velocity_R():
+def get_velocity_R(cwi):
     """<0n|v|Rm>"""
     pass

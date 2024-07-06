@@ -47,7 +47,7 @@ from symclosestwannier.util.utility import (
     thermal_avg,
 )
 
-from symclosestwannier.util.constants import elem_charge_SI, hbar_SI, bohr, bohr_magn_SI, joul_to_eV
+from symclosestwannier.util.constants import elec_mass_SI, elem_charge_SI, hbar_SI, bohr, bohr_magn_SI, joul_to_eV
 
 _num_proc = multiprocessing.cpu_count()
 
@@ -58,13 +58,14 @@ _beta_A = [2, 0, 1]
 # ==================================================
 def spin_moment_main(cwi, operators):
     """
-    Computes the following quantities:
-     (spin)  spin magnetic moments.
-
+    Computes the spin magnetic moments, Ms_x, Ms_y, Ms_z.
 
     Args:
         cwi (CWInfo): CWInfo.
         operators (dict): operators.
+
+    Returns:
+        dict: Ms_x, Ms_y, Ms_z.
     """
     d = {"Ms_x": 0.0, "Ms_y": 0.0, "Ms_z": 0.0}
 
@@ -136,32 +137,70 @@ def berry_main(cwi, operators):
     Args:
         cwi (CWInfo): CWInfo.
         operators (dict): operators.
+
+    Returns:
+        dict: dictionary of results.
     """
-    print("Properties calculated in module  b e r r y \n ------------------------------------------")
+    if cwi["num_fermi"] == 0:
+        raise Exception("Must specify one or more Fermi levels when berry=true")
+
+    print("Properties calculated in berry_main \n ------------------------------------------")
 
     # initialization
     d = {
-        # ahc
-        # morb
-        # kubo
-        "kubo_H": 0.0,
-        "kubo_AH": 0.0,
-        "kubo_H_spn": 0.0,
-        "kubo_AH_spn": 0.0,
-        # sc
-        "shc": 0.0,
-        # kdotp
+        "ahc_list": None,
+        "morb": None,
+        "kubo": None,
+        "kubo_H": None,
+        "kubo_AH": None,
+        "kubo_H_spn": None,
+        "kubo_AH_spn": None,
+        "sc": None,
+        "shc": None,
     }
 
     # (ahc)  Anomalous Hall conductivity (from Berry curvature)
     if cwi["berry_task"] == "ahc":
-        d["ahc_list"] = berry_get_ahc(cwi, operators)
+        print("* Anomalous Hall conductivity")
 
     # (morb) Orbital magnetization
     if cwi["berry_task"] == "morb":
-        pass
+        if cwi["transl_inv"]:
+            raise Exception("transl_inv=T disabled for morb")
+
+        print("* Orbital magnetization")
 
     # (kubo) Complex optical conductivity (Kubo-Greenwood) & JDOS
+    if cwi["berry_task"] == "kubo":
+        if cwi["spin_decomp"]:
+            print("* Complex optical conductivity and its spin-decomposition")
+            print("* Joint density of states and its spin-decomposition")
+        else:
+            print("* Complex optical conductivity")
+            print("* Joint density of states")
+
+    # (sc)   Nonlinear shift current
+    if cwi["berry_task"] == "sc":
+        print("* Shift current")
+
+    # (shc)  Spin Hall conductivity
+    if cwi["berry_task"] == "shc":
+        print("* Spin Hall Conductivity")
+        if cwi["shc_freq_scan"]:
+            print("  Frequency scan")
+        else:
+            print("  Fermi energy scan")
+
+    if cwi["transl_inv"]:
+        print(
+            "Using a translationally-invariant discretization for the band-diagonal Wannier matrix elements of r, etc."
+        )
+
+    # --- #
+
+    if cwi["berry_task"] == "ahc":
+        d["ahc_list"] = berry_get_ahc(cwi, operators)
+
     if cwi["berry_task"] == "kubo":
         kubo_H, kubo_AH, kubo_H_spn, kubo_AH_spn = berry_get_kubo(cwi, operators)
 
@@ -170,40 +209,93 @@ def berry_main(cwi, operators):
         d["kubo_H_spn"] = kubo_H_spn
         d["kubo_AH_spn"] = kubo_AH_spn
 
-    # (sc)   Nonlinear shift current
     if cwi["berry_task"] == "sc":
         kubo_nfreq = round((cwi["kubo_freq_max"] - cwi["kubo_freq_min"]) / cwi["kubo_freq_step"]) + 1
         sc_k_list = np.zeros((3, 6, kubo_nfreq))
         sc_list = np.zeros((3, 6, kubo_nfreq))
-        # allocate (shc_fermi(fermi_n))
-        # allocate (shc_k_fermi(fermi_n))
-        # allocate (shc_k_fermi_dummy(fermi_n))
-        # shc_fermi = 0.0_dp
-        # shc_k_fermi = 0.0_dp
-        # !only used for fermiscan & adpt kmesh
-        # shc_k_fermi_dummy = 0.0_dp
-        # adpt_counter_list = 0
 
-    # (shc)  Spin Hall conductivity
     if cwi["berry_task"] == "shc":
         if cwi["shc_freq_scan"]:
             d["shc_freq"] = berry_get_shc(cwi, operators)
         else:
             d["shc_fermi"] = berry_get_shc(cwi, operators)
 
-    if cwi["berry_task"] == "kdotp":
-        pass
+    return d
 
-    # (me) magnetoelectric tensor
-    if cwi["berry_task"] == "me":
-        pass
-        # SS = fourier_transform_r_to_k_vec(operators["SS_R"], kpoints, cwi["irvec"], cwi["ndegen"], atoms_frac)
-        # Sx = U.transpose(0, 2, 1).conjugate() @ SS[0] @ U
-        # Sy = U.transpose(0, 2, 1).conjugate() @ SS[1] @ U
-        # Sz = U.transpose(0, 2, 1).conjugate() @ SS[2] @ U
-        # S = np.array([Sx, Sy, Sz])
 
-        # me_H_spn, me_H_orb, me_AH_spn, me_AH_orb = berry_get_me(cwi, E, A, S)
+# ==================================================
+def gyrotropic_main(cwi, operators):
+    """
+    Computes the following quantities:
+     (-d0)   D tensor (the Berry curvature dipole).
+     (-dw)   D(w) tensor (the finite-frequency generalization of the Berry curvature dipole).
+     (-k)    K tensor (orbital component of the kinetic magnetoelectric effect (kME)).
+     (-spin) K tensor (spin component of the kinetic magnetoelectric effect (kME)).
+     (-c)    C tensor (the ohmic conductivity).
+     (-noa)  the interband contributionto the natural optical activity.
+     (-dos)  the density of states.
+     (-all)  computes all.
+
+    Args:
+        cwi (CWInfo): CWInfo.
+        operators (dict): operators.
+
+    Returns:
+        dict: dictionary of results.
+    """
+    if cwi["num_fermi"] == 0:
+        raise Exception("Must specify one or more Fermi levels when gyrotropic=true")
+
+    print("Properties calculated in gyrotropic_main \n ------------------------------------------")
+
+    # initialization
+    d = {
+        "gyro_K_orb": None,
+        "gyro_K_spn": None,
+        "gyro_DOS": None,
+        "gyro_C": None,
+        "gyro_D": None,
+        "gyro_Dw": None,
+        "gyro_NOA_orb": None,
+        "gyro_NOA_spn": None,
+    }
+
+    win = cwi.win
+
+    # (K tensor)  orbital component of the kinetic magnetoelectric effect (kME)
+    if win.eval_K:
+        if cwi["transl_inv"]:
+            raise Exception("transl_inv=T disabled for K-tensor")
+
+        print("* K-tensor  --- Eq.3 of TAS17 ")
+        if win.eval_spn:
+            print("    * including spin component ")
+        else:
+            print("    * excluding spin component ")
+
+    # D(w) tensor (the finite-frequency generalization of the Berry curvature dipole).
+    if win.eval_Dw:
+        print("* Dw-tensor  --- Eq.12 of TAS17 ")
+
+    if win.eval_C:
+        print("* C-tensor  --- Eq.B6 of TAS17 ")
+
+    if win.eval_NOA:
+        print("* gamma-tensor of NOA --- Eq.C12 of TAS17 ")
+        if win.eval_spn:
+            print("    * including spin component ")
+        else:
+            print("    * excluding spin component ")
+
+    if cwi["transl_inv"]:
+        print(
+            "Using a translationally-invariant discretization for the band-diagonal Wannier matrix elements of r, etc."
+        )
+
+    # --- #
+
+    if win.eval_K:
+        d["gyro_K_orb"], d["gyro_K_spn"] = gyrotropic_get_K(cwi, operators)
 
     return d
 
@@ -332,30 +424,30 @@ def utility_w0gauss(x, n):
 
     (n=-99): derivative of Fermi-Dirac function: 0.5/(1.0+cosh(x))
     """
-    utility_w0gauss = 0.0  # in case of error return
+    w0gauss = 0.0  # in case of error return
 
     sqrtpm1 = 1.0 / np.sqrt(np.pi)
 
     # cold smearing  (Marzari-Vanderbilt)
     if n == -1:
         arg = min(200, (x - 1.0 / np.sqrt(2)) ** 2)
-        utility_w0gauss = sqrtpm1 * np.exp(-arg) * (2.0 - np.sqrt(2.0) * x)
+        w0gauss = sqrtpm1 * np.exp(-arg) * (2.0 - np.sqrt(2.0) * x)
     # Fermi-Dirac smearing
     elif n == -99:
         if np.abs(x) <= 36.0:
-            utility_w0gauss = 1.0 / (2.0 + np.exp(-x) + np.exp(+x))
+            w0gauss = 1.0 / (2.0 + np.exp(-x) + np.exp(+x))
         else:
-            utility_w0gauss = 0.0
+            w0gauss = 0.0
     # Gaussian
     elif n == 0:
         arg = min(200, x**2)
-        utility_w0gauss = np.exp(-arg) * sqrtpm1
+        w0gauss = np.exp(-arg) * sqrtpm1
     elif n > 10 or n < 0:
         raise Exception("utility_w0gauss higher order (n>10) smearing is untested and unstable")
     # Methfessel-Paxton
     else:
         arg = min(200, x**2)
-        utility_w0gauss = np.exp(-arg) * sqrtpm1
+        w0gauss = np.exp(-arg) * sqrtpm1
         hd = 0.0
         hp = np.exp(-arg)
         ni = 0
@@ -366,9 +458,9 @@ def utility_w0gauss(x, n):
             a = -a / (float(i) * 4.0)
             hp = 2.0 * x * hd - 2.0 * float(ni) * hp
             ni += 1
-            utility_w0gauss += a * hp
+            w0gauss += a * hp
 
-    return utility_w0gauss
+    return w0gauss
 
 
 # ==================================================
@@ -773,6 +865,12 @@ def berry_get_ahc(cwi, operators):
     The real part Re[σ^AH_αβ] describes the anomalous Hall conductivity (AHC), and remains finite in the static limit,
     while the imaginary part Im[σ^H_αβ] describes magnetic circular dichroism, and vanishes as ω → 0.
 
+    Args:
+        cwi (CWInfo): CWInfo.
+        operators (dict): operators.
+
+    Returns:
+        ndarray: Anomalous Hall conductivity.
     """
     num_fermi = cwi["num_fermi"]
 
@@ -909,8 +1007,7 @@ def berry_get_kubo(cwi, operators):
 
     Args:
         cwi (CWInfo): CWInfo.
-        HH_R (ndarray): matrix elements of real-space Hamiltonian, <0n|H|Rm>.
-        AA_R (ndarray): matrix elements of real-space position operator, <0n|r|Rm>.
+        operators (dict):
 
     Returns:
         tuple: Kubo_H, Kubo_AH, Kubo_H_spn, Kubo_AH_spn.
@@ -970,9 +1067,6 @@ def berry_get_kubo(cwi, operators):
 
         Args:
             kpt (ndarray): kpoint.
-            cwi (CWInfo): CWInfo.
-            HH_R (ndarray): matrix elements of real-space Hamiltonian, <0n|H|Rm>.
-            AA_R (ndarray): matrix elements of real-space position operator, <0n|r|Rm>.
 
         Returns:
             tuple: Kubo_H, Kubo_AH, Kubo_H_spn, Kubo_AH_spn.
@@ -1224,9 +1318,9 @@ def berry_get_shc_klist(cwi, operators, kpoints, band=False):
     divided by hbar as well. But these two hbar required by velocity
     operators are canceled by the preceding hbar^2 of QZYZ18 Eq.(3).
 
-       shc_k_fermi: return a list for different Fermi energies
-       shc_k_freq:  return a list for different frequencies
-       shc_k_band:  return a list for each energy band
+    - shc_k_fermi: return a list for different Fermi energies
+    - shc_k_freq:  return a list for different frequencies
+    - shc_k_band:  return a list for each energy band
 
     Junfeng Qiao (18/8/2018)
     """
@@ -1404,6 +1498,13 @@ def berry_get_shc_klist(cwi, operators, kpoints, band=False):
 def berry_get_shc(cwi, operators):
     """
     Spin Hall conductivity, in (hbar/e)*S/cm.
+
+    Args:
+        cwi (CWInfo): CWInfo.
+        operators (dict): operators.
+
+    Returns:
+        ndarray: Spin Hall conductivity.
     """
     num_fermi = cwi["num_fermi"]
 
@@ -1418,6 +1519,7 @@ def berry_get_shc(cwi, operators):
     db2 = 1.0 / float(berry_kmesh[1])
     db3 = 1.0 / float(berry_kmesh[2])
 
+    # Do not read 'kpoint.dat'. Loop over a regular grid in the full BZ
     kweight = db1 * db2 * db3
     kweight_adpt = kweight / berry_curv_adpt_kmesh**3
 
@@ -1439,10 +1541,8 @@ def berry_get_shc(cwi, operators):
         """
         shc_k_list = berry_get_shc_klist(cwi, operators, kpoints)
 
-        shc_list = 0.0
-
         if cwi["shc_freq_scan"]:
-            shc_list = np.sum(shc_k_list, axis=1) * kweight
+            return np.sum(shc_k_list, axis=1) * kweight
         else:
             shc_list = np.zeros((num_fermi))
 
@@ -1474,9 +1574,7 @@ def berry_get_shc(cwi, operators):
                             for loop_adpt in range(berry_curv_adpt_kmesh**3):
                                 shc_list[ife_] += shc_k_list_dummy[ife_, loop_adpt] * kweight_adpt
 
-        del shc_k_list
-
-        return shc_list
+            return shc_list
 
     # ==================================================
     N1, N2, N3 = cwi["berry_kmesh"]
@@ -1519,129 +1617,259 @@ def berry_get_shc(cwi, operators):
 
     fac = 1.0e8 * elem_charge_SI**2 / (hbar_SI * cell_volume) / 2.0
 
-    shc_list = shc_list * fac
+    shc_list *= fac
 
     return shc_list
 
 
 # ==================================================
-def berry_get_me(cwi, E, A):
+def gyrotropic_get_K(cwi, operators):
     """
-    Contribution from point k to the complex interband optical
-    conductivity, separated into Hermitian (H) and anti-Hermitian (AH)
-    parts.
+    Computes the following quantities:
+
+    - gyro_K_orb = delta(E_kn-E_f).(d E_{kn}/d k_i).(2.hbar/e).m^orb_{kn,j}
+      [units of (length^3)*energy]
+
+    - gyro_K_spn = delta(E_kn-E_f).(d E_{kn}/d k_i).sigma_{kn,j} (sigma = Pauli matrix)
+      [units of length]
 
     Args:
+        cwi (CWInfo): CWInfo.
+        operators (dict): operators.
 
     Returns:
+        ndarray: Spin Hall conductivity.
     """
-    pass
-    # ef = cwi["fermi_energy"]
-    # berry_kmesh = cwi["berry_kmesh"]
-    # me_eigval_max = cwi["me_eigval_max"]
-    # num_k = len(berry_kmesh)
-    # num_wann = cwi["num_wann"]
+    if cwi["tb_gauge"]:
+        atoms_list = list(cwi["atoms_frac"].values())
+        atoms_frac = np.array([atoms_list[i] for i in cwi["nw2n"]])
+    else:
+        atoms_frac = None
 
-    # spin_decomp = cwi["spin_decomp"]
-    # spn_nk = np.zeros(num_wann)
+    gyrotropic_kmesh = cwi["gyrotropic_kmesh"]
+    gyrotropic_box = cwi.win.gyrotropic_box
+    gyrotropic_box_corner = cwi.win.gyrotropic_box_corner
 
-    # me_adpt_smr = cwi["me_adpt_smr"]
-    # me_adpt_smr_fac = cwi["me_adpt_smr_fac"]
-    # me_adpt_smr_max = cwi["me_adpt_smr_max"]
+    # Mesh spacing in reduced coordinates
+    db1 = 1.0 / float(gyrotropic_kmesh[0])
+    db2 = 1.0 / float(gyrotropic_kmesh[1])
+    db3 = 1.0 / float(gyrotropic_kmesh[2])
 
-    # me_smr_fixed_en_width = cwi["me_smr_fixed_en_width"]
-    # eta_smr = me_smr_fixed_en_width
+    # Do not read 'kpoint.dat'. Loop over a regular grid in the full BZ
+    kweight = db1 * db2 * db3 * np.linalg.det(gyrotropic_box)
 
-    # me_freq_list = np.arange(cwi["me_freq_min"], cwi["me_freq_max"], cwi["me_freq_step"])
-    # me_nfreq = len(me_freq_list)
-    # if cwi["me_smr_type"] == "gauss":
-    #     me_smr_type_idx = 0
-    # elif "m-p" in cwi["me_smr_type"]:
-    #     m_pN = cwi["me_smr_type"]
-    #     me_smr_type_idx = m_pN[2:]
-    # elif cwi["me_smr_type"] == "m-v" or cwi["me_smr_type"] == "cold":
-    #     me_smr_type_idx = -1
-    # elif cwi["me_smr_type"] == "f-d":
-    #     me_smr_type_idx = -99
+    gyrotropic_degen_thresh = cwi["gyrotropic_degen_thresh"]
+    gyrotropic_smr_max_arg = cwi["gyrotropic_smr_max_arg"]
+    eta_smr = cwi["gyrotropic_smr_fixed_en_width"]
+    use_degen_pert = cwi["use_degen_pert"]
+    degen_thr = cwi["degen_thr"]
+    num_wann = cwi["num_wann"]
 
-    # occ = np.array([[fermi(E[k, m] - ef, T_Kelvin=0.0) for m in range(num_wann)] for k in range(num_k)])
+    if cwi["gyrotropic_band_list"] is None:
+        gyrotropic_band_list = [n for n in range(cwi["num_wann"])]
+        gyrotropic_num_bands = cwi["num_wann"]
+    else:
+        gyrotropic_band_list = [int(n) for n in gyrotropic_band_list.split(",")]
+        gyrotropic_num_bands = len(gyrotropic_band_list)
 
-    # me_H_spn = 1.0j * np.zeros((me_nfreq, 3, 3))
-    # me_H_orb = 1.0j * np.zeros((me_nfreq, 3, 3))
-    # me_AH_spn = 1.0j * np.zeros((me_nfreq, 3, 3))
-    # me_AH_orb = 1.0j * np.zeros((me_nfreq, 3, 3))
+    mum_fermi = cwi["num_fermi"]
+    fermi_energy_list = cwi["fermi_energy_list"]
 
-    # for k in range(num_k):
-    #     ek = E[k]
-    #     fk = occ[k]
-    #     ak = A[k]
-    #     sk = S[k]
+    if cwi["gyrotropic_smr_type"] == "gauss":
+        gyrotropic_smr_type_idx = 0
+    elif "m-p" in cwi["gyrotropic_smr_type"]:
+        m_pN = cwi["gyrotropic_smr_type"]
+        gyrotropic_smr_type_idx = m_pN[2:]
+    elif cwi["gyrotropic_smr_type"] == "m-v" or cwi["gyrotropic_smr_type"] == "cold":
+        gyrotropic_smr_type_idx = -1
+    elif cwi["gyrotropic_smr_type"] == "f-d":
+        gyrotropic_smr_type_idx = -99
 
-    #     for m in range(num_wann):
-    #         for n in range(num_wann):
-    #             if n == m:
-    #                 continue
-    #             if ek[m] > me_eigval_max or ek[n] > me_eigval_max:
-    #                 continue
-    #             if spin_decomp:
-    #                 if spn_nk[n] >= 0 and spn_nk[m] >= 0:
-    #                     ispn = 0  # up --> up transition
-    #                 elif spn_nk[n] < 0 and spn_nk[m] < 0:
-    #                     ispn = 1  # down --> down
-    #                 else:
-    #                     ispn = 2  # spin-flip
-    #             if me_adpt_smr:  # Eq.(35) YWVS07
-    #                 # vdum[:] = del_ek[m, :] - del_ek[n, :]
-    #                 # joint_level_spacing = np.sqrt(np.dot(vdum, vdum))*Delta_k
-    #                 # eta_smr = min(joint_level_spacing*me_adpt_smr_fac, me_adpt_smr_max)
-    #                 pass
+    # ==================================================
+    @wrap_non_picklable_objects
+    def gyrotropic_get_K_k(kpoints):
+        """
+        berry_get_imf_klist
+        """
+        if kpoints.ndim == 1:
+            kpoints = np.array([kpoints])
 
-    #             rfac1 = (fk[m] - fk[n]) * (ek[m] - ek[n])
+        kpoints = np.array([gyrotropic_box_corner + gyrotropic_box @ k for k in kpoints])
 
-    #             for ifreq in range(me_nfreq):
-    #                 #
-    #                 # Complex frequency for the anti-Hermitian conductivity
-    #                 #
-    #                 if me_adpt_smr:
-    #                     omega = me_freq_list[ifreq] + 1j * eta_smr
-    #                 else:
-    #                     omega = me_freq_list[ifreq] + 1j * me_smr_fixed_en_width
-    #                 #
-    #                 # Broadened delta function for the Hermitian conductivity and JDOS
-    #                 #
-    #                 arg = (ek[m] - ek[n] - np.real(omega)) / eta_smr
-    #                 # If only Hermitean part were computed, could speed up
-    #                 # by inserting here 'if(abs(arg)>10.0_dp) cycle'
-    #                 delta = utility_w0gauss(arg, me_smr_type_idx) / eta_smr
+        HH, delHH = fourier_transform_r_to_k_new(
+            operators["HH_R"], kpoints, cwi["unit_cell_cart"], cwi["irvec"], cwi["ndegen"], atoms_frac
+        )
 
-    #                 #
-    #                 # Lorentzian shape (for testing purposes)
-    #                 # delta=1.0_dp/(1.0_dp+arg*arg)/pi
-    #                 # delta=delta/eta_smr
-    #                 #
-    #                 cfac = 1j * rfac1 / (ek[m] - ek[n] - omega)
-    #                 rfac2 = -np.pi * rfac1 * delta
-    #                 for j in range(3):
-    #                     for i in range(j, 3):
-    #                         me_H[ifreq, i, j] += rfac2 * ak[i, n, m] * ak[j, m, n]
-    #                         me_AH[ifreq, i, j] += cfac * ak[i, n, m] * ak[j, m, n]
-    #                         if spin_decomp:
-    #                             me_H_spn[ifreq, i, j, ispn] += rfac2 * ak[i, n, m] * ak[j, m, n]
-    #                             me_AH_spn[ifreq, i, j, ispn] += cfac * ak[i, n, m] * ak[j, m, n]
+        if cwi["zeeman_interaction"]:
+            B = cwi["magnetic_field"]
+            theta = cwi["magnetic_field_theta"]
+            phi = cwi["magnetic_field_phi"]
+            g_factor = cwi["g_factor"]
 
-    # me_H_spn /= num_k
-    # me_H_orb /= num_k
-    # me_AH_spn /= num_k
-    # me_AH_orb /= num_k
+            pauli_spin = fourier_transform_r_to_k_vec(
+                operators["SS_R"], kpoints, cwi["irvec"], cwi["ndegen"], atoms_frac
+            )
+            H_zeeman = spin_zeeman_interaction(B, theta, phi, pauli_spin, g_factor, cwi["num_wann"])
+            HH += H_zeeman
 
-    # return me_H_spn, me_H_orb, me_AH_spn, me_AH_orb
+        E, U = np.linalg.eigh(HH)
+        HH = None
+
+        delE = wham_get_deleig(delHH, E, U, use_degen_pert, degen_thr)
+
+        gyro_K_orb = np.zeros((3, 3, mum_fermi))
+
+        if cwi.win.eval_spn:
+            S_w = fourier_transform_r_to_k_vec(operators["SS_R"], kpoints, cwi["irvec"], cwi["ndegen"], atoms_frac)
+            S_k_diag = np.einsum("knl,aklp,kpn->akn", U.conj(), S_w, U, optimize=True)
+            gyro_K_spn = np.zeros((3, 3, mum_fermi), dtype=float)
+        else:
+            gyro_K_spn = None
+
+        for k in range(len(kpoints)):
+            kpt = kpoints[k]
+
+            got_spin = False
+            for n1 in range(gyrotropic_num_bands):
+                n = gyrotropic_band_list[n1]
+
+                if n > 0 and E[k, n] - E[k, n - 1] <= gyrotropic_degen_thresh:
+                    continue
+
+                if n < num_wann - 1 and E[k, n + 1] - E[k, n] <= gyrotropic_degen_thresh:
+                    continue
+
+                got_orb_n = False
+                for ifermi in range(mum_fermi):
+                    arg = (E[k, n] - fermi_energy_list[ifermi]) / eta_smr
+                    #
+                    # To save time: far from the Fermi surface, negligible contribution
+                    #
+                    # -------------------------
+                    if np.abs(arg) > gyrotropic_smr_max_arg:
+                        continue
+
+                    if cwi.win.eval_spn and not got_spin:
+                        S = S_k_diag[:, k, n]
+                        got_spin = True
+
+                    # Orbital quantities are computed for each band separately
+                    if not got_orb_n:
+                        if cwi.win.eval_K:
+                            pass
+                            # Fake occupations: band n occupied, others empty
+                            # occ = 0.0
+                            # occ(n) = 1.0
+                            # call berry_get_imfgh_klist(kpt, imf_k, img_k, imh_k, occ)
+                            # do i = 1, 3
+                            # orb_nk(i) = sum(imh_k(:, i, 1)) - sum(img_k(:, i, 1))
+                            # curv_nk(i) = sum(imf_k(:, i, 1))
+                            # enddo
+                        elif cwi.win.eval_D:
+                            pass
+                            # occ = 0.0
+                            # occ(n) = 1.0
+                            # call berry_get_imf_klist(kpt, imf_k, occ)
+                            # do i = 1, 3
+                            # curv_nk(i) = sum(imf_k(:, i, 1))
+                            # enddo
+                            # got_orb_n = .true. ! Do it for only one value of ifermi
+
+                        if cwi.win.eval_Dw:
+                            # gyrotropic_get_curv_w_k(eig, AA, curv_w_nk)
+                            pass
+
+                        got_orb_n = True  # Do it for only one value of ifermi
+
+                    delta = (
+                        utility_w0gauss(arg, gyrotropic_smr_type_idx) / eta_smr * kweight
+                    )  # Broadened delta(E_nk-E_f)
+                    #
+                    # Loop over Cartesian tensor components
+                    #
+
+                    for j in range(3):
+                        if cwi.win.eval_K and cwi.win.eval_spn:
+                            gyro_K_spn[:, j, ifermi] += np.real(delE[:, k, n] * S[j] * delta)
+                        if cwi.win.eval_K:
+                            gyro_K_orb[:, j, ifermi] = 0.0
+                            # gyro_K_orb[:, j, ifermi] += delE[:, k, n] * orb_nk(j)*delta
+                        # if cwi.win.eval_D:
+                        #     gyro_D[:, j, ifermi] += delE[:, k, n] * curv_nk(j)*delta
+                        # if cwi.win.eval_Dw:
+                        #     for i in range(3):
+                        #         gyro_Dw[i, j, ifermi, :] += delE[i, k, n]*delta*curv_w_nk[n, :, j]
+
+                        # if cwi.win.eval_C:
+                        #     gyro_C[:, j, ifermi] += delE[:, k, n] * delE[j, k, n] * delta
+
+                    # if cwi.win.eval_dos:
+                    #     gyro_DOS[ifermi] += delta
+
+            # if cwi.win.eval_NOA:
+            #     if cwi.win.eval_spn:
+            #         gyrotropic_get_NOA_k(kpt, kweight, eig, del_eig, AA, UU, gyro_NOA_orb, gyro_NOA_spn)
+            #     else:
+            #         gyrotropic_get_NOA_k(kpt, kweight, eig, del_eig, AA, UU, gyro_NOA_orb)
+
+        return gyro_K_orb, gyro_K_spn
+
+    # ==================================================
+    N1, N2, N3 = cwi["gyrotropic_kmesh"]
+    kpoints = np.array(
+        [[i / float(N1), j / float(N2), k / float(N3)] for i in range(N1) for j in range(N2) for k in range(N3)]
+    )
+
+    kpoints_chunks = np.split(kpoints, [j for j in range(100000, len(kpoints), 100000)])
+
+    res = Parallel(n_jobs=1, verbose=10)(delayed(gyrotropic_get_K_k)(kpoints) for kpoints in kpoints_chunks)
+
+    gyro_K_orb = np.sum([gyro_K_orb for gyro_K_orb, _ in res], axis=0)
+    gyro_K_spn = np.sum([gyro_K_spn for _, gyro_K_spn in res], axis=0)
+
+    """
+    --------------------------------------------------------------------
+    At this point gme_orb_list contains
+
+    (1/N)sum_{k,n} delta(E_kn-E_f).(d E_{kn}/d k_i).Im[<del_k u_kn| x (H_k-E_kn)|del_k u_kn>]
+    (units of energy times length^3) in eV.Ang^3.
+
+    To get K  in units of Ampere do the following:
+        * Divide by V_c in Ang^3 to get a quantity with units of eV
+        * Multiply by 'e' in SI to convert to SI (Joules)
+        * Multiply by e/(2.hbar) to get K in Ampere
+
+    fac = e^2/(2.hbar.V_c)
+     -------------------------------------------------------------------
+    """
+    cell_volume = cwi["unit_cell_volume"]
+
+    fac = elem_charge_SI**2 / (2.0 * hbar_SI * cell_volume)
+
+    gyro_K_orb *= fac
+
+    """
+    --------------------------------------------------------------------
+    At this point gyro_K_spn contains
+
+    (1/N) sum_k delta(E_kn-E_f).(d E_{kn}/d k_i).sigma_{kn,j}
+    (units of length) in Angstroms.
+
+    To get K in units of Ampere do the following:
+        * Divide by V_c in Ang^3 to get a quantity with units of [L]^{-2}
+        * Multiply by 10^20 to convert to SI
+        * Multiply by -g_s.e.hbar/(4m_e) \simeq e.hbar/(2.m_e) in SI units
+
+    fac = 10^20*e*hbar/(2.m_e.V_c)
+     -------------------------------------------------------------------
+    """
+    fac = -1.0e20 * elem_charge_SI * hbar_SI / (2.0 * elec_mass_SI * cell_volume)
+
+    gyro_K_spn *= fac
+
+    return gyro_K_orb, gyro_K_spn
 
 
-# *************************************************************************** #
-#     dc Anomalous Hall conductivity and eventually (if 'mcd' string also     #
-#       present in addition to 'ahe', e.g., 'ahe+mcd') dichroic optical       #
-#     conductivity, both calculated on the same (adaptively-refined) mesh     #
-# *************************************************************************** #
 # ==================================================
 def absorptive_dichroic_optical_cond_main():
     """
@@ -1678,13 +1906,5 @@ def orbital_magnetization_main():
 def boltzwann_main():
     """
     Boltzmann transport coefficients (BoltzWann module)
-    """
-    pass
-
-
-# ==================================================
-def gyrotropic_main():
-    """
-    Gyrotropic transport coefficients (Gyrotropic module)
     """
     pass

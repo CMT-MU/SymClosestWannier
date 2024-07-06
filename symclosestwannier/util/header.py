@@ -109,6 +109,7 @@ win_info = {
     "gyrotropic_freq_min": "Lower limit of the frequency range for computing the optical activity. (The units are [eV]) (float), [0.0].",
     "gyrotropic_freq_step": "Difference between consecutive values of the optical frequency between gyrotropic_freq_min and gyrotropic_freq_max. (The units are [eV]) (float), [0.01].",
     "gyrotropic_eigval_max": "Maximum energy eigenvalue of the eigenstates to be included in the evaluation of the Natural optical activity. (The units are [eV]) (float), [If an inner energy window was specified, the default value is the upper bound of the inner energy window plus 0.6667. Otherwise it is the maximum energy eigenvalue stored in seedname.eig plus 0.6667.].",
+    "gyrotropic_smr_max_arg": "Maximum value of smearing arg (float), [5.0]. ",
     "gyrotropic_degen_thresh": "The threshould to eliminate degenerate bands from the calculation in order to avoid divergences. (Units are [eV]) (float), [0.0].",
     "gyrotropic_smr_fixed_en_width": "Overrides the smr_fixed_en_width global variable.",
     "gyrotropic_smr_type": "Overrides the smr_type global variable.",
