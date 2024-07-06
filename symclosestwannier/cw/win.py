@@ -75,6 +75,21 @@ _default = {
     "kubo_smr_type": "gauss",
     # gyrotropic
     "gyrotropic": False,
+    "gyrotropic_task": "",
+    "gyrotropic_kmesh": [1, 1, 1],
+    "gyrotropic_kmesh_spacing": [1, 1, 1],
+    "gyrotropic_freq_max": None,
+    "gyrotropic_freq_min": 0.0,
+    "gyrotropic_freq_step": 0.01,
+    "gyrotropic_eigval_max": +100000,
+    "gyrotropic_degen_thresh": 0.0,
+    "gyrotropic_smr_fixed_en_width": 0.0,
+    "gyrotropic_smr_type": "gauss",
+    "gyrotropic_band_list": None,
+    "gyrotropic_box_center": [0.5, 0.5, 0.5],
+    "gyrotropic_box_b1": [1.0, 0.0, 0.0],
+    "gyrotropic_box_b2": [0.0, 1.0, 0.0],
+    "gyrotropic_box_b3": [0.0, 0.0, 1.0],
     # boltzwann
     "boltzwann": False,
 }
@@ -184,16 +199,31 @@ class Win(dict):
                 - kubo_freq_min           : Lower limit of the frequency range for computing the optical conductivity, JDOS and ac SHC. (The units are [eV]) (float), [0.0].
                 - kubo_freq_step          : Difference between consecutive values of the optical frequency between kubo_freq_min and kubo_freq_max. (The units are [eV]) (float), [0.01].
                 - kubo_eigval_max         : Maximum energy eigenvalue of the eigenstates to be included in the evaluation of the optical conductivity, JDOS and ac SHC. (The units are [eV]) (float), [If an inner energy window was specified, the default value is the upper bound of the inner energy window plus 0.6667. Otherwise it is the maximum energy eigenvalue stored in seedname.eig plus 0.6667.].
-                - kubo_adpt_smr           : Overrides the adpt_smr global variable.
-                - kubo_adpt_smr_fac       : Overrides the adpt_smr_fac global variable.
-                - kubo_adpt_smr_max       : Overrides the adpt_smr_max global variable.
-                - kubo_smr_fixed_en_width : Overrides the smr_fixed_en_width global variable.
-                - kubo_smr_type           : Overrides the smr_type global variable.
+                - kubo_adpt_smr           : Overrides the adpt_smr global variable (bool), [False].
+                - kubo_adpt_smr_fac       : Overrides the adpt_smr_fac global variable (float), [sqrt(2)].
+                - kubo_adpt_smr_max       : Overrides the adpt_smr_max global variable (float), [1.0].
+                - kubo_smr_fixed_en_width : Overrides the smr_fixed_en_width global variable (float), [0.0].
+                - kubo_smr_type           : Overrides the smr_type global variable (str), [gauss].
 
             # morb
 
             # gyrotropic
-                - gyrotropic          : Determines whether to enter the gyrotropic routines (bool), [False].
+                - gyrotropic                    : Determines whether to enter the gyrotropic routines (bool), [False].
+                - gyrotropic_task               : The quantity to compute when gyrotropic=true, -DO/-Dw/-C/-K/-spin/-NOA/-dos, (str).
+                - gyrotropic_kmesh              : Overrides the kmesh global variable.
+                - gyrotropic_kmesh_spacing      : Overrides the kmesh_spacing global variable.
+                - gyrotropic_freq_max           : Upper limit of the frequency range for computing the optical activity. (The units are [eV]) (float), [If an inner energy window was specified, the default value is dis_froz_max-fermi_energy+0.6667. Otherwise it is the difference between the maximum and the minimum energy eigenvalue stored in seedname.eig, plus 0.6667.].
+                - gyrotropic_freq_min           : Lower limit of the frequency range for computing the optical activity. (The units are [eV]) (float), [0.0].
+                - gyrotropic_freq_step          : Difference between consecutive values of the optical frequency between gyrotropic_freq_min and gyrotropic_freq_max. (The units are [eV]) (float), [0.01].
+                - gyrotropic_eigval_max         : Maximum energy eigenvalue of the eigenstates to be included in the evaluation of the Natural optical activity. (The units are [eV]) (float), [If an inner energy window was specified, the default value is the upper bound of the inner energy window plus 0.6667. Otherwise it is the maximum energy eigenvalue stored in seedname.eig plus 0.6667.].
+                - gyrotropic_degen_thresh       : The threshould to eliminate degenerate bands from the calculation in order to avoid divergences. (Units are [eV]) (float), [0.0].
+                - gyrotropic_smr_fixed_en_width : Overrides the smr_fixed_en_width global variable.
+                - gyrotropic_smr_type           : Overrides the smr_type global variable.
+                - gyrotropic_band_list          : List of bands used in the calculation.
+                - gyrotropic_box_center         : Three real numbers. Optionally the integration may be restricted to a parallelogram, centered at gyrotropic_box_center and defined by vectors gyrotropic_box_b{1,2,3}.  In reduced coordinates, [0.5 0.5 0.5].
+                - gyrotropic_box_b1             : Three real numbers. In reduced coordinates, [1.0 0.0 0.0].
+                - gyrotropic_box_b2             : Three real numbers. In reduced coordinates, [0.0 1.0 0.0].
+                - gyrotropic_box_b3             : Three real numbers. In reduced coordinates, [0.0 0.0 1.0].
 
             # boltzwann
                 - boltzwann           : Determines whether to enter the boltzwann routines (bool), [False].
@@ -367,6 +397,34 @@ class Win(dict):
         d["kubo_smr_fixed_en_width"] = self._get_param_keyword(win_data, "kubo_smr_fixed_en_width", 0.0, dtype=float)
 
         d["gyrotropic"] = self._get_param_keyword(win_data, "gyrotropic", False, dtype=bool)
+        gyrotropic_task = self._get_param_keyword(win_data, "gyrotropic_task", None, dtype=str)
+        if gyrotropic_task is not None:
+            gyrotropic_task = gyrotropic_task.replace(" ", "")
+        d["gyrotropic_task"] = gyrotropic_task
+        gyrotropic_kmesh = self._get_param_keyword(win_data, "gyrotropic_kmesh", "1  1  1", dtype=str)
+        d["gyrotropic_kmesh"] = [int(x) for x in gyrotropic_kmesh.split()]
+        gyrotropic_kmesh_spacing = self._get_param_keyword(win_data, "gyrotropic_kmesh_spacing", "1  1  1", dtype=str)
+        d["gyrotropic_kmesh_spacing"] = [int(x) for x in gyrotropic_kmesh_spacing.split()]
+
+        d["gyrotropic_freq_max"] = self._get_param_keyword(win_data, "gyrotropic_freq_max", 1.0, dtype=float)
+        d["gyrotropic_freq_min"] = self._get_param_keyword(win_data, "gyrotropic_freq_min", 0.0, dtype=float)
+        d["gyrotropic_freq_step"] = self._get_param_keyword(win_data, "gyrotropic_freq_step", 0.01, dtype=float)
+        d["gyrotropic_eigval_max"] = self._get_param_keyword(win_data, "gyrotropic_eigval_max", +100000, dtype=float)
+        d["gyrotropic_smr_type"] = self._get_param_keyword(win_data, "smr_type", "gauss", dtype=str).replace(" ", "")
+        d["gyrotropic_smr_fixed_en_width"] = self._get_param_keyword(
+            win_data, "gyrotropic_smr_fixed_en_width", 0.0, dtype=float
+        )
+        d["gyrotropic_degen_thresh"] = self._get_param_keyword(win_data, "gyrotropic_degen_thresh", 0.0, dtype=float)
+        d["gyrotropic_band_list"] = self._get_param_keyword(win_data, "gyrotropic_band_list", None, dtype=str)
+        gyrotropic_box_center = self._get_param_keyword(win_data, "gyrotropic_box_center", "0.5 0.5 0.5", dtype=str)
+        d["gyrotropic_box_center"] = [float(x) for x in gyrotropic_box_center.split()]
+        gyrotropic_box_b1 = self._get_param_keyword(win_data, "gyrotropic_box_b1", "1.0 0.0 0.0", dtype=str)
+        d["gyrotropic_box_b1"] = [float(x) for x in gyrotropic_box_b1.split()]
+        gyrotropic_box_b2 = self._get_param_keyword(win_data, "gyrotropic_box_b2", "0.0 1.0 0.0", dtype=str)
+        d["gyrotropic_box_b2"] = [float(x) for x in gyrotropic_box_b2.split()]
+        gyrotropic_box_b3 = self._get_param_keyword(win_data, "gyrotropic_box_b3", "0.0 0.0 1.0", dtype=str)
+        d["gyrotropic_box_b3"] = [float(x) for x in gyrotropic_box_b3.split()]
+
         d["boltzwann"] = self._get_param_keyword(win_data, "boltzwann", False, dtype=bool)
 
         num_fermi = 0
