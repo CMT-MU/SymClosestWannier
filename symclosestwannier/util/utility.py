@@ -135,7 +135,7 @@ def iterate3dpm(size):
 
 
 # ==================================================
-def wigner_seitz(A, mp_grid, prec=1.0e-7):
+def wigner_seitz(A, mp_grid, prec=1.0e-5):
     """
     wigner seitz cell.
     return irreducible R vectors and number of degeneracy at each R.
