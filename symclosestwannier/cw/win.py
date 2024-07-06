@@ -56,6 +56,13 @@ _default = {
     "fermi_energy_step": 0.01,
     "fermi_energy_list": None,
     "num_fermi": 0,
+    "shc_freq_scan": False,
+    "shc_alpha": 1,
+    "shc_beta": 2,
+    "shc_gamma": 3,
+    "shc_bandshift": False,
+    "shc_bandshift_firstband": None,
+    "shc_bandshift_energyshift": 0.0,
     # kubo
     "kubo_freq_max": None,
     "kubo_freq_min": 0.0,
@@ -164,6 +171,13 @@ class Win(dict):
                 - fermi_energy_step            : Step for increasing the Fermi energy in the specified range. (The units are [eV]) (float), [0.01].
                 - fermi_energy_list            : list of fermi energy (list), [None].
                 - num_fermi                    : number of fermi energies (int), [0].
+                - shc_freq_scan                : Determines whether to calculate the frequency scan (i.e. the ac SHC) or the Fermi energy scan (i.e. the dc SHC) of the spin Hall conductivity. The default value is false, which means dc SHC is calculated. (bool), [False].
+                - shc_alpha                    : The α index of spin Hall conductivity σ^{spin γ}_{αβ}, i.e. the direction of spin current. Possible values are 1, 2 and 3, representing the x, y and z directions respectively. (int), [1].
+                - shc_beta                     : The β index of spin Hall conductivity σ^{spin γ}_{αβ}, i.e. the direction of applied electric field. Possible values are 1, 2 and 3, representing the x, y and z directions respectively. (int), [2].
+                - shc_gamma                    : The γ index of spin Hall conductivity σ^{spin γ}_{αβ}, i.e. the spin direction of spin current. Possible values are 1, 2 and 3, representing the x, y and z directions respectively. (int), [3].
+                - shc_bandshift                : Shift all conduction bands by a given amount (float), [False].
+                - shc_bandshift_firstband      : Index of the first band to shift (int), [None].
+                - shc_bandshift_energyshift    : Energy shift of the conduction bands (eV) (float), [0.0].
 
             # kubo
                 - kubo_freq_max           : Upper limit of the frequency range for computing the optical conductivity, JDOS and ac SHC. (The units are [eV]) (float), [If an inner energy window was specified, the default value is dis_froz_max-fermi_energy+0.6667. Otherwise it is the difference between the maximum and the minimum energy eigenvalue stored in seedname.eig, plus 0.6667.].
@@ -407,6 +421,17 @@ class Win(dict):
         d["fermi_energy_step"] = fermi_energy_step
         d["fermi_energy_list"] = fermi_energy_list
         d["num_fermi"] = num_fermi
+
+        # shc
+        d["shc_freq_scan"] = self._get_param_keyword(win_data, "shc_freq_scan", False, dtype=bool)
+        d["shc_alpha"] = self._get_param_keyword(win_data, "shc_alpha", 1, dtype=int)
+        d["shc_beta"] = self._get_param_keyword(win_data, "shc_beta", 2, dtype=int)
+        d["shc_gamma"] = self._get_param_keyword(win_data, "shc_gamma", 3, dtype=int)
+        d["shc_bandshift"] = self._get_param_keyword(win_data, "shc_bandshift", False, dtype=bool)
+        d["shc_bandshift_firstband"] = self._get_param_keyword(win_data, "shc_bandshift_firstband", None, dtype=float)
+        d["shc_bandshift_energyshift"] = self._get_param_keyword(
+            win_data, "shc_bandshift_energyshift", 0.0, dtype=float
+        )
 
         return d
 

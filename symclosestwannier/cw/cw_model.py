@@ -55,7 +55,7 @@ from symclosestwannier.util.header import (
     s_header,
     z_exp_header,
 )
-from symclosestwannier.util._utility import (
+from symclosestwannier.util.utility import (
     thermal_avg,
     weight_proj,
     fourier_transform_k_to_r,
@@ -157,8 +157,7 @@ class CWModel(dict):
         Sk = Ak.transpose(0, 2, 1).conjugate() @ Ak
         Sk = 0.5 * (Sk + np.einsum("kmn->knm", Sk).conj())
 
-        diag_Ek = np.array([np.diag(Ek[k]) for k in range(self._cwi["num_k"])])
-        Hk = Uk.transpose(0, 2, 1).conjugate() @ diag_Ek @ Uk
+        Hk = np.einsum("klm,kl,kln->kmn", np.conj(Uk), Ek, Uk, optimize=True)
         Hk = 0.5 * (Hk + np.einsum("kmn->knm", Hk).conj())
 
         if self._cwi["zeeman_interaction"]:
@@ -343,8 +342,7 @@ class CWModel(dict):
             Uk = Ak @ S2k_inv
 
         # projection from KS energies to Closest Wannnier Hamiltonian
-        diag_Ek = np.array([np.diag(Ek[k]) for k in range(self._cwi["num_k"])])
-        Hk = Uk.transpose(0, 2, 1).conjugate() @ diag_Ek @ Uk
+        Hk = np.einsum("klm,kl,kln->kmn", np.conj(Uk), Ek, Uk, optimize=True)
         Hk = 0.5 * (Hk + np.einsum("kmn->knm", Hk).conj())
 
         if self._cwi["zeeman_interaction"]:
@@ -582,16 +580,28 @@ class CWModel(dict):
             self._cwm.log(msg, None, end="\n", file=self._outfile, mode="a")
             self._cwm.set_stamp()
 
-
             dic = mat.copy()
             Zk = []
             for k, d in mat["matrix"].items():
                 dic["matrix"] = {k: d}
-                Zk.append(CWModel.construct_Ok([1], self._cwi["num_wann"], self._cwi["kpoints"], self._cwi["irvec"], dic))
+                Zk.append(
+                    CWModel.construct_Ok([1], self._cwi["num_wann"], self._cwi["kpoints"], self._cwi["irvec"], dic)
+                )
 
-            Hk_sym = CWModel.construct_Ok(list(z.values()), self._cwi["num_wann"], self._cwi["kpoints"], self._cwi["irvec"], mat)
+            Hk_sym = CWModel.construct_Ok(
+                list(z.values()), self._cwi["num_wann"], self._cwi["kpoints"], self._cwi["irvec"], mat
+            )
             Ek, Uk = np.linalg.eigh(Hk_sym)
-            Z_exp = [thermal_avg(Zki, Ek, Uk, self._cwi["fermi_energy"], T=self._cwi["T"],) for Zki in Zk]
+            Z_exp = [
+                thermal_avg(
+                    Zki,
+                    Ek,
+                    Uk,
+                    self._cwi["fermi_energy"],
+                    T=self._cwi["T"],
+                )
+                for Zki in Zk
+            ]
             z_exp = {key: Z_exp[i] for i, key in enumerate(z.keys())}
 
             self._cwm.log("done", None, end="\n", file=self._outfile, mode="a")

@@ -4,33 +4,16 @@ utility codes.
 
 import numpy as np
 from sympy.physics.quantum import TensorProduct
-import fortio, scipy.io
 import multiprocessing
 from joblib import Parallel, delayed, wrap_non_picklable_objects
 
 from gcoreutils.nsarray import NSArray
 
-from symclosestwannier.util.constants import bohr_magn_SI, joul_to_eV
+from symclosestwannier.util.constants import k_B_SI, elem_charge_SI, bohr_magn_SI, joul_to_eV
 
 M_ZERO = np.finfo(float).eps
 
 _num_proc = multiprocessing.cpu_count()
-
-
-# ==================================================
-class FortranFileR(fortio.FortranFile):
-    def __init__(self, filename):
-        try:
-            super().__init__(filename, mode="r", header_dtype="uint32", auto_endian=True, check_file=True)
-        except ValueError:
-            print("File '{}' contains subrecords - using header_dtype='int32'".format(filename))
-            super().__init__(filename, mode="r", header_dtype="int32", auto_endian=True, check_file=True)
-
-
-# ==================================================
-class FortranFileW(scipy.io.FortranFile):
-    def __init__(self, filename):
-        super().__init__(filename, mode="w")
 
 
 # ==================================================
@@ -39,27 +22,37 @@ def is_zero(x):
 
 
 # ==================================================
-def fermi(x, T=0.0):
+def Kelvin_to_eV(T_Kelvin):
+    """convert K to eV"""
+    return T_Kelvin * k_B_SI / elem_charge_SI
+
+
+# ==================================================
+def fermi(x, T=0.0, unit="Kelvin"):
+    T_eV = Kelvin_to_eV(T) if unit == "Kelvin" else T
+
     if T == 0.0:
-        return np.vectorize(float)(x < 0.0)
+        return 1.0 * np.vectorize(float)(x < 0.0)
 
-    return 0.5 * (1.0 - np.tanh(0.5 * x / T))
-
-
-# ==================================================
-def fermi_dt(x, T=0.01):
-    return fermi(x, T) * fermi(-x, T) / T
+    return 0.5 * (1.0 - np.tanh(0.5 * x / T_eV))
 
 
 # ==================================================
-def fermi_ddt(x, T=0.01):
-    return (1 - 2 * fermi(-x, T)) * fermi(x, T) * fermi(-x, T) / T / T
+def fermi_dt(x, T=0.01, unit="Kelvin"):
+    T_eV = Kelvin_to_eV(T) if unit == "Kelvin" else T
+    return fermi(x, T, unit) * fermi(-x, T, unit) / T_eV
+
+
+# ==================================================
+def fermi_ddt(x, T=0.01, unit="Kelvin"):
+    T_eV = Kelvin_to_eV(T) if unit == "Kelvin" else T
+    return (1 - 2 * fermi(-x, T, unit)) * fermi(x, T, unit) * fermi(-x, T, unit) / T_eV / T_eV
 
 
 # ==================================================
 def weight_proj(e, e0, e1, T0, T1, delta=10e-12):
     """weight function for projection"""
-    return fermi(e0 - e, T0) + fermi(e - e1, T1) - 1.0 + delta
+    return fermi(e0 - e, T0, unit="eV") + fermi(e - e1, T1, unit="eV") - 1.0 + delta
 
 
 # ==================================================
@@ -142,7 +135,7 @@ def iterate3dpm(size):
 
 
 # ==================================================
-def wigner_seitz(A, mp_grid, prec=1.0e-7):
+def wigner_seitz(A, mp_grid, prec=1.0e-5):
     """
     wigner seitz cell.
     return irreducible R vectors and number of degeneracy at each R.
@@ -597,50 +590,51 @@ def samb_decomp_operator(
     """
     Or_dict = sort_ket_matrix_dict(Or_dict, ket, ket_samb)
 
-    if A is not None:
-        if not np.allclose(A, A_samb, rtol=1e-03, atol=1e-03):
-            A = np.array(A, dtype=float)
-            A_samb = np.array(A_samb, dtype=float)
-            atoms_frac = np.array(sort_ket_list(atoms_frac, ket, ket_samb), dtype=float)
-            atoms_frac_samb = np.array(atoms_frac_samb, dtype=float)
+    # if A is not None:
+    #     if np.allclose(A, A_samb, rtol=1e-03, atol=1e-03):
+    #         print("ok!!!")
+    #         A = np.array(A, dtype=float)
+    #         A_samb = np.array(A_samb, dtype=float)
+    #         atoms_frac = np.array(sort_ket_list(atoms_frac, ket, ket_samb), dtype=float)
+    #         atoms_frac_samb = np.array(atoms_frac_samb, dtype=float)
 
-            Or_dict_ = {}
-            for (R1, R2, R3, m, n), v in Or_dict.items():
-                if np.abs(v) < 1e-12:
-                    continue
+    #         Or_dict_ = {}
+    #         for (R1, R2, R3, m, n), v in Or_dict.items():
+    #             if np.abs(v) < 1e-12:
+    #                 continue
 
-                R = np.array([R1, R2, R3], dtype=float)
-                rm = atoms_frac[m]
-                rn = atoms_frac[n]
-                bond = ((R + rn) - rm) @ A
+    #             R = np.array([R1, R2, R3], dtype=float)
+    #             rm = atoms_frac[m]
+    #             rn = atoms_frac[n]
+    #             bond = ((R + rn) - rm) @ A
 
-                bond = tuple([format(bi, ".2f") for bi in bond])
-                bond = tuple([float(bi) for bi in bond])
+    #             bond = tuple([format(bi, ".3f") for bi in bond])
+    #             bond = tuple([float(bi) for bi in bond])
 
-                Or_dict_[(*bond, m, n)] = v
+    #             Or_dict_[(*bond, m, n)] = v
 
-            Or_dict = Or_dict_
+    #         Or_dict = Or_dict_
 
-            Zr_dict_ = {}
-            for tag, d in Zr_dict.items():
-                dic = {}
-                for (R1, R2, R3, m, n), v in d.items():
-                    if np.abs(v) < 1e-12:
-                        continue
+    #         Zr_dict_ = {}
+    #         for tag, d in Zr_dict.items():
+    #             dic = {}
+    #             for (R1, R2, R3, m, n), v in d.items():
+    #                 if np.abs(v) < 1e-12:
+    #                     continue
 
-                    R = np.array([R1, R2, R3], dtype=float)
-                    rm = atoms_frac_samb[m]
-                    rn = atoms_frac_samb[n]
-                    bond = ((R + rn) - rm) @ A_samb
+    #                 R = np.array([R1, R2, R3], dtype=float)
+    #                 rm = atoms_frac_samb[m]
+    #                 rn = atoms_frac_samb[n]
+    #                 bond = ((R + rn) - rm) @ A_samb
 
-                    bond = tuple([format(bi, ".2f") for bi in bond])
-                    bond = tuple([float(bi) for bi in bond])
+    #                 bond = tuple([format(bi, ".3f") for bi in bond])
+    #                 bond = tuple([float(bi) for bi in bond])
 
-                    dic[(*bond, m, n)] = v
+    #                 dic[(*bond, m, n)] = v
 
-                Zr_dict_[tag] = dic
+    #             Zr_dict_[tag] = dic
 
-            Zr_dict = Zr_dict_
+    #         Zr_dict = Zr_dict_
 
     z = {
         tag: np.real(np.sum([v * Or_dict.get((-k[0], -k[1], -k[2], k[4], k[3]), 0) for k, v in d.items()]))
@@ -711,7 +705,7 @@ def construct_Ok(z, num_wann, kpoints, rpoints, matrix_dict):
 
 
 # ==================================================
-def thermal_avg(O, E, U, ef=0.0, T=0.0, num_k=0):
+def thermal_avg(O, E, U, ef=0.0, T_Kelvin=0.0, num_k=0):
     """
     thermal average of the given operator,
     <O> = 1 / Nk * \sum_{n,k} fermi_dirac[E_{n}(k)] O_{nn}(k)
@@ -735,7 +729,7 @@ def thermal_avg(O, E, U, ef=0.0, T=0.0, num_k=0):
     if ef is None:
         ef = 0.0
 
-    fk = fermi(E - ef, T)
+    fk = fermi(E - ef, T_Kelvin)
 
     O = np.array(O)
     E = np.array(E)

@@ -52,7 +52,7 @@ def cmd(seedname, input, version):
     seedname = seedname.replace(" ", "")
     seedname = seedname[:-5] if seedname[-5:] == ".cwin" else seedname
 
-    analyzer(seedname)
+    _, _ = analyzer(seedname)
 
 
 # ================================================== main

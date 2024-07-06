@@ -1,7 +1,7 @@
 # Utility
 
 ```{eval-rst}
-.. automodule:: symclosestwannier.util._utility
+.. automodule:: symclosestwannier.util.utility
 .. automodule:: symclosestwannier.util.band
 .. automodule:: symclosestwannier.util.constants
 .. automodule:: symclosestwannier.util.get_oper_R

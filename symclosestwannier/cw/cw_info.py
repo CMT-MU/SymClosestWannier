@@ -30,7 +30,7 @@ from symclosestwannier.cw.mmn import Mmn
 from symclosestwannier.cw.umat import Umat
 from symclosestwannier.cw.spn import Spn
 
-from symclosestwannier.util._utility import wigner_seitz, convert_w90_orbital
+from symclosestwannier.util.utility import wigner_seitz, convert_w90_orbital
 
 _class_map = {"cwin": CWin, "win": Win, "nnkp": Nnkp, "eig": Eig, "amn": Amn, "mmn": Mmn, "umat": Umat, "spn": Spn}
 
@@ -89,7 +89,15 @@ class CWInfo(dict):
                 if not np.any([d["write_rmn"], d["write_vmn"], d["write_tb"], d["berry"]]):
                     continue
             if name == "spn":
-                if not np.any([d["write_spn"], d["spin_decomp"], d["spin_moment"], d["zeeman_interaction"]]):
+                if not np.any(
+                    [
+                        d["write_spn"],
+                        d["spin_decomp"],
+                        d["spin_moment"],
+                        d["zeeman_interaction"],
+                        d["berry_task"] == "shc",
+                    ]
+                ):
                     continue
 
             info = C(topdir, seedname)
