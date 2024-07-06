@@ -20,7 +20,7 @@
 
 import numpy as np
 
-from symclosestwannier.util._utility import fourier_transform_k_to_r
+from symclosestwannier.util.utility import fourier_transform_k_to_r
 
 
 # ==================================================
@@ -40,9 +40,7 @@ def get_oper_R(name, cwi):
         "BB_R": get_BB_R,  # <0|H(r-R)|R>
         "CC_R": get_CC_R,  # <0|r_alpha.H(r-R)_beta|R>
         "SS_R": get_SS_R,  # <0n|sigma_x,y,z|Rm>
-        "SR_R": get_SR_R,  # <0n|sigma_x,y,z.(r-R)_alpha|Rm>
-        "SHR_R": get_SHR_R,  # <0n|sigma_x,y,z.H.(r-R)_alpha|Rm>
-        "SH_R": get_SH_R,  # <0n|sigma_x,y,z.H|Rm>
+        "get_SHC_R": get_SHC_R,  # <0n|sigma_x,y,z.(r-R)_alpha|Rm>, <0n|sigma_x,y,z.H.(r-R)_alpha|Rm>, <0n|sigma_x,y,z.H|Rm>
         "SAA_R": get_SAA_R,  # <0n|sigma_x,y,z.(r-R)_alpha|Rm>
         "SBB_R": get_SBB_R,  # <0n|sigma_x,y,z.H.(r-R)_alpha|Rm>
     }
@@ -65,8 +63,7 @@ def get_HH_R(cwi):
     Uk = np.array(cwi["Uk"])
     num_k = cwi["num_k"]
 
-    diag_Ek = np.array([np.diag(Ek[k]) for k in range(num_k)])
-    HH_k = Uk.transpose(0, 2, 1).conjugate() @ diag_Ek @ Uk
+    HH_k = np.einsum("klm,kl,kln->kmn", np.conj(Uk), Ek, Uk, optimize=True)
     HH_k = 0.5 * (HH_k + np.einsum("kmn->knm", HH_k).conj())
 
     kpoints = np.array(cwi["kpoints"])
@@ -100,17 +97,18 @@ def get_AA_R(cwi):
     kb2k = cwi.nnkp.kb2k()
     bveck = cwi.nnkp.bveck()
     wk = cwi.nnkp.wk()
+    wb = cwi["wb"]
 
     kpoints = np.array(cwi["kpoints"])
     irvec = np.array(cwi["irvec"])
 
     ### Unitary transform Mkb ###
     Mkb_w = np.einsum("klm, kblp, kbpn->kbmn", np.conj(Uk), Mkb, Uk[kb2k[:, :], :, :], optimize=True)  # Eq. (61)
-    AA_k = 1j * np.einsum("kb,kba,kbmn->akmn", wk, bveck, Mkb_w, optimize=True)
+    AA_k = 1.0j * np.einsum("b,kba,kbmn->akmn", wb, bveck, Mkb_w, optimize=True)
 
     # Use Eq.(31) of Marzari&Vanderbilt PRB 56, 12847 (1997) for band-diagonal position matrix.
     if cwi["transl_inv"]:
-        AA_k_diag = -1 * np.einsum("kb,kba,kbnn->akn", wk, bveck, np.imag(np.log(Mkb_w)), optimize=True)
+        AA_k_diag = -np.einsum("b,kba,kbnn->akn", wb, bveck, np.imag(np.log(Mkb_w)), optimize=True)
         np.einsum("aknn->akn", AA_k)[:] = AA_k_diag
 
     AA_k = 0.5 * (AA_k + np.einsum("akmn->aknm", AA_k).conj())
@@ -171,21 +169,91 @@ def get_SS_R(cwi):
 
 
 # ==================================================
-def get_SR_R():
-    """<0n|sigma_x,y,z.(r-R)_alpha|Rm>"""
-    pass
+def get_SHC_R(cwi):
+    """
+    Compute several matrices for spin Hall conductivity
+        - SR_R  = <0n|sigma_{x,y,z}.(r-R)_alpha|Rm>
+        - SHR_R = <0n|sigma_{x,y,z}.H.(r-R)_alpha|Rm>
+        - SH_R  = <0n|sigma_{x,y,z}.H|Rm>
 
+    Args:
+        cwi (CWInfo): CWInfo.
 
-# ==================================================
-def get_SHR_R():
-    """<0n|sigma_x,y,z.H.(r-R)_alpha|Rm>"""
-    pass
+    Returns:
+        tuple: SR_R(3, 3, len(irvec), num_wann, num_wann), SHR_R(3, 3, len(irvec), num_wann, num_wann), SH_R(3, len(irvec), num_wann, num_wann).
+    """
+    kpoints = np.array(cwi["kpoints"])
+    irvec = np.array(cwi["irvec"])
+    num_wann = cwi["num_wann"]
+    num_bands = cwi["num_bands"]
+    num_k = cwi["num_k"]
 
+    if cwi["tb_gauge"]:
+        atoms_list = list(cwi["atoms_frac"].values())
+        atoms_frac = np.array([atoms_list[i] for i in cwi["nw2n"]])
+    else:
+        atoms_frac = None
 
-# ==================================================
-def get_SH_R():
-    """<0n|sigma_x,y,z.H|Rm>"""
-    pass
+    Ek = np.array(cwi["Ek"])
+    Uk = np.array(cwi["Uk"])
+
+    # spin operator
+    spn_o = np.array(cwi["pauli_spn"])
+    SS_k = np.einsum("klm,aklp,kpn->akmn", np.conj(Uk), spn_o, Uk, optimize=True)
+
+    # get_HH_R
+    shc_bandshift = cwi["shc_bandshift"]
+    shc_bandshift_firstband = cwi["shc_bandshift_firstband"]
+    shc_bandshift_energyshift = cwi["shc_bandshift_energyshift"]
+
+    if shc_bandshift:
+        Ek[:, shc_bandshift_firstband:] += shc_bandshift_energyshift
+
+    H_o = np.array([np.diag(Ek[k]) for k in range(num_k)])
+
+    # get_AA_R
+    Mkb = np.array(cwi["Mkb"])
+    kb2k = cwi.nnkp.kb2k()
+    bveck = cwi.nnkp.bveck()
+    wk = cwi.nnkp.wk()
+    wb = cwi["wb"]
+
+    #! QZYZ18 Eq.(48)
+    SH_o = spn_o @ H_o[np.newaxis, :, :, :]
+    SH_k = np.einsum("klm, aklp, kpn->akmn", np.conj(Uk), SH_o, Uk, optimize=True)
+
+    #! QZYZ18 Eq.(50)
+    SM_o = np.einsum("akml, kbln->akbmn", spn_o, Mkb, optimize=True)
+    SM_k = np.einsum("klm, akblp, kbpn->akbmn", np.conj(Uk), SM_o, Uk[kb2k[:, :], :, :], optimize=True)
+    # SR_k = np.einsum("kb,kbc,akbmn->ackmn", wk, bveck, SM_k, optimize=True) - np.einsum(
+    #     "kb,kbc,akmn->ackmn", wk, bveck, SS_k, optimize=True
+    # )
+    SR_k = np.einsum("b,kbc,akbmn->ackmn", wb, bveck, SM_k, optimize=True) - np.einsum(
+        "b,kbc,akmn->ackmn", wb, bveck, SS_k, optimize=True
+    )
+
+    #! QZYZ18 Eq.(51)
+    SHM_o = np.einsum("akml, kbln->akbmn", SH_o, Mkb, optimize=True)
+    SHM_k = np.einsum("klm, akblp, kbpn->akbmn", np.conj(Uk), SHM_o, Uk[kb2k[:, :], :, :], optimize=True)
+    # SHR_k = np.einsum("kb,kbc,akbmn->ackmn", wk, bveck, SHM_k, optimize=True) - np.einsum(
+    #     "kb,kbc,akmn->ackmn", wk, bveck, SH_k, optimize=True
+    # )
+    SHR_k = np.einsum("b,kbc,akbmn->ackmn", wb, bveck, SHM_k, optimize=True) - np.einsum(
+        "b,kbc,akmn->ackmn", wb, bveck, SH_k, optimize=True
+    )
+
+    SH_R = np.array([fourier_transform_k_to_r(SH_k[i], kpoints, irvec, atoms_frac) for i in range(3)])
+    SR_R = np.array(
+        [[fourier_transform_k_to_r(SR_k[i][j], kpoints, irvec, atoms_frac) for j in range(3)] for i in range(3)]
+    )
+    SHR_R = np.array(
+        [[fourier_transform_k_to_r(SHR_k[i][j], kpoints, irvec, atoms_frac) for j in range(3)] for i in range(3)]
+    )
+
+    SR_R = 1.0j * SR_R
+    SHR_R = 1.0j * SHR_R
+
+    return SR_R, SHR_R, SH_R
 
 
 # ==================================================
@@ -208,7 +276,7 @@ def get_SBB_R():
 # ==================================================
 def get_berry_phase_R(cwi):
     """
-    matrix elements of real-space spin operator, <0n|A_x,y,z|Rm>.
+    matrix elements of berry phase, <0n|A_x,y,z|Rm>.
 
     Args:
         cwi (CWInfo): CWInfo.
@@ -275,11 +343,4 @@ def get_der_orbital_moment_R():
 # ==================================================
 def get_velocity_R():
     """<0n|v|Rm>"""
-    pass
-
-
-# ==================================================
-def get_spin_velocity_R():
-    """<0n|{s,v}/2|Rm>"""
-
     pass
