@@ -97,17 +97,18 @@ def get_AA_R(cwi):
     kb2k = cwi.nnkp.kb2k()
     bveck = cwi.nnkp.bveck()
     wk = cwi.nnkp.wk()
+    wb = cwi["wb"]
 
     kpoints = np.array(cwi["kpoints"])
     irvec = np.array(cwi["irvec"])
 
     ### Unitary transform Mkb ###
     Mkb_w = np.einsum("klm, kblp, kbpn->kbmn", np.conj(Uk), Mkb, Uk[kb2k[:, :], :, :], optimize=True)  # Eq. (61)
-    AA_k = 1.0j * np.einsum("kb,kba,kbmn->akmn", wk, bveck, Mkb_w, optimize=True)
+    AA_k = 1.0j * np.einsum("b,kba,kbmn->akmn", wb, bveck, Mkb_w, optimize=True)
 
     # Use Eq.(31) of Marzari&Vanderbilt PRB 56, 12847 (1997) for band-diagonal position matrix.
     if cwi["transl_inv"]:
-        AA_k_diag = -1 * np.einsum("kb,kba,kbnn->akn", wk, bveck, np.imag(np.log(Mkb_w)), optimize=True)
+        AA_k_diag = -np.einsum("b,kba,kbnn->akn", wb, bveck, np.imag(np.log(Mkb_w)), optimize=True)
         np.einsum("aknn->akn", AA_k)[:] = AA_k_diag
 
     AA_k = 0.5 * (AA_k + np.einsum("akmn->aknm", AA_k).conj())
@@ -206,7 +207,7 @@ def get_SHC_R(cwi):
     shc_bandshift_energyshift = cwi["shc_bandshift_energyshift"]
 
     if shc_bandshift:
-        Ek[:, shc_bandshift_firstband:] = Ek[:, shc_bandshift_firstband:] + shc_bandshift_energyshift
+        Ek[:, shc_bandshift_firstband:] += shc_bandshift_energyshift
 
     H_o = np.array([np.diag(Ek[k]) for k in range(num_k)])
 
@@ -215,6 +216,7 @@ def get_SHC_R(cwi):
     kb2k = cwi.nnkp.kb2k()
     bveck = cwi.nnkp.bveck()
     wk = cwi.nnkp.wk()
+    wb = cwi["wb"]
 
     #! QZYZ18 Eq.(48)
     SH_o = spn_o @ H_o[np.newaxis, :, :, :]
@@ -223,15 +225,21 @@ def get_SHC_R(cwi):
     #! QZYZ18 Eq.(50)
     SM_o = np.einsum("akml, kbln->akbmn", spn_o, Mkb, optimize=True)
     SM_k = np.einsum("klm, akblp, kbpn->akbmn", np.conj(Uk), SM_o, Uk[kb2k[:, :], :, :], optimize=True)
-    SR_k = np.einsum("kb,kbc,akbmn->ackmn", wk, bveck, SM_k, optimize=True) - np.einsum(
-        "kb,kbc,akmn->ackmn", wk, bveck, SS_k, optimize=True
+    # SR_k = np.einsum("kb,kbc,akbmn->ackmn", wk, bveck, SM_k, optimize=True) - np.einsum(
+    #     "kb,kbc,akmn->ackmn", wk, bveck, SS_k, optimize=True
+    # )
+    SR_k = np.einsum("b,kbc,akbmn->ackmn", wb, bveck, SM_k, optimize=True) - np.einsum(
+        "b,kbc,akmn->ackmn", wb, bveck, SS_k, optimize=True
     )
 
     #! QZYZ18 Eq.(51)
     SHM_o = np.einsum("akml, kbln->akbmn", SH_o, Mkb, optimize=True)
     SHM_k = np.einsum("klm, akblp, kbpn->akbmn", np.conj(Uk), SHM_o, Uk[kb2k[:, :], :, :], optimize=True)
-    SHR_k = np.einsum("kb,kbc,akbmn->ackmn", wk, bveck, SHM_k, optimize=True) - np.einsum(
-        "kb,kbc,akmn->ackmn", wk, bveck, SH_k, optimize=True
+    # SHR_k = np.einsum("kb,kbc,akbmn->ackmn", wk, bveck, SHM_k, optimize=True) - np.einsum(
+    #     "kb,kbc,akmn->ackmn", wk, bveck, SH_k, optimize=True
+    # )
+    SHR_k = np.einsum("b,kbc,akbmn->ackmn", wb, bveck, SHM_k, optimize=True) - np.einsum(
+        "b,kbc,akmn->ackmn", wb, bveck, SH_k, optimize=True
     )
 
     SH_R = np.array([fourier_transform_k_to_r(SH_k[i], kpoints, irvec, atoms_frac) for i in range(3)])
@@ -241,6 +249,9 @@ def get_SHC_R(cwi):
     SHR_R = np.array(
         [[fourier_transform_k_to_r(SHR_k[i][j], kpoints, irvec, atoms_frac) for j in range(3)] for i in range(3)]
     )
+
+    SR_R = 1.0j * SR_R
+    SHR_R = 1.0j * SHR_R
 
     return SR_R, SHR_R, SH_R
 
