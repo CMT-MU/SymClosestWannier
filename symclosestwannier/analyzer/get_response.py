@@ -1050,8 +1050,8 @@ def berry_get_kubo(cwi, operators):
                         vdum = delE[:, k, m] - delE[:, k, n]
                         joint_level_spacing = np.sqrt(np.dot(vdum, vdum)) * Delta_k
                         eta_smr = min(joint_level_spacing * kubo_adpt_smr_fac, kubo_adpt_smr_max)
-                        if eta_smr < 1e-6:
-                            eta_smr = 1e-6
+                        # if eta_smr < 1e-6:
+                        #     eta_smr = 1e-6
                     else:
                         eta_smr = kubo_smr_fixed_en_width
 
@@ -1091,7 +1091,7 @@ def berry_get_kubo(cwi, operators):
 
     num_k = np.prod(cwi["berry_kmesh"])
 
-    kpoints_chunks = np.split(kpoints, [j for j in range(1000, len(kpoints), 1000)])
+    kpoints_chunks = np.split(kpoints, [j for j in range(100000, len(kpoints), 100000)])
 
     res = Parallel(n_jobs=_num_proc, verbose=10)(delayed(berry_get_kubo_k)(kpt) for kpt in kpoints_chunks)
 
@@ -1167,11 +1167,11 @@ def berry_get_js_k(cwi, operators, kpoints, E, del_alpha_E, D_alpha_h, U):
     # =========== K_k ===========
     #  < u_k | sigma_gamma | \partial_alpha u_k >, QZYZ18 Eq.(26)
     #  QZYZ18 Eq.(37)
-    S_gamma_R_gamma_w = fourier_transform_r_to_k(
+    S_gamma_R_alpha_w = fourier_transform_r_to_k(
         operators["SR_R"][shc_gamma - 1, shc_alpha - 1], kpoints, cwi["irvec"], cwi["ndegen"], atoms_frac
     )
     #   ! QZYZ18 Eq.(31)
-    S_gamma_R_alpha_k = -1.0j * U.transpose(0, 2, 1).conjugate() @ S_gamma_R_gamma_w @ U
+    S_gamma_R_alpha_k = -1.0j * U.transpose(0, 2, 1).conjugate() @ S_gamma_R_alpha_w @ U
     K_k = S_gamma_R_alpha_k + S_gamma_k @ D_alpha_h
 
     # =========== L_k ===========
@@ -1186,7 +1186,7 @@ def berry_get_js_k(cwi, operators, kpoints, E, del_alpha_E, D_alpha_h, U):
     )
     # QZYZ18 Eq.(32)
     S_gamma_HR_alpha_k = -1.0j * U.transpose(0, 2, 1).conjugate() @ S_gamma_HR_alpha_w @ U
-    S_gamma_H_k = -1.0j * U.transpose(0, 2, 1).conjugate() @ S_gamma_H_w @ U
+    S_gamma_H_k = U.transpose(0, 2, 1).conjugate() @ S_gamma_H_w @ U
     L_k = S_gamma_HR_alpha_k + S_gamma_H_k @ D_alpha_h
 
     # =========== B_k ===========
@@ -1303,14 +1303,13 @@ def berry_get_shc_klist(cwi, operators, kpoints, band=False):
 
     shc_alpha = cwi["shc_alpha"]
     shc_beta = cwi["shc_beta"]
-    shc_gamma = cwi["shc_gamma"]
 
     shc_bandshift = cwi["shc_bandshift"]
     shc_bandshift_firstband = cwi["shc_bandshift_firstband"]
     shc_bandshift_energyshift = cwi["shc_bandshift_energyshift"]
 
     if shc_bandshift:
-        E[:, shc_bandshift_firstband:] = E[:, shc_bandshift_firstband:] + shc_bandshift_energyshift
+        E[:, shc_bandshift_firstband:] += shc_bandshift_energyshift
 
     del_alpha_E = delE[shc_alpha - 1]
     D_alpha_h = D_h[shc_alpha - 1]
@@ -1324,10 +1323,10 @@ def berry_get_shc_klist(cwi, operators, kpoints, band=False):
     lfreq = False
     lfermi = False
     if cwi["shc_freq_scan"]:
-        shc_k_freq = np.zeros(kubo_nfreq)
+        shc_k_freq = np.zeros((kubo_nfreq, len(kpoints)))
         lfreq = True
     else:
-        shc_k_fermi = np.zeros(cwi["num_fermi"])
+        shc_k_fermi = np.zeros((cwi["num_fermi"], len(kpoints)))
         lfermi = True
 
     lband = False
@@ -1362,13 +1361,11 @@ def berry_get_shc_klist(cwi, operators, kpoints, band=False):
                 if E[k, m] > kubo_eigval_max or E[k, n] > kubo_eigval_max:
                     continue
 
-                ekm = E[k, m]
-                ekn = E[k, n]
-                rfac = ekm - ekn
+                rfac = E[k, m] - E[k, n]
 
                 # this will calculate AHC
                 # prod = -rfac*cmplx_i*AA(n, m, shc_alpha) * rfac*cmplx_i*AA(m, n, shc_beta)
-                prod = js_k[k, n, m] * 1.0j * rfac * AA[shc_beta, k, m, n]
+                prod = js_k[k, n, m] * 1.0j * rfac * AA[shc_beta - 1, k, m, n]
                 if kubo_adpt_smr:
                     # Eq.(35) YWVS07
                     vdum = delE[:, k, m] - delE[:, k, n]
@@ -1389,9 +1386,9 @@ def berry_get_shc_klist(cwi, operators, kpoints, band=False):
                     omega += rfac * np.imag(prod)
 
             if lfermi:
-                shc_k_fermi += occ_fermi[:, k, n] * omega
+                shc_k_fermi[:, k] += occ_fermi[:, k, n] * omega
             elif lfreq:
-                shc_k_freq += occ_freq[k, n] * omega_list
+                shc_k_freq[:, k] += occ_freq[k, n] * omega_list
             elif lband:
                 shc_k_band[n] = omega
 
@@ -1449,7 +1446,7 @@ def berry_get_shc_fermi(cwi, operators):
         berry_get_imf_klist
         """
         shc_k_list = berry_get_shc_klist(cwi, operators, kpoints)
-        shc_list = np.zeros((num_fermi, 3, 3))
+        shc_list = np.zeros((num_fermi))
 
         for k in range(len(kpoints)):
             kpt = kpoints[k]
@@ -1457,28 +1454,27 @@ def berry_get_shc_fermi(cwi, operators):
             adpt_counter_list = [0] * num_fermi
 
             for ife in range(num_fermi):
-                vdum = np.array([sum(shc_k_list[ife, k, :, a]) for a in range(3)])
+                rdum = abs(shc_k_list[ife, k])
 
                 if berry_curv_unit == "bohr2":
-                    vdum = vdum / bohr**2
+                    rdum = rdum / bohr**2
 
-                rdum = np.sqrt(np.dot(vdum, vdum))
                 if rdum > berry_curv_adpt_kmesh_thresh:
                     adpt_counter_list[ife] = adpt_counter_list[ife] + 1
                     ladpt[ife] = True
                 else:
-                    shc_list[ife, :, :] += shc_k_list[ife, k, :, :] * kweight
+                    shc_list[ife] += shc_k_list[ife, k] * kweight
 
             if np.any(ladpt):
                 # for loop_adpt in range(berry_curv_adpt_kmesh**3):
                 # !Using shc_k here would corrupt values for other
                 # !kpt, hence dummy. Only if-th element is used.
-                shc_k_list_dummy = berry_get_shc_klist(cwi, operators, kpt[np.newaxis, :] + adkpt.T, ladpt=ladpt)
+                shc_k_list_dummy = berry_get_shc_klist(cwi, operators, kpt[np.newaxis, :] + adkpt.T)
 
                 for ife_ in range(num_fermi):
                     if ladpt[ife_]:
                         for loop_adpt in range(berry_curv_adpt_kmesh**3):
-                            shc_list[ife_, :, :] += shc_k_list_dummy[ife_, loop_adpt, :, :] * kweight_adpt
+                            shc_list[ife_] += shc_k_list_dummy[ife_, loop_adpt] * kweight_adpt
 
         del shc_k_list
 
@@ -1494,7 +1490,7 @@ def berry_get_shc_fermi(cwi, operators):
 
     kpoints_chunks = np.split(kpoints, [j for j in range(100000, len(kpoints), 100000)])
 
-    shc_fermi = np.zeros((num_fermi, 3, 3), dtype=float)
+    shc_fermi = np.zeros((num_fermi), dtype=float)
 
     res = Parallel(n_jobs=_num_proc, verbose=50)(delayed(berry_get_shc_k)(kpoints) for kpoints in kpoints_chunks)
 

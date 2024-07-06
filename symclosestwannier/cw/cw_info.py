@@ -89,7 +89,15 @@ class CWInfo(dict):
                 if not np.any([d["write_rmn"], d["write_vmn"], d["write_tb"], d["berry"]]):
                     continue
             if name == "spn":
-                if not np.any([d["write_spn"], d["spin_decomp"], d["spin_moment"], d["zeeman_interaction"]]):
+                if not np.any(
+                    [
+                        d["write_spn"],
+                        d["spin_decomp"],
+                        d["spin_moment"],
+                        d["zeeman_interaction"],
+                        d["berry_task"] == "shc",
+                    ]
+                ):
                     continue
 
             info = C(topdir, seedname)
