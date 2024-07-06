@@ -342,7 +342,7 @@ class CWModel(dict):
             Uk = Ak @ S2k_inv
 
         # projection from KS energies to Closest Wannnier Hamiltonian
-        Hk = np.einsum("klm,kl,kln-akmn", np.conj(Uk), Ek, Uk, optimize=True)
+        Hk = np.einsum("klm,kl,kln->kmn", np.conj(Uk), Ek, Uk, optimize=True)
         Hk = 0.5 * (Hk + np.einsum("kmn->knm", Hk).conj())
 
         if self._cwi["zeeman_interaction"]:

@@ -252,7 +252,7 @@ class Response(dict):
                     fermi_energy_list[ife], sum(ahc_list[ife, :, 0]), sum(ahc_list[ife, :, 1]), sum(ahc_list[ife, :, 2])
                 )
 
-            filename = f"{self._cwi['seedname']}-ahc-fermiscan_cw.dat"
+            filename = f"{self._cwi['seedname']}-ahc-fermiscan.dat"
             self._cwm.write(filename, ahc_str, None, None)
 
     # ==================================================
@@ -280,7 +280,7 @@ class Response(dict):
                 ]
             )
 
-            filename_S = f"{self._cwi['seedname']}-kubo_S_{k}_cw.dat"
+            filename_S = f"{self._cwi['seedname']}-kubo_S_{k}.dat"
             self._cwm.write(filename_S, kubo_S_str, None, None)
 
         d = {"yz": (1, 2), "zx": (2, 0), "xy": (0, 1)}
@@ -300,7 +300,7 @@ class Response(dict):
                 ]
             )
 
-            filename_A = f"{self._cwi['seedname']}-kubo_A_{k}_cw.dat"
+            filename_A = f"{self._cwi['seedname']}-kubo_A_{k}.dat"
             self._cwm.write(filename_A, kubo_A_str, None, None)
 
     # ==================================================
@@ -336,7 +336,7 @@ class Response(dict):
                     ifreq, np.real(kubo_freq_list[ifreq]), np.real(shc_freq[ifreq]), np.imag(shc_freq[ifreq])
                 )
 
-            filename = f"{self._cwi['seedname']}-shc-freqscan_cw.dat"
+            filename = f"{self._cwi['seedname']}-shc-freqscan.dat"
             self._cwm.write(filename, shc_str, None, None)
         else:
             shc_fermi = self["shc_fermi"]
@@ -349,7 +349,7 @@ class Response(dict):
                     ife, fermi_energy_list[ife], np.real(shc_fermi[ife])
                 )
 
-            filename = f"{self._cwi['seedname']}-shc-fermiscan_cw.dat"
+            filename = f"{self._cwi['seedname']}-shc-fermiscan.dat"
             self._cwm.write(filename, shc_str, None, None)
 
     # ==================================================
