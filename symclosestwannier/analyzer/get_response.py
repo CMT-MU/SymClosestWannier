@@ -686,6 +686,9 @@ def berry_get_imfgh_klist(cwi, operators, kpoints, imf=False, img=False, imh=Fal
     else:
         todo = [True] * num_fermi_loc
 
+    num_k = cwi["num_k"]
+    num_wann = cwi["num_wann"]
+
     HH, delHH = fourier_transform_r_to_k_new(
         operators["HH_R"], kpoints, cwi["unit_cell_cart"], cwi["irvec"], cwi["ndegen"], atoms_frac
     )
@@ -701,7 +704,6 @@ def berry_get_imfgh_klist(cwi, operators, kpoints, imf=False, img=False, imh=Fal
         HH += H_zeeman
 
     E, U = np.linalg.eigh(HH)
-    del HH
 
     #
     # Gather W-gauge matrix objects
@@ -749,92 +751,81 @@ def berry_get_imfgh_klist(cwi, operators, kpoints, imf=False, img=False, imh=Fal
     else:
         imf_k_list = None
 
-    if img:
-        img_k_list = None
-    else:
-        img_k_list = None
+    if img and imh:
+        BB = fourier_transform_r_to_k_vec(
+            operators["BB_R"], kpoints, cwi["irvec"], cwi["ndegen"], atoms_frac, cwi["unit_cell_cart"]
+        )
 
-    if imh:
-        imh_k_list = None
-    else:
-        imh_k_list = None
+        CC = np.array(
+            [
+                [
+                    ffourier_transform_r_to_k(
+                        operators["CC_R"][i, j], kpoints, cwi["irvec"], cwi["ndegen"], atoms_frac, cwi["unit_cell_cart"]
+                    )
+                    for j in range(3)
+                ]
+                for i in range(3)
+            ]
+        )
 
-    # if (present(img_k_list) .and. present(imh_k_list)) then
-    #   allocate (BB(num_wann, num_wann, 3))
-    #   allocate (CC(num_wann, num_wann, 3, 3))
+        tmp = np.zero((5, num_k, num_wann, num_wann), dtype=complex)
+        # tmp[0:2,:,:,:] ... not dependent on inner loop variables
+        # tmp[0.:,:,:] ..... HH . AA(:,:,alpha_A(i))
+        # tmp[1,:,:,:] ..... LLambda_ij [Eq. (37) LVTS12] expressed as a pseudovector
+        # tmp[2,:,:,:] ..... HH . OOmega(:,:,i)
+        # tmp[3:4,:,:,:] ... working matrices for matrix products of inner loop
 
-    #   allocate (tmp(num_wann, num_wann, 5))
-    #   ! tmp(:,:,1:3) ... not dependent on inner loop variables
-    #   ! tmp(:,:,1) ..... HH . AA(:,:,alpha_A(i))
-    #   ! tmp(:,:,2) ..... LLambda_ij [Eq. (37) LVTS12] expressed as a pseudovector
-    #   ! tmp(:,:,3) ..... HH . OOmega(:,:,i)
-    #   ! tmp(:,:,4:5) ... working matrices for matrix products of inner loop
+        # Trace formula for -2Im[g], Eq.(66) LVTS12
+        # Trace formula for -2Im[h], Eq.(56) LVTS12
 
-    #   call pw90common_fourier_R_to_k_vec(kpt, BB_R, OO_true=BB)
-    #   do j = 1, 3
-    #     do i = 1, j
-    #       call pw90common_fourier_R_to_k(kpt, CC_R(:, :, :, i, j), CC(:, :, i, j), 0)
-    #       CC(:, :, j, i) = conjg(transpose(CC(:, :, i, j)))
-    #     end do
-    #   end do
+        for i in range(3):
+            tmp[0] = HH @ AA[_alpha_A[i]]
+            tmp[2] = HH @ OOmega[i]
+            #
+            # LLambda_ij [Eq. (37) LVTS12] expressed as a pseudovector
+            tmp[1] = 1.0j * (CC[_alpha_A[i], _beta_A[i]] - CC[_alpha_A[i], _beta_A[i]].transpose(0, 2, 1).conjugate())
 
-    #   ! Trace formula for -2Im[g], Eq.(66) LVTS12
-    #   ! Trace formula for -2Im[h], Eq.(56) LVTS12
-    #   !
-    #   do i = 1, 3
-    #     call utility_zgemm_new(HH, AA(:, :, alpha_A(i)), tmp(:, :, 1))
-    #     call utility_zgemm_new(HH, OOmega(:, :, i), tmp(:, :, 3))
-    #     !
-    #     ! LLambda_ij [Eq. (37) LVTS12] expressed as a pseudovector
-    #     tmp(:, :, 2) = cmplx_i*(CC(:, :, alpha_A(i), beta_A(i)) &
-    #                             - conjg(transpose(CC(:, :, alpha_A(i), beta_A(i)))))
+            for ife in range(num_fermi_loc):
+                #
+                # J0 terms for -2Im[g] and -2Im[h]
+                #
+                tmp[3] = tmp[0] @ f_list[ife]
+                tmp[4] = tmp[3] @ AA[_beta_A[i]]
 
-    #     do ife = 1, num_fermi_loc
-    #       !
-    #       ! J0 terms for -2Im[g] and -2Im[h]
-    #       !
-    #       ! tmp(:,:,5) = HH . AA(:,:,alpha_A(i)) . f_list(:,:,ife) . AA(:,:,beta_A(i))
-    #       call utility_zgemm_new(tmp(:, :, 1), f_list(:, :, ife), tmp(:, :, 4))
-    #       call utility_zgemm_new(tmp(:, :, 4), AA(:, :, beta_A(i)), tmp(:, :, 5))
+                s = 2.0 * np.imag(np.trace(f_list[ife] @ tmp[4], axis1=1, axis2=2))
+                img_k_list[ife, :, 0, i] = np.imag(np.trace(f_list[ife] @ tmp[1], axis1=1, axis2=2)) - s
+                imh_k_list[ife, :, 0, i] = np.imag(np.trace(f_list[ife] @ tmp[2], axis1=1, axis2=2)) + s
 
-    #       s = 2.0_dp*utility_im_tr_prod(f_list(:, :, ife), tmp(:, :, 5));
-    #       img_k_list(1, i, ife) = utility_re_tr_prod(f_list(:, :, ife), tmp(:, :, 2)) - s
-    #       imh_k_list(1, i, ife) = utility_re_tr_prod(f_list(:, :, ife), tmp(:, :, 3)) + s
+                #
+                # J1 terms for -2Im[g] and -2Im[h]
+                #
+                # tmp(:,:,1) = HH . AA(:,:,alpha_A(i))
+                # tmp(:,:,4) = HH . JJm_list(:,:,ife,alpha_A(i))
+                tmp[3] = HH @ JJm_list[_alpha_A[i], ife]
 
-    #       !
-    #       ! J1 terms for -2Im[g] and -2Im[h]
-    #       !
-    #       ! tmp(:,:,1) = HH . AA(:,:,alpha_A(i))
-    #       ! tmp(:,:,4) = HH . JJm_list(:,:,ife,alpha_A(i))
-    #       call utility_zgemm_new(HH, JJm_list(:, :, ife, alpha_A(i)), tmp(:, :, 4))
+                img_k_list[ife, :, 1, i] = -2.0 * (
+                    np.imag(np.trace(JJm_list[_alpha_A[i], ife] @ BB[_beta_A[i]], axis1=1, axis2=2))
+                    - np.imag(np.trace(JJm_list[_beta_A[i], ife] @ BB[_alpha_A[i]], axis1=1, axis2=2))
+                )
+                imh_k_list[ife, :, 1, i] = -2.0 * (
+                    np.imag(np.trace(tmp[0] @ JJp_list[_beta_A[i], ife], axis1=1, axis2=2))
+                    + np.imag(np.trace(tmp[3] @ AA[_beta_A[i]], axis1=1, axis2=2))
+                )
 
-    #       img_k_list(2, i, ife) = -2.0_dp* &
-    #                               ( &
-    #                               utility_im_tr_prod(JJm_list(:, :, ife, alpha_A(i)), BB(:, :, beta_A(i))) &
-    #                               - utility_im_tr_prod(JJm_list(:, :, ife, beta_A(i)), BB(:, :, alpha_A(i))) &
-    #                               )
-    #       imh_k_list(2, i, ife) = -2.0_dp* &
-    #                               ( &
-    #                               utility_im_tr_prod(tmp(:, :, 1), JJp_list(:, :, ife, beta_A(i))) &
-    #                               + utility_im_tr_prod(tmp(:, :, 4), AA(:, :, beta_A(i))) &
-    #                               )
+                #
+                # J2 terms for -2Im[g] and -2Im[h]
+                #
+                # tmp(:,:,4) = JJm_list(:,:,ife,alpha_A(i)) . HH
+                # tmp(:,:,5) = HH . JJm_list(:,:,ife,alpha_A(i))
+                tmp[3] = JJm_list[_alpha_A[i], ife] @ HH
+                tmp[4] = HH @ JJm_list[_alpha_A[i], ife]
 
-    #       !
-    #       ! J2 terms for -2Im[g] and -2Im[h]
-    #       !
-    #       ! tmp(:,:,4) = JJm_list(:,:,ife,alpha_A(i)) . HH
-    #       ! tmp(:,:,5) = HH . JJm_list(:,:,ife,alpha_A(i))
-    #       call utility_zgemm_new(JJm_list(:, :, ife, alpha_A(i)), HH, tmp(:, :, 4))
-    #       call utility_zgemm_new(HH, JJm_list(:, :, ife, alpha_A(i)), tmp(:, :, 5))
-
-    #       img_k_list(3, i, ife) = -2.0_dp* &
-    #                               utility_im_tr_prod(tmp(:, :, 4), JJp_list(:, :, ife, beta_A(i)))
-    #       imh_k_list(3, i, ife) = -2.0_dp* &
-    #                               utility_im_tr_prod(tmp(:, :, 5), JJp_list(:, :, ife, beta_A(i)))
-    #     end do
-    #   end do
-    #   deallocate (tmp)
-    # end if
+                img_k_list[ife, :, 2, i] = -2.0 * np.imag(
+                    np.trace(tmp[3] @ JJp_list[_beta_A[i], ife], axis1=1, axis2=2)
+                )
+                imh_k_list[ife, :, 2, i] = -2.0 * np.imag(
+                    np.trace(tmp[4] @ JJp_list[_beta_A[i], ife], axis1=1, axis2=2)
+                )
 
     return imf_k_list, img_k_list, imh_k_list
 
@@ -1729,7 +1720,6 @@ def gyrotropic_get_K(cwi, operators):
         for k in range(len(kpoints)):
             kpt = kpoints[k]
 
-            got_spin = False
             for n1 in range(gyrotropic_num_bands):
                 n = gyrotropic_band_list[n1]
 
@@ -1739,6 +1729,7 @@ def gyrotropic_get_K(cwi, operators):
                 if n < num_wann - 1 and E[k, n + 1] - E[k, n] <= gyrotropic_degen_thresh:
                     continue
 
+                got_spin = False
                 got_orb_n = False
                 for ifermi in range(mum_fermi):
                     arg = (E[k, n] - fermi_energy_list[ifermi]) / eta_smr
@@ -1822,7 +1813,7 @@ def gyrotropic_get_K(cwi, operators):
 
     kpoints_chunks = np.split(kpoints, [j for j in range(100000, len(kpoints), 100000)])
 
-    res = Parallel(n_jobs=1, verbose=10)(delayed(gyrotropic_get_K_k)(kpoints) for kpoints in kpoints_chunks)
+    res = Parallel(n_jobs=-2, verbose=10)(delayed(gyrotropic_get_K_k)(kpoints) for kpoints in kpoints_chunks)
 
     gyro_K_orb = np.sum([gyro_K_orb for gyro_K_orb, _ in res], axis=0)
     gyro_K_spn = np.sum([gyro_K_spn for _, gyro_K_spn in res], axis=0)

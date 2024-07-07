@@ -363,7 +363,7 @@ class Response(dict):
                 gyro_K_str += "# EFERMI(eV)      omega(eV)             xx             yy             zz             xy             xz             yz              x              y              z \n"
 
                 for i in range(self._cwi["num_fermi"]):
-                    gyro_K_str += "{:>15.6f}   {:>15.6f}   {:>15.6f}   {:>15.6f}   {:>15.6f}   {:>15.6f}   {:>15.6f}   {:>15.6f}   {:>15.6f}   {:>15.6f}   {:>15.6f}\n".format(
+                    gyro_K_str += "{:>15.6e}   {:>15.6e}   {:>15.6e}   {:>15.6e}   {:>15.6e}   {:>15.6e}   {:>15.6e}   {:>15.6e}   {:>15.6e}   {:>15.6e}   {:>15.6e}\n".format(
                         self._cwi["fermi_energy_list"][i],
                         0.0,
                         xx[i],
