@@ -2,6 +2,7 @@
 utility codes.
 """
 
+import fortio
 import numpy as np
 from sympy.physics.quantum import TensorProduct
 import multiprocessing
@@ -14,6 +15,16 @@ from symclosestwannier.util.constants import k_B_SI, elem_charge_SI, bohr_magn_S
 M_ZERO = np.finfo(float).eps
 
 _num_proc = multiprocessing.cpu_count()
+
+
+# ==================================================
+class FortranFileR(fortio.FortranFile):
+    def __init__(self, filename):
+        try:
+            super().__init__(filename, mode="r", header_dtype="uint32", auto_endian=True, check_file=True)
+        except ValueError:
+            print("File '{}' contains subrecords - using header_dtype='int32'".format(filename))
+            super().__init__(filename, mode="r", header_dtype="int32", auto_endian=True, check_file=True)
 
 
 # ==================================================
