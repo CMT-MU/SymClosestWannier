@@ -112,75 +112,68 @@ class Response(dict):
         self._cwm.log(cw_start_set_operators_msg(), stamp=None, end="\n", file=self._outfile, mode="a")
         self._cwm.set_stamp()
 
-        # (ahc)  Anomalous Hall conductivity (from Berry curvature)
-        if self._cwi["berry_task"] == "ahc":
-            if self["HH_R"] is None:
-                self["HH_R"] = get_oper_R("HH_R", self._cwi)
-            if self["AA_R"] is None:
-                self["AA_R"] = get_oper_R("AA_R", self._cwi)
+        # berry
+        if self._cwi["berry"]:
+            self["HH_R"] = get_oper_R("HH_R", self._cwi) if self["HH_R"] is None else self["HH_R"]
 
-        # (morb) Orbital magnetization
-        if self._cwi["berry_task"] == "morb":
-            if self["HH_R"] is None:
-                self["HH_R"] = get_oper_R("HH_R", self._cwi)
-            if self["AA_R"] is None:
-                self["AA_R"] = get_oper_R("AA_R", self._cwi)
-            if self["BB_R"] is None:
-                self["BB_R"] = get_oper_R("BB_R", self._cwi)
-            if self["CC_R"] is None:
-                self["CC_R"] = get_oper_R("CC_R", self._cwi)
+            # (ahc)  Anomalous Hall conductivity (from Berry curvature)
+            if self._cwi["berry_task"] == "ahc":
+                self["AA_R"] = get_oper_R("AA_R", self._cwi) if self["AA_R"] is None else self["AA_R"]
 
-        # (kubo) Complex optical conductivity (Kubo-Greenwood) & JDOS
-        if self._cwi["berry_task"] == "kubo":
-            if self["HH_R"] is None:
-                self["HH_R"] = get_oper_R("HH_R", self._cwi)
-            if self["AA_R"] is None:
-                self["AA_R"] = get_oper_R("AA_R", self._cwi)
-            if self._cwi["spin_decomp"] and self["SS_R"] is None:
-                self["SS_R"] = get_oper_R("SS_R", self._cwi)
+            # (morb) Orbital magnetization
+            if self._cwi["berry_task"] == "morb":
+                self["AA_R"] = get_oper_R("AA_R", self._cwi) if self["AA_R"] is None else self["AA_R"]
+                self["BB_R"] = get_oper_R("BB_R", self._cwi) if self["BB_R"] is None else self["BB_R"]
+                self["CC_R"] = get_oper_R("CC_R", self._cwi) if self["CC_R"] is None else self["CC_R"]
 
-        # (sc)   Nonlinear shift current
-        if self._cwi["berry_task"] == "sc":
-            if self["HH_R"] is None:
-                self["HH_R"] = get_oper_R("HH_R", self._cwi)
-            if self["AA_R"] is None:
-                self["AA_R"] = get_oper_R("AA_R", self._cwi)
+            # (kubo) Complex optical conductivity (Kubo-Greenwood) & JDOS
+            if self._cwi["berry_task"] == "kubo":
+                self["AA_R"] = get_oper_R("AA_R", self._cwi) if self["AA_R"] is None else self["AA_R"]
+                self["SS_R"] = (
+                    get_oper_R("SS_R", self._cwi) if self._cwi["spin_decomp"] and self["SS_R"] is None else self["SS_R"]
+                )
 
-        # (shc)  Spin Hall conductivity
-        if self._cwi["berry_task"] == "shc":
-            if self["HH_R"] is None:
-                self["HH_R"] = get_oper_R("HH_R", self._cwi)
-            if self["AA_R"] is None:
-                self["AA_R"] = get_oper_R("AA_R", self._cwi)
-            if self["SS_R"] is None:
-                self["SS_R"] = get_oper_R("SS_R", self._cwi)
+            # (sc)   Nonlinear shift current
+            if self._cwi["berry_task"] == "sc":
+                self["AA_R"] = get_oper_R("AA_R", self._cwi) if self["AA_R"] is None else self["AA_R"]
 
-            # if self._cwi["shc_method"] == "qiao":
-            if self["SR_R"] is None:
-                SR_R, SHR_R, SH_R = get_oper_R("get_SHC_R", self._cwi)
-                self["SR_R"] = SR_R
-                self["SHR_R"] = SHR_R
-                self["SH_R"] = SH_R
+            # (shc)  Spin Hall conductivity
+            if self._cwi["berry_task"] == "shc":
+                self["AA_R"] = get_oper_R("AA_R", self._cwi) if self["AA_R"] is None else self["AA_R"]
+                self["SS_R"] = get_oper_R("SS_R", self._cwi) if self["SS_R"] is None else self["SS_R"]
 
-            # else:  # ryoo
-            #     if self["SAA_R"] is None:
-            #         self["SAA_R"] = get_oper_R("SAA_R", self._cwi)
-            #     if self["SBB_R"] is None:
-            #         self["SBB_R"] = get_oper_R("SBB_R", self._cwi)
+                # if self._cwi["shc_method"] == "qiao":
+                if self["SR_R"] is None:
+                    SR_R, SHR_R, SH_R = get_oper_R("get_SHC_R", self._cwi)
+                    self["SR_R"] = SR_R
+                    self["SHR_R"] = SHR_R
+                    self["SH_R"] = SH_R
 
-        # (kdotp) joint density of states
-        if self._cwi["berry_task"] == "kdotp":
+            # (kdotp) joint density of states
+            if self._cwi["berry_task"] == "kdotp":
+                pass
+
+            # (me) magnetoelectric tensor
+            if self._cwi["berry_task"] == "me":
+                self["AA_R"] = get_oper_R("AA_R", self._cwi) if self["AA_R"] is None else self["AA_R"]
+                self["SS_R"] = get_oper_R("SS_R", self._cwi) if self["SS_R"] is None else self["SS_R"]
+
+        # gyrotropic
+        if self._cwi["gyrotropic"]:
+            win = self._cwi.win
+
             if self["HH_R"] is None:
                 self["HH_R"] = get_oper_R("HH_R", self._cwi)
 
-        # (me) magnetoelectric tensor
-        if self._cwi["berry_task"] == "me":
-            if self["HH_R"] is None:
-                self["HH_R"] = get_oper_R("HH_R", self._cwi)
-            if self["AA_R"] is None:
-                self["AA_R"] = get_oper_R("AA_R", self._cwi)
-            if self["SS_R"] is None:
-                self["SS_R"] = get_oper_R("SS_R", self._cwi)
+            if win.eval_D or win.eval_Dw or win.eval_K or win.eval_NOA:
+                self["AA_R"] = get_oper_R("AA_R", self._cwi) if self["AA_R"] is None else self["AA_R"]
+
+            if win.eval_spn:
+                self["SS_R"] = get_oper_R("SS_R", self._cwi) if self["SS_R"] is None else self["SS_R"]
+
+            if win.eval_K:
+                self["BB_R"] = get_oper_R("BB_R", self._cwi) if self["BB_R"] is None else self["BB_R"]
+                self["CC_R"] = get_oper_R("CC_R", self._cwi) if self["CC_R"] is None else self["CC_R"]
 
         # spin magnetic moment
         if self._cwi["spin_moment"]:
@@ -308,21 +301,6 @@ class Response(dict):
         """
         write seedname-shc.dat, seedname-shc-fermiscan.dat.
         """
-        # !
-        # ! Convert to the unit: (hbar/e) S/cm
-        # ! at this point, we need to
-        # ! (i)   multiply -e^2/hbar/(V*N_k) as in the QZYZ18 Eq.(5),
-        # !       note 1/N_k has already been applied by the kweight
-        # ! (ii)  convert charge current to spin current:
-        # !       divide the result by -e and multiply hbar/2 to
-        # !       recover the spin current, so the overall
-        # !       effect is -hbar/2/e
-        # ! (iii) multiply 1e8 to convert it to the unit S/cm
-        # ! So, the overall factor is
-        # !   fac = 1.0e8 * e^2 / hbar / V / 2.0
-        # ! and the final unit of spin Hall conductivity is (hbar/e)S/cm
-        # !
-
         if self._cwi["shc_freq_scan"]:
             shc_freq = self["shc_freq"]
             kubo_freq_list = np.arange(
@@ -351,6 +329,65 @@ class Response(dict):
 
             filename = f"{self._cwi['seedname']}-shc-fermiscan.dat"
             self._cwm.write(filename, shc_str, None, None)
+
+    # ==================================================
+    def write_gyro_K(self):
+        """
+        write *.dat.
+        """
+
+        def write(f_out_name_tmp, units_tmp, comment_tmp, spin=False):
+            if spin:
+                gyro_K = self[f"gyro_K_spn"]
+            else:
+                gyro_K = self[f"gyro_K_orb"]
+
+            if gyro_K is not None:
+                filename = f"{self._cwi['seedname']}-gyrotropic-{f_out_name_tmp}.dat"
+                gyro_K_str = f"# {comment_tmp} \n"
+                gyro_K_str += f"# in units of [ {units_tmp} ] \n"
+
+                # Symmetric part
+                xx = gyro_K[0, 0, :]
+                yy = gyro_K[1, 1, :]
+                zz = gyro_K[2, 2, :]
+                xy = (gyro_K[0, 1, :] + gyro_K[1, 0, :]) / 2.0
+                xz = (gyro_K[0, 2, :] + gyro_K[2, 0, :]) / 2.0
+                yz = (gyro_K[1, 2, :] + gyro_K[2, 1, :]) / 2.0
+                # Antisymmetric part, in polar-vector form
+                x = (gyro_K[1, 2, :] - gyro_K[2, 1, :]) / 2.0
+                y = (gyro_K[2, 0, :] - gyro_K[0, 2, :]) / 2.0
+                z = (gyro_K[0, 1, :] - gyro_K[1, 0, :]) / 2.0
+
+                gyro_K_str += f"#                             |                                      symmetric part                                     ||              asymmetric part              | \n"
+                gyro_K_str += "# EFERMI(eV)      omega(eV)             xx             yy             zz             xy             xz             yz              x              y              z \n"
+
+                for i in range(self._cwi["num_fermi"]):
+                    gyro_K_str += "{:>15.6e}   {:>15.6e}   {:>15.6e}   {:>15.6e}   {:>15.6e}   {:>15.6e}   {:>15.6e}   {:>15.6e}   {:>15.6e}   {:>15.6e}   {:>15.6e}\n".format(
+                        self._cwi["fermi_energy_list"][i],
+                        0.0,
+                        xx[i],
+                        yy[i],
+                        zz[i],
+                        xy[i],
+                        xz[i],
+                        yz[i],
+                        x[i],
+                        y[i],
+                        z[i],
+                    )
+
+                self._cwm.write(filename, gyro_K_str, None, None)
+
+        f_out_name_tmp = "K_spin"
+        units_tmp = "Ampere"
+        comment_tmp = "spin part of the K tensor -- Eq. 3 of TAS17"
+        write(f_out_name_tmp, units_tmp, comment_tmp, spin=True)
+
+        f_out_name_tmp = "K_orb"
+        units_tmp = "Ampere"
+        comment_tmp = "orbital part of the K tensor -- Eq. 3 of TAS17"
+        write(f_out_name_tmp, units_tmp, comment_tmp)
 
     # ==================================================
     def write_spin(self):

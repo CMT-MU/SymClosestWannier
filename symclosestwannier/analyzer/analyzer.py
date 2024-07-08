@@ -102,6 +102,10 @@ def analyzer(seedname="cwannier"):
     if cwi["berry_task"] == "shc":
         res.write_shc()
 
+    if cwi["gyrotropic"]:
+        if cwi.win.eval_K:
+            res.write_gyro_K()
+
     if cwi["spin_moment"]:
         res.write_spin()
 

@@ -29,16 +29,27 @@ from symclosestwannier.cw.amn import Amn
 from symclosestwannier.cw.mmn import Mmn
 from symclosestwannier.cw.umat import Umat
 from symclosestwannier.cw.spn import Spn
+from symclosestwannier.cw.uHu import UHu
 
 from symclosestwannier.util.utility import wigner_seitz, convert_w90_orbital
 
-_class_map = {"cwin": CWin, "win": Win, "nnkp": Nnkp, "eig": Eig, "amn": Amn, "mmn": Mmn, "umat": Umat, "spn": Spn}
+_class_map = {
+    "cwin": CWin,
+    "win": Win,
+    "nnkp": Nnkp,
+    "eig": Eig,
+    "amn": Amn,
+    "mmn": Mmn,
+    "umat": Umat,
+    "spn": Spn,
+    "uHu": UHu,
+}
 
 
 # ==================================================
 class CWInfo(dict):
     """
-    CWInfo manages information for CWModel, CWin, Win, Nnkp, Eig, Amn, Mmn, Umat, Spn.
+    CWInfo manages information for CWModel, CWin, Win, Nnkp, Eig, Amn, Mmn, Umat, Spn, UHu.
 
     Attributes:
         _topdir (str): top directory.
@@ -48,7 +59,7 @@ class CWInfo(dict):
     # ==================================================
     def __init__(self, topdir=None, seedname="cwannier", dic=None):
         """
-        CWInfo manages information for CWModel, CWin, Win, Nnkp, Eig, Amn, Mmn, Umat, Spn.
+        CWInfo manages information for CWModel, CWin, Win, Nnkp, Eig, Amn, Mmn, Umat, Spn, UHu.
 
         Args:
             topdir (str, optional): directory of seedname.cwin file.
@@ -68,7 +79,7 @@ class CWInfo(dict):
     # ==================================================
     def read(self, topdir, seedname):
         """
-        read seedname.cwin/win/nnkp/eig/amn/(mmn)/(umat)/(spn) files.
+        read seedname.cwin/win/nnkp/eig/amn/(mmn)/(umat)/(spn)/(uHu) files.
 
         Args:
             topdir (str): directory of seedname.cwin/win/eig/amn/mmn/nnkp files.
@@ -81,7 +92,7 @@ class CWInfo(dict):
         for C in _class_map.values():
             d.update(C._default())
 
-        info_list = []
+        info_dict = {}
         for name, C in _class_map.items():
             if name == "umat" and (d["restart"] != "w90"):
                 continue
@@ -96,13 +107,22 @@ class CWInfo(dict):
                         d["spin_moment"],
                         d["zeeman_interaction"],
                         d["berry_task"] == "shc",
+                        info_dict["win"].eval_spn,
+                    ]
+                ):
+                    continue
+
+            if name == "uHu":
+                if not np.any(
+                    [
+                        info_dict["win"].eval_spn,
                     ]
                 ):
                     continue
 
             info = C(topdir, seedname)
             for k, v in info.items():
-                for name_, info_ in info_list:
+                for name_, info_ in info_dict.items():
                     if k in info_:
                         v_ = info_[k]
 
@@ -115,7 +135,7 @@ class CWInfo(dict):
                                 msg = str(f"The values of {k} in {name} and {name_} files are inconsistent.")
                                 raise Exception(msg)
 
-            info_list.append((name, info))
+            info_dict.update({name: info})
             d.update(info)
 
         if d["zeeman_interaction"]:
