@@ -146,7 +146,7 @@ def iterate3dpm(size):
 
 
 # ==================================================
-def wigner_seitz(A, mp_grid, prec=1.0e-5):
+def wigner_seitz(A, mp_grid, prec=1.0e-7):
     """
     wigner seitz cell.
     return irreducible R vectors and number of degeneracy at each R.
@@ -177,8 +177,8 @@ def wigner_seitz(A, mp_grid, prec=1.0e-5):
             irvec.append(n)
             ndegen.append(np.sum(abs(dist - dist_min) < prec))
 
-    irvec = np.array(irvec)
-    ndegen = np.array(ndegen)
+    ndegen = np.array(ndegen, dtype="int64")
+    irvec = np.array(irvec, dtype="int64")
 
     return irvec, ndegen
 
