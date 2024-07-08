@@ -61,7 +61,6 @@ def get_HH_R(cwi):
     """
     Ek = np.array(cwi["Ek"])
     Uk = np.array(cwi["Uk"])
-    num_k = cwi["num_k"]
 
     HH_k = np.einsum("klm,kl,kln->kmn", np.conj(Uk), Ek, Uk, optimize=True)
     HH_k = 0.5 * (HH_k + np.einsum("kmn->knm", HH_k).conj())
@@ -125,15 +124,108 @@ def get_AA_R(cwi):
 
 
 # ==================================================
-def get_BB_R():
-    """<0|H(r-R)|R>"""
-    pass
+def get_BB_R(cwi):
+    """
+    matrix elements of real-space BB operator,
+        BB_a(R)=<0n|H(r-R)_a|Rm>
+
+    BB_a(R) is the Fourier transform of
+        BB_a(k) = i<u|H|del_a u> (a=x,y,z)
+
+    Args:
+        cwi (CWInfo): CWInfo.
+
+    Returns:
+        ndarray: position operator, BB_R(3, len(irvec), num_wann, num_wann).
+    """
+    if abs(cwi.get("scissors_shift", 0.0)) > 1.0e-7:
+        raise Exception("Error: scissors correction not yet implemented for BB_R")
+
+    num_bands = cwi["num_bands"]
+    num_wann = cwi["num_wann"]
+    num_k = cwi["num_k"]
+    kpoints = np.array(cwi["kpoints"])
+    irvec = np.array(cwi["irvec"])
+
+    kb2k = cwi.nnkp.kb2k()
+    bveck = cwi.nnkp.bveck()
+    wk = cwi.nnkp.wk()
+    wb = cwi["wb"]
+
+    Ek = np.array(cwi["Ek"])
+    Uk = np.array(cwi["Uk"])
+    Mkb = np.array(cwi["Mkb"])
+
+    H_o = np.array([np.diag(Ek[k]) for k in range(num_k)])
+
+    HM_o = np.einsum("kml, kbln->kbmn", H_o, Mkb, optimize=True)
+    H_k_kb = np.einsum("klm, kblp, kbpn->kbmn", np.conj(Uk), HM_o, Uk[kb2k[:, :], :, :], optimize=True)
+    BB_k = 1.0j * np.einsum("b,kbc,kbmn->ckmn", wb, bveck, H_k_kb, optimize=True)
+
+    if cwi["tb_gauge"]:
+        atoms_list = list(cwi["atoms_frac"].values())
+        atoms_frac = np.array([atoms_list[i] for i in cwi["nw2n"]])
+    else:
+        atoms_frac = None
+
+    BB_R = np.array([fourier_transform_k_to_r(BB_k[i], kpoints, irvec, atoms_frac) for i in range(3)])
+
+    return BB_R
 
 
 # ==================================================
-def get_CC_R():
-    """<0|r_alpha.H(r-R)_beta|R>"""
-    pass
+def get_CC_R(cwi):
+    """
+    matrix elements of real-space CC operator,
+        CC_ab(R)=<0n|r_a.H.(r-R)_b|Rm>
+
+    CC_ab(R) is the Fourier transform of
+        CC_ab(k) = <del_a u|H|del_b u> (a,b=x,y,z)
+
+    Args:
+        cwi (CWInfo): CWInfo.
+
+    Returns:
+        ndarray: position operator, CC_R(3, 3, len(irvec), num_wann, num_wann).
+
+    """
+    if abs(cwi.get("scissors_shift", 0.0)) > 1.0e-7:
+        raise Exception("Error: scissors correction not yet implemented for CC_R")
+
+    num_bands = cwi["num_bands"]
+    num_wann = cwi["num_wann"]
+    num_k = cwi["num_k"]
+    kpoints = np.array(cwi["kpoints"])
+    irvec = np.array(cwi["irvec"])
+
+    kb2k = cwi.nnkp.kb2k()
+    bveck = cwi.nnkp.bveck()
+    wk = cwi.nnkp.wk()
+    wb = cwi["wb"]
+
+    Ek = np.array(cwi["Ek"])
+    Uk = np.array(cwi["Uk"])
+    Mkb = np.array(cwi["Mkb"])
+    Hkb1b2 = np.array(cwi["Hkb1b2"])
+
+    H_o = np.array([np.diag(Ek[k]) for k in range(num_k)])
+
+    Hkb1b2 = np.einsum(
+        "kblm, kbdlp, kdpn->kbdmn", np.conj(Uk[kb2k[:, :], :, :]), Hkb1b2, Uk[kb2k[:, :], :, :], optimize=True
+    )
+    CC_k = np.einsum("b,kbi,d,kdj,kbdmn->ijkmn", wb, bveck, wb, bveck, Hkb1b2, optimize=True)
+
+    if cwi["tb_gauge"]:
+        atoms_list = list(cwi["atoms_frac"].values())
+        atoms_frac = np.array([atoms_list[i] for i in cwi["nw2n"]])
+    else:
+        atoms_frac = None
+
+    CC_R = np.array(
+        [[fourier_transform_k_to_r(CC_k[i, j], kpoints, irvec, atoms_frac) for j in range(3)] for i in range(3)]
+    )
+
+    return CC_R
 
 
 # ==================================================
@@ -257,13 +349,13 @@ def get_SHC_R(cwi):
 
 
 # ==================================================
-def get_SAA_R():
+def get_SAA_R(cwi):
     """<0n|sigma_x,y,z.(r-R)_alpha|Rm>"""
     pass
 
 
 # ==================================================
-def get_SBB_R():
+def get_SBB_R(cwi):
     """<0n|sigma_x,y,z.H.(r-R)_alpha|Rm>"""
     pass
 
@@ -314,33 +406,33 @@ def get_berry_phase_R(cwi):
 
 
 # ==================================================
-def get_berry_Curvature_R():
+def get_berry_Curvature_R(cwi):
     """<0n|Ω|Rm>"""
     pass
 
 
 # ==================================================
-def get_der_berry_Curvature_R():
+def get_der_berry_Curvature_Rcwi():
     """<0n|∇Ω|Rm>"""
 
     pass
 
 
 # ==================================================
-def get_orbital_moment_R():
+def get_orbital_moment_R(cwi):
     """<0n|Morb|Rm>"""
 
     pass
 
 
 # ==================================================
-def get_der_orbital_moment_R():
+def get_der_orbital_moment_R(cwi):
     """<0n|∇Morb|Rm>"""
 
     pass
 
 
 # ==================================================
-def get_velocity_R():
+def get_velocity_R(cwi):
     """<0n|v|Rm>"""
     pass

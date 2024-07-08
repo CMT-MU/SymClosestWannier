@@ -3,21 +3,12 @@ Spn manages matrix elements of Pauli spin operator in seedname.spn file.
 """
 
 import os
-import fortio
 
 import numpy as np
 
+from symclosestwannier.util.utility import FortranFileR
+
 _default = {"num_k": 1, "num_bands": 1, "pauli_spn": None}
-
-
-# ==================================================
-class FortranFileR(fortio.FortranFile):
-    def __init__(self, filename):
-        try:
-            super().__init__(filename, mode="r", header_dtype="uint32", auto_endian=True, check_file=True)
-        except ValueError:
-            print("File '{}' contains subrecords - using header_dtype='int32'".format(filename))
-            super().__init__(filename, mode="r", header_dtype="int32", auto_endian=True, check_file=True)
 
 
 # ==================================================
@@ -28,25 +19,25 @@ class Spn(dict):
     Attributes:
         _topdir (str): top directory.
         _seedname (str): seedname.
-        _spn_formatted (bool): formatted file?
+        _formatted (bool): formatted file?
     """
 
     # ==================================================
-    def __init__(self, topdir=None, seedname="cwannier", spn_formatted=False, dic=None):
+    def __init__(self, topdir=None, seedname="cwannier", formatted=False, dic=None):
         """
         Spn manages matrix elements of Pauli spin operator in seedname.spn file.
 
         Args:
             topdir (str, optional): directory of seedname.spn file.
             seedname (str, optional): seedname.
-            spn_formatted (bool, optional): formatted file?
+            formatted (bool, optional): formatted file?
             dic (dict, optional): dictionary of Spn.
         """
         super().__init__()
 
         self._topdir = topdir
         self._seedname = seedname
-        self._spn_formatted = spn_formatted
+        self._formatted = formatted
 
         if dic is None:
             file_name = os.path.join(topdir, "{}.{}".format(seedname, "spn"))
@@ -77,7 +68,7 @@ class Spn(dict):
         else:
             raise Exception("failed to read spn file: " + file_name)
 
-        if self._spn_formatted:
+        if self._formatted:
             f_spn_in = open(file_name, "r")
             SPNheader = f_spn_in.readline().strip()
             num_bands, num_k = (int(x) for x in f_spn_in.readline().split())
@@ -92,7 +83,7 @@ class Spn(dict):
 
         for ik in range(num_k):
             A = np.zeros((3, num_bands, num_bands), dtype=complex)
-            if self._spn_formatted:
+            if self._formatted:
                 tmp = np.array(
                     [f_spn_in.readline().split() for i in range(3 * num_bands * (num_bands + 1) // 2)], dtype=float
                 )
