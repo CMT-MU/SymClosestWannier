@@ -336,7 +336,7 @@ class Response(dict):
         write *.dat.
         """
 
-        def write(f_out_name_tmp, units_tmp, comment_tmp, spin=True):
+        def write(f_out_name_tmp, units_tmp, comment_tmp, spin=False):
             if spin:
                 gyro_K = self[f"gyro_K_spn"]
             else:

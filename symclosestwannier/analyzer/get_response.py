@@ -484,7 +484,7 @@ def wham_get_JJp_JJm_list(cwi, delHH, E, U, occ=None):
     num_wann = cwi["num_wann"]
 
     if occ is not None:
-        occ_list = [occ]
+        occ_list = np.array([occ])
     else:
         occ_list = np.array([fermi(E - ef, T=0.0) for ef in fermi_energy_list])
 
@@ -686,7 +686,6 @@ def berry_get_imfgh_klist(cwi, operators, kpoints, imf=False, img=False, imh=Fal
     else:
         todo = [True] * num_fermi_loc
 
-    num_k = cwi["num_k"]
     num_wann = cwi["num_wann"]
 
     HH, delHH = fourier_transform_r_to_k_new(
@@ -752,6 +751,9 @@ def berry_get_imfgh_klist(cwi, operators, kpoints, imf=False, img=False, imh=Fal
         imf_k_list = None
 
     if img and imh:
+        img_k_list = np.zeros((num_fermi_loc, len(kpoints), 3, 3))
+        imh_k_list = np.zeros((num_fermi_loc, len(kpoints), 3, 3))
+
         BB = fourier_transform_r_to_k_vec(
             operators["BB_R"], kpoints, cwi["irvec"], cwi["ndegen"], atoms_frac, cwi["unit_cell_cart"]
         )
@@ -759,16 +761,14 @@ def berry_get_imfgh_klist(cwi, operators, kpoints, imf=False, img=False, imh=Fal
         CC = np.array(
             [
                 [
-                    ffourier_transform_r_to_k(
-                        operators["CC_R"][i, j], kpoints, cwi["irvec"], cwi["ndegen"], atoms_frac, cwi["unit_cell_cart"]
-                    )
+                    fourier_transform_r_to_k(operators["CC_R"][i, j], kpoints, cwi["irvec"], cwi["ndegen"], atoms_frac)
                     for j in range(3)
                 ]
                 for i in range(3)
             ]
         )
 
-        tmp = np.zero((5, num_k, num_wann, num_wann), dtype=complex)
+        tmp = np.zeros((5, len(kpoints), num_wann, num_wann), dtype=complex)
         # tmp[0:2,:,:,:] ... not dependent on inner loop variables
         # tmp[0.:,:,:] ..... HH . AA(:,:,alpha_A(i))
         # tmp[1,:,:,:] ..... LLambda_ij [Eq. (37) LVTS12] expressed as a pseudovector
@@ -1729,6 +1729,8 @@ def gyrotropic_get_K(cwi, operators):
                 if n < num_wann - 1 and E[k, n + 1] - E[k, n] <= gyrotropic_degen_thresh:
                     continue
 
+                S = np.zeros(3)
+                orb_nk = np.zeros(3)
                 got_spin = False
                 got_orb_n = False
                 for ifermi in range(mum_fermi):
@@ -1747,13 +1749,14 @@ def gyrotropic_get_K(cwi, operators):
                     # Orbital quantities are computed for each band separately
                     if not got_orb_n:
                         if cwi.win.eval_K:
-                            pass
                             # Fake occupations: band n occupied, others empty
-                            # occ = 0.0
-                            # occ(n) = 1.0
-                            # call berry_get_imfgh_klist(kpt, imf_k, img_k, imh_k, occ)
-                            # do i = 1, 3
-                            # orb_nk(i) = sum(imh_k(:, i, 1)) - sum(img_k(:, i, 1))
+                            occ = np.zeros((1, num_wann))
+                            occ[:, n] = 1.0
+                            imf_k, img_k, imh_k = berry_get_imfgh_klist(
+                                cwi, operators, np.array([kpt]), imf=True, img=True, imh=True, occ=occ
+                            )
+                            for i in range(3):
+                                orb_nk[i] = np.sum(imh_k[0, 0, :, i]) - np.sum(img_k[0, 0, :, i])
                             # curv_nk(i) = sum(imf_k(:, i, 1))
                             # enddo
                         elif cwi.win.eval_D:
@@ -1783,8 +1786,7 @@ def gyrotropic_get_K(cwi, operators):
                         if cwi.win.eval_K and cwi.win.eval_spn:
                             gyro_K_spn[:, j, ifermi] += np.real(delE[:, k, n] * S[j] * delta)
                         if cwi.win.eval_K:
-                            gyro_K_orb[:, j, ifermi] = 0.0
-                            # gyro_K_orb[:, j, ifermi] += delE[:, k, n] * orb_nk(j)*delta
+                            gyro_K_orb[:, j, ifermi] += np.real(delE[:, k, n] * orb_nk[j] * delta)
                         # if cwi.win.eval_D:
                         #     gyro_D[:, j, ifermi] += delE[:, k, n] * curv_nk(j)*delta
                         # if cwi.win.eval_Dw:
@@ -1813,7 +1815,7 @@ def gyrotropic_get_K(cwi, operators):
 
     kpoints_chunks = np.split(kpoints, [j for j in range(100000, len(kpoints), 100000)])
 
-    res = Parallel(n_jobs=-2, verbose=10)(delayed(gyrotropic_get_K_k)(kpoints) for kpoints in kpoints_chunks)
+    res = Parallel(n_jobs=_num_proc, verbose=10)(delayed(gyrotropic_get_K_k)(kpoints) for kpoints in kpoints_chunks)
 
     gyro_K_orb = np.sum([gyro_K_orb for gyro_K_orb, _ in res], axis=0)
     gyro_K_spn = np.sum([gyro_K_spn for _, gyro_K_spn in res], axis=0)

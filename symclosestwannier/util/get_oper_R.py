@@ -211,7 +211,7 @@ def get_CC_R(cwi):
     H_o = np.array([np.diag(Ek[k]) for k in range(num_k)])
 
     Hkb1b2 = np.einsum(
-        "kblm, klp, kdpn->kbdmn", np.conj(Uk[kb2k[:, :], :, :]), Hkb1b2, Uk[kb2k[:, :], :, :], optimize=True
+        "kblm, kbdlp, kdpn->kbdmn", np.conj(Uk[kb2k[:, :], :, :]), Hkb1b2, Uk[kb2k[:, :], :, :], optimize=True
     )
     CC_k = np.einsum("b,kbi,d,kdj,kbdmn->ijkmn", wb, bveck, wb, bveck, Hkb1b2, optimize=True)
 
