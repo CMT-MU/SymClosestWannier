@@ -1712,7 +1712,7 @@ def gyrotropic_get_K(cwi, operators):
 
         if cwi.win.eval_spn:
             S_w = fourier_transform_r_to_k_vec(operators["SS_R"], kpoints, cwi["irvec"], cwi["ndegen"], atoms_frac)
-            S_k_diag = np.einsum("knl,aklp,kpn->akn", U.conj(), S_w, U, optimize=True)
+            S_k_diag = np.einsum("kln,aklp,kpn->akn", U.conj(), S_w, U, optimize=True)
             gyro_K_spn = np.zeros((3, 3, mum_fermi), dtype=float)
         else:
             gyro_K_spn = None
@@ -1731,7 +1731,6 @@ def gyrotropic_get_K(cwi, operators):
 
                 S = np.zeros(3)
                 orb_nk = np.zeros(3)
-                got_spin = False
                 got_orb_n = False
                 for ifermi in range(mum_fermi):
                     arg = (E[k, n] - fermi_energy_list[ifermi]) / eta_smr
@@ -1742,9 +1741,8 @@ def gyrotropic_get_K(cwi, operators):
                     if np.abs(arg) > gyrotropic_smr_max_arg:
                         continue
 
-                    if cwi.win.eval_spn and not got_spin:
+                    if cwi.win.eval_spn:
                         S = S_k_diag[:, k, n]
-                        got_spin = True
 
                     # Orbital quantities are computed for each band separately
                     if not got_orb_n:
