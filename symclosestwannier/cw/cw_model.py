@@ -575,34 +575,39 @@ class CWModel(dict):
 
         #####
 
-        if self._cwi["calc_z_exp"]:
-            msg = "    - evaluating expectation value of {Zj} at T = 0.0 ... "
+        if self._cwi["z_exp"]:
+            msg = f"    - evaluating expectation value of SAMBs at T = {self._cwi["z_exp_temperature"]} ... "
             self._cwm.log(msg, None, end="\n", file=self._outfile, mode="a")
             self._cwm.set_stamp()
 
-            dic = mat.copy()
-            Zk = []
-            for k, d in mat["matrix"].items():
-                dic["matrix"] = {k: d}
-                Zk.append(
-                    CWModel.construct_Ok([1], self._cwi["num_wann"], self._cwi["kpoints"], self._cwi["irvec"], dic)
-                )
-
-            Hk_sym = CWModel.construct_Ok(
-                list(z.values()), self._cwi["num_wann"], self._cwi["kpoints"], self._cwi["irvec"], mat
+            N1, N2, N3 = self._cwi["z_exp_kmesh"]
+            kpoints = np.array(
+                [[i / float(N1), j / float(N2), k / float(N3)] for i in range(N1) for j in range(N2) for k in range(N3)]
             )
+
+            Hk_sym = CWModel.fourier_transform_r_to_k(Hr_sym, kpoints, self._cwi["irvec"], self._cwi["ndegen"])
             Ek, Uk = np.linalg.eigh(Hk_sym)
-            Z_exp = [
-                thermal_avg(
-                    Zki,
+
+            Nz = len(mat["matrix"])
+            dic = mat.copy()
+            z_exp = {}
+            for i, (tag, d) in enumerate(Zr_dict.items()):
+                percent = (i + 1) / float(Nz) * 100
+                if percent % 10 == 0:
+                    self._cwm.log(f"* {int(percent)} %", None, end="\n", file=self._outfile, mode="a")
+
+                dic["matrix"] = {tag: d}
+                Zk = construct_Ok([1], self._cwi["num_wann"], kpoints, self._cwi["irvec"], dic)
+
+                v = thermal_avg(
+                    Zk,
                     Ek,
                     Uk,
                     self._cwi["fermi_energy"],
-                    T=self._cwi["T"],
+                    T_Kelvin=self._cwi["z_exp_temperature"],
                 )
-                for Zki in Zk
-            ]
-            z_exp = {key: Z_exp[i] for i, key in enumerate(z.keys())}
+
+                z_exp[tag] = v
 
             self._cwm.log("done", None, end="\n", file=self._outfile, mode="a")
         else:

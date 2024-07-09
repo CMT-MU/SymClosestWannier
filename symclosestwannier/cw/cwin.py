@@ -44,8 +44,9 @@ _default = {
     "mp_seedname": "default",
     "ket_amn": None,
     "irreps": "all",
-    "calc_z_exp": False,
-    "T": 0.0,
+    "z_exp": False,
+    "z_exp_kmesh": [1, 1, 1],
+    "z_exp_temperature": 0.0,
     #
     "a": None,
     "N1": 50,
@@ -136,8 +137,9 @@ class CWin(dict):
                 - mp_seedname       : seedname for seedname_model.py, seedname_samb.py and seedname_matrix.py files (str), ["default"].
                 - ket_amn           : ket basis list in the seedname.amn file. If ket_amn == auto, the list of orbitals are set automatically, or it can be set manually. The format of each ket must be same as the "ket" in sambname_model.py file. See sambname["info"]["ket"] in sambname_model.py file for the format (list), [None].
                 - irreps            : list of irreps to be considered (str/list), ["all"].
-                - calc_z_exp        : calculate the expectation value of the SAMB operators? (bool), [False].
-                - T                 : temperature T for which we want to calculate the expectation value of the SAMB operators (float), [0.0].
+                - z_exp             : calculate the expectation value of the SAMB operators? (bool), [False].
+                - z_exp_kmesh       : dimensions of the Monkhorst-Pack grid of k-points for z_exp calculation (list), [[1, 1, 1]].
+                - z_exp_temperature : temperature for which we want to calculate the expectation value of the SAMB operators (float), [0.0].
 
             # only used for band dispersion calculation.
                 - a                 : lattice parameter (in Ang) used to correct units of k points in reference band data, [None].
@@ -174,9 +176,15 @@ class CWin(dict):
                 continue
 
             if "=" in line:
-                v = (line.split("=")[1].split("!")[0]).replace(" ", "")
+                v = line.split("=")[1].split("!")[0]
             elif ":" in line:
-                v = (line.split(":")[1].split("!")[0]).replace(" ", "")
+                v = line.split(":")[1].split("!")[0]
+
+            if key == "z_exp_kmesh":
+                d["z_exp_kmesh"] = [int(x) for x in v.split() if x != ""]
+                continue
+
+            v = v.replace(" ", "")
 
             if key == "ket_amn":
                 if "[" in v or "]" in v:
