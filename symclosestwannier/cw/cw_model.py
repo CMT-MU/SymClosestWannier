@@ -202,7 +202,7 @@ class CWModel(dict):
         Ak = np.array(self._cwi["Ak"], dtype=complex)
 
         if self._cwi["proj_min"] > 0.0:
-            msg = f"   - exluding bands with low projectability (proj_min = {self._cwi['proj_min']}) ... "
+            msg = f"   - excluding bands with low projectability (proj_min = {self._cwi['proj_min']}) ... "
             self._cwm.log(msg, None, end="", file=self._outfile, mode="a")
             self._cwm.set_stamp()
 
