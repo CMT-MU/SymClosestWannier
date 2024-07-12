@@ -42,7 +42,6 @@ cwin_info = {
     "z_exp_temperature": "temperature T for which we want to calculate the expectation value of the SAMB operators (float), [0.0].",
     "a": "lattice parameter (in Ang) used to correct units of k points in reference band data (float, optional), [1.0].",
     "N1": "number of divisions for high symmetry lines (int, optional), [50].",
-    "fermi_energy": "fermi energy (float, optional), [0.0].",
     "zeeman_interaction": "consider zeeman interaction ? (bool), [False].",
     "magnetic_field": "strength of the magnetic field (float), [0.0].",
     "magnetic_field_theta": "angle from the z-axis of the magnetic field (float), [0.0].",

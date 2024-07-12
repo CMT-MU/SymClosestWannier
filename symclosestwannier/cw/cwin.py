@@ -50,7 +50,6 @@ _default = {
     #
     "a": None,
     "N1": 50,
-    "fermi_energy": 0.0,
     #
     "zeeman_interaction": False,
     "magnetic_field": 0.0,
@@ -144,7 +143,6 @@ class CWin(dict):
             # only used for band dispersion calculation.
                 - a                 : lattice parameter (in Ang) used to correct units of k points in reference band data, [None].
                 - N1                : number of divisions for high symmetry lines (int, optional), [50].
-                - fermi_energy      : fermi energy, [0.0].
 
             # only used for when zeeman interaction is considered.
                 - zeeman_interaction   : consider zeeman interaction ? (bool), [False].
@@ -219,7 +217,7 @@ class CWin(dict):
             "smearing_temp_max",
             "smearing_temp_min",
             "delta",
-            "T",
+            "z_exp_temperature",
             "a",
             "fermi_energy",
             "degen_thr",
