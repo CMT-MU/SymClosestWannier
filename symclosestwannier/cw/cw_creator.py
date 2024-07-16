@@ -84,8 +84,8 @@ def cw_creator(seedname="cwannier"):
     if cwi["write_hr"]:
         filename = f"{cwi['seedname']}_hr.dat.cw"
         cw_model.write_or(cw_model["Hr"], filename, header=CWModel._hr_header())
-        filename = f"{cwi['seedname']}_hr_nonortho.dat.cw"
-        cw_model.write_or(cw_model["Hr_nonortho"], filename, header=CWModel._hr_header())
+        # filename = f"{cwi['seedname']}_hr_nonortho.dat.cw"
+        # cw_model.write_or(cw_model["Hr_nonortho"], filename, header=CWModel._hr_header())
 
     if cwi["write_sr"]:
         filename = f"{cwi['seedname']}_sr.dat.cw"
@@ -128,8 +128,8 @@ def cw_creator(seedname="cwannier"):
             filename = os.path.join(cwi["mp_outdir"], "{}".format(f"{cwi['mp_seedname']}_hr_sym.dat.cw"))
             cw_model.write_or(cw_model["Hr_sym"], filename, header=CWModel._hr_header())
 
-            filename = os.path.join(cwi["mp_outdir"], "{}".format(f"{cwi['mp_seedname']}_hr_nonortho_sym.dat.cw"))
-            cw_model.write_or(cw_model["Hr_nonortho_sym"], filename, header=CWModel._hr_header())
+            # filename = os.path.join(cwi["mp_outdir"], "{}".format(f"{cwi['mp_seedname']}_hr_nonortho_sym.dat.cw"))
+            # cw_model.write_or(cw_model["Hr_nonortho_sym"], filename, header=CWModel._hr_header())
 
         if cwi["write_sr"]:
             filename = os.path.join(cwi["mp_outdir"], "{}".format(f"{cwi['mp_seedname']}_sr_sym.dat.cw"))
@@ -143,8 +143,8 @@ def cw_creator(seedname="cwannier"):
         filename = os.path.join(cwi["mp_outdir"], "{}".format(f"{cwi['mp_seedname']}_z.dat.cw"))
         cw_model.write_samb_coeffs(filename, type="z")
 
-        filename = os.path.join(cwi["mp_outdir"], "{}".format(f"{cwi['mp_seedname']}_z_nonortho.dat.cw"))
-        cw_model.write_samb_coeffs(filename, type="z_nonortho")
+        # filename = os.path.join(cwi["mp_outdir"], "{}".format(f"{cwi['mp_seedname']}_z_nonortho.dat.cw"))
+        # cw_model.write_samb_coeffs(filename, type="z_nonortho")
 
         filename = os.path.join(cwi["mp_outdir"], "{}".format(f"{cwi['mp_seedname']}_s.dat.cw"))
         cw_model.write_samb_coeffs(filename, type="s")
