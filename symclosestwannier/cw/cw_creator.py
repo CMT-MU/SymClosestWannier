@@ -152,9 +152,9 @@ def cw_creator(seedname="cwannier"):
         filename = os.path.join(cwi["mp_outdir"], "{}".format(f"{cwi['mp_seedname']}_z_exp.dat.cw"))
         cw_model.write_samb_exp(filename)
 
-    # the order of atoms are different from that of SAMBs
-    atoms_list = list(cw_model._cwi["atoms_frac_shift"].values())
-    atoms_frac = [atoms_list[i] for i in cw_model._cwi["nw2n"]]
+    # # the order of atoms are different from that of SAMBs
+    # atoms_list = list(cw_model._cwi["atoms_frac_shift"].values())
+    # atoms_frac = [atoms_list[i] for i in cw_model._cwi["nw2n"]]
 
     # band calculation
     if cwi["kpoint"] is not None and cwi["kpoint_path"] is not None:
@@ -174,7 +174,7 @@ def cw_creator(seedname="cwannier"):
             a = A[0].norm()
 
         Hk_path = cw_model.fourier_transform_r_to_k(
-            cw_model["Hr"], cwi["kpoints_path"], cwi["irvec"], cwi["ndegen"], atoms_frac
+            cw_model["Hr"], cwi["kpoints_path"], cwi["irvec"], cwi["ndegen"], atoms_frac=None
         )
         Ek, Uk = np.linalg.eigh(Hk_path)
 
