@@ -341,10 +341,21 @@ document.write(`
 <span class="kn">from</span> <span class="nn">symclosestwannier.cw.mmn</span> <span class="kn">import</span> <span class="n">Mmn</span>
 <span class="kn">from</span> <span class="nn">symclosestwannier.cw.umat</span> <span class="kn">import</span> <span class="n">Umat</span>
 <span class="kn">from</span> <span class="nn">symclosestwannier.cw.spn</span> <span class="kn">import</span> <span class="n">Spn</span>
+<span class="kn">from</span> <span class="nn">symclosestwannier.cw.uHu</span> <span class="kn">import</span> <span class="n">UHu</span>
 
-<span class="kn">from</span> <span class="nn">symclosestwannier.util._utility</span> <span class="kn">import</span> <span class="n">wigner_seitz</span><span class="p">,</span> <span class="n">convert_w90_orbital</span>
+<span class="kn">from</span> <span class="nn">symclosestwannier.util.utility</span> <span class="kn">import</span> <span class="n">wigner_seitz</span><span class="p">,</span> <span class="n">convert_w90_orbital</span>
 
-<span class="n">_class_map</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;cwin&quot;</span><span class="p">:</span> <span class="n">CWin</span><span class="p">,</span> <span class="s2">&quot;win&quot;</span><span class="p">:</span> <span class="n">Win</span><span class="p">,</span> <span class="s2">&quot;nnkp&quot;</span><span class="p">:</span> <span class="n">Nnkp</span><span class="p">,</span> <span class="s2">&quot;eig&quot;</span><span class="p">:</span> <span class="n">Eig</span><span class="p">,</span> <span class="s2">&quot;amn&quot;</span><span class="p">:</span> <span class="n">Amn</span><span class="p">,</span> <span class="s2">&quot;mmn&quot;</span><span class="p">:</span> <span class="n">Mmn</span><span class="p">,</span> <span class="s2">&quot;umat&quot;</span><span class="p">:</span> <span class="n">Umat</span><span class="p">,</span> <span class="s2">&quot;spn&quot;</span><span class="p">:</span> <span class="n">Spn</span><span class="p">}</span>
+<span class="n">_class_map</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;cwin&quot;</span><span class="p">:</span> <span class="n">CWin</span><span class="p">,</span>
+    <span class="s2">&quot;win&quot;</span><span class="p">:</span> <span class="n">Win</span><span class="p">,</span>
+    <span class="s2">&quot;nnkp&quot;</span><span class="p">:</span> <span class="n">Nnkp</span><span class="p">,</span>
+    <span class="s2">&quot;eig&quot;</span><span class="p">:</span> <span class="n">Eig</span><span class="p">,</span>
+    <span class="s2">&quot;amn&quot;</span><span class="p">:</span> <span class="n">Amn</span><span class="p">,</span>
+    <span class="s2">&quot;mmn&quot;</span><span class="p">:</span> <span class="n">Mmn</span><span class="p">,</span>
+    <span class="s2">&quot;umat&quot;</span><span class="p">:</span> <span class="n">Umat</span><span class="p">,</span>
+    <span class="s2">&quot;spn&quot;</span><span class="p">:</span> <span class="n">Spn</span><span class="p">,</span>
+    <span class="s2">&quot;uHu&quot;</span><span class="p">:</span> <span class="n">UHu</span><span class="p">,</span>
+<span class="p">}</span>
 
 
 <span class="c1"># ==================================================</span>
@@ -352,7 +363,7 @@ document.write(`
 <a class="viewcode-back" href="../../../src/api/cw.html#symclosestwannier.cw.cw_info.CWInfo">[docs]</a>
 <span class="k">class</span> <span class="nc">CWInfo</span><span class="p">(</span><span class="nb">dict</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    CWInfo manages information for CWModel, CWin, Win, Nnkp, Eig, Amn, Mmn, Umat, Spn.</span>
+<span class="sd">    CWInfo manages information for CWModel, CWin, Win, Nnkp, Eig, Amn, Mmn, Umat, Spn, UHu.</span>
 
 <span class="sd">    Attributes:</span>
 <span class="sd">        _topdir (str): top directory.</span>
@@ -362,7 +373,7 @@ document.write(`
     <span class="c1"># ==================================================</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">topdir</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">seedname</span><span class="o">=</span><span class="s2">&quot;cwannier&quot;</span><span class="p">,</span> <span class="n">dic</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        CWInfo manages information for CWModel, CWin, Win, Nnkp, Eig, Amn, Mmn, Umat, Spn.</span>
+<span class="sd">        CWInfo manages information for CWModel, CWin, Win, Nnkp, Eig, Amn, Mmn, Umat, Spn, UHu.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            topdir (str, optional): directory of seedname.cwin file.</span>
@@ -384,7 +395,7 @@ document.write(`
 <a class="viewcode-back" href="../../../src/api/cw.html#symclosestwannier.cw.cw_info.CWInfo.read">[docs]</a>
     <span class="k">def</span> <span class="nf">read</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">topdir</span><span class="p">,</span> <span class="n">seedname</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        read seedname.cwin/win/nnkp/eig/amn/(mmn)/(umat)/(spn) files.</span>
+<span class="sd">        read seedname.cwin/win/nnkp/eig/amn/(mmn)/(umat)/(spn)/(uHu) files.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            topdir (str): directory of seedname.cwin/win/eig/amn/mmn/nnkp files.</span>
@@ -397,7 +408,7 @@ document.write(`
         <span class="k">for</span> <span class="n">C</span> <span class="ow">in</span> <span class="n">_class_map</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
             <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">C</span><span class="o">.</span><span class="n">_default</span><span class="p">())</span>
 
-        <span class="n">info_list</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">info_dict</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">C</span> <span class="ow">in</span> <span class="n">_class_map</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
             <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;umat&quot;</span> <span class="ow">and</span> <span class="p">(</span><span class="n">d</span><span class="p">[</span><span class="s2">&quot;restart&quot;</span><span class="p">]</span> <span class="o">!=</span> <span class="s2">&quot;w90&quot;</span><span class="p">):</span>
                 <span class="k">continue</span>
@@ -405,23 +416,42 @@ document.write(`
                 <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">([</span><span class="n">d</span><span class="p">[</span><span class="s2">&quot;write_rmn&quot;</span><span class="p">],</span> <span class="n">d</span><span class="p">[</span><span class="s2">&quot;write_vmn&quot;</span><span class="p">],</span> <span class="n">d</span><span class="p">[</span><span class="s2">&quot;write_tb&quot;</span><span class="p">],</span> <span class="n">d</span><span class="p">[</span><span class="s2">&quot;berry&quot;</span><span class="p">]]):</span>
                     <span class="k">continue</span>
             <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;spn&quot;</span><span class="p">:</span>
-                <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">([</span><span class="n">d</span><span class="p">[</span><span class="s2">&quot;write_spn&quot;</span><span class="p">],</span> <span class="n">d</span><span class="p">[</span><span class="s2">&quot;spin_decomp&quot;</span><span class="p">],</span> <span class="n">d</span><span class="p">[</span><span class="s2">&quot;spin_moment&quot;</span><span class="p">],</span> <span class="n">d</span><span class="p">[</span><span class="s2">&quot;zeeman_interaction&quot;</span><span class="p">]]):</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span>
+                    <span class="p">[</span>
+                        <span class="n">d</span><span class="p">[</span><span class="s2">&quot;write_spn&quot;</span><span class="p">],</span>
+                        <span class="n">d</span><span class="p">[</span><span class="s2">&quot;spin_decomp&quot;</span><span class="p">],</span>
+                        <span class="n">d</span><span class="p">[</span><span class="s2">&quot;spin_moment&quot;</span><span class="p">],</span>
+                        <span class="n">d</span><span class="p">[</span><span class="s2">&quot;zeeman_interaction&quot;</span><span class="p">],</span>
+                        <span class="n">d</span><span class="p">[</span><span class="s2">&quot;berry_task&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;shc&quot;</span><span class="p">,</span>
+                        <span class="n">info_dict</span><span class="p">[</span><span class="s2">&quot;win&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">eval_spn</span><span class="p">,</span>
+                    <span class="p">]</span>
+                <span class="p">):</span>
+                    <span class="k">continue</span>
+
+            <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;uHu&quot;</span><span class="p">:</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span>
+                    <span class="p">[</span>
+                        <span class="n">info_dict</span><span class="p">[</span><span class="s2">&quot;win&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">eval_spn</span><span class="p">,</span>
+                    <span class="p">]</span>
+                <span class="p">):</span>
                     <span class="k">continue</span>
 
             <span class="n">info</span> <span class="o">=</span> <span class="n">C</span><span class="p">(</span><span class="n">topdir</span><span class="p">,</span> <span class="n">seedname</span><span class="p">)</span>
             <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">info</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-                <span class="k">for</span> <span class="n">name_</span><span class="p">,</span> <span class="n">info_</span> <span class="ow">in</span> <span class="n">info_list</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">name_</span><span class="p">,</span> <span class="n">info_</span> <span class="ow">in</span> <span class="n">info_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
                     <span class="k">if</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">info_</span><span class="p">:</span>
                         <span class="n">v_</span> <span class="o">=</span> <span class="n">info_</span><span class="p">[</span><span class="n">k</span><span class="p">]</span>
 
                         <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="o">==</span> <span class="nb">list</span><span class="p">:</span>
                             <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">v_</span><span class="p">,</span> <span class="mf">1e-6</span><span class="p">):</span>
-                                <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The value of </span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2"> in </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> and </span><span class="si">{</span><span class="n">name_</span><span class="si">}</span><span class="s2"> is inconsistent.&quot;</span><span class="p">)</span>
+                                <span class="n">msg</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The values of </span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2"> in </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> and </span><span class="si">{</span><span class="n">name_</span><span class="si">}</span><span class="s2"> files are inconsistent.&quot;</span><span class="p">)</span>
+                                <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
                         <span class="k">else</span><span class="p">:</span>
                             <span class="k">if</span> <span class="n">v</span> <span class="o">!=</span> <span class="n">v_</span><span class="p">:</span>
-                                <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The value of </span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2"> in </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> and </span><span class="si">{</span><span class="n">name_</span><span class="si">}</span><span class="s2"> is inconsistent.&quot;</span><span class="p">)</span>
+                                <span class="n">msg</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The values of </span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2"> in </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> and </span><span class="si">{</span><span class="n">name_</span><span class="si">}</span><span class="s2"> files are inconsistent.&quot;</span><span class="p">)</span>
+                                <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
 
-            <span class="n">info_list</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">name</span><span class="p">,</span> <span class="n">info</span><span class="p">))</span>
+            <span class="n">info_dict</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="n">name</span><span class="p">:</span> <span class="n">info</span><span class="p">})</span>
             <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">info</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">d</span><span class="p">[</span><span class="s2">&quot;zeeman_interaction&quot;</span><span class="p">]:</span>

@@ -315,12 +315,10 @@ document.write(`
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">import</span> <span class="nn">gzip</span>
-<span class="kn">import</span> <span class="nn">tarfile</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
-<span class="kn">from</span> <span class="nn">symclosestwannier.util._utility</span> <span class="kn">import</span> <span class="n">FortranFileR</span><span class="p">,</span> <span class="n">FortranFileW</span>
+<span class="kn">from</span> <span class="nn">symclosestwannier.util.utility</span> <span class="kn">import</span> <span class="n">FortranFileR</span>
 
 <span class="n">_default</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;num_k&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;num_bands&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;pauli_spn&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">}</span>
 
@@ -335,25 +333,25 @@ document.write(`
 <span class="sd">    Attributes:</span>
 <span class="sd">        _topdir (str): top directory.</span>
 <span class="sd">        _seedname (str): seedname.</span>
-<span class="sd">        _spn_formatted (bool): formatted file?</span>
+<span class="sd">        _formatted (bool): formatted file?</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="c1"># ==================================================</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">topdir</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">seedname</span><span class="o">=</span><span class="s2">&quot;cwannier&quot;</span><span class="p">,</span> <span class="n">spn_formatted</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">dic</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">topdir</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">seedname</span><span class="o">=</span><span class="s2">&quot;cwannier&quot;</span><span class="p">,</span> <span class="n">formatted</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">dic</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Spn manages matrix elements of Pauli spin operator in seedname.spn file.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            topdir (str, optional): directory of seedname.spn file.</span>
 <span class="sd">            seedname (str, optional): seedname.</span>
-<span class="sd">            spn_formatted (bool, optional): formatted file?</span>
+<span class="sd">            formatted (bool, optional): formatted file?</span>
 <span class="sd">            dic (dict, optional): dictionary of Spn.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_topdir</span> <span class="o">=</span> <span class="n">topdir</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_seedname</span> <span class="o">=</span> <span class="n">seedname</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_spn_formatted</span> <span class="o">=</span> <span class="n">spn_formatted</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_formatted</span> <span class="o">=</span> <span class="n">formatted</span>
 
         <span class="k">if</span> <span class="n">dic</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">file_name</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">topdir</span><span class="p">,</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">.</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">seedname</span><span class="p">,</span> <span class="s2">&quot;spn&quot;</span><span class="p">))</span>
@@ -375,7 +373,7 @@ document.write(`
 <span class="sd">            dict:</span>
 <span class="sd">                - num_k     : # of k points (int), [1].</span>
 <span class="sd">                - num_bands : # of bands passed to the code (int), [1].</span>
-<span class="sd">                - Spnk      : num_bands×num_bands matrix elementes of Pauli spin operators (ndarray), [None].</span>
+<span class="sd">                - pauli_spn : num_bands×num_bands matrix elements of Pauli spin operators (ndarray), [None].</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">file_name</span><span class="p">):</span>
             <span class="k">pass</span>
@@ -386,7 +384,7 @@ document.write(`
         <span class="k">else</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;failed to read spn file: &quot;</span> <span class="o">+</span> <span class="n">file_name</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_spn_formatted</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_formatted</span><span class="p">:</span>
             <span class="n">f_spn_in</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">file_name</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span>
             <span class="n">SPNheader</span> <span class="o">=</span> <span class="n">f_spn_in</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
             <span class="n">num_bands</span><span class="p">,</span> <span class="n">num_k</span> <span class="o">=</span> <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">f_spn_in</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">())</span>
@@ -401,7 +399,7 @@ document.write(`
 
         <span class="k">for</span> <span class="n">ik</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_k</span><span class="p">):</span>
             <span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span> <span class="n">num_bands</span><span class="p">,</span> <span class="n">num_bands</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">complex</span><span class="p">)</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_spn_formatted</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_formatted</span><span class="p">:</span>
                 <span class="n">tmp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
                     <span class="p">[</span><span class="n">f_spn_in</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">()</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span> <span class="o">*</span> <span class="n">num_bands</span> <span class="o">*</span> <span class="p">(</span><span class="n">num_bands</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">//</span> <span class="mi">2</span><span class="p">)],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span>
                 <span class="p">)</span>
@@ -416,62 +414,10 @@ document.write(`
 
             <span class="n">pauli_spn</span><span class="p">[:,</span> <span class="n">ik</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">A</span>
 
-        <span class="n">pauli_spn</span> <span class="o">=</span> <span class="n">pauli_spn</span><span class="p">[:,</span> <span class="p">:,</span> <span class="mi">120</span><span class="p">:,</span> <span class="mi">120</span><span class="p">:]</span>
-        <span class="n">num_bands</span> <span class="o">=</span> <span class="n">pauli_spn</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
-
         <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;num_k&quot;</span><span class="p">:</span> <span class="n">num_k</span><span class="p">,</span> <span class="s2">&quot;num_bands&quot;</span><span class="p">:</span> <span class="n">num_bands</span><span class="p">,</span> <span class="s2">&quot;pauli_spn&quot;</span><span class="p">:</span> <span class="n">pauli_spn</span><span class="o">.</span><span class="n">tolist</span><span class="p">()}</span>
 
         <span class="k">return</span> <span class="n">d</span></div>
 
-
-    <span class="c1"># # ==================================================</span>
-    <span class="c1"># def write(self, file_name=&quot;cwannier.spn&quot;):</span>
-    <span class="c1">#     &quot;&quot;&quot;</span>
-    <span class="c1">#     write spn data.</span>
-
-    <span class="c1">#     Args:</span>
-    <span class="c1">#         file_name (str, optional): file name.</span>
-    <span class="c1">#     &quot;&quot;&quot;</span>
-    <span class="c1">#     SPN = FortranFileW(file_name)</span>
-    <span class="c1">#     header = &quot;Created from wavecar at {0}&quot;.format(datetime.datetime.now().isoformat())</span>
-    <span class="c1">#     header = header[:60]</span>
-    <span class="c1">#     header += &quot; &quot; * (60 - len(header))</span>
-    <span class="c1">#     SPN.write_record(bytearray(header, encoding=&quot;ascii&quot;))</span>
-    <span class="c1">#     SPN.write_record(np.array([NBout, NK], dtype=np.int32))</span>
-
-    <span class="c1">#     for ik in range(NK):</span>
-    <span class="c1">#         npw = int(record(2 + ik * (NBin + 1), 1))</span>
-    <span class="c1">#         npw12 = npw // 2</span>
-    <span class="c1">#         if npw != npw12 * 2:</span>
-    <span class="c1">#             raise RuntimeError(f&quot;odd number of coefs {npw}&quot;)</span>
-    <span class="c1">#         print(&quot;k-point {0:3d} : {1:6d} plane waves&quot;.format(ik, npw))</span>
-    <span class="c1">#         WF = np.zeros((npw, NBout), dtype=complex)</span>
-    <span class="c1">#         for ib in range(NBout):</span>
-    <span class="c1">#             WF[:, ib] = record(3 + ik * (NBin + 1) + ib + IBstart, npw, np.complex64)</span>
-    <span class="c1">#         overlap = WF.conj().T.dot(WF)</span>
-    <span class="c1">#         assert np.max(np.abs(overlap - overlap.T.conj())) &lt; 1e-15</span>
-
-    <span class="c1">#         if normalize == &quot;norm&quot;:</span>
-    <span class="c1">#             WF = WF / np.sqrt(np.abs(overlap.diagonal()))</span>
-
-    <span class="c1">#         SIGMA = np.array(</span>
-    <span class="c1">#             [</span>
-    <span class="c1">#                 [</span>
-    <span class="c1">#                     np.einsum(</span>
-    <span class="c1">#                         &quot;ki,kj-&gt;ij&quot;, WF.conj()[npw12 * i : npw12 * (i + 1), :], WF[npw12 * j : npw12 * (j + 1), :]</span>
-    <span class="c1">#                     )</span>
-    <span class="c1">#                     for j in (0, 1)</span>
-    <span class="c1">#                 ]</span>
-    <span class="c1">#                 for i in (0, 1)</span>
-    <span class="c1">#             ]</span>
-    <span class="c1">#         )</span>
-    <span class="c1">#         SX = SIGMA[0, 1] + SIGMA[1, 0]</span>
-    <span class="c1">#         SY = -1.0j * (SIGMA[0, 1] - SIGMA[1, 0])</span>
-    <span class="c1">#         SZ = SIGMA[0, 0] - SIGMA[1, 1]</span>
-    <span class="c1">#         A = np.array(</span>
-    <span class="c1">#             [s[n, m] for m in range(NBout) for n in range(m + 1) for s in (SX, SY, SZ)], dtype=np.complex128</span>
-    <span class="c1">#         )</span>
-    <span class="c1">#         SPN.write_record(A)</span>
 
     <span class="c1"># ==================================================</span>
     <span class="nd">@classmethod</span>

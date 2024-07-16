@@ -32,7 +32,7 @@
     <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=384b581d" />
     <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="../../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
   
@@ -358,6 +358,7 @@ document.write(`
                 <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.cw.amn.Amn"><code class="docutils literal notranslate"><span class="pre">Amn</span></code></a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.cw.amn.Amn.read"><code class="docutils literal notranslate"><span class="pre">Amn.read()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.cw.amn.Amn.write"><code class="docutils literal notranslate"><span class="pre">Amn.write()</span></code></a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.cw.cw_info.CWInfo"><code class="docutils literal notranslate"><span class="pre">CWInfo</span></code></a><ul class="nav section-nav flex-column">
@@ -483,13 +484,24 @@ document.write(`
 </dl>
 </dd></dl>
 
+<dl class="py method">
+<dt class="sig sig-object py" id="symclosestwannier.cw.amn.Amn.write">
+<span class="sig-name descname"><span class="pre">write</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'cwannier.amn.cw'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/cw/amn.html#Amn.write"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.cw.amn.Amn.write" title="Link to this definition">#</a></dt>
+<dd><p>write amn data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>file_name</strong> (<em>str</em><em>, </em><em>optional</em>) -- file name.</p>
+</dd>
+</dl>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="py class" id="module-symclosestwannier.cw.cw_info">
 <dt class="sig sig-object py" id="symclosestwannier.cw.cw_info.CWInfo">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">CWInfo</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">topdir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seedname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'cwannier'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dic</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/cw/cw_info.html#CWInfo"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.cw.cw_info.CWInfo" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></p>
-<p>CWInfo manages information for CWModel, CWin, Win, Nnkp, Eig, Amn, Mmn, Umat, Spn.</p>
+<p>CWInfo manages information for CWModel, CWin, Win, Nnkp, Eig, Amn, Mmn, Umat, Spn, UHu.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -502,7 +514,7 @@ document.write(`
 <dl class="py method">
 <dt class="sig sig-object py" id="symclosestwannier.cw.cw_info.CWInfo.read">
 <span class="sig-name descname"><span class="pre">read</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">topdir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seedname</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/cw/cw_info.html#CWInfo.read"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.cw.cw_info.CWInfo.read" title="Link to this definition">#</a></dt>
-<dd><p>read seedname.cwin/win/nnkp/eig/amn/(mmn)/(umat)/(spn) files.</p>
+<dd><p>read seedname.cwin/win/nnkp/eig/amn/(mmn)/(umat)/(spn)/(uHu) files.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -913,7 +925,7 @@ fourier transformation from real-space representation into k-space representatio
 
 <dl class="py method">
 <dt class="sig sig-object py" id="symclosestwannier.cw.eig.Eig.write">
-<span class="sig-name descname"><span class="pre">write</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'cwannier.eig'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/cw/eig.html#Eig.write"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.cw.eig.Eig.write" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">write</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'cwannier.eig.cw'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/cw/eig.html#Eig.write"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.cw.eig.Eig.write" title="Link to this definition">#</a></dt>
 <dd><p>write eig data.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -1237,10 +1249,15 @@ CW TB model can be symmetrized by using Symmetry-Adapted Multipole Basis (SAMB).
 <li><p>smearing_temp_min : smearing temperature for lower window (float), [0.01].</p></li>
 <li><p>delta             : small constant to avoid ill-conditioning of overlap matrices (float), [1e-12].</p></li>
 <li><p>svd               : implement singular value decomposition ? otherwise adopt Lowdin's orthogonalization method (bool), [False].</p></li>
+<li><p>optimize_wintemp&quot;: optimize the energy windows and smearing temperatures? (bool), [False].</p></li>
+<li><p>optimize_wintemp_num_iter&quot;: number of iterations for optimization (int), [100].</p></li>
+<li><p>optimize_wintemp_conv_thr&quot;: Convergence threshold for optimization (float), [1e-1].</p></li>
+<li><p>optimize_wintemp_mixing_beta&quot;: mixing factor for optimization (float), [0.7].</p></li>
+<li><p>optimize_wintemp_fixed_params&quot;:  fixed parameters for optimization, (list) [[&quot;dis_win_emin&quot;, &quot;smearing_temp_min&quot;]].</p></li>
 <li><p>verbose           : verbose calculation info (bool, optional), [False].</p></li>
 <li><p>parallel          : use parallel code? (bool), [False].</p></li>
 <li><p>formatter         : format by using black? (bool), [False].</p></li>
-<li><p>transl_inv        : use Eq.(31) of Marzari&amp;Vanderbilt PRB 56, 12847 (1997) for band-diagonal position matrix elements? (bool), [True].</p></li>
+<li><p>transl_inv        : use Eq.(31) of Marzari&amp;Vanderbilt PRB 56, 12847 (1997) for band-diagonal position matrix elements? (bool), [False].</p></li>
 <li><p>use_degen_pert    : use degenerate perturbation theory when bands are degenerate and band derivatives are needed? (bool), [False].</p></li>
 <li><p>degen_thr         : threshold to exclude degenerate bands from the calculation, [0.0].</p></li>
 <li><p>tb_gauge          : use tb gauge? (bool), [False].</p></li>
@@ -1250,6 +1267,9 @@ CW TB model can be symmetrized by using Symmetry-Adapted Multipole Basis (SAMB).
 <li><p>write_rmn         : write seedname_r.dat ? (bool), [False].</p></li>
 <li><p>write_vmn         : write seedname_v.dat ? (bool), [False].</p></li>
 <li><p>write_tb          : write seedname_tb.dat ? (bool), [False].</p></li>
+<li><p>write_eig         : write seedname.eig.cw ? (bool), [False].</p></li>
+<li><p>write_amn         : write seedname.amn.cw ? (bool), [False].</p></li>
+<li><p>write_mmn         : write seedname.mmn.cw ? (bool), [False].</p></li>
 <li><p>write_spn         : write seedname.spn.cw ? (bool), [False].</p></li>
 </ul>
 </dd>
@@ -1259,12 +1279,14 @@ CW TB model can be symmetrized by using Symmetry-Adapted Multipole Basis (SAMB).
 <li><p>mp_seedname       : seedname for seedname_model.py, seedname_samb.py and seedname_matrix.py files (str), [&quot;default&quot;].</p></li>
 <li><p>ket_amn           : ket basis list in the seedname.amn file. If ket_amn == auto, the list of orbitals are set automatically, or it can be set manually. The format of each ket must be same as the &quot;ket&quot; in sambname_model.py file. See sambname[&quot;info&quot;][&quot;ket&quot;] in sambname_model.py file for the format (list), [None].</p></li>
 <li><p>irreps            : list of irreps to be considered (str/list), [&quot;all&quot;].</p></li>
+<li><p>z_exp             : calculate the expectation value of the SAMB operators? (bool), [False].</p></li>
+<li><p>z_exp_kmesh       : dimensions of the Monkhorst-Pack grid of k-points for z_exp calculation (list), [[1, 1, 1]].</p></li>
+<li><p>z_exp_temperature : temperature for which we want to calculate the expectation value of the SAMB operators (float), [0.0].</p></li>
 </ul>
 </dd>
 <dt># only used for band dispersion calculation.</dt><dd><ul class="simple">
 <li><p>a                 : lattice parameter (in Ang) used to correct units of k points in reference band data, [None].</p></li>
 <li><p>N1                : number of divisions for high symmetry lines (int, optional), [50].</p></li>
-<li><p>fermi_energy      : fermi energy, [0.0].</p></li>
 </ul>
 </dd>
 <dt># only used for when zeeman interaction is considered.</dt><dd><ul class="simple">
@@ -1329,7 +1351,7 @@ CW TB model can be symmetrized by using Symmetry-Adapted Multipole Basis (SAMB).
 
 <dl class="py method">
 <dt class="sig sig-object py" id="symclosestwannier.cw.mmn.Mmn.write">
-<span class="sig-name descname"><span class="pre">write</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'cwannier.mmn'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/cw/mmn.html#Mmn.write"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.cw.mmn.Mmn.write" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">write</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'cwannier.mmn.cw'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/cw/mmn.html#Mmn.write"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.cw.mmn.Mmn.write" title="Link to this definition">#</a></dt>
 <dd><p>write mmn data.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -1343,7 +1365,7 @@ CW TB model can be symmetrized by using Symmetry-Adapted Multipole Basis (SAMB).
 <p id="module-symclosestwannier.cw.spn">Spn manages matrix elements of Pauli spin operator in seedname.spn file.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="symclosestwannier.cw.spn.Spn">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Spn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">topdir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seedname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'cwannier'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spn_formatted</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dic</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/cw/spn.html#Spn"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.cw.spn.Spn" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Spn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">topdir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seedname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'cwannier'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">formatted</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dic</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/cw/spn.html#Spn"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.cw.spn.Spn" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></p>
 <p>Spn manages matrix elements of Pauli spin operator in seedname.spn file.</p>
 <dl class="field-list simple">
@@ -1351,7 +1373,7 @@ CW TB model can be symmetrized by using Symmetry-Adapted Multipole Basis (SAMB).
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>topdir</strong> (<em>str</em><em>, </em><em>optional</em>) -- directory of seedname.spn file.</p></li>
 <li><p><strong>seedname</strong> (<em>str</em><em>, </em><em>optional</em>) -- seedname.</p></li>
-<li><p><strong>spn_formatted</strong> (<em>bool</em><em>, </em><em>optional</em>) -- formatted file?</p></li>
+<li><p><strong>formatted</strong> (<em>bool</em><em>, </em><em>optional</em>) -- formatted file?</p></li>
 <li><p><strong>dic</strong> (<em>dict</em><em>, </em><em>optional</em>) -- dictionary of Spn.</p></li>
 </ul>
 </dd>
@@ -1368,7 +1390,7 @@ CW TB model can be symmetrized by using Symmetry-Adapted Multipole Basis (SAMB).
 <dd class="field-even"><p><ul class="simple">
 <li><p>num_k     : # of k points (int), [1].</p></li>
 <li><p>num_bands : # of bands passed to the code (int), [1].</p></li>
-<li><p>Spnk      : num_bands×num_bands matrix elementes of Pauli spin operators (ndarray), [None].</p></li>
+<li><p>pauli_spn : num_bands×num_bands matrix elements of Pauli spin operators (ndarray), [None].</p></li>
 </ul>
 </p>
 </dd>
@@ -1458,6 +1480,13 @@ CW TB model can be symmetrized by using Symmetry-Adapted Multipole Basis (SAMB).
 <li><p>fermi_energy_step            : Step for increasing the Fermi energy in the specified range. (The units are [eV]) (float), [0.01].</p></li>
 <li><p>fermi_energy_list            : list of fermi energy (list), [None].</p></li>
 <li><p>num_fermi                    : number of fermi energies (int), [0].</p></li>
+<li><p>shc_freq_scan                : Determines whether to calculate the frequency scan (i.e. the ac SHC) or the Fermi energy scan (i.e. the dc SHC) of the spin Hall conductivity. The default value is false, which means dc SHC is calculated. (bool), [False].</p></li>
+<li><p>shc_alpha                    : The α index of spin Hall conductivity σ^{spin γ}_{αβ}, i.e. the direction of spin current. Possible values are 1, 2 and 3, representing the x, y and z directions respectively. (int), [1].</p></li>
+<li><p>shc_beta                     : The β index of spin Hall conductivity σ^{spin γ}_{αβ}, i.e. the direction of applied electric field. Possible values are 1, 2 and 3, representing the x, y and z directions respectively. (int), [2].</p></li>
+<li><p>shc_gamma                    : The γ index of spin Hall conductivity σ^{spin γ}_{αβ}, i.e. the spin direction of spin current. Possible values are 1, 2 and 3, representing the x, y and z directions respectively. (int), [3].</p></li>
+<li><p>shc_bandshift                : Shift all conduction bands by a given amount (float), [False].</p></li>
+<li><p>shc_bandshift_firstband      : Index of the first band to shift (int), [None].</p></li>
+<li><p>shc_bandshift_energyshift    : Energy shift of the conduction bands (eV) (float), [0.0].</p></li>
 </ul>
 </dd>
 <dt># kubo</dt><dd><ul class="simple">
@@ -1465,18 +1494,34 @@ CW TB model can be symmetrized by using Symmetry-Adapted Multipole Basis (SAMB).
 <li><p>kubo_freq_min           : Lower limit of the frequency range for computing the optical conductivity, JDOS and ac SHC. (The units are [eV]) (float), [0.0].</p></li>
 <li><p>kubo_freq_step          : Difference between consecutive values of the optical frequency between kubo_freq_min and kubo_freq_max. (The units are [eV]) (float), [0.01].</p></li>
 <li><p>kubo_eigval_max         : Maximum energy eigenvalue of the eigenstates to be included in the evaluation of the optical conductivity, JDOS and ac SHC. (The units are [eV]) (float), [If an inner energy window was specified, the default value is the upper bound of the inner energy window plus 0.6667. Otherwise it is the maximum energy eigenvalue stored in seedname.eig plus 0.6667.].</p></li>
-<li><p>kubo_adpt_smr           : Overrides the adpt_smr global variable.</p></li>
-<li><p>kubo_adpt_smr_fac       : Overrides the adpt_smr_fac global variable.</p></li>
-<li><p>kubo_adpt_smr_max       : Overrides the adpt_smr_max global variable.</p></li>
-<li><p>kubo_smr_fixed_en_width : Overrides the smr_fixed_en_width global variable.</p></li>
-<li><p>kubo_smr_type           : Overrides the smr_type global variable.</p></li>
+<li><p>kubo_adpt_smr           : Overrides the adpt_smr global variable (bool), [False].</p></li>
+<li><p>kubo_adpt_smr_fac       : Overrides the adpt_smr_fac global variable (float), [sqrt(2)].</p></li>
+<li><p>kubo_adpt_smr_max       : Overrides the adpt_smr_max global variable (float), [1.0].</p></li>
+<li><p>kubo_smr_fixed_en_width : Overrides the smr_fixed_en_width global variable (float), [0.0].</p></li>
+<li><p>kubo_smr_type           : Overrides the smr_type global variable (str), [gauss].</p></li>
 </ul>
 </dd>
 </dl>
 <p># morb</p>
 <dl class="simple">
 <dt># gyrotropic</dt><dd><ul class="simple">
-<li><p>gyrotropic          : Determines whether to enter the gyrotropic routines (bool), [False].</p></li>
+<li><p>gyrotropic                    : Determines whether to enter the gyrotropic routines (bool), [False].</p></li>
+<li><p>gyrotropic_task               : The quantity to compute when gyrotropic=true, -DO/-Dw/-C/-K/-spin/-NOA/-dos, (str).</p></li>
+<li><p>gyrotropic_kmesh              : Overrides the kmesh global variable.</p></li>
+<li><p>gyrotropic_kmesh_spacing      : Overrides the kmesh_spacing global variable.</p></li>
+<li><p>gyrotropic_freq_max           : Upper limit of the frequency range for computing the optical activity. (The units are [eV]) (float), [If an inner energy window was specified, the default value is dis_froz_max-fermi_energy+0.6667. Otherwise it is the difference between the maximum and the minimum energy eigenvalue stored in seedname.eig, plus 0.6667.].</p></li>
+<li><p>gyrotropic_freq_min           : Lower limit of the frequency range for computing the optical activity. (The units are [eV]) (float), [0.0].</p></li>
+<li><p>gyrotropic_freq_step          : Difference between consecutive values of the optical frequency between gyrotropic_freq_min and gyrotropic_freq_max. (The units are [eV]) (float), [0.01].</p></li>
+<li><p>gyrotropic_eigval_max         : Maximum energy eigenvalue of the eigenstates to be included in the evaluation of the Natural optical activity. (The units are [eV]) (float), [If an inner energy window was specified, the default value is the upper bound of the inner energy window plus 0.6667. Otherwise it is the maximum energy eigenvalue stored in seedname.eig plus 0.6667.].</p></li>
+<li><p>gyrotropic_smr_max_arg        : Maximum value of smearing arg (float), [5.0].</p></li>
+<li><p>gyrotropic_degen_thresh       : The threshould to eliminate degenerate bands from the calculation in order to avoid divergences. (Units are [eV]) (float), [0.0].</p></li>
+<li><p>gyrotropic_smr_fixed_en_width : Overrides the smr_fixed_en_width global variable.</p></li>
+<li><p>gyrotropic_smr_type           : Overrides the smr_type global variable.</p></li>
+<li><p>gyrotropic_band_list          : List of bands used in the calculation.</p></li>
+<li><p>gyrotropic_box_center         : Three real numbers. Optionally the integration may be restricted to a parallelogram, centered at gyrotropic_box_center and defined by vectors gyrotropic_box_b{1,2,3}.  In reduced coordinates, [0.5 0.5 0.5].</p></li>
+<li><p>gyrotropic_box_b1             : Three real numbers. In reduced coordinates, [1.0 0.0 0.0].</p></li>
+<li><p>gyrotropic_box_b2             : Three real numbers. In reduced coordinates, [0.0 1.0 0.0].</p></li>
+<li><p>gyrotropic_box_b3             : Three real numbers. In reduced coordinates, [0.0 0.0 1.0].</p></li>
 </ul>
 </dd>
 <dt># boltzwann</dt><dd><ul class="simple">
@@ -1538,6 +1583,7 @@ CW TB model can be symmetrized by using Symmetry-Adapted Multipole Basis (SAMB).
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.cw.amn.Amn"><code class="docutils literal notranslate"><span class="pre">Amn</span></code></a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.cw.amn.Amn.read"><code class="docutils literal notranslate"><span class="pre">Amn.read()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.cw.amn.Amn.write"><code class="docutils literal notranslate"><span class="pre">Amn.write()</span></code></a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.cw.cw_info.CWInfo"><code class="docutils literal notranslate"><span class="pre">CWInfo</span></code></a><ul class="nav section-nav flex-column">

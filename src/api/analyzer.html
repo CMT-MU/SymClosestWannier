@@ -32,7 +32,7 @@
     <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=384b581d" />
     <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="../../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
   
@@ -366,10 +366,13 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.get_response.berry_get_ahc"><code class="docutils literal notranslate"><span class="pre">berry_get_ahc()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.get_response.berry_get_imf_klist"><code class="docutils literal notranslate"><span class="pre">berry_get_imf_klist()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.get_response.berry_get_imfgh_klist"><code class="docutils literal notranslate"><span class="pre">berry_get_imfgh_klist()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.get_response.berry_get_js_k"><code class="docutils literal notranslate"><span class="pre">berry_get_js_k()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.get_response.berry_get_kubo"><code class="docutils literal notranslate"><span class="pre">berry_get_kubo()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.get_response.berry_get_me"><code class="docutils literal notranslate"><span class="pre">berry_get_me()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.get_response.berry_get_shc"><code class="docutils literal notranslate"><span class="pre">berry_get_shc()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.get_response.berry_get_shc_klist"><code class="docutils literal notranslate"><span class="pre">berry_get_shc_klist()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.get_response.berry_main"><code class="docutils literal notranslate"><span class="pre">berry_main()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.get_response.boltzwann_main"><code class="docutils literal notranslate"><span class="pre">boltzwann_main()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.get_response.gyrotropic_get_K"><code class="docutils literal notranslate"><span class="pre">gyrotropic_get_K()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.get_response.gyrotropic_main"><code class="docutils literal notranslate"><span class="pre">gyrotropic_main()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.get_response.kmesh_spacing_mesh"><code class="docutils literal notranslate"><span class="pre">kmesh_spacing_mesh()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.get_response.orbital_magnetization_main"><code class="docutils literal notranslate"><span class="pre">orbital_magnetization_main()</span></code></a></li>
@@ -384,7 +387,9 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.response.Response"><code class="docutils literal notranslate"><span class="pre">Response</span></code></a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.response.Response.set_operators"><code class="docutils literal notranslate"><span class="pre">Response.set_operators()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.response.Response.write_ahc"><code class="docutils literal notranslate"><span class="pre">Response.write_ahc()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.response.Response.write_gyro_K"><code class="docutils literal notranslate"><span class="pre">Response.write_gyro_K()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.response.Response.write_kubo"><code class="docutils literal notranslate"><span class="pre">Response.write_kubo()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.response.Response.write_shc"><code class="docutils literal notranslate"><span class="pre">Response.write_shc()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.response.Response.write_spin"><code class="docutils literal notranslate"><span class="pre">Response.write_spin()</span></code></a></li>
 </ul>
 </li>
@@ -452,6 +457,20 @@ document.write(`
 The three independent components σx = σyz, σy = σzx, and σz = σxy are computed.
 The real part Re[σ^AH_αβ] describes the anomalous Hall conductivity (AHC), and remains finite in the static limit,
 while the imaginary part Im[σ^H_αβ] describes magnetic circular dichroism, and vanishes as ω → 0.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>cwi</strong> (<a class="reference internal" href="cw.html#symclosestwannier.cw.cw_info.CWInfo" title="symclosestwannier.cw.cw_info.CWInfo"><em>CWInfo</em></a>) -- CWInfo.</p></li>
+<li><p><strong>operators</strong> (<em>dict</em>) -- operators.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Anomalous Hall conductivity.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>ndarray</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py function">
@@ -490,6 +509,16 @@ for a list of Fermi energies, and stored in axial-vector form.</p>
 </dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="symclosestwannier.analyzer.get_response.berry_get_js_k">
+<span class="sig-name descname"><span class="pre">berry_get_js_k</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cwi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">operators</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kpoints</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">E</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">del_alpha_E</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">D_alpha_h</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">U</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/analyzer/get_response.html#berry_get_js_k"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.analyzer.get_response.berry_get_js_k" title="Link to this definition">#</a></dt>
+<dd><p>ontribution from point k to the
+&lt;psi_k | 1/2*(sigma_gamma*v_alpha + v_alpha*sigma_gamma) | psi_k&gt;</p>
+<p>QZYZ18 Eq.(23) without hbar/2 (required by spin operator) and
+not divided by hbar (required by velocity operator)</p>
+<p>Junfeng Qiao (8/7/2018)</p>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="symclosestwannier.analyzer.get_response.berry_get_kubo">
 <span class="sig-name descname"><span class="pre">berry_get_kubo</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cwi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">operators</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/analyzer/get_response.html#berry_get_kubo"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.analyzer.get_response.berry_get_kubo" title="Link to this definition">#</a></dt>
 <dd><p>Complex interband optical conductivity, in S/cm,
@@ -498,8 +527,7 @@ separated into Hermitian (Kubo_H) and anti-Hermitian (Kubo_AH) parts.</p>
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>cwi</strong> (<a class="reference internal" href="cw.html#symclosestwannier.cw.cw_info.CWInfo" title="symclosestwannier.cw.cw_info.CWInfo"><em>CWInfo</em></a>) -- CWInfo.</p></li>
-<li><p><strong>HH_R</strong> (<em>ndarray</em>) -- matrix elements of real-space Hamiltonian, &lt;0n|H|Rm&gt;.</p></li>
-<li><p><strong>AA_R</strong> (<em>ndarray</em>) -- matrix elements of real-space position operator, &lt;0n|r|Rm&gt;.</p></li>
+<li><p><strong>operators</strong> (<em>dict</em>) -- </p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -512,13 +540,49 @@ separated into Hermitian (Kubo_H) and anti-Hermitian (Kubo_AH) parts.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="symclosestwannier.analyzer.get_response.berry_get_me">
-<span class="sig-name descname"><span class="pre">berry_get_me</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cwi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">E</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">A</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/analyzer/get_response.html#berry_get_me"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.analyzer.get_response.berry_get_me" title="Link to this definition">#</a></dt>
-<dd><p>Contribution from point k to the complex interband optical
-conductivity, separated into Hermitian (H) and anti-Hermitian (AH)
-parts.</p>
-<p>Args:</p>
-<p>Returns:</p>
+<dt class="sig sig-object py" id="symclosestwannier.analyzer.get_response.berry_get_shc">
+<span class="sig-name descname"><span class="pre">berry_get_shc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cwi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">operators</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/analyzer/get_response.html#berry_get_shc"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.analyzer.get_response.berry_get_shc" title="Link to this definition">#</a></dt>
+<dd><p>Spin Hall conductivity, in (hbar/e)*S/cm.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>cwi</strong> (<a class="reference internal" href="cw.html#symclosestwannier.cw.cw_info.CWInfo" title="symclosestwannier.cw.cw_info.CWInfo"><em>CWInfo</em></a>) -- CWInfo.</p></li>
+<li><p><strong>operators</strong> (<em>dict</em>) -- operators.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Spin Hall conductivity.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="symclosestwannier.analyzer.get_response.berry_get_shc_klist">
+<span class="sig-name descname"><span class="pre">berry_get_shc_klist</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cwi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">operators</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kpoints</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">band</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/analyzer/get_response.html#berry_get_shc_klist"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.analyzer.get_response.berry_get_shc_klist" title="Link to this definition">#</a></dt>
+<dd><p>Contribution from a k-point to the spin Hall conductivity on a list
+of Fermi energies or a list of frequencies or a list of energy bands</p>
+<blockquote>
+<div><dl class="simple">
+<dt>sigma_{alpha,beta}^{gamma}(k), alpha, beta, gamma = 1, 2, 3</dt><dd><p>(x, y, z, respectively)</p>
+</dd>
+</dl>
+</div></blockquote>
+<p>i.e. the Berry curvature-like term of QZYZ18 Eq.(3) &amp; (4).
+The unit is angstrom^2, similar to that of Berry curvature of AHC.</p>
+<p>Note the berry_get_js_k() has not been multiplied by hbar/2 (as
+required by spin operator) and not been divided by hbar (as required
+by the velocity operator). The second velocity operator has not been
+divided by hbar as well. But these two hbar required by velocity
+operators are canceled by the preceding hbar^2 of QZYZ18 Eq.(3).</p>
+<ul class="simple">
+<li><p>shc_k_fermi: return a list for different Fermi energies</p></li>
+<li><p>shc_k_freq:  return a list for different frequencies</p></li>
+<li><p>shc_k_band:  return a list for each energy band</p></li>
+</ul>
+<p>Junfeng Qiao (18/8/2018)</p>
 </dd></dl>
 
 <dl class="py function">
@@ -539,6 +603,12 @@ parts.</p>
 <li><p><strong>operators</strong> (<em>dict</em>) -- operators.</p></li>
 </ul>
 </dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>dictionary of results.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
 </dl>
 </dd></dl>
 
@@ -549,9 +619,59 @@ parts.</p>
 </dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="symclosestwannier.analyzer.get_response.gyrotropic_get_K">
+<span class="sig-name descname"><span class="pre">gyrotropic_get_K</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cwi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">operators</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/analyzer/get_response.html#gyrotropic_get_K"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.analyzer.get_response.gyrotropic_get_K" title="Link to this definition">#</a></dt>
+<dd><p>Computes the following quantities:</p>
+<ul class="simple">
+<li><p>gyro_K_orb = delta(E_kn-E_f).(d E_{kn}/d k_i).(2.hbar/e).m^orb_{kn,j}
+[units of (length^3)*energy]</p></li>
+<li><p>gyro_K_spn = delta(E_kn-E_f).(d E_{kn}/d k_i).sigma_{kn,j} (sigma = Pauli matrix)
+[units of length]</p></li>
+</ul>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>cwi</strong> (<a class="reference internal" href="cw.html#symclosestwannier.cw.cw_info.CWInfo" title="symclosestwannier.cw.cw_info.CWInfo"><em>CWInfo</em></a>) -- CWInfo.</p></li>
+<li><p><strong>operators</strong> (<em>dict</em>) -- operators.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Spin Hall conductivity.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="symclosestwannier.analyzer.get_response.gyrotropic_main">
-<span class="sig-name descname"><span class="pre">gyrotropic_main</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/analyzer/get_response.html#gyrotropic_main"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.analyzer.get_response.gyrotropic_main" title="Link to this definition">#</a></dt>
-<dd><p>Gyrotropic transport coefficients (Gyrotropic module)</p>
+<span class="sig-name descname"><span class="pre">gyrotropic_main</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cwi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">operators</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/analyzer/get_response.html#gyrotropic_main"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.analyzer.get_response.gyrotropic_main" title="Link to this definition">#</a></dt>
+<dd><dl class="simple">
+<dt>Computes the following quantities:</dt><dd><p>(-d0)   D tensor (the Berry curvature dipole).
+(-dw)   D(w) tensor (the finite-frequency generalization of the Berry curvature dipole).
+(-k)    K tensor (orbital component of the kinetic magnetoelectric effect (kME)).
+(-spin) K tensor (spin component of the kinetic magnetoelectric effect (kME)).
+(-c)    C tensor (the ohmic conductivity).
+(-noa)  the interband contributionto the natural optical activity.
+(-dos)  the density of states.
+(-all)  computes all.</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>cwi</strong> (<a class="reference internal" href="cw.html#symclosestwannier.cw.cw_info.CWInfo" title="symclosestwannier.cw.cw_info.CWInfo"><em>CWInfo</em></a>) -- CWInfo.</p></li>
+<li><p><strong>operators</strong> (<em>dict</em>) -- operators.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>dictionary of results.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py function">
@@ -571,16 +691,19 @@ the three Delta_k's for each of the primitive translations b1, b2, and b3</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="symclosestwannier.analyzer.get_response.spin_moment_main">
 <span class="sig-name descname"><span class="pre">spin_moment_main</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cwi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">operators</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/analyzer/get_response.html#spin_moment_main"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.analyzer.get_response.spin_moment_main" title="Link to this definition">#</a></dt>
-<dd><dl class="simple">
-<dt>Computes the following quantities:</dt><dd><p>(spin)  spin magnetic moments.</p>
-</dd>
-</dl>
+<dd><p>Computes the spin magnetic moments, Ms_x, Ms_y, Ms_z.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>cwi</strong> (<a class="reference internal" href="cw.html#symclosestwannier.cw.cw_info.CWInfo" title="symclosestwannier.cw.cw_info.CWInfo"><em>CWInfo</em></a>) -- CWInfo.</p></li>
 <li><p><strong>operators</strong> (<em>dict</em>) -- operators.</p></li>
 </ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Ms_x, Ms_y, Ms_z.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
 </dd>
 </dl>
 </dd></dl>
@@ -670,14 +793,21 @@ Tsirkin: !now optionally either E or occ parameters may be supplied
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="symclosestwannier.analyzer.response.Response.write_gyro_K">
+<span class="sig-name descname"><span class="pre">write_gyro_K</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/analyzer/response.html#Response.write_gyro_K"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.analyzer.response.Response.write_gyro_K" title="Link to this definition">#</a></dt>
+<dd><p>write <a href="#id1"><span class="problematic" id="id2">*</span></a>.dat.</p>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="symclosestwannier.analyzer.response.Response.write_kubo">
 <span class="sig-name descname"><span class="pre">write_kubo</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/analyzer/response.html#Response.write_kubo"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.analyzer.response.Response.write_kubo" title="Link to this definition">#</a></dt>
 <dd><p>write seedname-kubo_H_*.dat, seedname-kubo_A_*.dat.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>filename</strong> (<em>str</em>) -- file name.</p>
-</dd>
-</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="symclosestwannier.analyzer.response.Response.write_shc">
+<span class="sig-name descname"><span class="pre">write_shc</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/analyzer/response.html#Response.write_shc"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.analyzer.response.Response.write_shc" title="Link to this definition">#</a></dt>
+<dd><p>write seedname-shc.dat, seedname-shc-fermiscan.dat.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -745,10 +875,13 @@ Tsirkin: !now optionally either E or occ parameters may be supplied
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.get_response.berry_get_ahc"><code class="docutils literal notranslate"><span class="pre">berry_get_ahc()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.get_response.berry_get_imf_klist"><code class="docutils literal notranslate"><span class="pre">berry_get_imf_klist()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.get_response.berry_get_imfgh_klist"><code class="docutils literal notranslate"><span class="pre">berry_get_imfgh_klist()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.get_response.berry_get_js_k"><code class="docutils literal notranslate"><span class="pre">berry_get_js_k()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.get_response.berry_get_kubo"><code class="docutils literal notranslate"><span class="pre">berry_get_kubo()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.get_response.berry_get_me"><code class="docutils literal notranslate"><span class="pre">berry_get_me()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.get_response.berry_get_shc"><code class="docutils literal notranslate"><span class="pre">berry_get_shc()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.get_response.berry_get_shc_klist"><code class="docutils literal notranslate"><span class="pre">berry_get_shc_klist()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.get_response.berry_main"><code class="docutils literal notranslate"><span class="pre">berry_main()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.get_response.boltzwann_main"><code class="docutils literal notranslate"><span class="pre">boltzwann_main()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.get_response.gyrotropic_get_K"><code class="docutils literal notranslate"><span class="pre">gyrotropic_get_K()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.get_response.gyrotropic_main"><code class="docutils literal notranslate"><span class="pre">gyrotropic_main()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.get_response.kmesh_spacing_mesh"><code class="docutils literal notranslate"><span class="pre">kmesh_spacing_mesh()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.get_response.orbital_magnetization_main"><code class="docutils literal notranslate"><span class="pre">orbital_magnetization_main()</span></code></a></li>
@@ -763,7 +896,9 @@ Tsirkin: !now optionally either E or occ parameters may be supplied
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.response.Response"><code class="docutils literal notranslate"><span class="pre">Response</span></code></a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.response.Response.set_operators"><code class="docutils literal notranslate"><span class="pre">Response.set_operators()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.response.Response.write_ahc"><code class="docutils literal notranslate"><span class="pre">Response.write_ahc()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.response.Response.write_gyro_K"><code class="docutils literal notranslate"><span class="pre">Response.write_gyro_K()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.response.Response.write_kubo"><code class="docutils literal notranslate"><span class="pre">Response.write_kubo()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.response.Response.write_shc"><code class="docutils literal notranslate"><span class="pre">Response.write_shc()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.response.Response.write_spin"><code class="docutils literal notranslate"><span class="pre">Response.write_spin()</span></code></a></li>
 </ul>
 </li>

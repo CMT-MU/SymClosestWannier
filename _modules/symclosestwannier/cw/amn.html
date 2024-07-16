@@ -320,6 +320,7 @@ document.write(`
 <span class="kn">import</span> <span class="nn">gzip</span>
 <span class="kn">import</span> <span class="nn">tarfile</span>
 <span class="kn">import</span> <span class="nn">itertools</span>
+<span class="kn">import</span> <span class="nn">datetime</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
@@ -396,6 +397,32 @@ document.write(`
         <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;num_k&quot;</span><span class="p">:</span> <span class="n">num_k</span><span class="p">,</span> <span class="s2">&quot;num_bands&quot;</span><span class="p">:</span> <span class="n">num_bands</span><span class="p">,</span> <span class="s2">&quot;num_wann&quot;</span><span class="p">:</span> <span class="n">num_wann</span><span class="p">,</span> <span class="s2">&quot;Ak&quot;</span><span class="p">:</span> <span class="n">Ak</span><span class="p">}</span>
 
         <span class="k">return</span> <span class="n">d</span></div>
+
+
+    <span class="c1"># ==================================================</span>
+<div class="viewcode-block" id="Amn.write">
+<a class="viewcode-back" href="../../../src/api/cw.html#symclosestwannier.cw.amn.Amn.write">[docs]</a>
+    <span class="k">def</span> <span class="nf">write</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_name</span><span class="o">=</span><span class="s2">&quot;cwannier.amn.cw&quot;</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        write amn data.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            file_name (str, optional): file name.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">Ak</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="p">[</span><span class="s2">&quot;Ak&quot;</span><span class="p">])</span>
+
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">file_name</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
+            <span class="n">fp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;Created by amn.py </span><span class="si">{}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;on </span><span class="si">%d</span><span class="s2">%b%Y at %H:%M:%S&quot;</span><span class="p">)))</span>
+            <span class="n">fp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span>
+                <span class="s2">&quot;       </span><span class="si">{:5d}</span><span class="s2">       </span><span class="si">{:5d}</span><span class="s2">       </span><span class="si">{:5d}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="p">[</span><span class="s2">&quot;num_bands&quot;</span><span class="p">],</span> <span class="bp">self</span><span class="p">[</span><span class="s2">&quot;num_k&quot;</span><span class="p">],</span> <span class="bp">self</span><span class="p">[</span><span class="s2">&quot;num_wann&quot;</span><span class="p">])</span>
+            <span class="p">)</span>
+            <span class="k">for</span> <span class="n">ik</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">itertools</span><span class="o">.</span><span class="n">product</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="p">[</span><span class="s2">&quot;num_k&quot;</span><span class="p">]),</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="p">[</span><span class="s2">&quot;num_wann&quot;</span><span class="p">]),</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="p">[</span><span class="s2">&quot;num_bands&quot;</span><span class="p">])):</span>
+                <span class="c1"># num_bands, num_wann, nk</span>
+                <span class="n">fp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span>
+                    <span class="s2">&quot;</span><span class="si">{0:5d}{1:5d}{2:5d}{3.real:18.12f}{3.imag:18.12f}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">m</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">ik</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">Ak</span><span class="p">[</span><span class="n">ik</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">m</span><span class="p">])</span>
+                <span class="p">)</span>
+
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  * wrote &#39;</span><span class="si">{</span><span class="n">file_name</span><span class="si">}</span><span class="s2">&#39;.&quot;</span><span class="p">)</span></div>
 
 
     <span class="c1"># ==================================================</span>

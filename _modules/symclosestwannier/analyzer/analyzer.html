@@ -371,11 +371,7 @@ document.write(`
     <span class="n">cwi</span> <span class="o">=</span> <span class="n">CWInfo</span><span class="p">(</span><span class="s2">&quot;./&quot;</span><span class="p">,</span> <span class="n">seedname</span><span class="p">,</span> <span class="n">dic</span><span class="o">=</span><span class="n">info</span><span class="p">)</span>
     <span class="n">cwi</span> <span class="o">|=</span> <span class="n">cwin</span> <span class="o">|</span> <span class="n">win</span>
 
-    <span class="k">if</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;restart&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;sym&quot;</span><span class="p">:</span>
-        <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;restart&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;cw&quot;</span>
-
     <span class="n">cw_model</span> <span class="o">=</span> <span class="n">CWModel</span><span class="p">(</span><span class="n">cwi</span><span class="p">,</span> <span class="n">cwm</span><span class="p">,</span> <span class="n">dic</span><span class="o">=</span><span class="n">data</span><span class="p">)</span>
-
     <span class="n">cwi</span> <span class="o">=</span> <span class="n">cw_model</span><span class="o">.</span><span class="n">_cwi</span>
 
     <span class="n">outfile</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">seedname</span><span class="si">}</span><span class="s2">.cwpout&quot;</span>
@@ -387,12 +383,14 @@ document.write(`
     <span class="c1">#       Response       #</span>
     <span class="c1"># ******************** #</span>
 
-    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">cw_model</span><span class="p">[</span><span class="s2">&quot;Hr_sym&quot;</span><span class="p">])</span> <span class="o">==</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
-        <span class="n">Hr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">cw_model</span><span class="p">[</span><span class="s2">&quot;Hr_sym&quot;</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">complex128</span><span class="p">)</span>
-    <span class="k">elif</span> <span class="nb">type</span><span class="p">(</span><span class="n">cw_model</span><span class="p">[</span><span class="s2">&quot;Hr&quot;</span><span class="p">])</span> <span class="o">==</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">cw_model</span><span class="p">[</span><span class="s2">&quot;Hr&quot;</span><span class="p">])</span> <span class="o">==</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
         <span class="n">Hr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">cw_model</span><span class="p">[</span><span class="s2">&quot;Hr&quot;</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">complex128</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">Hr</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">if</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;symmetrization&quot;</span><span class="p">]:</span>
+        <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">cw_model</span><span class="p">[</span><span class="s2">&quot;Hr_sym&quot;</span><span class="p">])</span> <span class="o">==</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+            <span class="n">Hr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">cw_model</span><span class="p">[</span><span class="s2">&quot;Hr_sym&quot;</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">complex128</span><span class="p">)</span>
 
     <span class="n">res</span> <span class="o">=</span> <span class="n">Response</span><span class="p">(</span><span class="n">cwi</span><span class="p">,</span> <span class="n">cwm</span><span class="p">,</span> <span class="n">HH_R</span><span class="o">=</span><span class="n">Hr</span><span class="p">)</span>
 
@@ -415,6 +413,13 @@ document.write(`
     <span class="k">if</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;berry_task&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;kubo&quot;</span><span class="p">:</span>
         <span class="n">res</span><span class="o">.</span><span class="n">write_kubo</span><span class="p">()</span>
 
+    <span class="k">if</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;berry_task&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;shc&quot;</span><span class="p">:</span>
+        <span class="n">res</span><span class="o">.</span><span class="n">write_shc</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;gyrotropic&quot;</span><span class="p">]:</span>
+        <span class="k">if</span> <span class="n">cwi</span><span class="o">.</span><span class="n">win</span><span class="o">.</span><span class="n">eval_K</span><span class="p">:</span>
+            <span class="n">res</span><span class="o">.</span><span class="n">write_gyro_K</span><span class="p">()</span>
+
     <span class="k">if</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;spin_moment&quot;</span><span class="p">]:</span>
         <span class="n">res</span><span class="o">.</span><span class="n">write_spin</span><span class="p">()</span>
 
@@ -422,7 +427,9 @@ document.write(`
     <span class="n">cwm</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">cw_end_output_msg</span><span class="p">(),</span> <span class="n">stamp</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">outfile</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;a&quot;</span><span class="p">)</span>
 
     <span class="n">cwm</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  * total elapsed_time:&quot;</span><span class="p">,</span> <span class="n">stamp</span><span class="o">=</span><span class="s2">&quot;start&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">outfile</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;a&quot;</span><span class="p">)</span>
-    <span class="n">cwm</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">postcw_end_msg</span><span class="p">(),</span> <span class="n">stamp</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">outfile</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;a&quot;</span><span class="p">)</span></div>
+    <span class="n">cwm</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">postcw_end_msg</span><span class="p">(),</span> <span class="n">stamp</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">outfile</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;a&quot;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">res</span><span class="p">,</span> <span class="n">band</span></div>
 
 </pre></div>
 

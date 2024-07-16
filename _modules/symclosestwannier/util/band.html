@@ -313,6 +313,7 @@ document.write(`
 <span></span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">utility codes for CW.</span>
 <span class="sd">&quot;&quot;&quot;</span>
+
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">subprocess</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
@@ -415,6 +416,7 @@ document.write(`
     <span class="n">fs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;set xrange [:</span><span class="si">{</span><span class="n">kmax</span><span class="si">}</span><span class="s2">] </span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
     <span class="n">fs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;set yrange [</span><span class="si">{</span><span class="n">emin</span><span class="o">-</span><span class="n">ef</span><span class="o">-</span><span class="n">offset</span><span class="si">}</span><span class="s2">:</span><span class="si">{</span><span class="n">emax</span><span class="o">-</span><span class="n">ef</span><span class="o">+</span><span class="n">offset</span><span class="si">}</span><span class="s2">] </span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
     <span class="n">fs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;set tics font &#39;Times Roman, 30&#39; </span><span class="se">\n\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">fs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;set size ratio 0.7 </span><span class="se">\n\n</span><span class="s2">&quot;</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">k_dis_pos</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">for</span> <span class="n">pos</span><span class="p">,</span> <span class="n">label</span> <span class="ow">in</span> <span class="n">k_dis_pos</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
@@ -422,6 +424,8 @@ document.write(`
 
         <span class="n">k_dis_pos</span> <span class="o">=</span> <span class="p">{</span><span class="n">pos</span><span class="p">:</span> <span class="s2">&quot;{/Symbol G}&quot;</span> <span class="k">if</span> <span class="n">label</span> <span class="o">==</span> <span class="s2">&quot;G&quot;</span> <span class="k">else</span> <span class="n">label</span> <span class="k">for</span> <span class="n">pos</span><span class="p">,</span> <span class="n">label</span> <span class="ow">in</span> <span class="n">k_dis_pos</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
         <span class="n">fs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;set xtics (&quot;</span> <span class="o">+</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="sa">f</span><span class="s2">&quot;&#39;</span><span class="si">{</span><span class="n">label</span><span class="si">}</span><span class="s2">&#39; </span><span class="si">{</span><span class="n">pos</span><span class="si">}</span><span class="s2">,&quot;</span> <span class="k">for</span> <span class="n">pos</span><span class="p">,</span> <span class="n">label</span> <span class="ow">in</span> <span class="n">k_dis_pos</span><span class="o">.</span><span class="n">items</span><span class="p">()])</span> <span class="o">+</span> <span class="s2">&quot;) </span><span class="se">\n\n</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="n">fs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;ef = </span><span class="si">{</span><span class="n">ef</span><span class="si">}</span><span class="s2"> </span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">a</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">fs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;a = </span><span class="si">{</span><span class="n">a</span><span class="si">}</span><span class="s2"> </span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
@@ -433,10 +437,14 @@ document.write(`
 
     <span class="k">if</span> <span class="n">ref_filename</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="c1"># fs.write(f&quot;&#39;{ref_filename}&#39; u ($1/(2*pi)):2 w l lw lwidth lc &#39;dark-grey&#39;, &quot;)</span>
-        <span class="n">fs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&#39;</span><span class="si">{</span><span class="n">ref_filename</span><span class="si">}</span><span class="s2">&#39; u ($1/a):2 w l lw lwidth lc &#39;dark-grey&#39;, &quot;</span><span class="p">)</span>
+        <span class="n">fs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&#39;</span><span class="si">{</span><span class="n">ref_filename</span><span class="si">}</span><span class="s2">&#39; u ($1/a):($2-ef) w l lw lwidth lc &#39;dark-grey&#39;, &quot;</span><span class="p">)</span>
 
     <span class="n">fs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span>
-        <span class="sa">f</span><span class="s2">&quot;for [j=2:</span><span class="si">{</span><span class="n">num_wann</span><span class="o">*</span><span class="p">(</span><span class="n">num_wann</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="si">}</span><span class="s2">:</span><span class="si">{</span><span class="n">num_wann</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2">] &#39;</span><span class="si">{</span><span class="n">filename</span><span class="si">}</span><span class="s2">.txt&#39; u 1:j w l lw lwidth dt (3,1) lc &#39;</span><span class="si">{</span><span class="n">lc</span><span class="si">}</span><span class="s2">&#39; </span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="sa">f</span><span class="s2">&quot;for [j=2:</span><span class="si">{</span><span class="n">num_wann</span><span class="o">*</span><span class="p">(</span><span class="n">num_wann</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="si">}</span><span class="s2">:</span><span class="si">{</span><span class="n">num_wann</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2">] &#39;</span><span class="si">{</span><span class="n">filename</span><span class="si">}</span><span class="s2">.txt&#39; u 1:j w l lw lwidth dt (3,1) lc &#39;</span><span class="si">{</span><span class="n">lc</span><span class="si">}</span><span class="s2">&#39;, &quot;</span>
+    <span class="p">)</span>
+
+    <span class="n">fs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span>
+        <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="mf">0.0</span><span class="si">}</span><span class="s2"> lw 0.5 dt (2,1) lc &#39;black&#39;&quot;</span>
     <span class="p">)</span>
 
     <span class="n">fs</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
