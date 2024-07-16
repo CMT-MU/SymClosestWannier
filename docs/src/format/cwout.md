@@ -136,14 +136,11 @@ done
 
 
   * wrote 'graphene_pz_hr.dat.cw'.
-  * wrote 'graphene_pz_hr_nonortho.dat.cw'.
   * wrote 'graphene_pz_sr.dat.cw'.
   * wrote 'graphene_pz_r.dat.cw'.
   * wrote './sym/graphene_pz_20_hr_sym.dat.cw'.
-  * wrote './sym/graphene_pz_20_hr_nonortho_sym.dat.cw'.
   * wrote './sym/graphene_pz_20_sr_sym.dat.cw'.
   * wrote './sym/graphene_pz_20_z.dat.cw'.
-  * wrote './sym/graphene_pz_20_z_nonortho.dat.cw'.
   * wrote './sym/graphene_pz_20_s.dat.cw'.
   * wrote './sym/graphene_pz_20_z_exp.dat.cw'.
 
