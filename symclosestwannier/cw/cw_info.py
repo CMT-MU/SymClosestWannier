@@ -97,7 +97,7 @@ class CWInfo(dict):
             if name == "umat" and (d["restart"] != "w90"):
                 continue
             if name == "mmn":
-                if not np.any([d["write_rmn"], d["write_vmn"], d["write_tb"], d["berry"]]):
+                if not np.any([d["write_rmn"], d["write_vmn"], d["write_tb"], d["berry"], d["gyrotropic"]]):
                     continue
             if name == "spn":
                 if not np.any(
