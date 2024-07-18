@@ -112,13 +112,13 @@ class CWInfo(dict):
                 ):
                     continue
 
-            if name == "uHu":
-                if not np.any(
-                    [
-                        info_dict["win"].eval_spn,
-                    ]
-                ):
-                    continue
+            # if name == "uHu":
+            #     if not np.any(
+            #         [
+            #             info_dict["win"].eval_spn,
+            #         ]
+            #     ):
+            #         continue
 
             info = C(topdir, seedname)
             for k, v in info.items():
