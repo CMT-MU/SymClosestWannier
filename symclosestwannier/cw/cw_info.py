@@ -113,11 +113,7 @@ class CWInfo(dict):
                     continue
 
             if name == "uHu":
-                if not np.any(
-                    [
-                        info_dict["win"].eval_spn,
-                    ]
-                ):
+                if not np.any([d["gyrotropic"]]):
                     continue
 
             info = C(topdir, seedname)

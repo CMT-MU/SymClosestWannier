@@ -1856,7 +1856,8 @@ def gyrotropic_get_K(cwi, operators):
     """
     fac = -1.0e20 * elem_charge_SI * hbar_SI / (2.0 * elec_mass_SI * cell_volume)
 
-    gyro_K_spn *= fac
+    if cwi.win.eval_spn:
+        gyro_K_spn *= fac
 
     return gyro_K_orb, gyro_K_spn
 
