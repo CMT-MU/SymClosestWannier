@@ -121,7 +121,9 @@ def cw_creator(seedname="cwannier"):
         cwi.mmn.write(filename)
 
     if cwi["write_spn"]:
-        pass
+        SS_R = get_oper_R("SS_R", cwi)
+        filename = f"{cwi['seedname']}.s.cw"
+        cw_model.write_or(SS_R, filename, vec=True)
 
     if cwi["symmetrization"]:
         if cwi["write_hr"]:
@@ -143,8 +145,8 @@ def cw_creator(seedname="cwannier"):
         filename = os.path.join(cwi["mp_outdir"], "{}".format(f"{cwi['mp_seedname']}_z.dat.cw"))
         cw_model.write_samb_coeffs(filename, type="z")
 
-        # filename = os.path.join(cwi["mp_outdir"], "{}".format(f"{cwi['mp_seedname']}_z_nonortho.dat.cw"))
-        # cw_model.write_samb_coeffs(filename, type="z_nonortho")
+        filename = os.path.join(cwi["mp_outdir"], "{}".format(f"{cwi['mp_seedname']}_z_nonortho.dat.cw"))
+        cw_model.write_samb_coeffs(filename, type="z_nonortho")
 
         filename = os.path.join(cwi["mp_outdir"], "{}".format(f"{cwi['mp_seedname']}_s.dat.cw"))
         cw_model.write_samb_coeffs(filename, type="s")
