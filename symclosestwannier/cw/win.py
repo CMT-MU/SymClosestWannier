@@ -370,7 +370,7 @@ class Win(dict):
         d["kmesh"] = [int(x) for x in kmesh.split()]
         kmesh_spacing = self._get_param_keyword(win_data, "kmesh_spacing", "1  1  1", dtype=str)
         d["kmesh_spacing"] = [int(x) for x in kmesh_spacing.split()]
-        d["adpt_smr"] = self._get_param_keyword(win_data, "adpt_smr", False, dtype=bool)
+        d["adpt_smr"] = self._get_param_keyword(win_data, "adpt_smr", True, dtype=bool)
         d["adpt_smr_fac"] = self._get_param_keyword(win_data, "adpt_smr_fac", np.sqrt(2), dtype=float)
         d["adpt_smr_max"] = self._get_param_keyword(win_data, "adpt_smr_max", 1.0, dtype=float)
         d["smr_type"] = self._get_param_keyword(win_data, "smr_type", "gauss", dtype=str).replace(" ", "")
@@ -391,11 +391,13 @@ class Win(dict):
         d["kubo_freq_min"] = self._get_param_keyword(win_data, "kubo_freq_min", 0.0, dtype=float)
         d["kubo_freq_step"] = self._get_param_keyword(win_data, "kubo_freq_step", 0.01, dtype=float)
         d["kubo_eigval_max"] = self._get_param_keyword(win_data, "kubo_eigval_max", +100000, dtype=float)
-        d["kubo_adpt_smr"] = self._get_param_keyword(win_data, "kubo_adpt_smr", False, dtype=bool)
-        d["kubo_adpt_smr_fac"] = self._get_param_keyword(win_data, "kubo_adpt_smr_fac", np.sqrt(2), dtype=float)
-        d["kubo_adpt_smr_max"] = self._get_param_keyword(win_data, "kubo_adpt_smr_max", 1.0, dtype=float)
-        d["kubo_smr_type"] = self._get_param_keyword(win_data, "smr_type", "gauss", dtype=str).replace(" ", "")
-        d["kubo_smr_fixed_en_width"] = self._get_param_keyword(win_data, "kubo_smr_fixed_en_width", 0.0, dtype=float)
+        d["kubo_adpt_smr"] = self._get_param_keyword(win_data, "kubo_adpt_smr", d["adpt_smr"], dtype=bool)
+        d["kubo_adpt_smr_fac"] = self._get_param_keyword(win_data, "kubo_adpt_smr_fac", d["adpt_smr_fac"], dtype=float)
+        d["kubo_adpt_smr_max"] = self._get_param_keyword(win_data, "kubo_adpt_smr_max", d["adpt_smr_max"], dtype=float)
+        d["kubo_smr_type"] = self._get_param_keyword(win_data, "smr_type", d["smr_type"], dtype=str).replace(" ", "")
+        d["kubo_smr_fixed_en_width"] = self._get_param_keyword(
+            win_data, "kubo_smr_fixed_en_width", d["smr_fixed_en_width"], dtype=float
+        )
 
         d["gyrotropic"] = self._get_param_keyword(win_data, "gyrotropic", False, dtype=bool)
         gyrotropic_task = self._get_param_keyword(win_data, "gyrotropic_task", None, dtype=str)
@@ -413,9 +415,11 @@ class Win(dict):
         d["gyrotropic_freq_min"] = self._get_param_keyword(win_data, "gyrotropic_freq_min", 0.0, dtype=float)
         d["gyrotropic_freq_step"] = self._get_param_keyword(win_data, "gyrotropic_freq_step", 0.01, dtype=float)
         d["gyrotropic_eigval_max"] = self._get_param_keyword(win_data, "gyrotropic_eigval_max", +100000, dtype=float)
-        d["gyrotropic_smr_type"] = self._get_param_keyword(win_data, "smr_type", "gauss", dtype=str).replace(" ", "")
+        d["gyrotropic_smr_type"] = self._get_param_keyword(win_data, "smr_type", d["smr_type"], dtype=str).replace(
+            " ", ""
+        )
         d["gyrotropic_smr_fixed_en_width"] = self._get_param_keyword(
-            win_data, "gyrotropic_smr_fixed_en_width", 0.0, dtype=float
+            win_data, "gyrotropic_smr_fixed_en_width", d["smr_fixed_en_width"], dtype=float
         )
         d["gyrotropic_smr_max_arg"] = self._get_param_keyword(win_data, "gyrotropic_smr_max_arg", 5.0, dtype=float)
         d["gyrotropic_degen_thresh"] = self._get_param_keyword(win_data, "gyrotropic_degen_thresh", 0.0, dtype=float)
