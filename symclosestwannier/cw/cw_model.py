@@ -51,7 +51,7 @@ from symclosestwannier.util.header import (
     hr_header,
     sr_header,
     z_header,
-    # z_nonortho_header,
+    z_nonortho_header,
     s_header,
     z_exp_header,
 )
@@ -67,36 +67,34 @@ from symclosestwannier.util.utility import (
     matrix_dict_k,
     dict_to_matrix,
     sort_ket_matrix_k,
-    sort_ket_matrix_dict,
     samb_decomp_operator,
     construct_Or,
     construct_Ok,
     spin_zeeman_interaction,
     Kelvin_to_eV,
 )
-from symclosestwannier.util.get_oper_R import get_oper_R
 
 _default = {
     "Sk": None,
     "Hk": None,
-    # "Hk_nonortho": None,
+    "Hk_nonortho": None,
     #
     "Sr": None,
     "Hr": None,
-    # "Hr_nonortho": None,
+    "Hr_nonortho": None,
     #
     "s": None,
     "z": None,
-    # "z_nonortho": None,
+    "z_nonortho": None,
     #
     "z_exp": None,
     #
     "Sk_sym": None,
     "Hk_sym": None,
-    # "Hk_nonortho_sym": None,
+    "Hk_nonortho_sym": None,
     "Sr_sym": None,
     "Hr_sym": None,
-    # "Hr_nonortho_sym": None,
+    "Hr_nonortho_sym": None,
     #
     "Ek_RMSE_grid": None,
     "Ek_RMSE_path": None,
@@ -174,11 +172,11 @@ class CWModel(dict):
             Hk += H_zeeman
 
         S2k = np.array([spl.sqrtm(Sk[k]) for k in range(self._cwi["num_k"])])
-        # Hk_nonortho = S2k @ Hk @ S2k
+        Hk_nonortho = S2k @ Hk @ S2k
 
         Sr = CWModel.fourier_transform_k_to_r(Sk, self._cwi["kpoints"], self._cwi["irvec"])
         Hr = CWModel.fourier_transform_k_to_r(Hk, self._cwi["kpoints"], self._cwi["irvec"])
-        # Hr_nonortho = CWModel.fourier_transform_k_to_r(Hk_nonortho, self._cwi["kpoints"], self._cwi["irvec"])
+        Hr_nonortho = CWModel.fourier_transform_k_to_r(Hk_nonortho, self._cwi["kpoints"], self._cwi["irvec"])
 
         #####
 
@@ -186,11 +184,11 @@ class CWModel(dict):
             {
                 "Sk": Sk.tolist(),
                 "Hk": Hk.tolist(),
-                # "Hk_nonortho": Hk_nonortho.tolist(),
+                "Hk_nonortho": Hk_nonortho.tolist(),
                 #
                 "Sr": Sr.tolist(),
                 "Hr": Hr.tolist(),
-                # "Hr_nonortho": Hr_nonortho.tolist(),
+                "Hr_nonortho": Hr_nonortho.tolist(),
             }
         )
 
@@ -236,8 +234,7 @@ class CWModel(dict):
         self._cwm.log(msg, None, end="", file=self._outfile, mode="a")
         self._cwm.set_stamp()
 
-        # Sk, Uk, Hk, Hk_nonortho, Sr, Hr, Hr_nonortho = self._construct_tb(Ek, Ak)
-        Sk, Uk, Hk, Sr, Hr = self._construct_tb(Ek, Ak)
+        Sk, Uk, Hk, Sr, Hr, Hk_nonortho, Hr_nonortho = self._construct_tb(Ek, Ak)
 
         self._cwm.log("done", file=self._outfile, mode="a")
 
@@ -252,11 +249,11 @@ class CWModel(dict):
             {
                 "Sk": Sk.tolist(),
                 "Hk": Hk.tolist(),
-                # "Hk_nonortho": Hk_nonortho.tolist(),
+                "Hk_nonortho": Hk_nonortho.tolist(),
                 #
                 "Sr": Sr.tolist(),
                 "Hr": Hr.tolist(),
-                # "Hr_nonortho": Hr_nonortho.tolist(),
+                "Hr_nonortho": Hr_nonortho.tolist(),
             }
         )
 
@@ -521,14 +518,14 @@ class CWModel(dict):
             H_zeeman = spin_zeeman_interaction(B, theta, phi, pauli_spin, g_factor, self._cwi["num_wann"])
             Hk += H_zeeman
 
+        S2k = np.array([spl.sqrtm(Sk[k]) for k in range(self._cwi["num_k"])])
+        Hk_nonortho = S2k @ Hk @ S2k
+
         Sr = CWModel.fourier_transform_k_to_r(Sk, self._cwi["kpoints"], self._cwi["irvec"])
         Hr = CWModel.fourier_transform_k_to_r(Hk, self._cwi["kpoints"], self._cwi["irvec"])
-        # Hr_nonortho = CWModel.fourier_transform_k_to_r(Hk_nonortho, self._cwi["kpoints"], self._cwi["irvec"])
+        Hr_nonortho = CWModel.fourier_transform_k_to_r(Hk_nonortho, self._cwi["kpoints"], self._cwi["irvec"])
 
-        # S2k = np.array([spl.sqrtm(Sk[k]) for k in range(self._cwi["num_k"])])
-        # Hk_nonortho = S2k @ Hk @ S2k
-
-        return Sk, Uk, Hk, Sr, Hr  # , Hk_nonortho, Hr_nonortho
+        return Sk, Uk, Hk, Sr, Hr, Hk_nonortho, Hr_nonortho
 
     # ==================================================
     def _sym(self):
@@ -538,7 +535,7 @@ class CWModel(dict):
         Hk = np.array(self["Hk"])
         Hr_dict = CWModel.matrix_dict_r(self["Hr"], self._cwi["irvec"])
         Sr_dict = CWModel.matrix_dict_r(self["Sr"], self._cwi["irvec"])
-        # Hr_nonortho_dict = CWModel.matrix_dict_r(self["Hr_nonortho"], self._cwi["irvec"])
+        Hr_nonortho_dict = CWModel.matrix_dict_r(self["Hr_nonortho"], self._cwi["irvec"])
 
         #####
 
@@ -641,19 +638,30 @@ class CWModel(dict):
         self._cwm.log(msg, None, end="", file=self._outfile, mode="a")
         self._cwm.set_stamp()
 
-        # s = CWModel.samb_decomp_operator(Sr_dict, Zr_dict, A, atoms_frac, ket_amn, A_samb, atoms_frac_samb, ket_samb)
-        s = z
+        if mat["molecule"]:
+            s = CWModel.samb_decomp_operator(Sr_dict, Zr_dict, ket=ket_amn, ket_samb=ket_samb)
+        else:
+            s = CWModel.samb_decomp_operator(
+                Sr_dict, Zr_dict, A, atoms_frac, ket_amn, A_samb, atoms_frac_samb, ket_samb
+            )
+
         self._cwm.log("done", file=self._outfile, mode="a")
 
         #####
 
-        # msg = "    - decomposing non-orthogonal Hamiltonian as linear combination of SAMBs ... "
-        # self._cwm.log(msg, None, end="", file=self._outfile, mode="a")
-        # self._cwm.set_stamp()
+        msg = "    - decomposing non-orthogonal Hamiltonian as linear combination of SAMBs ... "
+        self._cwm.log(msg, None, end="", file=self._outfile, mode="a")
+        self._cwm.set_stamp()
 
-        # z_nonortho = CWModel.samb_decomp_operator(Hr_nonortho_dict, Zr_dict, A, atoms_frac, ket_amn, A_samb, atoms_frac_samb, ket_samb)
+        if mat["molecule"]:
+            z_nonortho = CWModel.samb_decomp_operator(Hr_nonortho_dict, Zr_dict, ket=ket_amn, ket_samb=ket_samb)
+        else:
+            z_nonortho = CWModel.samb_decomp_operator(
+                Hr_nonortho_dict, Zr_dict, A, atoms_frac, ket_amn, A_samb, atoms_frac_samb, ket_samb
+            )
+
         # z_nonortho = z
-        # self._cwm.log("done", file=self._outfile, mode="a")
+        self._cwm.log("done", file=self._outfile, mode="a")
 
         #####
 
@@ -663,9 +671,9 @@ class CWModel(dict):
 
         Sr_sym = CWModel.construct_Or(list(s.values()), self._cwi["num_wann"], self._cwi["irvec"], mat)
         Hr_sym = CWModel.construct_Or(list(z.values()), self._cwi["num_wann"], self._cwi["irvec"], mat)
-        # Hr_nonortho_sym = CWModel.construct_Or(
-        #     list(z_nonortho.values()), self._cwi["num_wann"], self._cwi["irvec"], mat
-        # )
+        Hr_nonortho_sym = CWModel.construct_Or(
+            list(z_nonortho.values()), self._cwi["num_wann"], self._cwi["irvec"], mat
+        )
 
         if self._cwi["tb_gauge"]:
             Sk_sym = CWModel.fourier_transform_r_to_k(
@@ -674,13 +682,13 @@ class CWModel(dict):
             Hk_sym = CWModel.fourier_transform_r_to_k(
                 Hr_sym, self._cwi["kpoints"], self._cwi["irvec"], self._cwi["ndegen"], atoms_frac=atoms_frac_samb
             )
-            # Hk_nonortho_sym = CWModel.fourier_transform_r_to_k(
-            #     Hr_nonortho_sym,
-            #     self._cwi["kpoints"],
-            #     self._cwi["irvec"],
-            #     self._cwi["ndegen"],
-            #     atoms_frac=atoms_frac_samb,
-            # )
+            Hk_nonortho_sym = CWModel.fourier_transform_r_to_k(
+                Hr_nonortho_sym,
+                self._cwi["kpoints"],
+                self._cwi["irvec"],
+                self._cwi["ndegen"],
+                atoms_frac=atoms_frac_samb,
+            )
         else:
             Sk_sym = CWModel.fourier_transform_r_to_k(
                 Sr_sym, self._cwi["kpoints"], self._cwi["irvec"], self._cwi["ndegen"]
@@ -688,9 +696,9 @@ class CWModel(dict):
             Hk_sym = CWModel.fourier_transform_r_to_k(
                 Hr_sym, self._cwi["kpoints"], self._cwi["irvec"], self._cwi["ndegen"]
             )
-            # Hk_nonortho_sym = CWModel.fourier_transform_r_to_k(
-            #     Hr_nonortho_sym, self._cwi["kpoints"], self._cwi["irvec"], self._cwi["ndegen"]
-            # )
+            Hk_nonortho_sym = CWModel.fourier_transform_r_to_k(
+                Hr_nonortho_sym, self._cwi["kpoints"], self._cwi["irvec"], self._cwi["ndegen"]
+            )
         self._cwm.log("done", file=self._outfile, mode="a")
 
         #####
@@ -754,10 +762,10 @@ class CWModel(dict):
 
             if self._cwi["tb_gauge"]:
                 Hk_grid = CWModel.fourier_transform_r_to_k(
-                    self["Hr"], kpoints, self._cwi["irvec"], self._cwi["ndegen"], atoms_frac=atoms_frac_samb
+                    Hr_sym, kpoints, self._cwi["irvec"], self._cwi["ndegen"], atoms_frac=atoms_frac_samb
                 )
             else:
-                Hk_grid = CWModel.fourier_transform_r_to_k(self["Hr"], kpoints, self._cwi["irvec"], self._cwi["ndegen"])
+                Hk_grid = CWModel.fourier_transform_r_to_k(Hr_sym, kpoints, self._cwi["irvec"], self._cwi["ndegen"])
 
             Ek, Uk = np.linalg.eigh(Hk_grid)
 
@@ -812,7 +820,7 @@ class CWModel(dict):
         free_energy = E_tot - Kelvin_to_eV(T) * S
 
         if self._cwi["z_exp"]:
-            E_tot_samb = np.sum([z[k] * z_exp[k] for k in z.keys()])
+            E_tot_samb = np.sum([z[k] * z_exp[k] for k in z_exp.keys()])
         else:
             E_tot_samb = 0.0
 
@@ -831,15 +839,15 @@ class CWModel(dict):
             {
                 "s": s,
                 "z": z,
-                # "z_nonortho": z_nonortho,
+                "z_nonortho": z_nonortho,
                 "z_exp": z_exp,
                 #
                 "Sk_sym": Sk_sym,
                 "Hk_sym": Hk_sym,
-                # "Hk_nonortho_sym": Hk_nonortho_sym,
+                "Hk_nonortho_sym": Hk_nonortho_sym,
                 "Sr_sym": Sr_sym,
                 "Hr_sym": Hr_sym,
-                # "Hr_nonortho_sym": Hr_nonortho_sym,
+                "Hr_nonortho_sym": Hr_nonortho_sym,
                 #
                 "Ek_RMSE_grid": Ek_RMSE_grid,
                 "Ek_RMSE_path": Ek_RMSE_path,
@@ -1330,21 +1338,21 @@ class CWModel(dict):
             filename (str): file name.
             type (str): 'z'/'z_nonortho'/'s'.
         """
-        # assert type in ("z", "z_nonortho", "s"), f"invalid type = {type} was given. choose from 'z'/'z_nonortho'/'s'."
-        assert type in ("z", "s"), f"invalid type = {type} was given. choose from 'z'/'s'."
+        assert type in ("z", "z_nonortho", "s"), f"invalid type = {type} was given. choose from 'z'/'z_nonortho'/'s'."
+        # assert type in ("z", "s"), f"invalid type = {type} was given. choose from 'z'/'s'."
 
         if type == "z":
             header = z_header
             o = self["z"]
-        # elif type == "z_nonortho":
-        #     header = z_nonortho_header
-        # o = self["z_nonortho"]
+        elif type == "z_nonortho":
+            header = z_nonortho_header
+            o = self["z_nonortho"]
         elif type == "s":
             header = s_header
             o = self["s"]
         else:
-            # raise Exception(f"invalid type = {type} was given. choose from 'z'/'z_nonortho'/'s'.")
-            raise Exception(f"invalid type = {type} was given. choose from 'z'/'s'.")
+            raise Exception(f"invalid type = {type} was given. choose from 'z'/'z_nonortho'/'s'.")
+            # raise Exception(f"invalid type = {type} was given. choose from 'z'/'s'.")
 
         o_str = "# created by pw2cw \n"
         o_str += "# written {}\n".format(datetime.datetime.now().strftime("on %d%b%Y at %H:%M:%S"))
