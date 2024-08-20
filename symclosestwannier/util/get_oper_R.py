@@ -20,7 +20,7 @@
 
 import numpy as np
 
-from symclosestwannier.util.utility import fourier_transform_k_to_r
+from symclosestwannier.util.utility import fourier_transform_r_to_k, fourier_transform_k_to_r
 
 
 # ==================================================
@@ -95,7 +95,6 @@ def get_AA_R(cwi):
 
     kb2k = cwi.nnkp.kb2k()
     bveck = cwi.nnkp.bveck()
-    wk = cwi.nnkp.wk()
     wb = cwi["wb"]
 
     kpoints = np.array(cwi["kpoints"])
@@ -141,15 +140,12 @@ def get_BB_R(cwi):
     if abs(cwi.get("scissors_shift", 0.0)) > 1.0e-7:
         raise Exception("Error: scissors correction not yet implemented for BB_R")
 
-    num_bands = cwi["num_bands"]
-    num_wann = cwi["num_wann"]
     num_k = cwi["num_k"]
     kpoints = np.array(cwi["kpoints"])
     irvec = np.array(cwi["irvec"])
 
     kb2k = cwi.nnkp.kb2k()
     bveck = cwi.nnkp.bveck()
-    wk = cwi.nnkp.wk()
     wb = cwi["wb"]
 
     Ek = np.array(cwi["Ek"])
@@ -192,23 +188,15 @@ def get_CC_R(cwi):
     if abs(cwi.get("scissors_shift", 0.0)) > 1.0e-7:
         raise Exception("Error: scissors correction not yet implemented for CC_R")
 
-    num_bands = cwi["num_bands"]
-    num_wann = cwi["num_wann"]
-    num_k = cwi["num_k"]
     kpoints = np.array(cwi["kpoints"])
     irvec = np.array(cwi["irvec"])
 
     kb2k = cwi.nnkp.kb2k()
     bveck = cwi.nnkp.bveck()
-    wk = cwi.nnkp.wk()
     wb = cwi["wb"]
 
-    Ek = np.array(cwi["Ek"])
     Uk = np.array(cwi["Uk"])
-    Mkb = np.array(cwi["Mkb"])
     Hkb1b2 = np.array(cwi["Hkb1b2"])
-
-    H_o = np.array([np.diag(Ek[k]) for k in range(num_k)])
 
     Hkb1b2 = np.einsum(
         "kblm, kbdlp, kdpn->kbdmn", np.conj(Uk[kb2k[:, :], :, :]), Hkb1b2, Uk[kb2k[:, :], :, :], optimize=True
@@ -276,8 +264,6 @@ def get_SHC_R(cwi):
     """
     kpoints = np.array(cwi["kpoints"])
     irvec = np.array(cwi["irvec"])
-    num_wann = cwi["num_wann"]
-    num_bands = cwi["num_bands"]
     num_k = cwi["num_k"]
 
     if cwi["tb_gauge"]:
@@ -307,7 +293,6 @@ def get_SHC_R(cwi):
     Mkb = np.array(cwi["Mkb"])
     kb2k = cwi.nnkp.kb2k()
     bveck = cwi.nnkp.bveck()
-    wk = cwi.nnkp.wk()
     wb = cwi["wb"]
 
     #! QZYZ18 Eq.(48)
@@ -317,9 +302,6 @@ def get_SHC_R(cwi):
     #! QZYZ18 Eq.(50)
     SM_o = np.einsum("akml, kbln->akbmn", spn_o, Mkb, optimize=True)
     SM_k = np.einsum("klm, akblp, kbpn->akbmn", np.conj(Uk), SM_o, Uk[kb2k[:, :], :, :], optimize=True)
-    # SR_k = np.einsum("kb,kbc,akbmn->ackmn", wk, bveck, SM_k, optimize=True) - np.einsum(
-    #     "kb,kbc,akmn->ackmn", wk, bveck, SS_k, optimize=True
-    # )
     SR_k = np.einsum("b,kbc,akbmn->ackmn", wb, bveck, SM_k, optimize=True) - np.einsum(
         "b,kbc,akmn->ackmn", wb, bveck, SS_k, optimize=True
     )
@@ -327,9 +309,6 @@ def get_SHC_R(cwi):
     #! QZYZ18 Eq.(51)
     SHM_o = np.einsum("akml, kbln->akbmn", SH_o, Mkb, optimize=True)
     SHM_k = np.einsum("klm, akblp, kbpn->akbmn", np.conj(Uk), SHM_o, Uk[kb2k[:, :], :, :], optimize=True)
-    # SHR_k = np.einsum("kb,kbc,akbmn->ackmn", wk, bveck, SHM_k, optimize=True) - np.einsum(
-    #     "kb,kbc,akmn->ackmn", wk, bveck, SH_k, optimize=True
-    # )
     SHR_k = np.einsum("b,kbc,akbmn->ackmn", wb, bveck, SHM_k, optimize=True) - np.einsum(
         "b,kbc,akmn->ackmn", wb, bveck, SH_k, optimize=True
     )
