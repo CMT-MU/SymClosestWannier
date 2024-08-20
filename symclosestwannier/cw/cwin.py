@@ -31,7 +31,7 @@ _default = {
     #
     "transl_inv": False,
     "use_degen_pert": False,
-    "degen_thr": 0.0,
+    "degen_thr": 1e-4,
     "tb_gauge": False,
     #
     "write_hr": False,

@@ -325,7 +325,7 @@ def wham_get_D_h(delHH, E, U):
 
 
 # ==================================================
-def wham_get_deleig_a(delHH_a, E, U, use_degen_pert=False, degen_thr=0.0):
+def wham_get_deleig_a(delHH_a, E, U, use_degen_pert=False, degen_thr=1e-4):
     """
     Compute band derivatives dE/dk_a.
     """
@@ -337,10 +337,10 @@ def wham_get_deleig_a(delHH_a, E, U, use_degen_pert=False, degen_thr=0.0):
         deleig_a = np.zeros((num_k, num_wann))
 
         for k in range(num_k):
-            i = 0
-            while i <= num_wann:
+            i = -1
+            while i < num_wann - 1:
                 i = i + 1
-                if i + 1 <= num_wann:
+                if i + 1 < num_wann:
                     diff = E[k, i + 1] - E[k, i]
                 else:
                     #
@@ -357,10 +357,12 @@ def wham_get_deleig_a(delHH_a, E, U, use_degen_pert=False, degen_thr=0.0):
                     #
                     # See if any higher bands are in the same degenerate group
                     #
-                    while degen_max + 1 <= num_wann and diff < degen_thr:
+                    while degen_max + 1 < num_wann:
                         diff = E[k, degen_max + 1] - E[k, degen_max]
                         if diff < degen_thr:
                             degen_max = degen_max + 1
+                        else:
+                            break
 
                     #
                     # Bands from degen_min to degen_max are degenerate. Diagonalize
@@ -368,8 +370,12 @@ def wham_get_deleig_a(delHH_a, E, U, use_degen_pert=False, degen_thr=0.0):
                     # The eigenvalues are the band gradients
                     #
                     dim = degen_max - degen_min + 1
-                    deleig_a[k, i : i + dim] = np.linalg.eigh(
-                        delHH_bar_a[degen_min : degen_max + 1, degen_min : degen_max + 1]
+                    # deleig_a[k, i : i + dim] = np.linalg.eigh(
+                    #    delHH_bar_a[degen_min : degen_max + 1, degen_min : degen_max + 1]
+                    # )[0]
+
+                    deleig_a[k, degen_min : degen_max + 1] = np.linalg.eigh(
+                        delHH_bar_a[k, degen_min : degen_max + 1, degen_min : degen_max + 1]
                     )[0]
 
                     #
@@ -1433,11 +1439,10 @@ def berry_get_shc_klist(cwi, operators, kpoints, band=False):
 
     for k in range(len(kpoints)):
         for n in range(num_wann):
+            omega = 0.0
             # get Omega_{n,alpha beta}^{gamma}
             if lfreq:
                 omega_list = np.zeros(kubo_nfreq)
-            elif lfermi or lband:
-                omega = 0.0
 
             for m in range(num_wann):
                 if m == n:
@@ -1456,8 +1461,6 @@ def berry_get_shc_klist(cwi, operators, kpoints, band=False):
                     vdum = delE[:, k, m] - delE[:, k, n]
                     joint_level_spacing = np.sqrt(np.dot(vdum, vdum)) * Delta_k
                     eta_smr = min(joint_level_spacing * kubo_adpt_smr_fac, kubo_adpt_smr_max)
-                    if eta_smr < 1e-6:
-                        eta_smr = 1e-6
                 else:
                     eta_smr = kubo_smr_fixed_en_width
 
@@ -1542,17 +1545,16 @@ def berry_get_shc(cwi, operators):
                 ladpt = [False] * num_fermi
                 adpt_counter_list = [0] * num_fermi
 
-                for ife in range(num_fermi):
-                    rdum = abs(shc_k_list[ife, k])
+                if berry_curv_adpt_kmesh > 1:
+                    for ife in range(num_fermi):
+                        rdum = abs(shc_k_list[ife, k])
 
-                    if berry_curv_unit == "bohr2":
-                        rdum = rdum / bohr**2
+                        if berry_curv_unit == "bohr2":
+                            rdum = rdum / bohr**2
 
-                    if rdum > berry_curv_adpt_kmesh_thresh:
-                        adpt_counter_list[ife] = adpt_counter_list[ife] + 1
-                        ladpt[ife] = True
-                    else:
-                        shc_list[ife] += shc_k_list[ife, k] * kweight
+                        if rdum > berry_curv_adpt_kmesh_thresh:
+                            adpt_counter_list[ife] = adpt_counter_list[ife] + 1
+                            ladpt[ife] = True
 
                 if np.any(ladpt):
                     # for loop_adpt in range(berry_curv_adpt_kmesh**3):
@@ -1564,6 +1566,10 @@ def berry_get_shc(cwi, operators):
                         if ladpt[ife_]:
                             for loop_adpt in range(berry_curv_adpt_kmesh**3):
                                 shc_list[ife_] += shc_k_list_dummy[ife_, loop_adpt] * kweight_adpt
+
+                else:
+                    for ife in range(num_fermi):
+                        shc_list[ife] += shc_k_list[ife, k] * kweight
 
             return shc_list
 
