@@ -1515,16 +1515,17 @@ def berry_get_shc(cwi, operators):
 
     # Do not read 'kpoint.dat'. Loop over a regular grid in the full BZ
     kweight = db1 * db2 * db3
-    kweight_adpt = kweight / berry_curv_adpt_kmesh**3
+    ka1, ka2, ka3 = berry_curv_adpt_kmesh
+    kweight_adpt = kweight / (ka1 * ka2 * ka3)
 
-    adkpt = np.zeros((3, berry_curv_adpt_kmesh**3))
+    adkpt = np.zeros((3, ka1 * ka2 * ka3))
     ikpt = 0
-    for i in range(berry_curv_adpt_kmesh):
-        for j in range(berry_curv_adpt_kmesh):
-            for k in range(berry_curv_adpt_kmesh):
-                adkpt[0, ikpt] = db1 * ((i + 0.5) / berry_curv_adpt_kmesh - 0.5)
-                adkpt[1, ikpt] = db2 * ((j + 0.5) / berry_curv_adpt_kmesh - 0.5)
-                adkpt[2, ikpt] = db3 * ((k + 0.5) / berry_curv_adpt_kmesh - 0.5)
+    for i in range(ka1):
+        for j in range(ka2):
+            for k in range(ka3):
+                adkpt[0, ikpt] = db1 * ((i + 0.5) / ka1 - 0.5)
+                adkpt[1, ikpt] = db2 * ((j + 0.5) / ka2 - 0.5)
+                adkpt[2, ikpt] = db3 * ((k + 0.5) / ka3 - 0.5)
                 ikpt = ikpt + 1
 
     # ==================================================
@@ -1545,7 +1546,7 @@ def berry_get_shc(cwi, operators):
                 ladpt = [False] * num_fermi
                 adpt_counter_list = [0] * num_fermi
 
-                if berry_curv_adpt_kmesh > 1:
+                if np.any(np.array(berry_curv_adpt_kmesh) > 1):
                     for ife in range(num_fermi):
                         rdum = abs(shc_k_list[ife, k])
 
@@ -1564,7 +1565,7 @@ def berry_get_shc(cwi, operators):
 
                     for ife_ in range(num_fermi):
                         if ladpt[ife_]:
-                            for loop_adpt in range(berry_curv_adpt_kmesh**3):
+                            for loop_adpt in range(ka1 * ka2 * ka3):
                                 shc_list[ife_] += shc_k_list_dummy[ife_, loop_adpt] * kweight_adpt
 
                 else:

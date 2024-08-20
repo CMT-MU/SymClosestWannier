@@ -387,6 +387,13 @@ class Win(dict):
         berry_kmesh_spacing = self._get_param_keyword(win_data, "berry_kmesh_spacing", "1  1  1", dtype=str)
         d["berry_kmesh_spacing"] = [int(x) for x in berry_kmesh_spacing.split()]
 
+        d["berry_curv_unit"] = self._get_param_keyword(win_data, "berry_curv_unit", "ang2", dtype=str)
+        berry_curv_adpt_kmesh = self._get_param_keyword(win_data, "berry_curv_adpt_kmesh", "1  1  1", dtype=str)
+        d["berry_curv_adpt_kmesh"] = [int(x) for x in berry_curv_adpt_kmesh.split()]
+        d["berry_curv_adpt_kmesh_thresh"] = self._get_param_keyword(
+            win_data, "berry_curv_adpt_kmesh_thresh", 100, dtype=float
+        )
+
         d["kubo_freq_max"] = self._get_param_keyword(win_data, "kubo_freq_max", 1.0, dtype=float)
         d["kubo_freq_min"] = self._get_param_keyword(win_data, "kubo_freq_min", 0.0, dtype=float)
         d["kubo_freq_step"] = self._get_param_keyword(win_data, "kubo_freq_step", 0.01, dtype=float)

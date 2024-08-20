@@ -35,6 +35,11 @@ from multipie.tag.tag_multipole import TagMultipole
 from multipie.model.construct_model import construct_samb_matrix
 from multipie.data.data_transform_matrix import _data_trans_lattice_p
 
+import multiprocessing
+from joblib import Parallel, delayed, wrap_non_picklable_objects
+
+_num_proc = multiprocessing.cpu_count()
+
 
 from symclosestwannier.util.message import (
     cw_start_msg,
@@ -583,6 +588,18 @@ class CWModel(dict):
             zj: {tuple(sp.sympify(k)): complex(sp.sympify(v)) for k, v in d.items()} for zj, d in mat["matrix"].items()
         }
 
+        ### kuniyoshi (24/08/20) ###
+        def proc(d):
+            return {tuple(sp.sympify(k)): complex(sp.sympify(v)) for k, v in d.items()}
+
+        res = Parallel(n_jobs=_num_proc, verbose=1)(delayed(proc)(d) for d in mat["matrix"].values())
+
+        Zr_dict = {}
+        for i, (zj, d) in enumerate(mat["matrix"].items()):
+            Zr_dict[(zj, tag_dict[zj])] = res[i]
+            mat["matrix"][zj] = res[i]
+        ### kuniyoshi (24/08/20) ###
+
         A = None
         A_samb = None
 
@@ -771,11 +788,42 @@ class CWModel(dict):
 
             Nz = len(mat["matrix"])
             dic = mat.copy()
+
+            # @wrap_non_picklable_objects
+            # def proc(i, tag, d):
+            #     percent = (i + 1) / float(Nz) * 100
+            #     if percent % 10 == 0:
+            #         self._cwm.log(f"* {int(percent)} %", None, end="\n", file=self._outfile, mode="a")
+
+            #     dic["matrix"] = {tag: d}
+
+            #     if self._cwi["tb_gauge"]:
+            #         Zk = construct_Ok(
+            #             [1], self._cwi["num_wann"], kpoints, self._cwi["irvec"], dic, atoms_frac=atoms_frac_samb
+            #         )
+            #     else:
+            #         Zk = construct_Ok([1], self._cwi["num_wann"], kpoints, self._cwi["irvec"], dic)
+
+            #     v = thermal_avg(
+            #         Zk,
+            #         Ek,
+            #         Uk,
+            #         self._cwi["fermi_energy"],
+            #         T_Kelvin=self._cwi["z_exp_temperature"],
+            #     )
+
+            #     return i, tag, v
+
+            # res = Parallel(n_jobs=2, verbose=10)(delayed(proc)(i, tag, d) for i, (tag, d) in enumerate(Zr_dict.items()))
+            # res = sorted(res, key=lambda x: x[0])
+            # z_exp = {tag: v for _, tag, v in res}
+
             z_exp = {}
+            percent = 10
             for i, (tag, d) in enumerate(Zr_dict.items()):
-                percent = (i + 1) / float(Nz) * 100
-                if percent % 10 == 0:
+                if int((i + 1) / float(Nz) * 100 % 10) == percent:
                     self._cwm.log(f"* {int(percent)} %", None, end="\n", file=self._outfile, mode="a")
+                    percent += 10
 
                 dic["matrix"] = {tag: d}
 
