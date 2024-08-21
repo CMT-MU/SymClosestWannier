@@ -141,7 +141,10 @@ class CWInfo(dict):
         #
         # additional information
         #
-        A = np.array(d["A"])
+        d["A"] = np.array(d["unit_cell_cart"])
+        d["B"] = 2 * np.pi * np.linalg.inv(d["A"]).T
+        A, B = d["A"], d["B"]
+
         irvec, ndegen = wigner_seitz(A, d["mp_grid"])
 
         if d["kpoint"] is not None and d["kpoint_path"] is not None:

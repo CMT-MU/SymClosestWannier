@@ -235,22 +235,22 @@ cw_info_header += "\n".join(["    - {:<17} : {:<100} \n".format(k, v) for k, v i
 cw_data = {
     "Sk": "Overlap matrix elements in k-space (ndarray).",
     "Hk": "Hamiltonian matrix elements in k-space (orthogonal) (ndarray).",
-    # "Hk_nonortho": "Hamiltonian matrix elements in k-space (non-orthogonal) (ndarray).",
+    "Hk_nonortho": "Hamiltonian matrix elements in k-space (non-orthogonal) (ndarray).",
     #
     "Sr": "Overlap matrix elements in real-space (ndarray).",
     "Hr": "Hamiltonian matrix elements in real-space (orthogonal) (ndarray).",
-    # "Hr_nonortho": "Hamiltonian matrix elements in real-space (non-orthogonal) (ndarray).",
+    "Hr_nonortho": "Hamiltonian matrix elements in real-space (non-orthogonal) (ndarray).",
     #
     "s": "The expansion coefficients of Sk expressed by a linear combination of SAMBs (ndarray).",
     "z": "The expansion coefficients of Hk expressed by a linear combination of SAMBs (ndarray).",
-    # "z_nonortho": "The expansion coefficients of Hk_nonortho expressed by a linear combination of SAMBs (ndarray).",
+    "z_nonortho": "The expansion coefficients of Hk_nonortho expressed by a linear combination of SAMBs (ndarray).",
     #
     "Sk_sym": "Symmetrized overlap matrix elements in k-space (ndarray).",
     "Hk_sym": "Symmetrized Hamiltonian matrix elements in k-space (orthogonal) (ndarray).",
-    # "Hk_nonortho_sym": "Symmetrized Hamiltonian matrix elements in k-space (non-orthogonal) (ndarray).",
+    "Hk_nonortho_sym": "Symmetrized Hamiltonian matrix elements in k-space (non-orthogonal) (ndarray).",
     "Sr_sym": "Symmetrized overlap matrix elements in real-space (ndarray).",
     "Hr_sym": "Symmetrized Hamiltonian matrix elements in real-space (orthogonal) (ndarray).",
-    # "Hr_nonortho_sym": "Symmetrized Hamiltonian matrix elements in real-space (non-orthogonal) (ndarray).",
+    "Hr_nonortho_sym": "Symmetrized Hamiltonian matrix elements in real-space (non-orthogonal) (ndarray).",
     #
     "Ek_RMSE_grid": "mean squared error of eigen energies between symmetrized and non-symmetrized closed wannier TB model (grid) (float).",
     "Ek_RMSE_path": "mean squared error of eigen energies between symmetrized and non-symmetrized closed wannier TB model (path) (float).",
@@ -323,13 +323,13 @@ z_header = """
     - z_j is the expansion coefficients.
 """
 
-# z_nonortho_header = """
-# === The expansion coefficients of the Hamiltonian matrix (non-orthogonal) H' expressed by a linear combination of SAMBs ===
-# - j z_j TagMultipole coefficient
-#     - H'(R) ~ sum_{j} z_j Z_j(R)
-#     - z_j = \sum_{R} Tr[Z_j(R)*H'(R)].
-#     - z_j is the expansion coefficients.
-# """
+z_nonortho_header = """
+=== The expansion coefficients of the Hamiltonian matrix (non-orthogonal) H' expressed by a linear combination of SAMBs ===
+- j z_j TagMultipole coefficient
+    - H'(R) ~ sum_{j} z_j Z_j(R)
+    - z_j = \sum_{R} Tr[Z_j(R)*H'(R)].
+    - z_j is the expansion coefficients.
+"""
 
 
 s_header = """
