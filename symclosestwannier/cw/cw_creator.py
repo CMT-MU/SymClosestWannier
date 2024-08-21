@@ -28,7 +28,7 @@ from symclosestwannier.cw.cwin import CWin
 from symclosestwannier.cw.cw_info import CWInfo
 from symclosestwannier.cw.cw_manager import CWManager
 from symclosestwannier.cw.cw_model import CWModel
-from symclosestwannier.util.band import output_linear_dispersion
+from symclosestwannier.util.band import output_linear_dispersion, output_linear_dispersion_eig
 
 
 from symclosestwannier.util.message import (
@@ -182,8 +182,11 @@ def cw_creator(seedname="cwannier"):
 
         ef = cwi["fermi_energy"]
 
-        output_linear_dispersion(
-            ".", seedname + "_band.txt", k_linear, Ek, Uk, ref_filename=ref_filename, a=a, ef=ef, k_dis_pos=k_dis_pos
+        # output_linear_dispersion(
+        #     ".", seedname + "_band.txt", k_linear, Ek, Uk, ref_filename=ref_filename, a=a, ef=ef, k_dis_pos=k_dis_pos
+        # )
+        output_linear_dispersion_eig(
+            ".", seedname + "_band.txt", k_linear, Ek, ref_filename=ref_filename, a=a, ef=ef, k_dis_pos=k_dis_pos
         )
 
         if cwi["symmetrization"]:
@@ -208,12 +211,13 @@ def cw_creator(seedname="cwannier"):
             )
             Ek, Uk = np.linalg.eigh(Hk_sym_path)
 
-            output_linear_dispersion(
+            # output_linear_dispersion(
+            output_linear_dispersion_eig(
                 cwi["mp_outdir"],
                 cwi["mp_seedname"] + "_band.txt",
                 k_linear,
                 Ek,
-                Uk,
+                # Uk,
                 ref_filename=ref_filename,
                 a=a,
                 ef=ef,
