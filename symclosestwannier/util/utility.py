@@ -146,7 +146,7 @@ def iterate3dpm(size):
 
 
 # ==================================================
-def wigner_seitz(A, mp_grid, prec=1.0e-7):
+def wigner_seitz(A, mp_grid, prec=1.0e-4):
     """
     wigner seitz cell.
     return irreducible R vectors and number of degeneracy at each R.
@@ -602,7 +602,9 @@ def samb_decomp_operator(
     Or_dict = sort_ket_matrix_dict(Or_dict, ket, ket_samb)
 
     # if A is not None:
-    #     if np.allclose(A, A_samb, rtol=1e-03, atol=1e-03):
+    #     if not np.allclose(A, A_samb, rtol=1e-03, atol=1e-03):
+    # if True:
+    #     if True:
     #         print("ok!!!")
     #         A = np.array(A, dtype=float)
     #         A_samb = np.array(A_samb, dtype=float)
@@ -687,7 +689,7 @@ def construct_Or(z, num_wann, rpoints, matrix_dict):
 
 
 # ==================================================
-def construct_Ok(z, num_wann, kpoints, rpoints, matrix_dict):
+def construct_Ok(z, num_wann, kpoints, rpoints, matrix_dict, atoms_frac=None):
     """
     arbitrary operator constructed by linear combination of SAMBs in k-space representation.
 
@@ -703,11 +705,6 @@ def construct_Ok(z, num_wann, kpoints, rpoints, matrix_dict):
     """
     kpoints = np.array(kpoints)
     rpoints = np.array(rpoints)
-    cell_site = matrix_dict["cell_site"]
-    ket = matrix_dict["ket"]
-    atoms_frac = [
-        NSArray(cell_site[ket[a].split("@")[1]][0], style="vector", fmt="value").tolist() for a in range(len(ket))
-    ]
 
     Or = construct_Or(z, num_wann, rpoints, matrix_dict)
     Ok = fourier_transform_r_to_k(Or, kpoints, rpoints, atoms_frac=atoms_frac)
@@ -765,6 +762,54 @@ def thermal_avg(O, E, U, ef=0.0, T_Kelvin=0.0, num_k=0):
         O_exp = np.array(O_exp)
 
     return O_exp
+
+
+# ==================================================
+def total_energy(E, ef=0.0, T_Kelvin=0.0, num_k=0):
+    """
+    total energy
+    """
+    if ef is None:
+        ef = 0.0
+
+    fk = fermi(E - ef, T_Kelvin)
+
+    E = np.array(E)
+
+    if num_k == 0:
+        num_k = E.shape[0]
+
+    E_tot = np.sum(fk * E) / num_k
+
+    return E_tot
+
+
+# ==================================================
+def entropy(E, ef=0.0, T_Kelvin=0.0, num_k=0):
+    """
+    total energy
+    """
+    if ef is None:
+        ef = 0.0
+
+    fk = fermi(E - ef, T_Kelvin)
+
+    if num_k == 0:
+        num_k = E.shape[0]
+
+    S = -np.sum(fk * np.log(fk) + (1.0 - fk) * np.log(1.0 - fk)) / num_k
+
+    return S
+
+
+# ==================================================
+def free_energy(E, ef=0.0, T_Kelvin=0.0, num_k=0):
+    """
+    total energy
+    """
+    E_tot = total_energy(E, ef, T_Kelvin, num_k)
+    S = entropy(E, ef, T_Kelvin, num_k)
+    return E_tot - T_Kelvin * S
 
 
 # ==================================================
