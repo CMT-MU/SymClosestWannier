@@ -1823,8 +1823,8 @@ def gyrotropic_get_K(cwi, operators):
 
     # res = Parallel(n_jobs=_num_proc, verbose=10)(delayed(gyrotropic_get_K_k)(kpoints) for kpoints in kpoints_chunks)
 
-    gyro_K_orb = 0.0
-    gyro_K_spn = 0.0
+    gyro_K_orb = np.zeros((3, 3, mum_fermi), dtype=float)
+    gyro_K_spn = np.zeros((3, 3, mum_fermi), dtype=float)
 
     import time
 
