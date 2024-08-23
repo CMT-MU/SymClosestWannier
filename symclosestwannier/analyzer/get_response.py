@@ -1818,12 +1818,32 @@ def gyrotropic_get_K(cwi, operators):
         [[i / float(N1), j / float(N2), k / float(N3)] for i in range(N1) for j in range(N2) for k in range(N3)]
     )
 
-    kpoints_chunks = np.split(kpoints, [j for j in range(100000, len(kpoints), 100000)])
+    kpoints_chunks = np.split(kpoints, [j for j in range(300000, len(kpoints), 300000)])
+    num_chunks = len(kpoints_chunks)
 
-    res = Parallel(n_jobs=_num_proc, verbose=10)(delayed(gyrotropic_get_K_k)(kpoints) for kpoints in kpoints_chunks)
+    # res = Parallel(n_jobs=_num_proc, verbose=10)(delayed(gyrotropic_get_K_k)(kpoints) for kpoints in kpoints_chunks)
 
-    gyro_K_orb = np.sum([gyro_K_orb for gyro_K_orb, _ in res], axis=0)
-    gyro_K_spn = np.sum([gyro_K_spn for _, gyro_K_spn in res], axis=0)
+    gyro_K_orb = 0.0
+    gyro_K_spn = 0.0
+
+    import time
+
+    start_time = time.time()
+    for i, kpoints in enumerate(kpoints_chunks):
+        print(f"{i+1}/{num_chunks}")
+        res = gyrotropic_get_K_k(kpoints)
+
+        gyro_K_orb += np.sum([v[0] for v in res], axis=0)
+        gyro_K_spn += np.sum([v[1] for v in res], axis=0)
+
+        # convert second to hour, minute and seconds
+        elapsed_time = int(time.time() - start_time)
+        elapsed_hour = elapsed_time // 3600
+        elapsed_minute = (elapsed_time % 3600) // 60
+        elapsed_second = elapsed_time % 3600 % 60
+
+        # print as 00:00:00
+        print(str(elapsed_hour).zfill(2) + ":" + str(elapsed_minute).zfill(2) + ":" + str(elapsed_second).zfill(2))
 
     """
     --------------------------------------------------------------------
