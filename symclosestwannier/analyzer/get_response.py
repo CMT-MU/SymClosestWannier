@@ -1836,6 +1836,8 @@ def gyrotropic_get_K(cwi, operators):
         gyro_K_orb += np.sum([v[0] for v in res], axis=0)
         gyro_K_spn += np.sum([v[1] for v in res], axis=0)
 
+        res = None
+
         # convert second to hour, minute and seconds
         elapsed_time = int(time.time() - start_time)
         elapsed_hour = elapsed_time // 3600
