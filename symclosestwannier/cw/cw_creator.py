@@ -182,11 +182,12 @@ def cw_creator(seedname="cwannier"):
 
         ef = cwi["fermi_energy"]
 
-        # output_linear_dispersion(
-        #     ".", seedname + "_band.txt", k_linear, Ek, Uk, ref_filename=ref_filename, a=a, ef=ef, k_dis_pos=k_dis_pos
-        # )
         output_linear_dispersion_eig(
             ".", seedname + "_band.txt", k_linear, Ek, ref_filename=ref_filename, a=a, ef=ef, k_dis_pos=k_dis_pos
+        )
+
+        output_linear_dispersion(
+            ".", seedname + "_band_detail.txt", k_linear, Ek, Uk, ref_filename=ref_filename, a=a, ef=ef, k_dis_pos=k_dis_pos
         )
 
         if cwi["symmetrization"]:
