@@ -319,7 +319,7 @@ z_header = """
 === The expansion coefficients of the Hamiltonian matrix (orthogonal) H expressed by a linear combination of SAMBs ===
 - j z_j TagMultipole coefficient
     - H(R) ~ sum_{j} z_j Z_j(R)
-    - z_j = \sum_{R} Tr[Z_j(R)*H(R)].
+    - z_j = sum_{R} Tr[Z_j(R)*H(R)].
     - z_j is the expansion coefficients.
 """
 
@@ -327,7 +327,7 @@ z_nonortho_header = """
 === The expansion coefficients of the Hamiltonian matrix (non-orthogonal) H' expressed by a linear combination of SAMBs ===
 - j z_j TagMultipole coefficient
     - H'(R) ~ sum_{j} z_j Z_j(R)
-    - z_j = \sum_{R} Tr[Z_j(R)*H'(R)].
+    - z_j = sum_{R} Tr[Z_j(R)*H'(R)].
     - z_j is the expansion coefficients.
 """
 
@@ -336,12 +336,12 @@ s_header = """
 === The expansion coefficients of the Overlap matrix expressed by a linear combination of SAMBs ===
 - j z_j TagMultipole coefficient
     - S(R) ~ sum_{j} z_j Z_j(R)
-    - z_j = \sum_{R} Tr[Z_j(R)*S(R)].
+    - z_j = sum_{R} Tr[Z_j(R)*S(R)].
     - z_j is the expansion coefficients.
 """
 
 z_exp_header = """
 === expectation value of the given operator
 - j z_j TagMultipole expectation value
-- <O> = 1 / Nk * \sum_{n,k} fermi_dirac[E_{n}(k)] O_{nn}(k)
+- <O> = 1 / Nk * sum_{n,k} fermi_dirac[E_{n}(k)] O_{nn}(k)
 """
