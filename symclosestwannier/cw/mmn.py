@@ -149,3 +149,33 @@ class Mmn(dict):
     @classmethod
     def _default(cls):
         return _default
+
+
+
+# ==================================================
+def _sort_Mkb_nnkpts(Mmn, Nnkp):
+    Mkb = Mmn["Mkb"]
+    nnkpts_mmn = np.array(Mmn["nnkpts"])
+    num_k = Mmn["num_k"]
+    num_bands = Mmn["num_bands"]
+    num_b = Mmn["num_b"]
+
+    nnkpts_nnkp = np.array(Nnkp["nnkpts"])
+
+    Mkb_sorted = np.zeros((num_k, num_b, num_bands, num_bands), dtype=complex)
+
+    for k in range(num_k):
+        for b in range(num_b):
+            if not np.all(nnkpts_nnkp[k, b] == nnkpts_mmn[k, b]):
+                b_ = nnkpts_mmn[k].tolist().index(nnkpts_nnkp[k, b].tolist())
+                Mkb_sorted[k, b] = Mkb[k,b_]
+            else:
+                Mkb_sorted[k, b] = Mkb[k,b]
+
+    Mmn["nnkpts"] = nnkpts_nnkp.tolist()
+    Mmn["Mkb"] = Mkb_sorted
+
+    return Mmn
+
+
+
