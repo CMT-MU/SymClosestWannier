@@ -216,7 +216,7 @@ def generate_band_gnuplot(outdir, filename, kmax, emax, emin, num_wann, **kwargs
     lwidth = kwargs.get("lwidth", 3)
     lc = kwargs.get("lc", "salmon")
 
-    fs = open(f"{outdir}/plot_band.gnu", "w")
+    fs = open(f"{outdir}/plot_band_detail.gnu", "w")
     fs.write("unset key \n")
     fs.write("unset grid \n")
     fs.write(f"lwidth = {lwidth} \n")
@@ -256,4 +256,4 @@ def generate_band_gnuplot(outdir, filename, kmax, emax, emin, num_wann, **kwargs
 
     os.chdir(outdir)
 
-    subprocess.run("gnuplot plot_band.gnu", shell=True)
+    subprocess.run("gnuplot plot_band_detail.gnu", shell=True)

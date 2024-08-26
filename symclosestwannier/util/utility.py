@@ -716,7 +716,7 @@ def construct_Ok(z, num_wann, kpoints, rpoints, matrix_dict, atoms_frac=None):
 def thermal_avg(O, E, U, ef=0.0, T_Kelvin=0.0, num_k=0):
     """
     thermal average of the given operator,
-    <O> = 1 / Nk * \sum_{n,k} fermi_dirac[E_{n}(k)] O_{nn}(k)
+    <O> = 1 / Nk * sum_{n,k} fermi_dirac[E_{n}(k)] O_{nn}(k)
 
     Args:
         O (ndarray): operator or list of operator.

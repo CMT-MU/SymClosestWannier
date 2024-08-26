@@ -219,17 +219,17 @@ class Response(dict):
             ahc_list = self["ahc_list"]
             ahc_str = "AHC (S/cm)       x          y          z \n"
             ahc_str += "==========\n"
-            ahc_str += "J0 term :" + "{:>15.8f}   {:>15.8f}   {:>15.8f} \n".format(
+            ahc_str += "J0 term :" + "{:>20.15f}   {:>20.15f}   {:>20.15f} \n".format(
                 ahc_list[0, 0, 0], ahc_list[0, 0, 1], ahc_list[0, 0, 2]
             )
-            ahc_str += "J1 term :" + "{:>15.8f}   {:>15.8f}   {:>15.8f} \n".format(
+            ahc_str += "J1 term :" + "{:>20.15f}   {:>20.15f}   {:>20.15f} \n".format(
                 ahc_list[0, 1, 0], ahc_list[0, 1, 1], ahc_list[0, 1, 2]
             )
-            ahc_str += "J2 term :" + "{:>15.8f}   {:>15.8f}   {:>15.8f} \n".format(
+            ahc_str += "J2 term :" + "{:>20.15f}   {:>20.15f}   {:>20.15f} \n".format(
                 ahc_list[0, 2, 0], ahc_list[0, 2, 1], ahc_list[0, 2, 2]
             )
             ahc_str += "-------------------------------------------\n"
-            ahc_str += "Total   :" + "{:>15.8f}   {:>15.8f}   {:>15.8f} \n".format(
+            ahc_str += "Total   :" + "{:>20.15f}   {:>20.15f}   {:>20.15f} \n".format(
                 sum(ahc_list[0, :, 0]), sum(ahc_list[0, :, 1]), sum(ahc_list[0, :, 2])
             )
 
@@ -241,7 +241,7 @@ class Response(dict):
             fermi_energy_list = self._cwi["fermi_energy_list"]
             ahc_str = ""
             for ife in range(num_fermi):
-                ahc_str += "{:>15.8f}   {:>15.8f}   {:>15.8f}   {:>15.8f} \n".format(
+                ahc_str += "{:>20.15f}   {:>20.15f}   {:>20.15f}   {:>20.15f} \n".format(
                     fermi_energy_list[ife], sum(ahc_list[ife, :, 0]), sum(ahc_list[ife, :, 1]), sum(ahc_list[ife, :, 2])
                 )
 
@@ -266,7 +266,7 @@ class Response(dict):
 
             kubo_S_str = "".join(
                 [
-                    "{:>15.8f}   {:>15.8f}   {:>15.8f} \n ".format(
+                    "{:>20.15f}   {:>20.15f}   {:>20.15f} \n ".format(
                         o, 0.5 * (H_ij + H_ji).real, 0.5 * (AH_ij + AH_ji).imag
                     )
                     for o, H_ij, H_ji, AH_ij, AH_ji in zip(kubo_freq_list, kubo_H_ij, kubo_H_ji, kubo_AH_ij, kubo_AH_ji)
@@ -286,7 +286,7 @@ class Response(dict):
 
             kubo_A_str = "".join(
                 [
-                    "{:>15.8f}   {:>15.8f}   {:>15.8f} \n ".format(
+                    "{:>20.15f}   {:>20.15f}   {:>20.15f} \n ".format(
                         o, 0.5 * (AH_ij - AH_ji).real, 0.5 * (H_ij - H_ji).imag
                     )
                     for o, H_ij, H_ji, AH_ij, AH_ji in zip(kubo_freq_list, kubo_H_ij, kubo_H_ji, kubo_AH_ij, kubo_AH_ji)
@@ -310,7 +310,7 @@ class Response(dict):
 
             shc_str = "#No.   Frequency(eV)   Re(sigma)((hbar/e)*S/cm)   Im(sigma)((hbar/e)*S/cm) \n"
             for ifreq in range(kubo_nfreq):
-                shc_str += "{:>15.8f}   {:>15.8f}   {:>15.8f}   {:>15.8f} \n".format(
+                shc_str += "{:>20.15f}   {:>20.15f}   {:>20.15f}   {:>20.15f} \n".format(
                     ifreq, np.real(kubo_freq_list[ifreq]), np.real(shc_freq[ifreq]), np.imag(shc_freq[ifreq])
                 )
 
@@ -323,7 +323,7 @@ class Response(dict):
             num_fermi = self._cwi["num_fermi"]
             fermi_energy_list = self._cwi["fermi_energy_list"]
             for ife in range(num_fermi):
-                shc_str += "{:>15.8f}   {:>15.8f}   {:>15.8f} \n".format(
+                shc_str += "{:>20.15f}   {:>20.15f}   {:>20.15f} \n".format(
                     ife, fermi_energy_list[ife], np.real(shc_fermi[ife])
                 )
 
@@ -363,7 +363,7 @@ class Response(dict):
                 gyro_K_str += "# EFERMI(eV)      omega(eV)             xx             yy             zz             xy             xz             yz              x              y              z \n"
 
                 for i in range(self._cwi["num_fermi"]):
-                    gyro_K_str += "{:>15.6e}   {:>15.6e}   {:>15.6e}   {:>15.6e}   {:>15.6e}   {:>15.6e}   {:>15.6e}   {:>15.6e}   {:>15.6e}   {:>15.6e}   {:>15.6e}\n".format(
+                    gyro_K_str += "{:>20.15e}   {:>20.15e}   {:>20.15e}   {:>20.15e}   {:>20.15e}   {:>20.15e}   {:>20.15e}   {:>20.15e}   {:>20.15e}   {:>20.15e}   {:>20.15e}\n".format(
                         self._cwi["fermi_energy_list"][i],
                         0.0,
                         xx[i],
@@ -397,6 +397,6 @@ class Response(dict):
         Args:
             filename (str): file name.
         """
-        spin_str = "{:>15.8f}   {:>15.8f}   {:>15.8f} \n ".format(self["Ms_x"], self["Ms_y"], self["Ms_z"])
+        spin_str = "{:>20.15f}   {:>20.15f}   {:>20.15f} \n ".format(self["Ms_x"], self["Ms_y"], self["Ms_z"])
         filename = f"{self._cwi['seedname']}-spin.dat"
         self._cwm.write(filename, spin_str, None, None)

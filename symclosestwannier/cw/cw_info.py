@@ -26,7 +26,7 @@ from symclosestwannier.cw.win import Win
 from symclosestwannier.cw.nnkp import Nnkp
 from symclosestwannier.cw.eig import Eig
 from symclosestwannier.cw.amn import Amn
-from symclosestwannier.cw.mmn import Mmn
+from symclosestwannier.cw.mmn import Mmn, _sort_Mkb_nnkpts
 from symclosestwannier.cw.umat import Umat
 from symclosestwannier.cw.spn import Spn
 from symclosestwannier.cw.uHu import UHu
@@ -124,6 +124,13 @@ class CWInfo(dict):
 
                         if type(v) == list:
                             if not np.allclose(v, v_, 1e-6):
+                                if k == "nnkpts":
+                                    info = _sort_Mkb_nnkpts(info, info_dict["nnkp"])
+                                    v = info[k]
+
+                                    if np.allclose(v, v_, 1e-6):
+                                        continue
+
                                 msg = str(f"The values of {k} in {name} and {name_} files are inconsistent.")
                                 raise Exception(msg)
                         else:
