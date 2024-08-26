@@ -42,6 +42,11 @@ cwin_info = {
     "z_exp_temperature": "temperature T for which we want to calculate the expectation value of the SAMB operators (float), [0.0].",
     "a": "lattice parameter (in Ang) used to correct units of k points in reference band data (float, optional), [1.0].",
     "N1": "number of divisions for high symmetry lines (int, optional), [50].",
+    "calc_dos": "calculate dos? (bool), [False].",
+    "N1": "number of divisions for fermi energy in DOS calculation (int, optional), [50].",
+    "dos_kmesh": "dimensions of the Monkhorst-Pack grid of k-points for dos calculation (list), [[1, 1, 1]].",
+    "dos_num_fermi"     : "number of fermi energies (int), [50].",
+    "dos_smr_en_width"  : "Energy width for the smearing function for the DOS (The units are [eV]) (flaot), [0.001].",
     "zeeman_interaction": "consider zeeman interaction ? (bool), [False].",
     "magnetic_field": "strength of the magnetic field (float), [0.0].",
     "magnetic_field_theta": "angle from the z-axis of the magnetic field (float), [0.0].",
@@ -319,7 +324,7 @@ z_header = """
 === The expansion coefficients of the Hamiltonian matrix (orthogonal) H expressed by a linear combination of SAMBs ===
 - j z_j TagMultipole coefficient
     - H(R) ~ sum_{j} z_j Z_j(R)
-    - z_j = \sum_{R} Tr[Z_j(R)*H(R)].
+    - z_j = sum_{R} Tr[Z_j(R)*H(R)].
     - z_j is the expansion coefficients.
 """
 
@@ -327,7 +332,7 @@ z_nonortho_header = """
 === The expansion coefficients of the Hamiltonian matrix (non-orthogonal) H' expressed by a linear combination of SAMBs ===
 - j z_j TagMultipole coefficient
     - H'(R) ~ sum_{j} z_j Z_j(R)
-    - z_j = \sum_{R} Tr[Z_j(R)*H'(R)].
+    - z_j = sum_{R} Tr[Z_j(R)*H'(R)].
     - z_j is the expansion coefficients.
 """
 
@@ -336,12 +341,12 @@ s_header = """
 === The expansion coefficients of the Overlap matrix expressed by a linear combination of SAMBs ===
 - j z_j TagMultipole coefficient
     - S(R) ~ sum_{j} z_j Z_j(R)
-    - z_j = \sum_{R} Tr[Z_j(R)*S(R)].
+    - z_j = sum_{R} Tr[Z_j(R)*S(R)].
     - z_j is the expansion coefficients.
 """
 
 z_exp_header = """
 === expectation value of the given operator
 - j z_j TagMultipole expectation value
-- <O> = 1 / Nk * \sum_{n,k} fermi_dirac[E_{n}(k)] O_{nn}(k)
+- <O> = 1 / Nk * sum_{n,k} fermi_dirac[E_{n}(k)] O_{nn}(k)
 """

@@ -53,9 +53,14 @@ _default = {
     "z_exp": False,
     "z_exp_kmesh": [1, 1, 1],
     "z_exp_temperature": 0.0,
-    #
+    # band
     "a": None,
     "N1": 50,
+    # dos
+    "calc_dos": False,
+    "dos_kmesh": [1, 1, 1],
+    "dos_num_fermi": 50,
+    "dos_smr_en_width": 0.001,
     #
     "zeeman_interaction": False,
     "magnetic_field": 0.0,
@@ -155,6 +160,12 @@ class CWin(dict):
                 - a                 : lattice parameter (in Ang) used to correct units of k points in reference band data, [None].
                 - N1                : number of divisions for high symmetry lines (int, optional), [50].
 
+            # only used for dos calculation.
+                - calc_dos          : calculate dos? (bool), [False].
+                - dos_kmesh         : dimensions of the Monkhorst-Pack grid of k-points for dos calculation (list), [[1, 1, 1]].
+                - dos_num_fermi     : number of fermi energies (int), [50].
+                - dos_smr_en_width  : Energy width for the smearing function for the DOS (The units are [eV]) (flaot), [0.001].
+
             # only used for when zeeman interaction is considered.
                 - zeeman_interaction   : consider zeeman interaction ? (bool), [False].
                 - magnetic_field       : strength of the magnetic field (float), [0.0].
@@ -191,6 +202,10 @@ class CWin(dict):
 
             if key == "z_exp_kmesh":
                 d["z_exp_kmesh"] = [int(x) for x in v.split() if x != ""]
+                continue
+
+            if key == "dos_kmesh":
+                d["dos_kmesh"] = [int(x) for x in v.split() if x != ""]
                 continue
 
             v = v.replace(" ", "")
@@ -237,6 +252,7 @@ class CWin(dict):
             "z_exp_temperature",
             "a",
             "fermi_energy",
+            "dos_smr_en_width",
             "degen_thr",
             "magnetic_field",
             "magnetic_field_theta",
@@ -244,7 +260,7 @@ class CWin(dict):
             "g_factor",
         ):
             v = float(v)
-        elif key in ("optimize_wintemp_num_iter", "N1"):
+        elif key in ("optimize_wintemp_num_iter", "N1", "dos_num_fermi"):
             v = int(v)
         elif key == "ket_amn":
             if "[" in v or "]" in v:
