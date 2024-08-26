@@ -151,7 +151,7 @@ def output_linear_dispersion(outdir, filename, k, e, u, **kwargs):
 
     filename = filename[:-4] if filename[-4:] == ".txt" else filename
 
-    fs = open(outdir + "/" + filename + ".txt", "w")
+    fs = open(outdir + "/" + filename + "_detail.txt", "w")
     fs.write("# n = band, j = orbital, E_n: energy, W_jn: weight\n")
     fs.write("# k E_0 W_00 W_10 ... 1qW_M0 E_1 W_01 W_11 W_M1 ... E_n W_jn ... E_d W_0d W_1d ... W_dd\n")
     fs.write(f"# Emax = {str(emax)}\n")
