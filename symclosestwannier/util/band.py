@@ -126,9 +126,7 @@ def generate_band_gnuplot_eig(outdir, filename, kmax, emax, emin, num_wann, **kw
 
     fs.close()
 
-    os.chdir(outdir)
-
-    subprocess.run("gnuplot plot_band.gnu", shell=True)
+    subprocess.run(f"cd {outdir} ; gnuplot plot_band.gnu", shell=True)
 
 
 # ==================================================
@@ -254,6 +252,4 @@ def generate_band_gnuplot(outdir, filename, kmax, emax, emin, num_wann, **kwargs
 
     fs.close()
 
-    os.chdir(outdir)
-
-    subprocess.run("gnuplot plot_band_detail.gnu", shell=True)
+    subprocess.run(f"cd {outdir} ; gnuplot plot_band_detail.gnu", shell=True)
