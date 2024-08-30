@@ -11,6 +11,7 @@ import numpy as np
 def _lorentzian(e, g=0.001):
     return (1.0 / np.pi) * g / (g**2 + e**2)
 
+
 # ==================================================
 def output_dos(outdir, filename, e, u, ef_shift=0.0, dos_num_fermi=50, dos_smr_en_width=0.001, **kwargs):
     """
@@ -41,8 +42,11 @@ def output_dos(outdir, filename, e, u, ef_shift=0.0, dos_num_fermi=50, dos_smr_e
 
     u_abs2 = np.abs(u) ** 2
     pdos = (1.0 / num_k) * np.array(
-            [[np.sum(u_abs2[:, m, :] * _lorentzian(e - ef, dos_smr_en_width)) for ef in fermi_energy_list] for m in range(num_wann)]
-        )
+        [
+            [np.sum(u_abs2[:, m, :] * _lorentzian(e - ef, dos_smr_en_width)) for ef in fermi_energy_list]
+            for m in range(num_wann)
+        ]
+    )
 
     filename = filename[:-4] if filename[-4:] == ".txt" else filename
 
@@ -97,7 +101,6 @@ def generate_dos_gnuplot(outdir, filename, emax, emin, ef_shift, dos_max, num_wa
     ef_max = emax + offset
     ef_min = emin - offset
 
-
     lwidth = kwargs.get("lwidth", 3)
     lc = kwargs.get("lc", "salmon")
 
@@ -121,6 +124,4 @@ def generate_dos_gnuplot(outdir, filename, emax, emin, ef_shift, dos_max, num_wa
 
     fs.close()
 
-    os.chdir(outdir)
-
-    subprocess.run("gnuplot plot_dos.gnu", shell=True)
+    subprocess.run(f"cd {outdir} ; gnuplot plot_dos.gnu", shell=True)
