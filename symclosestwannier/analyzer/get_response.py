@@ -1831,12 +1831,12 @@ def gyrotropic_get_K(cwi, operators):
     start_time = time.time()
     for i, kpoints in enumerate(kpoints_chunks):
         print(f"{i+1}/{num_chunks}")
-        res = gyrotropic_get_K_k(kpoints)
+        v = gyrotropic_get_K_k(kpoints)
 
-        gyro_K_orb += np.sum([v[0] for v in res], axis=0)
-        gyro_K_spn += np.sum([v[1] for v in res], axis=0)
+        gyro_K_orb += v[0]
+        gyro_K_spn += v[1]
 
-        res = None
+        v = None
 
         # convert second to hour, minute and seconds
         elapsed_time = int(time.time() - start_time)
