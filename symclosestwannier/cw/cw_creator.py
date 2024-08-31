@@ -161,7 +161,7 @@ def cw_creator(seedname="cwannier"):
 
     # band calculation
     if cwi["kpoint"] is not None and cwi["kpoint_path"] is not None:
-        cwm.log("\n  * calculating band dispersion ... ", None, end = "", file=outfile, mode="a")
+        cwm.log("\n  * calculating band dispersion ... ", None, end="", file=outfile, mode="a")
 
         k_linear = NSArray(cwi["k_linear"], "vector", fmt="value")
         k_dis_pos = cwi["k_dis_pos"]
@@ -190,7 +190,15 @@ def cw_creator(seedname="cwannier"):
         )
 
         output_linear_dispersion(
-            ".", seedname + "_band_detail.txt", k_linear, Ek, Uk, ref_filename=ref_filename, a=a, ef=ef, k_dis_pos=k_dis_pos
+            ".",
+            seedname + "_band_detail.txt",
+            k_linear,
+            Ek,
+            Uk,
+            ref_filename=ref_filename,
+            a=a,
+            ef=ef,
+            k_dis_pos=k_dis_pos,
         )
 
         if cwi["symmetrization"]:
@@ -246,24 +254,24 @@ def cw_creator(seedname="cwannier"):
     #####
 
     if cwi["calc_dos"]:
-        cwm.log("\n  * calculating DOS ... ", None, end = "", file=outfile, mode="a")
+        cwm.log("\n  * calculating DOS ... ", None, end="", file=outfile, mode="a")
         cwm.set_stamp()
 
-        N1, N2, N3 =cwi["dos_kmesh"]
+        N1, N2, N3 = cwi["dos_kmesh"]
         kpoints = np.array(
-                [[i / float(N1), j / float(N2), k / float(N3)] for i in range(N1) for j in range(N2) for k in range(N3)]
+            [[i / float(N1), j / float(N2), k / float(N3)] for i in range(N1) for j in range(N2) for k in range(N3)]
         )
 
-        Hk_grid = CWModel.fourier_transform_r_to_k(cw_model["Hr"], kpoints, cwi["irvec"], cwi["ndegen"], atoms_frac=None)
+        Hk_grid = CWModel.fourier_transform_r_to_k(
+            cw_model["Hr"], kpoints, cwi["irvec"], cwi["ndegen"], atoms_frac=None
+        )
         Ek, Uk = np.linalg.eigh(Hk_grid)
 
         ef_shift = cwi["fermi_energy"]
         dos_num_fermi = cwi["dos_num_fermi"]
         dos_smr_en_width = cwi["dos_smr_en_width"]
 
-        output_dos(
-            ".", seedname + "_dos.txt", Ek, Uk, ef_shift, dos_num_fermi, dos_smr_en_width
-        )
+        output_dos(".", seedname + "_dos.txt", Ek, Uk, ef_shift, dos_num_fermi, dos_smr_en_width)
 
         if cwi["symmetrization"]:
             ket_samb = cw_model["matrix_dict"]["ket"]
@@ -289,12 +297,7 @@ def cw_creator(seedname="cwannier"):
 
             # output_linear_dispersion(
             output_dos(
-                cwi["mp_outdir"],
-                cwi["mp_seedname"] + "_dos.txt",
-                Ek,
-                Uk,
-                ef_shift,
-                dos_num_fermi, dos_smr_en_width
+                cwi["mp_outdir"], cwi["mp_seedname"] + "_dos.txt", Ek, Uk, ef_shift, dos_num_fermi, dos_smr_en_width
             )
 
         cwm.log("done", end="\n", file=outfile, mode="a")
