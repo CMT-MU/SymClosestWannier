@@ -1290,8 +1290,6 @@ class CWModel(dict):
                     v = bool(v)
                 elif type(v) == np.float64:
                     v = float(v)
-                elif type(v) == np.ndarray:
-                    v = list(v)
 
                 data[k] = v
 
