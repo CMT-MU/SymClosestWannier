@@ -1275,7 +1275,25 @@ class CWModel(dict):
             dict: dictionary of data.
         """
         with h5py.File(filename, "r") as hf:
-            data = {k: v[()] if v is not None else None for k, v in hf["data"].items()}
+            data = {}
+            for k, v in hf["data"].items():
+                v = v[()]
+
+                if type(v) == bytes:
+                    v = v.decode("utf-8")
+                    try:
+                        v = ast.literal_eval(v)
+                    except:
+                        v = v
+
+                elif type(v) == np.bool_:
+                    v = bool(v)
+                elif type(v) == np.float64:
+                    v = float(v)
+                elif type(v) == np.ndarray:
+                    v = list(v)
+
+                data[k] = v
 
             return data
 
