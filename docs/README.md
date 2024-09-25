@@ -5,7 +5,7 @@
 
     > [1] Hiroaki Kusunose, Rikuto Oiwa, and Satoru Hayami, Symmetry-adapted modeling for molecules and crystals, Phys. Rev. B 107, 195118 (2023).
     > DOI: https://doi.org/10.1103/PhysRevB.107.195118.<br>
-    > [2] Taisuke Ozaki, Closest Wannier functions to a given set of localized orbitals, arXiv:2306.15296, (2023).
+    > [2] Taisuke Ozaki, Closest Wannier functions to a given set of localized orbitals, Phys. Rev. B 110, 125115, (2024).
     > URL: https://arxiv.org/abs/2306.15296v2.
 
 - **Authors**: Rikuto Oiwa
