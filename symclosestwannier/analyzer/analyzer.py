@@ -78,6 +78,10 @@ def analyzer(seedname="cwannier"):
         if type(cw_model["Hr_sym"]) == np.ndarray:
             Hr = np.array(cw_model["Hr_sym"], dtype=np.complex128)
 
+            ket_samb = cw_model["matrix_dict"]["ket"]
+            ket_amn = cwi.get("ket_amn", ket_samb)
+            Hr = sort_ket_matrix(Hr, ket_samb, ket_amn)
+
     res = Response(cwi, cwm, HH_R=Hr)
 
     # ******************** #

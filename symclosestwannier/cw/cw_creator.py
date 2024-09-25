@@ -42,6 +42,8 @@ from symclosestwannier.util.message import (
 
 from symclosestwannier.util.get_oper_R import get_oper_R
 
+from symclosestwannier.util.utility import sort_ket_matrix
+
 
 # ==================================================
 def cw_creator(seedname="cwannier"):
@@ -178,23 +180,48 @@ def cw_creator(seedname="cwannier"):
             A = NSArray(cwi["unit_cell_cart"], "matrix", fmt="value")
             a = A[0].norm()
 
+        if cwi["tb_gauge"]:
+            atoms_list = list(cwi["atoms_frac"].values())
+            atoms_frac = np.array([atoms_list[i] for i in cwi["nw2n"]])
+        else:
+            atoms_frac = None
+
         Hk_path = cw_model.fourier_transform_r_to_k(
-            cw_model["Hr"], cwi["kpoints_path"], cwi["irvec"], cwi["ndegen"], atoms_frac=None
+            cw_model["Hr"], cwi["kpoints_path"], cwi["irvec"], cwi["ndegen"], atoms_frac=atoms_frac
         )
         Ek, Uk = np.linalg.eigh(Hk_path)
 
         ef = cwi["fermi_energy"]
 
+        if cwi["calc_spin_2d"]:
+            SS_R = get_oper_R("SS_R", cwi)
+            SS_k = cw_model.fourier_transform_r_to_k_vec(
+                SS_R, cwi["kpoints_path"], cwi["irvec"], cwi["ndegen"], atoms_frac=atoms_frac
+            )
+            SS_H = np.array([Uk.transpose(0, 2, 1).conjugate() @ SS_k[a] @ Uk for a in range(3)])
+            Sk = np.real(np.diagonal(SS_H, axis1=2, axis2=3))
+            Sk = Sk.transpose(2, 1, 0)
+        else:
+            Sk = None
+
         output_linear_dispersion_eig(
-            ".", seedname + "_band.txt", k_linear, Ek, ref_filename=ref_filename, a=a, ef=ef, k_dis_pos=k_dis_pos
+            ".",
+            seedname + "_band.txt",
+            k_linear,
+            e=Ek,
+            o=Sk,
+            ref_filename=ref_filename,
+            a=a,
+            ef=ef,
+            k_dis_pos=k_dis_pos,
         )
 
         output_linear_dispersion(
             ".",
             seedname + "_band_detail.txt",
             k_linear,
-            Ek,
-            Uk,
+            e=Ek,
+            u=Uk,
             ref_filename=ref_filename,
             a=a,
             ef=ef,
@@ -204,10 +231,14 @@ def cw_creator(seedname="cwannier"):
         if cwi["symmetrization"]:
             ket_samb = cw_model["matrix_dict"]["ket"]
             cell_site = cw_model["matrix_dict"]["cell_site"]
-            atoms_frac = [
-                NSArray(cell_site[ket_samb[a].split("@")[1]][0], style="vector", fmt="value").tolist()
-                for a in range(cw_model._cwi["num_wann"])
-            ]
+
+            if cwi["tb_gauge"]:
+                atoms_frac = [
+                    NSArray(cell_site[ket_samb[a].split("@")[1]][0], style="vector", fmt="value").tolist()
+                    for a in range(cw_model._cwi["num_wann"])
+                ]
+            else:
+                atoms_frac = None
 
             rel = os.path.relpath(cwi["outdir"], cwi["mp_outdir"])
 
@@ -223,13 +254,27 @@ def cw_creator(seedname="cwannier"):
             )
             Ek, Uk = np.linalg.eigh(Hk_sym_path)
 
+            if cwi["calc_spin_2d"]:
+                SS_R = get_oper_R("SS_R", cwi)
+                SS_k = cw_model.fourier_transform_r_to_k_vec(
+                    SS_R, cwi["kpoints_path"], cwi["irvec"], cwi["ndegen"], atoms_frac=atoms_frac
+                )
+                ket_samb = cw_model["matrix_dict"]["ket"]
+                ket_amn = cwi.get("ket_amn", ket_samb)
+                SS_k = np.array([sort_ket_matrix(SS_k[a], ket_amn, ket_samb) for a in range(3)])
+                SS_H = np.array([Uk.transpose(0, 2, 1).conjugate() @ SS_k[a] @ Uk for a in range(3)])
+                Sk = np.real(np.diagonal(SS_H, axis1=2, axis2=3))
+                Sk = Sk.transpose(2, 1, 0)
+            else:
+                Sk = None
+
             # output_linear_dispersion(
             output_linear_dispersion_eig(
                 cwi["mp_outdir"],
                 cwi["mp_seedname"] + "_band.txt",
                 k_linear,
-                Ek,
-                # Uk,
+                e=Ek,
+                o=Sk,
                 ref_filename=ref_filename,
                 a=a,
                 ef=ef,
@@ -241,8 +286,8 @@ def cw_creator(seedname="cwannier"):
                 cwi["mp_outdir"],
                 cwi["mp_seedname"] + "_band_detail.txt",
                 k_linear,
-                Ek,
-                Uk,
+                e=Ek,
+                u=Uk,
                 ref_filename=ref_filename,
                 a=a,
                 ef=ef,
