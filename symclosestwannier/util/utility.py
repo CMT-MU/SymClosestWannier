@@ -512,19 +512,19 @@ def dict_to_matrix(Or_dict):
 
 
 # ==================================================
-def sort_ket_matrix_k(Ok, ket, ket_samb):
+def sort_ket_matrix(Ok, ket1, ket2):
     """
-    sort ket to align with the SAMB definition (ket_samb).
+    sort ket1 to align with the order of ket2.
 
     Args:
         Ok (ndarray): arbitrary operator in k-space representation, O_{ab}(k) = <φ_{a}(k)|H|φ_{b}(k)>.
-        ket (list): ket basis list, orbital@site.
-        ket_samb (list): ket basis list for SAMBs, orbital@site.
+        ket1 (list): ket basis list, orbital@site.
+        ket2 (list): ket basis list, orbital@site.
 
     Returns:
         Ok (ndarray): operator.
     """
-    idx_list = [ket.index(o) for o in ket_samb]
+    idx_list = [ket1.index(o) for o in ket2]
     Ok = Ok[:, idx_list, :]
     Ok = Ok[:, :, idx_list]
 
@@ -749,7 +749,7 @@ def thermal_avg(O, E, U, ef=0.0, T_Kelvin=0.0, num_k=0):
     O_exp = []
     for i, Oi in enumerate(O):
         UdoU = U.transpose(0, 2, 1).conjugate() @ Oi @ U
-        UdoU_diag = np.diagonal(UdoU.transpose(1, 2, 0))
+        UdoU_diag = np.diagonal(UdoU, axis1=1, axis2=2)
         Oi_exp = np.sum(fk * UdoU_diag) / num_k
         O_exp.append(np.real(Oi_exp))
 

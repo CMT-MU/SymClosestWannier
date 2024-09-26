@@ -8,7 +8,7 @@ import numpy as np
 
 
 # ==================================================
-def output_linear_dispersion_eig(outdir, filename, k, e, **kwargs):
+def output_linear_dispersion_eig(outdir, filename, k, e, o=None, **kwargs):
     """
     output band dispersion along high-symmetry lines.
     (only eigen values)
@@ -18,6 +18,7 @@ def output_linear_dispersion_eig(outdir, filename, k, e, **kwargs):
         filename (str): file name.
         k (str): k points along high-symmetry lines.
         e (ndarray): eigen values.
+        o (ndarray, optional): expectation value of any operator for each band, [num_band, num_k, component].
         kwargs (dict, optional): key words for generate_band_gnuplot.
     """
     kmax = np.max(k)
@@ -49,7 +50,17 @@ def output_linear_dispersion_eig(outdir, filename, k, e, **kwargs):
         en = e[n] - ef
         s = ""
         for i in range(num_k):
-            s += "{k:0<20}   {e:<20} \n".format(k=k[i], e=en[i])
+            if o is None:
+                s += "{k:0<20}   {e:<20} \n".format(k=k[i], e=en[i])
+            else:
+                s += "{k:0<20}   {e:<20}".format(k=k[i], e=en[i])
+                if o.ndim == 2:
+                    s += "   {o:<20}".format(o=o[n, i])
+                else:
+                    for a in range(o.shape[2]):
+                        s += "   {o:<20}".format(o=o[n, i, a])
+
+                s += " \n"
 
         s += "\n"
         fs.write(s)
@@ -149,7 +160,7 @@ def output_linear_dispersion(outdir, filename, k, e, u, **kwargs):
 
     filename = filename[:-4] if filename[-4:] == ".txt" else filename
 
-    fs = open(outdir + "/" + filename + "_detail.txt", "w")
+    fs = open(outdir + "/" + filename + ".txt", "w")
     fs.write("# n = band, j = orbital, E_n: energy, W_jn: weight\n")
     fs.write("# k E_0 W_00 W_10 ... 1qW_M0 E_1 W_01 W_11 W_M1 ... E_n W_jn ... E_d W_0d W_1d ... W_dd\n")
     fs.write(f"# Emax = {str(emax)}\n")

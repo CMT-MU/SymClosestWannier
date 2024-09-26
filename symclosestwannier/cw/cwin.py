@@ -56,6 +56,7 @@ _default = {
     # band
     "a": None,
     "N1": 50,
+    "calc_spin_2d": False,
     # dos
     "calc_dos": False,
     "dos_kmesh": [1, 1, 1],
