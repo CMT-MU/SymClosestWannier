@@ -13,57 +13,49 @@
   
   <script data-cfasync="false">
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
-    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
   </script>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../../../_static/styles/theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
-<link href="../../../_static/styles/bootstrap.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
-<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+  <link href="../../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
 
   
-  <link href="../../../_static/vendor/fontawesome/6.5.1/css/all.min.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
-  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.1/webfonts/fa-solid-900.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
+  <link href="../../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
-    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b76e3c8a" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/styles/sphinx-book-theme.css?v=384b581d" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/sphinx-book-theme.css?v=a3416100" />
     <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css?v=13237357" />
     <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-thebe.css?v=4fa983c6" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-design.min.css?v=95c83b7e" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae" />
-<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
-  <script src="../../../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
     <script src="../../../_static/documentation_options.js?v=8cf54648"></script>
-    <script src="../../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../../../_static/copybutton.js?v=f281be69"></script>
-    <script src="../../../_static/scripts/sphinx-book-theme.js?v=efea14e4"></script>
+    <script src="../../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
     <script src="../../../_static/togglebutton.js?v=4a39c7ea"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script src="../../../_static/design-tabs.js?v=36754332"></script>
-    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
-const thebe_selector = ".thebe,.cell"
-const thebe_selector_input = "pre"
-const thebe_selector_output = ".output, .cell_output"
-</script>
-    <script async="async" src="../../../_static/sphinx-thebe.js?v=afe5de03"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../../../_static/sphinx-thebe.js?v=c100c467"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
-    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
-const thebe_selector = ".thebe,.cell"
-const thebe_selector_input = "pre"
-const thebe_selector_output = ".output, .cell_output"
-</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_modules/symclosestwannier/cw/cw_model';</script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
@@ -76,27 +68,23 @@ const thebe_selector_output = ".output, .cell_output"
 
   
   
-  <a id="pst-skip-link" class="skip-link" href="#main-content">Skip to main content</a>
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
   
   <div id="pst-scroll-pixel-helper"></div>
   
   <button type="button" class="btn rounded-pill" id="pst-back-to-top">
-    <i class="fa-solid fa-arrow-up"></i>
-    Back to top
-  </button>
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
 
   
   <input type="checkbox"
           class="sidebar-toggle"
-          name="__primary"
-          id="__primary"/>
-  <label class="overlay overlay-primary" for="__primary"></label>
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
   
   <input type="checkbox"
           class="sidebar-toggle"
-          name="__secondary"
-          id="__secondary"/>
-  <label class="overlay overlay-secondary" for="__secondary"></label>
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
   
   <div class="search-button__wrapper">
     <div class="search-button__overlay"></div>
@@ -118,8 +106,13 @@ const thebe_selector_output = ".output, .cell_output"
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
 </form></div>
   </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
   
-    <header class="bd-header navbar navbar-expand-lg bd-navbar">
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
     </header>
   
 
@@ -145,6 +138,8 @@ const thebe_selector_output = ".output, .cell_output"
         <div class="sidebar-primary-item">
 
   
+    
+  
 
 <a class="navbar-brand logo" href="../../../README.html">
   
@@ -160,7 +155,7 @@ const thebe_selector_output = ".output, .cell_output"
 
  <script>
  document.write(`
-   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <i class="fa-solid fa-magnifying-glass"></i>
     <span class="search-button__default-text">Search</span>
     <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
@@ -207,7 +202,7 @@ const thebe_selector_output = ".output, .cell_output"
 
       </div>
       
-      <main id="main-content" class="bd-main">
+      <main id="main-content" class="bd-main" role="main">
         
         
 
@@ -216,14 +211,14 @@ const thebe_selector_output = ".output, .cell_output"
           <div class="bd-content">
             <div class="bd-article-container">
               
-              <div class="bd-header-article">
+              <div class="bd-header-article d-print-none">
 <div class="header-article-items header-article__inner">
   
     <div class="header-article-items__start">
       
-        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
   <span class="fa-solid fa-bars"></span>
-</label></div>
+</button></div>
       
     </div>
   
@@ -268,10 +263,10 @@ const thebe_selector_output = ".output, .cell_output"
 
 <script>
 document.write(`
-  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
-    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
-    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
   </button>
 `);
 </script>
@@ -279,7 +274,7 @@ document.write(`
 
 <script>
 document.write(`
-  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <i class="fa-solid fa-magnifying-glass fa-lg"></i>
   </button>
 `);
@@ -347,6 +342,11 @@ document.write(`
 <span class="kn">from</span> <span class="nn">multipie.model.construct_model</span> <span class="kn">import</span> <span class="n">construct_samb_matrix</span>
 <span class="kn">from</span> <span class="nn">multipie.data.data_transform_matrix</span> <span class="kn">import</span> <span class="n">_data_trans_lattice_p</span>
 
+<span class="kn">import</span> <span class="nn">multiprocessing</span>
+<span class="kn">from</span> <span class="nn">joblib</span> <span class="kn">import</span> <span class="n">Parallel</span><span class="p">,</span> <span class="n">delayed</span><span class="p">,</span> <span class="n">wrap_non_picklable_objects</span>
+
+<span class="n">_num_proc</span> <span class="o">=</span> <span class="n">multiprocessing</span><span class="o">.</span><span class="n">cpu_count</span><span class="p">()</span>
+
 
 <span class="kn">from</span> <span class="nn">symclosestwannier.util.message</span> <span class="kn">import</span> <span class="p">(</span>
     <span class="n">cw_start_msg</span><span class="p">,</span>
@@ -363,12 +363,14 @@ document.write(`
     <span class="n">hr_header</span><span class="p">,</span>
     <span class="n">sr_header</span><span class="p">,</span>
     <span class="n">z_header</span><span class="p">,</span>
-    <span class="c1"># z_nonortho_header,</span>
+    <span class="n">z_nonortho_header</span><span class="p">,</span>
     <span class="n">s_header</span><span class="p">,</span>
     <span class="n">z_exp_header</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="kn">from</span> <span class="nn">symclosestwannier.util.utility</span> <span class="kn">import</span> <span class="p">(</span>
     <span class="n">thermal_avg</span><span class="p">,</span>
+    <span class="n">total_energy</span><span class="p">,</span>
+    <span class="n">entropy</span><span class="p">,</span>
     <span class="n">weight_proj</span><span class="p">,</span>
     <span class="n">fourier_transform_k_to_r</span><span class="p">,</span>
     <span class="n">fourier_transform_r_to_k</span><span class="p">,</span>
@@ -377,35 +379,34 @@ document.write(`
     <span class="n">matrix_dict_k</span><span class="p">,</span>
     <span class="n">dict_to_matrix</span><span class="p">,</span>
     <span class="n">sort_ket_matrix_k</span><span class="p">,</span>
-    <span class="n">sort_ket_matrix_dict</span><span class="p">,</span>
     <span class="n">samb_decomp_operator</span><span class="p">,</span>
     <span class="n">construct_Or</span><span class="p">,</span>
     <span class="n">construct_Ok</span><span class="p">,</span>
     <span class="n">spin_zeeman_interaction</span><span class="p">,</span>
+    <span class="n">Kelvin_to_eV</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="kn">from</span> <span class="nn">symclosestwannier.util.get_oper_R</span> <span class="kn">import</span> <span class="n">get_oper_R</span>
 
 <span class="n">_default</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s2">&quot;Sk&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
     <span class="s2">&quot;Hk&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="c1"># &quot;Hk_nonortho&quot;: None,</span>
+    <span class="s2">&quot;Hk_nonortho&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
     <span class="c1">#</span>
     <span class="s2">&quot;Sr&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
     <span class="s2">&quot;Hr&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="c1"># &quot;Hr_nonortho&quot;: None,</span>
+    <span class="s2">&quot;Hr_nonortho&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
     <span class="c1">#</span>
     <span class="s2">&quot;s&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
     <span class="s2">&quot;z&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="c1"># &quot;z_nonortho&quot;: None,</span>
+    <span class="s2">&quot;z_nonortho&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
     <span class="c1">#</span>
     <span class="s2">&quot;z_exp&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
     <span class="c1">#</span>
     <span class="s2">&quot;Sk_sym&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
     <span class="s2">&quot;Hk_sym&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="c1"># &quot;Hk_nonortho_sym&quot;: None,</span>
+    <span class="s2">&quot;Hk_nonortho_sym&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
     <span class="s2">&quot;Sr_sym&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
     <span class="s2">&quot;Hr_sym&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="c1"># &quot;Hr_nonortho_sym&quot;: None,</span>
+    <span class="s2">&quot;Hr_nonortho_sym&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
     <span class="c1">#</span>
     <span class="s2">&quot;Ek_RMSE_grid&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
     <span class="s2">&quot;Ek_RMSE_path&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
@@ -485,11 +486,11 @@ document.write(`
             <span class="n">Hk</span> <span class="o">+=</span> <span class="n">H_zeeman</span>
 
         <span class="n">S2k</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">spl</span><span class="o">.</span><span class="n">sqrtm</span><span class="p">(</span><span class="n">Sk</span><span class="p">[</span><span class="n">k</span><span class="p">])</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;num_k&quot;</span><span class="p">])])</span>
-        <span class="c1"># Hk_nonortho = S2k @ Hk @ S2k</span>
+        <span class="n">Hk_nonortho</span> <span class="o">=</span> <span class="n">S2k</span> <span class="o">@</span> <span class="n">Hk</span> <span class="o">@</span> <span class="n">S2k</span>
 
         <span class="n">Sr</span> <span class="o">=</span> <span class="n">CWModel</span><span class="o">.</span><span class="n">fourier_transform_k_to_r</span><span class="p">(</span><span class="n">Sk</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;kpoints&quot;</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;irvec&quot;</span><span class="p">])</span>
         <span class="n">Hr</span> <span class="o">=</span> <span class="n">CWModel</span><span class="o">.</span><span class="n">fourier_transform_k_to_r</span><span class="p">(</span><span class="n">Hk</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;kpoints&quot;</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;irvec&quot;</span><span class="p">])</span>
-        <span class="c1"># Hr_nonortho = CWModel.fourier_transform_k_to_r(Hk_nonortho, self._cwi[&quot;kpoints&quot;], self._cwi[&quot;irvec&quot;])</span>
+        <span class="n">Hr_nonortho</span> <span class="o">=</span> <span class="n">CWModel</span><span class="o">.</span><span class="n">fourier_transform_k_to_r</span><span class="p">(</span><span class="n">Hk_nonortho</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;kpoints&quot;</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;irvec&quot;</span><span class="p">])</span>
 
         <span class="c1">#####</span>
 
@@ -497,11 +498,11 @@ document.write(`
             <span class="p">{</span>
                 <span class="s2">&quot;Sk&quot;</span><span class="p">:</span> <span class="n">Sk</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span>
                 <span class="s2">&quot;Hk&quot;</span><span class="p">:</span> <span class="n">Hk</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span>
-                <span class="c1"># &quot;Hk_nonortho&quot;: Hk_nonortho.tolist(),</span>
+                <span class="s2">&quot;Hk_nonortho&quot;</span><span class="p">:</span> <span class="n">Hk_nonortho</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span>
                 <span class="c1">#</span>
                 <span class="s2">&quot;Sr&quot;</span><span class="p">:</span> <span class="n">Sr</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span>
                 <span class="s2">&quot;Hr&quot;</span><span class="p">:</span> <span class="n">Hr</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span>
-                <span class="c1"># &quot;Hr_nonortho&quot;: Hr_nonortho.tolist(),</span>
+                <span class="s2">&quot;Hr_nonortho&quot;</span><span class="p">:</span> <span class="n">Hr_nonortho</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span>
             <span class="p">}</span>
         <span class="p">)</span>
 
@@ -525,6 +526,7 @@ document.write(`
             <span class="bp">self</span><span class="o">.</span><span class="n">_cwm</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="s2">&quot;done&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_outfile</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;a&quot;</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;disentangle&quot;</span><span class="p">]:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;optimize_wintemp&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;optimize_wintemp&quot;</span><span class="p">])</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;optimize_wintemp&quot;</span><span class="p">]:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_optimize_win_temp</span><span class="p">(</span><span class="n">Ek</span><span class="p">,</span> <span class="n">Ak</span><span class="p">)</span>
 
@@ -546,8 +548,7 @@ document.write(`
         <span class="bp">self</span><span class="o">.</span><span class="n">_cwm</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_outfile</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;a&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_cwm</span><span class="o">.</span><span class="n">set_stamp</span><span class="p">()</span>
 
-        <span class="c1"># Sk, Uk, Hk, Hk_nonortho, Sr, Hr, Hr_nonortho = self._construct_tb(Ek, Ak)</span>
-        <span class="n">Sk</span><span class="p">,</span> <span class="n">Uk</span><span class="p">,</span> <span class="n">Hk</span><span class="p">,</span> <span class="n">Sr</span><span class="p">,</span> <span class="n">Hr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_construct_tb</span><span class="p">(</span><span class="n">Ek</span><span class="p">,</span> <span class="n">Ak</span><span class="p">)</span>
+        <span class="n">Sk</span><span class="p">,</span> <span class="n">Uk</span><span class="p">,</span> <span class="n">Hk</span><span class="p">,</span> <span class="n">Sr</span><span class="p">,</span> <span class="n">Hr</span><span class="p">,</span> <span class="n">Hk_nonortho</span><span class="p">,</span> <span class="n">Hr_nonortho</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_construct_tb</span><span class="p">(</span><span class="n">Ek</span><span class="p">,</span> <span class="n">Ak</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_cwm</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="s2">&quot;done&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_outfile</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;a&quot;</span><span class="p">)</span>
 
@@ -562,11 +563,11 @@ document.write(`
             <span class="p">{</span>
                 <span class="s2">&quot;Sk&quot;</span><span class="p">:</span> <span class="n">Sk</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span>
                 <span class="s2">&quot;Hk&quot;</span><span class="p">:</span> <span class="n">Hk</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span>
-                <span class="c1"># &quot;Hk_nonortho&quot;: Hk_nonortho.tolist(),</span>
+                <span class="s2">&quot;Hk_nonortho&quot;</span><span class="p">:</span> <span class="n">Hk_nonortho</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span>
                 <span class="c1">#</span>
                 <span class="s2">&quot;Sr&quot;</span><span class="p">:</span> <span class="n">Sr</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span>
                 <span class="s2">&quot;Hr&quot;</span><span class="p">:</span> <span class="n">Hr</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span>
-                <span class="c1"># &quot;Hr_nonortho&quot;: Hr_nonortho.tolist(),</span>
+                <span class="s2">&quot;Hr_nonortho&quot;</span><span class="p">:</span> <span class="n">Hr_nonortho</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span>
             <span class="p">}</span>
         <span class="p">)</span>
 
@@ -669,22 +670,35 @@ document.write(`
             <span class="n">num_wann</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;num_wann&quot;</span><span class="p">]</span>
             <span class="n">num_bands</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;num_bands&quot;</span><span class="p">]</span>
 
-            <span class="n">Delta</span> <span class="o">=</span> <span class="p">(</span>
-                <span class="nb">sum</span><span class="p">(</span>
-                    <span class="p">[</span>
-                        <span class="n">jaccard</span><span class="p">(</span>
-                            <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">Ek</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span>
-                            <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">Ek_cw</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span>
-                        <span class="p">)</span>
-                        <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_k</span><span class="p">)</span>
-                    <span class="p">]</span>
-                <span class="p">)</span>
-                <span class="o">/</span> <span class="n">num_k</span>
-            <span class="p">)</span>
+            <span class="c1"># Delta = (</span>
+            <span class="c1">#     sum(</span>
+            <span class="c1">#         [</span>
+            <span class="c1">#             jaccard(</span>
+            <span class="c1">#                 np.round(Ek[k], 3).tolist(),</span>
+            <span class="c1">#                 np.round(Ek_cw[k], 3).tolist(),</span>
+            <span class="c1">#             )</span>
+            <span class="c1">#             for k in range(num_k)</span>
+            <span class="c1">#         ]</span>
+            <span class="c1">#     )</span>
+            <span class="c1">#     / num_k</span>
+            <span class="c1"># )</span>
 
             <span class="c1"># Delta = (</span>
             <span class="c1">#     np.sum(np.abs(Ek - Ek_cw)) / self._cwi[&quot;num_k&quot;] / (self._cwi[&quot;num_wann&quot;] + self._cwi[&quot;num_bands&quot;]) * 2</span>
             <span class="c1"># )</span>
+
+            <span class="n">Delta</span> <span class="o">=</span> <span class="mf">0.0</span>
+
+            <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_k</span><span class="p">):</span>
+                <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_wann</span><span class="p">):</span>
+                    <span class="n">enk_cw</span> <span class="o">=</span> <span class="n">Ek_cw</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="n">n</span><span class="p">]</span>
+                    <span class="n">d_lst</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">enk_cw</span> <span class="o">-</span> <span class="n">Ek</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="n">m</span><span class="p">])</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_bands</span><span class="p">)]</span>
+                    <span class="n">m</span> <span class="o">=</span> <span class="n">d_lst</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="n">d_lst</span><span class="p">))</span>
+                    <span class="n">emk</span> <span class="o">=</span> <span class="n">Ek</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="n">m</span><span class="p">]</span>
+
+                    <span class="n">Delta</span> <span class="o">+=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">enk_cw</span> <span class="o">-</span> <span class="n">emk</span><span class="p">)</span>
+
+            <span class="n">Delta</span> <span class="o">=</span> <span class="n">Delta</span> <span class="o">/</span> <span class="n">num_k</span> <span class="o">/</span> <span class="n">num_wann</span>
 
             <span class="k">return</span> <span class="n">Delta</span>
 
@@ -702,9 +716,9 @@ document.write(`
             <span class="k">return</span> <span class="p">(</span><span class="n">f</span><span class="p">(</span><span class="n">x</span> <span class="o">+</span> <span class="n">h_vec</span><span class="p">)</span> <span class="o">-</span> <span class="n">f</span><span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="n">h_vec</span><span class="p">))</span> <span class="o">/</span> <span class="p">(</span><span class="mf">2.0</span> <span class="o">*</span> <span class="n">h</span><span class="p">)</span>
 
         <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;- optimizing windows and smearing temperatures ... </span><span class="se">\n</span><span class="s2">&quot;</span>
-        <span class="n">msg</span> <span class="o">+=</span> <span class="s2">&quot;* -------------------------------------------------------------------------------------- * </span><span class="se">\n</span><span class="s2">&quot;</span>
-        <span class="n">msg</span> <span class="o">+=</span> <span class="s2">&quot;|  niter:  dis_win_emin  dis_win_emax  smearing_temp_min smearing_temp_max  Delta  Time  | </span><span class="se">\n</span><span class="s2">&quot;</span>
-        <span class="n">msg</span> <span class="o">+=</span> <span class="s2">&quot;* ---------------------------------------------------------------------------------------* </span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="n">msg</span> <span class="o">+=</span> <span class="s2">&quot;* --------------------------------------------------------------------------------------------- * </span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="n">msg</span> <span class="o">+=</span> <span class="s2">&quot;|  niter:   dis_win_emin   dis_win_emax   smearing_temp_min   smearing_temp_max   Delta   Time  | </span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="n">msg</span> <span class="o">+=</span> <span class="s2">&quot;* --------------------------------------------------------------------------------------------- * </span><span class="se">\n</span><span class="s2">&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_cwm</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_outfile</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;a&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_cwm</span><span class="o">.</span><span class="n">set_stamp</span><span class="p">()</span>
 
@@ -733,23 +747,27 @@ document.write(`
                 <span class="n">grad</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span> <span class="k">if</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">fixed_indexes</span> <span class="k">else</span> <span class="n">numerical_diff</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">)])</span>
                 <span class="n">x</span> <span class="o">=</span> <span class="n">x</span> <span class="o">-</span> <span class="n">mixing_beta</span> <span class="o">*</span> <span class="n">grad</span>
 
-            <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;       </span><span class="si">{</span><span class="n">niter</span><span class="si">}</span><span class="s2">:  </span><span class="si">{</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">  </span><span class="si">{</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2">  </span><span class="si">{</span><span class="n">x</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="si">}</span><span class="s2">  </span><span class="si">{</span><span class="n">x</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="si">}</span><span class="s2">  </span><span class="si">{</span><span class="n">Delta</span><span class="si">}</span><span class="s2">&quot;</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_cwm</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_outfile</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;a&quot;</span><span class="p">)</span>
+            <span class="n">emin</span><span class="p">,</span> <span class="n">emax</span><span class="p">,</span> <span class="n">T_min</span><span class="p">,</span> <span class="n">T_max</span> <span class="o">=</span> <span class="n">x</span>
 
-        <span class="n">emin</span><span class="p">,</span> <span class="n">emax</span><span class="p">,</span> <span class="n">T_min</span><span class="p">,</span> <span class="n">T_max</span> <span class="o">=</span> <span class="n">x</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{0[0]:8d}</span><span class="s2">: </span><span class="si">{0[1]:12.6f}</span><span class="s2">  </span><span class="si">{0[2]:12.6f}</span><span class="s2"> </span><span class="si">{0[3]:12.6f}</span><span class="s2"> </span><span class="si">{0[4]:12.6f}</span><span class="s2"> </span><span class="si">{0[5]:12.6f}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="p">[</span><span class="n">niter</span><span class="p">,</span> <span class="n">emin</span><span class="p">,</span> <span class="n">emax</span><span class="p">,</span> <span class="n">T_min</span><span class="p">,</span> <span class="n">T_max</span><span class="p">,</span> <span class="n">Delta</span><span class="p">]</span>
+            <span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_cwm</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_outfile</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;a&quot;</span><span class="p">)</span>
 
         <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;* -------------------------------------------------------------------------------------- * </span><span class="se">\n</span><span class="s2">&quot;</span>
         <span class="k">if</span> <span class="n">cnt</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;optimize_wintemp_num_iter&quot;</span><span class="p">]:</span>
-            <span class="n">msg</span> <span class="o">+=</span> <span class="s2">&quot;Warning: Maximum number of optimize_win_emp iterations reached </span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="n">msg</span> <span class="o">+=</span> <span class="s2">&quot;Warning: Maximum number of optimize_win_temp iterations reached </span><span class="se">\n</span><span class="s2">&quot;</span>
 
         <span class="k">if</span> <span class="n">Delta</span> <span class="o">&gt;</span> <span class="n">conv_thr</span><span class="p">:</span>
-            <span class="n">msg</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;Warning: optimize_win_emp convergence criteria (optimize_wintemp_conv_thr = </span><span class="si">{</span><span class="n">conv_thr</span><span class="si">}</span><span class="s2">) not satisfied </span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="n">msg</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;Warning: optimize_win_temp convergence criteria (optimize_wintemp_conv_thr = </span><span class="si">{</span><span class="n">conv_thr</span><span class="si">}</span><span class="s2">) not satisfied </span><span class="se">\n</span><span class="s2">&quot;</span>
+
+        <span class="n">emin</span><span class="p">,</span> <span class="n">emax</span><span class="p">,</span> <span class="n">T_min</span><span class="p">,</span> <span class="n">T_max</span> <span class="o">=</span> <span class="n">x</span>
 
         <span class="n">msg</span> <span class="o">+=</span> <span class="s2">&quot;Final values: </span><span class="se">\n</span><span class="s2">&quot;</span>
-        <span class="n">msg</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;  - dis_win_emin = </span><span class="si">{</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2"> </span><span class="se">\n</span><span class="s2">&quot;</span>
-        <span class="n">msg</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;  - dis_win_emax = </span><span class="si">{</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2"> </span><span class="se">\n</span><span class="s2">&quot;</span>
-        <span class="n">msg</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;  - smearing_temp_min = </span><span class="si">{</span><span class="n">x</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="si">}</span><span class="s2"> </span><span class="se">\n</span><span class="s2">&quot;</span>
-        <span class="n">msg</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;  - smearing_temp_max = </span><span class="si">{</span><span class="n">x</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="si">}</span><span class="s2"> </span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="n">msg</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;  - dis_win_emin = </span><span class="si">{</span><span class="n">emin</span><span class="si">}</span><span class="s2"> </span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="n">msg</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;  - dis_win_emax = </span><span class="si">{</span><span class="n">emax</span><span class="si">}</span><span class="s2"> </span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="n">msg</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;  - smearing_temp_min = </span><span class="si">{</span><span class="n">T_min</span><span class="si">}</span><span class="s2"> </span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="n">msg</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;  - smearing_temp_max = </span><span class="si">{</span><span class="n">T_max</span><span class="si">}</span><span class="s2"> </span><span class="se">\n</span><span class="s2">&quot;</span>
         <span class="n">msg</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;  - Delta = </span><span class="si">{</span><span class="n">Delta</span><span class="si">}</span><span class="s2"> </span><span class="se">\n</span><span class="s2">&quot;</span>
         <span class="n">msg</span> <span class="o">+=</span> <span class="s2">&quot;* -------------------------------------------------------------------------------------- * </span><span class="se">\n</span><span class="s2">&quot;</span>
 
@@ -760,7 +778,12 @@ document.write(`
             <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;dis_win_emax&quot;</span><span class="p">],</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;smearing_temp_min&quot;</span><span class="p">],</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;smearing_temp_max&quot;</span><span class="p">],</span>
-        <span class="p">)</span> <span class="o">=</span> <span class="n">x</span>
+        <span class="p">)</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">emin</span><span class="p">,</span>
+            <span class="n">emax</span><span class="p">,</span>
+            <span class="n">T_min</span><span class="p">,</span>
+            <span class="n">T_max</span><span class="p">,</span>
+        <span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_cwm</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="s2">&quot;done &quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_outfile</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;a&quot;</span><span class="p">)</span>
 
@@ -809,14 +832,14 @@ document.write(`
             <span class="n">H_zeeman</span> <span class="o">=</span> <span class="n">spin_zeeman_interaction</span><span class="p">(</span><span class="n">B</span><span class="p">,</span> <span class="n">theta</span><span class="p">,</span> <span class="n">phi</span><span class="p">,</span> <span class="n">pauli_spin</span><span class="p">,</span> <span class="n">g_factor</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;num_wann&quot;</span><span class="p">])</span>
             <span class="n">Hk</span> <span class="o">+=</span> <span class="n">H_zeeman</span>
 
+        <span class="n">S2k</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">spl</span><span class="o">.</span><span class="n">sqrtm</span><span class="p">(</span><span class="n">Sk</span><span class="p">[</span><span class="n">k</span><span class="p">])</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;num_k&quot;</span><span class="p">])])</span>
+        <span class="n">Hk_nonortho</span> <span class="o">=</span> <span class="n">S2k</span> <span class="o">@</span> <span class="n">Hk</span> <span class="o">@</span> <span class="n">S2k</span>
+
         <span class="n">Sr</span> <span class="o">=</span> <span class="n">CWModel</span><span class="o">.</span><span class="n">fourier_transform_k_to_r</span><span class="p">(</span><span class="n">Sk</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;kpoints&quot;</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;irvec&quot;</span><span class="p">])</span>
         <span class="n">Hr</span> <span class="o">=</span> <span class="n">CWModel</span><span class="o">.</span><span class="n">fourier_transform_k_to_r</span><span class="p">(</span><span class="n">Hk</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;kpoints&quot;</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;irvec&quot;</span><span class="p">])</span>
-        <span class="c1"># Hr_nonortho = CWModel.fourier_transform_k_to_r(Hk_nonortho, self._cwi[&quot;kpoints&quot;], self._cwi[&quot;irvec&quot;])</span>
+        <span class="n">Hr_nonortho</span> <span class="o">=</span> <span class="n">CWModel</span><span class="o">.</span><span class="n">fourier_transform_k_to_r</span><span class="p">(</span><span class="n">Hk_nonortho</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;kpoints&quot;</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;irvec&quot;</span><span class="p">])</span>
 
-        <span class="c1"># S2k = np.array([spl.sqrtm(Sk[k]) for k in range(self._cwi[&quot;num_k&quot;])])</span>
-        <span class="c1"># Hk_nonortho = S2k @ Hk @ S2k</span>
-
-        <span class="k">return</span> <span class="n">Sk</span><span class="p">,</span> <span class="n">Uk</span><span class="p">,</span> <span class="n">Hk</span><span class="p">,</span> <span class="n">Sr</span><span class="p">,</span> <span class="n">Hr</span>  <span class="c1"># , Hk_nonortho, Hr_nonortho</span>
+        <span class="k">return</span> <span class="n">Sk</span><span class="p">,</span> <span class="n">Uk</span><span class="p">,</span> <span class="n">Hk</span><span class="p">,</span> <span class="n">Sr</span><span class="p">,</span> <span class="n">Hr</span><span class="p">,</span> <span class="n">Hk_nonortho</span><span class="p">,</span> <span class="n">Hr_nonortho</span>
 
     <span class="c1"># ==================================================</span>
     <span class="k">def</span> <span class="nf">_sym</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -826,7 +849,7 @@ document.write(`
         <span class="n">Hk</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="p">[</span><span class="s2">&quot;Hk&quot;</span><span class="p">])</span>
         <span class="n">Hr_dict</span> <span class="o">=</span> <span class="n">CWModel</span><span class="o">.</span><span class="n">matrix_dict_r</span><span class="p">(</span><span class="bp">self</span><span class="p">[</span><span class="s2">&quot;Hr&quot;</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;irvec&quot;</span><span class="p">])</span>
         <span class="n">Sr_dict</span> <span class="o">=</span> <span class="n">CWModel</span><span class="o">.</span><span class="n">matrix_dict_r</span><span class="p">(</span><span class="bp">self</span><span class="p">[</span><span class="s2">&quot;Sr&quot;</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;irvec&quot;</span><span class="p">])</span>
-        <span class="c1"># Hr_nonortho_dict = CWModel.matrix_dict_r(self[&quot;Hr_nonortho&quot;], self._cwi[&quot;irvec&quot;])</span>
+        <span class="n">Hr_nonortho_dict</span> <span class="o">=</span> <span class="n">CWModel</span><span class="o">.</span><span class="n">matrix_dict_r</span><span class="p">(</span><span class="bp">self</span><span class="p">[</span><span class="s2">&quot;Hr_nonortho&quot;</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;irvec&quot;</span><span class="p">])</span>
 
         <span class="c1">#####</span>
 
@@ -873,6 +896,18 @@ document.write(`
         <span class="n">mat</span><span class="p">[</span><span class="s2">&quot;matrix&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
             <span class="n">zj</span><span class="p">:</span> <span class="p">{</span><span class="nb">tuple</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">sympify</span><span class="p">(</span><span class="n">k</span><span class="p">)):</span> <span class="nb">complex</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">sympify</span><span class="p">(</span><span class="n">v</span><span class="p">))</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">d</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span> <span class="k">for</span> <span class="n">zj</span><span class="p">,</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">mat</span><span class="p">[</span><span class="s2">&quot;matrix&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
         <span class="p">}</span>
+
+        <span class="c1">### kuniyoshi (24/08/20) ###</span>
+        <span class="k">def</span> <span class="nf">proc</span><span class="p">(</span><span class="n">d</span><span class="p">):</span>
+            <span class="k">return</span> <span class="p">{</span><span class="nb">tuple</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">sympify</span><span class="p">(</span><span class="n">k</span><span class="p">)):</span> <span class="nb">complex</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">sympify</span><span class="p">(</span><span class="n">v</span><span class="p">))</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">d</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+
+        <span class="n">res</span> <span class="o">=</span> <span class="n">Parallel</span><span class="p">(</span><span class="n">n_jobs</span><span class="o">=</span><span class="n">_num_proc</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">1</span><span class="p">)(</span><span class="n">delayed</span><span class="p">(</span><span class="n">proc</span><span class="p">)(</span><span class="n">d</span><span class="p">)</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">mat</span><span class="p">[</span><span class="s2">&quot;matrix&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+
+        <span class="n">Zr_dict</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">zj</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">mat</span><span class="p">[</span><span class="s2">&quot;matrix&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
+            <span class="n">Zr_dict</span><span class="p">[(</span><span class="n">zj</span><span class="p">,</span> <span class="n">tag_dict</span><span class="p">[</span><span class="n">zj</span><span class="p">])]</span> <span class="o">=</span> <span class="n">res</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="n">mat</span><span class="p">[</span><span class="s2">&quot;matrix&quot;</span><span class="p">][</span><span class="n">zj</span><span class="p">]</span> <span class="o">=</span> <span class="n">res</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        <span class="c1">### kuniyoshi (24/08/20) ###</span>
 
         <span class="n">A</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="n">A_samb</span> <span class="o">=</span> <span class="kc">None</span>
@@ -929,19 +964,30 @@ document.write(`
         <span class="bp">self</span><span class="o">.</span><span class="n">_cwm</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_outfile</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;a&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_cwm</span><span class="o">.</span><span class="n">set_stamp</span><span class="p">()</span>
 
-        <span class="c1"># s = CWModel.samb_decomp_operator(Sr_dict, Zr_dict, A, atoms_frac, ket_amn, A_samb, atoms_frac_samb, ket_samb)</span>
-        <span class="n">s</span> <span class="o">=</span> <span class="n">z</span>
+        <span class="k">if</span> <span class="n">mat</span><span class="p">[</span><span class="s2">&quot;molecule&quot;</span><span class="p">]:</span>
+            <span class="n">s</span> <span class="o">=</span> <span class="n">CWModel</span><span class="o">.</span><span class="n">samb_decomp_operator</span><span class="p">(</span><span class="n">Sr_dict</span><span class="p">,</span> <span class="n">Zr_dict</span><span class="p">,</span> <span class="n">ket</span><span class="o">=</span><span class="n">ket_amn</span><span class="p">,</span> <span class="n">ket_samb</span><span class="o">=</span><span class="n">ket_samb</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">s</span> <span class="o">=</span> <span class="n">CWModel</span><span class="o">.</span><span class="n">samb_decomp_operator</span><span class="p">(</span>
+                <span class="n">Sr_dict</span><span class="p">,</span> <span class="n">Zr_dict</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">atoms_frac</span><span class="p">,</span> <span class="n">ket_amn</span><span class="p">,</span> <span class="n">A_samb</span><span class="p">,</span> <span class="n">atoms_frac_samb</span><span class="p">,</span> <span class="n">ket_samb</span>
+            <span class="p">)</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">_cwm</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="s2">&quot;done&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_outfile</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;a&quot;</span><span class="p">)</span>
 
         <span class="c1">#####</span>
 
-        <span class="c1"># msg = &quot;    - decomposing non-orthogonal Hamiltonian as linear combination of SAMBs ... &quot;</span>
-        <span class="c1"># self._cwm.log(msg, None, end=&quot;&quot;, file=self._outfile, mode=&quot;a&quot;)</span>
-        <span class="c1"># self._cwm.set_stamp()</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;    - decomposing non-orthogonal Hamiltonian as linear combination of SAMBs ... &quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_cwm</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_outfile</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;a&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_cwm</span><span class="o">.</span><span class="n">set_stamp</span><span class="p">()</span>
 
-        <span class="c1"># z_nonortho = CWModel.samb_decomp_operator(Hr_nonortho_dict, Zr_dict, A, atoms_frac, ket_amn, A_samb, atoms_frac_samb, ket_samb)</span>
+        <span class="k">if</span> <span class="n">mat</span><span class="p">[</span><span class="s2">&quot;molecule&quot;</span><span class="p">]:</span>
+            <span class="n">z_nonortho</span> <span class="o">=</span> <span class="n">CWModel</span><span class="o">.</span><span class="n">samb_decomp_operator</span><span class="p">(</span><span class="n">Hr_nonortho_dict</span><span class="p">,</span> <span class="n">Zr_dict</span><span class="p">,</span> <span class="n">ket</span><span class="o">=</span><span class="n">ket_amn</span><span class="p">,</span> <span class="n">ket_samb</span><span class="o">=</span><span class="n">ket_samb</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">z_nonortho</span> <span class="o">=</span> <span class="n">CWModel</span><span class="o">.</span><span class="n">samb_decomp_operator</span><span class="p">(</span>
+                <span class="n">Hr_nonortho_dict</span><span class="p">,</span> <span class="n">Zr_dict</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">atoms_frac</span><span class="p">,</span> <span class="n">ket_amn</span><span class="p">,</span> <span class="n">A_samb</span><span class="p">,</span> <span class="n">atoms_frac_samb</span><span class="p">,</span> <span class="n">ket_samb</span>
+            <span class="p">)</span>
+
         <span class="c1"># z_nonortho = z</span>
-        <span class="c1"># self._cwm.log(&quot;done&quot;, file=self._outfile, mode=&quot;a&quot;)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_cwm</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="s2">&quot;done&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_outfile</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;a&quot;</span><span class="p">)</span>
 
         <span class="c1">#####</span>
 
@@ -951,9 +997,9 @@ document.write(`
 
         <span class="n">Sr_sym</span> <span class="o">=</span> <span class="n">CWModel</span><span class="o">.</span><span class="n">construct_Or</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">values</span><span class="p">()),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;num_wann&quot;</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;irvec&quot;</span><span class="p">],</span> <span class="n">mat</span><span class="p">)</span>
         <span class="n">Hr_sym</span> <span class="o">=</span> <span class="n">CWModel</span><span class="o">.</span><span class="n">construct_Or</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">z</span><span class="o">.</span><span class="n">values</span><span class="p">()),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;num_wann&quot;</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;irvec&quot;</span><span class="p">],</span> <span class="n">mat</span><span class="p">)</span>
-        <span class="c1"># Hr_nonortho_sym = CWModel.construct_Or(</span>
-        <span class="c1">#     list(z_nonortho.values()), self._cwi[&quot;num_wann&quot;], self._cwi[&quot;irvec&quot;], mat</span>
-        <span class="c1"># )</span>
+        <span class="n">Hr_nonortho_sym</span> <span class="o">=</span> <span class="n">CWModel</span><span class="o">.</span><span class="n">construct_Or</span><span class="p">(</span>
+            <span class="nb">list</span><span class="p">(</span><span class="n">z_nonortho</span><span class="o">.</span><span class="n">values</span><span class="p">()),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;num_wann&quot;</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;irvec&quot;</span><span class="p">],</span> <span class="n">mat</span>
+        <span class="p">)</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;tb_gauge&quot;</span><span class="p">]:</span>
             <span class="n">Sk_sym</span> <span class="o">=</span> <span class="n">CWModel</span><span class="o">.</span><span class="n">fourier_transform_r_to_k</span><span class="p">(</span>
@@ -962,13 +1008,13 @@ document.write(`
             <span class="n">Hk_sym</span> <span class="o">=</span> <span class="n">CWModel</span><span class="o">.</span><span class="n">fourier_transform_r_to_k</span><span class="p">(</span>
                 <span class="n">Hr_sym</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;kpoints&quot;</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;irvec&quot;</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;ndegen&quot;</span><span class="p">],</span> <span class="n">atoms_frac</span><span class="o">=</span><span class="n">atoms_frac_samb</span>
             <span class="p">)</span>
-            <span class="c1"># Hk_nonortho_sym = CWModel.fourier_transform_r_to_k(</span>
-            <span class="c1">#     Hr_nonortho_sym,</span>
-            <span class="c1">#     self._cwi[&quot;kpoints&quot;],</span>
-            <span class="c1">#     self._cwi[&quot;irvec&quot;],</span>
-            <span class="c1">#     self._cwi[&quot;ndegen&quot;],</span>
-            <span class="c1">#     atoms_frac=atoms_frac_samb,</span>
-            <span class="c1"># )</span>
+            <span class="n">Hk_nonortho_sym</span> <span class="o">=</span> <span class="n">CWModel</span><span class="o">.</span><span class="n">fourier_transform_r_to_k</span><span class="p">(</span>
+                <span class="n">Hr_nonortho_sym</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;kpoints&quot;</span><span class="p">],</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;irvec&quot;</span><span class="p">],</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;ndegen&quot;</span><span class="p">],</span>
+                <span class="n">atoms_frac</span><span class="o">=</span><span class="n">atoms_frac_samb</span><span class="p">,</span>
+            <span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">Sk_sym</span> <span class="o">=</span> <span class="n">CWModel</span><span class="o">.</span><span class="n">fourier_transform_r_to_k</span><span class="p">(</span>
                 <span class="n">Sr_sym</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;kpoints&quot;</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;irvec&quot;</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;ndegen&quot;</span><span class="p">]</span>
@@ -976,9 +1022,9 @@ document.write(`
             <span class="n">Hk_sym</span> <span class="o">=</span> <span class="n">CWModel</span><span class="o">.</span><span class="n">fourier_transform_r_to_k</span><span class="p">(</span>
                 <span class="n">Hr_sym</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;kpoints&quot;</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;irvec&quot;</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;ndegen&quot;</span><span class="p">]</span>
             <span class="p">)</span>
-            <span class="c1"># Hk_nonortho_sym = CWModel.fourier_transform_r_to_k(</span>
-            <span class="c1">#     Hr_nonortho_sym, self._cwi[&quot;kpoints&quot;], self._cwi[&quot;irvec&quot;], self._cwi[&quot;ndegen&quot;]</span>
-            <span class="c1"># )</span>
+            <span class="n">Hk_nonortho_sym</span> <span class="o">=</span> <span class="n">CWModel</span><span class="o">.</span><span class="n">fourier_transform_r_to_k</span><span class="p">(</span>
+                <span class="n">Hr_nonortho_sym</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;kpoints&quot;</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;irvec&quot;</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;ndegen&quot;</span><span class="p">]</span>
+            <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_cwm</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="s2">&quot;done&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_outfile</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;a&quot;</span><span class="p">)</span>
 
         <span class="c1">#####</span>
@@ -1040,19 +1086,62 @@ document.write(`
                 <span class="p">[[</span><span class="n">i</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="n">N1</span><span class="p">),</span> <span class="n">j</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="n">N2</span><span class="p">),</span> <span class="n">k</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="n">N3</span><span class="p">)]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N1</span><span class="p">)</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N2</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N3</span><span class="p">)]</span>
             <span class="p">)</span>
 
-            <span class="n">Hk_sym</span> <span class="o">=</span> <span class="n">CWModel</span><span class="o">.</span><span class="n">fourier_transform_r_to_k</span><span class="p">(</span><span class="n">Hr_sym</span><span class="p">,</span> <span class="n">kpoints</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;irvec&quot;</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;ndegen&quot;</span><span class="p">])</span>
-            <span class="n">Ek</span><span class="p">,</span> <span class="n">Uk</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">eigh</span><span class="p">(</span><span class="n">Hk_sym</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;tb_gauge&quot;</span><span class="p">]:</span>
+                <span class="n">Hk_grid</span> <span class="o">=</span> <span class="n">CWModel</span><span class="o">.</span><span class="n">fourier_transform_r_to_k</span><span class="p">(</span>
+                    <span class="n">Hr_sym</span><span class="p">,</span> <span class="n">kpoints</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;irvec&quot;</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;ndegen&quot;</span><span class="p">],</span> <span class="n">atoms_frac</span><span class="o">=</span><span class="n">atoms_frac_samb</span>
+                <span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">Hk_grid</span> <span class="o">=</span> <span class="n">CWModel</span><span class="o">.</span><span class="n">fourier_transform_r_to_k</span><span class="p">(</span><span class="n">Hr_sym</span><span class="p">,</span> <span class="n">kpoints</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;irvec&quot;</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;ndegen&quot;</span><span class="p">])</span>
+
+            <span class="n">Ek</span><span class="p">,</span> <span class="n">Uk</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">eigh</span><span class="p">(</span><span class="n">Hk_grid</span><span class="p">)</span>
 
             <span class="n">Nz</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">mat</span><span class="p">[</span><span class="s2">&quot;matrix&quot;</span><span class="p">])</span>
             <span class="n">dic</span> <span class="o">=</span> <span class="n">mat</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+            <span class="c1"># @wrap_non_picklable_objects</span>
+            <span class="c1"># def proc(i, tag, d):</span>
+            <span class="c1">#     percent = (i + 1) / float(Nz) * 100</span>
+            <span class="c1">#     if percent % 10 == 0:</span>
+            <span class="c1">#         self._cwm.log(f&quot;* {int(percent)} %&quot;, None, end=&quot;\n&quot;, file=self._outfile, mode=&quot;a&quot;)</span>
+
+            <span class="c1">#     dic[&quot;matrix&quot;] = {tag: d}</span>
+
+            <span class="c1">#     if self._cwi[&quot;tb_gauge&quot;]:</span>
+            <span class="c1">#         Zk = construct_Ok(</span>
+            <span class="c1">#             [1], self._cwi[&quot;num_wann&quot;], kpoints, self._cwi[&quot;irvec&quot;], dic, atoms_frac=atoms_frac_samb</span>
+            <span class="c1">#         )</span>
+            <span class="c1">#     else:</span>
+            <span class="c1">#         Zk = construct_Ok([1], self._cwi[&quot;num_wann&quot;], kpoints, self._cwi[&quot;irvec&quot;], dic)</span>
+
+            <span class="c1">#     v = thermal_avg(</span>
+            <span class="c1">#         Zk,</span>
+            <span class="c1">#         Ek,</span>
+            <span class="c1">#         Uk,</span>
+            <span class="c1">#         self._cwi[&quot;fermi_energy&quot;],</span>
+            <span class="c1">#         T_Kelvin=self._cwi[&quot;z_exp_temperature&quot;],</span>
+            <span class="c1">#     )</span>
+
+            <span class="c1">#     return i, tag, v</span>
+
+            <span class="c1"># res = Parallel(n_jobs=2, verbose=10)(delayed(proc)(i, tag, d) for i, (tag, d) in enumerate(Zr_dict.items()))</span>
+            <span class="c1"># res = sorted(res, key=lambda x: x[0])</span>
+            <span class="c1"># z_exp = {tag: v for _, tag, v in res}</span>
+
             <span class="n">z_exp</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="n">percent</span> <span class="o">=</span> <span class="mi">10</span>
             <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">tag</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">Zr_dict</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
-                <span class="n">percent</span> <span class="o">=</span> <span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="n">Nz</span><span class="p">)</span> <span class="o">*</span> <span class="mi">100</span>
-                <span class="k">if</span> <span class="n">percent</span> <span class="o">%</span> <span class="mi">10</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">if</span> <span class="nb">int</span><span class="p">((</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="n">Nz</span><span class="p">)</span> <span class="o">*</span> <span class="mi">100</span> <span class="o">%</span> <span class="mi">10</span><span class="p">)</span> <span class="o">==</span> <span class="n">percent</span><span class="p">:</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">_cwm</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;* </span><span class="si">{</span><span class="nb">int</span><span class="p">(</span><span class="n">percent</span><span class="p">)</span><span class="si">}</span><span class="s2"> %&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_outfile</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;a&quot;</span><span class="p">)</span>
+                    <span class="n">percent</span> <span class="o">+=</span> <span class="mi">10</span>
 
                 <span class="n">dic</span><span class="p">[</span><span class="s2">&quot;matrix&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="n">tag</span><span class="p">:</span> <span class="n">d</span><span class="p">}</span>
-                <span class="n">Zk</span> <span class="o">=</span> <span class="n">construct_Ok</span><span class="p">([</span><span class="mi">1</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;num_wann&quot;</span><span class="p">],</span> <span class="n">kpoints</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;irvec&quot;</span><span class="p">],</span> <span class="n">dic</span><span class="p">)</span>
+
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;tb_gauge&quot;</span><span class="p">]:</span>
+                    <span class="n">Zk</span> <span class="o">=</span> <span class="n">construct_Ok</span><span class="p">(</span>
+                        <span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;num_wann&quot;</span><span class="p">],</span> <span class="n">kpoints</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;irvec&quot;</span><span class="p">],</span> <span class="n">dic</span><span class="p">,</span> <span class="n">atoms_frac</span><span class="o">=</span><span class="n">atoms_frac_samb</span>
+                    <span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">Zk</span> <span class="o">=</span> <span class="n">construct_Ok</span><span class="p">([</span><span class="mi">1</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;num_wann&quot;</span><span class="p">],</span> <span class="n">kpoints</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;irvec&quot;</span><span class="p">],</span> <span class="n">dic</span><span class="p">)</span>
 
                 <span class="n">v</span> <span class="o">=</span> <span class="n">thermal_avg</span><span class="p">(</span>
                     <span class="n">Zk</span><span class="p">,</span>
@@ -1068,21 +1157,54 @@ document.write(`
         <span class="k">else</span><span class="p">:</span>
             <span class="n">z_exp</span> <span class="o">=</span> <span class="p">{}</span>
 
+        <span class="n">T</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;z_exp_temperature&quot;</span><span class="p">]</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;    - evaluating total_energy, entropy at T = </span><span class="si">{</span><span class="n">T</span><span class="si">}</span><span class="s2"> ... &quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_cwm</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_outfile</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;a&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_cwm</span><span class="o">.</span><span class="n">set_stamp</span><span class="p">()</span>
+
+        <span class="n">E_tot</span> <span class="o">=</span> <span class="n">total_energy</span><span class="p">(</span>
+            <span class="n">Ek_grid</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;fermi_energy&quot;</span><span class="p">],</span>
+            <span class="n">T_Kelvin</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;z_exp_temperature&quot;</span><span class="p">],</span>
+        <span class="p">)</span>
+
+        <span class="n">S</span> <span class="o">=</span> <span class="n">entropy</span><span class="p">(</span>
+            <span class="n">Ek_grid</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;fermi_energy&quot;</span><span class="p">],</span>
+            <span class="n">T_Kelvin</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;z_exp_temperature&quot;</span><span class="p">],</span>
+        <span class="p">)</span>
+
+        <span class="n">free_energy</span> <span class="o">=</span> <span class="n">E_tot</span> <span class="o">-</span> <span class="n">Kelvin_to_eV</span><span class="p">(</span><span class="n">T</span><span class="p">)</span> <span class="o">*</span> <span class="n">S</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;z_exp&quot;</span><span class="p">]:</span>
+            <span class="n">E_tot_samb</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">([</span><span class="n">z</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">*</span> <span class="n">z_exp</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">z_exp</span><span class="o">.</span><span class="n">keys</span><span class="p">()])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">E_tot_samb</span> <span class="o">=</span> <span class="mf">0.0</span>
+
+        <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot; * E_tot_samb = </span><span class="si">{</span><span class="n">E_tot_samb</span><span class="si">}</span><span class="s2"> [eV] </span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="n">msg</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot; * E_tot = </span><span class="si">{</span><span class="n">E_tot</span><span class="si">}</span><span class="s2"> [eV] </span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="n">msg</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot; * T*S = </span><span class="si">{</span><span class="n">T</span><span class="o">*</span><span class="n">S</span><span class="si">}</span><span class="s2"> [eV] </span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="n">msg</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot; * free_energy = </span><span class="si">{</span><span class="n">free_energy</span><span class="si">}</span><span class="s2"> [eV]&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_cwm</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_outfile</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;a&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_cwm</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="s2">&quot;done&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_outfile</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;a&quot;</span><span class="p">)</span>
+
         <span class="c1">#####</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
             <span class="p">{</span>
                 <span class="s2">&quot;s&quot;</span><span class="p">:</span> <span class="n">s</span><span class="p">,</span>
                 <span class="s2">&quot;z&quot;</span><span class="p">:</span> <span class="n">z</span><span class="p">,</span>
-                <span class="c1"># &quot;z_nonortho&quot;: z_nonortho,</span>
+                <span class="s2">&quot;z_nonortho&quot;</span><span class="p">:</span> <span class="n">z_nonortho</span><span class="p">,</span>
                 <span class="s2">&quot;z_exp&quot;</span><span class="p">:</span> <span class="n">z_exp</span><span class="p">,</span>
                 <span class="c1">#</span>
                 <span class="s2">&quot;Sk_sym&quot;</span><span class="p">:</span> <span class="n">Sk_sym</span><span class="p">,</span>
                 <span class="s2">&quot;Hk_sym&quot;</span><span class="p">:</span> <span class="n">Hk_sym</span><span class="p">,</span>
-                <span class="c1"># &quot;Hk_nonortho_sym&quot;: Hk_nonortho_sym,</span>
+                <span class="s2">&quot;Hk_nonortho_sym&quot;</span><span class="p">:</span> <span class="n">Hk_nonortho_sym</span><span class="p">,</span>
                 <span class="s2">&quot;Sr_sym&quot;</span><span class="p">:</span> <span class="n">Sr_sym</span><span class="p">,</span>
                 <span class="s2">&quot;Hr_sym&quot;</span><span class="p">:</span> <span class="n">Hr_sym</span><span class="p">,</span>
-                <span class="c1"># &quot;Hr_nonortho_sym&quot;: Hr_nonortho_sym,</span>
+                <span class="s2">&quot;Hr_nonortho_sym&quot;</span><span class="p">:</span> <span class="n">Hr_nonortho_sym</span><span class="p">,</span>
                 <span class="c1">#</span>
                 <span class="s2">&quot;Ek_RMSE_grid&quot;</span><span class="p">:</span> <span class="n">Ek_RMSE_grid</span><span class="p">,</span>
                 <span class="s2">&quot;Ek_RMSE_path&quot;</span><span class="p">:</span> <span class="n">Ek_RMSE_path</span><span class="p">,</span>
@@ -1260,7 +1382,7 @@ document.write(`
 <div class="viewcode-block" id="CWModel.construct_Ok">
 <a class="viewcode-back" href="../../../src/api/cw.html#symclosestwannier.cw.cw_model.CWModel.construct_Ok">[docs]</a>
     <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">construct_Ok</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">num_wann</span><span class="p">,</span> <span class="n">kpoints</span><span class="p">,</span> <span class="n">rpoints</span><span class="p">,</span> <span class="n">matrix_dict</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">construct_Ok</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">num_wann</span><span class="p">,</span> <span class="n">kpoints</span><span class="p">,</span> <span class="n">rpoints</span><span class="p">,</span> <span class="n">matrix_dict</span><span class="p">,</span> <span class="n">atoms_frac</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        arbitrary operator constructed by linear combination of SAMBs in k-space representation.</span>
 
@@ -1274,7 +1396,7 @@ document.write(`
 <span class="sd">        Returns:</span>
 <span class="sd">            ndarray: matrix, [#k, dim, dim].</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">construct_Ok</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">num_wann</span><span class="p">,</span> <span class="n">kpoints</span><span class="p">,</span> <span class="n">rpoints</span><span class="p">,</span> <span class="n">matrix_dict</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">construct_Ok</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">num_wann</span><span class="p">,</span> <span class="n">kpoints</span><span class="p">,</span> <span class="n">rpoints</span><span class="p">,</span> <span class="n">matrix_dict</span><span class="p">,</span> <span class="n">atoms_frac</span><span class="p">)</span></div>
 
 
     <span class="c1"># ==================================================</span>
@@ -1620,21 +1742,21 @@ document.write(`
 <span class="sd">            filename (str): file name.</span>
 <span class="sd">            type (str): &#39;z&#39;/&#39;z_nonortho&#39;/&#39;s&#39;.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c1"># assert type in (&quot;z&quot;, &quot;z_nonortho&quot;, &quot;s&quot;), f&quot;invalid type = {type} was given. choose from &#39;z&#39;/&#39;z_nonortho&#39;/&#39;s&#39;.&quot;</span>
-        <span class="k">assert</span> <span class="nb">type</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;z&quot;</span><span class="p">,</span> <span class="s2">&quot;s&quot;</span><span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;invalid type = </span><span class="si">{</span><span class="nb">type</span><span class="si">}</span><span class="s2"> was given. choose from &#39;z&#39;/&#39;s&#39;.&quot;</span>
+        <span class="k">assert</span> <span class="nb">type</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;z&quot;</span><span class="p">,</span> <span class="s2">&quot;z_nonortho&quot;</span><span class="p">,</span> <span class="s2">&quot;s&quot;</span><span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;invalid type = </span><span class="si">{</span><span class="nb">type</span><span class="si">}</span><span class="s2"> was given. choose from &#39;z&#39;/&#39;z_nonortho&#39;/&#39;s&#39;.&quot;</span>
+        <span class="c1"># assert type in (&quot;z&quot;, &quot;s&quot;), f&quot;invalid type = {type} was given. choose from &#39;z&#39;/&#39;s&#39;.&quot;</span>
 
         <span class="k">if</span> <span class="nb">type</span> <span class="o">==</span> <span class="s2">&quot;z&quot;</span><span class="p">:</span>
             <span class="n">header</span> <span class="o">=</span> <span class="n">z_header</span>
             <span class="n">o</span> <span class="o">=</span> <span class="bp">self</span><span class="p">[</span><span class="s2">&quot;z&quot;</span><span class="p">]</span>
-        <span class="c1"># elif type == &quot;z_nonortho&quot;:</span>
-        <span class="c1">#     header = z_nonortho_header</span>
-        <span class="c1"># o = self[&quot;z_nonortho&quot;]</span>
+        <span class="k">elif</span> <span class="nb">type</span> <span class="o">==</span> <span class="s2">&quot;z_nonortho&quot;</span><span class="p">:</span>
+            <span class="n">header</span> <span class="o">=</span> <span class="n">z_nonortho_header</span>
+            <span class="n">o</span> <span class="o">=</span> <span class="bp">self</span><span class="p">[</span><span class="s2">&quot;z_nonortho&quot;</span><span class="p">]</span>
         <span class="k">elif</span> <span class="nb">type</span> <span class="o">==</span> <span class="s2">&quot;s&quot;</span><span class="p">:</span>
             <span class="n">header</span> <span class="o">=</span> <span class="n">s_header</span>
             <span class="n">o</span> <span class="o">=</span> <span class="bp">self</span><span class="p">[</span><span class="s2">&quot;s&quot;</span><span class="p">]</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="c1"># raise Exception(f&quot;invalid type = {type} was given. choose from &#39;z&#39;/&#39;z_nonortho&#39;/&#39;s&#39;.&quot;)</span>
-            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;invalid type = </span><span class="si">{</span><span class="nb">type</span><span class="si">}</span><span class="s2"> was given. choose from &#39;z&#39;/&#39;s&#39;.&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;invalid type = </span><span class="si">{</span><span class="nb">type</span><span class="si">}</span><span class="s2"> was given. choose from &#39;z&#39;/&#39;z_nonortho&#39;/&#39;s&#39;.&quot;</span><span class="p">)</span>
+            <span class="c1"># raise Exception(f&quot;invalid type = {type} was given. choose from &#39;z&#39;/&#39;s&#39;.&quot;)</span>
 
         <span class="n">o_str</span> <span class="o">=</span> <span class="s2">&quot;# created by pw2cw </span><span class="se">\n</span><span class="s2">&quot;</span>
         <span class="n">o_str</span> <span class="o">+=</span> <span class="s2">&quot;# written </span><span class="si">{}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;on </span><span class="si">%d</span><span class="s2">%b%Y at %H:%M:%S&quot;</span><span class="p">))</span>
@@ -1685,8 +1807,6 @@ document.write(`
             
             
               
-                <div class="bd-sidebar-secondary bd-toc"></div>
-              
             
           </div>
           <footer class="bd-footer-content">
@@ -1730,8 +1850,8 @@ By Rikuto Oiwa
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="../../../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae"></script>
-<script src="../../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae"></script>
+  <script src="../../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
 
   <footer class="bd-footer">
   </footer>

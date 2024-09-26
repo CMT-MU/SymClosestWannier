@@ -13,57 +13,49 @@
   
   <script data-cfasync="false">
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
-    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
   </script>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../../../_static/styles/theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
-<link href="../../../_static/styles/bootstrap.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
-<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+  <link href="../../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
 
   
-  <link href="../../../_static/vendor/fontawesome/6.5.1/css/all.min.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
-  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.1/webfonts/fa-solid-900.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
+  <link href="../../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
-    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b76e3c8a" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/styles/sphinx-book-theme.css?v=384b581d" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/sphinx-book-theme.css?v=a3416100" />
     <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css?v=13237357" />
     <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-thebe.css?v=4fa983c6" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-design.min.css?v=95c83b7e" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae" />
-<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
-  <script src="../../../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
     <script src="../../../_static/documentation_options.js?v=8cf54648"></script>
-    <script src="../../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../../../_static/copybutton.js?v=f281be69"></script>
-    <script src="../../../_static/scripts/sphinx-book-theme.js?v=efea14e4"></script>
+    <script src="../../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
     <script src="../../../_static/togglebutton.js?v=4a39c7ea"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script src="../../../_static/design-tabs.js?v=36754332"></script>
-    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
-const thebe_selector = ".thebe,.cell"
-const thebe_selector_input = "pre"
-const thebe_selector_output = ".output, .cell_output"
-</script>
-    <script async="async" src="../../../_static/sphinx-thebe.js?v=afe5de03"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../../../_static/sphinx-thebe.js?v=c100c467"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
-    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
-const thebe_selector = ".thebe,.cell"
-const thebe_selector_input = "pre"
-const thebe_selector_output = ".output, .cell_output"
-</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_modules/symclosestwannier/cw/cw_creator';</script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
@@ -76,27 +68,23 @@ const thebe_selector_output = ".output, .cell_output"
 
   
   
-  <a id="pst-skip-link" class="skip-link" href="#main-content">Skip to main content</a>
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
   
   <div id="pst-scroll-pixel-helper"></div>
   
   <button type="button" class="btn rounded-pill" id="pst-back-to-top">
-    <i class="fa-solid fa-arrow-up"></i>
-    Back to top
-  </button>
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
 
   
   <input type="checkbox"
           class="sidebar-toggle"
-          name="__primary"
-          id="__primary"/>
-  <label class="overlay overlay-primary" for="__primary"></label>
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
   
   <input type="checkbox"
           class="sidebar-toggle"
-          name="__secondary"
-          id="__secondary"/>
-  <label class="overlay overlay-secondary" for="__secondary"></label>
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
   
   <div class="search-button__wrapper">
     <div class="search-button__overlay"></div>
@@ -118,8 +106,13 @@ const thebe_selector_output = ".output, .cell_output"
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
 </form></div>
   </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
   
-    <header class="bd-header navbar navbar-expand-lg bd-navbar">
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
     </header>
   
 
@@ -145,6 +138,8 @@ const thebe_selector_output = ".output, .cell_output"
         <div class="sidebar-primary-item">
 
   
+    
+  
 
 <a class="navbar-brand logo" href="../../../README.html">
   
@@ -160,7 +155,7 @@ const thebe_selector_output = ".output, .cell_output"
 
  <script>
  document.write(`
-   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <i class="fa-solid fa-magnifying-glass"></i>
     <span class="search-button__default-text">Search</span>
     <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
@@ -207,7 +202,7 @@ const thebe_selector_output = ".output, .cell_output"
 
       </div>
       
-      <main id="main-content" class="bd-main">
+      <main id="main-content" class="bd-main" role="main">
         
         
 
@@ -216,14 +211,14 @@ const thebe_selector_output = ".output, .cell_output"
           <div class="bd-content">
             <div class="bd-article-container">
               
-              <div class="bd-header-article">
+              <div class="bd-header-article d-print-none">
 <div class="header-article-items header-article__inner">
   
     <div class="header-article-items__start">
       
-        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
   <span class="fa-solid fa-bars"></span>
-</label></div>
+</button></div>
       
     </div>
   
@@ -268,10 +263,10 @@ const thebe_selector_output = ".output, .cell_output"
 
 <script>
 document.write(`
-  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
-    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
-    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
   </button>
 `);
 </script>
@@ -279,7 +274,7 @@ document.write(`
 
 <script>
 document.write(`
-  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <i class="fa-solid fa-magnifying-glass fa-lg"></i>
   </button>
 `);
@@ -340,7 +335,8 @@ document.write(`
 <span class="kn">from</span> <span class="nn">symclosestwannier.cw.cw_info</span> <span class="kn">import</span> <span class="n">CWInfo</span>
 <span class="kn">from</span> <span class="nn">symclosestwannier.cw.cw_manager</span> <span class="kn">import</span> <span class="n">CWManager</span>
 <span class="kn">from</span> <span class="nn">symclosestwannier.cw.cw_model</span> <span class="kn">import</span> <span class="n">CWModel</span>
-<span class="kn">from</span> <span class="nn">symclosestwannier.util.band</span> <span class="kn">import</span> <span class="n">output_linear_dispersion</span>
+<span class="kn">from</span> <span class="nn">symclosestwannier.util.band</span> <span class="kn">import</span> <span class="n">output_linear_dispersion</span><span class="p">,</span> <span class="n">output_linear_dispersion_eig</span>
+<span class="kn">from</span> <span class="nn">symclosestwannier.util.dos</span> <span class="kn">import</span> <span class="n">output_dos</span>
 
 
 <span class="kn">from</span> <span class="nn">symclosestwannier.util.message</span> <span class="kn">import</span> <span class="p">(</span>
@@ -435,7 +431,9 @@ document.write(`
         <span class="n">cwi</span><span class="o">.</span><span class="n">mmn</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;write_spn&quot;</span><span class="p">]:</span>
-        <span class="k">pass</span>
+        <span class="n">SS_R</span> <span class="o">=</span> <span class="n">get_oper_R</span><span class="p">(</span><span class="s2">&quot;SS_R&quot;</span><span class="p">,</span> <span class="n">cwi</span><span class="p">)</span>
+        <span class="n">filename</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">cwi</span><span class="p">[</span><span class="s1">&#39;seedname&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">.s.cw&quot;</span>
+        <span class="n">cw_model</span><span class="o">.</span><span class="n">write_or</span><span class="p">(</span><span class="n">SS_R</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">vec</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;symmetrization&quot;</span><span class="p">]:</span>
         <span class="k">if</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;write_hr&quot;</span><span class="p">]:</span>
@@ -457,8 +455,8 @@ document.write(`
         <span class="n">filename</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;mp_outdir&quot;</span><span class="p">],</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">cwi</span><span class="p">[</span><span class="s1">&#39;mp_seedname&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">_z.dat.cw&quot;</span><span class="p">))</span>
         <span class="n">cw_model</span><span class="o">.</span><span class="n">write_samb_coeffs</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="s2">&quot;z&quot;</span><span class="p">)</span>
 
-        <span class="c1"># filename = os.path.join(cwi[&quot;mp_outdir&quot;], &quot;{}&quot;.format(f&quot;{cwi[&#39;mp_seedname&#39;]}_z_nonortho.dat.cw&quot;))</span>
-        <span class="c1"># cw_model.write_samb_coeffs(filename, type=&quot;z_nonortho&quot;)</span>
+        <span class="n">filename</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;mp_outdir&quot;</span><span class="p">],</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">cwi</span><span class="p">[</span><span class="s1">&#39;mp_seedname&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">_z_nonortho.dat.cw&quot;</span><span class="p">))</span>
+        <span class="n">cw_model</span><span class="o">.</span><span class="n">write_samb_coeffs</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="s2">&quot;z_nonortho&quot;</span><span class="p">)</span>
 
         <span class="n">filename</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;mp_outdir&quot;</span><span class="p">],</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">cwi</span><span class="p">[</span><span class="s1">&#39;mp_seedname&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">_s.dat.cw&quot;</span><span class="p">))</span>
         <span class="n">cw_model</span><span class="o">.</span><span class="n">write_samb_coeffs</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="s2">&quot;s&quot;</span><span class="p">)</span>
@@ -472,6 +470,8 @@ document.write(`
 
     <span class="c1"># band calculation</span>
     <span class="k">if</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;kpoint&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;kpoint_path&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">cwm</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">  * calculating band dispersion ... &quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">end</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">outfile</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;a&quot;</span><span class="p">)</span>
+
         <span class="n">k_linear</span> <span class="o">=</span> <span class="n">NSArray</span><span class="p">(</span><span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;k_linear&quot;</span><span class="p">],</span> <span class="s2">&quot;vector&quot;</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s2">&quot;value&quot;</span><span class="p">)</span>
         <span class="n">k_dis_pos</span> <span class="o">=</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;k_dis_pos&quot;</span><span class="p">]</span>
 
@@ -494,8 +494,12 @@ document.write(`
 
         <span class="n">ef</span> <span class="o">=</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;fermi_energy&quot;</span><span class="p">]</span>
 
+        <span class="n">output_linear_dispersion_eig</span><span class="p">(</span>
+            <span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="n">seedname</span> <span class="o">+</span> <span class="s2">&quot;_band.txt&quot;</span><span class="p">,</span> <span class="n">k_linear</span><span class="p">,</span> <span class="n">Ek</span><span class="p">,</span> <span class="n">ref_filename</span><span class="o">=</span><span class="n">ref_filename</span><span class="p">,</span> <span class="n">a</span><span class="o">=</span><span class="n">a</span><span class="p">,</span> <span class="n">ef</span><span class="o">=</span><span class="n">ef</span><span class="p">,</span> <span class="n">k_dis_pos</span><span class="o">=</span><span class="n">k_dis_pos</span>
+        <span class="p">)</span>
+
         <span class="n">output_linear_dispersion</span><span class="p">(</span>
-            <span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="n">seedname</span> <span class="o">+</span> <span class="s2">&quot;_band.txt&quot;</span><span class="p">,</span> <span class="n">k_linear</span><span class="p">,</span> <span class="n">Ek</span><span class="p">,</span> <span class="n">Uk</span><span class="p">,</span> <span class="n">ref_filename</span><span class="o">=</span><span class="n">ref_filename</span><span class="p">,</span> <span class="n">a</span><span class="o">=</span><span class="n">a</span><span class="p">,</span> <span class="n">ef</span><span class="o">=</span><span class="n">ef</span><span class="p">,</span> <span class="n">k_dis_pos</span><span class="o">=</span><span class="n">k_dis_pos</span>
+            <span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="n">seedname</span> <span class="o">+</span> <span class="s2">&quot;_band_detail.txt&quot;</span><span class="p">,</span> <span class="n">k_linear</span><span class="p">,</span> <span class="n">Ek</span><span class="p">,</span> <span class="n">Uk</span><span class="p">,</span> <span class="n">ref_filename</span><span class="o">=</span><span class="n">ref_filename</span><span class="p">,</span> <span class="n">a</span><span class="o">=</span><span class="n">a</span><span class="p">,</span> <span class="n">ef</span><span class="o">=</span><span class="n">ef</span><span class="p">,</span> <span class="n">k_dis_pos</span><span class="o">=</span><span class="n">k_dis_pos</span>
         <span class="p">)</span>
 
         <span class="k">if</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;symmetrization&quot;</span><span class="p">]:</span>
@@ -520,9 +524,23 @@ document.write(`
             <span class="p">)</span>
             <span class="n">Ek</span><span class="p">,</span> <span class="n">Uk</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">eigh</span><span class="p">(</span><span class="n">Hk_sym_path</span><span class="p">)</span>
 
-            <span class="n">output_linear_dispersion</span><span class="p">(</span>
+            <span class="c1"># output_linear_dispersion(</span>
+            <span class="n">output_linear_dispersion_eig</span><span class="p">(</span>
                 <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;mp_outdir&quot;</span><span class="p">],</span>
                 <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;mp_seedname&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot;_band.txt&quot;</span><span class="p">,</span>
+                <span class="n">k_linear</span><span class="p">,</span>
+                <span class="n">Ek</span><span class="p">,</span>
+                <span class="c1"># Uk,</span>
+                <span class="n">ref_filename</span><span class="o">=</span><span class="n">ref_filename</span><span class="p">,</span>
+                <span class="n">a</span><span class="o">=</span><span class="n">a</span><span class="p">,</span>
+                <span class="n">ef</span><span class="o">=</span><span class="n">ef</span><span class="p">,</span>
+                <span class="n">k_dis_pos</span><span class="o">=</span><span class="n">k_dis_pos</span><span class="p">,</span>
+            <span class="p">)</span>
+
+            <span class="c1"># output_linear_dispersion(</span>
+            <span class="n">output_linear_dispersion</span><span class="p">(</span>
+                <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;mp_outdir&quot;</span><span class="p">],</span>
+                <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;mp_seedname&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot;_band_detail.txt&quot;</span><span class="p">,</span>
                 <span class="n">k_linear</span><span class="p">,</span>
                 <span class="n">Ek</span><span class="p">,</span>
                 <span class="n">Uk</span><span class="p">,</span>
@@ -531,6 +549,66 @@ document.write(`
                 <span class="n">ef</span><span class="o">=</span><span class="n">ef</span><span class="p">,</span>
                 <span class="n">k_dis_pos</span><span class="o">=</span><span class="n">k_dis_pos</span><span class="p">,</span>
             <span class="p">)</span>
+
+        <span class="n">cwm</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="s2">&quot;done&quot;</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">outfile</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;a&quot;</span><span class="p">)</span>
+
+    <span class="c1">#####</span>
+
+    <span class="k">if</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;calc_dos&quot;</span><span class="p">]:</span>
+        <span class="n">cwm</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">  * calculating DOS ... &quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">end</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">outfile</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;a&quot;</span><span class="p">)</span>
+        <span class="n">cwm</span><span class="o">.</span><span class="n">set_stamp</span><span class="p">()</span>
+
+        <span class="n">N1</span><span class="p">,</span> <span class="n">N2</span><span class="p">,</span> <span class="n">N3</span> <span class="o">=</span><span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;dos_kmesh&quot;</span><span class="p">]</span>
+        <span class="n">kpoints</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+                <span class="p">[[</span><span class="n">i</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="n">N1</span><span class="p">),</span> <span class="n">j</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="n">N2</span><span class="p">),</span> <span class="n">k</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="n">N3</span><span class="p">)]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N1</span><span class="p">)</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N2</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N3</span><span class="p">)]</span>
+        <span class="p">)</span>
+
+        <span class="n">Hk_grid</span> <span class="o">=</span> <span class="n">CWModel</span><span class="o">.</span><span class="n">fourier_transform_r_to_k</span><span class="p">(</span><span class="n">cw_model</span><span class="p">[</span><span class="s2">&quot;Hr&quot;</span><span class="p">],</span> <span class="n">kpoints</span><span class="p">,</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;irvec&quot;</span><span class="p">],</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;ndegen&quot;</span><span class="p">],</span> <span class="n">atoms_frac</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+        <span class="n">Ek</span><span class="p">,</span> <span class="n">Uk</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">eigh</span><span class="p">(</span><span class="n">Hk_grid</span><span class="p">)</span>
+
+        <span class="n">ef_shift</span> <span class="o">=</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;fermi_energy&quot;</span><span class="p">]</span>
+        <span class="n">dos_num_fermi</span> <span class="o">=</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;dos_num_fermi&quot;</span><span class="p">]</span>
+        <span class="n">dos_smr_en_width</span> <span class="o">=</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;dos_smr_en_width&quot;</span><span class="p">]</span>
+
+        <span class="n">output_dos</span><span class="p">(</span>
+            <span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="n">seedname</span> <span class="o">+</span> <span class="s2">&quot;_dos.txt&quot;</span><span class="p">,</span> <span class="n">Ek</span><span class="p">,</span> <span class="n">Uk</span><span class="p">,</span> <span class="n">ef_shift</span><span class="p">,</span> <span class="n">dos_num_fermi</span><span class="p">,</span> <span class="n">dos_smr_en_width</span>
+        <span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;symmetrization&quot;</span><span class="p">]:</span>
+            <span class="n">ket_samb</span> <span class="o">=</span> <span class="n">cw_model</span><span class="p">[</span><span class="s2">&quot;matrix_dict&quot;</span><span class="p">][</span><span class="s2">&quot;ket&quot;</span><span class="p">]</span>
+            <span class="n">cell_site</span> <span class="o">=</span> <span class="n">cw_model</span><span class="p">[</span><span class="s2">&quot;matrix_dict&quot;</span><span class="p">][</span><span class="s2">&quot;cell_site&quot;</span><span class="p">]</span>
+            <span class="n">atoms_frac</span> <span class="o">=</span> <span class="p">[</span>
+                <span class="n">NSArray</span><span class="p">(</span><span class="n">cell_site</span><span class="p">[</span><span class="n">ket_samb</span><span class="p">[</span><span class="n">a</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;@&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]][</span><span class="mi">0</span><span class="p">],</span> <span class="n">style</span><span class="o">=</span><span class="s2">&quot;vector&quot;</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s2">&quot;value&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+                <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">cw_model</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;num_wann&quot;</span><span class="p">])</span>
+            <span class="p">]</span>
+
+            <span class="n">rel</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">relpath</span><span class="p">(</span><span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;outdir&quot;</span><span class="p">],</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;mp_outdir&quot;</span><span class="p">])</span>
+
+            <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">seedname</span><span class="si">}</span><span class="s2">.band.gnu&quot;</span><span class="p">):</span>
+                <span class="n">ref_filename</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">rel</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">seedname</span><span class="si">}</span><span class="s2">.band.gnu&quot;</span>
+            <span class="k">elif</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">seedname</span><span class="si">}</span><span class="s2">.band.gnu.dat&quot;</span><span class="p">):</span>
+                <span class="n">ref_filename</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">rel</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">seedname</span><span class="si">}</span><span class="s2">.band.gnu.dat&quot;</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">ref_filename</span> <span class="o">=</span> <span class="kc">None</span>
+
+            <span class="n">Hk_sym_grid</span> <span class="o">=</span> <span class="n">cw_model</span><span class="o">.</span><span class="n">fourier_transform_r_to_k</span><span class="p">(</span>
+                <span class="n">cw_model</span><span class="p">[</span><span class="s2">&quot;Hr_sym&quot;</span><span class="p">],</span> <span class="n">kpoints</span><span class="p">,</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;irvec&quot;</span><span class="p">],</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;ndegen&quot;</span><span class="p">],</span> <span class="n">atoms_frac</span><span class="o">=</span><span class="n">atoms_frac</span>
+            <span class="p">)</span>
+            <span class="n">Ek</span><span class="p">,</span> <span class="n">Uk</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">eigh</span><span class="p">(</span><span class="n">Hk_sym_grid</span><span class="p">)</span>
+
+            <span class="c1"># output_linear_dispersion(</span>
+            <span class="n">output_dos</span><span class="p">(</span>
+                <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;mp_outdir&quot;</span><span class="p">],</span>
+                <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;mp_seedname&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot;_dos.txt&quot;</span><span class="p">,</span>
+                <span class="n">Ek</span><span class="p">,</span>
+                <span class="n">Uk</span><span class="p">,</span>
+                <span class="n">ef_shift</span><span class="p">,</span>
+                <span class="n">dos_num_fermi</span><span class="p">,</span> <span class="n">dos_smr_en_width</span>
+            <span class="p">)</span>
+
+        <span class="n">cwm</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="s2">&quot;done&quot;</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">outfile</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;a&quot;</span><span class="p">)</span>
+
+    <span class="c1">#####</span>
 
     <span class="n">cwm</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2">  * total elapsed_time:&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">outfile</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;a&quot;</span><span class="p">)</span>
     <span class="n">cwm</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">cw_end_output_msg</span><span class="p">(),</span> <span class="n">stamp</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">outfile</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;a&quot;</span><span class="p">)</span>
@@ -550,8 +628,6 @@ document.write(`
             </div>
             
             
-              
-                <div class="bd-sidebar-secondary bd-toc"></div>
               
             
           </div>
@@ -596,8 +672,8 @@ By Rikuto Oiwa
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="../../../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae"></script>
-<script src="../../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae"></script>
+  <script src="../../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
 
   <footer class="bd-footer">
   </footer>
