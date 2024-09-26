@@ -1141,8 +1141,8 @@ def berry_get_kubo(cwi, operators):
                         vdum = delE[:, k, m] - delE[:, k, n]
                         joint_level_spacing = np.sqrt(np.dot(vdum, vdum)) * Delta_k
                         eta_smr = min(joint_level_spacing * kubo_adpt_smr_fac, kubo_adpt_smr_max)
-                        # if eta_smr < 1e-6:
-                        #     eta_smr = 1e-6
+                        if eta_smr < 1e-6:
+                            eta_smr = 1e-6
                     else:
                         eta_smr = kubo_smr_fixed_en_width
 

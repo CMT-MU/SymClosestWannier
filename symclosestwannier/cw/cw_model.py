@@ -67,11 +67,12 @@ from symclosestwannier.util.utility import (
     weight_proj,
     fourier_transform_k_to_r,
     fourier_transform_r_to_k,
+    fourier_transform_r_to_k_vec,
     interpolate,
     matrix_dict_r,
     matrix_dict_k,
     dict_to_matrix,
-    sort_ket_matrix_k,
+    sort_ket_matrix,
     samb_decomp_operator,
     construct_Or,
     construct_Ok,
@@ -217,7 +218,6 @@ class CWModel(dict):
             self._cwm.log("done", file=self._outfile, mode="a")
 
         if self._cwi["disentangle"]:
-            print("optimize_wintemp", self._cwi["optimize_wintemp"])
             if self._cwi["optimize_wintemp"]:
                 self._optimize_win_temp(Ek, Ak)
 
@@ -538,6 +538,7 @@ class CWModel(dict):
         symmetrize CW TB Hamiltonian.
         """
         Hk = np.array(self["Hk"])
+        Sk = np.array(self["Sk"])
         Hr_dict = CWModel.matrix_dict_r(self["Hr"], self._cwi["irvec"])
         Sr_dict = CWModel.matrix_dict_r(self["Sr"], self._cwi["irvec"])
         Hr_nonortho_dict = CWModel.matrix_dict_r(self["Hr_nonortho"], self._cwi["irvec"])
@@ -566,7 +567,7 @@ class CWModel(dict):
         ket_amn = self._cwi.get("ket_amn", ket_samb)
 
         # sort orbitals
-        Hk = sort_ket_matrix_k(Hk, ket_amn, ket_samb)
+        Hk = sort_ket_matrix(Hk, ket_amn, ket_samb)
 
         if self._cwi["irreps"] == "all":
             irreps = model["info"]["generate"]["irrep"]
@@ -662,6 +663,17 @@ class CWModel(dict):
                 Sr_dict, Zr_dict, A, atoms_frac, ket_amn, A_samb, atoms_frac_samb, ket_samb
             )
 
+        S2k_inv = np.array([npl.inv(spl.sqrtm(Sk[k])) for k in range(self._cwi["num_k"])])
+        S2r_inv = CWModel.fourier_transform_k_to_r(S2k_inv, self._cwi["kpoints"], self._cwi["irvec"])
+        S2r_inv_dict = CWModel.matrix_dict_r(S2r_inv, self._cwi["irvec"])
+
+        if mat["molecule"]:
+            s2_inv = CWModel.samb_decomp_operator(S2r_inv_dict, Zr_dict, ket=ket_amn, ket_samb=ket_samb)
+        else:
+            s2_inv = CWModel.samb_decomp_operator(
+                S2r_inv_dict, Zr_dict, A, atoms_frac, ket_amn, A_samb, atoms_frac_samb, ket_samb
+            )
+
         self._cwm.log("done", file=self._outfile, mode="a")
 
         #####
@@ -687,6 +699,7 @@ class CWModel(dict):
         self._cwm.set_stamp()
 
         Sr_sym = CWModel.construct_Or(list(s.values()), self._cwi["num_wann"], self._cwi["irvec"], mat)
+        S2r_inv_sym = CWModel.construct_Or(list(s2_inv.values()), self._cwi["num_wann"], self._cwi["irvec"], mat)
         Hr_sym = CWModel.construct_Or(list(z.values()), self._cwi["num_wann"], self._cwi["irvec"], mat)
         Hr_nonortho_sym = CWModel.construct_Or(
             list(z_nonortho.values()), self._cwi["num_wann"], self._cwi["irvec"], mat
@@ -716,6 +729,7 @@ class CWModel(dict):
             Hk_nonortho_sym = CWModel.fourier_transform_r_to_k(
                 Hr_nonortho_sym, self._cwi["kpoints"], self._cwi["irvec"], self._cwi["ndegen"]
             )
+
         self._cwm.log("done", file=self._outfile, mode="a")
 
         #####
@@ -938,6 +952,28 @@ class CWModel(dict):
             ndarray: k-space representation of the given operator, O_{ab}(k) = <φ_{a}(k)|O|φ_{b}(k)>.
         """
         return fourier_transform_r_to_k(Or, kpoints, irvec, ndegen, atoms_frac)
+
+    # ==================================================
+    @classmethod
+    def fourier_transform_r_to_k_vec(
+        cls, Or_vec, kpoints, irvec, ndegen=None, atoms_frac=None, unit_cell_cart=None, pseudo=False
+    ):
+        """
+        fourier transformation of an arbitrary operator from real-space representation into k-space representation.
+
+        Args:
+            Or_vec (ndarray): real-space representation of the given operator, [O_{ab}^{x}(R), O_{ab}^{y}(R), O_{ab}^{z}(R)].
+            kpoints (ndarray): k-points used in DFT calculation, [[k1, k2, k3]] (crystal coordinate).
+            irvec (ndarray): irreducible R vectors (crystal coordinate, [[n1,n2,n3]], nj: integer).
+            ndegen (ndarray, optional): number of degeneracy at each R.
+            atoms_frac (ndarray, optional): atom's position in fractional coordinates.
+            unit_cell_cart (ndarray): transform matrix, [a1,a2,a3], [None].
+            pseudo (bool, optional): calculate pseudo vector?
+
+        Returns:
+            ndarray: k-space representation of the given operator, O_{ab}(k) = <φ_{a}(k)|O|φ_{b}(k)>.
+        """
+        return fourier_transform_r_to_k_vec(Or_vec, kpoints, irvec, ndegen, atoms_frac, unit_cell_cart, pseudo)
 
     # ==================================================
     @classmethod
@@ -1239,7 +1275,23 @@ class CWModel(dict):
             dict: dictionary of data.
         """
         with h5py.File(filename, "r") as hf:
-            data = {k: v[()] if v is not None else None for k, v in hf["data"].items()}
+            data = {}
+            for k, v in hf["data"].items():
+                v = v[()]
+
+                if type(v) == bytes:
+                    v = v.decode("utf-8")
+                    try:
+                        v = ast.literal_eval(v)
+                    except:
+                        v = v
+
+                elif type(v) == np.bool_:
+                    v = bool(v)
+                elif type(v) == np.float64:
+                    v = float(v)
+
+                data[k] = v
 
             return data
 
