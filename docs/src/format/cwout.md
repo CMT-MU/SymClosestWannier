@@ -124,8 +124,8 @@ Example standard output for [graphene](../../example/graphene/graphene.cwin) is 
     - decomposing non-orthogonal Hamiltonian as linear combination of SAMBs ... done ( 0.0 [sec] ).
     - constructing symmetrized TB Hamiltonian ... done ( 0.025 [sec] ).
     - evaluating fitting accuracy ...
-     * RMSE of eigen values between CW and Symmetry-Adapted CW models (grid) = 2.6820 [meV]
-     * RMSE of eigen values between CW and Symmetry-Adapted CW models (path) = 3.7451 [meV]
+     * MAE of eigen values between CW and Symmetry-Adapted CW models (grid) = 2.6820 [meV]
+     * MAE of eigen values between CW and Symmetry-Adapted CW models (path) = 3.7451 [meV]
     - evaluating expectation value of {Zj} at T = 0 ...
 done
 

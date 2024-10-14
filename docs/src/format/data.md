@@ -10,6 +10,6 @@
 - Hk_sym          : Symmetrized Hamiltonian matrix elements in k-space (orthogonal) (ndarray).",
 - Sr_sym          : Symmetrized overlap matrix elements in real-space (ndarray).",
 - Hr_sym          : Symmetrized Hamiltonian matrix elements in real-space (orthogonal) (ndarray).",
-- Ek_RMSE_grid    : mean squared error of eigen energies between symmetrized and non-symmetrized closed wannier TB model (grid) (float).",
-- Ek_RMSE_path    : mean squared error of eigen energies between symmetrized and non-symmetrized closed wannier TB model (path) (float).",
+- Ek_MAE_grid    : mean squared error of eigen energies between symmetrized and non-symmetrized closed wannier TB model (grid) (float).",
+- Ek_MAE_path    : mean squared error of eigen energies between symmetrized and non-symmetrized closed wannier TB model (path) (float).",
 - matrix_dict     : dictionary form of the real-space representation of symmetry-adapted multipole basis (SAMB) (dict).",
