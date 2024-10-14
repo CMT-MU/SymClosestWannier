@@ -225,7 +225,7 @@ class CWin(dict):
         ), "Symmetrization cannot be performed when restart == w90."
 
         assert not (
-            d["disentangle"] and d["dis_win_emax"] is None or d["dis_win_emin"] is None
+            d["disentangle"] and (d["dis_win_emax"] is None or d["dis_win_emin"] is None)
         ), "dis_win_emax and dis_win_emin must be specified when disentangle == true."
 
         return d
