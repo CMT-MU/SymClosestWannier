@@ -45,8 +45,8 @@ cwin_info = {
     "calc_dos": "calculate dos? (bool), [False].",
     "N1": "number of divisions for fermi energy in DOS calculation (int, optional), [50].",
     "dos_kmesh": "dimensions of the Monkhorst-Pack grid of k-points for dos calculation (list), [[1, 1, 1]].",
-    "dos_num_fermi"     : "number of fermi energies (int), [50].",
-    "dos_smr_en_width"  : "Energy width for the smearing function for the DOS (The units are [eV]) (flaot), [0.001].",
+    "dos_num_fermi": "number of fermi energies (int), [50].",
+    "dos_smr_en_width": "Energy width for the smearing function for the DOS (The units are [eV]) (flaot), [0.001].",
     "zeeman_interaction": "consider zeeman interaction ? (bool), [False].",
     "magnetic_field": "strength of the magnetic field (float), [0.0].",
     "magnetic_field_theta": "angle from the z-axis of the magnetic field (float), [0.0].",
@@ -257,8 +257,8 @@ cw_data = {
     "Hr_sym": "Symmetrized Hamiltonian matrix elements in real-space (orthogonal) (ndarray).",
     "Hr_nonortho_sym": "Symmetrized Hamiltonian matrix elements in real-space (non-orthogonal) (ndarray).",
     #
-    "Ek_RMSE_grid": "mean squared error of eigen energies between symmetrized and non-symmetrized closed wannier TB model (grid) (float).",
-    "Ek_RMSE_path": "mean squared error of eigen energies between symmetrized and non-symmetrized closed wannier TB model (path) (float).",
+    "Ek_MAE_grid": "mean squared error of eigen energies between symmetrized and non-symmetrized closed wannier TB model (grid) (float).",
+    "Ek_MAE_path": "mean squared error of eigen energies between symmetrized and non-symmetrized closed wannier TB model (path) (float).",
     #
     "matrix_dict": "dictionary form of the real-space representation of symmetry-adapted multipole basis (SAMB) (dict).",
 }
@@ -349,4 +349,11 @@ z_exp_header = """
 === expectation value of the given operator
 - j z_j TagMultipole expectation value
 - <O> = 1 / Nk * sum_{n,k} fermi_dirac[E_{n}(k)] O_{nn}(k)
+"""
+
+O_R_dependence_header = """
+=== Bond length ||R|| dependence of the Frobenius norm of the operator ||O(R)|| ===
+- ||R|| ||O(R)|| max(abs(O(R)))
+    - ||R||      : Bond length (the 2-norm of lattice vector).
+    - ||O(R)||   : The Frobenius norm of the operator.
 """

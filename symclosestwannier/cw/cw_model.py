@@ -41,10 +41,7 @@ from joblib import Parallel, delayed, wrap_non_picklable_objects
 _num_proc = multiprocessing.cpu_count()
 
 
-from symclosestwannier.util.message import (
-    cw_start_msg,
-    cw_start_msg_w90,
-)
+from symclosestwannier.util.message import cw_start_msg, cw_start_msg_w90
 from symclosestwannier.util.header import (
     cw_info_header,
     cw_data_header,
@@ -59,12 +56,14 @@ from symclosestwannier.util.header import (
     z_nonortho_header,
     s_header,
     z_exp_header,
+    O_R_dependence_header,
 )
 from symclosestwannier.util.utility import (
     thermal_avg,
     total_energy,
     entropy,
     weight_proj,
+    band_distance,
     fourier_transform_k_to_r,
     fourier_transform_r_to_k,
     fourier_transform_r_to_k_vec,
@@ -74,6 +73,7 @@ from symclosestwannier.util.utility import (
     dict_to_matrix,
     sort_ket_matrix,
     samb_decomp_operator,
+    O_R_dependence,
     construct_Or,
     construct_Ok,
     spin_zeeman_interaction,
@@ -102,8 +102,8 @@ _default = {
     "Hr_sym": None,
     "Hr_nonortho_sym": None,
     #
-    "Ek_RMSE_grid": None,
-    "Ek_RMSE_path": None,
+    "Ek_MAE_grid": None,
+    "Ek_MAE_path": None,
     #
     "matrix_dict": None,
 }
@@ -167,6 +167,17 @@ class CWModel(dict):
         Hk = np.einsum("klm,kl,kln->kmn", np.conj(Uk), Ek, Uk, optimize=True)
         Hk = 0.5 * (Hk + np.einsum("kmn->knm", Hk).conj())
 
+        # band distance
+        idx_bottom, eta_0, eta_0_max, eta_2, eta_2_max = band_distance(Ek, Hk, ef=self._cwi["fermi_energy"])
+
+        self._cwm.log(f"* band distance between DFT and Wannier bands:")
+        self._cwm.log(f" - idx_bottom = {idx_bottom}", file=self._outfile, mode="a")
+        self._cwm.log(f" - eta_0      = {eta_0} [meV]", file=self._outfile, mode="a")
+        self._cwm.log(f" - eta_0_max  = {eta_0_max} [meV]", file=self._outfile, mode="a")
+        self._cwm.log(f" - eta_2      = {eta_2} [meV]", file=self._outfile, mode="a")
+        self._cwm.log(f" - eta_2_max  = {eta_2_max} [meV]", file=self._outfile, mode="a")
+
+        # zeeman interaction
         if self._cwi["zeeman_interaction"]:
             B = self._cwi["magnetic_field"]
             theta = self._cwi["magnetic_field_theta"]
@@ -513,6 +524,20 @@ class CWModel(dict):
         Hk = np.einsum("klm,kl,kln->kmn", np.conj(Uk), Ek, Uk, optimize=True)
         Hk = 0.5 * (Hk + np.einsum("kmn->knm", Hk).conj())
 
+        # band distance
+        self._cwm.log("* band distance between DFT and Wannier bands:", None, file=self._outfile, mode="a")
+        self._cwm.set_stamp()
+
+        idx_bottom, eta_0, eta_0_max, eta_2, eta_2_max = band_distance(Ek, Hk, ef=self._cwi["fermi_energy"])
+
+        self._cwm.log(f"* band distance between DFT and Wannier bands:")
+        self._cwm.log(f" - idx_bottom = {idx_bottom}", file=self._outfile, mode="a")
+        self._cwm.log(f" - eta_0      = {eta_0} [meV]", file=self._outfile, mode="a")
+        self._cwm.log(f" - eta_0_max  = {eta_0_max} [meV]", file=self._outfile, mode="a")
+        self._cwm.log(f" - eta_2      = {eta_2} [meV]", file=self._outfile, mode="a")
+        self._cwm.log(f" - eta_2_max  = {eta_2_max} [meV]", file=self._outfile, mode="a")
+
+        # zeeman interaction
         if self._cwi["zeeman_interaction"]:
             B = self._cwi["magnetic_field"]
             theta = self._cwi["magnetic_field_theta"]
@@ -742,9 +767,9 @@ class CWModel(dict):
         Ek_grid_sym, _ = np.linalg.eigh(Hk_sym)
 
         num_k, num_wann = Ek_grid_sym.shape
-        Ek_RMSE_grid = np.sum(np.abs(Ek_grid_sym - Ek_grid)) / num_k / num_wann * 1000  # [meV]
+        Ek_MAE_grid = np.sum(np.abs(Ek_grid_sym - Ek_grid)) / num_k / num_wann * 1000  # [meV]
 
-        msg = f"     * RMSE of eigen values between CW and Symmetry-Adapted CW models (grid) = {'{:.4f}'.format(Ek_RMSE_grid)} [meV]"
+        msg = f"     * MAE of eigen values between CW and Symmetry-Adapted CW models (grid) = {'{:.4f}'.format(Ek_MAE_grid)} [meV]"
         self._cwm.log(msg, None, end="\n", file=self._outfile, mode="a")
 
         #####
@@ -771,12 +796,12 @@ class CWModel(dict):
             Ek_path_sym, _ = np.linalg.eigh(Hk_sym_path)
 
             num_k, num_wann = Ek_path_sym.shape
-            Ek_RMSE_path = np.sum(np.abs(Ek_path_sym - Ek_path)) / num_k / num_wann * 1000  # [meV]
+            Ek_MAE_path = np.sum(np.abs(Ek_path_sym - Ek_path)) / num_k / num_wann * 1000  # [meV]
 
-            msg = f"     * RMSE of eigen values between CW and Symmetry-Adapted CW models (path) = {'{:.4f}'.format(Ek_RMSE_path)} [meV]"
+            msg = f"     * MAE of eigen values between CW and Symmetry-Adapted CW models (path) = {'{:.4f}'.format(Ek_MAE_path)} [meV]"
             self._cwm.log(msg, None, end="\n", file=self._outfile, mode="a")
         else:
-            Ek_RMSE_path = None
+            Ek_MAE_path = None
 
         #####
 
@@ -911,8 +936,8 @@ class CWModel(dict):
                 "Hr_sym": Hr_sym,
                 "Hr_nonortho_sym": Hr_nonortho_sym,
                 #
-                "Ek_RMSE_grid": Ek_RMSE_grid,
-                "Ek_RMSE_path": Ek_RMSE_path,
+                "Ek_MAE_grid": Ek_MAE_grid,
+                "Ek_MAE_path": Ek_MAE_path,
                 #
                 "matrix_dict": mat,
             }
@@ -1195,6 +1220,11 @@ class CWModel(dict):
         return s_header
 
     # ==================================================
+    @classmethod
+    def _O_R_dependence_header(cls):
+        return O_R_dependence_header
+
+    # ==================================================
     def write_info_data(self, filename):
         """
         write info and data to seedname.hdf5 (hdf5 format).
@@ -1362,6 +1392,40 @@ class CWModel(dict):
                 Or_str += line
 
         self._cwm.write(filename, Or_str, header, None)
+
+    # ==================================================
+    def write_O_R_dependence(self, Or, filename, header=None):
+        """
+        write Bond length ||R|| (the 2-norm of lattice vector) dependence of the Frobenius norm of the operator ||O(R)||.
+        and the decay length τ [Ang] defined by Exponential-form fitting ||O(R)|| = ||O(0)|| exp(-||R||/τ).
+
+        Args:
+            Or (ndarray): real-space representation of the given operator, O_{ab}(R) = <φ_{a}(0)|O|φ_{b}(R)>.
+            filename (str): file name.
+            header (str, optional): header.
+        """
+        Or = np.array(Or)
+
+        A = self._cwi["A"]
+        irvec = self._cwi["irvec"]
+        ndegen = self._cwi["ndegen"]
+        ef = self._cwi["fermi_energy"]
+
+        R_2_norm_lst, OR_F_norm_lst, OR_abs_max_lst, O0_F_norm, tau = O_R_dependence(Or, A, irvec, ndegen, ef)
+
+        O_R_dep_str = "# created by pw2cw \n"
+        O_R_dep_str += "# written {}\n".format(datetime.datetime.now().strftime("on %d%b%Y at %H:%M:%S"))
+        O_R_dep_str += f"# ||O(R)|| ~ ||O(0)|| exp(-||R|| / tau) \n"
+        O_R_dep_str += f"# ||O(0)|| = {O0_F_norm} \n"
+        O_R_dep_str += f"# tau = {tau} \n"
+
+        for iR, R_2_norm in enumerate(R_2_norm_lst):
+            OR_F_norm = OR_F_norm_lst[iR]
+            OR_abs_max = OR_abs_max_lst[iR]
+
+            O_R_dep_str += " {:>15.8E}  {:>15.8E}  {:>15.8E}  \n".format(R_2_norm, OR_F_norm, OR_abs_max)
+
+        self._cwm.write(filename, O_R_dep_str, header, None)
 
     # ==================================================
     def write_tb(self, Hr, Ar, filename, rpoints=None):
