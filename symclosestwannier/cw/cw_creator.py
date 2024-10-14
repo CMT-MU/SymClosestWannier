@@ -90,6 +90,9 @@ def cw_creator(seedname="cwannier"):
         # filename = f"{cwi['seedname']}_hr_nonortho.dat.cw"
         # cw_model.write_or(cw_model["Hr_nonortho"], filename, header=CWModel._hr_header())
 
+        filename = f"{cwi['seedname']}_hr_R_dep.dat.cw"
+        cw_model.write_O_R_dependence(cw_model["Hr"], filename, header=CWModel._O_R_dependence_header())
+
     if cwi["write_sr"]:
         filename = f"{cwi['seedname']}_sr.dat.cw"
         cw_model.write_or(cw_model["Sr"], filename, header=CWModel._sr_header())

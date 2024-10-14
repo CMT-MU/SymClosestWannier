@@ -67,6 +67,57 @@ def weight_proj(e, e0, e1, T0, T1, delta=10e-12):
 
 
 # ==================================================
+def band_distance(Ek, Hk, ef=0.0):
+    """
+    band distance defined in [npj Computational Materials (2023) 208]:
+        - eta_x = \sqrt{ \sum w_{nk}(x) (e_{nk}^{DFT} - e_{nk}^{Wan})**2 / \sum w_{nk} }.
+        - eta_x_max = \max{ w_{nk}(x) \abs{e_{nk}^{DFT} - e_{nk}^{Wan}} }.
+        - w_{nk}(x) = \sqrt{ f_{nk}^{DFT}(Ef+x,T=0.1) * f_{nk}^{Wan}(Ef+x,T=0.1) }
+        - f_{nk}: fermi-dirac distribution function.
+
+    Args:
+        Ek (ndarray): Kohn-Sham energies.
+        Hk (ndarray): Hamiltonian matrix elements in k-space (orthogonal).
+        ef (float, optional): fermi energy.
+
+    Returns: idx_bottom, eta_0, eta_0_max, eta_2, eta_2_max.
+             idx_bottom is the index of the bottom band of DFT bands compared with the Wannier bands.
+    """
+    num_k, num_bands = Ek.shape
+    num_wann = Hk.shape[1]
+
+    Ek_wan, _ = np.linalg.eigh(Hk)
+
+    idx_bottom = 0
+
+    if num_wann < num_bands:
+        ek_wan_1 = Ek_wan[:, 0]
+        MAE = np.inf
+        for idx in range(num_bands):
+            ek_ref = Ek[:, idx]
+            MAE_ = np.sum(np.abs(ek_ref - ek_wan_1)) / num_k
+            if MAE_ < MAE:
+                idx_bottom = idx
+                MAE = MAE_
+
+    Ek_ref = Ek[:, idx_bottom : idx_bottom + num_wann]
+
+    fermi_ref = fermi(Ek_ref - (ef + 0.0), T=0.1, unit="eV")
+    fermi_wan = fermi(Ek_wan - (ef + 0.0), T=0.1, unit="eV")
+    w = np.sqrt(fermi_ref * fermi_wan)
+    eta_0 = np.sqrt(np.sum(w * (Ek_ref - Ek_wan) ** 2) / np.sum(w)) * 1000
+    eta_0_max = np.max(w * np.abs(Ek_ref - Ek_wan)) * 1000
+
+    fermi_ref = fermi(Ek_ref - (ef + 2.0), T=0.1, unit="eV")
+    fermi_wan = fermi(Ek_wan - (ef + 2.0), T=0.1, unit="eV")
+    w = np.sqrt(fermi_ref * fermi_wan)
+    eta_2 = np.sqrt(np.sum(w * (Ek_ref - Ek_wan) ** 2) / np.sum(w)) * 1000
+    eta_2_max = np.max(w * np.abs(Ek_ref - Ek_wan)) * 1000
+
+    return idx_bottom, eta_0, eta_0_max, eta_2, eta_2_max
+
+
+# ==================================================
 def convert_w90_orbital(l, m, r, s):
     """
     convert orbital in the Wannier90 format into the MultiPie format.
@@ -655,6 +706,65 @@ def samb_decomp_operator(
     }
 
     return z
+
+
+# ==================================================
+def O_R_dependence(Or, A, irvec, ndegen, ef=0.0):
+    """
+    Bond length ||R|| (the 2-norm of lattice vector) dependence of the Frobenius norm of the operator ||O(R)||.
+    The decay length τ [Ang] defined by Exponential-form fitting ||O(R)|| = ||O(Rmin)|| exp(-||R||/τ) is also returned.
+    Rmin is the bond with minimum length.
+
+    Args:
+        Or (ndarray): real-space representation of the given operator, O_{ab}(R) = <φ_{a}(0)|O|φ_{b}(R)>.
+        A (list/ndarray): real lattice vectors, A = [a1,a2,a3] (list), [[[1,0,0], [0,1,0], [0,0,1]]].
+        irvec (ndarray, optional): irreducible R vectors (crystal coordinate, [[n1,n2,n3]], nj: integer).
+        ndegen (ndarray, optional): number of degeneracy at each R.
+        ef (float, optional): fermi energy.
+
+    Returns: (list, list, list, float, float, float)
+            [||R||], [||O(R)||], [max(|O(R)|)], ||O(Rmin)||, ||Rmin||, τ.
+    """
+    R_2_norm_lst = []
+    OR_F_norm_lst = []
+    OR_abs_max_lst = []
+
+    a = np.linalg.norm(A[0])
+
+    num_R = Or.shape[0]
+    for iR in range(num_R):
+        n1, n2, n3 = irvec[iR]
+        R = np.array([n1, n2, n3]) @ A
+
+        OR = Or[iR]
+        OR = OR / ndegen[iR]
+
+        if (n1, n2, n3) == (0, 0, 0):
+            OR = OR - np.diag(OR.diagonal())
+
+            if np.linalg.norm(OR, ord="fro") < 1e-8:
+                continue
+
+        R_2_norm = np.linalg.norm(R)
+        OR_F_norm = np.linalg.norm(OR, ord="fro")
+        OR_abs_max = np.max(np.abs(OR))
+
+        R_2_norm_lst.append(R_2_norm)
+        OR_F_norm_lst.append(OR_F_norm)
+        OR_abs_max_lst.append(OR_abs_max)
+
+    zip_lists = zip(R_2_norm_lst, OR_F_norm_lst, OR_abs_max_lst)
+    zip_sort = sorted(zip_lists)
+    R_2_norm_lst, OR_F_norm_lst, OR_abs_max_lst = zip(*zip_sort)
+
+    R_2_norm_min = np.min(R_2_norm_lst)
+    R_2_min_lst = list(np.where(R_2_norm_lst == R_2_norm_min))[0]
+    Omin_F_norm = np.max(np.array(OR_F_norm_lst)[R_2_min_lst])
+
+    coefficients = np.polyfit(R_2_norm_lst, -np.log((OR_F_norm_lst) / Omin_F_norm), 1)
+    tau = 1.0 / coefficients[0]
+
+    return R_2_norm_lst, OR_F_norm_lst, OR_abs_max_lst, Omin_F_norm, R_2_norm_min, tau
 
 
 # ==================================================
