@@ -712,7 +712,8 @@ def samb_decomp_operator(
 def O_R_dependence(Or, A, irvec, ndegen, ef=0.0):
     """
     Bond length ||R|| (the 2-norm of lattice vector) dependence of the Frobenius norm of the operator ||O(R)||.
-    The decay length τ [Ang] defined by Exponential-form fitting ||O(R)|| = ||O(0)|| exp(-||R||/τ) is also returned.
+    The decay length τ [Ang] defined by Exponential-form fitting ||O(R)|| = ||O(Rmin)|| exp(-||R||/τ) is also returned.
+    Rmin is the bond with minimum length.
 
     Args:
         Or (ndarray): real-space representation of the given operator, O_{ab}(R) = <φ_{a}(0)|O|φ_{b}(R)>.
@@ -721,14 +722,14 @@ def O_R_dependence(Or, A, irvec, ndegen, ef=0.0):
         ndegen (ndarray, optional): number of degeneracy at each R.
         ef (float, optional): fermi energy.
 
-    Returns:
-        tuple: a,b,c,d,e.
+    Returns: (list, list, list, float, float, float)
+            [||R||], [||O(R)||], [max(|O(R)|)], ||O(Rmin)||, ||Rmin||, τ.
     """
     R_2_norm_lst = []
     OR_F_norm_lst = []
     OR_abs_max_lst = []
 
-    O0_F_norm = 1.0
+    a = np.linalg.norm(A[0])
 
     num_R = Or.shape[0]
     for iR in range(num_R):
@@ -740,8 +741,9 @@ def O_R_dependence(Or, A, irvec, ndegen, ef=0.0):
 
         if (n1, n2, n3) == (0, 0, 0):
             OR = OR - np.diag(OR.diagonal())
-            # dim = OR.shape[0]
-            # OR = OR - np.eye(dim) * ef
+
+            if np.linalg.norm(OR, ord="fro") < 1e-8:
+                continue
 
         R_2_norm = np.linalg.norm(R)
         OR_F_norm = np.linalg.norm(OR, ord="fro")
@@ -751,20 +753,18 @@ def O_R_dependence(Or, A, irvec, ndegen, ef=0.0):
         OR_F_norm_lst.append(OR_F_norm)
         OR_abs_max_lst.append(OR_abs_max)
 
-        if (n1, n2, n3) == (0, 0, 0):
-            O0_F_norm = OR_F_norm
-
-    if O0_F_norm < 1e-12:
-        O0_F_norm = 1.0
-
     zip_lists = zip(R_2_norm_lst, OR_F_norm_lst, OR_abs_max_lst)
     zip_sort = sorted(zip_lists)
     R_2_norm_lst, OR_F_norm_lst, OR_abs_max_lst = zip(*zip_sort)
 
-    coefficients = np.polyfit(R_2_norm_lst, -np.log(OR_F_norm_lst / O0_F_norm), 1)
+    R_2_norm_min = np.min(R_2_norm_lst)
+    R_2_min_lst = list(np.where(R_2_norm_lst == R_2_norm_min))[0]
+    Omin_F_norm = np.max(np.array(OR_F_norm_lst)[R_2_min_lst])
+
+    coefficients = np.polyfit(R_2_norm_lst, -np.log((OR_F_norm_lst) / Omin_F_norm), 1)
     tau = 1.0 / coefficients[0]
 
-    return R_2_norm_lst, OR_F_norm_lst, OR_abs_max_lst, O0_F_norm, tau
+    return R_2_norm_lst, OR_F_norm_lst, OR_abs_max_lst, Omin_F_norm, R_2_norm_min, tau
 
 
 # ==================================================

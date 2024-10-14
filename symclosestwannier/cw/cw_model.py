@@ -168,14 +168,18 @@ class CWModel(dict):
         Hk = 0.5 * (Hk + np.einsum("kmn->knm", Hk).conj())
 
         # band distance
+        self._cwm.log("* band distance between DFT and Wannier bands:", None, file=self._outfile, mode="a")
+        self._cwm.set_stamp()
+
         idx_bottom, eta_0, eta_0_max, eta_2, eta_2_max = band_distance(Ek, Hk, ef=self._cwi["fermi_energy"])
 
-        self._cwm.log(f"* band distance between DFT and Wannier bands:")
         self._cwm.log(f" - idx_bottom = {idx_bottom}", file=self._outfile, mode="a")
         self._cwm.log(f" - eta_0      = {eta_0} [meV]", file=self._outfile, mode="a")
         self._cwm.log(f" - eta_0_max  = {eta_0_max} [meV]", file=self._outfile, mode="a")
         self._cwm.log(f" - eta_2      = {eta_2} [meV]", file=self._outfile, mode="a")
         self._cwm.log(f" - eta_2_max  = {eta_2_max} [meV]", file=self._outfile, mode="a")
+
+        self._cwm.log("done", file=self._outfile, mode="a")
 
         # zeeman interaction
         if self._cwi["zeeman_interaction"]:
@@ -530,12 +534,13 @@ class CWModel(dict):
 
         idx_bottom, eta_0, eta_0_max, eta_2, eta_2_max = band_distance(Ek, Hk, ef=self._cwi["fermi_energy"])
 
-        self._cwm.log(f"* band distance between DFT and Wannier bands:")
         self._cwm.log(f" - idx_bottom = {idx_bottom}", file=self._outfile, mode="a")
         self._cwm.log(f" - eta_0      = {eta_0} [meV]", file=self._outfile, mode="a")
         self._cwm.log(f" - eta_0_max  = {eta_0_max} [meV]", file=self._outfile, mode="a")
         self._cwm.log(f" - eta_2      = {eta_2} [meV]", file=self._outfile, mode="a")
         self._cwm.log(f" - eta_2_max  = {eta_2_max} [meV]", file=self._outfile, mode="a")
+
+        self._cwm.log("done", file=self._outfile, mode="a")
 
         # zeeman interaction
         if self._cwi["zeeman_interaction"]:
@@ -1411,19 +1416,22 @@ class CWModel(dict):
         ndegen = self._cwi["ndegen"]
         ef = self._cwi["fermi_energy"]
 
-        R_2_norm_lst, OR_F_norm_lst, OR_abs_max_lst, O0_F_norm, tau = O_R_dependence(Or, A, irvec, ndegen, ef)
+        # [||R||], [||O(R)||], [max(|O(R)|)], ||O(Rmin)||, ||Rmin||, τ
+        R_2_norm_lst, OR_F_norm_lst, OR_abs_max_lst, Omin_F_norm, R_2_norm_min, tau = O_R_dependence(
+            Or, A, irvec, ndegen, ef
+        )
 
         O_R_dep_str = "# created by pw2cw \n"
         O_R_dep_str += "# written {}\n".format(datetime.datetime.now().strftime("on %d%b%Y at %H:%M:%S"))
-        O_R_dep_str += f"# ||O(R)|| ~ ||O(0)|| exp(-||R|| / tau) \n"
-        O_R_dep_str += f"# ||O(0)|| = {O0_F_norm} \n"
-        O_R_dep_str += f"# tau = {tau} \n"
+        O_R_dep_str += "# ||Rmin||    = {:<12.8f} [eV] \n".format(R_2_norm_min)
+        O_R_dep_str += "# ||O(Rmin)|| = {:<12.8f} [eV] \n".format(Omin_F_norm)
+        O_R_dep_str += "# τ           = {:<12.8f} [Ang] \n".format(tau)
 
         for iR, R_2_norm in enumerate(R_2_norm_lst):
             OR_F_norm = OR_F_norm_lst[iR]
             OR_abs_max = OR_abs_max_lst[iR]
 
-            O_R_dep_str += " {:>15.8E}  {:>15.8E}  {:>15.8E}  \n".format(R_2_norm, OR_F_norm, OR_abs_max)
+            O_R_dep_str += " {:>15.8E}  {:>15.8E}  {:>15.8E}  \n".format(R_2_norm - R_2_norm_min, OR_F_norm, OR_abs_max)
 
         self._cwm.write(filename, O_R_dep_str, header, None)
 

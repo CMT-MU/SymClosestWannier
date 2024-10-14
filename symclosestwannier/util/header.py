@@ -353,7 +353,12 @@ z_exp_header = """
 
 O_R_dependence_header = """
 === Bond length ||R|| dependence of the Frobenius norm of the operator ||O(R)|| ===
-- ||R|| ||O(R)|| max(abs(O(R)))
-    - ||R||      : Bond length (the 2-norm of lattice vector).
-    - ||O(R)||   : The Frobenius norm of the operator.
+-
+- ||R - Rmin|| [Ang]  ||O(R)|| [eV]  max(|O(R)|) [eV]
+    - ||O(R)|| ~ ||O(Rmin)|| exp(-(||R|| - ||Rmin||) / τ).
+    - ||R||       : Bond length (the 2-norm of lattice vector).
+    - ||O(R)||    : The Frobenius norm of the operator.
+    - ||Rmin||    : Minimum bond length.
+    - ||O(Rmin)|| : The Frobenius norm of the operator at R = Rmin.
+    - τ           : The decay length [Ang].
 """
