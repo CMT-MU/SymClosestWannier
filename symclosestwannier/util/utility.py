@@ -69,7 +69,7 @@ def weight_proj(e, e0, e1, T0, T1, delta=10e-12):
 # ==================================================
 def band_distance(Ek, Hk, ef=0.0):
     """
-    band distance defined in [npj Computational Materials (2023) 208]:
+    band distance defined in [npj Computational Materials, 208 (2023)]:
         - eta_x = \sqrt{ \sum w_{nk}(x) (e_{nk}^{DFT} - e_{nk}^{Wan})**2 / \sum w_{nk} }.
         - eta_x_max = \max{ w_{nk}(x) \abs{e_{nk}^{DFT} - e_{nk}^{Wan}} }.
         - w_{nk}(x) = \sqrt{ f_{nk}^{DFT}(Ef+x,T=0.1) * f_{nk}^{Wan}(Ef+x,T=0.1) }
