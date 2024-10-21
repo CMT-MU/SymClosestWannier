@@ -61,9 +61,14 @@ def fermi_ddt(x, T=0.01, unit="Kelvin"):
 
 
 # ==================================================
-def weight_proj(e, e0, e1, T0, T1, delta=10e-12):
+def weight_proj(e, dis_win_emin, dis_win_emax, smearing_temp_min, smearing_temp_max, delta=10e-12):
     """weight function for projection"""
-    return fermi(e0 - e, T0, unit="eV") + fermi(e - e1, T1, unit="eV") - 1.0 + delta
+    return (
+        fermi(dis_win_emin - e, smearing_temp_min, unit="eV")
+        + fermi(e - dis_win_emax, smearing_temp_max, unit="eV")
+        - 1.0
+        + delta
+    )
 
 
 # ==================================================
@@ -664,7 +669,7 @@ def samb_decomp_operator(
 
     #         Or_dict_ = {}
     #         for (R1, R2, R3, m, n), v in Or_dict.items():
-    #             if np.abs(v) < 1e-12:
+    #             if np.abs(v) < 0.0:
     #                 continue
 
     #             R = np.array([R1, R2, R3], dtype=float)
@@ -683,7 +688,7 @@ def samb_decomp_operator(
     #         for tag, d in Zr_dict.items():
     #             dic = {}
     #             for (R1, R2, R3, m, n), v in d.items():
-    #                 if np.abs(v) < 1e-12:
+    #                 if np.abs(v) < 0.0:
     #                     continue
 
     #                 R = np.array([R1, R2, R3], dtype=float)
