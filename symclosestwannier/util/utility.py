@@ -5,6 +5,7 @@ utility codes.
 import fortio
 import numpy as np
 from sympy.physics.quantum import TensorProduct
+from heapq import nlargest
 import multiprocessing
 from joblib import Parallel, delayed, wrap_non_picklable_objects
 
@@ -72,7 +73,7 @@ def weight_proj(e, dis_win_emin, dis_win_emax, smearing_temp_min, smearing_temp_
 
 
 # ==================================================
-def band_distance(Ek, Hk, ef=0.0):
+def band_distance(Ak, Ek, Hk, ef=0.0):
     """
     band distance defined in [npj Computational Materials, 208 (2023)]:
         - eta_x = \sqrt{ \sum w_{nk}(x) (e_{nk}^{DFT} - e_{nk}^{Wan})**2 / \sum w_{nk} }.
@@ -81,31 +82,26 @@ def band_distance(Ek, Hk, ef=0.0):
         - f_{nk}: fermi-dirac distribution function.
 
     Args:
+        Ak (ndarray): Overlap matrix elements.
         Ek (ndarray): Kohn-Sham energies.
         Hk (ndarray): Hamiltonian matrix elements in k-space (orthogonal).
         ef (float, optional): fermi energy.
 
-    Returns: idx_bottom, eta_0, eta_0_max, eta_2, eta_2_max.
-             idx_bottom is the index of the bottom band of DFT bands compared with the Wannier bands.
+    Returns: eta_0, eta_0_max, eta_2, eta_2_max.
     """
-    num_k, num_bands = Ek.shape
-    num_wann = Hk.shape[1]
+    num_k, num_wann, _ = Hk.shape
 
     Ek_wan, _ = np.linalg.eigh(Hk)
 
-    idx_bottom = 0
+    # projectability of each Kohn-Sham state in k-space.
+    Pk = np.real(np.diagonal(Ak @ Ak.transpose(0, 2, 1).conjugate(), axis1=1, axis2=2))
 
-    if num_wann < num_bands:
-        ek_wan_1 = Ek_wan[:, 0]
-        MAE = np.inf
-        for idx in range(num_bands):
-            ek_ref = Ek[:, idx]
-            MAE_ = np.sum(np.abs(ek_ref - ek_wan_1)) / num_k
-            if MAE_ < MAE:
-                idx_bottom = idx
-                MAE = MAE_
-
-    Ek_ref = Ek[:, idx_bottom : idx_bottom + num_wann]
+    Ek_ref = np.zeros((num_k, num_wann))
+    for k in range(num_k):
+        Pk_ = [(pnk, n) for n, pnk in enumerate(Pk[k])]
+        Pk_max_idx_list = sorted([n for _, n in nlargest(num_wann, Pk_)])
+        for i, n in enumerate(Pk_max_idx_list):
+            Ek_ref[k, i] = Ek[k, n]
 
     fermi_ref = fermi(Ek_ref - (ef + 0.0), T=0.1, unit="eV")
     fermi_wan = fermi(Ek_wan - (ef + 0.0), T=0.1, unit="eV")
@@ -119,7 +115,7 @@ def band_distance(Ek, Hk, ef=0.0):
     eta_2 = np.sqrt(np.sum(w * (Ek_ref - Ek_wan) ** 2) / np.sum(w)) * 1000
     eta_2_max = np.max(w * np.abs(Ek_ref - Ek_wan)) * 1000
 
-    return idx_bottom, eta_0, eta_0_max, eta_2, eta_2_max
+    return eta_0, eta_0_max, eta_2, eta_2_max
 
 
 # ==================================================
