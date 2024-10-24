@@ -383,6 +383,60 @@ document.write(`
 
 
 <span class="c1"># ==================================================</span>
+<div class="viewcode-block" id="band_distance">
+<a class="viewcode-back" href="../../../src/api/util.html#symclosestwannier.util.utility.band_distance">[docs]</a>
+<span class="k">def</span> <span class="nf">band_distance</span><span class="p">(</span><span class="n">Ek</span><span class="p">,</span> <span class="n">Hk</span><span class="p">,</span> <span class="n">ef</span><span class="o">=</span><span class="mf">0.0</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    band distance defined in [npj Computational Materials (2023) 208]:</span>
+<span class="sd">        - eta_x = \sqrt{ \sum w_{nk}(x) (e_{nk}^{DFT} - e_{nk}^{Wan})**2 / \sum w_{nk} }.</span>
+<span class="sd">        - eta_x_max = \max{ w_{nk}(x) \abs{e_{nk}^{DFT} - e_{nk}^{Wan}} }.</span>
+<span class="sd">        - w_{nk}(x) = \sqrt{ f_{nk}^{DFT}(Ef+x,T=0.1) * f_{nk}^{Wan}(Ef+x,T=0.1) }</span>
+<span class="sd">        - f_{nk}: fermi-dirac distribution function.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        Ek (ndarray): Kohn-Sham energies.</span>
+<span class="sd">        Hk (ndarray): Hamiltonian matrix elements in k-space (orthogonal).</span>
+<span class="sd">        ef (float, optional): fermi energy.</span>
+
+<span class="sd">    Returns: idx_bottom, eta_0, eta_0_max, eta_2, eta_2_max.</span>
+<span class="sd">             idx_bottom is the index of the bottom band of DFT bands compared with the Wannier bands.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">num_k</span><span class="p">,</span> <span class="n">num_bands</span> <span class="o">=</span> <span class="n">Ek</span><span class="o">.</span><span class="n">shape</span>
+    <span class="n">num_wann</span> <span class="o">=</span> <span class="n">Hk</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="n">Ek_wan</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">eigh</span><span class="p">(</span><span class="n">Hk</span><span class="p">)</span>
+
+    <span class="n">idx_bottom</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="k">if</span> <span class="n">num_wann</span> <span class="o">&lt;</span> <span class="n">num_bands</span><span class="p">:</span>
+        <span class="n">ek_wan_1</span> <span class="o">=</span> <span class="n">Ek_wan</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span>
+        <span class="n">MAE</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">inf</span>
+        <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_bands</span><span class="p">):</span>
+            <span class="n">ek_ref</span> <span class="o">=</span> <span class="n">Ek</span><span class="p">[:,</span> <span class="n">idx</span><span class="p">]</span>
+            <span class="n">MAE_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">ek_ref</span> <span class="o">-</span> <span class="n">ek_wan_1</span><span class="p">))</span> <span class="o">/</span> <span class="n">num_k</span>
+            <span class="k">if</span> <span class="n">MAE_</span> <span class="o">&lt;</span> <span class="n">MAE</span><span class="p">:</span>
+                <span class="n">idx_bottom</span> <span class="o">=</span> <span class="n">idx</span>
+                <span class="n">MAE</span> <span class="o">=</span> <span class="n">MAE_</span>
+
+    <span class="n">Ek_ref</span> <span class="o">=</span> <span class="n">Ek</span><span class="p">[:,</span> <span class="n">idx_bottom</span> <span class="p">:</span> <span class="n">idx_bottom</span> <span class="o">+</span> <span class="n">num_wann</span><span class="p">]</span>
+
+    <span class="n">fermi_ref</span> <span class="o">=</span> <span class="n">fermi</span><span class="p">(</span><span class="n">Ek_ref</span> <span class="o">-</span> <span class="p">(</span><span class="n">ef</span> <span class="o">+</span> <span class="mf">0.0</span><span class="p">),</span> <span class="n">T</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s2">&quot;eV&quot;</span><span class="p">)</span>
+    <span class="n">fermi_wan</span> <span class="o">=</span> <span class="n">fermi</span><span class="p">(</span><span class="n">Ek_wan</span> <span class="o">-</span> <span class="p">(</span><span class="n">ef</span> <span class="o">+</span> <span class="mf">0.0</span><span class="p">),</span> <span class="n">T</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s2">&quot;eV&quot;</span><span class="p">)</span>
+    <span class="n">w</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">fermi_ref</span> <span class="o">*</span> <span class="n">fermi_wan</span><span class="p">)</span>
+    <span class="n">eta_0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">w</span> <span class="o">*</span> <span class="p">(</span><span class="n">Ek_ref</span> <span class="o">-</span> <span class="n">Ek_wan</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">w</span><span class="p">))</span> <span class="o">*</span> <span class="mi">1000</span>
+    <span class="n">eta_0_max</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">w</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">Ek_ref</span> <span class="o">-</span> <span class="n">Ek_wan</span><span class="p">))</span> <span class="o">*</span> <span class="mi">1000</span>
+
+    <span class="n">fermi_ref</span> <span class="o">=</span> <span class="n">fermi</span><span class="p">(</span><span class="n">Ek_ref</span> <span class="o">-</span> <span class="p">(</span><span class="n">ef</span> <span class="o">+</span> <span class="mf">2.0</span><span class="p">),</span> <span class="n">T</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s2">&quot;eV&quot;</span><span class="p">)</span>
+    <span class="n">fermi_wan</span> <span class="o">=</span> <span class="n">fermi</span><span class="p">(</span><span class="n">Ek_wan</span> <span class="o">-</span> <span class="p">(</span><span class="n">ef</span> <span class="o">+</span> <span class="mf">2.0</span><span class="p">),</span> <span class="n">T</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s2">&quot;eV&quot;</span><span class="p">)</span>
+    <span class="n">w</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">fermi_ref</span> <span class="o">*</span> <span class="n">fermi_wan</span><span class="p">)</span>
+    <span class="n">eta_2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">w</span> <span class="o">*</span> <span class="p">(</span><span class="n">Ek_ref</span> <span class="o">-</span> <span class="n">Ek_wan</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">w</span><span class="p">))</span> <span class="o">*</span> <span class="mi">1000</span>
+    <span class="n">eta_2_max</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">w</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">Ek_ref</span> <span class="o">-</span> <span class="n">Ek_wan</span><span class="p">))</span> <span class="o">*</span> <span class="mi">1000</span>
+
+    <span class="k">return</span> <span class="n">idx_bottom</span><span class="p">,</span> <span class="n">eta_0</span><span class="p">,</span> <span class="n">eta_0_max</span><span class="p">,</span> <span class="n">eta_2</span><span class="p">,</span> <span class="n">eta_2_max</span></div>
+
+
+
+<span class="c1"># ==================================================</span>
 <div class="viewcode-block" id="convert_w90_orbital">
 <a class="viewcode-back" href="../../../src/api/util.html#symclosestwannier.util.utility.convert_w90_orbital">[docs]</a>
 <span class="k">def</span> <span class="nf">convert_w90_orbital</span><span class="p">(</span><span class="n">l</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">s</span><span class="p">):</span>
@@ -858,21 +912,21 @@ document.write(`
 
 
 <span class="c1"># ==================================================</span>
-<div class="viewcode-block" id="sort_ket_matrix_k">
-<a class="viewcode-back" href="../../../src/api/util.html#symclosestwannier.util.utility.sort_ket_matrix_k">[docs]</a>
-<span class="k">def</span> <span class="nf">sort_ket_matrix_k</span><span class="p">(</span><span class="n">Ok</span><span class="p">,</span> <span class="n">ket</span><span class="p">,</span> <span class="n">ket_samb</span><span class="p">):</span>
+<div class="viewcode-block" id="sort_ket_matrix">
+<a class="viewcode-back" href="../../../src/api/util.html#symclosestwannier.util.utility.sort_ket_matrix">[docs]</a>
+<span class="k">def</span> <span class="nf">sort_ket_matrix</span><span class="p">(</span><span class="n">Ok</span><span class="p">,</span> <span class="n">ket1</span><span class="p">,</span> <span class="n">ket2</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    sort ket to align with the SAMB definition (ket_samb).</span>
+<span class="sd">    sort ket1 to align with the order of ket2.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        Ok (ndarray): arbitrary operator in k-space representation, O_{ab}(k) = &lt;φ_{a}(k)|H|φ_{b}(k)&gt;.</span>
-<span class="sd">        ket (list): ket basis list, orbital@site.</span>
-<span class="sd">        ket_samb (list): ket basis list for SAMBs, orbital@site.</span>
+<span class="sd">        ket1 (list): ket basis list, orbital@site.</span>
+<span class="sd">        ket2 (list): ket basis list, orbital@site.</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        Ok (ndarray): operator.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">idx_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">ket</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">o</span><span class="p">)</span> <span class="k">for</span> <span class="n">o</span> <span class="ow">in</span> <span class="n">ket_samb</span><span class="p">]</span>
+    <span class="n">idx_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">ket1</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">o</span><span class="p">)</span> <span class="k">for</span> <span class="n">o</span> <span class="ow">in</span> <span class="n">ket2</span><span class="p">]</span>
     <span class="n">Ok</span> <span class="o">=</span> <span class="n">Ok</span><span class="p">[:,</span> <span class="n">idx_list</span><span class="p">,</span> <span class="p">:]</span>
     <span class="n">Ok</span> <span class="o">=</span> <span class="n">Ok</span><span class="p">[:,</span> <span class="p">:,</span> <span class="n">idx_list</span><span class="p">]</span>
 
@@ -1016,6 +1070,68 @@ document.write(`
 
 
 <span class="c1"># ==================================================</span>
+<div class="viewcode-block" id="O_R_dependence">
+<a class="viewcode-back" href="../../../src/api/util.html#symclosestwannier.util.utility.O_R_dependence">[docs]</a>
+<span class="k">def</span> <span class="nf">O_R_dependence</span><span class="p">(</span><span class="n">Or</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">irvec</span><span class="p">,</span> <span class="n">ndegen</span><span class="p">,</span> <span class="n">ef</span><span class="o">=</span><span class="mf">0.0</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Bond length ||R|| (the 2-norm of lattice vector) dependence of the Frobenius norm of the operator ||O(R)||.</span>
+<span class="sd">    The decay length τ [Ang] defined by Exponential-form fitting ||O(R)|| = ||O(Rmin)|| exp(-||R||/τ) is also returned.</span>
+<span class="sd">    Rmin is the bond with minimum length.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        Or (ndarray): real-space representation of the given operator, O_{ab}(R) = &lt;φ_{a}(0)|O|φ_{b}(R)&gt;.</span>
+<span class="sd">        A (list/ndarray): real lattice vectors, A = [a1,a2,a3] (list), [[[1,0,0], [0,1,0], [0,0,1]]].</span>
+<span class="sd">        irvec (ndarray, optional): irreducible R vectors (crystal coordinate, [[n1,n2,n3]], nj: integer).</span>
+<span class="sd">        ndegen (ndarray, optional): number of degeneracy at each R.</span>
+<span class="sd">        ef (float, optional): fermi energy.</span>
+
+<span class="sd">    Returns: (list, list, list, float, float, float)</span>
+<span class="sd">            [||R||], [||O(R)||], [max(|O(R)|)], ||O(Rmin)||, ||Rmin||, τ.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">R_2_norm_lst</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">OR_F_norm_lst</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">OR_abs_max_lst</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">A</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+    <span class="n">num_R</span> <span class="o">=</span> <span class="n">Or</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">iR</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_R</span><span class="p">):</span>
+        <span class="n">n1</span><span class="p">,</span> <span class="n">n2</span><span class="p">,</span> <span class="n">n3</span> <span class="o">=</span> <span class="n">irvec</span><span class="p">[</span><span class="n">iR</span><span class="p">]</span>
+        <span class="n">R</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">n1</span><span class="p">,</span> <span class="n">n2</span><span class="p">,</span> <span class="n">n3</span><span class="p">])</span> <span class="o">@</span> <span class="n">A</span>
+
+        <span class="n">OR</span> <span class="o">=</span> <span class="n">Or</span><span class="p">[</span><span class="n">iR</span><span class="p">]</span>
+        <span class="n">OR</span> <span class="o">=</span> <span class="n">OR</span> <span class="o">/</span> <span class="n">ndegen</span><span class="p">[</span><span class="n">iR</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="n">n1</span><span class="p">,</span> <span class="n">n2</span><span class="p">,</span> <span class="n">n3</span><span class="p">)</span> <span class="o">==</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">):</span>
+            <span class="n">OR</span> <span class="o">=</span> <span class="n">OR</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">OR</span><span class="o">.</span><span class="n">diagonal</span><span class="p">())</span>
+
+            <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">OR</span><span class="p">,</span> <span class="nb">ord</span><span class="o">=</span><span class="s2">&quot;fro&quot;</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mf">1e-8</span><span class="p">:</span>
+                <span class="k">continue</span>
+
+        <span class="n">R_2_norm</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">R</span><span class="p">)</span>
+        <span class="n">OR_F_norm</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">OR</span><span class="p">,</span> <span class="nb">ord</span><span class="o">=</span><span class="s2">&quot;fro&quot;</span><span class="p">)</span>
+        <span class="n">OR_abs_max</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">OR</span><span class="p">))</span>
+
+        <span class="n">R_2_norm_lst</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">R_2_norm</span><span class="p">)</span>
+        <span class="n">OR_F_norm_lst</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">OR_F_norm</span><span class="p">)</span>
+        <span class="n">OR_abs_max_lst</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">OR_abs_max</span><span class="p">)</span>
+
+    <span class="n">zip_lists</span> <span class="o">=</span> <span class="nb">zip</span><span class="p">(</span><span class="n">R_2_norm_lst</span><span class="p">,</span> <span class="n">OR_F_norm_lst</span><span class="p">,</span> <span class="n">OR_abs_max_lst</span><span class="p">)</span>
+    <span class="n">zip_sort</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">zip_lists</span><span class="p">)</span>
+    <span class="n">R_2_norm_lst</span><span class="p">,</span> <span class="n">OR_F_norm_lst</span><span class="p">,</span> <span class="n">OR_abs_max_lst</span> <span class="o">=</span> <span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="n">zip_sort</span><span class="p">)</span>
+
+    <span class="n">R_2_norm_min</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">R_2_norm_lst</span><span class="p">)</span>
+    <span class="n">R_2_min_lst</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">R_2_norm_lst</span> <span class="o">==</span> <span class="n">R_2_norm_min</span><span class="p">))[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">Omin_F_norm</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">OR_F_norm_lst</span><span class="p">)[</span><span class="n">R_2_min_lst</span><span class="p">])</span>
+
+    <span class="n">coefficients</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">polyfit</span><span class="p">(</span><span class="n">R_2_norm_lst</span><span class="p">,</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">((</span><span class="n">OR_F_norm_lst</span><span class="p">)</span> <span class="o">/</span> <span class="n">Omin_F_norm</span><span class="p">),</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">tau</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="n">coefficients</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="k">return</span> <span class="n">R_2_norm_lst</span><span class="p">,</span> <span class="n">OR_F_norm_lst</span><span class="p">,</span> <span class="n">OR_abs_max_lst</span><span class="p">,</span> <span class="n">Omin_F_norm</span><span class="p">,</span> <span class="n">R_2_norm_min</span><span class="p">,</span> <span class="n">tau</span></div>
+
+
+
+<span class="c1"># ==================================================</span>
 <div class="viewcode-block" id="construct_Or">
 <a class="viewcode-back" href="../../../src/api/util.html#symclosestwannier.util.utility.construct_Or">[docs]</a>
 <span class="k">def</span> <span class="nf">construct_Or</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">num_wann</span><span class="p">,</span> <span class="n">rpoints</span><span class="p">,</span> <span class="n">matrix_dict</span><span class="p">):</span>
@@ -1115,7 +1231,7 @@ document.write(`
     <span class="n">O_exp</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">Oi</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">O</span><span class="p">):</span>
         <span class="n">UdoU</span> <span class="o">=</span> <span class="n">U</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">conjugate</span><span class="p">()</span> <span class="o">@</span> <span class="n">Oi</span> <span class="o">@</span> <span class="n">U</span>
-        <span class="n">UdoU_diag</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diagonal</span><span class="p">(</span><span class="n">UdoU</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+        <span class="n">UdoU_diag</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diagonal</span><span class="p">(</span><span class="n">UdoU</span><span class="p">,</span> <span class="n">axis1</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">axis2</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
         <span class="n">Oi_exp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">fk</span> <span class="o">*</span> <span class="n">UdoU_diag</span><span class="p">)</span> <span class="o">/</span> <span class="n">num_k</span>
         <span class="n">O_exp</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">real</span><span class="p">(</span><span class="n">Oi_exp</span><span class="p">))</span>
 

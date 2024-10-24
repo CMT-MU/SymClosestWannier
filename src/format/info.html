@@ -367,7 +367,7 @@ document.write(`
 <li><p>dis_win_emin      : lower energy window (float), [None].</p></li>
 <li><p>smearing_temp_max : smearing temperature for upper window (float), [5.0].</p></li>
 <li><p>smearing_temp_min : smearing temperature for lower window (float), [0.01].</p></li>
-<li><p>delta             : small constant to avoid ill-conditioning of overlap matrices (float), [1e-12].</p></li>
+<li><p>delta             : small constant to avoid ill-conditioning of overlap matrices (&lt; 1e-5) (float), [0.0].</p></li>
 <li><p>svd               : implement singular value decomposition ? otherwise adopt Lowdin’s orthogonalization method (bool), [False].</p></li>
 <li><p>verbose           : verbose calculation info (bool, optional), [False].</p></li>
 <li><p>parallel          : use parallel code? (bool), [False].</p></li>

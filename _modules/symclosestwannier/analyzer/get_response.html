@@ -1492,8 +1492,8 @@ document.write(`
                         <span class="n">vdum</span> <span class="o">=</span> <span class="n">delE</span><span class="p">[:,</span> <span class="n">k</span><span class="p">,</span> <span class="n">m</span><span class="p">]</span> <span class="o">-</span> <span class="n">delE</span><span class="p">[:,</span> <span class="n">k</span><span class="p">,</span> <span class="n">n</span><span class="p">]</span>
                         <span class="n">joint_level_spacing</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">vdum</span><span class="p">,</span> <span class="n">vdum</span><span class="p">))</span> <span class="o">*</span> <span class="n">Delta_k</span>
                         <span class="n">eta_smr</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">joint_level_spacing</span> <span class="o">*</span> <span class="n">kubo_adpt_smr_fac</span><span class="p">,</span> <span class="n">kubo_adpt_smr_max</span><span class="p">)</span>
-                        <span class="c1"># if eta_smr &lt; 1e-6:</span>
-                        <span class="c1">#     eta_smr = 1e-6</span>
+                        <span class="k">if</span> <span class="n">eta_smr</span> <span class="o">&lt;</span> <span class="mf">1e-6</span><span class="p">:</span>
+                            <span class="n">eta_smr</span> <span class="o">=</span> <span class="mf">1e-6</span>
                     <span class="k">else</span><span class="p">:</span>
                         <span class="n">eta_smr</span> <span class="o">=</span> <span class="n">kubo_smr_fixed_en_width</span>
 

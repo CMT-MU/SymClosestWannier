@@ -367,6 +367,7 @@ document.write(`
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.cw.cw_model.CWModel.dict_to_matrix"><code class="docutils literal notranslate"><span class="pre">CWModel.dict_to_matrix()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.cw.cw_model.CWModel.fourier_transform_k_to_r"><code class="docutils literal notranslate"><span class="pre">CWModel.fourier_transform_k_to_r()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.cw.cw_model.CWModel.fourier_transform_r_to_k"><code class="docutils literal notranslate"><span class="pre">CWModel.fourier_transform_r_to_k()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.cw.cw_model.CWModel.fourier_transform_r_to_k_vec"><code class="docutils literal notranslate"><span class="pre">CWModel.fourier_transform_r_to_k_vec()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.cw.cw_model.CWModel.interpolate"><code class="docutils literal notranslate"><span class="pre">CWModel.interpolate()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.cw.cw_model.CWModel.matrix_dict_k"><code class="docutils literal notranslate"><span class="pre">CWModel.matrix_dict_k()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.cw.cw_model.CWModel.matrix_dict_r"><code class="docutils literal notranslate"><span class="pre">CWModel.matrix_dict_r()</span></code></a></li>
@@ -374,6 +375,7 @@ document.write(`
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.cw.cw_model.CWModel.read_info"><code class="docutils literal notranslate"><span class="pre">CWModel.read_info()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.cw.cw_model.CWModel.read_info_data"><code class="docutils literal notranslate"><span class="pre">CWModel.read_info_data()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.cw.cw_model.CWModel.samb_decomp_operator"><code class="docutils literal notranslate"><span class="pre">CWModel.samb_decomp_operator()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.cw.cw_model.CWModel.write_O_R_dependence"><code class="docutils literal notranslate"><span class="pre">CWModel.write_O_R_dependence()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.cw.cw_model.CWModel.write_info_data"><code class="docutils literal notranslate"><span class="pre">CWModel.write_info_data()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.cw.cw_model.CWModel.write_or"><code class="docutils literal notranslate"><span class="pre">CWModel.write_or()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.cw.cw_model.CWModel.write_samb_coeffs"><code class="docutils literal notranslate"><span class="pre">CWModel.write_samb_coeffs()</span></code></a></li>
@@ -667,6 +669,31 @@ atoms_frac (ndarray, optional): atom's position in fractional coordinates.</p>
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="symclosestwannier.cw.cw_model.CWModel.fourier_transform_r_to_k_vec">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">fourier_transform_r_to_k_vec</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Or_vec</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kpoints</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">irvec</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ndegen</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">atoms_frac</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unit_cell_cart</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pseudo</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/cw/cw_model.html#CWModel.fourier_transform_r_to_k_vec"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.cw.cw_model.CWModel.fourier_transform_r_to_k_vec" title="Link to this definition">#</a></dt>
+<dd><p>fourier transformation of an arbitrary operator from real-space representation into k-space representation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>Or_vec</strong> (<em>ndarray</em>) -- real-space representation of the given operator, [O_{ab}^{x}(R), O_{ab}^{y}(R), O_{ab}^{z}(R)].</p></li>
+<li><p><strong>kpoints</strong> (<em>ndarray</em>) -- k-points used in DFT calculation, [[k1, k2, k3]] (crystal coordinate).</p></li>
+<li><p><strong>irvec</strong> (<em>ndarray</em>) -- irreducible R vectors (crystal coordinate, [[n1,n2,n3]], nj: integer).</p></li>
+<li><p><strong>ndegen</strong> (<em>ndarray</em><em>, </em><em>optional</em>) -- number of degeneracy at each R.</p></li>
+<li><p><strong>atoms_frac</strong> (<em>ndarray</em><em>, </em><em>optional</em>) -- atom's position in fractional coordinates.</p></li>
+<li><p><strong>unit_cell_cart</strong> (<em>ndarray</em>) -- transform matrix, [a1,a2,a3], [None].</p></li>
+<li><p><strong>pseudo</strong> (<em>bool</em><em>, </em><em>optional</em>) -- calculate pseudo vector?</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>k-space representation of the given operator, O_{ab}(k) = &lt;φ_{a}(k)|O|φ_{b}(k)&gt;.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="symclosestwannier.cw.cw_model.CWModel.interpolate">
 <em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">interpolate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Ok</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kpoints_0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kpoints</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">irvec</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ndegen</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">atoms_frac</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/cw/cw_model.html#CWModel.interpolate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.cw.cw_model.CWModel.interpolate" title="Link to this definition">#</a></dt>
 <dd><p>interpolate an arbitrary operator by implementing
@@ -806,6 +833,22 @@ fourier transformation from real-space representation into k-space representatio
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>z (dict)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="symclosestwannier.cw.cw_model.CWModel.write_O_R_dependence">
+<span class="sig-name descname"><span class="pre">write_O_R_dependence</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Or</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">header</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/cw/cw_model.html#CWModel.write_O_R_dependence"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.cw.cw_model.CWModel.write_O_R_dependence" title="Link to this definition">#</a></dt>
+<dd><p>write Bond length ||R|| (the 2-norm of lattice vector) dependence of the Frobenius norm of the operator ||O(R)||.
+and the decay length τ [Ang] defined by Exponential-form fitting ||O(R)|| = ||O(0)|| exp(-||R||/τ).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>Or</strong> (<em>ndarray</em>) -- real-space representation of the given operator, O_{ab}(R) = &lt;φ_{a}(0)|O|φ_{b}(R)&gt;.</p></li>
+<li><p><strong>filename</strong> (<em>str</em>) -- file name.</p></li>
+<li><p><strong>header</strong> (<em>str</em><em>, </em><em>optional</em>) -- header.</p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>
@@ -1599,6 +1642,7 @@ CW TB model can be symmetrized by using Symmetry-Adapted Multipole Basis (SAMB).
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.cw.cw_model.CWModel.dict_to_matrix"><code class="docutils literal notranslate"><span class="pre">CWModel.dict_to_matrix()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.cw.cw_model.CWModel.fourier_transform_k_to_r"><code class="docutils literal notranslate"><span class="pre">CWModel.fourier_transform_k_to_r()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.cw.cw_model.CWModel.fourier_transform_r_to_k"><code class="docutils literal notranslate"><span class="pre">CWModel.fourier_transform_r_to_k()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.cw.cw_model.CWModel.fourier_transform_r_to_k_vec"><code class="docutils literal notranslate"><span class="pre">CWModel.fourier_transform_r_to_k_vec()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.cw.cw_model.CWModel.interpolate"><code class="docutils literal notranslate"><span class="pre">CWModel.interpolate()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.cw.cw_model.CWModel.matrix_dict_k"><code class="docutils literal notranslate"><span class="pre">CWModel.matrix_dict_k()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.cw.cw_model.CWModel.matrix_dict_r"><code class="docutils literal notranslate"><span class="pre">CWModel.matrix_dict_r()</span></code></a></li>
@@ -1606,6 +1650,7 @@ CW TB model can be symmetrized by using Symmetry-Adapted Multipole Basis (SAMB).
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.cw.cw_model.CWModel.read_info"><code class="docutils literal notranslate"><span class="pre">CWModel.read_info()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.cw.cw_model.CWModel.read_info_data"><code class="docutils literal notranslate"><span class="pre">CWModel.read_info_data()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.cw.cw_model.CWModel.samb_decomp_operator"><code class="docutils literal notranslate"><span class="pre">CWModel.samb_decomp_operator()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.cw.cw_model.CWModel.write_O_R_dependence"><code class="docutils literal notranslate"><span class="pre">CWModel.write_O_R_dependence()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.cw.cw_model.CWModel.write_info_data"><code class="docutils literal notranslate"><span class="pre">CWModel.write_info_data()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.cw.cw_model.CWModel.write_or"><code class="docutils literal notranslate"><span class="pre">CWModel.write_or()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.cw.cw_model.CWModel.write_samb_coeffs"><code class="docutils literal notranslate"><span class="pre">CWModel.write_samb_coeffs()</span></code></a></li>

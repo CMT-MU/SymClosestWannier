@@ -344,6 +344,8 @@ document.write(`
     <span class="n">cw_end_output_msg</span><span class="p">,</span>
 <span class="p">)</span>
 
+<span class="kn">from</span> <span class="nn">symclosestwannier.util.utility</span> <span class="kn">import</span> <span class="n">sort_ket_matrix</span>
+
 
 <span class="c1"># ==================================================</span>
 <div class="viewcode-block" id="analyzer">
@@ -386,6 +388,9 @@ document.write(`
     <span class="k">if</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;symmetrization&quot;</span><span class="p">]:</span>
         <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">cw_model</span><span class="p">[</span><span class="s2">&quot;Hr_sym&quot;</span><span class="p">])</span> <span class="o">==</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
             <span class="n">Hr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">cw_model</span><span class="p">[</span><span class="s2">&quot;Hr_sym&quot;</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">complex128</span><span class="p">)</span>
+            <span class="n">ket_samb</span> <span class="o">=</span> <span class="n">cw_model</span><span class="p">[</span><span class="s2">&quot;matrix_dict&quot;</span><span class="p">][</span><span class="s2">&quot;ket&quot;</span><span class="p">]</span>
+            <span class="n">ket_amn</span> <span class="o">=</span> <span class="n">cwi</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;ket_amn&quot;</span><span class="p">,</span> <span class="n">ket_samb</span><span class="p">)</span>
+            <span class="n">Hr</span> <span class="o">=</span> <span class="n">sort_ket_matrix</span><span class="p">(</span><span class="n">Hr</span><span class="p">,</span> <span class="n">ket_samb</span><span class="p">,</span> <span class="n">ket_amn</span><span class="p">)</span>
 
     <span class="n">res</span> <span class="o">=</span> <span class="n">Response</span><span class="p">(</span><span class="n">cwi</span><span class="p">,</span> <span class="n">cwm</span><span class="p">,</span> <span class="n">HH_R</span><span class="o">=</span><span class="n">Hr</span><span class="p">)</span>
 

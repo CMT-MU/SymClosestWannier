@@ -363,6 +363,7 @@ document.write(`
     <span class="c1"># band</span>
     <span class="s2">&quot;a&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
     <span class="s2">&quot;N1&quot;</span><span class="p">:</span> <span class="mi">50</span><span class="p">,</span>
+    <span class="s2">&quot;calc_spin_2d&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
     <span class="c1"># dos</span>
     <span class="s2">&quot;calc_dos&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
     <span class="s2">&quot;dos_kmesh&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
@@ -535,7 +536,7 @@ document.write(`
         <span class="p">),</span> <span class="s2">&quot;Symmetrization cannot be performed when restart == w90.&quot;</span>
 
         <span class="k">assert</span> <span class="ow">not</span> <span class="p">(</span>
-            <span class="n">d</span><span class="p">[</span><span class="s2">&quot;disentangle&quot;</span><span class="p">]</span> <span class="ow">and</span> <span class="n">d</span><span class="p">[</span><span class="s2">&quot;dis_win_emax&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">d</span><span class="p">[</span><span class="s2">&quot;dis_win_emin&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span>
+            <span class="n">d</span><span class="p">[</span><span class="s2">&quot;disentangle&quot;</span><span class="p">]</span> <span class="ow">and</span> <span class="p">(</span><span class="n">d</span><span class="p">[</span><span class="s2">&quot;dis_win_emax&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">d</span><span class="p">[</span><span class="s2">&quot;dis_win_emin&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">)</span>
         <span class="p">),</span> <span class="s2">&quot;dis_win_emax and dis_win_emin must be specified when disentangle == true.&quot;</span>
 
         <span class="k">return</span> <span class="n">d</span></div>
