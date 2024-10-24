@@ -29,6 +29,9 @@ import sympy as sp
 import numpy as np
 from numpy import linalg as npl
 from scipy import linalg as spl
+import lmfit
+
+from scipy.optimize import curve_fit
 
 from gcoreutils.nsarray import NSArray
 from multipie.tag.tag_multipole import TagMultipole
@@ -171,13 +174,12 @@ class CWModel(dict):
         self._cwm.log("* band distance between DFT and Wannier bands:", None, file=self._outfile, mode="a")
         self._cwm.set_stamp()
 
-        idx_bottom, eta_0, eta_0_max, eta_2, eta_2_max = band_distance(Ek, Hk, ef=self._cwi["fermi_energy"])
+        eta_0, eta_0_max, eta_2, eta_2_max = band_distance(Ak, Ek, Hk, ef=self._cwi["fermi_energy"])
 
-        self._cwm.log(f" - idx_bottom = {idx_bottom}", file=self._outfile, mode="a")
-        self._cwm.log(f" - eta_0      = {eta_0} [meV]", file=self._outfile, mode="a")
-        self._cwm.log(f" - eta_0_max  = {eta_0_max} [meV]", file=self._outfile, mode="a")
-        self._cwm.log(f" - eta_2      = {eta_2} [meV]", file=self._outfile, mode="a")
-        self._cwm.log(f" - eta_2_max  = {eta_2_max} [meV]", file=self._outfile, mode="a")
+        self._cwm.log(f" - eta_0     = {eta_0} [meV]", file=self._outfile, mode="a")
+        self._cwm.log(f" - eta_0_max = {eta_0_max} [meV]", file=self._outfile, mode="a")
+        self._cwm.log(f" - eta_2     = {eta_2} [meV]", file=self._outfile, mode="a")
+        self._cwm.log(f" - eta_2_max = {eta_2_max} [meV]", file=self._outfile, mode="a")
 
         self._cwm.log("done", file=self._outfile, mode="a")
 
@@ -233,7 +235,7 @@ class CWModel(dict):
             self._cwm.log("done", file=self._outfile, mode="a")
 
         if self._cwi["disentangle"]:
-            if self._cwi["optimize_wintemp"]:
+            if self._cwi["optimize_win_temp"]:
                 self._optimize_win_temp(Ek, Ak)
 
             msg = "   - disentanglement ... "
@@ -339,159 +341,106 @@ class CWModel(dict):
     # ==================================================
     def _optimize_win_temp(self, Ek, Ak):
         """
-        optimize the energy windows and smearing temperatures.
+        optimize the energy windows and smearing temperatures
+        by using the projectability of each Kohn-Sham state in k-space.
 
         Args:
             Ek (ndarray): Kohn-Sham energies.
             Ak (ndarray): Overlap matrix elements.
         """
-        import numpy as np
-        import itertools
-        from fractions import Fraction
+        # projectability of each Kohn-Sham state in k-space.
+        Pk = np.real(np.diagonal(Ak @ Ak.transpose(0, 2, 1).conjugate(), axis1=1, axis2=2))
 
-        # Jaccard係数を計算
-        def jaccard(x, y):
-            # 積集合の要素数
-            intersection = len(set.intersection(set(x), set(y)))
-            # 和集合の要素数
-            union = len(set.union(set(x), set(y)))
-            # 分数表示で返す
-            return float(Fraction(intersection, union))
+        ek = Ek.reshape(self._cwi["num_k"] * self._cwi["num_bands"])
+        pk = Pk.reshape(self._cwi["num_k"] * self._cwi["num_bands"])
 
-        def f(x):
-            emin, emax, T_min, T_max = x
-            Ak_new = self._disentangle(Ek, Ak, emin, emax, T_min, T_max)
+        # normalize
+        pk = pk / np.max(pk)
 
-            def U_mat(k):
-                u, _, vd = np.linalg.svd(Ak_new[k], full_matrices=False)
-                return u @ vd
+        fixed_params = self._cwi["optimize_win_temp_fixed_params"]
 
-            Uk = np.array([U_mat(k) for k in range(self._cwi["num_k"])])
-            Hk = np.einsum("klm,kl,kln->kmn", np.conj(Uk), Ek, Uk, optimize=True)
-            Hk = 0.5 * (Hk + np.einsum("kmn->knm", Hk).conj())
+        model = lmfit.Model(weight_proj)
+        params = lmfit.Parameters()
 
-            Ek_cw = np.linalg.eigvalsh(Hk)
+        param_bound_dict = {
+            "dis_win_emin": (-np.inf, np.inf),
+            "dis_win_emax": (-np.inf, np.inf),
+            "smearing_temp_min": (0, 100),
+            "smearing_temp_max": (0, 100),
+            "delta": (0, 1e-5),
+        }
 
-            num_k = self._cwi["num_k"]
-            num_wann = self._cwi["num_wann"]
-            num_bands = self._cwi["num_bands"]
+        for param, (min, max) in param_bound_dict.items():
 
-            # Delta = (
-            #     sum(
-            #         [
-            #             jaccard(
-            #                 np.round(Ek[k], 3).tolist(),
-            #                 np.round(Ek_cw[k], 3).tolist(),
-            #             )
-            #             for k in range(num_k)
-            #         ]
-            #     )
-            #     / num_k
-            # )
-
-            # Delta = (
-            #     np.sum(np.abs(Ek - Ek_cw)) / self._cwi["num_k"] / (self._cwi["num_wann"] + self._cwi["num_bands"]) * 2
-            # )
-
-            Delta = 0.0
-
-            for k in range(num_k):
-                for n in range(num_wann):
-                    enk_cw = Ek_cw[k, n]
-                    d_lst = [np.abs(enk_cw - Ek[k, m]) for m in range(num_bands)]
-                    m = d_lst.index(min(d_lst))
-                    emk = Ek[k, m]
-
-                    Delta += np.abs(enk_cw - emk)
-
-            Delta = Delta / num_k / num_wann
-
-            return Delta
-
-        # E_width = np.max(Ek) - np.min(Ek)
-        h_dic = {0: 1e-2, 1: 1e-2, 2: 1e-2, 3: 1e-2}
-
-        # ==========================
-        def numerical_diff(x, i):
-            x = np.array(x)
-
-            h = h_dic[i]
-            h_vec = np.zeros(4)
-            h_vec[i] = h
-
-            return (f(x + h_vec) - f(x - h_vec)) / (2.0 * h)
-
-        msg = "- optimizing windows and smearing temperatures ... \n"
-        msg += "* --------------------------------------------------------------------------------------------- * \n"
-        msg += "|  niter:   dis_win_emin   dis_win_emax   smearing_temp_min   smearing_temp_max   Delta   Time  | \n"
-        msg += "* --------------------------------------------------------------------------------------------- * \n"
-        self._cwm.log(msg, None, end="", file=self._outfile, mode="a")
-        self._cwm.set_stamp()
-
-        conv_thr = self._cwi["optimize_wintemp_conv_thr"]
-        mixing_beta = self._cwi["optimize_wintemp_mixing_beta"]
-        fixed_params = self._cwi["optimize_wintemp_fixed_params"]
-        d = {"dis_win_emin": 0, "dis_win_emax": 1, "smearing_temp_min": 2, "smearing_temp_max": 3}
-        fixed_indexes = [idx for k, idx in d.items() if k in fixed_params]
-
-        x = (
-            self._cwi["dis_win_emin"],
-            self._cwi["dis_win_emax"],
-            self._cwi["smearing_temp_min"],
-            self._cwi["smearing_temp_max"],
-        )
-
-        cnt = 0
-        for niter in range(self._cwi["optimize_wintemp_num_iter"]):
-            cnt += 1
-
-            Delta = f(x)
-
-            if Delta < conv_thr:
-                break
+            if param in fixed_params:
+                params.add(param, value=self._cwi[param], vary=False)
+                params[param].value = self._cwi[param]
             else:
-                grad = np.array([0 if i in fixed_indexes else numerical_diff(x, i) for i in range(4)])
-                x = x - mixing_beta * grad
+                params.add(param, value=self._cwi[param], min=min, max=max)
 
-            emin, emax, T_min, T_max = x
+        result = model.fit(pk, params, e=ek)
 
-            msg = "{0[0]:8d}: {0[1]:12.6f}  {0[2]:12.6f} {0[3]:12.6f} {0[4]:12.6f} {0[5]:12.6f}".format(
-                [niter, emin, emax, T_min, T_max, Delta]
-            )
-            self._cwm.log(msg, file=self._outfile, mode="a")
+        dis_win_emin = result.params["dis_win_emin"].value
+        dis_win_emax = result.params["dis_win_emax"].value
+        smearing_temp_min = result.params["smearing_temp_min"].value
+        smearing_temp_max = result.params["smearing_temp_max"].value
+        delta = result.params["delta"].value
 
-        msg = "* -------------------------------------------------------------------------------------- * \n"
-        if cnt == self._cwi["optimize_wintemp_num_iter"]:
-            msg += "Warning: Maximum number of optimize_win_temp iterations reached \n"
+        if "dis_win_emax" in fixed_params:
+            dis_win_emax_opt = dis_win_emax
+        else:
+            dis_win_emax_opt = dis_win_emax - 3.0 * smearing_temp_max
 
-        if Delta > conv_thr:
-            msg += f"Warning: optimize_win_temp convergence criteria (optimize_wintemp_conv_thr = {conv_thr}) not satisfied \n"
+        msg = "   - optimizing windows and smearing temperatures ... \n"
+        msg += "*----------------------------------------------------------------------------* \n"
+        if fixed_params != []:
+            msg += "    * fixed_params: \n"
+            for param in fixed_params:
+                msg += f"    - {param} = {self._cwi[param]} \n"
+            msg += "\n"
 
-        emin, emax, T_min, T_max = x
-
-        msg += "Final values: \n"
-        msg += f"  - dis_win_emin = {emin} \n"
-        msg += f"  - dis_win_emax = {emax} \n"
-        msg += f"  - smearing_temp_min = {T_min} \n"
-        msg += f"  - smearing_temp_max = {T_max} \n"
-        msg += f"  - Delta = {Delta} \n"
-        msg += "* -------------------------------------------------------------------------------------- * \n"
-
+        msg += "    * Initial values: \n"
+        msg += f"    - dis_win_emax      = {self._cwi['dis_win_emax']} \n"
+        msg += f"    - dis_win_emin      = {self._cwi['dis_win_emin']} \n"
+        msg += f"    - smearing_temp_max = {self._cwi['smearing_temp_max']} \n"
+        msg += f"    - smearing_temp_min = {self._cwi['smearing_temp_min']} \n"
+        msg += f"    - delta             = {self._cwi['delta']} \n"
+        msg += "\n"
+        msg += "    * Optimized values: \n"
+        if "dis_win_emax" in fixed_params:
+            msg += f"     - dis_win_emax (opt)      = {dis_win_emax_opt}\n"
+        else:
+            msg += f"     - dis_win_emax (fit)      = {dis_win_emax} \n"
+            msg += f"     - dis_win_emax (opt)      = dis_win_emax (fit) - 0.5 * smearing_temp_max (opt) \n"
+            msg += f"                               = {dis_win_emax_opt} \n"
+        msg += f"     - dis_win_emin (opt)      = {dis_win_emin} \n"
+        msg += f"     - smearing_temp_max (opt) = {smearing_temp_max} \n"
+        msg += f"     - smearing_temp_min (opt) = {smearing_temp_min} \n"
+        msg += f"     - delta (opt)             = {delta} \n"
+        msg += "*----------------------------------------------------------------------------* \n"
         self._cwm.log(msg, None, end="", file=self._outfile, mode="a")
 
-        (
-            self._cwi["dis_win_emin"],
-            self._cwi["dis_win_emax"],
-            self._cwi["smearing_temp_min"],
-            self._cwi["smearing_temp_max"],
-        ) = (
-            emin,
-            emax,
-            T_min,
-            T_max,
-        )
+        fs = open("projectability.txt", "w")
+        fs.write(f"# projectability \n")
+        fs.write(f"# enk pnk wnk(init_fit) wnk(best_fit) \n")
+        fs.write(f"# dis_win_emax_fit = {dis_win_emax} \n")
+        fs.write(f"# dis_win_emax_opt = dis_win_emax_fit - 0.5 * smearing_temp_max = {dis_win_emax_opt} \n")
+        fs.write(f"# dis_win_emin_opt = {dis_win_emin} \n")
+        fs.write(f"# smearing_temp_max_opt = {smearing_temp_max} \n")
+        fs.write(f"# delta_opt = {delta} \n")
 
-        self._cwm.log("done ", file=self._outfile, mode="a")
+        for i, eki in enumerate(ek):
+            pki = pk[i]
+            init_fit = result.init_fit[i]
+            best_fit = result.best_fit[i]
+            fs.write(f"{eki}  {pki}  {init_fit}  {best_fit}\n")
+
+        fs.close()
+
+        self._cwi["dis_win_emin"] = dis_win_emin
+        self._cwi["dis_win_emax"] = dis_win_emax_opt
+        self._cwi["smearing_temp_min"] = smearing_temp_min
+        self._cwi["smearing_temp_max"] = smearing_temp_max
 
     # ==================================================
     def _construct_tb(self, Ek, Ak):
@@ -529,18 +478,16 @@ class CWModel(dict):
         Hk = 0.5 * (Hk + np.einsum("kmn->knm", Hk).conj())
 
         # band distance
-        self._cwm.log("* band distance between DFT and Wannier bands:", None, file=self._outfile, mode="a")
+        self._cwm.log("\n    * band distance between DFT and Wannier bands:", None, file=self._outfile, mode="a")
         self._cwm.set_stamp()
 
-        idx_bottom, eta_0, eta_0_max, eta_2, eta_2_max = band_distance(Ek, Hk, ef=self._cwi["fermi_energy"])
+        eta_0, eta_0_max, eta_2, eta_2_max = band_distance(Ak, Ek, Hk, ef=self._cwi["fermi_energy"])
 
-        self._cwm.log(f" - idx_bottom = {idx_bottom}", file=self._outfile, mode="a")
-        self._cwm.log(f" - eta_0      = {eta_0} [meV]", file=self._outfile, mode="a")
-        self._cwm.log(f" - eta_0_max  = {eta_0_max} [meV]", file=self._outfile, mode="a")
-        self._cwm.log(f" - eta_2      = {eta_2} [meV]", file=self._outfile, mode="a")
-        self._cwm.log(f" - eta_2_max  = {eta_2_max} [meV]", file=self._outfile, mode="a")
-
-        self._cwm.log("done", file=self._outfile, mode="a")
+        # self._cwm.log(f"     - bottom_band_idx = {bottom_band_idx}", None, file=self._outfile, mode="a")
+        self._cwm.log(f"     - eta_0     = {eta_0} [meV]", None, file=self._outfile, mode="a")
+        self._cwm.log(f"     - eta_0_max = {eta_0_max} [meV]", None, file=self._outfile, mode="a")
+        self._cwm.log(f"     - eta_2     = {eta_2} [meV]", None, file=self._outfile, mode="a")
+        self._cwm.log(f"     - eta_2_max = {eta_2_max} [meV]", None, file=self._outfile, mode="a")
 
         # zeeman interaction
         if self._cwi["zeeman_interaction"]:
