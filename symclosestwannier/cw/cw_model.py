@@ -462,7 +462,7 @@ class CWModel(dict):
             msg += f"     - dis_win_emax (opt)      = {dis_win_emax_opt}\n"
         else:
             msg += f"     - dis_win_emax (fit)      = {dis_win_emax} \n"
-            msg += f"     - dis_win_emax (opt)      = dis_win_emax (fit) - 0.5 * smearing_temp_max (opt) \n"
+            msg += f"     - dis_win_emax (opt)      = dis_win_emax (fit) - 3 * smearing_temp_max (opt) \n"
             msg += f"                               = {dis_win_emax_opt} \n"
         msg += f"     - dis_win_emin (opt)      = {dis_win_emin} \n"
         msg += f"     - smearing_temp_max (opt) = {smearing_temp_max} \n"
@@ -475,7 +475,7 @@ class CWModel(dict):
         fs.write(f"# projectability \n")
         fs.write(f"# enk pnk wnk(init_fit) wnk(best_fit) \n")
         fs.write(f"# dis_win_emax_fit = {dis_win_emax} \n")
-        fs.write(f"# dis_win_emax_opt = dis_win_emax_fit - 0.5 * smearing_temp_max = {dis_win_emax_opt} \n")
+        fs.write(f"# dis_win_emax_opt = dis_win_emax_fit - 3 * smearing_temp_max = {dis_win_emax_opt} \n")
         fs.write(f"# dis_win_emin_opt = {dis_win_emin} \n")
         fs.write(f"# smearing_temp_max_opt = {smearing_temp_max} \n")
         fs.write(f"# delta_opt = {delta} \n")
