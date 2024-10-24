@@ -16,14 +16,10 @@ _default = {
     "dis_win_emin": None,
     "smearing_temp_max": 1.0,
     "smearing_temp_min": 0.0,
-    "delta": 1e-12,
+    "delta": 0.0,
     "svd": False,
-    "optimize_wintemp": False,
-    "optimize_wintemp_num_iter": 100,
-    "optimize_wintemp_conv_thr": 1e-1,
-    "optimize_wintemp_mixing_beta": 0.7,
-    "optimize_wintemp_fixed_params": [],
-    ""
+    "optimize_win_temp": False,
+    "optimize_win_temp_fixed_params": [],
     #
     "verbose": False,
     "parallel": False,
@@ -122,13 +118,10 @@ class CWin(dict):
                 - dis_win_emin      : lower energy window (float), [None].
                 - smearing_temp_max : smearing temperature for upper window (float), [5.0].
                 - smearing_temp_min : smearing temperature for lower window (float), [0.01].
-                - delta             : small constant to avoid ill-conditioning of overlap matrices (float), [1e-12].
+                - delta             : small constant to avoid ill-conditioning of overlap matrices (< 1e-5) (float), [0.0].
                 - svd               : implement singular value decomposition ? otherwise adopt Lowdin's orthogonalization method (bool), [False].
-                - optimize_wintemp": optimize the energy windows and smearing temperatures? (bool), [False].
-                - optimize_wintemp_num_iter": number of iterations for optimization (int), [100].
-                - optimize_wintemp_conv_thr": Convergence threshold for optimization (float), [1e-1].
-                - optimize_wintemp_mixing_beta": mixing factor for optimization (float), [0.7].
-                - optimize_wintemp_fixed_params":  fixed parameters for optimization, (list) [["dis_win_emin", "smearing_temp_min"]].
+                - optimize_win_temp": optimize the energy windows and smearing temperatures? (bool), [False].
+                - optimize_win_temp_fixed_params":  fixed parameters for optimization (ex: ['dis_win_emin', 'smearing_temp_min']), (list) [].
                 - verbose           : verbose calculation info (bool, optional), [False].
                 - parallel          : use parallel code? (bool), [False].
                 - formatter         : format by using black? (bool), [False].
@@ -215,7 +208,7 @@ class CWin(dict):
                 if "[" in v or "]" in v:
                     v = "".join(v)
 
-            if key == "optimize_wintemp_fixed_params":
+            if key == "optimize_win_temp_fixed_params":
                 if "[" in v or "]" in v:
                     v = "".join(v)
 
@@ -248,8 +241,6 @@ class CWin(dict):
             "smearing_temp_max",
             "smearing_temp_min",
             "delta",
-            "optimize_wintemp_conv_thr",
-            "optimize_wintemp_mixing_beta",
             "z_exp_temperature",
             "a",
             "fermi_energy",
@@ -261,7 +252,10 @@ class CWin(dict):
             "g_factor",
         ):
             v = float(v)
-        elif key in ("optimize_wintemp_num_iter", "N1", "dos_num_fermi"):
+            if key == "delta":
+                if v > 1e-5:
+                    raise Exception(f"delta is too large. delta must be less than 1e-5.")
+        elif key in ("N1", "dos_num_fermi"):
             v = int(v)
         elif key == "ket_amn":
             if "[" in v or "]" in v:
@@ -269,9 +263,16 @@ class CWin(dict):
                     v = [str(o) if i == 0 else f"({str(o)}" for i, o in enumerate(v[1:-1].split(",("))]
                 else:
                     v = [str(o) for o in v[1:-1].split(",")]
-        elif key == "optimize_wintemp_fixed_params":
+        elif key == "optimize_win_temp_fixed_params":
             if "[" in v or "]" in v:
                 v = [str(o) for o in v[1:-1].split(",")]
+            if len(v) > 0:
+                for vi in v:
+                    if vi not in ("dis_win_emin", "dis_win_emax", "smearing_temp_min", "smearing_temp_max", "delta"):
+                        raise Exception(
+                            f"invalid optimize_win_temp_fixed_params: {vi} was given. choose from 'dis_win_emin'/'dis_win_emax'/'smearing_temp_min'/'smearing_temp_max'/'delta'."
+                        )
+
         elif key == "irreps":
             if "[" in v and "]" in v:
                 v = [str(o) for o in v[1:-1].split(",")]

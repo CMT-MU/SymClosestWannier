@@ -40,7 +40,7 @@ def cw_open_msg():
              |  [ref] "Closest Wannier functions to              |
              |         a given set of localized orbitals"        |
              |         Taisuke Ozaki,                            |
-             |         Phys. Rev. B 110, 125115, (2024).                 |
+             |         Phys. Rev. B 110, 125115, (2024).         |
              |                                                   |
              |  [ref] "Symmetry-adapted modeling for             |
              |         molecules and crystals"                   |
@@ -52,7 +52,7 @@ def cw_open_msg():
              |     The SymClosestWwannier Developer Group and    |
              |        individual contributors                    |
              |                                                   |
-             |       Release: 1.3.3      30th Aug 2024           |
+             |       Release: 1.5.0      24th Oct 2024           |
              |                                                   |
              | This program is free software; you can            |
              | redistribute it and/or modify it under the terms  |
