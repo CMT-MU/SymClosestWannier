@@ -12,7 +12,7 @@
   - dis_win_emin      : lower energy window (float), [None].
   - smearing_temp_max : smearing temperature for upper window (float), [5.0].
   - smearing_temp_min : smearing temperature for lower window (float), [0.01].
-  - delta             : small constant to avoid ill-conditioning of overlap matrices (float), [1e-12].
+  - delta             : small constant to avoid ill-conditioning of overlap matrices (< 1e-5) (float), [0.0].
   - svd               : implement singular value decomposition ? otherwise adopt Lowdin's orthogonalization method (bool), [False].
   - verbose           : verbose calculation info (bool, optional), [False].
   - parallel          : use parallel code? (bool), [False].

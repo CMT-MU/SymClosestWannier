@@ -7,7 +7,7 @@ dis_win_emax      = 2.3
 dis_win_emin      = -7.5
 smearing_temp_max = 2.0
 smearing_temp_min = 1.0
-delta             = 1e-12
+delta             = 0.0
 svd               = true
 verbose           = true
 
