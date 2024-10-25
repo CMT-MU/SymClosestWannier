@@ -425,13 +425,15 @@ class CWModel(dict):
         fs.write(f"# dis_win_emax_opt = dis_win_emax_fit - 3 * smearing_temp_max = {dis_win_emax_opt} \n")
         fs.write(f"# dis_win_emin_opt = {dis_win_emin} \n")
         fs.write(f"# smearing_temp_max_opt = {smearing_temp_max} \n")
+        fs.write(f"# smearing_temp_min_opt = {smearing_temp_min} \n")
         fs.write(f"# delta_opt = {delta} \n")
 
         for i, eki in enumerate(ek):
             pki = pk[i]
             init_fit = result.init_fit[i]
             best_fit = result.best_fit[i]
-            fs.write(f"{eki}  {pki}  {init_fit}  {best_fit}\n")
+            opt_fit = weight_proj(eki, dis_win_emin, dis_win_emax_opt, smearing_temp_min, smearing_temp_max, delta)
+            fs.write(f"{eki}  {pki}  {init_fit}  {best_fit}  {opt_fit}\n")
 
         fs.close()
 
@@ -439,6 +441,7 @@ class CWModel(dict):
         self._cwi["dis_win_emax"] = dis_win_emax_opt
         self._cwi["smearing_temp_min"] = smearing_temp_min
         self._cwi["smearing_temp_max"] = smearing_temp_max
+        self._cwi["delta"] = delta
 
     # ==================================================
     def _construct_tb(self, Ek, Ak):
