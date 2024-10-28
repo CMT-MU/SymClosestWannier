@@ -190,6 +190,10 @@ class Nnkp(dict):
                     d["atom_pos"] = atom_pos
                     d["atom_pos_r"] = atom_pos_r
 
+                if "begin auto_projections" in line:
+                    spinors = "begin spinor_projections" in line
+                    d["num_wann"] = int(nnkp_data[i + 1])
+
             bvec_cart = np.zeros([d["num_b"], 3])
             bvec_crys = np.zeros([d["num_b"], 3])
             bbmat = np.zeros([d["num_b"], 9])
