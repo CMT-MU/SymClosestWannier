@@ -31,10 +31,6 @@ from numpy import linalg as npl
 from scipy import linalg as spl
 import lmfit
 
-from scipy.optimize import curve_fit
-
-from scipy.optimize import curve_fit
-
 from gcoreutils.nsarray import NSArray
 from multipie.tag.tag_multipole import TagMultipole
 from multipie.model.construct_model import construct_samb_matrix
@@ -226,55 +222,6 @@ class CWModel(dict):
 
         Ek = np.array(self._cwi["Ek"], dtype=float)
         Ak = np.array(self._cwi["Ak"], dtype=complex)
-
-        #
-        # projectability of each Kohn-Sham state in k-space.
-        #
-        Pk = np.real(np.diagonal(Ak @ Ak.transpose(0, 2, 1).conjugate(), axis1=1, axis2=2))
-        array_x = Ek.reshape(self._cwi["num_k"] * self._cwi["num_bands"])
-        array_y = Pk.reshape(self._cwi["num_k"] * self._cwi["num_bands"])
-
-        print(np.max(array_y))
-
-        array_y = array_y / np.max(array_y)
-
-        print(np.max(array_y))
-
-        dis_win_emin = self._cwi["dis_win_emin"]
-        smearing_temp_min = self._cwi["smearing_temp_min"]
-
-        def nonlinear_fit(x, a, b):
-            return weight_proj(x, dis_win_emin, a, smearing_temp_min, b, delta=self._cwi["delta"])
-
-        param, cov = curve_fit(nonlinear_fit, array_x, array_y)
-        dis_win_emax, smearing_temp_max = param
-
-        self._cwi["dis_win_emax"] = dis_win_emax - 3 * smearing_temp_max
-        self._cwi["smearing_temp_max"] = smearing_temp_max
-
-        self._cwm.log(f"dis_win_emin = {dis_win_emin}", None, file=self._outfile, mode="a")
-        self._cwm.log(f"dis_win_emax = {dis_win_emax}", None, file=self._outfile, mode="a")
-        self._cwm.log(f"smearing_temp_min = {smearing_temp_min}", None, file=self._outfile, mode="a")
-        self._cwm.log(f"smearing_temp_max = {smearing_temp_max}", None, file=self._outfile, mode="a")
-        self._cwm.log(f"cov = {cov}", None, file=self._outfile, mode="a")
-
-        fs = open("projectability.txt", "w")
-        fs.write(f"dis_win_emin = {dis_win_emin} \n")
-        fs.write(f"dis_win_emax = {dis_win_emax} \n")
-        fs.write(f"smearing_temp_min = {smearing_temp_min} \n")
-        fs.write(f"smearing_temp_max = {smearing_temp_max} \n")
-        fs.write(f"cov = {cov} \n")
-
-        for e, p in zip(array_x, array_y):
-            w = weight_proj(
-                e, dis_win_emin, dis_win_emax, smearing_temp_min, smearing_temp_max, delta=self._cwi["delta"]
-            )
-            fs.write(f"{e}  {p}  {w} \n")
-
-        fs.close()
-        #
-        # projectability of each Kohn-Sham state in k-space.
-        #
 
         if self._cwi["proj_min"] > 0.0:
             msg = f"   - excluding bands with low projectability (proj_min = {self._cwi['proj_min']}) ... "
@@ -478,13 +425,15 @@ class CWModel(dict):
         fs.write(f"# dis_win_emax_opt = dis_win_emax_fit - 3 * smearing_temp_max = {dis_win_emax_opt} \n")
         fs.write(f"# dis_win_emin_opt = {dis_win_emin} \n")
         fs.write(f"# smearing_temp_max_opt = {smearing_temp_max} \n")
+        fs.write(f"# smearing_temp_min_opt = {smearing_temp_min} \n")
         fs.write(f"# delta_opt = {delta} \n")
 
         for i, eki in enumerate(ek):
             pki = pk[i]
             init_fit = result.init_fit[i]
             best_fit = result.best_fit[i]
-            fs.write(f"{eki}  {pki}  {init_fit}  {best_fit}\n")
+            opt_fit = weight_proj(eki, dis_win_emin, dis_win_emax_opt, smearing_temp_min, smearing_temp_max, delta)
+            fs.write(f"{eki}  {pki}  {init_fit}  {best_fit}  {opt_fit}\n")
 
         fs.close()
 
@@ -492,6 +441,7 @@ class CWModel(dict):
         self._cwi["dis_win_emax"] = dis_win_emax_opt
         self._cwi["smearing_temp_min"] = smearing_temp_min
         self._cwi["smearing_temp_max"] = smearing_temp_max
+        self._cwi["delta"] = delta
 
     # ==================================================
     def _construct_tb(self, Ek, Ak):
