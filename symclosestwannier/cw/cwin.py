@@ -227,7 +227,9 @@ class CWin(dict):
     def _str_to(self, key, v):
         v = str(v).replace("'", "").replace('"', "")
 
-        if key in ("seedname", "mp_seedname"):
+        if key not in CWin._default().keys():
+            raise Exception(f"invalid keyword = {key} was given.")
+        elif key in ("seedname", "mp_seedname"):
             pass
         elif key in ("outdir", "mp_outdir"):
             v = v[:-1] if v[-1] == "/" else v
@@ -243,7 +245,6 @@ class CWin(dict):
             "delta",
             "z_exp_temperature",
             "a",
-            "fermi_energy",
             "dos_smr_en_width",
             "degen_thr",
             "magnetic_field",

@@ -69,6 +69,7 @@ win_info = {
     "dis_win_max": "top of the outer energy window (float), [+100000].",
     "dis_win_min": "bottom of the outer energy window (float), [-100000].",
     "dis_mix_ratio": "mixing ratio during the disentanglement (float), [0.5].",
+    "fermi_energy": "fermi energy (float), [0.0].",
     #
     "mp_grid": "dimensions of the Monkhorst-Pack grid of k-points (list), [[0, 0, 0]].",
     "kpoints": "k-points, [[k1, k2, k3]] (crystal coordinate) (list), [[[0, 0, 0]]].",
