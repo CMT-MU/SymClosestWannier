@@ -387,7 +387,7 @@ class CWModel(dict):
         if "dis_win_emax" in fixed_params:
             dis_win_emax_opt = dis_win_emax
         else:
-            dis_win_emax_opt = dis_win_emax - 2.0 * smearing_temp_max
+            dis_win_emax_opt = dis_win_emax - 3.0 * smearing_temp_max
 
         msg = "   - optimizing windows and smearing temperatures ... \n"
         msg += "*----------------------------------------------------------------------------* \n"
