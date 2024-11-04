@@ -387,7 +387,7 @@ class CWModel(dict):
         if "dis_win_emax" in fixed_params:
             dis_win_emax_opt = dis_win_emax
         else:
-            dis_win_emax_opt = dis_win_emax - 3.0 * smearing_temp_max
+            dis_win_emax_opt = dis_win_emax - 2.0 * smearing_temp_max
 
         msg = "   - optimizing windows and smearing temperatures ... \n"
         msg += "*----------------------------------------------------------------------------* \n"
@@ -1247,17 +1247,37 @@ class CWModel(dict):
 
     # ==================================================
     @classmethod
-    def read_data(self, filename):
+    def read_info_data(self, filename):
         """
-        read data from seedname.hdf5 (hdf5 format).
+        read info and data from seedname.hdf5 (hdf5 format).
 
         Args:
             filename (str): file name.
 
         Returns:
-            dict: dictionary of data.
+            tuple: CWInfo, dictionary of data.
         """
         with h5py.File(filename, "r") as hf:
+            info = {}
+            for k, v in hf["info"].items():
+                v = v[()]
+
+                if type(v) == bytes:
+                    v = v.decode("utf-8")
+                    try:
+                        v = ast.literal_eval(v)
+                    except:
+                        v = v
+
+                elif type(v) == np.bool_:
+                    v = bool(v)
+                elif type(v) == np.float64:
+                    v = float(v)
+                elif type(v) == np.ndarray:
+                    v = list(v)
+
+                info[k] = v
+
             data = {}
             for k, v in hf["data"].items():
                 v = v[()]
@@ -1276,24 +1296,7 @@ class CWModel(dict):
 
                 data[k] = v
 
-            return data
-
-    # ==================================================
-    @classmethod
-    def read_info_data(self, filename):
-        """
-        read info and data from seedname.hdf5 (hdf5 format).
-
-        Args:
-            filename (str): file name.
-
-        Returns:
-            tuple: CWInfo, dictionary of data.
-        """
-        info = CWModel.read_info(filename)
-        data = CWModel.read_data(filename)
-
-        return info, data
+            return info, data
 
     # ==================================================
     def write_or(self, Or, filename, rpoints=None, header=None, vec=False):
