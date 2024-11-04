@@ -1,6 +1,6 @@
 # information in CWModel [default]
 - seedname          : seedname (str), [cwannier].
-- restart           : the restart position 'cw'/'w90'/'sym' (str), ['cw'].
+- restart           : the restart position 'cw'/'w90' (str), ['cw'].
 - outdir            : input and output files are found in this directory (str), ['./'].
 - disentangle       : disentagle bands ? (bool), [False].
 - proj_min          : minimum value of projectability (float), [0.0].

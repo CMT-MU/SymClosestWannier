@@ -12,4 +12,3 @@
 - Hr_sym          : Symmetrized Hamiltonian matrix elements in real-space (orthogonal) (ndarray).",
 - Ek_MAE_grid    : mean squared error of eigen energies between symmetrized and non-symmetrized closed wannier TB model (grid) (float).",
 - Ek_MAE_path    : mean squared error of eigen energies between symmetrized and non-symmetrized closed wannier TB model (path) (float).",
-- matrix_dict     : dictionary form of the real-space representation of symmetry-adapted multipole basis (SAMB) (dict).",

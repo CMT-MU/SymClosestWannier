@@ -4,7 +4,7 @@ headers.
 
 cwin_info = {
     "seedname": "seedname (str), [cwannier].",
-    "restart": "the restart position 'cw'/'w90'/'sym' (str), ['cw'].",
+    "restart": "the restart position 'cw'/'w90' (str), ['cw'].",
     "outdir": "input and output files are found in this directory (str), ['./'].",
     "disentangle": "disentagle bands ? (bool), [False].",
     "proj_min": "minimum value of projectability (float), [0.0].",
@@ -12,7 +12,7 @@ cwin_info = {
     "dis_win_emin": "lower energy window (float), [None].",
     "smearing_temp_max": "smearing temperature for upper window (float), [5.0].",
     "smearing_temp_min": "smearing temperature for lower window (float), [0.01].",
-    "delta": "small constant to avoid ill-conditioning of overlap matrices (< 1e-5) (float), [0.0].",
+    "delta": "small constant to avoid ill-conditioning of overlap matrices (< 1e-6) (float), [0.0].",
     "svd": "implement singular value decomposition ? otherwise adopt Lowdin's orthogonalization method (bool), [False].",
     "optimize_params": "optimize the energy windows and smearing temperatures? (bool), [False].",
     "optimize_params_fixed": "fixed parameters for optimization (ex: ['dis_win_emin', 'smearing_temp_min']), (list) [].",
@@ -262,8 +262,6 @@ cw_data = {
     #
     "Ek_MAE_grid": "mean squared error of eigen energies between symmetrized and non-symmetrized closed wannier TB model (grid) (float).",
     "Ek_MAE_path": "mean squared error of eigen energies between symmetrized and non-symmetrized closed wannier TB model (path) (float).",
-    #
-    "matrix_dict": "dictionary form of the real-space representation of symmetry-adapted multipole basis (SAMB) (dict).",
 }
 
 cw_data_header = """

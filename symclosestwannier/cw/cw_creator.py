@@ -54,7 +54,6 @@ def cw_creator(seedname="cwannier"):
     Args:
         seedname (str, optional): seedname.
     """
-    win = Win(".", seedname)
     cwin = CWin("./", seedname)
     cwm = CWManager(
         topdir=cwin["outdir"], verbose=cwin["verbose"], parallel=cwin["parallel"], formatter=cwin["formatter"]
@@ -62,21 +61,14 @@ def cw_creator(seedname="cwannier"):
 
     outfile = f"{seedname}.cwout"
 
-    if cwin["restart"] == "sym":
-        filename = os.path.join(cwin["outdir"], "{}".format(f"{seedname}.hdf5"))
-        info, data = CWModel.read_info_data(filename)
-        cwi = CWInfo("./", seedname, dic=info)
-        cwi |= cwin | win
-        dic = data
-    else:
-        cwi = CWInfo("./", seedname)
-        dic = None
+    cwi = CWInfo("./", seedname)
 
     cwm.log(cw_open_msg(), stamp=None, end="\n", file=outfile, mode="w")
     cwm.log(system_msg(cwi), stamp=None, end="\n", file=outfile, mode="a")
 
-    cw_model = CWModel(cwi, cwm, dic)
+    cw_model = CWModel(cwi, cwm)
     cwi = cw_model._cwi
+    samb_info = cw_model._samb_info
 
     cwm.log(cw_start_output_msg(), stamp=None, end="\n", file=outfile, mode="a")
     cwm.set_stamp()
@@ -232,8 +224,8 @@ def cw_creator(seedname="cwannier"):
         )
 
         if cwi["symmetrization"]:
-            ket_samb = cw_model["matrix_dict"]["ket"]
-            cell_site = cw_model["matrix_dict"]["cell_site"]
+            ket_samb = samb_info["ket"]
+            cell_site = samb_info["cell_site"]
 
             if cwi["tb_gauge"]:
                 atoms_frac = [
@@ -262,7 +254,7 @@ def cw_creator(seedname="cwannier"):
                 SS_k = cw_model.fourier_transform_r_to_k_vec(
                     SS_R, cwi["kpoints_path"], cwi["irvec"], cwi["ndegen"], atoms_frac=atoms_frac
                 )
-                ket_samb = cw_model["matrix_dict"]["ket"]
+                ket_samb = samb_info["ket"]
                 ket_amn = cwi.get("ket_amn", ket_samb)
                 SS_k = np.array([sort_ket_matrix(SS_k[a], ket_amn, ket_samb) for a in range(3)])
                 SS_H = np.array([Uk.transpose(0, 2, 1).conjugate() @ SS_k[a] @ Uk for a in range(3)])
@@ -322,8 +314,8 @@ def cw_creator(seedname="cwannier"):
         output_dos(".", seedname + "_dos.txt", Ek, Uk, ef_shift, dos_num_fermi, dos_smr_en_width)
 
         if cwi["symmetrization"]:
-            ket_samb = cw_model["matrix_dict"]["ket"]
-            cell_site = cw_model["matrix_dict"]["cell_site"]
+            ket_samb = samb_info["ket"]
+            cell_site = samb_info["cell_site"]
             atoms_frac = [
                 NSArray(cell_site[ket_samb[a].split("@")[1]][0], style="vector", fmt="value").tolist()
                 for a in range(cw_model._cwi["num_wann"])

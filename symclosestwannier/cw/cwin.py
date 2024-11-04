@@ -111,13 +111,13 @@ class CWin(dict):
             dict: dictionary form of seedname.cwin.
                 - seedname          : seedname (str), ["cwannier"].
                 - outdir            : output files are found in this directory (str), ["./"].
-                - restart           : the restart position 'cw'/'w90'/'sym' (str), ["wannierize"].
+                - restart           : the restart position 'cw'/'w90' (str), ["cw"].
                 - disentangle       : disentagle bands ? (bool), [False].
                 - proj_min          : minimum value of projectability: [0.0].
                 - dis_win_emax      : upper energy window (float), [None].
                 - dis_win_emin      : lower energy window (float), [None].
-                - smearing_temp_max : smearing temperature for upper window (float), [5.0].
-                - smearing_temp_min : smearing temperature for lower window (float), [0.01].
+                - smearing_temp_max : smearing temperature for upper window (float), [1.0].
+                - smearing_temp_min : smearing temperature for lower window (float), [0.0].
                 - delta             : small constant to avoid ill-conditioning of overlap matrices (< 1e-5) (float), [0.0].
                 - svd               : implement singular value decomposition ? otherwise adopt Lowdin's orthogonalization method (bool), [False].
                 - optimize_params": optimize the energy windows and smearing temperatures? (bool), [False].
@@ -234,8 +234,8 @@ class CWin(dict):
         elif key in ("outdir", "mp_outdir"):
             v = v[:-1] if v[-1] == "/" else v
         elif key == "restart":
-            if v not in ("cw", "sym", "w90"):
-                raise Exception(f"invalid restart = {v} was given. choose from 'cw'/'w90'/'sym'.")
+            if v not in ("cw", "w90"):
+                raise Exception(f"invalid restart = {v} was given. choose from 'cw'/'w90'.")
         elif key in (
             "proj_min",
             "dis_win_emax",
