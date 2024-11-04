@@ -233,8 +233,8 @@ class CWModel(dict):
             self._cwm.log("done", file=self._outfile, mode="a")
 
         if self._cwi["disentangle"]:
-            if self._cwi["optimize_win_temp"]:
-                self._optimize_win_temp(Ek, Ak)
+            if self._cwi["optimize_params"]:
+                self._optimize_params(Ek, Ak)
 
             msg = "   - disentanglement ... "
             self._cwm.log(msg, None, end="", file=self._outfile, mode="a")
@@ -337,7 +337,7 @@ class CWModel(dict):
         return w[:, :, np.newaxis] * Ak
 
     # ==================================================
-    def _optimize_win_temp(self, Ek, Ak):
+    def _optimize_params(self, Ek, Ak):
         """
         optimize the energy windows and smearing temperatures
         by using the projectability of each Kohn-Sham state in k-space.
@@ -355,7 +355,7 @@ class CWModel(dict):
         # normalize
         pk = pk / np.max(pk)
 
-        fixed_params = self._cwi["optimize_win_temp_fixed_params"]
+        fixed_params = self._cwi["optimize_params_fixed"]
 
         model = lmfit.Model(weight_proj)
         params = lmfit.Parameters()
@@ -365,7 +365,7 @@ class CWModel(dict):
             "dis_win_emax": (-np.inf, np.inf),
             "smearing_temp_min": (0, 100),
             "smearing_temp_max": (0, 100),
-            "delta": (0, 1e-5),
+            "delta": (0, 1e-6),
         }
 
         for param, (min, max) in param_bound_dict.items():

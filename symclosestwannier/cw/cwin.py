@@ -18,8 +18,8 @@ _default = {
     "smearing_temp_min": 0.0,
     "delta": 0.0,
     "svd": False,
-    "optimize_win_temp": False,
-    "optimize_win_temp_fixed_params": [],
+    "optimize_params": False,
+    "optimize_params_fixed": [],
     #
     "verbose": False,
     "parallel": False,
@@ -120,8 +120,8 @@ class CWin(dict):
                 - smearing_temp_min : smearing temperature for lower window (float), [0.01].
                 - delta             : small constant to avoid ill-conditioning of overlap matrices (< 1e-5) (float), [0.0].
                 - svd               : implement singular value decomposition ? otherwise adopt Lowdin's orthogonalization method (bool), [False].
-                - optimize_win_temp": optimize the energy windows and smearing temperatures? (bool), [False].
-                - optimize_win_temp_fixed_params":  fixed parameters for optimization (ex: ['dis_win_emin', 'smearing_temp_min']), (list) [].
+                - optimize_params": optimize the energy windows and smearing temperatures? (bool), [False].
+                - optimize_params_fixed":  fixed parameters for optimization (ex: ['dis_win_emin', 'smearing_temp_min']), (list) [].
                 - verbose           : verbose calculation info (bool, optional), [False].
                 - parallel          : use parallel code? (bool), [False].
                 - formatter         : format by using black? (bool), [False].
@@ -208,7 +208,7 @@ class CWin(dict):
                 if "[" in v or "]" in v:
                     v = "".join(v)
 
-            if key == "optimize_win_temp_fixed_params":
+            if key == "optimize_params_fixed":
                 if "[" in v or "]" in v:
                     v = "".join(v)
 
@@ -263,14 +263,14 @@ class CWin(dict):
                     v = [str(o) if i == 0 else f"({str(o)}" for i, o in enumerate(v[1:-1].split(",("))]
                 else:
                     v = [str(o) for o in v[1:-1].split(",")]
-        elif key == "optimize_win_temp_fixed_params":
+        elif key == "optimize_params_fixed":
             if "[" in v or "]" in v:
                 v = [str(o) for o in v[1:-1].split(",")]
             if len(v) > 0:
                 for vi in v:
                     if vi not in ("dis_win_emin", "dis_win_emax", "smearing_temp_min", "smearing_temp_max", "delta"):
                         raise Exception(
-                            f"invalid optimize_win_temp_fixed_params: {vi} was given. choose from 'dis_win_emin'/'dis_win_emax'/'smearing_temp_min'/'smearing_temp_max'/'delta'."
+                            f"invalid optimize_params_fixed: {vi} was given. choose from 'dis_win_emin'/'dis_win_emax'/'smearing_temp_min'/'smearing_temp_max'/'delta'."
                         )
 
         elif key == "irreps":
