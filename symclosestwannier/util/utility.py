@@ -103,6 +103,12 @@ def band_distance(Ak, Ek, Hk, ef=0.0):
         for i, n in enumerate(Pk_max_idx_list):
             Ek_ref[k, i] = Ek[k, n]
 
+    for k in range(num_k):
+        for n in range(num_wann):
+            if Ek_ref[k, n] > ef or Ek_wan[k, n] > ef:
+                Ek_ref[k, n] = 0.0
+                Ek_wan[k, n] = 0.0
+
     fermi_ref = fermi(Ek_ref - (ef + 0.0), T=0.1, unit="eV")
     fermi_wan = fermi(Ek_wan - (ef + 0.0), T=0.1, unit="eV")
     w = np.sqrt(fermi_ref * fermi_wan)

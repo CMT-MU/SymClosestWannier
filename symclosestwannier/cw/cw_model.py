@@ -105,8 +105,6 @@ _default = {
     #
     "Ek_MAE_grid": None,
     "Ek_MAE_path": None,
-    #
-    "matrix_dict": None,
 }
 
 
@@ -118,39 +116,38 @@ class CWModel(dict):
     Attributes:
         _cwi (CWInfo): CWInfo.
         _cwm (CWManager): CWManager.
+        _samb_info (dict): SAMB info.
         _outfile (str): output file, seedname.cwout.
     """
 
     # ==================================================
-    def __init__(self, cwi, cwm, dic=None):
+    def __init__(self, cwi, cwm, samb_info={}, dic=None):
         """
         Closest Wannier (CW) tight-binding (TB) model based on Plane-Wave (PW) DFT calculation.
 
         Args:
             cwi (CWInfo, optional): CWInfo.
-            cwm (CWManager,optional): CWManager.
+            cwm (CWManager, optional): CWManager.
+            samb_info (dict, optional): SAMB info.
             dic (dict, optional): dictionary of data.
         """
         super().__init__()
 
         self._cwi = cwi
         self._cwm = cwm
+        self._samb_info = samb_info
         self._outfile = f"{self._cwi['seedname']}.cwout"
 
         if dic is not None:
             self.update(dic)
-            if self._cwi["restart"] == "sym":
-                self._sym()
         if dic is None:
             self.update(_default)
             if self._cwi["restart"] == "cw":
                 self._cw()
             elif self._cwi["restart"] == "w90":
                 self._w90()
-            elif self._cwi["restart"] == "sym":
-                self._sym()
             else:
-                raise Exception(f"invalid restart = {self._cwi['restart']} was given. choose from 'cw'/'w90'/'sym'.")
+                raise Exception(f"invalid restart = {self._cwi['restart']} was given. choose from 'cw'/'w90'.")
 
     # ==================================================
     def _w90(self):
@@ -233,8 +230,8 @@ class CWModel(dict):
             self._cwm.log("done", file=self._outfile, mode="a")
 
         if self._cwi["disentangle"]:
-            if self._cwi["optimize_win_temp"]:
-                self._optimize_win_temp(Ek, Ak)
+            if self._cwi["optimize_params"]:
+                self._optimize_params(Ek, Ak)
 
             msg = "   - disentanglement ... "
             self._cwm.log(msg, None, end="", file=self._outfile, mode="a")
@@ -337,7 +334,7 @@ class CWModel(dict):
         return w[:, :, np.newaxis] * Ak
 
     # ==================================================
-    def _optimize_win_temp(self, Ek, Ak):
+    def _optimize_params(self, Ek, Ak):
         """
         optimize the energy windows and smearing temperatures
         by using the projectability of each Kohn-Sham state in k-space.
@@ -355,7 +352,7 @@ class CWModel(dict):
         # normalize
         pk = pk / np.max(pk)
 
-        fixed_params = self._cwi["optimize_win_temp_fixed_params"]
+        fixed_params = self._cwi["optimize_params_fixed"]
 
         model = lmfit.Model(weight_proj)
         params = lmfit.Parameters()
@@ -365,7 +362,7 @@ class CWModel(dict):
             "dis_win_emax": (-np.inf, np.inf),
             "smearing_temp_min": (0, 100),
             "smearing_temp_max": (0, 100),
-            "delta": (0, 1e-5),
+            "delta": (0, 1e-6),
         }
 
         for param, (min, max) in param_bound_dict.items():
@@ -605,6 +602,8 @@ class CWModel(dict):
                 lattice_const = model["info"]["cell"]["a"]
                 A_samb = lattice_const * latticeP[lattice][:-1, :-1]
                 print(A_samb)
+
+            mat["A"] = A_samb
         #####
 
         atoms_list = list(self._cwi["atoms_frac"].values())
@@ -677,7 +676,6 @@ class CWModel(dict):
         self._cwm.set_stamp()
 
         Sr_sym = CWModel.construct_Or(list(s.values()), self._cwi["num_wann"], self._cwi["irvec"], mat)
-        S2r_inv_sym = CWModel.construct_Or(list(s2_inv.values()), self._cwi["num_wann"], self._cwi["irvec"], mat)
         Hr_sym = CWModel.construct_Or(list(z.values()), self._cwi["num_wann"], self._cwi["irvec"], mat)
         Hr_nonortho_sym = CWModel.construct_Or(
             list(z_nonortho.values()), self._cwi["num_wann"], self._cwi["irvec"], mat
@@ -781,35 +779,6 @@ class CWModel(dict):
             Nz = len(mat["matrix"])
             dic = mat.copy()
 
-            # @wrap_non_picklable_objects
-            # def proc(i, tag, d):
-            #     percent = (i + 1) / float(Nz) * 100
-            #     if percent % 10 == 0:
-            #         self._cwm.log(f"* {int(percent)} %", None, end="\n", file=self._outfile, mode="a")
-
-            #     dic["matrix"] = {tag: d}
-
-            #     if self._cwi["tb_gauge"]:
-            #         Zk = construct_Ok(
-            #             [1], self._cwi["num_wann"], kpoints, self._cwi["irvec"], dic, atoms_frac=atoms_frac_samb
-            #         )
-            #     else:
-            #         Zk = construct_Ok([1], self._cwi["num_wann"], kpoints, self._cwi["irvec"], dic)
-
-            #     v = thermal_avg(
-            #         Zk,
-            #         Ek,
-            #         Uk,
-            #         self._cwi["fermi_energy"],
-            #         T_Kelvin=self._cwi["z_exp_temperature"],
-            #     )
-
-            #     return i, tag, v
-
-            # res = Parallel(n_jobs=2, verbose=10)(delayed(proc)(i, tag, d) for i, (tag, d) in enumerate(Zr_dict.items()))
-            # res = sorted(res, key=lambda x: x[0])
-            # z_exp = {tag: v for _, tag, v in res}
-
             z_exp = {}
             percent = 10
             for i, (tag, d) in enumerate(Zr_dict.items()):
@@ -861,10 +830,10 @@ class CWModel(dict):
 
         if self._cwi["z_exp"]:
             E_tot_samb = np.sum([z[k] * z_exp[k] for k in z_exp.keys()])
+            msg = f" * E_tot_samb = {E_tot_samb} [eV] \n"
         else:
-            E_tot_samb = 0.0
+            msg = ""
 
-        msg = f" * E_tot_samb = {E_tot_samb} [eV] \n"
         msg += f" * E_tot = {E_tot} [eV] \n"
         msg += f" * T*S = {T*S} [eV] \n"
         msg += f" * free_energy = {free_energy} [eV]"
@@ -874,6 +843,9 @@ class CWModel(dict):
         self._cwm.log("done", None, end="\n", file=self._outfile, mode="a")
 
         #####
+
+        del mat["matrix"]
+        self._samb_info = mat
 
         self.update(
             {
@@ -891,8 +863,6 @@ class CWModel(dict):
                 #
                 "Ek_MAE_grid": Ek_MAE_grid,
                 "Ek_MAE_path": Ek_MAE_path,
-                #
-                "matrix_dict": mat,
             }
         )
 
@@ -1210,17 +1180,29 @@ class CWModel(dict):
                 except:
                     dset = data.create_dataset(k, data=str(v))
 
+            samb_info = hf.create_group("samb_info")
+            for k, v in self._samb_info.items():
+                try:
+                    if type(v) in (str, list, np.ndarray):
+                        dset = samb_info.create_dataset(k, data=v)
+                    elif type(v) == bool:
+                        dset = samb_info.create_dataset(k, data=v, dtype=bool)
+                    else:
+                        dset = samb_info.create_dataset(k, data=str(v))
+                except:
+                    dset = samb_info.create_dataset(k, data=str(v))
+
     # ==================================================
     @classmethod
-    def read_info(self, filename):
+    def read_info_data(self, filename):
         """
-        read info from seedname.hdf5 (hdf5 format).
+        read info and data from seedname.hdf5 (hdf5 format).
 
         Args:
             filename (str): file name.
 
         Returns:
-            CWInfo: info.
+            tuple: CWInfo, dictionary of data.
         """
         with h5py.File(filename, "r") as hf:
             info = {}
@@ -1243,21 +1225,6 @@ class CWModel(dict):
 
                 info[k] = v
 
-            return info
-
-    # ==================================================
-    @classmethod
-    def read_data(self, filename):
-        """
-        read data from seedname.hdf5 (hdf5 format).
-
-        Args:
-            filename (str): file name.
-
-        Returns:
-            dict: dictionary of data.
-        """
-        with h5py.File(filename, "r") as hf:
             data = {}
             for k, v in hf["data"].items():
                 v = v[()]
@@ -1276,24 +1243,27 @@ class CWModel(dict):
 
                 data[k] = v
 
-            return data
+            samb_info = {}
+            for k, v in hf["samb_info"].items():
+                v = v[()]
 
-    # ==================================================
-    @classmethod
-    def read_info_data(self, filename):
-        """
-        read info and data from seedname.hdf5 (hdf5 format).
+                if type(v) == bytes:
+                    v = v.decode("utf-8")
+                    try:
+                        v = ast.literal_eval(v)
+                    except:
+                        v = v
 
-        Args:
-            filename (str): file name.
+                elif type(v) == np.bool_:
+                    v = bool(v)
+                elif type(v) == np.float64:
+                    v = float(v)
+                elif type(v) == np.ndarray:
+                    v = list(v)
 
-        Returns:
-            tuple: CWInfo, dictionary of data.
-        """
-        info = CWModel.read_info(filename)
-        data = CWModel.read_data(filename)
+                samb_info[k] = v
 
-        return info, data
+            return info, data, samb_info
 
     # ==================================================
     def write_or(self, Or, filename, rpoints=None, header=None, vec=False):

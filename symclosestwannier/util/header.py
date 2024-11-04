@@ -4,7 +4,7 @@ headers.
 
 cwin_info = {
     "seedname": "seedname (str), [cwannier].",
-    "restart": "the restart position 'cw'/'w90'/'sym' (str), ['cw'].",
+    "restart": "the restart position 'cw'/'w90' (str), ['cw'].",
     "outdir": "input and output files are found in this directory (str), ['./'].",
     "disentangle": "disentagle bands ? (bool), [False].",
     "proj_min": "minimum value of projectability (float), [0.0].",
@@ -12,10 +12,10 @@ cwin_info = {
     "dis_win_emin": "lower energy window (float), [None].",
     "smearing_temp_max": "smearing temperature for upper window (float), [5.0].",
     "smearing_temp_min": "smearing temperature for lower window (float), [0.01].",
-    "delta": "small constant to avoid ill-conditioning of overlap matrices (< 1e-5) (float), [0.0].",
+    "delta": "small constant to avoid ill-conditioning of overlap matrices (< 1e-6) (float), [0.0].",
     "svd": "implement singular value decomposition ? otherwise adopt Lowdin's orthogonalization method (bool), [False].",
-    "optimize_win_temp": "optimize the energy windows and smearing temperatures? (bool), [False].",
-    "optimize_win_temp_fixed_params": "fixed parameters for optimization (ex: ['dis_win_emin', 'smearing_temp_min']), (list) [].",
+    "optimize_params": "optimize the energy windows and smearing temperatures? (bool), [False].",
+    "optimize_params_fixed": "fixed parameters for optimization (ex: ['dis_win_emin', 'smearing_temp_min']), (list) [].",
     "verbose": "verbose calculation info (bool, optional), [False].",
     "parallel": "use parallel code? (bool), [False].",
     "formatter": "format by using black? (bool), [False].",
@@ -69,6 +69,7 @@ win_info = {
     "dis_win_max": "top of the outer energy window (float), [+100000].",
     "dis_win_min": "bottom of the outer energy window (float), [-100000].",
     "dis_mix_ratio": "mixing ratio during the disentanglement (float), [0.5].",
+    "fermi_energy": "fermi energy (float), [0.0].",
     #
     "mp_grid": "dimensions of the Monkhorst-Pack grid of k-points (list), [[0, 0, 0]].",
     "kpoints": "k-points, [[k1, k2, k3]] (crystal coordinate) (list), [[[0, 0, 0]]].",
@@ -261,8 +262,6 @@ cw_data = {
     #
     "Ek_MAE_grid": "mean squared error of eigen energies between symmetrized and non-symmetrized closed wannier TB model (grid) (float).",
     "Ek_MAE_path": "mean squared error of eigen energies between symmetrized and non-symmetrized closed wannier TB model (path) (float).",
-    #
-    "matrix_dict": "dictionary form of the real-space representation of symmetry-adapted multipole basis (SAMB) (dict).",
 }
 
 cw_data_header = """
