@@ -1156,41 +1156,27 @@ class CWModel(dict):
             filename (str): file name.
         """
         with h5py.File(filename, "w") as hf:
-            info = hf.create_group("info")
-            for k, v in self._cwi.items():
-                try:
-                    if type(v) in (str, list, np.ndarray):
-                        dset = info.create_dataset(k, data=v)
-                    elif type(v) == bool:
-                        dset = info.create_dataset(k, data=v, dtype=bool)
-                    else:
-                        dset = info.create_dataset(k, data=str(v))
-                except:
-                    dset = info.create_dataset(k, data=str(v))
+            for group in ("info", "data", "samb_info"):
 
-            data = hf.create_group("data")
-            for k, v in self.items():
-                try:
-                    if type(v) in (str, list, np.ndarray):
-                        dset = data.create_dataset(k, data=v)
-                    elif type(v) == bool:
-                        dset = data.create_dataset(k, data=v, dtype=bool)
-                    else:
-                        dset = data.create_dataset(k, data=str(v))
-                except:
-                    dset = data.create_dataset(k, data=str(v))
+                if group == "info":
+                    data = self._cwi
+                elif group == "data":
+                    data = self
+                else:
+                    data = self._samb_info
 
-            samb_info = hf.create_group("samb_info")
-            for k, v in self._samb_info.items():
-                try:
-                    if type(v) in (str, list, np.ndarray):
-                        dset = samb_info.create_dataset(k, data=v)
-                    elif type(v) == bool:
-                        dset = samb_info.create_dataset(k, data=v, dtype=bool)
-                    else:
-                        dset = samb_info.create_dataset(k, data=str(v))
-                except:
-                    dset = samb_info.create_dataset(k, data=str(v))
+                group = hf.create_group(group)
+
+                for k, v in data.items():
+                    try:
+                        if type(v) in (str, list, np.ndarray):
+                            dset = group.create_dataset(k, data=v)
+                        elif type(v) == bool:
+                            dset = group.create_dataset(k, data=v, dtype=bool)
+                        else:
+                            dset = group.create_dataset(k, data=str(v))
+                    except:
+                        dset = group.create_dataset(k, data=str(v))
 
     # ==================================================
     @classmethod
@@ -1202,66 +1188,37 @@ class CWModel(dict):
             filename (str): file name.
 
         Returns:
-            tuple: CWInfo, dictionary of data.
+            tuple: CWInfo, dictionary of data, dictionary of SAMB info.
         """
+        info = {}
+        data = {}
+        samb_info = {}
+
         with h5py.File(filename, "r") as hf:
-            info = {}
-            for k, v in hf["info"].items():
-                v = v[()]
+            for d in ("info", "data", "samb_info"):
+                for k, v in hf[d].items():
+                    v = v[()]
 
-                if type(v) == bytes:
-                    v = v.decode("utf-8")
-                    try:
-                        v = ast.literal_eval(v)
-                    except:
-                        v = v
+                    if type(v) == bytes:
+                        v = v.decode("utf-8")
+                        try:
+                            v = ast.literal_eval(v)
+                        except:
+                            v = v
 
-                elif type(v) == np.bool_:
-                    v = bool(v)
-                elif type(v) == np.float64:
-                    v = float(v)
-                elif type(v) == np.ndarray:
-                    v = list(v)
+                    elif type(v) == np.bool_:
+                        v = bool(v)
+                    elif type(v) == np.float64:
+                        v = float(v)
+                    elif type(v) == np.ndarray:
+                        v = [ast.literal_eval(str(vi)) if type(vi) == bytes else vi for vi in v]
 
-                info[k] = v
-
-            data = {}
-            for k, v in hf["data"].items():
-                v = v[()]
-
-                if type(v) == bytes:
-                    v = v.decode("utf-8")
-                    try:
-                        v = ast.literal_eval(v)
-                    except:
-                        v = v
-
-                elif type(v) == np.bool_:
-                    v = bool(v)
-                elif type(v) == np.float64:
-                    v = float(v)
-
-                data[k] = v
-
-            samb_info = {}
-            for k, v in hf["samb_info"].items():
-                v = v[()]
-
-                if type(v) == bytes:
-                    v = v.decode("utf-8")
-                    try:
-                        v = ast.literal_eval(v)
-                    except:
-                        v = v
-
-                elif type(v) == np.bool_:
-                    v = bool(v)
-                elif type(v) == np.float64:
-                    v = float(v)
-                elif type(v) == np.ndarray:
-                    v = list(v)
-
-                samb_info[k] = v
+                    if d == "info":
+                        info[k] = v
+                    elif d == "data":
+                        data[k] = v
+                    else:
+                        samb_info[k] = v
 
             return info, data, samb_info
 
