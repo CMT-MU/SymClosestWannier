@@ -18,8 +18,8 @@ _default = {
     "smearing_temp_min": 0.0,
     "delta": 0.0,
     "svd": False,
-    "optimize_win_temp": False,
-    "optimize_win_temp_fixed_params": [],
+    "optimize_params": False,
+    "optimize_params_fixed": [],
     #
     "verbose": False,
     "parallel": False,
@@ -111,17 +111,17 @@ class CWin(dict):
             dict: dictionary form of seedname.cwin.
                 - seedname          : seedname (str), ["cwannier"].
                 - outdir            : output files are found in this directory (str), ["./"].
-                - restart           : the restart position 'cw'/'w90'/'sym' (str), ["wannierize"].
+                - restart           : the restart position 'cw'/'w90' (str), ["cw"].
                 - disentangle       : disentagle bands ? (bool), [False].
                 - proj_min          : minimum value of projectability: [0.0].
                 - dis_win_emax      : upper energy window (float), [None].
                 - dis_win_emin      : lower energy window (float), [None].
-                - smearing_temp_max : smearing temperature for upper window (float), [5.0].
-                - smearing_temp_min : smearing temperature for lower window (float), [0.01].
+                - smearing_temp_max : smearing temperature for upper window (float), [1.0].
+                - smearing_temp_min : smearing temperature for lower window (float), [0.0].
                 - delta             : small constant to avoid ill-conditioning of overlap matrices (< 1e-5) (float), [0.0].
                 - svd               : implement singular value decomposition ? otherwise adopt Lowdin's orthogonalization method (bool), [False].
-                - optimize_win_temp": optimize the energy windows and smearing temperatures? (bool), [False].
-                - optimize_win_temp_fixed_params":  fixed parameters for optimization (ex: ['dis_win_emin', 'smearing_temp_min']), (list) [].
+                - optimize_params": optimize the energy windows and smearing temperatures? (bool), [False].
+                - optimize_params_fixed":  fixed parameters for optimization (ex: ['dis_win_emin', 'smearing_temp_min']), (list) [].
                 - verbose           : verbose calculation info (bool, optional), [False].
                 - parallel          : use parallel code? (bool), [False].
                 - formatter         : format by using black? (bool), [False].
@@ -208,7 +208,7 @@ class CWin(dict):
                 if "[" in v or "]" in v:
                     v = "".join(v)
 
-            if key == "optimize_win_temp_fixed_params":
+            if key == "optimize_params_fixed":
                 if "[" in v or "]" in v:
                     v = "".join(v)
 
@@ -227,13 +227,15 @@ class CWin(dict):
     def _str_to(self, key, v):
         v = str(v).replace("'", "").replace('"', "")
 
-        if key in ("seedname", "mp_seedname"):
+        if key not in CWin._default().keys():
+            raise Exception(f"invalid keyword = {key} was given.")
+        elif key in ("seedname", "mp_seedname"):
             pass
         elif key in ("outdir", "mp_outdir"):
             v = v[:-1] if v[-1] == "/" else v
         elif key == "restart":
-            if v not in ("cw", "sym", "w90"):
-                raise Exception(f"invalid restart = {v} was given. choose from 'cw'/'w90'/'sym'.")
+            if v not in ("cw", "w90"):
+                raise Exception(f"invalid restart = {v} was given. choose from 'cw'/'w90'.")
         elif key in (
             "proj_min",
             "dis_win_emax",
@@ -243,7 +245,6 @@ class CWin(dict):
             "delta",
             "z_exp_temperature",
             "a",
-            "fermi_energy",
             "dos_smr_en_width",
             "degen_thr",
             "magnetic_field",
@@ -263,14 +264,14 @@ class CWin(dict):
                     v = [str(o) if i == 0 else f"({str(o)}" for i, o in enumerate(v[1:-1].split(",("))]
                 else:
                     v = [str(o) for o in v[1:-1].split(",")]
-        elif key == "optimize_win_temp_fixed_params":
+        elif key == "optimize_params_fixed":
             if "[" in v or "]" in v:
                 v = [str(o) for o in v[1:-1].split(",")]
             if len(v) > 0:
                 for vi in v:
                     if vi not in ("dis_win_emin", "dis_win_emax", "smearing_temp_min", "smearing_temp_max", "delta"):
                         raise Exception(
-                            f"invalid optimize_win_temp_fixed_params: {vi} was given. choose from 'dis_win_emin'/'dis_win_emax'/'smearing_temp_min'/'smearing_temp_max'/'delta'."
+                            f"invalid optimize_params_fixed: {vi} was given. choose from 'dis_win_emin'/'dis_win_emax'/'smearing_temp_min'/'smearing_temp_max'/'delta'."
                         )
 
         elif key == "irreps":

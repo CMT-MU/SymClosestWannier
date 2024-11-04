@@ -55,11 +55,11 @@ def analyzer(seedname="cwannier"):
     )
 
     filename = os.path.join(cwin["outdir"], "{}".format(f"{seedname}.hdf5"))
-    info, data = CWModel.read_info_data(filename)
+    info, data, samb_info = CWModel.read_info_data(filename)
     cwi = CWInfo("./", seedname, dic=info)
     cwi |= cwin | win
 
-    cw_model = CWModel(cwi, cwm, dic=data)
+    cw_model = CWModel(cwi, cwm, samb_info, dic=data)
     cwi = cw_model._cwi
 
     outfile = f"{seedname}.cwpout"
@@ -79,7 +79,7 @@ def analyzer(seedname="cwannier"):
     if cwi["symmetrization"]:
         if type(cw_model["Hr_sym"]) == np.ndarray:
             Hr = np.array(cw_model["Hr_sym"], dtype=np.complex128)
-            ket_samb = cw_model["matrix_dict"]["ket"]
+            ket_samb = samb_info["ket"]
             ket_amn = cwi.get("ket_amn", ket_samb)
             Hr = sort_ket_matrix(Hr, ket_samb, ket_amn)
 

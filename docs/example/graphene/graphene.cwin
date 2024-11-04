@@ -1,4 +1,4 @@
-restart = cw ! 'cw'/'w90'/'sym'
+restart = cw ! 'cw'/'w90'
 
 outdir = './'
 
