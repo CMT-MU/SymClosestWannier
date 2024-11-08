@@ -492,7 +492,7 @@ def wham_get_JJp_JJm_list(cwi, delHH, E, U, occ=None):
     if occ is not None:
         occ_list = np.array([occ])
     else:
-        occ_list = np.array([fermi(E - ef, T=0.0) for ef in fermi_energy_list])
+        occ_list = np.array([fermi(E - ef, T=0.0, unit="eV") for ef in fermi_energy_list])
 
     if occ is not None:
         fac_m = np.array(
@@ -641,7 +641,7 @@ def wham_get_occ_mat_list(cwi, U, E=None, occ=None):
     if occ is not None:
         occ_list = [occ]
     else:
-        occ_list = np.array([fermi(E - ef, T=0.0) for ef in fermi_energy_list])
+        occ_list = np.array([fermi(E - ef, T=0.0, unit="eV") for ef in fermi_energy_list])
 
     f_list = np.zeros((nfermi_loc, num_k, num_wann, num_wann), dtype=complex)
     g_list = np.zeros((nfermi_loc, num_k, num_wann, num_wann), dtype=complex)
@@ -925,9 +925,7 @@ def berry_get_ahc(cwi, operators):
                 # Using imf_k_list here would corrupt values for other
                 # frequencies, hence dummy. Only i-th element is used
 
-                imf_k_list_dummy = berry_get_imf_klist(
-                    cwi, operators, np.array([kpt[np.newaxis, :] + adkpt.T]), ladpt=ladpt
-                )
+                imf_k_list_dummy = berry_get_imf_klist(cwi, operators, kpt[np.newaxis, :] + adkpt.T, ladpt=ladpt)
 
                 for ife_ in range(num_fermi):
                     if ladpt[ife_]:
@@ -1108,7 +1106,7 @@ def berry_get_kubo(cwi, operators):
             kubo_H_spn = 0.0
             kubo_AH_spn = 0.0
 
-        occ = fermi(E - ef, T=0.0)
+        occ = fermi(E - ef, T=0.0, unit="eV")
 
         for k in range(len(kpt)):
             for m in range(num_wann):
@@ -1426,10 +1424,10 @@ def berry_get_shc_klist(cwi, operators, kpoints, band=False):
 
     if lfreq:
         ef = cwi["fermi_energy"]
-        occ_freq = fermi(E - ef, T=0.0)
+        occ_freq = fermi(E - ef, T=0.0, unit="eV")
     elif lfermi:
         fermi_energy_list = cwi["fermi_energy_list"]
-        occ_fermi = np.array([fermi(E - ef, T=0.0) for ef in fermi_energy_list])
+        occ_fermi = np.array([fermi(E - ef, T=0.0, unit="eV") for ef in fermi_energy_list])
 
     num_wann = cwi["num_wann"]
 
