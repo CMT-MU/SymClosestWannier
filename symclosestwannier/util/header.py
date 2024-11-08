@@ -126,6 +126,7 @@ win_info = {
     "gyrotropic_box_b1": "Three real numbers. In reduced coordinates, [1.0 0.0 0.0].",
     "gyrotropic_box_b2": "Three real numbers. In reduced coordinates, [0.0 1.0 0.0].",
     "gyrotropic_box_b3": "Three real numbers. In reduced coordinates, [0.0 0.0 1.0].",
+    "uHu_formatted": "Read a formatted seedname.uHu file (bool), [False]",
     # boltzwann
     "boltzwann": "Determines whether to enter the boltzwann routines (bool), [False].",
 }

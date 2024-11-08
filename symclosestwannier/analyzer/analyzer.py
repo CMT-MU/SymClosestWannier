@@ -48,7 +48,6 @@ def analyzer(seedname="cwannier"):
     Args:
         seedname (str, optional): seedname.
     """
-    win = Win(".", seedname)
     cwin = CWin(".", seedname)
     cwm = CWManager(
         topdir=cwin["outdir"], verbose=cwin["verbose"], parallel=cwin["parallel"], formatter=cwin["formatter"]
@@ -58,7 +57,7 @@ def analyzer(seedname="cwannier"):
     info, data, samb_info = CWModel.read_info_data(filename)
 
     cwi = CWInfo("./", seedname, dic=info, postcw=True)
-    cwi |= cwin | win
+    cwi |= cwin | Win(".", seedname)
 
     cw_model = CWModel(cwi, cwm, samb_info, dic=data)
     cwi = cw_model._cwi

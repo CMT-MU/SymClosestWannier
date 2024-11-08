@@ -74,29 +74,34 @@ class CWInfo(dict):
         self._seedname = seedname
         self._postcw = postcw
 
-        if dic is None:
-            self.update(self.read(topdir, seedname))
-        else:
-            self.update(dic)
+        self.update(self.read(topdir, seedname, dic))
 
     # ==================================================
-    def read(self, topdir, seedname):
+    def read(self, topdir, seedname, dic=None):
         """
         read seedname.cwin/win/nnkp/eig/amn/(mmn)/(umat)/(spn)/(uHu) files.
 
         Args:
             topdir (str): directory of seedname.cwin/win/eig/amn/mmn/nnkp files.
             seedname (str): seedname.
+            dic (dict, optional): dictionary of CWin.
 
         Returns:
             dict: system information.
         """
         d = {}
-        for C in _class_map.values():
-            d.update(C._default())
+
+        if dic is None:
+            for C in _class_map.values():
+                d.update(C._default())
+        else:
+            d = dic
 
         info_dict = {}
         for name, C in _class_map.items():
+            if name in d:
+                continue
+
             if name == "umat" and (d["restart"] != "w90"):
                 continue
             if name == "mmn":
@@ -117,12 +122,13 @@ class CWInfo(dict):
                 ):
                     continue
 
-            if self._postcw:
-                if name == "uHu":
-                    if not np.any([d["gyrotropic"]]):
-                        continue
+            if name == "uHu":
+                if not (self._postcw and np.any([d["gyrotropic"]])):
+                    continue
+                info = C(topdir, seedname, formatted=d["uHu_formatted"])
+            else:
+                info = C(topdir, seedname)
 
-            info = C(topdir, seedname)
             for k, v in info.items():
                 for name_, info_ in info_dict.items():
                     if k in info_:
