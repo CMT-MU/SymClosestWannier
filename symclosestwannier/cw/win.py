@@ -48,7 +48,7 @@ _default = {
     "berry_kmesh_spacing": [1, 1, 1],
     # berry curvature, ahc, shc
     "berry_curv_unit": "ang2",
-    "berry_curv_adpt_kmesh": 1,
+    "berry_curv_adpt_kmesh": [1, 1, 1],
     "berry_curv_adpt_kmesh_thresh": 100,
     "fermi_energy": 0.0,
     "fermi_energy_max": None,
@@ -90,6 +90,7 @@ _default = {
     "gyrotropic_box_b1": [1.0, 0.0, 0.0],
     "gyrotropic_box_b2": [0.0, 1.0, 0.0],
     "gyrotropic_box_b3": [0.0, 0.0, 1.0],
+    "uHu_formatted": False,
     # boltzwann
     "boltzwann": False,
 }
@@ -178,7 +179,7 @@ class Win(dict):
 
             # berry curvature, ahc, shc
                 - berry_curv_unit              : Unit of Berry curvature, ang2/bohr2, ['ang2'].
-                - berry_curv_adpt_kmesh        : Linear dimension of the adaptively refined k-mesh used to compute the anomalous/spin Hall conductivity, [1].
+                - berry_curv_adpt_kmesh        : Linear dimension of the adaptively refined k-mesh used to compute the anomalous/spin Hall conductivity, [1, 1, 1].
                 - berry_curv_adpt_kmesh_thresh : Threshold magnitude of the Berry curvature for adaptive refinement, [100].
                 - fermi_energy                 : fermi energy (float), [0.0].
                 - fermi_energy_max             : Upper limit of the Fermi energy range (float), [None].
@@ -225,6 +226,7 @@ class Win(dict):
                 - gyrotropic_box_b1             : Three real numbers. In reduced coordinates, [1.0 0.0 0.0].
                 - gyrotropic_box_b2             : Three real numbers. In reduced coordinates, [0.0 1.0 0.0].
                 - gyrotropic_box_b3             : Three real numbers. In reduced coordinates, [0.0 0.0 1.0].
+                - uHu_formatted                 : Read a formatted seedname.uHu file (bool), [False].
 
             # boltzwann
                 - boltzwann           : Determines whether to enter the boltzwann routines (bool), [False].
@@ -439,6 +441,8 @@ class Win(dict):
         d["gyrotropic_box_b2"] = [float(x) for x in gyrotropic_box_b2.split()]
         gyrotropic_box_b3 = self._get_param_keyword(win_data, "gyrotropic_box_b3", "0.0 0.0 1.0", dtype=str)
         d["gyrotropic_box_b3"] = [float(x) for x in gyrotropic_box_b3.split()]
+
+        d["uHu_formatted"] = self._get_param_keyword(win_data, "uHu_formatted", False, dtype=bool)
 
         d["boltzwann"] = self._get_param_keyword(win_data, "boltzwann", False, dtype=bool)
 

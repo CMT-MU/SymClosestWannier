@@ -643,12 +643,11 @@ def wham_get_occ_mat_list(cwi, U, E=None, occ=None):
     else:
         occ_list = np.array([fermi(E - ef, T=0.0) for ef in fermi_energy_list])
 
-    f_list = np.zeros((nfermi_loc, num_k, num_wann, num_wann), dtype=np.complex128)
-    g_list = np.zeros((nfermi_loc, num_k, num_wann, num_wann), dtype=np.complex128)
+    f_list = np.zeros((nfermi_loc, num_k, num_wann, num_wann), dtype=complex)
+    g_list = np.zeros((nfermi_loc, num_k, num_wann, num_wann), dtype=complex)
 
     f_list = np.einsum("kni,wki,kmi->wknm", U, occ_list, np.conjugate(U), optimize=True)
 
-    g_list = -f_list
     for n in range(num_wann):
         g_list[:, :, n, n] += 1.0
 
@@ -729,8 +728,11 @@ def berry_get_imfgh_klist(cwi, operators, kpoints, imf=False, img=False, imh=Fal
         operators["AA_R"], kpoints, cwi["irvec"], cwi["ndegen"], atoms_frac, cwi["unit_cell_cart"], pseudo=True
     )
 
+    imf_k_list = np.zeros((num_fermi_loc, len(kpoints), 3, 3))
+    img_k_list = np.zeros((num_fermi_loc, len(kpoints), 3, 3))
+    imh_k_list = np.zeros((num_fermi_loc, len(kpoints), 3, 3))
+
     if imf:
-        imf_k_list = np.zeros((num_fermi_loc, len(kpoints), 3, 3))
         # Trace formula for -2Im[f], Eq.(51) LVTS12
         for ife in range(num_fermi_loc):
             if todo[ife]:
@@ -753,26 +755,19 @@ def berry_get_imfgh_klist(cwi, operators, kpoints, imf=False, img=False, imh=Fal
                         )
                     )
 
-    else:
-        imf_k_list = None
-
     if img and imh:
-        img_k_list = np.zeros((num_fermi_loc, len(kpoints), 3, 3))
-        imh_k_list = np.zeros((num_fermi_loc, len(kpoints), 3, 3))
 
         BB = fourier_transform_r_to_k_vec(
             operators["BB_R"], kpoints, cwi["irvec"], cwi["ndegen"], atoms_frac, cwi["unit_cell_cart"]
         )
 
-        CC = np.array(
-            [
-                [
-                    fourier_transform_r_to_k(operators["CC_R"][i, j], kpoints, cwi["irvec"], cwi["ndegen"], atoms_frac)
-                    for j in range(3)
-                ]
-                for i in range(3)
-            ]
-        )
+        CC = np.zeros((3, 3, len(kpoints), num_wann, num_wann), dtype=complex)
+        for j in range(3):
+            for i in range(1, i):
+                CC[i, j, :, :, :] = fourier_transform_r_to_k(
+                    operators["CC_R"][i, j], kpoints, cwi["irvec"], cwi["ndegen"], atoms_frac
+                )
+                CC[j, i, :, :, :] = CC[i, j, :, :, :].transpose(0, 2, 1).conjugate()
 
         tmp = np.zeros((5, len(kpoints), num_wann, num_wann), dtype=complex)
         # tmp[0:2,:,:,:] ... not dependent on inner loop variables
@@ -875,6 +870,7 @@ def berry_get_ahc(cwi, operators):
 
     berry_curv_unit = cwi["berry_curv_unit"]
     berry_curv_adpt_kmesh = cwi["berry_curv_adpt_kmesh"]
+    ka1, ka2, ka3 = berry_curv_adpt_kmesh
     berry_curv_adpt_kmesh_thresh = cwi["berry_curv_adpt_kmesh_thresh"]
 
     # Mesh spacing in reduced coordinates
@@ -883,16 +879,16 @@ def berry_get_ahc(cwi, operators):
     db3 = 1.0 / float(berry_kmesh[2])
 
     kweight = db1 * db2 * db3
-    kweight_adpt = kweight / berry_curv_adpt_kmesh**3
+    kweight_adpt = kweight / (ka1 * ka2 * ka3)
 
-    adkpt = np.zeros((3, berry_curv_adpt_kmesh**3))
+    adkpt = np.zeros((3, (ka1 * ka2 * ka3)))
     ikpt = 0
-    for i in range(berry_curv_adpt_kmesh):
-        for j in range(berry_curv_adpt_kmesh):
-            for k in range(berry_curv_adpt_kmesh):
-                adkpt[0, ikpt] = db1 * ((i + 0.5) / berry_curv_adpt_kmesh - 0.5)
-                adkpt[1, ikpt] = db2 * ((j + 0.5) / berry_curv_adpt_kmesh - 0.5)
-                adkpt[2, ikpt] = db3 * ((k + 0.5) / berry_curv_adpt_kmesh - 0.5)
+    for i in range(ka1):
+        for j in range(ka2):
+            for k in range(ka3):
+                adkpt[0, ikpt] = db1 * ((i + 0.5) / ka1 - 0.5)
+                adkpt[1, ikpt] = db2 * ((j + 0.5) / ka2 - 0.5)
+                adkpt[2, ikpt] = db3 * ((k + 0.5) / ka3 - 0.5)
                 ikpt = ikpt + 1
 
     # ==================================================
@@ -903,6 +899,7 @@ def berry_get_ahc(cwi, operators):
 
         """
         imf_k_list = berry_get_imf_klist(cwi, operators, kpoints)
+
         imf_list = np.zeros((num_fermi, 3, 3))
 
         for k in range(len(kpoints)):
@@ -928,14 +925,14 @@ def berry_get_ahc(cwi, operators):
                 # Using imf_k_list here would corrupt values for other
                 # frequencies, hence dummy. Only i-th element is used
 
-                imf_k_list_dummy = berry_get_imf_klist(cwi, operators, kpt[np.newaxis, :] + adkpt.T, ladpt=ladpt)
+                imf_k_list_dummy = berry_get_imf_klist(
+                    cwi, operators, np.array([kpt[np.newaxis, :] + adkpt.T]), ladpt=ladpt
+                )
 
                 for ife_ in range(num_fermi):
                     if ladpt[ife_]:
-                        for loop_adpt in range(berry_curv_adpt_kmesh**3):
+                        for loop_adpt in range(ka1 * ka2 * ka3):
                             imf_list[ife_, :, :] += imf_k_list_dummy[ife_, loop_adpt, :, :] * kweight_adpt
-
-        del imf_k_list
 
         return imf_list
 
@@ -949,10 +946,9 @@ def berry_get_ahc(cwi, operators):
 
     kpoints_chunks = np.split(kpoints, [j for j in range(100000, len(kpoints), 100000)])
 
+    res = Parallel(n_jobs=_num_proc, verbose=10)(delayed(berry_get_ahc_k)(kpt) for kpt in kpoints_chunks)
+
     imf_list = np.zeros((num_fermi, 3, 3), dtype=float)
-
-    res = Parallel(n_jobs=_num_proc, verbose=10)(delayed(berry_get_ahc_k)(kpoints) for kpoints in kpoints_chunks)
-
     for v in res:
         imf_list += v
 
@@ -1664,7 +1660,7 @@ def gyrotropic_get_K(cwi, operators):
     num_wann = cwi["num_wann"]
 
     if cwi["gyrotropic_band_list"] is None:
-        gyrotropic_band_list = [n for n in range(cwi["num_wann"])]
+        gyrotropic_band_list = [n for n in range(1, cwi["num_wann"] + 1)]
         gyrotropic_num_bands = cwi["num_wann"]
     else:
         gyrotropic_band_list = [int(n) for n in gyrotropic_band_list.split(",")]
@@ -1692,7 +1688,7 @@ def gyrotropic_get_K(cwi, operators):
         if kpoints.ndim == 1:
             kpoints = np.array([kpoints])
 
-        kpoints = np.array([gyrotropic_box_corner + gyrotropic_box @ k for k in kpoints])
+        kpoints = np.array([gyrotropic_box_corner + k @ gyrotropic_box for k in kpoints])
 
         HH, delHH = fourier_transform_r_to_k_new(
             operators["HH_R"], kpoints, cwi["unit_cell_cart"], cwi["irvec"], cwi["ndegen"], atoms_frac
@@ -1715,20 +1711,18 @@ def gyrotropic_get_K(cwi, operators):
 
         delE = wham_get_deleig(delHH, E, U, use_degen_pert, degen_thr)
 
-        gyro_K_orb = np.zeros((3, 3, mum_fermi))
+        gyro_K_orb = np.zeros((3, 3, mum_fermi), dtype=float)
+        gyro_K_spn = np.zeros((3, 3, mum_fermi), dtype=float)
 
         if cwi.win.eval_spn:
             S_w = fourier_transform_r_to_k_vec(operators["SS_R"], kpoints, cwi["irvec"], cwi["ndegen"], atoms_frac)
             S_k_diag = np.einsum("kln,aklp,kpn->akn", U.conj(), S_w, U, optimize=True)
-            gyro_K_spn = np.zeros((3, 3, mum_fermi), dtype=float)
-        else:
-            gyro_K_spn = None
 
         for k in range(len(kpoints)):
             kpt = kpoints[k]
 
             for n1 in range(gyrotropic_num_bands):
-                n = gyrotropic_band_list[n1]
+                n = gyrotropic_band_list[n1] - 1
 
                 if n > 0 and E[k, n] - E[k, n - 1] <= gyrotropic_degen_thresh:
                     continue
