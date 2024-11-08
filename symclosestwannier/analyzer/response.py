@@ -162,8 +162,7 @@ class Response(dict):
         if self._cwi["gyrotropic"]:
             win = self._cwi.win
 
-            if self["HH_R"] is None:
-                self["HH_R"] = get_oper_R("HH_R", self._cwi)
+            self["HH_R"] = get_oper_R("HH_R", self._cwi) if self["HH_R"] is None else self["HH_R"]
 
             if win.eval_D or win.eval_Dw or win.eval_K or win.eval_NOA:
                 self["AA_R"] = get_oper_R("AA_R", self._cwi) if self["AA_R"] is None else self["AA_R"]
