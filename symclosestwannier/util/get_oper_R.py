@@ -203,6 +203,8 @@ def get_CC_R(cwi):
     )
     CC_k = np.einsum("b,kbi,d,kdj,kbdmn->ijkmn", wb, bveck, wb, bveck, Hkb1b2, optimize=True)
 
+    CC_k = 0.5 * (CC_k + np.einsum("ijkmn->ijknm", CC_k).conj())
+
     if cwi["tb_gauge"]:
         atoms_list = list(cwi["atoms_frac"].values())
         atoms_frac = np.array([atoms_list[i] for i in cwi["nw2n"]])

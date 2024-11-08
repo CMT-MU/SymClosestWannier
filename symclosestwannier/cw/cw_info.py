@@ -54,10 +54,11 @@ class CWInfo(dict):
     Attributes:
         _topdir (str): top directory.
         _seedname (str): seedname.
+        _postcw (bool): postcw calculation?
     """
 
     # ==================================================
-    def __init__(self, topdir=None, seedname="cwannier", dic=None):
+    def __init__(self, topdir=None, seedname="cwannier", dic=None, postcw=False):
         """
         CWInfo manages information for CWModel, CWin, Win, Nnkp, Eig, Amn, Mmn, Umat, Spn, UHu.
 
@@ -65,11 +66,13 @@ class CWInfo(dict):
             topdir (str, optional): directory of seedname.cwin file.
             seedname (str, optional): seedname.
             dic (dict, optional): dictionary of CWin.
+            postcw (bool): postcw calculation?
         """
         super().__init__()
 
         self._topdir = topdir
         self._seedname = seedname
+        self._postcw = postcw
 
         if dic is None:
             self.update(self.read(topdir, seedname))
@@ -114,9 +117,10 @@ class CWInfo(dict):
                 ):
                     continue
 
-            if name == "uHu":
-                if not np.any([d["gyrotropic"]]):
-                    continue
+            if self._postcw:
+                if name == "uHu":
+                    if not np.any([d["gyrotropic"]]):
+                        continue
 
             info = C(topdir, seedname)
             for k, v in info.items():

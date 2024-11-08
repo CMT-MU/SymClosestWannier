@@ -56,7 +56,8 @@ def analyzer(seedname="cwannier"):
 
     filename = os.path.join(cwin["outdir"], "{}".format(f"{seedname}.hdf5"))
     info, data, samb_info = CWModel.read_info_data(filename)
-    cwi = CWInfo("./", seedname, dic=info)
+
+    cwi = CWInfo("./", seedname, dic=info, postcw=True)
     cwi |= cwin | win
 
     cw_model = CWModel(cwi, cwm, samb_info, dic=data)
@@ -98,14 +99,15 @@ def analyzer(seedname="cwannier"):
     cwm.log(cw_start_output_msg(), stamp=None, end="\n", file=outfile, mode="a")
     cwm.set_stamp()
 
-    if cwi["berry_task"] == "ahc":
-        res.write_ahc()
+    if cwi["berry"]:
+        if cwi["berry_task"] == "ahc":
+            res.write_ahc()
 
-    if cwi["berry_task"] == "kubo":
-        res.write_kubo()
+        if cwi["berry_task"] == "kubo":
+            res.write_kubo()
 
-    if cwi["berry_task"] == "shc":
-        res.write_shc()
+        if cwi["berry_task"] == "shc":
+            res.write_shc()
 
     if cwi["gyrotropic"]:
         if cwi.win.eval_K:
