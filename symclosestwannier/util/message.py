@@ -52,7 +52,7 @@ def cw_open_msg():
              |     The SymClosestWwannier Developer Group and    |
              |        individual contributors                    |
              |                                                   |
-             |       Release: 1.7.0      4th Nov 2024            |
+             |       Release: 1.8.0      8th Nov 2024            |
              |                                                   |
              | This program is free software; you can            |
              | redistribute it and/or modify it under the terms  |
