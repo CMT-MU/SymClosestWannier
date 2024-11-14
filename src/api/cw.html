@@ -371,8 +371,6 @@ document.write(`
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.cw.cw_model.CWModel.interpolate"><code class="docutils literal notranslate"><span class="pre">CWModel.interpolate()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.cw.cw_model.CWModel.matrix_dict_k"><code class="docutils literal notranslate"><span class="pre">CWModel.matrix_dict_k()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.cw.cw_model.CWModel.matrix_dict_r"><code class="docutils literal notranslate"><span class="pre">CWModel.matrix_dict_r()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.cw.cw_model.CWModel.read_data"><code class="docutils literal notranslate"><span class="pre">CWModel.read_data()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.cw.cw_model.CWModel.read_info"><code class="docutils literal notranslate"><span class="pre">CWModel.read_info()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.cw.cw_model.CWModel.read_info_data"><code class="docutils literal notranslate"><span class="pre">CWModel.read_info_data()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.cw.cw_model.CWModel.samb_decomp_operator"><code class="docutils literal notranslate"><span class="pre">CWModel.samb_decomp_operator()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.cw.cw_model.CWModel.write_O_R_dependence"><code class="docutils literal notranslate"><span class="pre">CWModel.write_O_R_dependence()</span></code></a></li>
@@ -496,7 +494,7 @@ document.write(`
 
 <dl class="py class" id="module-symclosestwannier.cw.cw_info">
 <dt class="sig sig-object py" id="symclosestwannier.cw.cw_info.CWInfo">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">CWInfo</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">topdir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seedname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'cwannier'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dic</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/cw/cw_info.html#CWInfo"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.cw.cw_info.CWInfo" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">CWInfo</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">topdir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seedname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'cwannier'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dic</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">postcw</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/cw/cw_info.html#CWInfo"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.cw.cw_info.CWInfo" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></p>
 <p>CWInfo manages information for CWModel, CWin, Win, Nnkp, Eig, Amn, Mmn, Umat, Spn, UHu.</p>
 <dl class="field-list simple">
@@ -505,18 +503,20 @@ document.write(`
 <li><p><strong>topdir</strong> (<em>str</em><em>, </em><em>optional</em>) -- directory of seedname.cwin file.</p></li>
 <li><p><strong>seedname</strong> (<em>str</em><em>, </em><em>optional</em>) -- seedname.</p></li>
 <li><p><strong>dic</strong> (<em>dict</em><em>, </em><em>optional</em>) -- dictionary of CWin.</p></li>
+<li><p><strong>postcw</strong> (<em>bool</em>) -- postcw calculation?</p></li>
 </ul>
 </dd>
 </dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="symclosestwannier.cw.cw_info.CWInfo.read">
-<span class="sig-name descname"><span class="pre">read</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">topdir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seedname</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/cw/cw_info.html#CWInfo.read"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.cw.cw_info.CWInfo.read" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">read</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">topdir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seedname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dic</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/cw/cw_info.html#CWInfo.read"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.cw.cw_info.CWInfo.read" title="Link to this definition">#</a></dt>
 <dd><p>read seedname.cwin/win/nnkp/eig/amn/(mmn)/(umat)/(spn)/(uHu) files.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>topdir</strong> (<em>str</em>) -- directory of seedname.cwin/win/eig/amn/mmn/nnkp files.</p></li>
 <li><p><strong>seedname</strong> (<em>str</em>) -- seedname.</p></li>
+<li><p><strong>dic</strong> (<em>dict</em><em>, </em><em>optional</em>) -- dictionary of CWin.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -552,14 +552,15 @@ document.write(`
 
 <dl class="py class" id="module-symclosestwannier.cw.cw_model">
 <dt class="sig sig-object py" id="symclosestwannier.cw.cw_model.CWModel">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">CWModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cwi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cwm</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dic</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/cw/cw_model.html#CWModel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.cw.cw_model.CWModel" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">CWModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cwi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cwm</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">samb_info</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{}</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dic</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/cw/cw_model.html#CWModel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.cw.cw_model.CWModel" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></p>
 <p>Closest Wannier (CW) tight-binding (TB) model based on Plane-Wave (PW) DFT calculation.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>cwi</strong> (<a class="reference internal" href="#symclosestwannier.cw.cw_info.CWInfo" title="symclosestwannier.cw.cw_info.CWInfo"><em>CWInfo</em></a><em>, </em><em>optional</em>) -- CWInfo.</p></li>
-<li><p><strong>cwm</strong> (<a class="reference internal" href="#symclosestwannier.cw.cw_manager.CWManager" title="symclosestwannier.cw.cw_manager.CWManager"><em>CWManager</em></a><em>,</em><em>optional</em>) -- CWManager.</p></li>
+<li><p><strong>cwm</strong> (<a class="reference internal" href="#symclosestwannier.cw.cw_manager.CWManager" title="symclosestwannier.cw.cw_manager.CWManager"><em>CWManager</em></a><em>, </em><em>optional</em>) -- CWManager.</p></li>
+<li><p><strong>samb_info</strong> (<em>dict</em><em>, </em><em>optional</em>) -- SAMB info.</p></li>
 <li><p><strong>dic</strong> (<em>dict</em><em>, </em><em>optional</em>) -- dictionary of data.</p></li>
 </ul>
 </dd>
@@ -761,40 +762,6 @@ fourier transformation from real-space representation into k-space representatio
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="symclosestwannier.cw.cw_model.CWModel.read_data">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">read_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/cw/cw_model.html#CWModel.read_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.cw.cw_model.CWModel.read_data" title="Link to this definition">#</a></dt>
-<dd><p>read data from seedname.hdf5 (hdf5 format).</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>filename</strong> (<em>str</em>) -- file name.</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>dictionary of data.</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>dict</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="symclosestwannier.cw.cw_model.CWModel.read_info">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">read_info</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/cw/cw_model.html#CWModel.read_info"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.cw.cw_model.CWModel.read_info" title="Link to this definition">#</a></dt>
-<dd><p>read info from seedname.hdf5 (hdf5 format).</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>filename</strong> (<em>str</em>) -- file name.</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>info.</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference internal" href="#symclosestwannier.cw.cw_info.CWInfo" title="symclosestwannier.cw.cw_info.CWInfo">CWInfo</a></p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
 <dt class="sig sig-object py" id="symclosestwannier.cw.cw_model.CWModel.read_info_data">
 <em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">read_info_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/cw/cw_model.html#CWModel.read_info_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.cw.cw_model.CWModel.read_info_data" title="Link to this definition">#</a></dt>
 <dd><p>read info and data from seedname.hdf5 (hdf5 format).</p>
@@ -803,7 +770,7 @@ fourier transformation from real-space representation into k-space representatio
 <dd class="field-odd"><p><strong>filename</strong> (<em>str</em>) -- file name.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>CWInfo, dictionary of data.</p>
+<dd class="field-even"><p>CWInfo, dictionary of data, dictionary of SAMB info.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>tuple</p>
@@ -1278,20 +1245,17 @@ CW TB model can be symmetrized by using Symmetry-Adapted Multipole Basis (SAMB).
 <dt>dictionary form of seedname.cwin.</dt><dd><ul class="simple">
 <li><p>seedname          : seedname (str), [&quot;cwannier&quot;].</p></li>
 <li><p>outdir            : output files are found in this directory (str), [&quot;./&quot;].</p></li>
-<li><p>restart           : the restart position 'cw'/'w90'/'sym' (str), [&quot;wannierize&quot;].</p></li>
+<li><p>restart           : the restart position 'cw'/'w90' (str), [&quot;cw&quot;].</p></li>
 <li><p>disentangle       : disentagle bands ? (bool), [False].</p></li>
 <li><p>proj_min          : minimum value of projectability: [0.0].</p></li>
 <li><p>dis_win_emax      : upper energy window (float), [None].</p></li>
 <li><p>dis_win_emin      : lower energy window (float), [None].</p></li>
-<li><p>smearing_temp_max : smearing temperature for upper window (float), [5.0].</p></li>
-<li><p>smearing_temp_min : smearing temperature for lower window (float), [0.01].</p></li>
-<li><p>delta             : small constant to avoid ill-conditioning of overlap matrices (float), [1e-12].</p></li>
+<li><p>smearing_temp_max : smearing temperature for upper window (float), [1.0].</p></li>
+<li><p>smearing_temp_min : smearing temperature for lower window (float), [0.0].</p></li>
+<li><p>delta             : small constant to avoid ill-conditioning of overlap matrices (&lt; 1e-5) (float), [0.0].</p></li>
 <li><p>svd               : implement singular value decomposition ? otherwise adopt Lowdin's orthogonalization method (bool), [False].</p></li>
-<li><p>optimize_wintemp&quot;: optimize the energy windows and smearing temperatures? (bool), [False].</p></li>
-<li><p>optimize_wintemp_num_iter&quot;: number of iterations for optimization (int), [100].</p></li>
-<li><p>optimize_wintemp_conv_thr&quot;: Convergence threshold for optimization (float), [1e-1].</p></li>
-<li><p>optimize_wintemp_mixing_beta&quot;: mixing factor for optimization (float), [0.7].</p></li>
-<li><p>optimize_wintemp_fixed_params&quot;:  fixed parameters for optimization, (list) [[&quot;dis_win_emin&quot;, &quot;smearing_temp_min&quot;]].</p></li>
+<li><p>optimize_params&quot;: optimize the energy windows and smearing temperatures? (bool), [False].</p></li>
+<li><p>optimize_params_fixed&quot;:  fixed parameters for optimization (ex: ['dis_win_emin', 'smearing_temp_min']), (list) [].</p></li>
 <li><p>verbose           : verbose calculation info (bool, optional), [False].</p></li>
 <li><p>parallel          : use parallel code? (bool), [False].</p></li>
 <li><p>formatter         : format by using black? (bool), [False].</p></li>
@@ -1517,7 +1481,7 @@ CW TB model can be symmetrized by using Symmetry-Adapted Multipole Basis (SAMB).
 </dd>
 <dt># berry curvature, ahc, shc</dt><dd><ul class="simple">
 <li><p>berry_curv_unit              : Unit of Berry curvature, ang2/bohr2, ['ang2'].</p></li>
-<li><p>berry_curv_adpt_kmesh        : Linear dimension of the adaptively refined k-mesh used to compute the anomalous/spin Hall conductivity, [1].</p></li>
+<li><p>berry_curv_adpt_kmesh        : Linear dimension of the adaptively refined k-mesh used to compute the anomalous/spin Hall conductivity, [1, 1, 1].</p></li>
 <li><p>berry_curv_adpt_kmesh_thresh : Threshold magnitude of the Berry curvature for adaptive refinement, [100].</p></li>
 <li><p>fermi_energy                 : fermi energy (float), [0.0].</p></li>
 <li><p>fermi_energy_max             : Upper limit of the Fermi energy range (float), [None].</p></li>
@@ -1567,6 +1531,7 @@ CW TB model can be symmetrized by using Symmetry-Adapted Multipole Basis (SAMB).
 <li><p>gyrotropic_box_b1             : Three real numbers. In reduced coordinates, [1.0 0.0 0.0].</p></li>
 <li><p>gyrotropic_box_b2             : Three real numbers. In reduced coordinates, [0.0 1.0 0.0].</p></li>
 <li><p>gyrotropic_box_b3             : Three real numbers. In reduced coordinates, [0.0 0.0 1.0].</p></li>
+<li><p>uHu_formatted                 : Read a formatted seedname.uHu file (bool), [False].</p></li>
 </ul>
 </dd>
 <dt># boltzwann</dt><dd><ul class="simple">
@@ -1646,8 +1611,6 @@ CW TB model can be symmetrized by using Symmetry-Adapted Multipole Basis (SAMB).
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.cw.cw_model.CWModel.interpolate"><code class="docutils literal notranslate"><span class="pre">CWModel.interpolate()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.cw.cw_model.CWModel.matrix_dict_k"><code class="docutils literal notranslate"><span class="pre">CWModel.matrix_dict_k()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.cw.cw_model.CWModel.matrix_dict_r"><code class="docutils literal notranslate"><span class="pre">CWModel.matrix_dict_r()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.cw.cw_model.CWModel.read_data"><code class="docutils literal notranslate"><span class="pre">CWModel.read_data()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.cw.cw_model.CWModel.read_info"><code class="docutils literal notranslate"><span class="pre">CWModel.read_info()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.cw.cw_model.CWModel.read_info_data"><code class="docutils literal notranslate"><span class="pre">CWModel.read_info_data()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.cw.cw_model.CWModel.samb_decomp_operator"><code class="docutils literal notranslate"><span class="pre">CWModel.samb_decomp_operator()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.cw.cw_model.CWModel.write_O_R_dependence"><code class="docutils literal notranslate"><span class="pre">CWModel.write_O_R_dependence()</span></code></a></li>

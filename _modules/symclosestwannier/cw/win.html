@@ -355,7 +355,7 @@ document.write(`
     <span class="s2">&quot;berry_kmesh_spacing&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
     <span class="c1"># berry curvature, ahc, shc</span>
     <span class="s2">&quot;berry_curv_unit&quot;</span><span class="p">:</span> <span class="s2">&quot;ang2&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;berry_curv_adpt_kmesh&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="s2">&quot;berry_curv_adpt_kmesh&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
     <span class="s2">&quot;berry_curv_adpt_kmesh_thresh&quot;</span><span class="p">:</span> <span class="mi">100</span><span class="p">,</span>
     <span class="s2">&quot;fermi_energy&quot;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
     <span class="s2">&quot;fermi_energy_max&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
@@ -397,6 +397,7 @@ document.write(`
     <span class="s2">&quot;gyrotropic_box_b1&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">],</span>
     <span class="s2">&quot;gyrotropic_box_b2&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">],</span>
     <span class="s2">&quot;gyrotropic_box_b3&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">],</span>
+    <span class="s2">&quot;uHu_formatted&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
     <span class="c1"># boltzwann</span>
     <span class="s2">&quot;boltzwann&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
 <span class="p">}</span>
@@ -489,7 +490,7 @@ document.write(`
 
 <span class="sd">            # berry curvature, ahc, shc</span>
 <span class="sd">                - berry_curv_unit              : Unit of Berry curvature, ang2/bohr2, [&#39;ang2&#39;].</span>
-<span class="sd">                - berry_curv_adpt_kmesh        : Linear dimension of the adaptively refined k-mesh used to compute the anomalous/spin Hall conductivity, [1].</span>
+<span class="sd">                - berry_curv_adpt_kmesh        : Linear dimension of the adaptively refined k-mesh used to compute the anomalous/spin Hall conductivity, [1, 1, 1].</span>
 <span class="sd">                - berry_curv_adpt_kmesh_thresh : Threshold magnitude of the Berry curvature for adaptive refinement, [100].</span>
 <span class="sd">                - fermi_energy                 : fermi energy (float), [0.0].</span>
 <span class="sd">                - fermi_energy_max             : Upper limit of the Fermi energy range (float), [None].</span>
@@ -536,6 +537,7 @@ document.write(`
 <span class="sd">                - gyrotropic_box_b1             : Three real numbers. In reduced coordinates, [1.0 0.0 0.0].</span>
 <span class="sd">                - gyrotropic_box_b2             : Three real numbers. In reduced coordinates, [0.0 1.0 0.0].</span>
 <span class="sd">                - gyrotropic_box_b3             : Three real numbers. In reduced coordinates, [0.0 0.0 1.0].</span>
+<span class="sd">                - uHu_formatted                 : Read a formatted seedname.uHu file (bool), [False].</span>
 
 <span class="sd">            # boltzwann</span>
 <span class="sd">                - boltzwann           : Determines whether to enter the boltzwann routines (bool), [False].</span>
@@ -750,6 +752,8 @@ document.write(`
         <span class="n">d</span><span class="p">[</span><span class="s2">&quot;gyrotropic_box_b2&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">gyrotropic_box_b2</span><span class="o">.</span><span class="n">split</span><span class="p">()]</span>
         <span class="n">gyrotropic_box_b3</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_param_keyword</span><span class="p">(</span><span class="n">win_data</span><span class="p">,</span> <span class="s2">&quot;gyrotropic_box_b3&quot;</span><span class="p">,</span> <span class="s2">&quot;0.0 0.0 1.0&quot;</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">str</span><span class="p">)</span>
         <span class="n">d</span><span class="p">[</span><span class="s2">&quot;gyrotropic_box_b3&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">gyrotropic_box_b3</span><span class="o">.</span><span class="n">split</span><span class="p">()]</span>
+
+        <span class="n">d</span><span class="p">[</span><span class="s2">&quot;uHu_formatted&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_param_keyword</span><span class="p">(</span><span class="n">win_data</span><span class="p">,</span> <span class="s2">&quot;uHu_formatted&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">bool</span><span class="p">)</span>
 
         <span class="n">d</span><span class="p">[</span><span class="s2">&quot;boltzwann&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_param_keyword</span><span class="p">(</span><span class="n">win_data</span><span class="p">,</span> <span class="s2">&quot;boltzwann&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">bool</span><span class="p">)</span>
 

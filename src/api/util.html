@@ -461,9 +461,9 @@ Rmin is the bond with minimum length.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="symclosestwannier.util.utility.band_distance">
-<span class="sig-name descname"><span class="pre">band_distance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Ek</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Hk</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ef</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/util/utility.html#band_distance"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.util.utility.band_distance" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">band_distance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Ak</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Ek</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Hk</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ef</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/util/utility.html#band_distance"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.util.utility.band_distance" title="Link to this definition">#</a></dt>
 <dd><dl class="simple">
-<dt>band distance defined in [npj Computational Materials (2023) 208]:</dt><dd><ul class="simple">
+<dt>band distance defined in [npj Computational Materials, 208 (2023)]:</dt><dd><ul class="simple">
 <li><p>eta_x = sqrt{ sum w_{nk}(x) (e_{nk}^{DFT} - e_{nk}^{Wan})**2 / sum w_{nk} }.</p></li>
 <li><p>eta_x_max = max{ w_{nk}(x) bs{e_{nk}^{DFT} - e_{nk}^{Wan}} }.</p></li>
 <li><p>w_{nk}(x) = sqrt{ f_{nk}^{DFT}(Ef+x,T=0.1) * f_{nk}^{Wan}(Ef+x,T=0.1) }</p></li>
@@ -474,16 +474,14 @@ Rmin is the bond with minimum length.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
+<li><p><strong>Ak</strong> (<em>ndarray</em>) -- Overlap matrix elements.</p></li>
 <li><p><strong>Ek</strong> (<em>ndarray</em>) -- Kohn-Sham energies.</p></li>
 <li><p><strong>Hk</strong> (<em>ndarray</em>) -- Hamiltonian matrix elements in k-space (orthogonal).</p></li>
 <li><p><strong>ef</strong> (<em>float</em><em>, </em><em>optional</em>) -- fermi energy.</p></li>
 </ul>
 </dd>
 </dl>
-<dl class="simple">
-<dt>Returns: idx_bottom, eta_0, eta_0_max, eta_2, eta_2_max.</dt><dd><p>idx_bottom is the index of the bottom band of DFT bands compared with the Wannier bands.</p>
-</dd>
-</dl>
+<p>Returns: eta_0, eta_0_max, eta_2, eta_2_max.</p>
 </dd></dl>
 
 <dl class="py function">
@@ -864,7 +862,7 @@ fourier transformation from real-space representation into k-space representatio
 
 <dl class="py function">
 <dt class="sig sig-object py" id="symclosestwannier.util.utility.weight_proj">
-<span class="sig-name descname"><span class="pre">weight_proj</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">e</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">e0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">e1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">T0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">T1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delta</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-11</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/util/utility.html#weight_proj"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.util.utility.weight_proj" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">weight_proj</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">e</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dis_win_emin</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dis_win_emax</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">smearing_temp_min</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">smearing_temp_max</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delta</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-11</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/util/utility.html#weight_proj"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.util.utility.weight_proj" title="Link to this definition">#</a></dt>
 <dd><p>weight function for projection</p>
 </dd></dl>
 

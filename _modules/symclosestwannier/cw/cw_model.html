@@ -336,6 +336,7 @@ document.write(`
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">linalg</span> <span class="k">as</span> <span class="n">npl</span>
 <span class="kn">from</span> <span class="nn">scipy</span> <span class="kn">import</span> <span class="n">linalg</span> <span class="k">as</span> <span class="n">spl</span>
+<span class="kn">import</span> <span class="nn">lmfit</span>
 
 <span class="kn">from</span> <span class="nn">gcoreutils.nsarray</span> <span class="kn">import</span> <span class="n">NSArray</span>
 <span class="kn">from</span> <span class="nn">multipie.tag.tag_multipole</span> <span class="kn">import</span> <span class="n">TagMultipole</span>
@@ -411,8 +412,6 @@ document.write(`
     <span class="c1">#</span>
     <span class="s2">&quot;Ek_MAE_grid&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
     <span class="s2">&quot;Ek_MAE_path&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="c1">#</span>
-    <span class="s2">&quot;matrix_dict&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">}</span>
 
 
@@ -426,39 +425,38 @@ document.write(`
 <span class="sd">    Attributes:</span>
 <span class="sd">        _cwi (CWInfo): CWInfo.</span>
 <span class="sd">        _cwm (CWManager): CWManager.</span>
+<span class="sd">        _samb_info (dict): SAMB info.</span>
 <span class="sd">        _outfile (str): output file, seedname.cwout.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="c1"># ==================================================</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cwi</span><span class="p">,</span> <span class="n">cwm</span><span class="p">,</span> <span class="n">dic</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cwi</span><span class="p">,</span> <span class="n">cwm</span><span class="p">,</span> <span class="n">samb_info</span><span class="o">=</span><span class="p">{},</span> <span class="n">dic</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Closest Wannier (CW) tight-binding (TB) model based on Plane-Wave (PW) DFT calculation.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            cwi (CWInfo, optional): CWInfo.</span>
-<span class="sd">            cwm (CWManager,optional): CWManager.</span>
+<span class="sd">            cwm (CWManager, optional): CWManager.</span>
+<span class="sd">            samb_info (dict, optional): SAMB info.</span>
 <span class="sd">            dic (dict, optional): dictionary of data.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span> <span class="o">=</span> <span class="n">cwi</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_cwm</span> <span class="o">=</span> <span class="n">cwm</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_samb_info</span> <span class="o">=</span> <span class="n">samb_info</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_outfile</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s1">&#39;seedname&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">.cwout&quot;</span>
 
         <span class="k">if</span> <span class="n">dic</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">dic</span><span class="p">)</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;restart&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;sym&quot;</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_sym</span><span class="p">()</span>
         <span class="k">if</span> <span class="n">dic</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">_default</span><span class="p">)</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;restart&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;cw&quot;</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_cw</span><span class="p">()</span>
             <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;restart&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;w90&quot;</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_w90</span><span class="p">()</span>
-            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;restart&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;sym&quot;</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_sym</span><span class="p">()</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;invalid restart = </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s1">&#39;restart&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2"> was given. choose from &#39;cw&#39;/&#39;w90&#39;/&#39;sym&#39;.&quot;</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;invalid restart = </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s1">&#39;restart&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2"> was given. choose from &#39;cw&#39;/&#39;w90&#39;.&quot;</span><span class="p">)</span>
 
     <span class="c1"># ==================================================</span>
     <span class="k">def</span> <span class="nf">_w90</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -480,13 +478,12 @@ document.write(`
         <span class="bp">self</span><span class="o">.</span><span class="n">_cwm</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="s2">&quot;* band distance between DFT and Wannier bands:&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_outfile</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;a&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_cwm</span><span class="o">.</span><span class="n">set_stamp</span><span class="p">()</span>
 
-        <span class="n">idx_bottom</span><span class="p">,</span> <span class="n">eta_0</span><span class="p">,</span> <span class="n">eta_0_max</span><span class="p">,</span> <span class="n">eta_2</span><span class="p">,</span> <span class="n">eta_2_max</span> <span class="o">=</span> <span class="n">band_distance</span><span class="p">(</span><span class="n">Ek</span><span class="p">,</span> <span class="n">Hk</span><span class="p">,</span> <span class="n">ef</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;fermi_energy&quot;</span><span class="p">])</span>
+        <span class="n">eta_0</span><span class="p">,</span> <span class="n">eta_0_max</span><span class="p">,</span> <span class="n">eta_2</span><span class="p">,</span> <span class="n">eta_2_max</span> <span class="o">=</span> <span class="n">band_distance</span><span class="p">(</span><span class="n">Ak</span><span class="p">,</span> <span class="n">Ek</span><span class="p">,</span> <span class="n">Hk</span><span class="p">,</span> <span class="n">ef</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;fermi_energy&quot;</span><span class="p">])</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_cwm</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot; - idx_bottom = </span><span class="si">{</span><span class="n">idx_bottom</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_outfile</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;a&quot;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_cwm</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot; - eta_0      = </span><span class="si">{</span><span class="n">eta_0</span><span class="si">}</span><span class="s2"> [meV]&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_outfile</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;a&quot;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_cwm</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot; - eta_0_max  = </span><span class="si">{</span><span class="n">eta_0_max</span><span class="si">}</span><span class="s2"> [meV]&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_outfile</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;a&quot;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_cwm</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot; - eta_2      = </span><span class="si">{</span><span class="n">eta_2</span><span class="si">}</span><span class="s2"> [meV]&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_outfile</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;a&quot;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_cwm</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot; - eta_2_max  = </span><span class="si">{</span><span class="n">eta_2_max</span><span class="si">}</span><span class="s2"> [meV]&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_outfile</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;a&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_cwm</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot; - eta_0     = </span><span class="si">{</span><span class="n">eta_0</span><span class="si">}</span><span class="s2"> [meV]&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_outfile</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;a&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_cwm</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot; - eta_0_max = </span><span class="si">{</span><span class="n">eta_0_max</span><span class="si">}</span><span class="s2"> [meV]&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_outfile</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;a&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_cwm</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot; - eta_2     = </span><span class="si">{</span><span class="n">eta_2</span><span class="si">}</span><span class="s2"> [meV]&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_outfile</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;a&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_cwm</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot; - eta_2_max = </span><span class="si">{</span><span class="n">eta_2_max</span><span class="si">}</span><span class="s2"> [meV]&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_outfile</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;a&quot;</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_cwm</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="s2">&quot;done&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_outfile</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;a&quot;</span><span class="p">)</span>
 
@@ -542,8 +539,8 @@ document.write(`
             <span class="bp">self</span><span class="o">.</span><span class="n">_cwm</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="s2">&quot;done&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_outfile</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;a&quot;</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;disentangle&quot;</span><span class="p">]:</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;optimize_wintemp&quot;</span><span class="p">]:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_optimize_win_temp</span><span class="p">(</span><span class="n">Ek</span><span class="p">,</span> <span class="n">Ak</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;optimize_params&quot;</span><span class="p">]:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_optimize_params</span><span class="p">(</span><span class="n">Ek</span><span class="p">,</span> <span class="n">Ak</span><span class="p">)</span>
 
             <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;   - disentanglement ... &quot;</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_cwm</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_outfile</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;a&quot;</span><span class="p">)</span>
@@ -646,161 +643,111 @@ document.write(`
         <span class="k">return</span> <span class="n">w</span><span class="p">[:,</span> <span class="p">:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span> <span class="o">*</span> <span class="n">Ak</span>
 
     <span class="c1"># ==================================================</span>
-    <span class="k">def</span> <span class="nf">_optimize_win_temp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Ek</span><span class="p">,</span> <span class="n">Ak</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_optimize_params</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Ek</span><span class="p">,</span> <span class="n">Ak</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        optimize the energy windows and smearing temperatures.</span>
+<span class="sd">        optimize the energy windows and smearing temperatures</span>
+<span class="sd">        by using the projectability of each Kohn-Sham state in k-space.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            Ek (ndarray): Kohn-Sham energies.</span>
 <span class="sd">            Ak (ndarray): Overlap matrix elements.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-        <span class="kn">import</span> <span class="nn">itertools</span>
-        <span class="kn">from</span> <span class="nn">fractions</span> <span class="kn">import</span> <span class="n">Fraction</span>
+        <span class="c1"># projectability of each Kohn-Sham state in k-space.</span>
+        <span class="n">Pk</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">real</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diagonal</span><span class="p">(</span><span class="n">Ak</span> <span class="o">@</span> <span class="n">Ak</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">conjugate</span><span class="p">(),</span> <span class="n">axis1</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">axis2</span><span class="o">=</span><span class="mi">2</span><span class="p">))</span>
 
-        <span class="c1"># Jaccard係数を計算</span>
-        <span class="k">def</span> <span class="nf">jaccard</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
-            <span class="c1"># 積集合の要素数</span>
-            <span class="n">intersection</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="nb">set</span><span class="o">.</span><span class="n">intersection</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="nb">set</span><span class="p">(</span><span class="n">y</span><span class="p">)))</span>
-            <span class="c1"># 和集合の要素数</span>
-            <span class="n">union</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="nb">set</span><span class="o">.</span><span class="n">union</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="nb">set</span><span class="p">(</span><span class="n">y</span><span class="p">)))</span>
-            <span class="c1"># 分数表示で返す</span>
-            <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">Fraction</span><span class="p">(</span><span class="n">intersection</span><span class="p">,</span> <span class="n">union</span><span class="p">))</span>
+        <span class="n">ek</span> <span class="o">=</span> <span class="n">Ek</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;num_k&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;num_bands&quot;</span><span class="p">])</span>
+        <span class="n">pk</span> <span class="o">=</span> <span class="n">Pk</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;num_k&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;num_bands&quot;</span><span class="p">])</span>
 
-        <span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
-            <span class="n">emin</span><span class="p">,</span> <span class="n">emax</span><span class="p">,</span> <span class="n">T_min</span><span class="p">,</span> <span class="n">T_max</span> <span class="o">=</span> <span class="n">x</span>
-            <span class="n">Ak_new</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_disentangle</span><span class="p">(</span><span class="n">Ek</span><span class="p">,</span> <span class="n">Ak</span><span class="p">,</span> <span class="n">emin</span><span class="p">,</span> <span class="n">emax</span><span class="p">,</span> <span class="n">T_min</span><span class="p">,</span> <span class="n">T_max</span><span class="p">)</span>
+        <span class="c1"># normalize</span>
+        <span class="n">pk</span> <span class="o">=</span> <span class="n">pk</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">pk</span><span class="p">)</span>
 
-            <span class="k">def</span> <span class="nf">U_mat</span><span class="p">(</span><span class="n">k</span><span class="p">):</span>
-                <span class="n">u</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">vd</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">svd</span><span class="p">(</span><span class="n">Ak_new</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">full_matrices</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-                <span class="k">return</span> <span class="n">u</span> <span class="o">@</span> <span class="n">vd</span>
+        <span class="n">fixed_params</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;optimize_params_fixed&quot;</span><span class="p">]</span>
 
-            <span class="n">Uk</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">U_mat</span><span class="p">(</span><span class="n">k</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;num_k&quot;</span><span class="p">])])</span>
-            <span class="n">Hk</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">&quot;klm,kl,kln-&gt;kmn&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">conj</span><span class="p">(</span><span class="n">Uk</span><span class="p">),</span> <span class="n">Ek</span><span class="p">,</span> <span class="n">Uk</span><span class="p">,</span> <span class="n">optimize</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-            <span class="n">Hk</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">Hk</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">&quot;kmn-&gt;knm&quot;</span><span class="p">,</span> <span class="n">Hk</span><span class="p">)</span><span class="o">.</span><span class="n">conj</span><span class="p">())</span>
+        <span class="n">model</span> <span class="o">=</span> <span class="n">lmfit</span><span class="o">.</span><span class="n">Model</span><span class="p">(</span><span class="n">weight_proj</span><span class="p">)</span>
+        <span class="n">params</span> <span class="o">=</span> <span class="n">lmfit</span><span class="o">.</span><span class="n">Parameters</span><span class="p">()</span>
 
-            <span class="n">Ek_cw</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">eigvalsh</span><span class="p">(</span><span class="n">Hk</span><span class="p">)</span>
+        <span class="n">param_bound_dict</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;dis_win_emin&quot;</span><span class="p">:</span> <span class="p">(</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">),</span>
+            <span class="s2">&quot;dis_win_emax&quot;</span><span class="p">:</span> <span class="p">(</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">),</span>
+            <span class="s2">&quot;smearing_temp_min&quot;</span><span class="p">:</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">),</span>
+            <span class="s2">&quot;smearing_temp_max&quot;</span><span class="p">:</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">),</span>
+            <span class="s2">&quot;delta&quot;</span><span class="p">:</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">1e-6</span><span class="p">),</span>
+        <span class="p">}</span>
 
-            <span class="n">num_k</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;num_k&quot;</span><span class="p">]</span>
-            <span class="n">num_wann</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;num_wann&quot;</span><span class="p">]</span>
-            <span class="n">num_bands</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;num_bands&quot;</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">param</span><span class="p">,</span> <span class="p">(</span><span class="nb">min</span><span class="p">,</span> <span class="nb">max</span><span class="p">)</span> <span class="ow">in</span> <span class="n">param_bound_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
 
-            <span class="c1"># Delta = (</span>
-            <span class="c1">#     sum(</span>
-            <span class="c1">#         [</span>
-            <span class="c1">#             jaccard(</span>
-            <span class="c1">#                 np.round(Ek[k], 3).tolist(),</span>
-            <span class="c1">#                 np.round(Ek_cw[k], 3).tolist(),</span>
-            <span class="c1">#             )</span>
-            <span class="c1">#             for k in range(num_k)</span>
-            <span class="c1">#         ]</span>
-            <span class="c1">#     )</span>
-            <span class="c1">#     / num_k</span>
-            <span class="c1"># )</span>
-
-            <span class="c1"># Delta = (</span>
-            <span class="c1">#     np.sum(np.abs(Ek - Ek_cw)) / self._cwi[&quot;num_k&quot;] / (self._cwi[&quot;num_wann&quot;] + self._cwi[&quot;num_bands&quot;]) * 2</span>
-            <span class="c1"># )</span>
-
-            <span class="n">Delta</span> <span class="o">=</span> <span class="mf">0.0</span>
-
-            <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_k</span><span class="p">):</span>
-                <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_wann</span><span class="p">):</span>
-                    <span class="n">enk_cw</span> <span class="o">=</span> <span class="n">Ek_cw</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="n">n</span><span class="p">]</span>
-                    <span class="n">d_lst</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">enk_cw</span> <span class="o">-</span> <span class="n">Ek</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="n">m</span><span class="p">])</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_bands</span><span class="p">)]</span>
-                    <span class="n">m</span> <span class="o">=</span> <span class="n">d_lst</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="n">d_lst</span><span class="p">))</span>
-                    <span class="n">emk</span> <span class="o">=</span> <span class="n">Ek</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="n">m</span><span class="p">]</span>
-
-                    <span class="n">Delta</span> <span class="o">+=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">enk_cw</span> <span class="o">-</span> <span class="n">emk</span><span class="p">)</span>
-
-            <span class="n">Delta</span> <span class="o">=</span> <span class="n">Delta</span> <span class="o">/</span> <span class="n">num_k</span> <span class="o">/</span> <span class="n">num_wann</span>
-
-            <span class="k">return</span> <span class="n">Delta</span>
-
-        <span class="c1"># E_width = np.max(Ek) - np.min(Ek)</span>
-        <span class="n">h_dic</span> <span class="o">=</span> <span class="p">{</span><span class="mi">0</span><span class="p">:</span> <span class="mf">1e-2</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span> <span class="mf">1e-2</span><span class="p">,</span> <span class="mi">2</span><span class="p">:</span> <span class="mf">1e-2</span><span class="p">,</span> <span class="mi">3</span><span class="p">:</span> <span class="mf">1e-2</span><span class="p">}</span>
-
-        <span class="c1"># ==========================</span>
-        <span class="k">def</span> <span class="nf">numerical_diff</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">i</span><span class="p">):</span>
-            <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-
-            <span class="n">h</span> <span class="o">=</span> <span class="n">h_dic</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
-            <span class="n">h_vec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
-            <span class="n">h_vec</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">h</span>
-
-            <span class="k">return</span> <span class="p">(</span><span class="n">f</span><span class="p">(</span><span class="n">x</span> <span class="o">+</span> <span class="n">h_vec</span><span class="p">)</span> <span class="o">-</span> <span class="n">f</span><span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="n">h_vec</span><span class="p">))</span> <span class="o">/</span> <span class="p">(</span><span class="mf">2.0</span> <span class="o">*</span> <span class="n">h</span><span class="p">)</span>
-
-        <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;- optimizing windows and smearing temperatures ... </span><span class="se">\n</span><span class="s2">&quot;</span>
-        <span class="n">msg</span> <span class="o">+=</span> <span class="s2">&quot;* --------------------------------------------------------------------------------------------- * </span><span class="se">\n</span><span class="s2">&quot;</span>
-        <span class="n">msg</span> <span class="o">+=</span> <span class="s2">&quot;|  niter:   dis_win_emin   dis_win_emax   smearing_temp_min   smearing_temp_max   Delta   Time  | </span><span class="se">\n</span><span class="s2">&quot;</span>
-        <span class="n">msg</span> <span class="o">+=</span> <span class="s2">&quot;* --------------------------------------------------------------------------------------------- * </span><span class="se">\n</span><span class="s2">&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_cwm</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_outfile</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;a&quot;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_cwm</span><span class="o">.</span><span class="n">set_stamp</span><span class="p">()</span>
-
-        <span class="n">conv_thr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;optimize_wintemp_conv_thr&quot;</span><span class="p">]</span>
-        <span class="n">mixing_beta</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;optimize_wintemp_mixing_beta&quot;</span><span class="p">]</span>
-        <span class="n">fixed_params</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;optimize_wintemp_fixed_params&quot;</span><span class="p">]</span>
-        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;dis_win_emin&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;dis_win_emax&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;smearing_temp_min&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;smearing_temp_max&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">}</span>
-        <span class="n">fixed_indexes</span> <span class="o">=</span> <span class="p">[</span><span class="n">idx</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">idx</span> <span class="ow">in</span> <span class="n">d</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">fixed_params</span><span class="p">]</span>
-
-        <span class="n">x</span> <span class="o">=</span> <span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;dis_win_emin&quot;</span><span class="p">],</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;dis_win_emax&quot;</span><span class="p">],</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;smearing_temp_min&quot;</span><span class="p">],</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;smearing_temp_max&quot;</span><span class="p">],</span>
-        <span class="p">)</span>
-
-        <span class="n">cnt</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="k">for</span> <span class="n">niter</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;optimize_wintemp_num_iter&quot;</span><span class="p">]):</span>
-            <span class="n">cnt</span> <span class="o">+=</span> <span class="mi">1</span>
-
-            <span class="n">Delta</span> <span class="o">=</span> <span class="n">f</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-
-            <span class="k">if</span> <span class="n">Delta</span> <span class="o">&lt;</span> <span class="n">conv_thr</span><span class="p">:</span>
-                <span class="k">break</span>
+            <span class="k">if</span> <span class="n">param</span> <span class="ow">in</span> <span class="n">fixed_params</span><span class="p">:</span>
+                <span class="n">params</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">param</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="n">param</span><span class="p">],</span> <span class="n">vary</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+                <span class="n">params</span><span class="p">[</span><span class="n">param</span><span class="p">]</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="n">param</span><span class="p">]</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">grad</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span> <span class="k">if</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">fixed_indexes</span> <span class="k">else</span> <span class="n">numerical_diff</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">)])</span>
-                <span class="n">x</span> <span class="o">=</span> <span class="n">x</span> <span class="o">-</span> <span class="n">mixing_beta</span> <span class="o">*</span> <span class="n">grad</span>
+                <span class="n">params</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">param</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="n">param</span><span class="p">],</span> <span class="nb">min</span><span class="o">=</span><span class="nb">min</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="nb">max</span><span class="p">)</span>
 
-            <span class="n">emin</span><span class="p">,</span> <span class="n">emax</span><span class="p">,</span> <span class="n">T_min</span><span class="p">,</span> <span class="n">T_max</span> <span class="o">=</span> <span class="n">x</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">pk</span><span class="p">,</span> <span class="n">params</span><span class="p">,</span> <span class="n">e</span><span class="o">=</span><span class="n">ek</span><span class="p">)</span>
 
-            <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{0[0]:8d}</span><span class="s2">: </span><span class="si">{0[1]:12.6f}</span><span class="s2">  </span><span class="si">{0[2]:12.6f}</span><span class="s2"> </span><span class="si">{0[3]:12.6f}</span><span class="s2"> </span><span class="si">{0[4]:12.6f}</span><span class="s2"> </span><span class="si">{0[5]:12.6f}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                <span class="p">[</span><span class="n">niter</span><span class="p">,</span> <span class="n">emin</span><span class="p">,</span> <span class="n">emax</span><span class="p">,</span> <span class="n">T_min</span><span class="p">,</span> <span class="n">T_max</span><span class="p">,</span> <span class="n">Delta</span><span class="p">]</span>
-            <span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_cwm</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_outfile</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;a&quot;</span><span class="p">)</span>
+        <span class="n">dis_win_emin</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="s2">&quot;dis_win_emin&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">value</span>
+        <span class="n">dis_win_emax</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="s2">&quot;dis_win_emax&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">value</span>
+        <span class="n">smearing_temp_min</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="s2">&quot;smearing_temp_min&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">value</span>
+        <span class="n">smearing_temp_max</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="s2">&quot;smearing_temp_max&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">value</span>
+        <span class="n">delta</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="s2">&quot;delta&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">value</span>
 
-        <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;* -------------------------------------------------------------------------------------- * </span><span class="se">\n</span><span class="s2">&quot;</span>
-        <span class="k">if</span> <span class="n">cnt</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;optimize_wintemp_num_iter&quot;</span><span class="p">]:</span>
-            <span class="n">msg</span> <span class="o">+=</span> <span class="s2">&quot;Warning: Maximum number of optimize_win_temp iterations reached </span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="k">if</span> <span class="s2">&quot;dis_win_emax&quot;</span> <span class="ow">in</span> <span class="n">fixed_params</span><span class="p">:</span>
+            <span class="n">dis_win_emax_opt</span> <span class="o">=</span> <span class="n">dis_win_emax</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">dis_win_emax_opt</span> <span class="o">=</span> <span class="n">dis_win_emax</span> <span class="o">-</span> <span class="mf">3.0</span> <span class="o">*</span> <span class="n">smearing_temp_max</span>
 
-        <span class="k">if</span> <span class="n">Delta</span> <span class="o">&gt;</span> <span class="n">conv_thr</span><span class="p">:</span>
-            <span class="n">msg</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;Warning: optimize_win_temp convergence criteria (optimize_wintemp_conv_thr = </span><span class="si">{</span><span class="n">conv_thr</span><span class="si">}</span><span class="s2">) not satisfied </span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;   - optimizing windows and smearing temperatures ... </span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="n">msg</span> <span class="o">+=</span> <span class="s2">&quot;*----------------------------------------------------------------------------* </span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="k">if</span> <span class="n">fixed_params</span> <span class="o">!=</span> <span class="p">[]:</span>
+            <span class="n">msg</span> <span class="o">+=</span> <span class="s2">&quot;    * fixed_params: </span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="k">for</span> <span class="n">param</span> <span class="ow">in</span> <span class="n">fixed_params</span><span class="p">:</span>
+                <span class="n">msg</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;    - </span><span class="si">{</span><span class="n">param</span><span class="si">}</span><span class="s2"> = </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="n">param</span><span class="p">]</span><span class="si">}</span><span class="s2"> </span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="n">msg</span> <span class="o">+=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
 
-        <span class="n">emin</span><span class="p">,</span> <span class="n">emax</span><span class="p">,</span> <span class="n">T_min</span><span class="p">,</span> <span class="n">T_max</span> <span class="o">=</span> <span class="n">x</span>
-
-        <span class="n">msg</span> <span class="o">+=</span> <span class="s2">&quot;Final values: </span><span class="se">\n</span><span class="s2">&quot;</span>
-        <span class="n">msg</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;  - dis_win_emin = </span><span class="si">{</span><span class="n">emin</span><span class="si">}</span><span class="s2"> </span><span class="se">\n</span><span class="s2">&quot;</span>
-        <span class="n">msg</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;  - dis_win_emax = </span><span class="si">{</span><span class="n">emax</span><span class="si">}</span><span class="s2"> </span><span class="se">\n</span><span class="s2">&quot;</span>
-        <span class="n">msg</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;  - smearing_temp_min = </span><span class="si">{</span><span class="n">T_min</span><span class="si">}</span><span class="s2"> </span><span class="se">\n</span><span class="s2">&quot;</span>
-        <span class="n">msg</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;  - smearing_temp_max = </span><span class="si">{</span><span class="n">T_max</span><span class="si">}</span><span class="s2"> </span><span class="se">\n</span><span class="s2">&quot;</span>
-        <span class="n">msg</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;  - Delta = </span><span class="si">{</span><span class="n">Delta</span><span class="si">}</span><span class="s2"> </span><span class="se">\n</span><span class="s2">&quot;</span>
-        <span class="n">msg</span> <span class="o">+=</span> <span class="s2">&quot;* -------------------------------------------------------------------------------------- * </span><span class="se">\n</span><span class="s2">&quot;</span>
-
+        <span class="n">msg</span> <span class="o">+=</span> <span class="s2">&quot;    * Initial values: </span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="n">msg</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;    - dis_win_emax      = </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s1">&#39;dis_win_emax&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2"> </span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="n">msg</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;    - dis_win_emin      = </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s1">&#39;dis_win_emin&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2"> </span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="n">msg</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;    - smearing_temp_max = </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s1">&#39;smearing_temp_max&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2"> </span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="n">msg</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;    - smearing_temp_min = </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s1">&#39;smearing_temp_min&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2"> </span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="n">msg</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;    - delta             = </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s1">&#39;delta&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2"> </span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="n">msg</span> <span class="o">+=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="n">msg</span> <span class="o">+=</span> <span class="s2">&quot;    * Optimized values: </span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="k">if</span> <span class="s2">&quot;dis_win_emax&quot;</span> <span class="ow">in</span> <span class="n">fixed_params</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;     - dis_win_emax (opt)      = </span><span class="si">{</span><span class="n">dis_win_emax_opt</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;     - dis_win_emax (fit)      = </span><span class="si">{</span><span class="n">dis_win_emax</span><span class="si">}</span><span class="s2"> </span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="n">msg</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;     - dis_win_emax (opt)      = dis_win_emax (fit) - 3 * smearing_temp_max (opt) </span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="n">msg</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;                               = </span><span class="si">{</span><span class="n">dis_win_emax_opt</span><span class="si">}</span><span class="s2"> </span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="n">msg</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;     - dis_win_emin (opt)      = </span><span class="si">{</span><span class="n">dis_win_emin</span><span class="si">}</span><span class="s2"> </span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="n">msg</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;     - smearing_temp_max (opt) = </span><span class="si">{</span><span class="n">smearing_temp_max</span><span class="si">}</span><span class="s2"> </span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="n">msg</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;     - smearing_temp_min (opt) = </span><span class="si">{</span><span class="n">smearing_temp_min</span><span class="si">}</span><span class="s2"> </span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="n">msg</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;     - delta (opt)             = </span><span class="si">{</span><span class="n">delta</span><span class="si">}</span><span class="s2"> </span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="n">msg</span> <span class="o">+=</span> <span class="s2">&quot;*----------------------------------------------------------------------------* </span><span class="se">\n</span><span class="s2">&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_cwm</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_outfile</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;a&quot;</span><span class="p">)</span>
 
-        <span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;dis_win_emin&quot;</span><span class="p">],</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;dis_win_emax&quot;</span><span class="p">],</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;smearing_temp_min&quot;</span><span class="p">],</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;smearing_temp_max&quot;</span><span class="p">],</span>
-        <span class="p">)</span> <span class="o">=</span> <span class="p">(</span>
-            <span class="n">emin</span><span class="p">,</span>
-            <span class="n">emax</span><span class="p">,</span>
-            <span class="n">T_min</span><span class="p">,</span>
-            <span class="n">T_max</span><span class="p">,</span>
-        <span class="p">)</span>
+        <span class="n">fs</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;projectability.txt&quot;</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span>
+        <span class="n">fs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;# projectability </span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">fs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;# enk pnk wnk(init_fit) wnk(best_fit) </span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">fs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;# dis_win_emax_fit = </span><span class="si">{</span><span class="n">dis_win_emax</span><span class="si">}</span><span class="s2"> </span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">fs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;# dis_win_emax_opt = dis_win_emax_fit - 3 * smearing_temp_max = </span><span class="si">{</span><span class="n">dis_win_emax_opt</span><span class="si">}</span><span class="s2"> </span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">fs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;# dis_win_emin_opt = </span><span class="si">{</span><span class="n">dis_win_emin</span><span class="si">}</span><span class="s2"> </span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">fs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;# smearing_temp_max_opt = </span><span class="si">{</span><span class="n">smearing_temp_max</span><span class="si">}</span><span class="s2"> </span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">fs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;# smearing_temp_min_opt = </span><span class="si">{</span><span class="n">smearing_temp_min</span><span class="si">}</span><span class="s2"> </span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">fs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;# delta_opt = </span><span class="si">{</span><span class="n">delta</span><span class="si">}</span><span class="s2"> </span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_cwm</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="s2">&quot;done &quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_outfile</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;a&quot;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">eki</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">ek</span><span class="p">):</span>
+            <span class="n">pki</span> <span class="o">=</span> <span class="n">pk</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="n">init_fit</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">init_fit</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="n">best_fit</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">best_fit</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="n">opt_fit</span> <span class="o">=</span> <span class="n">weight_proj</span><span class="p">(</span><span class="n">eki</span><span class="p">,</span> <span class="n">dis_win_emin</span><span class="p">,</span> <span class="n">dis_win_emax_opt</span><span class="p">,</span> <span class="n">smearing_temp_min</span><span class="p">,</span> <span class="n">smearing_temp_max</span><span class="p">,</span> <span class="n">delta</span><span class="p">)</span>
+            <span class="n">fs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">eki</span><span class="si">}</span><span class="s2">  </span><span class="si">{</span><span class="n">pki</span><span class="si">}</span><span class="s2">  </span><span class="si">{</span><span class="n">init_fit</span><span class="si">}</span><span class="s2">  </span><span class="si">{</span><span class="n">best_fit</span><span class="si">}</span><span class="s2">  </span><span class="si">{</span><span class="n">opt_fit</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="n">fs</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;dis_win_emin&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dis_win_emin</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;dis_win_emax&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dis_win_emax_opt</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;smearing_temp_min&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">smearing_temp_min</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;smearing_temp_max&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">smearing_temp_max</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;delta&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">delta</span>
 
     <span class="c1"># ==================================================</span>
     <span class="k">def</span> <span class="nf">_construct_tb</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Ek</span><span class="p">,</span> <span class="n">Ak</span><span class="p">):</span>
@@ -838,18 +785,16 @@ document.write(`
         <span class="n">Hk</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">Hk</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">&quot;kmn-&gt;knm&quot;</span><span class="p">,</span> <span class="n">Hk</span><span class="p">)</span><span class="o">.</span><span class="n">conj</span><span class="p">())</span>
 
         <span class="c1"># band distance</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_cwm</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="s2">&quot;* band distance between DFT and Wannier bands:&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_outfile</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;a&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_cwm</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">    * band distance between DFT and Wannier bands:&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_outfile</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;a&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_cwm</span><span class="o">.</span><span class="n">set_stamp</span><span class="p">()</span>
 
-        <span class="n">idx_bottom</span><span class="p">,</span> <span class="n">eta_0</span><span class="p">,</span> <span class="n">eta_0_max</span><span class="p">,</span> <span class="n">eta_2</span><span class="p">,</span> <span class="n">eta_2_max</span> <span class="o">=</span> <span class="n">band_distance</span><span class="p">(</span><span class="n">Ek</span><span class="p">,</span> <span class="n">Hk</span><span class="p">,</span> <span class="n">ef</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;fermi_energy&quot;</span><span class="p">])</span>
+        <span class="n">eta_0</span><span class="p">,</span> <span class="n">eta_0_max</span><span class="p">,</span> <span class="n">eta_2</span><span class="p">,</span> <span class="n">eta_2_max</span> <span class="o">=</span> <span class="n">band_distance</span><span class="p">(</span><span class="n">Ak</span><span class="p">,</span> <span class="n">Ek</span><span class="p">,</span> <span class="n">Hk</span><span class="p">,</span> <span class="n">ef</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;fermi_energy&quot;</span><span class="p">])</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_cwm</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot; - idx_bottom = </span><span class="si">{</span><span class="n">idx_bottom</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_outfile</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;a&quot;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_cwm</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot; - eta_0      = </span><span class="si">{</span><span class="n">eta_0</span><span class="si">}</span><span class="s2"> [meV]&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_outfile</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;a&quot;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_cwm</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot; - eta_0_max  = </span><span class="si">{</span><span class="n">eta_0_max</span><span class="si">}</span><span class="s2"> [meV]&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_outfile</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;a&quot;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_cwm</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot; - eta_2      = </span><span class="si">{</span><span class="n">eta_2</span><span class="si">}</span><span class="s2"> [meV]&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_outfile</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;a&quot;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_cwm</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot; - eta_2_max  = </span><span class="si">{</span><span class="n">eta_2_max</span><span class="si">}</span><span class="s2"> [meV]&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_outfile</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;a&quot;</span><span class="p">)</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">_cwm</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="s2">&quot;done&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_outfile</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;a&quot;</span><span class="p">)</span>
+        <span class="c1"># self._cwm.log(f&quot;     - bottom_band_idx = {bottom_band_idx}&quot;, None, file=self._outfile, mode=&quot;a&quot;)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_cwm</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;     - eta_0     = </span><span class="si">{</span><span class="n">eta_0</span><span class="si">}</span><span class="s2"> [meV]&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_outfile</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;a&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_cwm</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;     - eta_0_max = </span><span class="si">{</span><span class="n">eta_0_max</span><span class="si">}</span><span class="s2"> [meV]&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_outfile</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;a&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_cwm</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;     - eta_2     = </span><span class="si">{</span><span class="n">eta_2</span><span class="si">}</span><span class="s2"> [meV]&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_outfile</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;a&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_cwm</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;     - eta_2_max = </span><span class="si">{</span><span class="n">eta_2_max</span><span class="si">}</span><span class="s2"> [meV]&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_outfile</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;a&quot;</span><span class="p">)</span>
 
         <span class="c1"># zeeman interaction</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;zeeman_interaction&quot;</span><span class="p">]:</span>
@@ -966,6 +911,8 @@ document.write(`
                 <span class="n">lattice_const</span> <span class="o">=</span> <span class="n">model</span><span class="p">[</span><span class="s2">&quot;info&quot;</span><span class="p">][</span><span class="s2">&quot;cell&quot;</span><span class="p">][</span><span class="s2">&quot;a&quot;</span><span class="p">]</span>
                 <span class="n">A_samb</span> <span class="o">=</span> <span class="n">lattice_const</span> <span class="o">*</span> <span class="n">latticeP</span><span class="p">[</span><span class="n">lattice</span><span class="p">][:</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
                 <span class="nb">print</span><span class="p">(</span><span class="n">A_samb</span><span class="p">)</span>
+
+            <span class="n">mat</span><span class="p">[</span><span class="s2">&quot;A&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">A_samb</span>
         <span class="c1">#####</span>
 
         <span class="n">atoms_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;atoms_frac&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
@@ -1038,7 +985,6 @@ document.write(`
         <span class="bp">self</span><span class="o">.</span><span class="n">_cwm</span><span class="o">.</span><span class="n">set_stamp</span><span class="p">()</span>
 
         <span class="n">Sr_sym</span> <span class="o">=</span> <span class="n">CWModel</span><span class="o">.</span><span class="n">construct_Or</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">values</span><span class="p">()),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;num_wann&quot;</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;irvec&quot;</span><span class="p">],</span> <span class="n">mat</span><span class="p">)</span>
-        <span class="n">S2r_inv_sym</span> <span class="o">=</span> <span class="n">CWModel</span><span class="o">.</span><span class="n">construct_Or</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">s2_inv</span><span class="o">.</span><span class="n">values</span><span class="p">()),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;num_wann&quot;</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;irvec&quot;</span><span class="p">],</span> <span class="n">mat</span><span class="p">)</span>
         <span class="n">Hr_sym</span> <span class="o">=</span> <span class="n">CWModel</span><span class="o">.</span><span class="n">construct_Or</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">z</span><span class="o">.</span><span class="n">values</span><span class="p">()),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;num_wann&quot;</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;irvec&quot;</span><span class="p">],</span> <span class="n">mat</span><span class="p">)</span>
         <span class="n">Hr_nonortho_sym</span> <span class="o">=</span> <span class="n">CWModel</span><span class="o">.</span><span class="n">construct_Or</span><span class="p">(</span>
             <span class="nb">list</span><span class="p">(</span><span class="n">z_nonortho</span><span class="o">.</span><span class="n">values</span><span class="p">()),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;num_wann&quot;</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;irvec&quot;</span><span class="p">],</span> <span class="n">mat</span>
@@ -1142,35 +1088,6 @@ document.write(`
             <span class="n">Nz</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">mat</span><span class="p">[</span><span class="s2">&quot;matrix&quot;</span><span class="p">])</span>
             <span class="n">dic</span> <span class="o">=</span> <span class="n">mat</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
 
-            <span class="c1"># @wrap_non_picklable_objects</span>
-            <span class="c1"># def proc(i, tag, d):</span>
-            <span class="c1">#     percent = (i + 1) / float(Nz) * 100</span>
-            <span class="c1">#     if percent % 10 == 0:</span>
-            <span class="c1">#         self._cwm.log(f&quot;* {int(percent)} %&quot;, None, end=&quot;\n&quot;, file=self._outfile, mode=&quot;a&quot;)</span>
-
-            <span class="c1">#     dic[&quot;matrix&quot;] = {tag: d}</span>
-
-            <span class="c1">#     if self._cwi[&quot;tb_gauge&quot;]:</span>
-            <span class="c1">#         Zk = construct_Ok(</span>
-            <span class="c1">#             [1], self._cwi[&quot;num_wann&quot;], kpoints, self._cwi[&quot;irvec&quot;], dic, atoms_frac=atoms_frac_samb</span>
-            <span class="c1">#         )</span>
-            <span class="c1">#     else:</span>
-            <span class="c1">#         Zk = construct_Ok([1], self._cwi[&quot;num_wann&quot;], kpoints, self._cwi[&quot;irvec&quot;], dic)</span>
-
-            <span class="c1">#     v = thermal_avg(</span>
-            <span class="c1">#         Zk,</span>
-            <span class="c1">#         Ek,</span>
-            <span class="c1">#         Uk,</span>
-            <span class="c1">#         self._cwi[&quot;fermi_energy&quot;],</span>
-            <span class="c1">#         T_Kelvin=self._cwi[&quot;z_exp_temperature&quot;],</span>
-            <span class="c1">#     )</span>
-
-            <span class="c1">#     return i, tag, v</span>
-
-            <span class="c1"># res = Parallel(n_jobs=2, verbose=10)(delayed(proc)(i, tag, d) for i, (tag, d) in enumerate(Zr_dict.items()))</span>
-            <span class="c1"># res = sorted(res, key=lambda x: x[0])</span>
-            <span class="c1"># z_exp = {tag: v for _, tag, v in res}</span>
-
             <span class="n">z_exp</span> <span class="o">=</span> <span class="p">{}</span>
             <span class="n">percent</span> <span class="o">=</span> <span class="mi">10</span>
             <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">tag</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">Zr_dict</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
@@ -1222,10 +1139,10 @@ document.write(`
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;z_exp&quot;</span><span class="p">]:</span>
             <span class="n">E_tot_samb</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">([</span><span class="n">z</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">*</span> <span class="n">z_exp</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">z_exp</span><span class="o">.</span><span class="n">keys</span><span class="p">()])</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot; * E_tot_samb = </span><span class="si">{</span><span class="n">E_tot_samb</span><span class="si">}</span><span class="s2"> [eV] </span><span class="se">\n</span><span class="s2">&quot;</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">E_tot_samb</span> <span class="o">=</span> <span class="mf">0.0</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
 
-        <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot; * E_tot_samb = </span><span class="si">{</span><span class="n">E_tot_samb</span><span class="si">}</span><span class="s2"> [eV] </span><span class="se">\n</span><span class="s2">&quot;</span>
         <span class="n">msg</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot; * E_tot = </span><span class="si">{</span><span class="n">E_tot</span><span class="si">}</span><span class="s2"> [eV] </span><span class="se">\n</span><span class="s2">&quot;</span>
         <span class="n">msg</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot; * T*S = </span><span class="si">{</span><span class="n">T</span><span class="o">*</span><span class="n">S</span><span class="si">}</span><span class="s2"> [eV] </span><span class="se">\n</span><span class="s2">&quot;</span>
         <span class="n">msg</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot; * free_energy = </span><span class="si">{</span><span class="n">free_energy</span><span class="si">}</span><span class="s2"> [eV]&quot;</span>
@@ -1235,6 +1152,9 @@ document.write(`
         <span class="bp">self</span><span class="o">.</span><span class="n">_cwm</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="s2">&quot;done&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_outfile</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;a&quot;</span><span class="p">)</span>
 
         <span class="c1">#####</span>
+
+        <span class="k">del</span> <span class="n">mat</span><span class="p">[</span><span class="s2">&quot;matrix&quot;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_samb_info</span> <span class="o">=</span> <span class="n">mat</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
             <span class="p">{</span>
@@ -1252,8 +1172,6 @@ document.write(`
                 <span class="c1">#</span>
                 <span class="s2">&quot;Ek_MAE_grid&quot;</span><span class="p">:</span> <span class="n">Ek_MAE_grid</span><span class="p">,</span>
                 <span class="s2">&quot;Ek_MAE_path&quot;</span><span class="p">:</span> <span class="n">Ek_MAE_path</span><span class="p">,</span>
-                <span class="c1">#</span>
-                <span class="s2">&quot;matrix_dict&quot;</span><span class="p">:</span> <span class="n">mat</span><span class="p">,</span>
             <span class="p">}</span>
         <span class="p">)</span>
 
@@ -1579,103 +1497,27 @@ document.write(`
 <span class="sd">            filename (str): file name.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">with</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">hf</span><span class="p">:</span>
-            <span class="n">info</span> <span class="o">=</span> <span class="n">hf</span><span class="o">.</span><span class="n">create_group</span><span class="p">(</span><span class="s2">&quot;info&quot;</span><span class="p">)</span>
-            <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-                <span class="k">try</span><span class="p">:</span>
-                    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="ow">in</span> <span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="nb">list</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
-                        <span class="n">dset</span> <span class="o">=</span> <span class="n">info</span><span class="o">.</span><span class="n">create_dataset</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">v</span><span class="p">)</span>
-                    <span class="k">elif</span> <span class="nb">type</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="o">==</span> <span class="nb">bool</span><span class="p">:</span>
-                        <span class="n">dset</span> <span class="o">=</span> <span class="n">info</span><span class="o">.</span><span class="n">create_dataset</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">v</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">bool</span><span class="p">)</span>
-                    <span class="k">else</span><span class="p">:</span>
-                        <span class="n">dset</span> <span class="o">=</span> <span class="n">info</span><span class="o">.</span><span class="n">create_dataset</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">v</span><span class="p">))</span>
-                <span class="k">except</span><span class="p">:</span>
-                    <span class="n">dset</span> <span class="o">=</span> <span class="n">info</span><span class="o">.</span><span class="n">create_dataset</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">v</span><span class="p">))</span>
+            <span class="k">for</span> <span class="n">group</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;info&quot;</span><span class="p">,</span> <span class="s2">&quot;data&quot;</span><span class="p">,</span> <span class="s2">&quot;samb_info&quot;</span><span class="p">):</span>
 
-            <span class="n">data</span> <span class="o">=</span> <span class="n">hf</span><span class="o">.</span><span class="n">create_group</span><span class="p">(</span><span class="s2">&quot;data&quot;</span><span class="p">)</span>
-            <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-                <span class="k">try</span><span class="p">:</span>
-                    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="ow">in</span> <span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="nb">list</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
-                        <span class="n">dset</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">create_dataset</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">v</span><span class="p">)</span>
-                    <span class="k">elif</span> <span class="nb">type</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="o">==</span> <span class="nb">bool</span><span class="p">:</span>
-                        <span class="n">dset</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">create_dataset</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">v</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">bool</span><span class="p">)</span>
-                    <span class="k">else</span><span class="p">:</span>
-                        <span class="n">dset</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">create_dataset</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">v</span><span class="p">))</span>
-                <span class="k">except</span><span class="p">:</span>
-                    <span class="n">dset</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">create_dataset</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">v</span><span class="p">))</span></div>
+                <span class="k">if</span> <span class="n">group</span> <span class="o">==</span> <span class="s2">&quot;info&quot;</span><span class="p">:</span>
+                    <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span>
+                <span class="k">elif</span> <span class="n">group</span> <span class="o">==</span> <span class="s2">&quot;data&quot;</span><span class="p">:</span>
+                    <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_samb_info</span>
 
+                <span class="n">group</span> <span class="o">=</span> <span class="n">hf</span><span class="o">.</span><span class="n">create_group</span><span class="p">(</span><span class="n">group</span><span class="p">)</span>
 
-    <span class="c1"># ==================================================</span>
-<div class="viewcode-block" id="CWModel.read_info">
-<a class="viewcode-back" href="../../../src/api/cw.html#symclosestwannier.cw.cw_model.CWModel.read_info">[docs]</a>
-    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">read_info</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        read info from seedname.hdf5 (hdf5 format).</span>
-
-<span class="sd">        Args:</span>
-<span class="sd">            filename (str): file name.</span>
-
-<span class="sd">        Returns:</span>
-<span class="sd">            CWInfo: info.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">with</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">hf</span><span class="p">:</span>
-            <span class="n">info</span> <span class="o">=</span> <span class="p">{}</span>
-            <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">hf</span><span class="p">[</span><span class="s2">&quot;info&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-                <span class="n">v</span> <span class="o">=</span> <span class="n">v</span><span class="p">[()]</span>
-
-                <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="o">==</span> <span class="nb">bytes</span><span class="p">:</span>
-                    <span class="n">v</span> <span class="o">=</span> <span class="n">v</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
                     <span class="k">try</span><span class="p">:</span>
-                        <span class="n">v</span> <span class="o">=</span> <span class="n">ast</span><span class="o">.</span><span class="n">literal_eval</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+                        <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="ow">in</span> <span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="nb">list</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+                            <span class="n">dset</span> <span class="o">=</span> <span class="n">group</span><span class="o">.</span><span class="n">create_dataset</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">v</span><span class="p">)</span>
+                        <span class="k">elif</span> <span class="nb">type</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="o">==</span> <span class="nb">bool</span><span class="p">:</span>
+                            <span class="n">dset</span> <span class="o">=</span> <span class="n">group</span><span class="o">.</span><span class="n">create_dataset</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">v</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">bool</span><span class="p">)</span>
+                        <span class="k">else</span><span class="p">:</span>
+                            <span class="n">dset</span> <span class="o">=</span> <span class="n">group</span><span class="o">.</span><span class="n">create_dataset</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">v</span><span class="p">))</span>
                     <span class="k">except</span><span class="p">:</span>
-                        <span class="n">v</span> <span class="o">=</span> <span class="n">v</span>
-
-                <span class="k">elif</span> <span class="nb">type</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="o">==</span> <span class="n">np</span><span class="o">.</span><span class="n">bool_</span><span class="p">:</span>
-                    <span class="n">v</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
-                <span class="k">elif</span> <span class="nb">type</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="o">==</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">:</span>
-                    <span class="n">v</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
-                <span class="k">elif</span> <span class="nb">type</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="o">==</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
-                    <span class="n">v</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
-
-                <span class="n">info</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span>
-
-            <span class="k">return</span> <span class="n">info</span></div>
-
-
-    <span class="c1"># ==================================================</span>
-<div class="viewcode-block" id="CWModel.read_data">
-<a class="viewcode-back" href="../../../src/api/cw.html#symclosestwannier.cw.cw_model.CWModel.read_data">[docs]</a>
-    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">read_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        read data from seedname.hdf5 (hdf5 format).</span>
-
-<span class="sd">        Args:</span>
-<span class="sd">            filename (str): file name.</span>
-
-<span class="sd">        Returns:</span>
-<span class="sd">            dict: dictionary of data.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">with</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">hf</span><span class="p">:</span>
-            <span class="n">data</span> <span class="o">=</span> <span class="p">{}</span>
-            <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">hf</span><span class="p">[</span><span class="s2">&quot;data&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-                <span class="n">v</span> <span class="o">=</span> <span class="n">v</span><span class="p">[()]</span>
-
-                <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="o">==</span> <span class="nb">bytes</span><span class="p">:</span>
-                    <span class="n">v</span> <span class="o">=</span> <span class="n">v</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
-                    <span class="k">try</span><span class="p">:</span>
-                        <span class="n">v</span> <span class="o">=</span> <span class="n">ast</span><span class="o">.</span><span class="n">literal_eval</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
-                    <span class="k">except</span><span class="p">:</span>
-                        <span class="n">v</span> <span class="o">=</span> <span class="n">v</span>
-
-                <span class="k">elif</span> <span class="nb">type</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="o">==</span> <span class="n">np</span><span class="o">.</span><span class="n">bool_</span><span class="p">:</span>
-                    <span class="n">v</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
-                <span class="k">elif</span> <span class="nb">type</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="o">==</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">:</span>
-                    <span class="n">v</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
-
-                <span class="n">data</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span>
-
-            <span class="k">return</span> <span class="n">data</span></div>
+                        <span class="n">dset</span> <span class="o">=</span> <span class="n">group</span><span class="o">.</span><span class="n">create_dataset</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">v</span><span class="p">))</span></div>
 
 
     <span class="c1"># ==================================================</span>
@@ -1690,12 +1532,39 @@ document.write(`
 <span class="sd">            filename (str): file name.</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            tuple: CWInfo, dictionary of data.</span>
+<span class="sd">            tuple: CWInfo, dictionary of data, dictionary of SAMB info.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">info</span> <span class="o">=</span> <span class="n">CWModel</span><span class="o">.</span><span class="n">read_info</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
-        <span class="n">data</span> <span class="o">=</span> <span class="n">CWModel</span><span class="o">.</span><span class="n">read_data</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+        <span class="n">info</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">samb_info</span> <span class="o">=</span> <span class="p">{}</span>
 
-        <span class="k">return</span> <span class="n">info</span><span class="p">,</span> <span class="n">data</span></div>
+        <span class="k">with</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">hf</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;info&quot;</span><span class="p">,</span> <span class="s2">&quot;data&quot;</span><span class="p">,</span> <span class="s2">&quot;samb_info&quot;</span><span class="p">):</span>
+                <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">hf</span><span class="p">[</span><span class="n">d</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                    <span class="n">v</span> <span class="o">=</span> <span class="n">v</span><span class="p">[()]</span>
+
+                    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="o">==</span> <span class="nb">bytes</span><span class="p">:</span>
+                        <span class="n">v</span> <span class="o">=</span> <span class="n">v</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
+                        <span class="k">try</span><span class="p">:</span>
+                            <span class="n">v</span> <span class="o">=</span> <span class="n">ast</span><span class="o">.</span><span class="n">literal_eval</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+                        <span class="k">except</span><span class="p">:</span>
+                            <span class="n">v</span> <span class="o">=</span> <span class="n">v</span>
+
+                    <span class="k">elif</span> <span class="nb">type</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="o">==</span> <span class="n">np</span><span class="o">.</span><span class="n">bool_</span><span class="p">:</span>
+                        <span class="n">v</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+                    <span class="k">elif</span> <span class="nb">type</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="o">==</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">:</span>
+                        <span class="n">v</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+                    <span class="k">elif</span> <span class="nb">type</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="o">==</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+                        <span class="n">v</span> <span class="o">=</span> <span class="p">[</span><span class="n">ast</span><span class="o">.</span><span class="n">literal_eval</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">vi</span><span class="p">))</span> <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">vi</span><span class="p">)</span> <span class="o">==</span> <span class="nb">bytes</span> <span class="k">else</span> <span class="n">vi</span> <span class="k">for</span> <span class="n">vi</span> <span class="ow">in</span> <span class="n">v</span><span class="p">]</span>
+
+                    <span class="k">if</span> <span class="n">d</span> <span class="o">==</span> <span class="s2">&quot;info&quot;</span><span class="p">:</span>
+                        <span class="n">info</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span>
+                    <span class="k">elif</span> <span class="n">d</span> <span class="o">==</span> <span class="s2">&quot;data&quot;</span><span class="p">:</span>
+                        <span class="n">data</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">samb_info</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span>
+
+            <span class="k">return</span> <span class="n">info</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">samb_info</span></div>
 
 
     <span class="c1"># ==================================================</span>

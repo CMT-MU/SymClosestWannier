@@ -357,18 +357,18 @@ document.write(`
 <span class="sd">    Args:</span>
 <span class="sd">        seedname (str, optional): seedname.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">win</span> <span class="o">=</span> <span class="n">Win</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="n">seedname</span><span class="p">)</span>
     <span class="n">cwin</span> <span class="o">=</span> <span class="n">CWin</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="n">seedname</span><span class="p">)</span>
     <span class="n">cwm</span> <span class="o">=</span> <span class="n">CWManager</span><span class="p">(</span>
         <span class="n">topdir</span><span class="o">=</span><span class="n">cwin</span><span class="p">[</span><span class="s2">&quot;outdir&quot;</span><span class="p">],</span> <span class="n">verbose</span><span class="o">=</span><span class="n">cwin</span><span class="p">[</span><span class="s2">&quot;verbose&quot;</span><span class="p">],</span> <span class="n">parallel</span><span class="o">=</span><span class="n">cwin</span><span class="p">[</span><span class="s2">&quot;parallel&quot;</span><span class="p">],</span> <span class="n">formatter</span><span class="o">=</span><span class="n">cwin</span><span class="p">[</span><span class="s2">&quot;formatter&quot;</span><span class="p">]</span>
     <span class="p">)</span>
 
     <span class="n">filename</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">cwin</span><span class="p">[</span><span class="s2">&quot;outdir&quot;</span><span class="p">],</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">seedname</span><span class="si">}</span><span class="s2">.hdf5&quot;</span><span class="p">))</span>
-    <span class="n">info</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="n">CWModel</span><span class="o">.</span><span class="n">read_info_data</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
-    <span class="n">cwi</span> <span class="o">=</span> <span class="n">CWInfo</span><span class="p">(</span><span class="s2">&quot;./&quot;</span><span class="p">,</span> <span class="n">seedname</span><span class="p">,</span> <span class="n">dic</span><span class="o">=</span><span class="n">info</span><span class="p">)</span>
-    <span class="n">cwi</span> <span class="o">|=</span> <span class="n">cwin</span> <span class="o">|</span> <span class="n">win</span>
+    <span class="n">info</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">samb_info</span> <span class="o">=</span> <span class="n">CWModel</span><span class="o">.</span><span class="n">read_info_data</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
 
-    <span class="n">cw_model</span> <span class="o">=</span> <span class="n">CWModel</span><span class="p">(</span><span class="n">cwi</span><span class="p">,</span> <span class="n">cwm</span><span class="p">,</span> <span class="n">dic</span><span class="o">=</span><span class="n">data</span><span class="p">)</span>
+    <span class="n">cwi</span> <span class="o">=</span> <span class="n">CWInfo</span><span class="p">(</span><span class="s2">&quot;./&quot;</span><span class="p">,</span> <span class="n">seedname</span><span class="p">,</span> <span class="n">dic</span><span class="o">=</span><span class="n">info</span><span class="p">,</span> <span class="n">postcw</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">cwi</span> <span class="o">|=</span> <span class="n">cwin</span> <span class="o">|</span> <span class="n">Win</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="n">seedname</span><span class="p">)</span>
+
+    <span class="n">cw_model</span> <span class="o">=</span> <span class="n">CWModel</span><span class="p">(</span><span class="n">cwi</span><span class="p">,</span> <span class="n">cwm</span><span class="p">,</span> <span class="n">samb_info</span><span class="p">,</span> <span class="n">dic</span><span class="o">=</span><span class="n">data</span><span class="p">)</span>
     <span class="n">cwi</span> <span class="o">=</span> <span class="n">cw_model</span><span class="o">.</span><span class="n">_cwi</span>
 
     <span class="n">outfile</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">seedname</span><span class="si">}</span><span class="s2">.cwpout&quot;</span>
@@ -388,7 +388,7 @@ document.write(`
     <span class="k">if</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;symmetrization&quot;</span><span class="p">]:</span>
         <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">cw_model</span><span class="p">[</span><span class="s2">&quot;Hr_sym&quot;</span><span class="p">])</span> <span class="o">==</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
             <span class="n">Hr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">cw_model</span><span class="p">[</span><span class="s2">&quot;Hr_sym&quot;</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">complex128</span><span class="p">)</span>
-            <span class="n">ket_samb</span> <span class="o">=</span> <span class="n">cw_model</span><span class="p">[</span><span class="s2">&quot;matrix_dict&quot;</span><span class="p">][</span><span class="s2">&quot;ket&quot;</span><span class="p">]</span>
+            <span class="n">ket_samb</span> <span class="o">=</span> <span class="n">samb_info</span><span class="p">[</span><span class="s2">&quot;ket&quot;</span><span class="p">]</span>
             <span class="n">ket_amn</span> <span class="o">=</span> <span class="n">cwi</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;ket_amn&quot;</span><span class="p">,</span> <span class="n">ket_samb</span><span class="p">)</span>
             <span class="n">Hr</span> <span class="o">=</span> <span class="n">sort_ket_matrix</span><span class="p">(</span><span class="n">Hr</span><span class="p">,</span> <span class="n">ket_samb</span><span class="p">,</span> <span class="n">ket_amn</span><span class="p">)</span>
 
@@ -407,14 +407,15 @@ document.write(`
     <span class="n">cwm</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">cw_start_output_msg</span><span class="p">(),</span> <span class="n">stamp</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">outfile</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;a&quot;</span><span class="p">)</span>
     <span class="n">cwm</span><span class="o">.</span><span class="n">set_stamp</span><span class="p">()</span>
 
-    <span class="k">if</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;berry_task&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;ahc&quot;</span><span class="p">:</span>
-        <span class="n">res</span><span class="o">.</span><span class="n">write_ahc</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;berry&quot;</span><span class="p">]:</span>
+        <span class="k">if</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;berry_task&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;ahc&quot;</span><span class="p">:</span>
+            <span class="n">res</span><span class="o">.</span><span class="n">write_ahc</span><span class="p">()</span>
 
-    <span class="k">if</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;berry_task&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;kubo&quot;</span><span class="p">:</span>
-        <span class="n">res</span><span class="o">.</span><span class="n">write_kubo</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;berry_task&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;kubo&quot;</span><span class="p">:</span>
+            <span class="n">res</span><span class="o">.</span><span class="n">write_kubo</span><span class="p">()</span>
 
-    <span class="k">if</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;berry_task&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;shc&quot;</span><span class="p">:</span>
-        <span class="n">res</span><span class="o">.</span><span class="n">write_shc</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;berry_task&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;shc&quot;</span><span class="p">:</span>
+            <span class="n">res</span><span class="o">.</span><span class="n">write_shc</span><span class="p">()</span>
 
     <span class="k">if</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;gyrotropic&quot;</span><span class="p">]:</span>
         <span class="k">if</span> <span class="n">cwi</span><span class="o">.</span><span class="n">win</span><span class="o">.</span><span class="n">eval_K</span><span class="p">:</span>

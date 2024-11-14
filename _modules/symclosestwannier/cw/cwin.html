@@ -323,14 +323,10 @@ document.write(`
     <span class="s2">&quot;dis_win_emin&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
     <span class="s2">&quot;smearing_temp_max&quot;</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">,</span>
     <span class="s2">&quot;smearing_temp_min&quot;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
-    <span class="s2">&quot;delta&quot;</span><span class="p">:</span> <span class="mf">1e-12</span><span class="p">,</span>
+    <span class="s2">&quot;delta&quot;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
     <span class="s2">&quot;svd&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
-    <span class="s2">&quot;optimize_wintemp&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
-    <span class="s2">&quot;optimize_wintemp_num_iter&quot;</span><span class="p">:</span> <span class="mi">100</span><span class="p">,</span>
-    <span class="s2">&quot;optimize_wintemp_conv_thr&quot;</span><span class="p">:</span> <span class="mf">1e-1</span><span class="p">,</span>
-    <span class="s2">&quot;optimize_wintemp_mixing_beta&quot;</span><span class="p">:</span> <span class="mf">0.7</span><span class="p">,</span>
-    <span class="s2">&quot;optimize_wintemp_fixed_params&quot;</span><span class="p">:</span> <span class="p">[],</span>
-    <span class="s2">&quot;&quot;</span>
+    <span class="s2">&quot;optimize_params&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="s2">&quot;optimize_params_fixed&quot;</span><span class="p">:</span> <span class="p">[],</span>
     <span class="c1">#</span>
     <span class="s2">&quot;verbose&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
     <span class="s2">&quot;parallel&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
@@ -426,20 +422,17 @@ document.write(`
 <span class="sd">            dict: dictionary form of seedname.cwin.</span>
 <span class="sd">                - seedname          : seedname (str), [&quot;cwannier&quot;].</span>
 <span class="sd">                - outdir            : output files are found in this directory (str), [&quot;./&quot;].</span>
-<span class="sd">                - restart           : the restart position &#39;cw&#39;/&#39;w90&#39;/&#39;sym&#39; (str), [&quot;wannierize&quot;].</span>
+<span class="sd">                - restart           : the restart position &#39;cw&#39;/&#39;w90&#39; (str), [&quot;cw&quot;].</span>
 <span class="sd">                - disentangle       : disentagle bands ? (bool), [False].</span>
 <span class="sd">                - proj_min          : minimum value of projectability: [0.0].</span>
 <span class="sd">                - dis_win_emax      : upper energy window (float), [None].</span>
 <span class="sd">                - dis_win_emin      : lower energy window (float), [None].</span>
-<span class="sd">                - smearing_temp_max : smearing temperature for upper window (float), [5.0].</span>
-<span class="sd">                - smearing_temp_min : smearing temperature for lower window (float), [0.01].</span>
-<span class="sd">                - delta             : small constant to avoid ill-conditioning of overlap matrices (float), [1e-12].</span>
+<span class="sd">                - smearing_temp_max : smearing temperature for upper window (float), [1.0].</span>
+<span class="sd">                - smearing_temp_min : smearing temperature for lower window (float), [0.0].</span>
+<span class="sd">                - delta             : small constant to avoid ill-conditioning of overlap matrices (&lt; 1e-5) (float), [0.0].</span>
 <span class="sd">                - svd               : implement singular value decomposition ? otherwise adopt Lowdin&#39;s orthogonalization method (bool), [False].</span>
-<span class="sd">                - optimize_wintemp&quot;: optimize the energy windows and smearing temperatures? (bool), [False].</span>
-<span class="sd">                - optimize_wintemp_num_iter&quot;: number of iterations for optimization (int), [100].</span>
-<span class="sd">                - optimize_wintemp_conv_thr&quot;: Convergence threshold for optimization (float), [1e-1].</span>
-<span class="sd">                - optimize_wintemp_mixing_beta&quot;: mixing factor for optimization (float), [0.7].</span>
-<span class="sd">                - optimize_wintemp_fixed_params&quot;:  fixed parameters for optimization, (list) [[&quot;dis_win_emin&quot;, &quot;smearing_temp_min&quot;]].</span>
+<span class="sd">                - optimize_params&quot;: optimize the energy windows and smearing temperatures? (bool), [False].</span>
+<span class="sd">                - optimize_params_fixed&quot;:  fixed parameters for optimization (ex: [&#39;dis_win_emin&#39;, &#39;smearing_temp_min&#39;]), (list) [].</span>
 <span class="sd">                - verbose           : verbose calculation info (bool, optional), [False].</span>
 <span class="sd">                - parallel          : use parallel code? (bool), [False].</span>
 <span class="sd">                - formatter         : format by using black? (bool), [False].</span>
@@ -526,7 +519,7 @@ document.write(`
                 <span class="k">if</span> <span class="s2">&quot;[&quot;</span> <span class="ow">in</span> <span class="n">v</span> <span class="ow">or</span> <span class="s2">&quot;]&quot;</span> <span class="ow">in</span> <span class="n">v</span><span class="p">:</span>
                     <span class="n">v</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
 
-            <span class="k">if</span> <span class="n">key</span> <span class="o">==</span> <span class="s2">&quot;optimize_wintemp_fixed_params&quot;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">key</span> <span class="o">==</span> <span class="s2">&quot;optimize_params_fixed&quot;</span><span class="p">:</span>
                 <span class="k">if</span> <span class="s2">&quot;[&quot;</span> <span class="ow">in</span> <span class="n">v</span> <span class="ow">or</span> <span class="s2">&quot;]&quot;</span> <span class="ow">in</span> <span class="n">v</span><span class="p">:</span>
                     <span class="n">v</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
 
@@ -546,13 +539,15 @@ document.write(`
     <span class="k">def</span> <span class="nf">_str_to</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
         <span class="n">v</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">v</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;&#39;&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;&quot;&#39;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;seedname&quot;</span><span class="p">,</span> <span class="s2">&quot;mp_seedname&quot;</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">CWin</span><span class="o">.</span><span class="n">_default</span><span class="p">()</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;invalid keyword = </span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2"> was given.&quot;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">key</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;seedname&quot;</span><span class="p">,</span> <span class="s2">&quot;mp_seedname&quot;</span><span class="p">):</span>
             <span class="k">pass</span>
         <span class="k">elif</span> <span class="n">key</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;outdir&quot;</span><span class="p">,</span> <span class="s2">&quot;mp_outdir&quot;</span><span class="p">):</span>
             <span class="n">v</span> <span class="o">=</span> <span class="n">v</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="k">if</span> <span class="n">v</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;/&quot;</span> <span class="k">else</span> <span class="n">v</span>
         <span class="k">elif</span> <span class="n">key</span> <span class="o">==</span> <span class="s2">&quot;restart&quot;</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">v</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;cw&quot;</span><span class="p">,</span> <span class="s2">&quot;sym&quot;</span><span class="p">,</span> <span class="s2">&quot;w90&quot;</span><span class="p">):</span>
-                <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;invalid restart = </span><span class="si">{</span><span class="n">v</span><span class="si">}</span><span class="s2"> was given. choose from &#39;cw&#39;/&#39;w90&#39;/&#39;sym&#39;.&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">v</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;cw&quot;</span><span class="p">,</span> <span class="s2">&quot;w90&quot;</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;invalid restart = </span><span class="si">{</span><span class="n">v</span><span class="si">}</span><span class="s2"> was given. choose from &#39;cw&#39;/&#39;w90&#39;.&quot;</span><span class="p">)</span>
         <span class="k">elif</span> <span class="n">key</span> <span class="ow">in</span> <span class="p">(</span>
             <span class="s2">&quot;proj_min&quot;</span><span class="p">,</span>
             <span class="s2">&quot;dis_win_emax&quot;</span><span class="p">,</span>
@@ -560,11 +555,8 @@ document.write(`
             <span class="s2">&quot;smearing_temp_max&quot;</span><span class="p">,</span>
             <span class="s2">&quot;smearing_temp_min&quot;</span><span class="p">,</span>
             <span class="s2">&quot;delta&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;optimize_wintemp_conv_thr&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;optimize_wintemp_mixing_beta&quot;</span><span class="p">,</span>
             <span class="s2">&quot;z_exp_temperature&quot;</span><span class="p">,</span>
             <span class="s2">&quot;a&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;fermi_energy&quot;</span><span class="p">,</span>
             <span class="s2">&quot;dos_smr_en_width&quot;</span><span class="p">,</span>
             <span class="s2">&quot;degen_thr&quot;</span><span class="p">,</span>
             <span class="s2">&quot;magnetic_field&quot;</span><span class="p">,</span>
@@ -573,7 +565,10 @@ document.write(`
             <span class="s2">&quot;g_factor&quot;</span><span class="p">,</span>
         <span class="p">):</span>
             <span class="n">v</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="n">key</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;optimize_wintemp_num_iter&quot;</span><span class="p">,</span> <span class="s2">&quot;N1&quot;</span><span class="p">,</span> <span class="s2">&quot;dos_num_fermi&quot;</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">key</span> <span class="o">==</span> <span class="s2">&quot;delta&quot;</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">v</span> <span class="o">&gt;</span> <span class="mf">1e-5</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;delta is too large. delta must be less than 1e-5.&quot;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">key</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;N1&quot;</span><span class="p">,</span> <span class="s2">&quot;dos_num_fermi&quot;</span><span class="p">):</span>
             <span class="n">v</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
         <span class="k">elif</span> <span class="n">key</span> <span class="o">==</span> <span class="s2">&quot;ket_amn&quot;</span><span class="p">:</span>
             <span class="k">if</span> <span class="s2">&quot;[&quot;</span> <span class="ow">in</span> <span class="n">v</span> <span class="ow">or</span> <span class="s2">&quot;]&quot;</span> <span class="ow">in</span> <span class="n">v</span><span class="p">:</span>
@@ -581,9 +576,16 @@ document.write(`
                     <span class="n">v</span> <span class="o">=</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">o</span><span class="p">)</span> <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="sa">f</span><span class="s2">&quot;(</span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">o</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">o</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">v</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,(&quot;</span><span class="p">))]</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="n">v</span> <span class="o">=</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">o</span><span class="p">)</span> <span class="k">for</span> <span class="n">o</span> <span class="ow">in</span> <span class="n">v</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">)]</span>
-        <span class="k">elif</span> <span class="n">key</span> <span class="o">==</span> <span class="s2">&quot;optimize_wintemp_fixed_params&quot;</span><span class="p">:</span>
+        <span class="k">elif</span> <span class="n">key</span> <span class="o">==</span> <span class="s2">&quot;optimize_params_fixed&quot;</span><span class="p">:</span>
             <span class="k">if</span> <span class="s2">&quot;[&quot;</span> <span class="ow">in</span> <span class="n">v</span> <span class="ow">or</span> <span class="s2">&quot;]&quot;</span> <span class="ow">in</span> <span class="n">v</span><span class="p">:</span>
                 <span class="n">v</span> <span class="o">=</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">o</span><span class="p">)</span> <span class="k">for</span> <span class="n">o</span> <span class="ow">in</span> <span class="n">v</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">)]</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">vi</span> <span class="ow">in</span> <span class="n">v</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">vi</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;dis_win_emin&quot;</span><span class="p">,</span> <span class="s2">&quot;dis_win_emax&quot;</span><span class="p">,</span> <span class="s2">&quot;smearing_temp_min&quot;</span><span class="p">,</span> <span class="s2">&quot;smearing_temp_max&quot;</span><span class="p">,</span> <span class="s2">&quot;delta&quot;</span><span class="p">):</span>
+                        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span>
+                            <span class="sa">f</span><span class="s2">&quot;invalid optimize_params_fixed: </span><span class="si">{</span><span class="n">vi</span><span class="si">}</span><span class="s2"> was given. choose from &#39;dis_win_emin&#39;/&#39;dis_win_emax&#39;/&#39;smearing_temp_min&#39;/&#39;smearing_temp_max&#39;/&#39;delta&#39;.&quot;</span>
+                        <span class="p">)</span>
+
         <span class="k">elif</span> <span class="n">key</span> <span class="o">==</span> <span class="s2">&quot;irreps&quot;</span><span class="p">:</span>
             <span class="k">if</span> <span class="s2">&quot;[&quot;</span> <span class="ow">in</span> <span class="n">v</span> <span class="ow">and</span> <span class="s2">&quot;]&quot;</span> <span class="ow">in</span> <span class="n">v</span><span class="p">:</span>
                 <span class="n">v</span> <span class="o">=</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">o</span><span class="p">)</span> <span class="k">for</span> <span class="n">o</span> <span class="ow">in</span> <span class="n">v</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">)]</span>

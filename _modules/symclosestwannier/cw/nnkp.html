@@ -501,6 +501,10 @@ document.write(`
                     <span class="n">d</span><span class="p">[</span><span class="s2">&quot;atom_pos&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">atom_pos</span>
                     <span class="n">d</span><span class="p">[</span><span class="s2">&quot;atom_pos_r&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">atom_pos_r</span>
 
+                <span class="k">if</span> <span class="s2">&quot;begin auto_projections&quot;</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
+                    <span class="n">spinors</span> <span class="o">=</span> <span class="s2">&quot;begin spinor_projections&quot;</span> <span class="ow">in</span> <span class="n">line</span>
+                    <span class="n">d</span><span class="p">[</span><span class="s2">&quot;num_wann&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">nnkp_data</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">])</span>
+
             <span class="n">bvec_cart</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">([</span><span class="n">d</span><span class="p">[</span><span class="s2">&quot;num_b&quot;</span><span class="p">],</span> <span class="mi">3</span><span class="p">])</span>
             <span class="n">bvec_crys</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">([</span><span class="n">d</span><span class="p">[</span><span class="s2">&quot;num_b&quot;</span><span class="p">],</span> <span class="mi">3</span><span class="p">])</span>
             <span class="n">bbmat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">([</span><span class="n">d</span><span class="p">[</span><span class="s2">&quot;num_b&quot;</span><span class="p">],</span> <span class="mi">9</span><span class="p">])</span>

@@ -363,10 +363,11 @@ document.write(`
 <span class="sd">    Attributes:</span>
 <span class="sd">        _topdir (str): top directory.</span>
 <span class="sd">        _seedname (str): seedname.</span>
+<span class="sd">        _postcw (bool): postcw calculation?</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="c1"># ==================================================</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">topdir</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">seedname</span><span class="o">=</span><span class="s2">&quot;cwannier&quot;</span><span class="p">,</span> <span class="n">dic</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">topdir</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">seedname</span><span class="o">=</span><span class="s2">&quot;cwannier&quot;</span><span class="p">,</span> <span class="n">dic</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">postcw</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        CWInfo manages information for CWModel, CWin, Win, Nnkp, Eig, Amn, Mmn, Umat, Spn, UHu.</span>
 
@@ -374,37 +375,44 @@ document.write(`
 <span class="sd">            topdir (str, optional): directory of seedname.cwin file.</span>
 <span class="sd">            seedname (str, optional): seedname.</span>
 <span class="sd">            dic (dict, optional): dictionary of CWin.</span>
+<span class="sd">            postcw (bool): postcw calculation?</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_topdir</span> <span class="o">=</span> <span class="n">topdir</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_seedname</span> <span class="o">=</span> <span class="n">seedname</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_postcw</span> <span class="o">=</span> <span class="n">postcw</span>
 
-        <span class="k">if</span> <span class="n">dic</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">topdir</span><span class="p">,</span> <span class="n">seedname</span><span class="p">))</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">dic</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">topdir</span><span class="p">,</span> <span class="n">seedname</span><span class="p">,</span> <span class="n">dic</span><span class="p">))</span>
 
     <span class="c1"># ==================================================</span>
 <div class="viewcode-block" id="CWInfo.read">
 <a class="viewcode-back" href="../../../src/api/cw.html#symclosestwannier.cw.cw_info.CWInfo.read">[docs]</a>
-    <span class="k">def</span> <span class="nf">read</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">topdir</span><span class="p">,</span> <span class="n">seedname</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">read</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">topdir</span><span class="p">,</span> <span class="n">seedname</span><span class="p">,</span> <span class="n">dic</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        read seedname.cwin/win/nnkp/eig/amn/(mmn)/(umat)/(spn)/(uHu) files.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            topdir (str): directory of seedname.cwin/win/eig/amn/mmn/nnkp files.</span>
 <span class="sd">            seedname (str): seedname.</span>
+<span class="sd">            dic (dict, optional): dictionary of CWin.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            dict: system information.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">d</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="k">for</span> <span class="n">C</span> <span class="ow">in</span> <span class="n">_class_map</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
-            <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">C</span><span class="o">.</span><span class="n">_default</span><span class="p">())</span>
+
+        <span class="k">if</span> <span class="n">dic</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">C</span> <span class="ow">in</span> <span class="n">_class_map</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+                <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">C</span><span class="o">.</span><span class="n">_default</span><span class="p">())</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">d</span> <span class="o">=</span> <span class="n">dic</span>
 
         <span class="n">info_dict</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">C</span> <span class="ow">in</span> <span class="n">_class_map</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">d</span><span class="p">:</span>
+                <span class="k">continue</span>
+
             <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;umat&quot;</span> <span class="ow">and</span> <span class="p">(</span><span class="n">d</span><span class="p">[</span><span class="s2">&quot;restart&quot;</span><span class="p">]</span> <span class="o">!=</span> <span class="s2">&quot;w90&quot;</span><span class="p">):</span>
                 <span class="k">continue</span>
             <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;mmn&quot;</span><span class="p">:</span>
@@ -426,10 +434,12 @@ document.write(`
                     <span class="k">continue</span>
 
             <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;uHu&quot;</span><span class="p">:</span>
-                <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">([</span><span class="n">d</span><span class="p">[</span><span class="s2">&quot;gyrotropic&quot;</span><span class="p">]]):</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_postcw</span> <span class="ow">and</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">([</span><span class="n">d</span><span class="p">[</span><span class="s2">&quot;gyrotropic&quot;</span><span class="p">]])):</span>
                     <span class="k">continue</span>
+                <span class="n">info</span> <span class="o">=</span> <span class="n">C</span><span class="p">(</span><span class="n">topdir</span><span class="p">,</span> <span class="n">seedname</span><span class="p">,</span> <span class="n">formatted</span><span class="o">=</span><span class="n">d</span><span class="p">[</span><span class="s2">&quot;uHu_formatted&quot;</span><span class="p">])</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">info</span> <span class="o">=</span> <span class="n">C</span><span class="p">(</span><span class="n">topdir</span><span class="p">,</span> <span class="n">seedname</span><span class="p">)</span>
 
-            <span class="n">info</span> <span class="o">=</span> <span class="n">C</span><span class="p">(</span><span class="n">topdir</span><span class="p">,</span> <span class="n">seedname</span><span class="p">)</span>
             <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">info</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
                 <span class="k">for</span> <span class="n">name_</span><span class="p">,</span> <span class="n">info_</span> <span class="ow">in</span> <span class="n">info_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
                     <span class="k">if</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">info_</span><span class="p">:</span>

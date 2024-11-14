@@ -312,6 +312,7 @@ document.write(`
 <span class="kn">import</span> <span class="nn">fortio</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">sympy.physics.quantum</span> <span class="kn">import</span> <span class="n">TensorProduct</span>
+<span class="kn">from</span> <span class="nn">heapq</span> <span class="kn">import</span> <span class="n">nlargest</span>
 <span class="kn">import</span> <span class="nn">multiprocessing</span>
 <span class="kn">from</span> <span class="nn">joblib</span> <span class="kn">import</span> <span class="n">Parallel</span><span class="p">,</span> <span class="n">delayed</span><span class="p">,</span> <span class="n">wrap_non_picklable_objects</span>
 
@@ -376,49 +377,55 @@ document.write(`
 <span class="c1"># ==================================================</span>
 <div class="viewcode-block" id="weight_proj">
 <a class="viewcode-back" href="../../../src/api/util.html#symclosestwannier.util.utility.weight_proj">[docs]</a>
-<span class="k">def</span> <span class="nf">weight_proj</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">e0</span><span class="p">,</span> <span class="n">e1</span><span class="p">,</span> <span class="n">T0</span><span class="p">,</span> <span class="n">T1</span><span class="p">,</span> <span class="n">delta</span><span class="o">=</span><span class="mf">10e-12</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">weight_proj</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">dis_win_emin</span><span class="p">,</span> <span class="n">dis_win_emax</span><span class="p">,</span> <span class="n">smearing_temp_min</span><span class="p">,</span> <span class="n">smearing_temp_max</span><span class="p">,</span> <span class="n">delta</span><span class="o">=</span><span class="mf">10e-12</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;weight function for projection&quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">fermi</span><span class="p">(</span><span class="n">e0</span> <span class="o">-</span> <span class="n">e</span><span class="p">,</span> <span class="n">T0</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s2">&quot;eV&quot;</span><span class="p">)</span> <span class="o">+</span> <span class="n">fermi</span><span class="p">(</span><span class="n">e</span> <span class="o">-</span> <span class="n">e1</span><span class="p">,</span> <span class="n">T1</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s2">&quot;eV&quot;</span><span class="p">)</span> <span class="o">-</span> <span class="mf">1.0</span> <span class="o">+</span> <span class="n">delta</span></div>
+    <span class="k">return</span> <span class="p">(</span>
+        <span class="n">fermi</span><span class="p">(</span><span class="n">dis_win_emin</span> <span class="o">-</span> <span class="n">e</span><span class="p">,</span> <span class="n">smearing_temp_min</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s2">&quot;eV&quot;</span><span class="p">)</span>
+        <span class="o">+</span> <span class="n">fermi</span><span class="p">(</span><span class="n">e</span> <span class="o">-</span> <span class="n">dis_win_emax</span><span class="p">,</span> <span class="n">smearing_temp_max</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s2">&quot;eV&quot;</span><span class="p">)</span>
+        <span class="o">-</span> <span class="mf">1.0</span>
+        <span class="o">+</span> <span class="n">delta</span>
+    <span class="p">)</span></div>
 
 
 
 <span class="c1"># ==================================================</span>
 <div class="viewcode-block" id="band_distance">
 <a class="viewcode-back" href="../../../src/api/util.html#symclosestwannier.util.utility.band_distance">[docs]</a>
-<span class="k">def</span> <span class="nf">band_distance</span><span class="p">(</span><span class="n">Ek</span><span class="p">,</span> <span class="n">Hk</span><span class="p">,</span> <span class="n">ef</span><span class="o">=</span><span class="mf">0.0</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">band_distance</span><span class="p">(</span><span class="n">Ak</span><span class="p">,</span> <span class="n">Ek</span><span class="p">,</span> <span class="n">Hk</span><span class="p">,</span> <span class="n">ef</span><span class="o">=</span><span class="mf">0.0</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    band distance defined in [npj Computational Materials (2023) 208]:</span>
+<span class="sd">    band distance defined in [npj Computational Materials, 208 (2023)]:</span>
 <span class="sd">        - eta_x = \sqrt{ \sum w_{nk}(x) (e_{nk}^{DFT} - e_{nk}^{Wan})**2 / \sum w_{nk} }.</span>
 <span class="sd">        - eta_x_max = \max{ w_{nk}(x) \abs{e_{nk}^{DFT} - e_{nk}^{Wan}} }.</span>
 <span class="sd">        - w_{nk}(x) = \sqrt{ f_{nk}^{DFT}(Ef+x,T=0.1) * f_{nk}^{Wan}(Ef+x,T=0.1) }</span>
 <span class="sd">        - f_{nk}: fermi-dirac distribution function.</span>
 
 <span class="sd">    Args:</span>
+<span class="sd">        Ak (ndarray): Overlap matrix elements.</span>
 <span class="sd">        Ek (ndarray): Kohn-Sham energies.</span>
 <span class="sd">        Hk (ndarray): Hamiltonian matrix elements in k-space (orthogonal).</span>
 <span class="sd">        ef (float, optional): fermi energy.</span>
 
-<span class="sd">    Returns: idx_bottom, eta_0, eta_0_max, eta_2, eta_2_max.</span>
-<span class="sd">             idx_bottom is the index of the bottom band of DFT bands compared with the Wannier bands.</span>
+<span class="sd">    Returns: eta_0, eta_0_max, eta_2, eta_2_max.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">num_k</span><span class="p">,</span> <span class="n">num_bands</span> <span class="o">=</span> <span class="n">Ek</span><span class="o">.</span><span class="n">shape</span>
-    <span class="n">num_wann</span> <span class="o">=</span> <span class="n">Hk</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">num_k</span><span class="p">,</span> <span class="n">num_wann</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">Hk</span><span class="o">.</span><span class="n">shape</span>
 
     <span class="n">Ek_wan</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">eigh</span><span class="p">(</span><span class="n">Hk</span><span class="p">)</span>
 
-    <span class="n">idx_bottom</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="c1"># projectability of each Kohn-Sham state in k-space.</span>
+    <span class="n">Pk</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">real</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diagonal</span><span class="p">(</span><span class="n">Ak</span> <span class="o">@</span> <span class="n">Ak</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">conjugate</span><span class="p">(),</span> <span class="n">axis1</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">axis2</span><span class="o">=</span><span class="mi">2</span><span class="p">))</span>
 
-    <span class="k">if</span> <span class="n">num_wann</span> <span class="o">&lt;</span> <span class="n">num_bands</span><span class="p">:</span>
-        <span class="n">ek_wan_1</span> <span class="o">=</span> <span class="n">Ek_wan</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span>
-        <span class="n">MAE</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">inf</span>
-        <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_bands</span><span class="p">):</span>
-            <span class="n">ek_ref</span> <span class="o">=</span> <span class="n">Ek</span><span class="p">[:,</span> <span class="n">idx</span><span class="p">]</span>
-            <span class="n">MAE_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">ek_ref</span> <span class="o">-</span> <span class="n">ek_wan_1</span><span class="p">))</span> <span class="o">/</span> <span class="n">num_k</span>
-            <span class="k">if</span> <span class="n">MAE_</span> <span class="o">&lt;</span> <span class="n">MAE</span><span class="p">:</span>
-                <span class="n">idx_bottom</span> <span class="o">=</span> <span class="n">idx</span>
-                <span class="n">MAE</span> <span class="o">=</span> <span class="n">MAE_</span>
+    <span class="n">Ek_ref</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">num_k</span><span class="p">,</span> <span class="n">num_wann</span><span class="p">))</span>
+    <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_k</span><span class="p">):</span>
+        <span class="n">Pk_</span> <span class="o">=</span> <span class="p">[(</span><span class="n">pnk</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span> <span class="k">for</span> <span class="n">n</span><span class="p">,</span> <span class="n">pnk</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">Pk</span><span class="p">[</span><span class="n">k</span><span class="p">])]</span>
+        <span class="n">Pk_max_idx_list</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">([</span><span class="n">n</span> <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">nlargest</span><span class="p">(</span><span class="n">num_wann</span><span class="p">,</span> <span class="n">Pk_</span><span class="p">)])</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">Pk_max_idx_list</span><span class="p">):</span>
+            <span class="n">Ek_ref</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">Ek</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="n">n</span><span class="p">]</span>
 
-    <span class="n">Ek_ref</span> <span class="o">=</span> <span class="n">Ek</span><span class="p">[:,</span> <span class="n">idx_bottom</span> <span class="p">:</span> <span class="n">idx_bottom</span> <span class="o">+</span> <span class="n">num_wann</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_k</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_wann</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">Ek_ref</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="n">n</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">ef</span> <span class="ow">or</span> <span class="n">Ek_wan</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="n">n</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">ef</span><span class="p">:</span>
+                <span class="n">Ek_ref</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span>
+                <span class="n">Ek_wan</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span>
 
     <span class="n">fermi_ref</span> <span class="o">=</span> <span class="n">fermi</span><span class="p">(</span><span class="n">Ek_ref</span> <span class="o">-</span> <span class="p">(</span><span class="n">ef</span> <span class="o">+</span> <span class="mf">0.0</span><span class="p">),</span> <span class="n">T</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s2">&quot;eV&quot;</span><span class="p">)</span>
     <span class="n">fermi_wan</span> <span class="o">=</span> <span class="n">fermi</span><span class="p">(</span><span class="n">Ek_wan</span> <span class="o">-</span> <span class="p">(</span><span class="n">ef</span> <span class="o">+</span> <span class="mf">0.0</span><span class="p">),</span> <span class="n">T</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s2">&quot;eV&quot;</span><span class="p">)</span>
@@ -432,7 +439,7 @@ document.write(`
     <span class="n">eta_2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">w</span> <span class="o">*</span> <span class="p">(</span><span class="n">Ek_ref</span> <span class="o">-</span> <span class="n">Ek_wan</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">w</span><span class="p">))</span> <span class="o">*</span> <span class="mi">1000</span>
     <span class="n">eta_2_max</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">w</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">Ek_ref</span> <span class="o">-</span> <span class="n">Ek_wan</span><span class="p">))</span> <span class="o">*</span> <span class="mi">1000</span>
 
-    <span class="k">return</span> <span class="n">idx_bottom</span><span class="p">,</span> <span class="n">eta_0</span><span class="p">,</span> <span class="n">eta_0_max</span><span class="p">,</span> <span class="n">eta_2</span><span class="p">,</span> <span class="n">eta_2_max</span></div>
+    <span class="k">return</span> <span class="n">eta_0</span><span class="p">,</span> <span class="n">eta_0_max</span><span class="p">,</span> <span class="n">eta_2</span><span class="p">,</span> <span class="n">eta_2_max</span></div>
 
 
 
@@ -1024,7 +1031,7 @@ document.write(`
 
     <span class="c1">#         Or_dict_ = {}</span>
     <span class="c1">#         for (R1, R2, R3, m, n), v in Or_dict.items():</span>
-    <span class="c1">#             if np.abs(v) &lt; 1e-12:</span>
+    <span class="c1">#             if np.abs(v) &lt; 0.0:</span>
     <span class="c1">#                 continue</span>
 
     <span class="c1">#             R = np.array([R1, R2, R3], dtype=float)</span>
@@ -1043,7 +1050,7 @@ document.write(`
     <span class="c1">#         for tag, d in Zr_dict.items():</span>
     <span class="c1">#             dic = {}</span>
     <span class="c1">#             for (R1, R2, R3, m, n), v in d.items():</span>
-    <span class="c1">#                 if np.abs(v) &lt; 1e-12:</span>
+    <span class="c1">#                 if np.abs(v) &lt; 0.0:</span>
     <span class="c1">#                     continue</span>
 
     <span class="c1">#                 R = np.array([R1, R2, R3], dtype=float)</span>
