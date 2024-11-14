@@ -350,13 +350,13 @@ class Response(dict):
                 xx = gyro_K[0, 0, :]
                 yy = gyro_K[1, 1, :]
                 zz = gyro_K[2, 2, :]
-                xy = (gyro_K[0, 1, :] + gyro_K[1, 0, :]) / 2.0
-                xz = (gyro_K[0, 2, :] + gyro_K[2, 0, :]) / 2.0
-                yz = (gyro_K[1, 2, :] + gyro_K[2, 1, :]) / 2.0
+                xy = (gyro_K[0, 1, :] + gyro_K[1, 0, :]) * 0.5
+                xz = (gyro_K[0, 2, :] + gyro_K[2, 0, :]) * 0.5
+                yz = (gyro_K[1, 2, :] + gyro_K[2, 1, :]) * 0.5
                 # Antisymmetric part, in polar-vector form
-                x = (gyro_K[1, 2, :] - gyro_K[2, 1, :]) / 2.0
-                y = (gyro_K[2, 0, :] - gyro_K[0, 2, :]) / 2.0
-                z = (gyro_K[0, 1, :] - gyro_K[1, 0, :]) / 2.0
+                x = (gyro_K[1, 2, :] - gyro_K[2, 1, :]) * 0.5
+                y = (gyro_K[2, 0, :] - gyro_K[0, 2, :]) * 0.5
+                z = (gyro_K[0, 1, :] - gyro_K[1, 0, :]) * 0.5
 
                 gyro_K_str += f"#                             |                                      symmetric part                                     ||              asymmetric part              | \n"
                 gyro_K_str += "# EFERMI(eV)      omega(eV)             xx             yy             zz             xy             xz             yz              x              y              z \n"
@@ -386,7 +386,7 @@ class Response(dict):
         f_out_name_tmp = "K_orb"
         units_tmp = "Ampere"
         comment_tmp = "orbital part of the K tensor -- Eq. 3 of TAS17"
-        write(f_out_name_tmp, units_tmp, comment_tmp)
+        write(f_out_name_tmp, units_tmp, comment_tmp, spin=False)
 
     # ==================================================
     def write_spin(self):
