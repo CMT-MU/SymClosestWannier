@@ -77,7 +77,7 @@ def analyzer(seedname="cwannier"):
         Hr = None
 
     if cwi["symmetrization"]:
-        if type(cw_model["Hr_sym"]) == np.ndarray:
+        if cw_model["Hr_sym"] is not None:
             Hr = np.array(cw_model["Hr_sym"], dtype=np.complex128)
             ket_samb = samb_info["ket"]
             ket_amn = cwi.get("ket_amn", ket_samb)

@@ -568,7 +568,9 @@ class CWModel(dict):
         def proc(d):
             return {tuple(sp.sympify(k)): complex(sp.sympify(v)) for k, v in d.items()}
 
-        res = Parallel(n_jobs=_num_proc, verbose=1)(delayed(proc)(d) for d in mat["matrix"].values())
+        matrix_lst = list(mat["matrix"].values())
+        res = Parallel(n_jobs=_num_proc, verbose=1)(delayed(proc)(d) for d in matrix_lst)
+        res = sorted(res, key=matrix_lst.index)
 
         Zr_dict = {}
         for i, (zj, d) in enumerate(mat["matrix"].items()):
@@ -601,7 +603,6 @@ class CWModel(dict):
                 }
                 lattice_const = model["info"]["cell"]["a"]
                 A_samb = lattice_const * latticeP[lattice][:-1, :-1]
-                print(A_samb)
 
             mat["A"] = A_samb
         #####
@@ -1206,12 +1207,12 @@ class CWModel(dict):
                         except:
                             v = v
 
-                    elif type(v) == np.bool_:
+                    if type(v) == np.bool_:
                         v = bool(v)
                     elif type(v) == np.float64:
                         v = float(v)
-                    elif type(v) == np.ndarray:
-                        v = [ast.literal_eval(str(vi)) if type(vi) == bytes else vi for vi in v]
+                    elif type(v) in (list, np.ndarray):
+                        v = [vi.decode("utf-8") if type(vi) == bytes else vi for vi in v]
 
                     if d == "info":
                         info[k] = v
