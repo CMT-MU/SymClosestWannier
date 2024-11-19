@@ -1716,21 +1716,21 @@ def gyrotropic_get_K(cwi, operators):
             S_w = fourier_transform_r_to_k_vec(operators["SS_R"], kpoints, cwi["irvec"], cwi["ndegen"], atoms_frac)
             S_k_diag = np.einsum("kln,aklp,kpn->akn", U.conj(), S_w, U, optimize=True)
 
-        for k in range(len(kpoints)):
-            kpt = kpoints[k]
+        for n1 in range(gyrotropic_num_bands):
+            n = gyrotropic_band_list[n1] - 1
 
-            for n1 in range(gyrotropic_num_bands):
-                n = gyrotropic_band_list[n1] - 1
+            k_list = []
+            kpt_list = []
+            ifermi_list = []
+            k_ifermi_list = []
 
+            for k in range(len(kpoints)):
                 if n > 0 and E[k, n] - E[k, n - 1] <= gyrotropic_degen_thresh:
                     continue
-
                 if n < num_wann - 1 and E[k, n + 1] - E[k, n] <= gyrotropic_degen_thresh:
                     continue
 
-                S = np.zeros(3)
-                orb_nk = np.zeros(3)
-                got_orb_n = False
+                flag = False
                 for ifermi in range(mum_fermi):
                     arg = (E[k, n] - fermi_energy_list[ifermi]) / eta_smr
                     #
@@ -1740,67 +1740,83 @@ def gyrotropic_get_K(cwi, operators):
                     if np.abs(arg) > gyrotropic_smr_max_arg:
                         continue
 
-                    if cwi.win.eval_spn:
-                        S = S_k_diag[:, k, n]
+                    if not flag:
+                        k_list.append(k)
+                        kpt_list.append(kpoints[k])
 
-                    # Orbital quantities are computed for each band separately
-                    if not got_orb_n:
-                        if cwi.win.eval_K:
-                            # Fake occupations: band n occupied, others empty
-                            occ = np.zeros((1, num_wann))
-                            occ[:, n] = 1.0
-                            imf_k, img_k, imh_k = berry_get_imfgh_klist(
-                                cwi, operators, np.array([kpt]), imf=True, img=True, imh=True, occ=occ
-                            )
-                            for i in range(3):
-                                orb_nk[i] = np.sum(imh_k[0, 0, :, i]) - np.sum(img_k[0, 0, :, i])
-                            # curv_nk(i) = sum(imf_k(:, i, 1))
-                            # enddo
-                        elif cwi.win.eval_D:
-                            pass
-                            # occ = 0.0
-                            # occ(n) = 1.0
-                            # call berry_get_imf_klist(kpt, imf_k, occ)
-                            # do i = 1, 3
-                            # curv_nk(i) = sum(imf_k(:, i, 1))
-                            # enddo
-                            # got_orb_n = .true. ! Do it for only one value of ifermi
+                    if ifermi not in ifermi_list:
+                        ifermi_list.append(ifermi)
 
-                        if cwi.win.eval_Dw:
-                            # gyrotropic_get_curv_w_k(eig, AA, curv_w_nk)
-                            pass
+                    k_ifermi_list.append((k, ifermi))
 
-                        got_orb_n = True  # Do it for only one value of ifermi
+                    flag = True
 
-                    delta = (
-                        utility_w0gauss(arg, gyrotropic_smr_type_idx) / eta_smr * kweight
-                    )  # Broadened delta(E_nk-E_f)
-                    #
-                    # Loop over Cartesian tensor components
-                    #
+            if len(kpt_list) == 0:
+                continue
 
-                    for j in range(3):
-                        if cwi.win.eval_K and cwi.win.eval_spn:
-                            gyro_K_spn[:, j, ifermi] += np.real(delE[:, k, n] * S[j] * delta)
-                        if cwi.win.eval_K:
-                            gyro_K_orb[:, j, ifermi] += np.real(delE[:, k, n] * orb_nk[j] * delta)
-                        # if cwi.win.eval_D:
-                        #     gyro_D[:, j, ifermi] += delE[:, k, n] * curv_nk(j)*delta
-                        # if cwi.win.eval_Dw:
-                        #     for i in range(3):
-                        #         gyro_Dw[i, j, ifermi, :] += delE[i, k, n]*delta*curv_w_nk[n, :, j]
+            orb_nk = np.zeros((len(kpt_list), 3))
 
-                        # if cwi.win.eval_C:
-                        #     gyro_C[:, j, ifermi] += delE[:, k, n] * delE[j, k, n] * delta
+            # Orbital quantities are computed for each band separately
+            if cwi.win.eval_K:
+                # Fake occupations: band n occupied, others empty
+                occ = np.zeros((len(kpt_list), num_wann))
+                occ[:, n] = 1.0
+                imf_k, img_k, imh_k = berry_get_imfgh_klist(
+                    cwi, operators, np.array(kpt_list), imf=True, img=True, imh=True, occ=occ
+                )
+                orb_nk = np.sum(imh_k[0, :, :, :], axis=1) - np.sum(img_k[0, :, :, :], axis=1)
+                # curv_nk(i) = sum(imf_k(:, i, 1))
+                # enddo
+                # (num_fermi_loc, kpoint, 3, 3))
+            elif cwi.win.eval_D:
+                pass
+                # occ = 0.0
+                # occ(n) = 1.0
+                # call berry_get_imf_klist(kpt, imf_k, occ)
+                # do i = 1, 3
+                # curv_nk(i) = sum(imf_k(:, i, 1))
+                # enddo
+                # got_orb_n = .true. ! Do it for only one value of ifermi
 
-                    # if cwi.win.eval_dos:
-                    #     gyro_DOS[ifermi] += delta
+            if cwi.win.eval_Dw:
+                # gyrotropic_get_curv_w_k(eig, AA, curv_w_nk)
+                pass
 
-            # if cwi.win.eval_NOA:
-            #     if cwi.win.eval_spn:
-            #         gyrotropic_get_NOA_k(kpt, kweight, eig, del_eig, AA, UU, gyro_NOA_orb, gyro_NOA_spn)
-            #     else:
-            #         gyrotropic_get_NOA_k(kpt, kweight, eig, del_eig, AA, UU, gyro_NOA_orb)
+            # Broadened delta(E_nk-E_f)
+            #
+            # Loop over Cartesian tensor components
+            #
+
+            for ifermi in ifermi_list:
+                k_list_ = [k for k, ifermi_ in k_ifermi_list if ifermi_ == ifermi]
+                if len(k_list_) == 0:
+                    continue
+
+                delE_ = np.array([delE[:, k, n] for k in k_list_])
+                orb_nk_ = np.array([orb_nk[k_list.index(k), :] for k in k_list_])
+                delta_ = (
+                    np.array(
+                        [
+                            utility_w0gauss((E[k, n] - fermi_energy_list[ifermi]) / eta_smr, gyrotropic_smr_type_idx)
+                            for k in k_list_
+                        ]
+                    )
+                    / eta_smr
+                    * kweight
+                )
+
+                if cwi.win.eval_spn:
+                    S = np.array([S_k_diag[:, k, n] for k in k_list_])
+                else:
+                    S = np.zeros(len(k_list_))
+
+                for j in range(3):
+                    if cwi.win.eval_K and cwi.win.eval_spn:
+                        for i in range(3):
+                            gyro_K_spn[i, j, ifermi] += np.sum(np.real(delE_[:, i] * S[:, j] * delta_))
+                    if cwi.win.eval_K:
+                        for i in range(3):
+                            gyro_K_orb[i, j, ifermi] += np.sum(np.real(delE_[:, i] * orb_nk_[:, j] * delta_))
 
         return gyro_K_orb, gyro_K_spn
 
@@ -1810,7 +1826,7 @@ def gyrotropic_get_K(cwi, operators):
         [[i / float(N1), j / float(N2), k / float(N3)] for i in range(N1) for j in range(N2) for k in range(N3)]
     )
 
-    kpoints_chunks = np.split(kpoints, [j for j in range(300000, len(kpoints), 300000)])
+    kpoints_chunks = np.split(kpoints, [j for j in range(100, len(kpoints), 100)])
     num_chunks = len(kpoints_chunks)
 
     # res = Parallel(n_jobs=_num_proc, verbose=10)(delayed(gyrotropic_get_K_k)(kpoints) for kpoints in kpoints_chunks)
@@ -1823,8 +1839,8 @@ def gyrotropic_get_K(cwi, operators):
     start_time = time.time()
     for i, kpoints in enumerate(kpoints_chunks):
         print(f"{i+1}/{num_chunks}")
-        v = gyrotropic_get_K_k(kpoints)
 
+        v = gyrotropic_get_K_k(kpoints)
         gyro_K_orb += v[0]
         gyro_K_spn += v[1]
 
