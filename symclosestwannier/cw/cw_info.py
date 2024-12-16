@@ -123,8 +123,19 @@ class CWInfo(dict):
                     continue
 
             if name == "uHu":
-                if not (self._postcw and np.any([d["gyrotropic"]])):
+                if not (self._postcw and d["gyrotropic"]):
                     continue
+                if not np.any(
+                    [
+                        info_dict["win"].eval_K,
+                        info_dict["win"].eval_C,
+                        info_dict["win"].eval_D,
+                        info_dict["win"].eval_Dw,
+                        info_dict["win"].eval_NOA,
+                    ]
+                ):
+                    continue
+
                 info = C(topdir, seedname, formatted=d["uHu_formatted"])
             else:
                 info = C(topdir, seedname)
