@@ -109,7 +109,7 @@ def analyzer(seedname="cwannier"):
             res.write_shc()
 
     if cwi["gyrotropic"]:
-        if cwi.win.eval_K:
+        if cwi.win.eval_K or cwi.win.eval_spn:
             res.write_gyro_K()
 
     if cwi["spin_moment"]:

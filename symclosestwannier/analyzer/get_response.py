@@ -263,7 +263,7 @@ def gyrotropic_main(cwi, operators):
     win = cwi.win
 
     # (K tensor)  orbital component of the kinetic magnetoelectric effect (kME)
-    if win.eval_K:
+    if win.eval_K or win.eval_spn:
         if cwi["transl_inv"]:
             raise Exception("transl_inv=T disabled for K-tensor")
 
@@ -294,7 +294,7 @@ def gyrotropic_main(cwi, operators):
 
     # --- #
 
-    if win.eval_K:
+    if win.eval_K or win.eval_spn:
         d["gyro_K_orb"], d["gyro_K_spn"] = gyrotropic_get_K(cwi, operators)
 
     return d
@@ -1811,7 +1811,7 @@ def gyrotropic_get_K(cwi, operators):
                     S = np.zeros(len(k_list_))
 
                 for j in range(3):
-                    if cwi.win.eval_K and cwi.win.eval_spn:
+                    if cwi.win.eval_spn:
                         for i in range(3):
                             gyro_K_spn[i, j, ifermi] += np.sum(np.real(delE_[:, i] * S[:, j] * delta_))
                     if cwi.win.eval_K:
@@ -1826,7 +1826,7 @@ def gyrotropic_get_K(cwi, operators):
         [[i / float(N1), j / float(N2), k / float(N3)] for i in range(N1) for j in range(N2) for k in range(N3)]
     )
 
-    kpoints_chunks = np.split(kpoints, [j for j in range(100, len(kpoints), 100)])
+    kpoints_chunks = np.split(kpoints, [j for j in range(300, len(kpoints), 300)])
     num_chunks = len(kpoints_chunks)
 
     # res = Parallel(n_jobs=_num_proc, verbose=10)(delayed(gyrotropic_get_K_k)(kpoints) for kpoints in kpoints_chunks)
