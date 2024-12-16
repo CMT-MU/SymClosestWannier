@@ -330,7 +330,7 @@ class Win(dict):
                 d["atoms_frac"] = atoms_frac
 
             if "begin atoms_cart" in line:
-                units = d["units"]
+                units = win_data[i + 1]
                 n = 2 if units in ("bohr", "ang") else 1
                 ap_data = win_data[i + n : win_data_lower.index("end atoms_cart")]
                 ap_data = [[vi for vi in v.split() if vi != ""] for v in ap_data]
@@ -580,8 +580,8 @@ class Win(dict):
     @property
     def eval_spn(self):
         eval_spn = "spin" in self.gyrotropic_task_list or ("all" in self.gyrotropic_task_list and self["spinors"])
-        if not (self.eval_K or self.eval_NOA):
-            eval_spn = False
+        # if not (self.eval_K or self.eval_NOA):
+        #    eval_spn = False
         return eval_spn
 
     # ==================================================
