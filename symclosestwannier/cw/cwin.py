@@ -221,6 +221,11 @@ class CWin(dict):
             d["disentangle"] and (d["dis_win_emax"] is None or d["dis_win_emin"] is None)
         ), "dis_win_emax and dis_win_emin must be specified when disentangle == true."
 
+        if d["dis_win_emax"] is not None and d["dis_win_emin"] is not None:
+            assert not (
+                d["dis_win_emax"] < d["dis_win_emin"]
+            ), "check disentanglement windows (dis_win_emax < dis_win_emin !)"
+
         return d
 
     # ==================================================
