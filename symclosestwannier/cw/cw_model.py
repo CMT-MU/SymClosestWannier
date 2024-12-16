@@ -556,26 +556,28 @@ class CWModel(dict):
                 del mat["matrix"][zj]
 
         tag_dict = {zj: tag for zj, (tag, _) in samb["data"]["Z"].items()}
-        Zr_dict = {
-            (zj, tag_dict[zj]): {tuple(sp.sympify(k)): complex(sp.sympify(v)) for k, v in d.items()}
-            for zj, d in mat["matrix"].items()
-        }
-        mat["matrix"] = {
-            zj: {tuple(sp.sympify(k)): complex(sp.sympify(v)) for k, v in d.items()} for zj, d in mat["matrix"].items()
-        }
+
+        # Zr_dict = {
+        #     (zj, tag_dict[zj]): {tuple(sp.sympify(k)): complex(sp.sympify(v)) for k, v in d.items()}
+        #     for zj, d in mat["matrix"].items()
+        # }
+        # mat["matrix"] = {
+        #     zj: {tuple(sp.sympify(k)): complex(sp.sympify(v)) for k, v in d.items()} for zj, d in mat["matrix"].items()
+        # }
 
         ### kuniyoshi (24/08/20) ###
-        def proc(d):
-            return {tuple(sp.sympify(k)): complex(sp.sympify(v)) for k, v in d.items()}
+        def proc(j, zj, d):
+            return j, zj, {tuple(sp.sympify(k)): complex(sp.sympify(v)) for k, v in d.items()}
 
-        matrix_lst = list(mat["matrix"].values())
-        res = Parallel(n_jobs=_num_proc, verbose=1)(delayed(proc)(d) for d in matrix_lst)
-        res = sorted(res, key=matrix_lst.index)
+        res = Parallel(n_jobs=_num_proc, verbose=1)(
+            delayed(proc)(j, zj, d) for j, (zj, d) in enumerate(mat["matrix"].items())
+        )
+        res = sorted(res, key=lambda x: x[0])
 
         Zr_dict = {}
-        for i, (zj, d) in enumerate(mat["matrix"].items()):
-            Zr_dict[(zj, tag_dict[zj])] = res[i]
-            mat["matrix"][zj] = res[i]
+        for _, zj, d in res:
+            Zr_dict[(zj, tag_dict[zj])] = d
+            mat["matrix"][zj] = d
         ### kuniyoshi (24/08/20) ###
 
         A = None
