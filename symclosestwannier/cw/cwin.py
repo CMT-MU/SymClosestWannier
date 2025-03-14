@@ -213,9 +213,9 @@ class CWin(dict):
                     v = "".join(v)
 
             d[key] = self._str_to(key, v)
-        assert not (
-            d["restart"] == "w90" and d["symmetrization"]
-        ), "Symmetrization cannot be performed when restart == w90."
+        # assert not (
+        #    d["restart"] == "w90" and d["symmetrization"]
+        # ), "Symmetrization cannot be performed when restart == w90."
 
         assert not (
             d["disentangle"] and (d["dis_win_emax"] is None or d["dis_win_emin"] is None)
