@@ -62,6 +62,7 @@ from symclosestwannier.util.header import (
 from symclosestwannier.util.utility import (
     thermal_avg,
     total_energy,
+    free_energy,
     entropy,
     weight_proj,
     band_distance,
@@ -209,6 +210,11 @@ class CWModel(dict):
                 "Hr_nonortho": Hr_nonortho.tolist(),
             }
         )
+
+        if self._cwi["symmetrization"]:
+            msg = "   - symmetrization ... "
+            self._cwm.log(msg, None, end="\n", file=self._outfile, mode="a")
+            self._sym()
 
     # ==================================================
     def _cw(self):
@@ -817,29 +823,19 @@ class CWModel(dict):
         self._cwm.log(msg, None, end="\n", file=self._outfile, mode="a")
         self._cwm.set_stamp()
 
-        E_tot = total_energy(
-            Ek_grid,
-            self._cwi["fermi_energy"],
-            T_Kelvin=self._cwi["z_exp_temperature"],
-        )
-
-        S = entropy(
-            Ek_grid,
-            self._cwi["fermi_energy"],
-            T_Kelvin=self._cwi["z_exp_temperature"],
-        )
-
-        free_energy = E_tot - Kelvin_to_eV(T) * S
+        E = total_energy(Ek_grid, self._cwi["fermi_energy"], T_Kelvin=T)
+        S = entropy(Ek_grid, self._cwi["fermi_energy"], T_Kelvin=T)
+        F = E - Kelvin_to_eV(T) * S
 
         if self._cwi["z_exp"]:
-            E_tot_samb = np.sum([z[k] * z_exp[k] for k in z_exp.keys()])
-            msg = f" * E_tot_samb = {E_tot_samb} [eV] \n"
+            E_samb = np.sum([z[k] * z_exp[k] for k in z_exp.keys()])
+            msg = f" * E_samb = {E_samb} [eV] \n"
         else:
             msg = ""
 
-        msg += f" * E_tot = {E_tot} [eV] \n"
-        msg += f" * T*S = {T*S} [eV] \n"
-        msg += f" * free_energy = {free_energy} [eV]"
+        msg += f" * E = {E} [eV] \n"
+        msg += f" * T*S = {Kelvin_to_eV(T) * S} [eV] \n"
+        msg += f" * F = E - TS = {F} [eV]"
 
         self._cwm.log(msg, None, end="\n", file=self._outfile, mode="a")
 
