@@ -15,33 +15,36 @@
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
     document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
   </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-<link href="../../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link href="../../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 
-  
-  <link href="../../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
-
-    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=fa44fd50" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/sphinx-book-theme.css?v=eba8b062" />
     <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css?v=13237357" />
     <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-design.min.css?v=95c83b7e" />
   
+  <!-- So that users can add custom icons -->
+  <script src="../../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
-<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
-  <script src="../../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
     <script src="../../../_static/documentation_options.js?v=8cf54648"></script>
-    <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../../../_static/copybutton.js?v=f281be69"></script>
@@ -51,16 +54,15 @@
     <script>let toggleOpenOnPrint = 'true';</script>
     <script src="../../../_static/togglebutton.js?v=4a39c7ea"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
-    <script src="../../../_static/design-tabs.js?v=36754332"></script>
+    <script src="../../../_static/design-tabs.js?v=f930bc37"></script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
     <script async="async" src="../../../_static/sphinx-thebe.js?v=c100c467"></script>
-    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
-    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_modules/symclosestwannier/analyzer/get_response';</script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="jp"/>
+  <meta name="docsearch:version" content="" />
   </head>
   
   
@@ -76,19 +78,8 @@
     <i class="fa-solid fa-arrow-up"></i>Back to top</button>
 
   
-  <input type="checkbox"
-          class="sidebar-toggle"
-          id="pst-primary-sidebar-checkbox"/>
-  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
-  
-  <input type="checkbox"
-          class="sidebar-toggle"
-          id="pst-secondary-sidebar-checkbox"/>
-  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
-  
-  <div class="search-button__wrapper">
-    <div class="search-button__overlay"></div>
-    <div class="search-button__search-container">
+  <dialog id="pst-search-dialog">
+    
 <form class="bd-search d-flex align-items-center"
       action="../../../search.html"
       method="get">
@@ -96,7 +87,6 @@
   <input type="search"
          class="form-control"
          name="q"
-         id="search-input"
          placeholder="Search this book..."
          aria-label="Search this book..."
          autocomplete="off"
@@ -104,8 +94,8 @@
          autocapitalize="off"
          spellcheck="false"/>
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
-</form></div>
-  </div>
+</form>
+  </dialog>
 
   <div class="pst-async-banner-revealer d-none">
   <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
@@ -123,7 +113,8 @@
       
         
       
-      <div class="bd-sidebar-primary bd-sidebar">
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
         
 
   
@@ -153,15 +144,11 @@
 </a></div>
         <div class="sidebar-primary-item">
 
- <script>
- document.write(`
-   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="fa-solid fa-magnifying-glass"></i>
-    <span class="search-button__default-text">Search</span>
-    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
-   </button>
- `);
- </script></div>
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
         <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
         <p aria-level="2" class="caption" role="heading"><span class="caption-text">SAMB Construction</span></p>
@@ -195,9 +182,14 @@
   
   
   <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
   </div>
-  
-  <div id="rtd-footer-container"></div>
 
 
       </div>
@@ -261,24 +253,16 @@
 
 
 
-<script>
-document.write(`
-  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
-    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
-    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
-  </button>
-`);
-</script>
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
 
 
-<script>
-document.write(`
-  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <i class="fa-solid fa-magnifying-glass fa-lg"></i>
-  </button>
-`);
-</script>
+</button>
 
 </div></div>
       
@@ -339,12 +323,12 @@ document.write(`
 <span class="c1"># *  IAdJS19 = arXiv:1910.06172 (2019) (quasi-degenerate k.p)</span>
 <span class="c1"># ---------------------------------------------------------------</span>
 
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">multiprocessing</span>
-<span class="kn">from</span> <span class="nn">joblib</span> <span class="kn">import</span> <span class="n">Parallel</span><span class="p">,</span> <span class="n">delayed</span><span class="p">,</span> <span class="n">wrap_non_picklable_objects</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">multiprocessing</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">joblib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Parallel</span><span class="p">,</span> <span class="n">delayed</span><span class="p">,</span> <span class="n">wrap_non_picklable_objects</span>
 
 
-<span class="kn">from</span> <span class="nn">symclosestwannier.util.utility</span> <span class="kn">import</span> <span class="p">(</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">symclosestwannier.util.utility</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">fermi</span><span class="p">,</span>
     <span class="n">fourier_transform_r_to_k</span><span class="p">,</span>
     <span class="n">fourier_transform_r_to_k_new</span><span class="p">,</span>
@@ -354,7 +338,7 @@ document.write(`
     <span class="n">thermal_avg</span><span class="p">,</span>
 <span class="p">)</span>
 
-<span class="kn">from</span> <span class="nn">symclosestwannier.util.constants</span> <span class="kn">import</span> <span class="n">elec_mass_SI</span><span class="p">,</span> <span class="n">elem_charge_SI</span><span class="p">,</span> <span class="n">hbar_SI</span><span class="p">,</span> <span class="n">bohr</span><span class="p">,</span> <span class="n">bohr_magn_SI</span><span class="p">,</span> <span class="n">joul_to_eV</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">symclosestwannier.util.constants</span><span class="w"> </span><span class="kn">import</span> <span class="n">elec_mass_SI</span><span class="p">,</span> <span class="n">elem_charge_SI</span><span class="p">,</span> <span class="n">hbar_SI</span><span class="p">,</span> <span class="n">bohr</span><span class="p">,</span> <span class="n">bohr_magn_SI</span><span class="p">,</span> <span class="n">joul_to_eV</span>
 
 <span class="n">_num_proc</span> <span class="o">=</span> <span class="n">multiprocessing</span><span class="o">.</span><span class="n">cpu_count</span><span class="p">()</span>
 
@@ -365,7 +349,7 @@ document.write(`
 <span class="c1"># ==================================================</span>
 <div class="viewcode-block" id="spin_moment_main">
 <a class="viewcode-back" href="../../../src/api/analyzer.html#symclosestwannier.analyzer.get_response.spin_moment_main">[docs]</a>
-<span class="k">def</span> <span class="nf">spin_moment_main</span><span class="p">(</span><span class="n">cwi</span><span class="p">,</span> <span class="n">operators</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">spin_moment_main</span><span class="p">(</span><span class="n">cwi</span><span class="p">,</span> <span class="n">operators</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Computes the spin magnetic moments, Ms_x, Ms_y, Ms_z.</span>
 
@@ -404,7 +388,7 @@ document.write(`
 
         <span class="c1"># ==================================================</span>
         <span class="nd">@wrap_non_picklable_objects</span>
-        <span class="k">def</span> <span class="nf">spin_moment_main_k</span><span class="p">(</span><span class="n">kpt</span><span class="p">):</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">spin_moment_main_k</span><span class="p">(</span><span class="n">kpt</span><span class="p">):</span>
             <span class="n">HH</span> <span class="o">=</span> <span class="n">fourier_transform_r_to_k</span><span class="p">(</span><span class="n">operators</span><span class="p">[</span><span class="s2">&quot;HH_R&quot;</span><span class="p">],</span> <span class="n">kpt</span><span class="p">,</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;irvec&quot;</span><span class="p">],</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;ndegen&quot;</span><span class="p">],</span> <span class="n">atoms_frac</span><span class="p">)</span>
 
             <span class="n">pauli_spn</span> <span class="o">=</span> <span class="n">fourier_transform_r_to_k_vec</span><span class="p">(</span><span class="n">operators</span><span class="p">[</span><span class="s2">&quot;SS_R&quot;</span><span class="p">],</span> <span class="n">kpt</span><span class="p">,</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;irvec&quot;</span><span class="p">],</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;ndegen&quot;</span><span class="p">],</span> <span class="n">atoms_frac</span><span class="p">)</span>
@@ -437,7 +421,7 @@ document.write(`
 <span class="c1"># ==================================================</span>
 <div class="viewcode-block" id="berry_main">
 <a class="viewcode-back" href="../../../src/api/analyzer.html#symclosestwannier.analyzer.get_response.berry_main">[docs]</a>
-<span class="k">def</span> <span class="nf">berry_main</span><span class="p">(</span><span class="n">cwi</span><span class="p">,</span> <span class="n">operators</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">berry_main</span><span class="p">(</span><span class="n">cwi</span><span class="p">,</span> <span class="n">operators</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Computes the following quantities:</span>
 <span class="sd">     (ahc)  Anomalous Hall conductivity (from Berry curvature)</span>
@@ -539,7 +523,7 @@ document.write(`
 <span class="c1"># ==================================================</span>
 <div class="viewcode-block" id="gyrotropic_main">
 <a class="viewcode-back" href="../../../src/api/analyzer.html#symclosestwannier.analyzer.get_response.gyrotropic_main">[docs]</a>
-<span class="k">def</span> <span class="nf">gyrotropic_main</span><span class="p">(</span><span class="n">cwi</span><span class="p">,</span> <span class="n">operators</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">gyrotropic_main</span><span class="p">(</span><span class="n">cwi</span><span class="p">,</span> <span class="n">operators</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Computes the following quantities:</span>
 <span class="sd">     (-d0)   D tensor (the Berry curvature dipole).</span>
@@ -578,7 +562,7 @@ document.write(`
     <span class="n">win</span> <span class="o">=</span> <span class="n">cwi</span><span class="o">.</span><span class="n">win</span>
 
     <span class="c1"># (K tensor)  orbital component of the kinetic magnetoelectric effect (kME)</span>
-    <span class="k">if</span> <span class="n">win</span><span class="o">.</span><span class="n">eval_K</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">win</span><span class="o">.</span><span class="n">eval_K</span> <span class="ow">or</span> <span class="n">win</span><span class="o">.</span><span class="n">eval_spn</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;transl_inv&quot;</span><span class="p">]:</span>
             <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;transl_inv=T disabled for K-tensor&quot;</span><span class="p">)</span>
 
@@ -609,7 +593,7 @@ document.write(`
 
     <span class="c1"># --- #</span>
 
-    <span class="k">if</span> <span class="n">win</span><span class="o">.</span><span class="n">eval_K</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">win</span><span class="o">.</span><span class="n">eval_K</span> <span class="ow">or</span> <span class="n">win</span><span class="o">.</span><span class="n">eval_spn</span><span class="p">:</span>
         <span class="n">d</span><span class="p">[</span><span class="s2">&quot;gyro_K_orb&quot;</span><span class="p">],</span> <span class="n">d</span><span class="p">[</span><span class="s2">&quot;gyro_K_spn&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">gyrotropic_get_K</span><span class="p">(</span><span class="n">cwi</span><span class="p">,</span> <span class="n">operators</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">d</span></div>
@@ -619,7 +603,7 @@ document.write(`
 <span class="c1"># ==================================================</span>
 <div class="viewcode-block" id="wham_get_D_h">
 <a class="viewcode-back" href="../../../src/api/analyzer.html#symclosestwannier.analyzer.get_response.wham_get_D_h">[docs]</a>
-<span class="k">def</span> <span class="nf">wham_get_D_h</span><span class="p">(</span><span class="n">delHH</span><span class="p">,</span> <span class="n">E</span><span class="p">,</span> <span class="n">U</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">wham_get_D_h</span><span class="p">(</span><span class="n">delHH</span><span class="p">,</span> <span class="n">E</span><span class="p">,</span> <span class="n">U</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Compute D^H_a=UU^dag.del_a UU (a=x,y,z)</span>
 <span class="sd">    using Eq.(24) of WYSV06</span>
@@ -646,7 +630,7 @@ document.write(`
 <span class="c1"># ==================================================</span>
 <div class="viewcode-block" id="wham_get_deleig_a">
 <a class="viewcode-back" href="../../../src/api/analyzer.html#symclosestwannier.analyzer.get_response.wham_get_deleig_a">[docs]</a>
-<span class="k">def</span> <span class="nf">wham_get_deleig_a</span><span class="p">(</span><span class="n">delHH_a</span><span class="p">,</span> <span class="n">E</span><span class="p">,</span> <span class="n">U</span><span class="p">,</span> <span class="n">use_degen_pert</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">degen_thr</span><span class="o">=</span><span class="mf">1e-4</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">wham_get_deleig_a</span><span class="p">(</span><span class="n">delHH_a</span><span class="p">,</span> <span class="n">E</span><span class="p">,</span> <span class="n">U</span><span class="p">,</span> <span class="n">use_degen_pert</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">degen_thr</span><span class="o">=</span><span class="mf">1e-4</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Compute band derivatives dE/dk_a.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -718,7 +702,7 @@ document.write(`
 <span class="c1"># ==================================================</span>
 <div class="viewcode-block" id="wham_get_deleig">
 <a class="viewcode-back" href="../../../src/api/analyzer.html#symclosestwannier.analyzer.get_response.wham_get_deleig">[docs]</a>
-<span class="k">def</span> <span class="nf">wham_get_deleig</span><span class="p">(</span><span class="n">delHH</span><span class="p">,</span> <span class="n">E</span><span class="p">,</span> <span class="n">U</span><span class="p">,</span> <span class="n">use_degen_pert</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">degen_thr</span><span class="o">=</span><span class="mf">0.0</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">wham_get_deleig</span><span class="p">(</span><span class="n">delHH</span><span class="p">,</span> <span class="n">E</span><span class="p">,</span> <span class="n">U</span><span class="p">,</span> <span class="n">use_degen_pert</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">degen_thr</span><span class="o">=</span><span class="mf">0.0</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    This function returns derivatives of the eigenvalues dE/dk_a, using wham_get_deleig_a.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -731,7 +715,7 @@ document.write(`
 <span class="c1"># =======================================================================</span>
 <div class="viewcode-block" id="kmesh_spacing_mesh">
 <a class="viewcode-back" href="../../../src/api/analyzer.html#symclosestwannier.analyzer.get_response.kmesh_spacing_mesh">[docs]</a>
-<span class="k">def</span> <span class="nf">kmesh_spacing_mesh</span><span class="p">(</span><span class="n">mesh</span><span class="p">,</span> <span class="n">B</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">kmesh_spacing_mesh</span><span class="p">(</span><span class="n">mesh</span><span class="p">,</span> <span class="n">B</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Set up the value of the interpolation mesh spacing, needed for</span>
 <span class="sd">    adaptive smearing [see Eqs. (34-35) YWVS07]. Choose it as the largest of</span>
@@ -749,7 +733,7 @@ document.write(`
 <span class="c1"># ==================================================</span>
 <div class="viewcode-block" id="utility_w0gauss">
 <a class="viewcode-back" href="../../../src/api/analyzer.html#symclosestwannier.analyzer.get_response.utility_w0gauss">[docs]</a>
-<span class="k">def</span> <span class="nf">utility_w0gauss</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">utility_w0gauss</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    the derivative of utility_wgauss:  an approximation to the delta function</span>
 
@@ -803,7 +787,7 @@ document.write(`
 <span class="c1"># ==================================================</span>
 <div class="viewcode-block" id="wham_get_JJp_JJm_list">
 <a class="viewcode-back" href="../../../src/api/analyzer.html#symclosestwannier.analyzer.get_response.wham_get_JJp_JJm_list">[docs]</a>
-<span class="k">def</span> <span class="nf">wham_get_JJp_JJm_list</span><span class="p">(</span><span class="n">cwi</span><span class="p">,</span> <span class="n">delHH</span><span class="p">,</span> <span class="n">E</span><span class="p">,</span> <span class="n">U</span><span class="p">,</span> <span class="n">occ</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">wham_get_JJp_JJm_list</span><span class="p">(</span><span class="n">cwi</span><span class="p">,</span> <span class="n">delHH</span><span class="p">,</span> <span class="n">E</span><span class="p">,</span> <span class="n">U</span><span class="p">,</span> <span class="n">occ</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Compute JJ^+_a and JJ^-_a (a=Cartesian index)</span>
 <span class="sd">    for a list of Fermi energies</span>
@@ -939,7 +923,7 @@ document.write(`
 
 
 <span class="c1"># ==================================================</span>
-<span class="k">def</span> <span class="nf">wham_get_eig_UU_HH_JJlist</span><span class="p">(</span><span class="n">cwi</span><span class="p">,</span> <span class="n">delHH</span><span class="p">,</span> <span class="n">E</span><span class="p">,</span> <span class="n">U</span><span class="p">,</span> <span class="n">occ</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">wham_get_eig_UU_HH_JJlist</span><span class="p">(</span><span class="n">cwi</span><span class="p">,</span> <span class="n">delHH</span><span class="p">,</span> <span class="n">E</span><span class="p">,</span> <span class="n">U</span><span class="p">,</span> <span class="n">occ</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Wrapper routine used to reduce number of Fourier calls</span>
 <span class="sd">    Added the optional occ parameter</span>
@@ -956,7 +940,7 @@ document.write(`
 <span class="c1"># ==================================================</span>
 <div class="viewcode-block" id="wham_get_occ_mat_list">
 <a class="viewcode-back" href="../../../src/api/analyzer.html#symclosestwannier.analyzer.get_response.wham_get_occ_mat_list">[docs]</a>
-<span class="k">def</span> <span class="nf">wham_get_occ_mat_list</span><span class="p">(</span><span class="n">cwi</span><span class="p">,</span> <span class="n">U</span><span class="p">,</span> <span class="n">E</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">occ</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">wham_get_occ_mat_list</span><span class="p">(</span><span class="n">cwi</span><span class="p">,</span> <span class="n">U</span><span class="p">,</span> <span class="n">E</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">occ</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Occupation matrix f, and g=1-f</span>
 <span class="sd">    for a list of Fermi energies</span>
@@ -997,7 +981,7 @@ document.write(`
 <span class="c1"># ==================================================</span>
 <div class="viewcode-block" id="berry_get_imfgh_klist">
 <a class="viewcode-back" href="../../../src/api/analyzer.html#symclosestwannier.analyzer.get_response.berry_get_imfgh_klist">[docs]</a>
-<span class="k">def</span> <span class="nf">berry_get_imfgh_klist</span><span class="p">(</span><span class="n">cwi</span><span class="p">,</span> <span class="n">operators</span><span class="p">,</span> <span class="n">kpoints</span><span class="p">,</span> <span class="n">imf</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">img</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">imh</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">occ</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ladpt</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">berry_get_imfgh_klist</span><span class="p">(</span><span class="n">cwi</span><span class="p">,</span> <span class="n">operators</span><span class="p">,</span> <span class="n">kpoints</span><span class="p">,</span> <span class="n">imf</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">img</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">imh</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">occ</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ladpt</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Calculates the three quantities needed for the orbital magnetization:</span>
 <span class="sd">        * -2Im[f(k)] [Eq.33 CTVR06, Eq.6 LVTS12]</span>
@@ -1177,7 +1161,7 @@ document.write(`
 <span class="c1"># ==================================================</span>
 <div class="viewcode-block" id="berry_get_imf_klist">
 <a class="viewcode-back" href="../../../src/api/analyzer.html#symclosestwannier.analyzer.get_response.berry_get_imf_klist">[docs]</a>
-<span class="k">def</span> <span class="nf">berry_get_imf_klist</span><span class="p">(</span><span class="n">cwi</span><span class="p">,</span> <span class="n">operators</span><span class="p">,</span> <span class="n">kpoints</span><span class="p">,</span> <span class="n">occ</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ladpt</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">berry_get_imf_klist</span><span class="p">(</span><span class="n">cwi</span><span class="p">,</span> <span class="n">operators</span><span class="p">,</span> <span class="n">kpoints</span><span class="p">,</span> <span class="n">occ</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ladpt</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Calculates the Berry curvature traced over the occupied</span>
 <span class="sd">    states, -2Im[f(k)] [Eq.33 CTVR06, Eq.6 LVTS12] for a list</span>
@@ -1198,7 +1182,7 @@ document.write(`
 <span class="c1"># ==================================================</span>
 <div class="viewcode-block" id="berry_get_ahc">
 <a class="viewcode-back" href="../../../src/api/analyzer.html#symclosestwannier.analyzer.get_response.berry_get_ahc">[docs]</a>
-<span class="k">def</span> <span class="nf">berry_get_ahc</span><span class="p">(</span><span class="n">cwi</span><span class="p">,</span> <span class="n">operators</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">berry_get_ahc</span><span class="p">(</span><span class="n">cwi</span><span class="p">,</span> <span class="n">operators</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Anomalous Hall conductivity, in S/cm.</span>
 <span class="sd">    The three independent components σx = σyz, σy = σzx, and σz = σxy are computed.</span>
@@ -1241,7 +1225,7 @@ document.write(`
 
     <span class="c1"># ==================================================</span>
     <span class="nd">@wrap_non_picklable_objects</span>
-    <span class="k">def</span> <span class="nf">berry_get_ahc_k</span><span class="p">(</span><span class="n">kpoints</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">berry_get_ahc_k</span><span class="p">(</span><span class="n">kpoints</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        berry_get_imf_klist</span>
 
@@ -1342,7 +1326,7 @@ document.write(`
 <span class="c1"># ==================================================</span>
 <div class="viewcode-block" id="berry_get_kubo">
 <a class="viewcode-back" href="../../../src/api/analyzer.html#symclosestwannier.analyzer.get_response.berry_get_kubo">[docs]</a>
-<span class="k">def</span> <span class="nf">berry_get_kubo</span><span class="p">(</span><span class="n">cwi</span><span class="p">,</span> <span class="n">operators</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">berry_get_kubo</span><span class="p">(</span><span class="n">cwi</span><span class="p">,</span> <span class="n">operators</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Complex interband optical conductivity, in S/cm,</span>
 <span class="sd">    separated into Hermitian (Kubo_H) and anti-Hermitian (Kubo_AH) parts.</span>
@@ -1401,7 +1385,7 @@ document.write(`
 
     <span class="c1"># ==================================================</span>
     <span class="nd">@wrap_non_picklable_objects</span>
-    <span class="k">def</span> <span class="nf">berry_get_kubo_k</span><span class="p">(</span><span class="n">kpt</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">berry_get_kubo_k</span><span class="p">(</span><span class="n">kpt</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        calculate</span>
 <span class="sd">        Complex interband optical conductivity, in S/cm,</span>
@@ -1575,7 +1559,7 @@ document.write(`
 <span class="c1"># ==================================================</span>
 <div class="viewcode-block" id="berry_get_js_k">
 <a class="viewcode-back" href="../../../src/api/analyzer.html#symclosestwannier.analyzer.get_response.berry_get_js_k">[docs]</a>
-<span class="k">def</span> <span class="nf">berry_get_js_k</span><span class="p">(</span><span class="n">cwi</span><span class="p">,</span> <span class="n">operators</span><span class="p">,</span> <span class="n">kpoints</span><span class="p">,</span> <span class="n">E</span><span class="p">,</span> <span class="n">del_alpha_E</span><span class="p">,</span> <span class="n">D_alpha_h</span><span class="p">,</span> <span class="n">U</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">berry_get_js_k</span><span class="p">(</span><span class="n">cwi</span><span class="p">,</span> <span class="n">operators</span><span class="p">,</span> <span class="n">kpoints</span><span class="p">,</span> <span class="n">E</span><span class="p">,</span> <span class="n">del_alpha_E</span><span class="p">,</span> <span class="n">D_alpha_h</span><span class="p">,</span> <span class="n">U</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    ontribution from point k to the</span>
 <span class="sd">    &lt;psi_k | 1/2*(sigma_gamma*v_alpha + v_alpha*sigma_gamma) | psi_k&gt;</span>
@@ -1651,7 +1635,7 @@ document.write(`
 <span class="c1"># ==================================================</span>
 <div class="viewcode-block" id="berry_get_shc_klist">
 <a class="viewcode-back" href="../../../src/api/analyzer.html#symclosestwannier.analyzer.get_response.berry_get_shc_klist">[docs]</a>
-<span class="k">def</span> <span class="nf">berry_get_shc_klist</span><span class="p">(</span><span class="n">cwi</span><span class="p">,</span> <span class="n">operators</span><span class="p">,</span> <span class="n">kpoints</span><span class="p">,</span> <span class="n">band</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">berry_get_shc_klist</span><span class="p">(</span><span class="n">cwi</span><span class="p">,</span> <span class="n">operators</span><span class="p">,</span> <span class="n">kpoints</span><span class="p">,</span> <span class="n">band</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Contribution from a k-point to the spin Hall conductivity on a list</span>
 <span class="sd">    of Fermi energies or a list of frequencies or a list of energy bands</span>
@@ -1843,7 +1827,7 @@ document.write(`
 <span class="c1"># ==================================================</span>
 <div class="viewcode-block" id="berry_get_shc">
 <a class="viewcode-back" href="../../../src/api/analyzer.html#symclosestwannier.analyzer.get_response.berry_get_shc">[docs]</a>
-<span class="k">def</span> <span class="nf">berry_get_shc</span><span class="p">(</span><span class="n">cwi</span><span class="p">,</span> <span class="n">operators</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">berry_get_shc</span><span class="p">(</span><span class="n">cwi</span><span class="p">,</span> <span class="n">operators</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Spin Hall conductivity, in (hbar/e)*S/cm.</span>
 
@@ -1884,7 +1868,7 @@ document.write(`
 
     <span class="c1"># ==================================================</span>
     <span class="nd">@wrap_non_picklable_objects</span>
-    <span class="k">def</span> <span class="nf">berry_get_shc_k</span><span class="p">(</span><span class="n">kpoints</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">berry_get_shc_k</span><span class="p">(</span><span class="n">kpoints</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        berry_get_imf_klist</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1978,7 +1962,7 @@ document.write(`
 <span class="c1"># ==================================================</span>
 <div class="viewcode-block" id="gyrotropic_get_K">
 <a class="viewcode-back" href="../../../src/api/analyzer.html#symclosestwannier.analyzer.get_response.gyrotropic_get_K">[docs]</a>
-<span class="k">def</span> <span class="nf">gyrotropic_get_K</span><span class="p">(</span><span class="n">cwi</span><span class="p">,</span> <span class="n">operators</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">gyrotropic_get_K</span><span class="p">(</span><span class="n">cwi</span><span class="p">,</span> <span class="n">operators</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Computes the following quantities:</span>
 
@@ -2042,7 +2026,7 @@ document.write(`
 
     <span class="c1"># ==================================================</span>
     <span class="nd">@wrap_non_picklable_objects</span>
-    <span class="k">def</span> <span class="nf">gyrotropic_get_K_k</span><span class="p">(</span><span class="n">kpoints</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">gyrotropic_get_K_k</span><span class="p">(</span><span class="n">kpoints</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        berry_get_imf_klist</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -2079,21 +2063,21 @@ document.write(`
             <span class="n">S_w</span> <span class="o">=</span> <span class="n">fourier_transform_r_to_k_vec</span><span class="p">(</span><span class="n">operators</span><span class="p">[</span><span class="s2">&quot;SS_R&quot;</span><span class="p">],</span> <span class="n">kpoints</span><span class="p">,</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;irvec&quot;</span><span class="p">],</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;ndegen&quot;</span><span class="p">],</span> <span class="n">atoms_frac</span><span class="p">)</span>
             <span class="n">S_k_diag</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">&quot;kln,aklp,kpn-&gt;akn&quot;</span><span class="p">,</span> <span class="n">U</span><span class="o">.</span><span class="n">conj</span><span class="p">(),</span> <span class="n">S_w</span><span class="p">,</span> <span class="n">U</span><span class="p">,</span> <span class="n">optimize</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
-        <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">kpoints</span><span class="p">)):</span>
-            <span class="n">kpt</span> <span class="o">=</span> <span class="n">kpoints</span><span class="p">[</span><span class="n">k</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">n1</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">gyrotropic_num_bands</span><span class="p">):</span>
+            <span class="n">n</span> <span class="o">=</span> <span class="n">gyrotropic_band_list</span><span class="p">[</span><span class="n">n1</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span>
 
-            <span class="k">for</span> <span class="n">n1</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">gyrotropic_num_bands</span><span class="p">):</span>
-                <span class="n">n</span> <span class="o">=</span> <span class="n">gyrotropic_band_list</span><span class="p">[</span><span class="n">n1</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span>
+            <span class="n">k_list</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">kpt_list</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">ifermi_list</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">k_ifermi_list</span> <span class="o">=</span> <span class="p">[]</span>
 
+            <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">kpoints</span><span class="p">)):</span>
                 <span class="k">if</span> <span class="n">n</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">E</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="n">n</span><span class="p">]</span> <span class="o">-</span> <span class="n">E</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">gyrotropic_degen_thresh</span><span class="p">:</span>
                     <span class="k">continue</span>
-
                 <span class="k">if</span> <span class="n">n</span> <span class="o">&lt;</span> <span class="n">num_wann</span> <span class="o">-</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">E</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">E</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="n">n</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">gyrotropic_degen_thresh</span><span class="p">:</span>
                     <span class="k">continue</span>
 
-                <span class="n">S</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
-                <span class="n">orb_nk</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
-                <span class="n">got_orb_n</span> <span class="o">=</span> <span class="kc">False</span>
+                <span class="n">flag</span> <span class="o">=</span> <span class="kc">False</span>
                 <span class="k">for</span> <span class="n">ifermi</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">mum_fermi</span><span class="p">):</span>
                     <span class="n">arg</span> <span class="o">=</span> <span class="p">(</span><span class="n">E</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="n">n</span><span class="p">]</span> <span class="o">-</span> <span class="n">fermi_energy_list</span><span class="p">[</span><span class="n">ifermi</span><span class="p">])</span> <span class="o">/</span> <span class="n">eta_smr</span>
                     <span class="c1">#</span>
@@ -2103,67 +2087,83 @@ document.write(`
                     <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">gyrotropic_smr_max_arg</span><span class="p">:</span>
                         <span class="k">continue</span>
 
+                    <span class="k">if</span> <span class="ow">not</span> <span class="n">flag</span><span class="p">:</span>
+                        <span class="n">k_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
+                        <span class="n">kpt_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">kpoints</span><span class="p">[</span><span class="n">k</span><span class="p">])</span>
+
+                    <span class="k">if</span> <span class="n">ifermi</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">ifermi_list</span><span class="p">:</span>
+                        <span class="n">ifermi_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ifermi</span><span class="p">)</span>
+
+                    <span class="n">k_ifermi_list</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">k</span><span class="p">,</span> <span class="n">ifermi</span><span class="p">))</span>
+
+                    <span class="n">flag</span> <span class="o">=</span> <span class="kc">True</span>
+
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">kpt_list</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">continue</span>
+
+            <span class="n">orb_nk</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">kpt_list</span><span class="p">),</span> <span class="mi">3</span><span class="p">))</span>
+
+            <span class="c1"># Orbital quantities are computed for each band separately</span>
+            <span class="k">if</span> <span class="n">cwi</span><span class="o">.</span><span class="n">win</span><span class="o">.</span><span class="n">eval_K</span><span class="p">:</span>
+                <span class="c1"># Fake occupations: band n occupied, others empty</span>
+                <span class="n">occ</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">kpt_list</span><span class="p">),</span> <span class="n">num_wann</span><span class="p">))</span>
+                <span class="n">occ</span><span class="p">[:,</span> <span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.0</span>
+                <span class="n">imf_k</span><span class="p">,</span> <span class="n">img_k</span><span class="p">,</span> <span class="n">imh_k</span> <span class="o">=</span> <span class="n">berry_get_imfgh_klist</span><span class="p">(</span>
+                    <span class="n">cwi</span><span class="p">,</span> <span class="n">operators</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">kpt_list</span><span class="p">),</span> <span class="n">imf</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">img</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">imh</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">occ</span><span class="o">=</span><span class="n">occ</span>
+                <span class="p">)</span>
+                <span class="n">orb_nk</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">imh_k</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:,</span> <span class="p">:],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">img_k</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:,</span> <span class="p">:],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+                <span class="c1"># curv_nk(i) = sum(imf_k(:, i, 1))</span>
+                <span class="c1"># enddo</span>
+                <span class="c1"># (num_fermi_loc, kpoint, 3, 3))</span>
+            <span class="k">elif</span> <span class="n">cwi</span><span class="o">.</span><span class="n">win</span><span class="o">.</span><span class="n">eval_D</span><span class="p">:</span>
+                <span class="k">pass</span>
+                <span class="c1"># occ = 0.0</span>
+                <span class="c1"># occ(n) = 1.0</span>
+                <span class="c1"># call berry_get_imf_klist(kpt, imf_k, occ)</span>
+                <span class="c1"># do i = 1, 3</span>
+                <span class="c1"># curv_nk(i) = sum(imf_k(:, i, 1))</span>
+                <span class="c1"># enddo</span>
+                <span class="c1"># got_orb_n = .true. ! Do it for only one value of ifermi</span>
+
+            <span class="k">if</span> <span class="n">cwi</span><span class="o">.</span><span class="n">win</span><span class="o">.</span><span class="n">eval_Dw</span><span class="p">:</span>
+                <span class="c1"># gyrotropic_get_curv_w_k(eig, AA, curv_w_nk)</span>
+                <span class="k">pass</span>
+
+            <span class="c1"># Broadened delta(E_nk-E_f)</span>
+            <span class="c1">#</span>
+            <span class="c1"># Loop over Cartesian tensor components</span>
+            <span class="c1">#</span>
+
+            <span class="k">for</span> <span class="n">ifermi</span> <span class="ow">in</span> <span class="n">ifermi_list</span><span class="p">:</span>
+                <span class="n">k_list_</span> <span class="o">=</span> <span class="p">[</span><span class="n">k</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">ifermi_</span> <span class="ow">in</span> <span class="n">k_ifermi_list</span> <span class="k">if</span> <span class="n">ifermi_</span> <span class="o">==</span> <span class="n">ifermi</span><span class="p">]</span>
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">k_list_</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="k">continue</span>
+
+                <span class="n">delE_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">delE</span><span class="p">[:,</span> <span class="n">k</span><span class="p">,</span> <span class="n">n</span><span class="p">]</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">k_list_</span><span class="p">])</span>
+                <span class="n">orb_nk_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">orb_nk</span><span class="p">[</span><span class="n">k_list</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">k</span><span class="p">),</span> <span class="p">:]</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">k_list_</span><span class="p">])</span>
+                <span class="n">delta_</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+                        <span class="p">[</span>
+                            <span class="n">utility_w0gauss</span><span class="p">((</span><span class="n">E</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="n">n</span><span class="p">]</span> <span class="o">-</span> <span class="n">fermi_energy_list</span><span class="p">[</span><span class="n">ifermi</span><span class="p">])</span> <span class="o">/</span> <span class="n">eta_smr</span><span class="p">,</span> <span class="n">gyrotropic_smr_type_idx</span><span class="p">)</span>
+                            <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">k_list_</span>
+                        <span class="p">]</span>
+                    <span class="p">)</span>
+                    <span class="o">/</span> <span class="n">eta_smr</span>
+                    <span class="o">*</span> <span class="n">kweight</span>
+                <span class="p">)</span>
+
+                <span class="k">if</span> <span class="n">cwi</span><span class="o">.</span><span class="n">win</span><span class="o">.</span><span class="n">eval_spn</span><span class="p">:</span>
+                    <span class="n">S</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">S_k_diag</span><span class="p">[:,</span> <span class="n">k</span><span class="p">,</span> <span class="n">n</span><span class="p">]</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">k_list_</span><span class="p">])</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">S</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">k_list_</span><span class="p">))</span>
+
+                <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
                     <span class="k">if</span> <span class="n">cwi</span><span class="o">.</span><span class="n">win</span><span class="o">.</span><span class="n">eval_spn</span><span class="p">:</span>
-                        <span class="n">S</span> <span class="o">=</span> <span class="n">S_k_diag</span><span class="p">[:,</span> <span class="n">k</span><span class="p">,</span> <span class="n">n</span><span class="p">]</span>
-
-                    <span class="c1"># Orbital quantities are computed for each band separately</span>
-                    <span class="k">if</span> <span class="ow">not</span> <span class="n">got_orb_n</span><span class="p">:</span>
-                        <span class="k">if</span> <span class="n">cwi</span><span class="o">.</span><span class="n">win</span><span class="o">.</span><span class="n">eval_K</span><span class="p">:</span>
-                            <span class="c1"># Fake occupations: band n occupied, others empty</span>
-                            <span class="n">occ</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="n">num_wann</span><span class="p">))</span>
-                            <span class="n">occ</span><span class="p">[:,</span> <span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.0</span>
-                            <span class="n">imf_k</span><span class="p">,</span> <span class="n">img_k</span><span class="p">,</span> <span class="n">imh_k</span> <span class="o">=</span> <span class="n">berry_get_imfgh_klist</span><span class="p">(</span>
-                                <span class="n">cwi</span><span class="p">,</span> <span class="n">operators</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">kpt</span><span class="p">]),</span> <span class="n">imf</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">img</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">imh</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">occ</span><span class="o">=</span><span class="n">occ</span>
-                            <span class="p">)</span>
-                            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
-                                <span class="n">orb_nk</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">imh_k</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="p">:,</span> <span class="n">i</span><span class="p">])</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">img_k</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="p">:,</span> <span class="n">i</span><span class="p">])</span>
-                            <span class="c1"># curv_nk(i) = sum(imf_k(:, i, 1))</span>
-                            <span class="c1"># enddo</span>
-                        <span class="k">elif</span> <span class="n">cwi</span><span class="o">.</span><span class="n">win</span><span class="o">.</span><span class="n">eval_D</span><span class="p">:</span>
-                            <span class="k">pass</span>
-                            <span class="c1"># occ = 0.0</span>
-                            <span class="c1"># occ(n) = 1.0</span>
-                            <span class="c1"># call berry_get_imf_klist(kpt, imf_k, occ)</span>
-                            <span class="c1"># do i = 1, 3</span>
-                            <span class="c1"># curv_nk(i) = sum(imf_k(:, i, 1))</span>
-                            <span class="c1"># enddo</span>
-                            <span class="c1"># got_orb_n = .true. ! Do it for only one value of ifermi</span>
-
-                        <span class="k">if</span> <span class="n">cwi</span><span class="o">.</span><span class="n">win</span><span class="o">.</span><span class="n">eval_Dw</span><span class="p">:</span>
-                            <span class="c1"># gyrotropic_get_curv_w_k(eig, AA, curv_w_nk)</span>
-                            <span class="k">pass</span>
-
-                        <span class="n">got_orb_n</span> <span class="o">=</span> <span class="kc">True</span>  <span class="c1"># Do it for only one value of ifermi</span>
-
-                    <span class="n">delta</span> <span class="o">=</span> <span class="p">(</span>
-                        <span class="n">utility_w0gauss</span><span class="p">(</span><span class="n">arg</span><span class="p">,</span> <span class="n">gyrotropic_smr_type_idx</span><span class="p">)</span> <span class="o">/</span> <span class="n">eta_smr</span> <span class="o">*</span> <span class="n">kweight</span>
-                    <span class="p">)</span>  <span class="c1"># Broadened delta(E_nk-E_f)</span>
-                    <span class="c1">#</span>
-                    <span class="c1"># Loop over Cartesian tensor components</span>
-                    <span class="c1">#</span>
-
-                    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
-                        <span class="k">if</span> <span class="n">cwi</span><span class="o">.</span><span class="n">win</span><span class="o">.</span><span class="n">eval_K</span> <span class="ow">and</span> <span class="n">cwi</span><span class="o">.</span><span class="n">win</span><span class="o">.</span><span class="n">eval_spn</span><span class="p">:</span>
-                            <span class="n">gyro_K_spn</span><span class="p">[:,</span> <span class="n">j</span><span class="p">,</span> <span class="n">ifermi</span><span class="p">]</span> <span class="o">+=</span> <span class="n">np</span><span class="o">.</span><span class="n">real</span><span class="p">(</span><span class="n">delE</span><span class="p">[:,</span> <span class="n">k</span><span class="p">,</span> <span class="n">n</span><span class="p">]</span> <span class="o">*</span> <span class="n">S</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">*</span> <span class="n">delta</span><span class="p">)</span>
-                        <span class="k">if</span> <span class="n">cwi</span><span class="o">.</span><span class="n">win</span><span class="o">.</span><span class="n">eval_K</span><span class="p">:</span>
-                            <span class="n">gyro_K_orb</span><span class="p">[:,</span> <span class="n">j</span><span class="p">,</span> <span class="n">ifermi</span><span class="p">]</span> <span class="o">+=</span> <span class="n">np</span><span class="o">.</span><span class="n">real</span><span class="p">(</span><span class="n">delE</span><span class="p">[:,</span> <span class="n">k</span><span class="p">,</span> <span class="n">n</span><span class="p">]</span> <span class="o">*</span> <span class="n">orb_nk</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">*</span> <span class="n">delta</span><span class="p">)</span>
-                        <span class="c1"># if cwi.win.eval_D:</span>
-                        <span class="c1">#     gyro_D[:, j, ifermi] += delE[:, k, n] * curv_nk(j)*delta</span>
-                        <span class="c1"># if cwi.win.eval_Dw:</span>
-                        <span class="c1">#     for i in range(3):</span>
-                        <span class="c1">#         gyro_Dw[i, j, ifermi, :] += delE[i, k, n]*delta*curv_w_nk[n, :, j]</span>
-
-                        <span class="c1"># if cwi.win.eval_C:</span>
-                        <span class="c1">#     gyro_C[:, j, ifermi] += delE[:, k, n] * delE[j, k, n] * delta</span>
-
-                    <span class="c1"># if cwi.win.eval_dos:</span>
-                    <span class="c1">#     gyro_DOS[ifermi] += delta</span>
-
-            <span class="c1"># if cwi.win.eval_NOA:</span>
-            <span class="c1">#     if cwi.win.eval_spn:</span>
-            <span class="c1">#         gyrotropic_get_NOA_k(kpt, kweight, eig, del_eig, AA, UU, gyro_NOA_orb, gyro_NOA_spn)</span>
-            <span class="c1">#     else:</span>
-            <span class="c1">#         gyrotropic_get_NOA_k(kpt, kweight, eig, del_eig, AA, UU, gyro_NOA_orb)</span>
+                        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
+                            <span class="n">gyro_K_spn</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">ifermi</span><span class="p">]</span> <span class="o">+=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">real</span><span class="p">(</span><span class="n">delE_</span><span class="p">[:,</span> <span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="n">S</span><span class="p">[:,</span> <span class="n">j</span><span class="p">]</span> <span class="o">*</span> <span class="n">delta_</span><span class="p">))</span>
+                    <span class="k">if</span> <span class="n">cwi</span><span class="o">.</span><span class="n">win</span><span class="o">.</span><span class="n">eval_K</span><span class="p">:</span>
+                        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
+                            <span class="n">gyro_K_orb</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">ifermi</span><span class="p">]</span> <span class="o">+=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">real</span><span class="p">(</span><span class="n">delE_</span><span class="p">[:,</span> <span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="n">orb_nk_</span><span class="p">[:,</span> <span class="n">j</span><span class="p">]</span> <span class="o">*</span> <span class="n">delta_</span><span class="p">))</span>
 
         <span class="k">return</span> <span class="n">gyro_K_orb</span><span class="p">,</span> <span class="n">gyro_K_spn</span>
 
@@ -2173,7 +2173,7 @@ document.write(`
         <span class="p">[[</span><span class="n">i</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="n">N1</span><span class="p">),</span> <span class="n">j</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="n">N2</span><span class="p">),</span> <span class="n">k</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="n">N3</span><span class="p">)]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N1</span><span class="p">)</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N2</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N3</span><span class="p">)]</span>
     <span class="p">)</span>
 
-    <span class="n">kpoints_chunks</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">kpoints</span><span class="p">,</span> <span class="p">[</span><span class="n">j</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">300000</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">kpoints</span><span class="p">),</span> <span class="mi">300000</span><span class="p">)])</span>
+    <span class="n">kpoints_chunks</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">kpoints</span><span class="p">,</span> <span class="p">[</span><span class="n">j</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">300</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">kpoints</span><span class="p">),</span> <span class="mi">300</span><span class="p">)])</span>
     <span class="n">num_chunks</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">kpoints_chunks</span><span class="p">)</span>
 
     <span class="c1"># res = Parallel(n_jobs=_num_proc, verbose=10)(delayed(gyrotropic_get_K_k)(kpoints) for kpoints in kpoints_chunks)</span>
@@ -2181,13 +2181,13 @@ document.write(`
     <span class="n">gyro_K_orb</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">mum_fermi</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
     <span class="n">gyro_K_spn</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">mum_fermi</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
 
-    <span class="kn">import</span> <span class="nn">time</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
 
     <span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
     <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">kpoints</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">kpoints_chunks</span><span class="p">):</span>
         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">num_chunks</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-        <span class="n">v</span> <span class="o">=</span> <span class="n">gyrotropic_get_K_k</span><span class="p">(</span><span class="n">kpoints</span><span class="p">)</span>
 
+        <span class="n">v</span> <span class="o">=</span> <span class="n">gyrotropic_get_K_k</span><span class="p">(</span><span class="n">kpoints</span><span class="p">)</span>
         <span class="n">gyro_K_orb</span> <span class="o">+=</span> <span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
         <span class="n">gyro_K_spn</span> <span class="o">+=</span> <span class="n">v</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
 
@@ -2248,7 +2248,7 @@ document.write(`
 
 
 <span class="c1"># ==================================================</span>
-<span class="k">def</span> <span class="nf">absorptive_dichroic_optical_cond_main</span><span class="p">():</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">absorptive_dichroic_optical_cond_main</span><span class="p">():</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Absorptive dichroic optical conductivity &amp; JDOS on uniform mesh</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -2258,7 +2258,7 @@ document.write(`
 <span class="c1"># ==================================================</span>
 <div class="viewcode-block" id="absorptive_dichroic_optical_cond_main">
 <a class="viewcode-back" href="../../../src/api/analyzer.html#symclosestwannier.analyzer.get_response.absorptive_dichroic_optical_cond_main">[docs]</a>
-<span class="k">def</span> <span class="nf">absorptive_dichroic_optical_cond_main</span><span class="p">():</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">absorptive_dichroic_optical_cond_main</span><span class="p">():</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Absorptive dichroic optical conductivity &amp; JDOS on uniform mesh</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -2269,7 +2269,7 @@ document.write(`
 <span class="c1"># ==================================================</span>
 <div class="viewcode-block" id="abs_ordinary_optical_cond_main">
 <a class="viewcode-back" href="../../../src/api/analyzer.html#symclosestwannier.analyzer.get_response.abs_ordinary_optical_cond_main">[docs]</a>
-<span class="k">def</span> <span class="nf">abs_ordinary_optical_cond_main</span><span class="p">():</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">abs_ordinary_optical_cond_main</span><span class="p">():</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Absorptive ordinary optical conductivity &amp; JDOS on a uniform mesh</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -2280,7 +2280,7 @@ document.write(`
 <span class="c1"># ==================================================</span>
 <div class="viewcode-block" id="orbital_magnetization_main">
 <a class="viewcode-back" href="../../../src/api/analyzer.html#symclosestwannier.analyzer.get_response.orbital_magnetization_main">[docs]</a>
-<span class="k">def</span> <span class="nf">orbital_magnetization_main</span><span class="p">():</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">orbital_magnetization_main</span><span class="p">():</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Orbital magnetization</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -2291,7 +2291,7 @@ document.write(`
 <span class="c1"># ==================================================</span>
 <div class="viewcode-block" id="boltzwann_main">
 <a class="viewcode-back" href="../../../src/api/analyzer.html#symclosestwannier.analyzer.get_response.boltzwann_main">[docs]</a>
-<span class="k">def</span> <span class="nf">boltzwann_main</span><span class="p">():</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">boltzwann_main</span><span class="p">():</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Boltzmann transport coefficients (BoltzWann module)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -2353,8 +2353,8 @@ By Rikuto Oiwa
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="../../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
-<script src="../../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+  <script defer src="../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
 
   <footer class="bd-footer">
   </footer>
