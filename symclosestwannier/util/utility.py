@@ -887,14 +887,13 @@ def thermal_avg(O, E, U, ef=0.0, T_Kelvin=0.0, num_k=0):
 # ==================================================
 def total_energy(E, ef=0.0, T_Kelvin=0.0, num_k=0):
     """
-    total energy
+    total energy (E).
     """
     if ef is None:
         ef = 0.0
 
-    fk = fermi(E - ef, T_Kelvin)
-
     E = np.array(E)
+    fk = fermi(E - ef, T_Kelvin)
 
     if num_k == 0:
         num_k = E.shape[0]
@@ -905,31 +904,44 @@ def total_energy(E, ef=0.0, T_Kelvin=0.0, num_k=0):
 
 
 # ==================================================
-def entropy(E, ef=0.0, T_Kelvin=0.0, num_k=0):
+def free_energy(E, ef=0.0, T_Kelvin=0.0, num_k=0):
     """
-    total energy
+    free energy (F = E - TS)
     """
     if ef is None:
         ef = 0.0
 
+    E = np.array(E)
     fk = fermi(E - ef, T_Kelvin)
 
     if num_k == 0:
         num_k = E.shape[0]
 
-    S = -np.sum(fk * np.log(fk) + (1.0 - fk) * np.log(1.0 - fk)) / num_k
+    T_eV = Kelvin_to_eV(T_Kelvin)
+    F = -T_eV * np.sum((-1.0 / T_eV * (E - ef) - np.log(fk))) / num_k
 
-    return S
+    return F
 
 
 # ==================================================
-def free_energy(E, ef=0.0, T_Kelvin=0.0, num_k=0):
+def entropy(E, ef=0.0, T_Kelvin=0.0, num_k=0):
     """
-    total energy
+    total energy (S).
     """
-    E_tot = total_energy(E, ef, T_Kelvin, num_k)
-    S = entropy(E, ef, T_Kelvin, num_k)
-    return E_tot - T_Kelvin * S
+    if ef is None:
+        ef = 0.0
+
+    if num_k == 0:
+        num_k = E.shape[0]
+
+    fk = fermi(E - ef, T_Kelvin)
+
+    log_fk = np.array([[np.log(fkin) if fkin != 0.0 else 0.0 for fkin in fki] for fki in fk])
+    log_1mfk = np.array([[np.log(1.0 - fkin) if 1.0 - fkin != 0.0 else 0.0 for fkin in fki] for fki in fk])
+
+    S = -np.sum(fk * log_fk + (1.0 - fk) * log_1mfk) / num_k
+
+    return S
 
 
 # ==================================================
