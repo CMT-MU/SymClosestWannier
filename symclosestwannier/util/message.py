@@ -49,10 +49,10 @@ def cw_open_msg():
              |                                                   |
              |                                                   |
              | Copyright (c) 2023-                               |
-             |     The SymClosestWwannier Developer Group and    |
+             |     The SymClosestWannier Developer Group and     |
              |        individual contributors                    |
              |                                                   |
-             |       Release: 1.9.5      16th Dec 2024           |
+             |        Release: 1.9.6      9th May 2025           |
              |                                                   |
              | This program is free software; you can            |
              | redistribute it and/or modify it under the terms  |
