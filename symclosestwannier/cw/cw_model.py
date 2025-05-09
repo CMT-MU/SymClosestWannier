@@ -533,6 +533,7 @@ class CWModel(dict):
         model = self._cwm.read(
             os.path.join(self._cwi["mp_outdir"], "{}".format(f"{self._cwi['mp_seedname']}_model.py"))
         )
+
         samb = self._cwm.read(os.path.join(self._cwi["mp_outdir"], "{}".format(f"{self._cwi['mp_seedname']}_samb.py")))
 
         try:
@@ -633,6 +634,24 @@ class CWModel(dict):
             z = CWModel.samb_decomp_operator(
                 Hr_dict, Zr_dict, A, atoms_frac, ket_amn, A_samb, atoms_frac_samb, ket_samb
             )
+
+        i = 0
+        # for tag, d in Zr_dict.items():
+        # i += 1
+        # if i in (1, 2, 8, 9, 10, 12, 17, 20, 29, 30, 32, 33, 34, 35, 81, 83, 85):
+        #    z[tag] = z[tag]
+        # else:
+        #    z[tag] = 0.0
+        # if i in (1, 2, 8, 9, 10, 12, 17, 20, 29, 30, 32, 33, 34, 35, 81, 82, 83, 84, 85, 86):
+        #    z[tag] = z[tag]
+        # if i in (1, 8, 10, 12, 32, 34, 83, 85):
+        #    z[tag] = z[tag]
+        # else:
+        #    z[tag] = 0.0
+        # if i in (10, 34, 83, 85):  # Gu
+        #    z[tag] = -z[tag]
+        # else:
+        #    z[tag] = z[tag]
 
         self._cwm.log("done", file=self._outfile, mode="a")
 
