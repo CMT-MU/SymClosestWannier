@@ -274,7 +274,6 @@ class Win(dict):
                     kpoints = kpoints.tolist()
 
                 kpoints = [kpt[:3] for kpt in kpoints]
-                print(kpoints)
                 d["kpoints"] = kpoints
 
             if "begin kpoint_path" in line:
