@@ -268,11 +268,13 @@ class Win(dict):
                 kpoints = np.genfromtxt(win_data[i + 1 : i + 1 + d["num_k"]], dtype=float)
                 kpoints = np.mod(kpoints, 1)  # 0 <= kj < 1.0
                 if kpoints.ndim == 1:
-                    d["kpoints"] = [kpoints.tolist()]
+                    kpoints = [kpoints.tolist()]
                 else:
-                    d["kpoints"] = kpoints.tolist()
+                    kpoints = kpoints.tolist()
 
-                d["kpoints"] = [kpt[:3] for kpt in d["kpoints"]]
+                kpoints = [kpt[:3] for kpt in kpoints]
+                kpoints = [kpt for kpt in kpoints if kpt not in ("", [])]
+                d["kpoints"] = kpoints
 
             if "begin kpoint_path" in line:
                 k_data = win_data[i + 1 : win_data_lower.index("end kpoint_path")]
@@ -306,6 +308,7 @@ class Win(dict):
                 units = units.replace(" ", "").lower()
                 n = 2 if units in ("bohr", "ang") else 1
                 unit_cell_cart_data = win_data[i + n : win_data_lower.index("end unit_cell_cart")]
+                unit_cell_cart_data = [v for v in unit_cell_cart_data if v not in ("", [])]
                 unit_cell_cart = np.array([[float(vi) for vi in v.split() if vi != ""] for v in unit_cell_cart_data])
                 if units == "bohr":
                     unit_cell_cart *= 0.529177249
@@ -316,6 +319,7 @@ class Win(dict):
             if "begin atoms_frac" in line:
                 ap_data = win_data[i + 1 : win_data_lower.index("end atoms_frac")]
                 ap_data = [[vi for vi in v.split() if vi != ""] for v in ap_data]
+                ap_data = [v for v in ap_data if v not in ("", [])]
 
                 atoms_frac = {}
                 cnt_X = {}
@@ -334,6 +338,7 @@ class Win(dict):
                 n = 2 if units in ("bohr", "ang") else 1
                 ap_data = win_data[i + n : win_data_lower.index("end atoms_cart")]
                 ap_data = [[vi for vi in v.split() if vi != ""] for v in ap_data]
+                ap_data = [v for v in ap_data if v not in ("", [])]
 
                 atoms_cart = {}
                 cnt_X = {}
