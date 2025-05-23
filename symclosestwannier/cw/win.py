@@ -265,7 +265,8 @@ class Win(dict):
 
         for i, line in enumerate(win_data_lower):
             if "begin kpoints" in line:
-                kpoints = np.genfromtxt(win_data[i + 1 : i + 1 + d["num_k"]], dtype=float)
+                kpoints = win_data[i + 1 : win_data_lower.index("end kpoints")]
+                kpoints = [[float(v) for v in kpt.split()] for kpt in kpoints if kpt not in ("", [])]
                 kpoints = np.mod(kpoints, 1)  # 0 <= kj < 1.0
                 if kpoints.ndim == 1:
                     kpoints = [kpoints.tolist()]
@@ -273,7 +274,7 @@ class Win(dict):
                     kpoints = kpoints.tolist()
 
                 kpoints = [kpt[:3] for kpt in kpoints]
-                kpoints = [kpt for kpt in kpoints if kpt not in ("", [])]
+                print(kpoints)
                 d["kpoints"] = kpoints
 
             if "begin kpoint_path" in line:
