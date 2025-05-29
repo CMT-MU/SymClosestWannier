@@ -112,6 +112,7 @@ class CWInfo(dict):
             if name == "spn":
                 if not np.any(
                     [
+                        d["calc_spin_2d"],
                         d["write_spn"],
                         d["spin_decomp"],
                         d["spin_moment"],
