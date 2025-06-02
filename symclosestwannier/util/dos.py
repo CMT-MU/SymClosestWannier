@@ -122,6 +122,16 @@ def generate_dos_gnuplot(outdir, filename, emax, emin, ef_shift, dos_max, num_wa
     fs.write(f"'{filename}.txt' u 2:1 w l lw lwidth dt (3,1) lc '{lc}', ")
     fs.write(f"{0.0} lw 0.5 dt (2,1) lc 'black'")
 
+    fs.write(" \n\n")
+
+    fs.write("set terminal pdf \n\n")
+
+    fs.write(f"set output '{filename}.pdf' \n\n")
+    fs.write("plot ")
+
+    fs.write(f"'{filename}.txt' u 2:1 w l lw lwidth dt (3,1) lc '{lc}', ")
+    fs.write(f"{0.0} lw 0.5 dt (2,1) lc 'black'")
+
     fs.close()
 
     subprocess.run(f"cd {outdir} ; gnuplot plot_dos.gnu", shell=True)
