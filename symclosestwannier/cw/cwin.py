@@ -153,6 +153,7 @@ class CWin(dict):
             # only used for band dispersion calculation.
                 - a                 : lattice parameter (in Ang) used to correct units of k points in reference band data, [None].
                 - N1                : number of divisions for high symmetry lines (int, optional), [50].
+                - calc_spin_2d      : add expectation value of spin operator given by *.spn in output file ? (bool). [False].
 
             # only used for dos calculation.
                 - calc_dos          : calculate dos? (bool), [False].
