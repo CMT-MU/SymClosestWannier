@@ -135,6 +135,21 @@ def generate_band_gnuplot_eig(outdir, filename, kmax, emax, emin, num_wann, **kw
 
     fs.write(f"{0.0} lw 0.5 dt (2,1) lc 'black'")
 
+    fs.write(" \n\n")
+
+    fs.write("set terminal pdf \n\n")
+
+    fs.write(f"set output '{filename}.pdf' \n\n")
+    fs.write("plot ")
+
+    if ref_filename is not None:
+        # fs.write(f"'{ref_filename}' u ($1/(2*pi)):2 w l lw lwidth lc 'dark-grey', ")
+        fs.write(f"'{ref_filename}' u ($1/a):($2-ef) w l lw lwidth lc 'dark-grey', ")
+
+    fs.write(f"'{filename}.txt' u 1:2 w l lw lwidth dt (3,1) lc '{lc}', ")
+
+    fs.write(f"{0.0} lw 0.5 dt (2,1) lc 'black'")
+
     fs.close()
 
     subprocess.run(f"cd {outdir} ; gnuplot plot_band.gnu", shell=True)
@@ -249,6 +264,23 @@ def generate_band_gnuplot(outdir, filename, kmax, emax, emin, num_wann, **kwargs
     fs.write("set terminal postscript eps color enhanced \n\n")
 
     fs.write(f"set output '{filename}.eps' \n\n")
+    fs.write("plot ")
+
+    if ref_filename is not None:
+        # fs.write(f"'{ref_filename}' u ($1/(2*pi)):2 w l lw lwidth lc 'dark-grey', ")
+        fs.write(f"'{ref_filename}' u ($1/a):($2-ef) w l lw lwidth lc 'dark-grey', ")
+
+    fs.write(
+        f"for [j=2:{num_wann*(num_wann+1)}:{num_wann+1}] '{filename}.txt' u 1:j w l lw lwidth dt (3,1) lc '{lc}', "
+    )
+
+    fs.write(f"{0.0} lw 0.5 dt (2,1) lc 'black'")
+
+    fs.write(" \n\n")
+
+    fs.write("set terminal pdf \n\n")
+
+    fs.write(f"set output '{filename}.pdf' \n\n")
     fs.write("plot ")
 
     if ref_filename is not None:
