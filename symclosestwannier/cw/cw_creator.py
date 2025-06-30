@@ -149,6 +149,9 @@ def cw_creator(seedname="cwannier"):
         filename = os.path.join(cwi["mp_outdir"], "{}".format(f"{cwi['mp_seedname']}_s.dat.cw"))
         cw_model.write_samb_coeffs(filename, type="s")
 
+        filename = os.path.join(cwi["mp_outdir"], "{}".format(f"{cwi['mp_seedname']}_n.dat.cw"))
+        cw_model.write_samb_coeffs(filename, type="n")
+
         filename = os.path.join(cwi["mp_outdir"], "{}".format(f"{cwi['mp_seedname']}_z_exp.dat.cw"))
         cw_model.write_samb_exp(filename)
 

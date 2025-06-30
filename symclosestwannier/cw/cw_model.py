@@ -50,16 +50,20 @@ from symclosestwannier.util.header import (
     rpoints_header,
     hk_header,
     sk_header,
+    nk_header,
     pk_header,
     hr_header,
     sr_header,
+    nr_header,
     z_header,
     z_nonortho_header,
     s_header,
+    n_header,
     z_exp_header,
     O_R_dependence_header,
 )
 from symclosestwannier.util.utility import (
+    fermi,
     thermal_avg,
     total_energy,
     free_energy,
@@ -84,23 +88,28 @@ from symclosestwannier.util.utility import (
 
 _default = {
     "Sk": None,
+    "nk": None,
     "Hk": None,
     "Hk_nonortho": None,
     #
     "Sr": None,
+    "nr": None,
     "Hr": None,
     "Hr_nonortho": None,
     #
     "s": None,
+    "n": None,
     "z": None,
     "z_nonortho": None,
     #
     "z_exp": None,
     #
     "Sk_sym": None,
+    "nk_sym": None,
     "Hk_sym": None,
     "Hk_nonortho_sym": None,
     "Sr_sym": None,
+    "nr_sym": None,
     "Hr_sym": None,
     "Hr_nonortho_sym": None,
     #
@@ -193,7 +202,13 @@ class CWModel(dict):
         S2k = np.array([spl.sqrtm(Sk[k]) for k in range(self._cwi["num_k"])])
         Hk_nonortho = S2k @ Hk @ S2k
 
+        # electronic density matrix elements
+        ef = self._cwi["fermi_energy"]
+        fk = np.array([np.diag(fermi(eki - ef, T=0.0)) for eki in Ek], dtype=float)
+        nk = Uk.transpose(0, 2, 1).conjugate() @ fk @ Uk
+
         Sr = CWModel.fourier_transform_k_to_r(Sk, self._cwi["kpoints"], self._cwi["irvec"])
+        nr = CWModel.fourier_transform_k_to_r(nk, self._cwi["kpoints"], self._cwi["irvec"])
         Hr = CWModel.fourier_transform_k_to_r(Hk, self._cwi["kpoints"], self._cwi["irvec"])
         Hr_nonortho = CWModel.fourier_transform_k_to_r(Hk_nonortho, self._cwi["kpoints"], self._cwi["irvec"])
 
@@ -202,10 +217,12 @@ class CWModel(dict):
         self.update(
             {
                 "Sk": Sk.tolist(),
+                "nk": nk.tolist(),
                 "Hk": Hk.tolist(),
                 "Hk_nonortho": Hk_nonortho.tolist(),
                 #
                 "Sr": Sr.tolist(),
+                "nr": nr.tolist(),
                 "Hr": Hr.tolist(),
                 "Hr_nonortho": Hr_nonortho.tolist(),
             }
@@ -259,6 +276,12 @@ class CWModel(dict):
 
         Sk, Uk, Hk, Sr, Hr, Hk_nonortho, Hr_nonortho = self._construct_tb(Ek, Ak)
 
+        # electronic density matrix elements
+        ef = self._cwi["fermi_energy"]
+        fk = np.array([np.diag(fermi(eki - ef, T=0.0)) for eki in Ek], dtype=float)
+        nk = Uk.transpose(0, 2, 1).conjugate() @ fk @ Uk
+        nr = CWModel.fourier_transform_k_to_r(nk, self._cwi["kpoints"], self._cwi["irvec"])
+
         self._cwm.log("done", file=self._outfile, mode="a")
 
         #####
@@ -271,10 +294,12 @@ class CWModel(dict):
         self.update(
             {
                 "Sk": Sk.tolist(),
+                "nk": nk.tolist(),
                 "Hk": Hk.tolist(),
                 "Hk_nonortho": Hk_nonortho.tolist(),
                 #
                 "Sr": Sr.tolist(),
+                "nr": nr.tolist(),
                 "Hr": Hr.tolist(),
                 "Hr_nonortho": Hr_nonortho.tolist(),
             }
@@ -520,8 +545,10 @@ class CWModel(dict):
         """
         Hk = np.array(self["Hk"])
         Sk = np.array(self["Sk"])
+        nk = np.array(self["nk"])
         Hr_dict = CWModel.matrix_dict_r(self["Hr"], self._cwi["irvec"])
         Sr_dict = CWModel.matrix_dict_r(self["Sr"], self._cwi["irvec"])
+        nr_dict = CWModel.matrix_dict_r(self["nr"], self._cwi["irvec"])
         Hr_nonortho_dict = CWModel.matrix_dict_r(self["Hr_nonortho"], self._cwi["irvec"])
 
         #####
@@ -550,6 +577,8 @@ class CWModel(dict):
 
         # sort orbitals
         Hk = sort_ket_matrix(Hk, ket_amn, ket_samb)
+        Sk = sort_ket_matrix(Sk, ket_amn, ket_samb)
+        nk = sort_ket_matrix(nk, ket_amn, ket_samb)
 
         if self._cwi["irreps"] == "all":
             irreps = model["info"]["generate"]["irrep"]
@@ -694,7 +723,21 @@ class CWModel(dict):
                 Hr_nonortho_dict, Zr_dict, A, atoms_frac, ket_amn, A_samb, atoms_frac_samb, ket_samb
             )
 
-        # z_nonortho = z
+        self._cwm.log("done", file=self._outfile, mode="a")
+
+        #####
+
+        msg = "    - decomposing electronic density as linear combination of SAMBs ... "
+        self._cwm.log(msg, None, end="", file=self._outfile, mode="a")
+        self._cwm.set_stamp()
+
+        if mat["molecule"]:
+            n = CWModel.samb_decomp_operator(nr_dict, Zr_dict, ket=ket_amn, ket_samb=ket_samb)
+        else:
+            n = CWModel.samb_decomp_operator(
+                nr_dict, Zr_dict, A, atoms_frac, ket_amn, A_samb, atoms_frac_samb, ket_samb
+            )
+
         self._cwm.log("done", file=self._outfile, mode="a")
 
         #####
@@ -708,6 +751,7 @@ class CWModel(dict):
         Hr_nonortho_sym = CWModel.construct_Or(
             list(z_nonortho.values()), self._cwi["num_wann"], self._cwi["irvec"], mat
         )
+        nr_sym = CWModel.construct_Or(list(n.values()), self._cwi["num_wann"], self._cwi["irvec"], mat)
 
         if self._cwi["tb_gauge"]:
             Sk_sym = CWModel.fourier_transform_r_to_k(
@@ -723,6 +767,9 @@ class CWModel(dict):
                 self._cwi["ndegen"],
                 atoms_frac=atoms_frac_samb,
             )
+            nk_sym = CWModel.fourier_transform_r_to_k(
+                nr_sym, self._cwi["kpoints"], self._cwi["irvec"], self._cwi["ndegen"], atoms_frac=atoms_frac_samb
+            )
         else:
             Sk_sym = CWModel.fourier_transform_r_to_k(
                 Sr_sym, self._cwi["kpoints"], self._cwi["irvec"], self._cwi["ndegen"]
@@ -732,6 +779,9 @@ class CWModel(dict):
             )
             Hk_nonortho_sym = CWModel.fourier_transform_r_to_k(
                 Hr_nonortho_sym, self._cwi["kpoints"], self._cwi["irvec"], self._cwi["ndegen"]
+            )
+            nk_sym = CWModel.fourier_transform_r_to_k(
+                nr_sym, self._cwi["kpoints"], self._cwi["irvec"], self._cwi["ndegen"]
             )
 
         self._cwm.log("done", file=self._outfile, mode="a")
@@ -868,14 +918,17 @@ class CWModel(dict):
         self.update(
             {
                 "s": s,
+                "n": n,
                 "z": z,
                 "z_nonortho": z_nonortho,
                 "z_exp": z_exp,
                 #
                 "Sk_sym": Sk_sym,
+                "nk_sym": nk_sym,
                 "Hk_sym": Hk_sym,
                 "Hk_nonortho_sym": Hk_nonortho_sym,
                 "Sr_sym": Sr_sym,
+                "nr_sym": nr_sym,
                 "Hr_sym": Hr_sym,
                 "Hr_nonortho_sym": Hr_nonortho_sym,
                 #
@@ -1403,8 +1456,12 @@ class CWModel(dict):
             filename (str): file name.
             type (str): 'z'/'z_nonortho'/'s'.
         """
-        assert type in ("z", "z_nonortho", "s"), f"invalid type = {type} was given. choose from 'z'/'z_nonortho'/'s'."
-        # assert type in ("z", "s"), f"invalid type = {type} was given. choose from 'z'/'s'."
+        assert type in (
+            "z",
+            "z_nonortho",
+            "s",
+            "n",
+        ), f"invalid type = {type} was given. choose from 'z'/'z_nonortho'/'s'/'n'."
 
         if type == "z":
             header = z_header
@@ -1415,9 +1472,11 @@ class CWModel(dict):
         elif type == "s":
             header = s_header
             o = self["s"]
+        elif type == "n":
+            header = n_header
+            o = self["n"]
         else:
-            raise Exception(f"invalid type = {type} was given. choose from 'z'/'z_nonortho'/'s'.")
-            # raise Exception(f"invalid type = {type} was given. choose from 'z'/'s'.")
+            raise Exception(f"invalid type = {type} was given. choose from 'z'/'z_nonortho'/'s'/'n'.")
 
         o_str = "# created by pw2cw \n"
         o_str += "# written {}\n".format(datetime.datetime.now().strftime("on %d%b%Y at %H:%M:%S"))
