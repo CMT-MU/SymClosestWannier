@@ -90,7 +90,7 @@ def band_distance(Ak, Ek, Hk, ef=0.0):
         Hk (ndarray): Hamiltonian matrix elements in k-space (orthogonal).
         ef (float, optional): fermi energy.
 
-    Returns: eta_0, eta_0_max, eta_2, eta_2_max.
+    Returns: eta_0, eta_0_max, eta_2, eta_2_max, eta_4, eta_4_max.
     """
     num_k, num_wann, _ = Hk.shape
 
@@ -106,12 +106,6 @@ def band_distance(Ak, Ek, Hk, ef=0.0):
         for i, n in enumerate(Pk_max_idx_list):
             Ek_ref[k, i] = Ek[k, n]
 
-    for k in range(num_k):
-        for n in range(num_wann):
-            if Ek_ref[k, n] > ef or Ek_wan[k, n] > ef:
-                Ek_ref[k, n] = 0.0
-                Ek_wan[k, n] = 0.0
-
     fermi_ref = fermi(Ek_ref - (ef + 0.0), T=0.1, unit="eV")
     fermi_wan = fermi(Ek_wan - (ef + 0.0), T=0.1, unit="eV")
     w = np.sqrt(fermi_ref * fermi_wan)
@@ -124,7 +118,13 @@ def band_distance(Ak, Ek, Hk, ef=0.0):
     eta_2 = np.sqrt(np.sum(w * (Ek_ref - Ek_wan) ** 2) / np.sum(w)) * 1000
     eta_2_max = np.max(w * np.abs(Ek_ref - Ek_wan)) * 1000
 
-    return eta_0, eta_0_max, eta_2, eta_2_max
+    fermi_ref = fermi(Ek_ref - (ef + 5.0), T=0.0, unit="eV")
+    fermi_wan = fermi(Ek_wan - (ef + 5.0), T=0.0, unit="eV")
+    w = np.sqrt(fermi_ref * fermi_wan)
+    eta_4 = np.sum(np.abs(Ek_wan - Ek_ref)) / num_k / num_wann * 1000  # [meV]
+    eta_4_max = np.max(w * np.abs(Ek_wan - Ek_ref)) * 1000
+
+    return eta_0, eta_0_max, eta_2, eta_2_max, eta_4, eta_4_max
 
 
 # ==================================================
