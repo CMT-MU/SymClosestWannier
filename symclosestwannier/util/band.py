@@ -195,13 +195,16 @@ def output_linear_dispersion(outdir, filename, k, e, u, **kwargs):
     e = e.T
     u = np.abs(u) ** 2
 
-    for i in range(num_k):
-        s = str(k[i])
-        for n in range(Nm):
-            en = e[n] - ef
-            s += " " + str(en[i])
+    for n in range(Nm):
+        en = e[n] - ef
+        s = ""
+        for i in range(num_k):
+            s += "{k:0<20}   {e:<20}".format(k=k[i], e=en[i])
             for j in range(Nm):
                 s += " " + str(u[i, j, n])
+
+            s += "\n"
+
         s += "\n"
         fs.write(s)
 
