@@ -3,8 +3,8 @@
 - **Overview**:
     A Python library to create Symmetry-adapted Closest Wannier (SymCW) tight-binding models [1] based on the Symmetry-Adapted Multipole Basis (SAMB) [2] and the Closest Wannier formalism developed by Taisuke Ozaki [3].
 
-    > [1] Rikuto Oiwa, Akane Inda, Satoru Hayami, Takuya Nomoto, Ryotaro Arita, and Hiroaki Kusunose, Symmetry-adapted closest Wannier modeling based on complete multipole basis set, arXiv:2501.10056 (2025).
-    > URL: (https://arxiv.org/abs/2501.10056)
+    > [1] Rikuto Oiwa, Akane Inda, Satoru Hayami, Takuya Nomoto, Ryotaro Arita, and Hiroaki Kusunose, Symmetry-adapted closest Wannier modeling based on complete multipole basis set, Phys. Rev. B 112, 035116 (2025).
+    > DOI: https://doi.org/10.1103/2s5q-p42x
     
     > [2] Hiroaki Kusunose, Rikuto Oiwa, and Satoru Hayami, Symmetry-adapted modeling for molecules and crystals, Phys. Rev. B 107, 195118 (2023).
     > DOI: https://doi.org/10.1103/PhysRevB.107.195118.<br>
@@ -23,7 +23,7 @@
 - **Citing SymClosestWannier**: If you are using SymClosestWannier in your scientific research, please help our scientific visibility by citing our work:
 
     > [1] Rikuto Oiwa, Akane Inda, Satoru Hayami, Takuya Nomoto, Ryotaro Arita, and Hiroaki Kusunose, Symmetry-adapted closest Wannier modeling based on complete multipole basis set, Phys. Rev. B 112, 035116 (2025).
-    > URL: (https://arxiv.org/abs/2501.10056)
+    > DOI: https://doi.org/10.1103/2s5q-p42x
     
     > [2] Hiroaki Kusunose, Rikuto Oiwa, and Satoru Hayami, Symmetry-adapted modeling for molecules and crystals, Phys. Rev. B 107, 195118 (2023).
     > DOI: https://doi.org/10.1103/PhysRevB.107.195118.<br>
