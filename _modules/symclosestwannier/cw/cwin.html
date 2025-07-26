@@ -448,6 +448,7 @@
 <span class="sd">            # only used for band dispersion calculation.</span>
 <span class="sd">                - a                 : lattice parameter (in Ang) used to correct units of k points in reference band data, [None].</span>
 <span class="sd">                - N1                : number of divisions for high symmetry lines (int, optional), [50].</span>
+<span class="sd">                - calc_spin_2d      : add expectation value of spin operator given by *.spn in output file ? (bool). [False].</span>
 
 <span class="sd">            # only used for dos calculation.</span>
 <span class="sd">                - calc_dos          : calculate dos? (bool), [False].</span>
@@ -508,9 +509,9 @@
                     <span class="n">v</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
 
             <span class="n">d</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_str_to</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
-        <span class="k">assert</span> <span class="ow">not</span> <span class="p">(</span>
-            <span class="n">d</span><span class="p">[</span><span class="s2">&quot;restart&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;w90&quot;</span> <span class="ow">and</span> <span class="n">d</span><span class="p">[</span><span class="s2">&quot;symmetrization&quot;</span><span class="p">]</span>
-        <span class="p">),</span> <span class="s2">&quot;Symmetrization cannot be performed when restart == w90.&quot;</span>
+        <span class="c1"># assert not (</span>
+        <span class="c1">#    d[&quot;restart&quot;] == &quot;w90&quot; and d[&quot;symmetrization&quot;]</span>
+        <span class="c1"># ), &quot;Symmetrization cannot be performed when restart == w90.&quot;</span>
 
         <span class="k">assert</span> <span class="ow">not</span> <span class="p">(</span>
             <span class="n">d</span><span class="p">[</span><span class="s2">&quot;disentangle&quot;</span><span class="p">]</span> <span class="ow">and</span> <span class="p">(</span><span class="n">d</span><span class="p">[</span><span class="s2">&quot;dis_win_emax&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">d</span><span class="p">[</span><span class="s2">&quot;dis_win_emin&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">)</span>

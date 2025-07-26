@@ -353,6 +353,7 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">symclosestwannier.util.utility</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">thermal_avg</span><span class="p">,</span>
     <span class="n">total_energy</span><span class="p">,</span>
+    <span class="n">free_energy</span><span class="p">,</span>
     <span class="n">entropy</span><span class="p">,</span>
     <span class="n">weight_proj</span><span class="p">,</span>
     <span class="n">band_distance</span><span class="p">,</span>
@@ -502,6 +503,11 @@
                 <span class="s2">&quot;Hr_nonortho&quot;</span><span class="p">:</span> <span class="n">Hr_nonortho</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span>
             <span class="p">}</span>
         <span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;symmetrization&quot;</span><span class="p">]:</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;   - symmetrization ... &quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_cwm</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_outfile</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;a&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_sym</span><span class="p">()</span>
 
     <span class="c1"># ==================================================</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">_cw</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -820,6 +826,7 @@
         <span class="n">model</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwm</span><span class="o">.</span><span class="n">read</span><span class="p">(</span>
             <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;mp_outdir&quot;</span><span class="p">],</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s1">&#39;mp_seedname&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">_model.py&quot;</span><span class="p">))</span>
         <span class="p">)</span>
+
         <span class="n">samb</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwm</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;mp_outdir&quot;</span><span class="p">],</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s1">&#39;mp_seedname&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">_samb.py&quot;</span><span class="p">)))</span>
 
         <span class="k">try</span><span class="p">:</span>
@@ -920,6 +927,24 @@
             <span class="n">z</span> <span class="o">=</span> <span class="n">CWModel</span><span class="o">.</span><span class="n">samb_decomp_operator</span><span class="p">(</span>
                 <span class="n">Hr_dict</span><span class="p">,</span> <span class="n">Zr_dict</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">atoms_frac</span><span class="p">,</span> <span class="n">ket_amn</span><span class="p">,</span> <span class="n">A_samb</span><span class="p">,</span> <span class="n">atoms_frac_samb</span><span class="p">,</span> <span class="n">ket_samb</span>
             <span class="p">)</span>
+
+        <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="c1"># for tag, d in Zr_dict.items():</span>
+        <span class="c1"># i += 1</span>
+        <span class="c1"># if i in (1, 2, 8, 9, 10, 12, 17, 20, 29, 30, 32, 33, 34, 35, 81, 83, 85):</span>
+        <span class="c1">#    z[tag] = z[tag]</span>
+        <span class="c1"># else:</span>
+        <span class="c1">#    z[tag] = 0.0</span>
+        <span class="c1"># if i in (1, 2, 8, 9, 10, 12, 17, 20, 29, 30, 32, 33, 34, 35, 81, 82, 83, 84, 85, 86):</span>
+        <span class="c1">#    z[tag] = z[tag]</span>
+        <span class="c1"># if i in (1, 8, 10, 12, 32, 34, 83, 85):</span>
+        <span class="c1">#    z[tag] = z[tag]</span>
+        <span class="c1"># else:</span>
+        <span class="c1">#    z[tag] = 0.0</span>
+        <span class="c1"># if i in (10, 34, 83, 85):  # Gu</span>
+        <span class="c1">#    z[tag] = -z[tag]</span>
+        <span class="c1"># else:</span>
+        <span class="c1">#    z[tag] = z[tag]</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_cwm</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="s2">&quot;done&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_outfile</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;a&quot;</span><span class="p">)</span>
 
@@ -1110,29 +1135,19 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_cwm</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_outfile</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;a&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_cwm</span><span class="o">.</span><span class="n">set_stamp</span><span class="p">()</span>
 
-        <span class="n">E_tot</span> <span class="o">=</span> <span class="n">total_energy</span><span class="p">(</span>
-            <span class="n">Ek_grid</span><span class="p">,</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;fermi_energy&quot;</span><span class="p">],</span>
-            <span class="n">T_Kelvin</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;z_exp_temperature&quot;</span><span class="p">],</span>
-        <span class="p">)</span>
-
-        <span class="n">S</span> <span class="o">=</span> <span class="n">entropy</span><span class="p">(</span>
-            <span class="n">Ek_grid</span><span class="p">,</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;fermi_energy&quot;</span><span class="p">],</span>
-            <span class="n">T_Kelvin</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;z_exp_temperature&quot;</span><span class="p">],</span>
-        <span class="p">)</span>
-
-        <span class="n">free_energy</span> <span class="o">=</span> <span class="n">E_tot</span> <span class="o">-</span> <span class="n">Kelvin_to_eV</span><span class="p">(</span><span class="n">T</span><span class="p">)</span> <span class="o">*</span> <span class="n">S</span>
+        <span class="n">E</span> <span class="o">=</span> <span class="n">total_energy</span><span class="p">(</span><span class="n">Ek_grid</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;fermi_energy&quot;</span><span class="p">],</span> <span class="n">T_Kelvin</span><span class="o">=</span><span class="n">T</span><span class="p">)</span>
+        <span class="n">S</span> <span class="o">=</span> <span class="n">entropy</span><span class="p">(</span><span class="n">Ek_grid</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;fermi_energy&quot;</span><span class="p">],</span> <span class="n">T_Kelvin</span><span class="o">=</span><span class="n">T</span><span class="p">)</span>
+        <span class="n">F</span> <span class="o">=</span> <span class="n">E</span> <span class="o">-</span> <span class="n">Kelvin_to_eV</span><span class="p">(</span><span class="n">T</span><span class="p">)</span> <span class="o">*</span> <span class="n">S</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;z_exp&quot;</span><span class="p">]:</span>
-            <span class="n">E_tot_samb</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">([</span><span class="n">z</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">*</span> <span class="n">z_exp</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">z_exp</span><span class="o">.</span><span class="n">keys</span><span class="p">()])</span>
-            <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot; * E_tot_samb = </span><span class="si">{</span><span class="n">E_tot_samb</span><span class="si">}</span><span class="s2"> [eV] </span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="n">E_samb</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">([</span><span class="n">z</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">*</span> <span class="n">z_exp</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">z_exp</span><span class="o">.</span><span class="n">keys</span><span class="p">()])</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot; * E_samb = </span><span class="si">{</span><span class="n">E_samb</span><span class="si">}</span><span class="s2"> [eV] </span><span class="se">\n</span><span class="s2">&quot;</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
 
-        <span class="n">msg</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot; * E_tot = </span><span class="si">{</span><span class="n">E_tot</span><span class="si">}</span><span class="s2"> [eV] </span><span class="se">\n</span><span class="s2">&quot;</span>
-        <span class="n">msg</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot; * T*S = </span><span class="si">{</span><span class="n">T</span><span class="o">*</span><span class="n">S</span><span class="si">}</span><span class="s2"> [eV] </span><span class="se">\n</span><span class="s2">&quot;</span>
-        <span class="n">msg</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot; * free_energy = </span><span class="si">{</span><span class="n">free_energy</span><span class="si">}</span><span class="s2"> [eV]&quot;</span>
+        <span class="n">msg</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot; * E = </span><span class="si">{</span><span class="n">E</span><span class="si">}</span><span class="s2"> [eV] </span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="n">msg</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot; * T*S = </span><span class="si">{</span><span class="n">Kelvin_to_eV</span><span class="p">(</span><span class="n">T</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">S</span><span class="si">}</span><span class="s2"> [eV] </span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="n">msg</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot; * F = E - TS = </span><span class="si">{</span><span class="n">F</span><span class="si">}</span><span class="s2"> [eV]&quot;</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_cwm</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_outfile</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;a&quot;</span><span class="p">)</span>
 

@@ -1246,14 +1246,13 @@
 <a class="viewcode-back" href="../../../src/api/util.html#symclosestwannier.util.utility.total_energy">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">total_energy</span><span class="p">(</span><span class="n">E</span><span class="p">,</span> <span class="n">ef</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">T_Kelvin</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">num_k</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    total energy</span>
+<span class="sd">    total energy (E).</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">ef</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">ef</span> <span class="o">=</span> <span class="mf">0.0</span>
 
-    <span class="n">fk</span> <span class="o">=</span> <span class="n">fermi</span><span class="p">(</span><span class="n">E</span> <span class="o">-</span> <span class="n">ef</span><span class="p">,</span> <span class="n">T_Kelvin</span><span class="p">)</span>
-
     <span class="n">E</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">E</span><span class="p">)</span>
+    <span class="n">fk</span> <span class="o">=</span> <span class="n">fermi</span><span class="p">(</span><span class="n">E</span> <span class="o">-</span> <span class="n">ef</span><span class="p">,</span> <span class="n">T_Kelvin</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">num_k</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
         <span class="n">num_k</span> <span class="o">=</span> <span class="n">E</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
@@ -1265,36 +1264,49 @@
 
 
 <span class="c1"># ==================================================</span>
-<div class="viewcode-block" id="entropy">
-<a class="viewcode-back" href="../../../src/api/util.html#symclosestwannier.util.utility.entropy">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">entropy</span><span class="p">(</span><span class="n">E</span><span class="p">,</span> <span class="n">ef</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">T_Kelvin</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">num_k</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+<div class="viewcode-block" id="free_energy">
+<a class="viewcode-back" href="../../../src/api/util.html#symclosestwannier.util.utility.free_energy">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">free_energy</span><span class="p">(</span><span class="n">E</span><span class="p">,</span> <span class="n">ef</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">T_Kelvin</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">num_k</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    total energy</span>
+<span class="sd">    free energy (F = E - TS)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">ef</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">ef</span> <span class="o">=</span> <span class="mf">0.0</span>
 
+    <span class="n">E</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">E</span><span class="p">)</span>
     <span class="n">fk</span> <span class="o">=</span> <span class="n">fermi</span><span class="p">(</span><span class="n">E</span> <span class="o">-</span> <span class="n">ef</span><span class="p">,</span> <span class="n">T_Kelvin</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">num_k</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
         <span class="n">num_k</span> <span class="o">=</span> <span class="n">E</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 
-    <span class="n">S</span> <span class="o">=</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">fk</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">fk</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="n">fk</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="n">fk</span><span class="p">))</span> <span class="o">/</span> <span class="n">num_k</span>
+    <span class="n">T_eV</span> <span class="o">=</span> <span class="n">Kelvin_to_eV</span><span class="p">(</span><span class="n">T_Kelvin</span><span class="p">)</span>
+    <span class="n">F</span> <span class="o">=</span> <span class="o">-</span><span class="n">T_eV</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">((</span><span class="o">-</span><span class="mf">1.0</span> <span class="o">/</span> <span class="n">T_eV</span> <span class="o">*</span> <span class="p">(</span><span class="n">E</span> <span class="o">-</span> <span class="n">ef</span><span class="p">)</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">fk</span><span class="p">)))</span> <span class="o">/</span> <span class="n">num_k</span>
 
-    <span class="k">return</span> <span class="n">S</span></div>
+    <span class="k">return</span> <span class="n">F</span></div>
 
 
 
 <span class="c1"># ==================================================</span>
-<div class="viewcode-block" id="free_energy">
-<a class="viewcode-back" href="../../../src/api/util.html#symclosestwannier.util.utility.free_energy">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">free_energy</span><span class="p">(</span><span class="n">E</span><span class="p">,</span> <span class="n">ef</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">T_Kelvin</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">num_k</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+<div class="viewcode-block" id="entropy">
+<a class="viewcode-back" href="../../../src/api/util.html#symclosestwannier.util.utility.entropy">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">entropy</span><span class="p">(</span><span class="n">E</span><span class="p">,</span> <span class="n">ef</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">T_Kelvin</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">num_k</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    total energy</span>
+<span class="sd">    total energy (S).</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">E_tot</span> <span class="o">=</span> <span class="n">total_energy</span><span class="p">(</span><span class="n">E</span><span class="p">,</span> <span class="n">ef</span><span class="p">,</span> <span class="n">T_Kelvin</span><span class="p">,</span> <span class="n">num_k</span><span class="p">)</span>
-    <span class="n">S</span> <span class="o">=</span> <span class="n">entropy</span><span class="p">(</span><span class="n">E</span><span class="p">,</span> <span class="n">ef</span><span class="p">,</span> <span class="n">T_Kelvin</span><span class="p">,</span> <span class="n">num_k</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">E_tot</span> <span class="o">-</span> <span class="n">T_Kelvin</span> <span class="o">*</span> <span class="n">S</span></div>
+    <span class="k">if</span> <span class="n">ef</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">ef</span> <span class="o">=</span> <span class="mf">0.0</span>
+
+    <span class="k">if</span> <span class="n">num_k</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">num_k</span> <span class="o">=</span> <span class="n">E</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="n">fk</span> <span class="o">=</span> <span class="n">fermi</span><span class="p">(</span><span class="n">E</span> <span class="o">-</span> <span class="n">ef</span><span class="p">,</span> <span class="n">T_Kelvin</span><span class="p">)</span>
+
+    <span class="n">log_fk</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">fkin</span><span class="p">)</span> <span class="k">if</span> <span class="n">fkin</span> <span class="o">!=</span> <span class="mf">0.0</span> <span class="k">else</span> <span class="mf">0.0</span> <span class="k">for</span> <span class="n">fkin</span> <span class="ow">in</span> <span class="n">fki</span><span class="p">]</span> <span class="k">for</span> <span class="n">fki</span> <span class="ow">in</span> <span class="n">fk</span><span class="p">])</span>
+    <span class="n">log_1mfk</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="n">fkin</span><span class="p">)</span> <span class="k">if</span> <span class="mf">1.0</span> <span class="o">-</span> <span class="n">fkin</span> <span class="o">!=</span> <span class="mf">0.0</span> <span class="k">else</span> <span class="mf">0.0</span> <span class="k">for</span> <span class="n">fkin</span> <span class="ow">in</span> <span class="n">fki</span><span class="p">]</span> <span class="k">for</span> <span class="n">fki</span> <span class="ow">in</span> <span class="n">fk</span><span class="p">])</span>
+
+    <span class="n">S</span> <span class="o">=</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">fk</span> <span class="o">*</span> <span class="n">log_fk</span> <span class="o">+</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="n">fk</span><span class="p">)</span> <span class="o">*</span> <span class="n">log_1mfk</span><span class="p">)</span> <span class="o">/</span> <span class="n">num_k</span>
+
+    <span class="k">return</span> <span class="n">S</span></div>
 
 
 

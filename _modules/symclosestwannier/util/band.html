@@ -431,6 +431,21 @@
 
     <span class="n">fs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="mf">0.0</span><span class="si">}</span><span class="s2"> lw 0.5 dt (2,1) lc &#39;black&#39;&quot;</span><span class="p">)</span>
 
+    <span class="n">fs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot; </span><span class="se">\n\n</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="n">fs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;set terminal pdf </span><span class="se">\n\n</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="n">fs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;set output &#39;</span><span class="si">{</span><span class="n">filename</span><span class="si">}</span><span class="s2">.pdf&#39; </span><span class="se">\n\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">fs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;plot &quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">ref_filename</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="c1"># fs.write(f&quot;&#39;{ref_filename}&#39; u ($1/(2*pi)):2 w l lw lwidth lc &#39;dark-grey&#39;, &quot;)</span>
+        <span class="n">fs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&#39;</span><span class="si">{</span><span class="n">ref_filename</span><span class="si">}</span><span class="s2">&#39; u ($1/a):($2-ef) w l lw lwidth lc &#39;dark-grey&#39;, &quot;</span><span class="p">)</span>
+
+    <span class="n">fs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&#39;</span><span class="si">{</span><span class="n">filename</span><span class="si">}</span><span class="s2">.txt&#39; u 1:2 w l lw lwidth dt (3,1) lc &#39;</span><span class="si">{</span><span class="n">lc</span><span class="si">}</span><span class="s2">&#39;, &quot;</span><span class="p">)</span>
+
+    <span class="n">fs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="mf">0.0</span><span class="si">}</span><span class="s2"> lw 0.5 dt (2,1) lc &#39;black&#39;&quot;</span><span class="p">)</span>
+
     <span class="n">fs</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 
     <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;cd </span><span class="si">{</span><span class="n">outdir</span><span class="si">}</span><span class="s2"> ; gnuplot plot_band.gnu&quot;</span><span class="p">,</span> <span class="n">shell</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
@@ -551,6 +566,23 @@
     <span class="n">fs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;set terminal postscript eps color enhanced </span><span class="se">\n\n</span><span class="s2">&quot;</span><span class="p">)</span>
 
     <span class="n">fs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;set output &#39;</span><span class="si">{</span><span class="n">filename</span><span class="si">}</span><span class="s2">.eps&#39; </span><span class="se">\n\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">fs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;plot &quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">ref_filename</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="c1"># fs.write(f&quot;&#39;{ref_filename}&#39; u ($1/(2*pi)):2 w l lw lwidth lc &#39;dark-grey&#39;, &quot;)</span>
+        <span class="n">fs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&#39;</span><span class="si">{</span><span class="n">ref_filename</span><span class="si">}</span><span class="s2">&#39; u ($1/a):($2-ef) w l lw lwidth lc &#39;dark-grey&#39;, &quot;</span><span class="p">)</span>
+
+    <span class="n">fs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span>
+        <span class="sa">f</span><span class="s2">&quot;for [j=2:</span><span class="si">{</span><span class="n">num_wann</span><span class="o">*</span><span class="p">(</span><span class="n">num_wann</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="si">}</span><span class="s2">:</span><span class="si">{</span><span class="n">num_wann</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2">] &#39;</span><span class="si">{</span><span class="n">filename</span><span class="si">}</span><span class="s2">.txt&#39; u 1:j w l lw lwidth dt (3,1) lc &#39;</span><span class="si">{</span><span class="n">lc</span><span class="si">}</span><span class="s2">&#39;, &quot;</span>
+    <span class="p">)</span>
+
+    <span class="n">fs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="mf">0.0</span><span class="si">}</span><span class="s2"> lw 0.5 dt (2,1) lc &#39;black&#39;&quot;</span><span class="p">)</span>
+
+    <span class="n">fs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot; </span><span class="se">\n\n</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="n">fs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;set terminal pdf </span><span class="se">\n\n</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="n">fs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;set output &#39;</span><span class="si">{</span><span class="n">filename</span><span class="si">}</span><span class="s2">.pdf&#39; </span><span class="se">\n\n</span><span class="s2">&quot;</span><span class="p">)</span>
     <span class="n">fs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;plot &quot;</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">ref_filename</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>

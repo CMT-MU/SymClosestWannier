@@ -477,6 +477,7 @@
         <span class="n">Hk_path</span> <span class="o">=</span> <span class="n">cw_model</span><span class="o">.</span><span class="n">fourier_transform_r_to_k</span><span class="p">(</span>
             <span class="n">cw_model</span><span class="p">[</span><span class="s2">&quot;Hr&quot;</span><span class="p">],</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;kpoints_path&quot;</span><span class="p">],</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;irvec&quot;</span><span class="p">],</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;ndegen&quot;</span><span class="p">],</span> <span class="n">atoms_frac</span><span class="o">=</span><span class="n">atoms_frac</span>
         <span class="p">)</span>
+
         <span class="n">Ek</span><span class="p">,</span> <span class="n">Uk</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">eigh</span><span class="p">(</span><span class="n">Hk_path</span><span class="p">)</span>
 
         <span class="n">ef</span> <span class="o">=</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;fermi_energy&quot;</span><span class="p">]</span>
@@ -492,11 +493,227 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="n">Sk</span> <span class="o">=</span> <span class="kc">None</span>
 
+        <span class="c1">### orbital angular momentum ###</span>
+        <span class="c1"># Lx = np.array(</span>
+        <span class="c1">#    [</span>
+        <span class="c1">#        [0, 0, 0, 0],</span>
+        <span class="c1">#        [0, 0, 0, 1.0j],</span>
+        <span class="c1">#        [0, 0, 0, 0],</span>
+        <span class="c1">#        [0, -1.0j, 0, 0],</span>
+        <span class="c1">#    ]</span>
+        <span class="c1"># )</span>
+        <span class="c1"># Ly = np.array(</span>
+        <span class="c1">#    [</span>
+        <span class="c1">#        [0, 0, 0, 0],</span>
+        <span class="c1">#        [0, 0, -1.0j, 0],</span>
+        <span class="c1">#        [0, 1.0j, 0, 0],</span>
+        <span class="c1">#        [0, 0, 0, 0],</span>
+        <span class="c1">#    ]</span>
+        <span class="c1"># )</span>
+        <span class="c1"># Lz = np.array(</span>
+        <span class="c1">#    [</span>
+        <span class="c1">#        [0, 0, 0, 0],</span>
+        <span class="c1">#        [0, 0, 0, 0],</span>
+        <span class="c1">#        [0, 0, 0, -1.0j],</span>
+        <span class="c1">#        [0, 0, 1.0j, 0],</span>
+        <span class="c1">#    ]</span>
+        <span class="c1"># )</span>
+        <span class="c1"># from numpy import linalg as npl</span>
+        <span class="c1"># from scipy import linalg as spl</span>
+
+        <span class="c1"># Sk_mat = cw_model.fourier_transform_r_to_k(</span>
+        <span class="c1">#    cw_model[&quot;Sr&quot;], cwi[&quot;kpoints_path&quot;], cwi[&quot;irvec&quot;], cwi[&quot;ndegen&quot;], atoms_frac=atoms_frac</span>
+        <span class="c1"># )</span>
+        <span class="c1"># S2k_inv = np.array([npl.inv(spl.sqrtm(Sk_mat[k])) for k in range(len(cwi[&quot;kpoints_path&quot;]))])</span>
+
+        <span class="c1"># identity_2 = np.eye(2)</span>
+        <span class="c1"># identity_3 = np.eye(3)</span>
+        <span class="c1"># Lx_ = np.kron(identity_3, np.kron(Lx, identity_2))</span>
+        <span class="c1"># Ly_ = np.kron(identity_3, np.kron(Ly, identity_2))</span>
+        <span class="c1"># Lz_ = np.kron(identity_3, np.kron(Lz, identity_2))</span>
+        <span class="c1">## Lx_ = np.kron(identity_3, Lx)</span>
+        <span class="c1">## Ly_ = np.kron(identity_3, Ly)</span>
+        <span class="c1">## Lz_ = np.kron(identity_3, Lz)</span>
+        <span class="c1"># L = [Lx_, Ly_, Lz_]</span>
+        <span class="c1"># Lk = np.array([[L[a] for _ in cwi[&quot;kpoints_path&quot;]] for a in range(3)])</span>
+        <span class="c1">## Lk_H = np.array([Uk.transpose(0, 2, 1).conjugate() @ S2k_inv @ Lk[a] @ S2k_inv @ Uk for a in range(3)])</span>
+        <span class="c1"># Lk_H = np.array([Uk.transpose(0, 2, 1).conjugate() @ Lk[a] @ Uk for a in range(3)])</span>
+        <span class="c1"># Lk = np.real(np.diagonal(Lk_H, axis1=2, axis2=3))</span>
+        <span class="c1"># Lk = Lk.transpose(2, 1, 0)</span>
+        <span class="c1">#### orbital angular momentum ###</span>
+
+        <span class="c1">#### sublattice angular momentum ###</span>
+        <span class="c1"># C3_site = np.array(</span>
+        <span class="c1">#    [</span>
+        <span class="c1">#        [0, 1, 0],</span>
+        <span class="c1">#        [0, 0, 1],</span>
+        <span class="c1">#        [1, 0, 0],</span>
+        <span class="c1">#    ]</span>
+        <span class="c1"># )</span>
+
+        <span class="c1"># identity_4 = np.eye(4)</span>
+        <span class="c1"># C3 = np.kron(C3_site, np.kron(identity_4, identity_2))</span>
+        <span class="c1"># Lz_site = 1.0j / np.sqrt(3) * (C3 - np.linalg.inv(C3))</span>
+        <span class="c1"># Lzk_site = np.array([Lz_site for _ in cwi[&quot;kpoints_path&quot;]])</span>
+        <span class="c1"># Lzk_site_H = Uk.transpose(0, 2, 1).conjugate() @ Lzk_site @ Uk</span>
+        <span class="c1"># Lzk_site = np.real(np.diagonal(Lzk_site_H, axis1=1, axis2=2))</span>
+        <span class="c1"># Lzk_site = Lzk_site.transpose(1, 0)</span>
+        <span class="c1">#### sublattice angular momentum ###</span>
+
+        <span class="c1">#### crystal angular momentum (spinless) ###</span>
+        <span class="c1"># C3_site = np.array(</span>
+        <span class="c1">#    [</span>
+        <span class="c1">#        [0, 1, 0],</span>
+        <span class="c1">#        [0, 0, 1],</span>
+        <span class="c1">#        [1, 0, 0],</span>
+        <span class="c1">#    ]</span>
+        <span class="c1"># )</span>
+        <span class="c1"># C3_orb = np.array(</span>
+        <span class="c1">#    [</span>
+        <span class="c1">#        [1, 0, 0, 0],</span>
+        <span class="c1">#        [0, 1, 0, 0],</span>
+        <span class="c1">#        [0, 0, -1.0 / 2, -np.sqrt(3) / 2],</span>
+        <span class="c1">#        [0, 0, np.sqrt(3) / 2, -1.0 / 2],</span>
+        <span class="c1">#    ]</span>
+        <span class="c1"># )</span>
+
+        <span class="c1"># C3 = np.kron(C3_site, np.kron(C3_orb, identity_2))</span>
+        <span class="c1"># Jz_as_c = 1.0j / np.sqrt(3) * (C3 - np.linalg.inv(C3))</span>
+        <span class="c1"># Jzk_as_c = np.array([Jz_as_c for _ in cwi[&quot;kpoints_path&quot;]])</span>
+        <span class="c1"># Jzk_as_c_H = Uk.transpose(0, 2, 1).conjugate() @ Jzk_as_c @ Uk</span>
+        <span class="c1"># Jzk_as_c = np.real(np.diagonal(Jzk_as_c_H, axis1=1, axis2=2))</span>
+        <span class="c1"># Jzk_as_c = Jzk_as_c.transpose(1, 0)</span>
+        <span class="c1">#### crystal angular momentum (spinless) ###</span>
+
+        <span class="c1">#### crystal angular momentum ###</span>
+        <span class="c1"># C3_site = np.array(</span>
+        <span class="c1">#    [</span>
+        <span class="c1">#        [0, 1, 0],</span>
+        <span class="c1">#        [0, 0, 1],</span>
+        <span class="c1">#        [1, 0, 0],</span>
+        <span class="c1">#    ]</span>
+        <span class="c1"># )</span>
+        <span class="c1"># C3_orb = np.array(</span>
+        <span class="c1">#    [</span>
+        <span class="c1">#        [1, 0, 0, 0],</span>
+        <span class="c1">#        [0, 1, 0, 0],</span>
+        <span class="c1">#        [0, 0, -1.0 / 2, -np.sqrt(3) / 2],</span>
+        <span class="c1">#        [0, 0, np.sqrt(3) / 2, -1.0 / 2],</span>
+        <span class="c1">#    ]</span>
+        <span class="c1"># )</span>
+        <span class="c1"># C3_spn = np.array(</span>
+        <span class="c1">#    [</span>
+        <span class="c1">#        [1.0 / 2 - 1.0j * np.sqrt(3) / 2, 0],</span>
+        <span class="c1">#        [0, 1.0 / 2 + 1.0j * np.sqrt(3) / 2],</span>
+        <span class="c1">#    ]</span>
+        <span class="c1"># )</span>
+
+        <span class="c1"># C3 = np.kron(C3_site, np.kron(C3_orb, C3_spn))</span>
+        <span class="c1"># Jz_c = 1.0j / np.sqrt(3) * (C3 - np.linalg.inv(C3))</span>
+        <span class="c1"># Jzk_c = np.array([Jz_c for _ in cwi[&quot;kpoints_path&quot;]])</span>
+        <span class="c1"># Jzk_c_H = Uk.transpose(0, 2, 1).conjugate() @ Jzk_c @ Uk</span>
+        <span class="c1"># Jzk_c = np.real(np.diagonal(Jzk_c_H, axis1=1, axis2=2))</span>
+        <span class="c1"># Jzk_c = Jzk_c.transpose(1, 0)</span>
+        <span class="c1">#### crystal angular momentum ###</span>
+
+        <span class="c1">#### ET dipole ###</span>
+        <span class="c1"># sigma_x = np.array([[0, 1.0], [1.0, 0.0]]) / np.sqrt(2)</span>
+        <span class="c1"># sigma_y = np.array([[0, -1.0j], [1.0j, 0.0]]) / np.sqrt(2)</span>
+        <span class="c1"># Q0_s = np.array(</span>
+        <span class="c1">#    [</span>
+        <span class="c1">#        [1, 0, 0],</span>
+        <span class="c1">#        [0, 1, 0],</span>
+        <span class="c1">#        [0, 0, 1],</span>
+        <span class="c1">#    ]</span>
+        <span class="c1"># )</span>
+        <span class="c1"># Q0_u = np.array(</span>
+        <span class="c1">#    [</span>
+        <span class="c1">#        [0, 1, 1],</span>
+        <span class="c1">#        [1, 0, 1],</span>
+        <span class="c1">#        [1, 1, 0],</span>
+        <span class="c1">#    ]</span>
+        <span class="c1"># )</span>
+        <span class="c1"># Gz_ = np.kron(Q0_s, np.kron(Lx, sigma_y)) - np.kron(</span>
+        <span class="c1">#    Q0_s,</span>
+        <span class="c1">#    np.kron(Ly, sigma_x),</span>
+        <span class="c1"># )</span>
+        <span class="c1"># Gzk = np.array([Gz_ for _ in cwi[&quot;kpoints_path&quot;]])</span>
+        <span class="c1"># Gzk_H = Uk.transpose(0, 2, 1).conjugate() @ Gzk @ Uk</span>
+        <span class="c1"># Gzk = np.real(np.diagonal(Gzk_H, axis1=1, axis2=2))</span>
+        <span class="c1"># Gzk = Gzk.transpose(1, 0)</span>
+        <span class="c1">#### ET dipole ###</span>
+
+        <span class="c1">#### Lzk_atomic_Q0u ###</span>
+        <span class="c1"># Q0_u = np.array(</span>
+        <span class="c1">#    [</span>
+        <span class="c1">#        [0, 1, 1],</span>
+        <span class="c1">#        [1, 0, 1],</span>
+        <span class="c1">#        [1, 1, 0],</span>
+        <span class="c1">#    ]</span>
+        <span class="c1"># )</span>
+        <span class="c1"># LazQ0u = np.kron(Q0_u, np.kron(Lz, identity_2))</span>
+        <span class="c1"># LazQ0u = np.array([LazQ0u for _ in cwi[&quot;kpoints_path&quot;]])</span>
+        <span class="c1"># LazQ0u_H = Uk.transpose(0, 2, 1).conjugate() @ LazQ0u @ Uk</span>
+        <span class="c1"># LazQ0u = np.real(np.diagonal(LazQ0u_H, axis1=1, axis2=2))</span>
+        <span class="c1"># LazQ0u = LazQ0u.transpose(1, 0)</span>
+        <span class="c1">#### Lzk_atomic_Q0u ###</span>
+
+        <span class="c1">#### Lzk_site_Qua ###</span>
+        <span class="c1"># C3_site = np.array(</span>
+        <span class="c1">#    [</span>
+        <span class="c1">#        [0, 1, 0],</span>
+        <span class="c1">#        [0, 0, 1],</span>
+        <span class="c1">#        [1, 0, 0],</span>
+        <span class="c1">#    ]</span>
+        <span class="c1"># )</span>
+
+        <span class="c1"># identity_4 = np.eye(4)</span>
+        <span class="c1"># C3 = np.kron(C3_site, np.kron(identity_4, identity_2))</span>
+        <span class="c1"># Lz_site = 1.0j / np.sqrt(3) * (C3 - np.linalg.inv(C3))</span>
+
+        <span class="c1"># Qu_a = np.array(</span>
+        <span class="c1">#    [</span>
+        <span class="c1">#        [0, 0, 0, 0],</span>
+        <span class="c1">#        [0, 2, 0, 0],</span>
+        <span class="c1">#        [0, 0, -1, 0],</span>
+        <span class="c1">#        [0, 0, 0, -1],</span>
+        <span class="c1">#    ]</span>
+        <span class="c1"># )</span>
+
+        <span class="c1"># LszQua = Lz_site @ np.kron(identity_3, np.kron(Qu_a, identity_2))</span>
+
+        <span class="c1"># LszQua = np.array([LszQua for _ in cwi[&quot;kpoints_path&quot;]])</span>
+        <span class="c1"># LszQua_H = Uk.transpose(0, 2, 1).conjugate() @ LszQua @ Uk</span>
+        <span class="c1"># LszQua = np.real(np.diagonal(LszQua_H, axis1=1, axis2=2))</span>
+        <span class="c1"># LszQua = LszQua.transpose(1, 0)</span>
+        <span class="c1">#### Lzk_site_Qua ###</span>
+
+        <span class="c1"># S_L_k = np.array([Sk[:, :, a] for a in range(3)] + [Lk[:, :, a] for a in range(3)])</span>
+        <span class="c1"># S_L_k = S_L_k.transpose(1, 2, 0)</span>
+
+        <span class="c1"># S_La_Ls_J_k = np.array([Sk[:, :, a] for a in range(3)] + [Lk[:, :, a] for a in range(3)] + [Lzk_site] + [Jzk_c])</span>
+        <span class="c1"># S_La_Ls_J_k = S_La_Ls_J_k.transpose(1, 2, 0)</span>
+
+        <span class="c1"># S_La_Ls_J_Gz_Jas_LazQ0u_LzsQua_k = np.array(</span>
+        <span class="c1">#    [Sk[:, :, a] for a in range(3)]</span>
+        <span class="c1">#    + [Lk[:, :, a] for a in range(3)]</span>
+        <span class="c1">#    + [Lzk_site]</span>
+        <span class="c1">#    # + [Jzk_c]</span>
+        <span class="c1">#    + [Lk[:, :, 2] + 0.5 * Sk[:, :, 2]]</span>
+        <span class="c1">#    + [Gzk]</span>
+        <span class="c1">#    + [Jzk_as_c]</span>
+        <span class="c1">#    + [LazQ0u]</span>
+        <span class="c1">#    + [LszQua]</span>
+        <span class="c1"># )</span>
+        <span class="c1"># S_La_Ls_J_Gz_Jas_LazQ0u_LzsQua_k = S_La_Ls_J_Gz_Jas_LazQ0u_LzsQua_k.transpose(1, 2, 0)</span>
+
         <span class="n">output_linear_dispersion_eig</span><span class="p">(</span>
             <span class="s2">&quot;.&quot;</span><span class="p">,</span>
             <span class="n">seedname</span> <span class="o">+</span> <span class="s2">&quot;_band.txt&quot;</span><span class="p">,</span>
             <span class="n">k_linear</span><span class="p">,</span>
             <span class="n">e</span><span class="o">=</span><span class="n">Ek</span><span class="p">,</span>
+            <span class="c1"># o=Lk,</span>
+            <span class="c1"># o=S_La_Ls_J_Gz_Jas_LazQ0u_LzsQua_k,</span>
             <span class="n">o</span><span class="o">=</span><span class="n">Sk</span><span class="p">,</span>
             <span class="n">ref_filename</span><span class="o">=</span><span class="n">ref_filename</span><span class="p">,</span>
             <span class="n">a</span><span class="o">=</span><span class="n">a</span><span class="p">,</span>
@@ -556,6 +773,159 @@
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">Sk</span> <span class="o">=</span> <span class="kc">None</span>
 
+            <span class="c1"># Lx = np.array(</span>
+            <span class="c1">#    [</span>
+            <span class="c1">#        [0, 0, 0, 0],</span>
+            <span class="c1">#        [0, 0, 0, 0],</span>
+            <span class="c1">#        [0, 0, 0, -1.0j],</span>
+            <span class="c1">#        [0, 0, 1.0j, 0],</span>
+            <span class="c1">#    ]</span>
+            <span class="c1"># )</span>
+            <span class="c1"># Ly = np.array(</span>
+            <span class="c1">#    [</span>
+            <span class="c1">#        [0, 0, 0, 0],</span>
+            <span class="c1">#        [0, 0, 0, 1.0j],</span>
+            <span class="c1">#        [0, 0, 0, 0],</span>
+            <span class="c1">#        [0, -1.0j, 0, 0],</span>
+            <span class="c1">#    ]</span>
+            <span class="c1"># )</span>
+            <span class="c1"># Lz = np.array(</span>
+            <span class="c1">#    [</span>
+            <span class="c1">#        [0, 0, 0, 0],</span>
+            <span class="c1">#        [0, 0, -1.0j, 0],</span>
+            <span class="c1">#        [0, 1.0j, 0, 0],</span>
+            <span class="c1">#        [0, 0, 0, 0],</span>
+            <span class="c1">#    ]</span>
+            <span class="c1"># )</span>
+
+            <span class="c1"># identity_2 = np.eye(2)</span>
+            <span class="c1"># identity_3 = np.eye(3)</span>
+            <span class="c1"># Lx = np.kron(identity_3, np.kron(Lx, identity_2))</span>
+            <span class="c1"># Ly = np.kron(identity_3, np.kron(Ly, identity_2))</span>
+            <span class="c1"># Lz = np.kron(identity_3, np.kron(Lz, identity_2))</span>
+            <span class="c1">## Lx = np.kron(identity_3, Lx)</span>
+            <span class="c1">## Ly = np.kron(identity_3, Ly)</span>
+            <span class="c1">## Lz = np.kron(identity_3, Lz)</span>
+            <span class="c1"># L = [Lx, Ly, Lz]</span>
+            <span class="c1"># Lk = np.array([[L[a] for _ in cwi[&quot;kpoints_path&quot;]] for a in range(3)])</span>
+            <span class="c1"># Lk_H = np.array([Uk.transpose(0, 2, 1).conjugate() @ Lk[a] @ Uk for a in range(3)])</span>
+            <span class="c1"># Lk = np.real(np.diagonal(Lk_H, axis1=2, axis2=3))</span>
+            <span class="c1"># Lk = Lk.transpose(2, 1, 0)</span>
+            <span class="c1">##### orbital angular momentum ###</span>
+
+            <span class="c1">##</span>
+            <span class="c1">##</span>
+            <span class="c1">##</span>
+
+            <span class="c1"># model = cwm.read(os.path.join(cwi[&quot;mp_outdir&quot;], &quot;{}&quot;.format(f&quot;{cwi[&#39;mp_seedname&#39;]}_model.py&quot;)))</span>
+            <span class="c1"># samb = cwm.read(os.path.join(cwi[&quot;mp_outdir&quot;], &quot;{}&quot;.format(f&quot;{cwi[&#39;mp_seedname&#39;]}_samb.py&quot;)))</span>
+
+            <span class="c1"># try:</span>
+            <span class="c1">#    mat = cwm.read(os.path.join(cwi[&quot;mp_outdir&quot;], &quot;{}&quot;.format(f&quot;{cwi[&#39;mp_seedname&#39;]}_matrix.pkl&quot;)))</span>
+            <span class="c1"># except:</span>
+            <span class="c1">#    mat = cwm.read(os.path.join(cwi[&quot;mp_outdir&quot;], &quot;{}&quot;.format(f&quot;{cwi[&#39;mp_seedname&#39;]}_matrix.py&quot;)))</span>
+
+            <span class="c1"># if cwi[&quot;irreps&quot;] == &quot;all&quot;:</span>
+            <span class="c1">#    irreps = model[&quot;info&quot;][&quot;generate&quot;][&quot;irrep&quot;]</span>
+            <span class="c1"># elif cwi[&quot;irreps&quot;] == &quot;full&quot;:</span>
+            <span class="c1">#    irreps = [model[&quot;info&quot;][&quot;generate&quot;][&quot;irrep&quot;][0]]</span>
+            <span class="c1"># else:</span>
+            <span class="c1">#    irreps = cwi[&quot;irreps&quot;]</span>
+
+            <span class="c1"># from multipie.tag.tag_multipole import TagMultipole</span>
+
+            <span class="c1"># for zj, (tag, _) in samb[&quot;data&quot;][&quot;Z&quot;].items():</span>
+            <span class="c1">#    if TagMultipole(tag).irrep not in irreps:</span>
+            <span class="c1">#        del mat[&quot;matrix&quot;][zj]</span>
+
+            <span class="c1"># tag_dict = {zj: tag for zj, (tag, _) in samb[&quot;data&quot;][&quot;Z&quot;].items()}</span>
+
+            <span class="c1">## Zr_dict = {</span>
+            <span class="c1">##     (zj, tag_dict[zj]): {tuple(sp.sympify(k)): complex(sp.sympify(v)) for k, v in d.items()}</span>
+            <span class="c1">##     for zj, d in mat[&quot;matrix&quot;].items()</span>
+            <span class="c1">## }</span>
+            <span class="c1">## mat[&quot;matrix&quot;] = {</span>
+            <span class="c1">##     zj: {tuple(sp.sympify(k)): complex(sp.sympify(v)) for k, v in d.items()} for zj, d in mat[&quot;matrix&quot;].items()</span>
+            <span class="c1">## }</span>
+
+            <span class="c1">#### kuniyoshi (24/08/20) ###</span>
+            <span class="c1"># import sympy as sp</span>
+            <span class="c1"># import multiprocessing</span>
+            <span class="c1"># from joblib import Parallel, delayed, wrap_non_picklable_objects</span>
+            <span class="c1"># from symclosestwannier.util.utility import construct_Ok</span>
+
+            <span class="c1"># _num_proc = multiprocessing.cpu_count()</span>
+
+            <span class="c1"># def proc(j, zj, d):</span>
+            <span class="c1">#    return j, zj, {tuple(sp.sympify(k)): complex(sp.sympify(v)) for k, v in d.items()}</span>
+
+            <span class="c1"># res = Parallel(n_jobs=_num_proc, verbose=1)(</span>
+            <span class="c1">#    delayed(proc)(j, zj, d) for j, (zj, d) in enumerate(mat[&quot;matrix&quot;].items())</span>
+            <span class="c1"># )</span>
+            <span class="c1"># res = sorted(res, key=lambda x: x[0])</span>
+
+            <span class="c1"># Zr_dict = {}</span>
+            <span class="c1"># for _, zj, d in res:</span>
+            <span class="c1">#    Zr_dict[(zj, tag_dict[zj])] = d</span>
+            <span class="c1">#    mat[&quot;matrix&quot;][zj] = d</span>
+
+            <span class="c1"># atoms_list = list(cwi[&quot;atoms_frac&quot;].values())</span>
+            <span class="c1"># atoms_frac = np.array([atoms_list[i] for i in cwi[&quot;nw2n&quot;]])</span>
+
+            <span class="c1"># atoms_frac_samb = [</span>
+            <span class="c1">#    NSArray(mat[&quot;cell_site&quot;][ket_samb[a].split(&quot;@&quot;)[1]][0], style=&quot;vector&quot;, fmt=&quot;value&quot;).tolist()</span>
+            <span class="c1">#    for a in range(cwi[&quot;num_wann&quot;])</span>
+            <span class="c1"># ]</span>
+
+            <span class="c1">#### kuniyoshi (24/08/20) ###</span>
+
+            <span class="c1"># dic = mat.copy()</span>
+            <span class="c1">#### Gu local (i = 9) ###</span>
+            <span class="c1">## Gu local (i = 9)</span>
+            <span class="c1"># tag, d = list(Zr_dict.items())[9]</span>
+            <span class="c1"># dic[&quot;matrix&quot;] = {tag: d}</span>
+            <span class="c1"># print(tag)</span>
+            <span class="c1"># if cwi[&quot;tb_gauge&quot;]:</span>
+            <span class="c1">#    Gu_local_k = construct_Ok(</span>
+            <span class="c1">#        [1], cwi[&quot;num_wann&quot;], cwi[&quot;kpoints_path&quot;], cwi[&quot;irvec&quot;], dic, atoms_frac=atoms_frac_samb</span>
+            <span class="c1">#    )</span>
+            <span class="c1"># else:</span>
+            <span class="c1">#    Gu_local_k = construct_Ok([1], cwi[&quot;num_wann&quot;], cwi[&quot;kpoints_path&quot;], cwi[&quot;irvec&quot;], dic)</span>
+
+            <span class="c1"># print((Gu_local_k[0]).tolist())</span>
+
+            <span class="c1"># Gu_local_k_H = Uk.transpose(0, 2, 1).conjugate() @ Gu_local_k @ Uk</span>
+            <span class="c1"># Gu_local_k = np.real(np.diagonal(Gu_local_k_H, axis1=1, axis2=2))</span>
+            <span class="c1"># Gu_local_k = Gu_local_k.transpose(1, 0)</span>
+            <span class="c1">#### Gu local (i = 9) ###</span>
+
+            <span class="c1">#### Gu B1 (i = 33) ###</span>
+            <span class="c1"># tag, d = list(Zr_dict.items())[33]</span>
+            <span class="c1"># dic[&quot;matrix&quot;] = {tag: d}</span>
+            <span class="c1"># print(tag)</span>
+            <span class="c1"># if cwi[&quot;tb_gauge&quot;]:</span>
+            <span class="c1">#    Gu_B1_k = construct_Ok(</span>
+            <span class="c1">#        [1], cwi[&quot;num_wann&quot;], cwi[&quot;kpoints_path&quot;], cwi[&quot;irvec&quot;], dic, atoms_frac=atoms_frac_samb</span>
+            <span class="c1">#    )</span>
+            <span class="c1"># else:</span>
+            <span class="c1">#    Gu_B1_k = construct_Ok([1], cwi[&quot;num_wann&quot;], cwi[&quot;kpoints_path&quot;], cwi[&quot;irvec&quot;], dic)</span>
+
+            <span class="c1"># print((Gu_B1_k[0]).tolist())</span>
+
+            <span class="c1"># Gu_B1_k_H = Uk.transpose(0, 2, 1).conjugate() @ Gu_B1_k @ Uk</span>
+            <span class="c1"># Gu_B1_k = np.real(np.diagonal(Gu_B1_k_H, axis1=1, axis2=2))</span>
+            <span class="c1"># Gu_B1_k = Gu_B1_k.transpose(1, 0)</span>
+            <span class="c1">#### Gu B1 (i = 33) ###</span>
+
+            <span class="c1">##</span>
+            <span class="c1">##</span>
+            <span class="c1">##</span>
+
+            <span class="c1"># S_L_Gu_local_Gu_B1_k = np.array(</span>
+            <span class="c1">#    [Sk[:, :, a] for a in range(3)] + [Lk[:, :, a] for a in range(3)] + [Gu_local_k] + [Gu_B1_k]</span>
+            <span class="c1"># )</span>
+            <span class="c1"># S_L_Gu_local_Gu_B1_k = S_L_Gu_local_Gu_B1_k.transpose(1, 2, 0)</span>
+
             <span class="c1"># output_linear_dispersion(</span>
             <span class="n">output_linear_dispersion_eig</span><span class="p">(</span>
                 <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;mp_outdir&quot;</span><span class="p">],</span>
@@ -563,6 +933,9 @@
                 <span class="n">k_linear</span><span class="p">,</span>
                 <span class="n">e</span><span class="o">=</span><span class="n">Ek</span><span class="p">,</span>
                 <span class="n">o</span><span class="o">=</span><span class="n">Sk</span><span class="p">,</span>
+                <span class="c1"># o=Lk,</span>
+                <span class="c1"># o=S_L_k,</span>
+                <span class="c1"># o=S_L_Gu_local_Gu_B1_k,</span>
                 <span class="n">ref_filename</span><span class="o">=</span><span class="n">ref_filename</span><span class="p">,</span>
                 <span class="n">a</span><span class="o">=</span><span class="n">a</span><span class="p">,</span>
                 <span class="n">ef</span><span class="o">=</span><span class="n">ef</span><span class="p">,</span>
