@@ -436,13 +436,17 @@ def utility_w0gauss(x, n):
 
     (n=-99): derivative of Fermi-Dirac function: 0.5/(1.0+cosh(x))
     """
-    w0gauss = 0.0  # in case of error return
+    if not isinstance(x, np.ndarray):
+        x = np.array(x)
+
+    w0gauss = np.zeros(x.shape)  # in case of error return
 
     sqrtpm1 = 1.0 / np.sqrt(np.pi)
 
     # cold smearing  (Marzari-Vanderbilt)
     if n == -1:
-        arg = min(200, (x - 1.0 / np.sqrt(2)) ** 2)
+        arg = (x - 1.0 / np.sqrt(2)) ** 2
+        arg = np.where(np.abs(arg) < 200, arg, np.sign(arg) * 200)
         w0gauss = sqrtpm1 * np.exp(-arg) * (2.0 - np.sqrt(2.0) * x)
     # Fermi-Dirac smearing
     elif n == -99:
@@ -452,13 +456,15 @@ def utility_w0gauss(x, n):
             w0gauss = 0.0
     # Gaussian
     elif n == 0:
-        arg = min(200, x**2)
+        arg = x**2
+        arg = np.where(np.abs(arg) < 200, arg, np.sign(arg) * 200)
         w0gauss = np.exp(-arg) * sqrtpm1
     elif n > 10 or n < 0:
         raise Exception("utility_w0gauss higher order (n>10) smearing is untested and unstable")
     # Methfessel-Paxton
     else:
-        arg = min(200, x**2)
+        arg = x**2
+        arg = np.where(np.abs(arg) < 200, arg, np.sign(arg) * 200)
         w0gauss = np.exp(-arg) * sqrtpm1
         hd = 0.0
         hp = np.exp(-arg)
@@ -1104,12 +1110,12 @@ def berry_get_kubo(cwi, operators):
         delHH = None
         U = None
 
-        kubo_H = 1.0j * np.zeros((kubo_nfreq, 3, 3))
-        kubo_AH = 1.0j * np.zeros((kubo_nfreq, 3, 3))
+        kubo_H = np.zeros((kubo_nfreq, 3, 3), dtype=complex)
+        kubo_AH = np.zeros((kubo_nfreq, 3, 3), dtype=complex)
 
         if spin_decomp:
-            kubo_H_spn = 1.0j * np.zeros((kubo_nfreq, 3, 3, 3))
-            kubo_AH_spn = 1.0j * np.zeros((kubo_nfreq, 3, 3, 3))
+            kubo_H_spn = np.zeros((kubo_nfreq, 3, 3, 3), dtype=complex)
+            kubo_AH_spn = np.zeros((kubo_nfreq, 3, 3, 3), dtype=complex)
         else:
             kubo_H_spn = 0.0
             kubo_AH_spn = 0.0
@@ -1156,10 +1162,7 @@ def berry_get_kubo(cwi, operators):
 
                     # Broadened delta function for the Hermitian conductivity and JDOS
                     arg = (ekm - ekn - np.real(omega_list)) / eta_smr
-                    delta = (
-                        np.array([utility_w0gauss(arg[ifreq], kubo_smr_type_idx) for ifreq in range(kubo_nfreq)])
-                        / eta_smr
-                    )
+                    delta = utility_w0gauss(arg, kubo_smr_type_idx) / eta_smr
 
                     rfac1 = (fkm - fkn) * (ekm - ekn)
                     rfac2 = -np.pi * rfac1 * delta
@@ -1190,12 +1193,12 @@ def berry_get_kubo(cwi, operators):
 
     res = Parallel(n_jobs=_num_proc, verbose=10)(delayed(berry_get_kubo_k)(kpt) for kpt in kpoints_chunks)
 
-    kubo_H = 1.0j * np.zeros((kubo_nfreq, 3, 3))
-    kubo_AH = 1.0j * np.zeros((kubo_nfreq, 3, 3))
+    kubo_H = np.zeros((kubo_nfreq, 3, 3), dtype=complex)
+    kubo_AH = np.zeros((kubo_nfreq, 3, 3), dtype=complex)
 
     if spin_decomp:
-        kubo_H_spn = 1.0j * np.zeros((kubo_nfreq, 3, 3, 3))
-        kubo_AH_spn = 1.0j * np.zeros((kubo_nfreq, 3, 3, 3))
+        kubo_H_spn = np.zeros((kubo_nfreq, 3, 3, 3), dtype=complex)
+        kubo_AH_spn = np.zeros((kubo_nfreq, 3, 3, 3), dtype=complex)
     else:
         kubo_H_spn = 0.0
         kubo_AH_spn = 0.0
@@ -1333,12 +1336,12 @@ def berry_get_kubo_tb(cwi, operators):
         delHH = None
         U = None
 
-        kubo_H = 1.0j * np.zeros((kubo_nfreq, 3, 3))
-        kubo_AH = 1.0j * np.zeros((kubo_nfreq, 3, 3))
+        kubo_H = np.zeros((kubo_nfreq, 3, 3), dtype=complex)
+        kubo_AH = np.zeros((kubo_nfreq, 3, 3), dtype=complex)
 
         if spin_decomp:
-            kubo_H_spn = 1.0j * np.zeros((kubo_nfreq, 3, 3, 3))
-            kubo_AH_spn = 1.0j * np.zeros((kubo_nfreq, 3, 3, 3))
+            kubo_H_spn = np.zeros((kubo_nfreq, 3, 3, 3), dtype=complex)
+            kubo_AH_spn = np.zeros((kubo_nfreq, 3, 3, 3), dtype=complex)
         else:
             kubo_H_spn = 0.0
             kubo_AH_spn = 0.0
@@ -1385,10 +1388,7 @@ def berry_get_kubo_tb(cwi, operators):
 
                     # Broadened delta function for the Hermitian conductivity and JDOS
                     arg = (ekm - ekn - np.real(omega_list)) / eta_smr
-                    delta = (
-                        np.array([utility_w0gauss(arg[ifreq], kubo_smr_type_idx) for ifreq in range(kubo_nfreq)])
-                        / eta_smr
-                    )
+                    delta = utility_w0gauss(arg, kubo_smr_type_idx) / eta_smr
 
                     rfac1 = (fkm - fkn) / (ekm - ekn)
                     rfac2 = -np.pi * rfac1 * delta
@@ -1419,12 +1419,12 @@ def berry_get_kubo_tb(cwi, operators):
 
     res = Parallel(n_jobs=_num_proc, verbose=10)(delayed(berry_get_kubo_k)(kpt) for kpt in kpoints_chunks)
 
-    kubo_H = 1.0j * np.zeros((kubo_nfreq, 3, 3))
-    kubo_AH = 1.0j * np.zeros((kubo_nfreq, 3, 3))
+    kubo_H = np.zeros((kubo_nfreq, 3, 3), dtype=complex)
+    kubo_AH = np.zeros((kubo_nfreq, 3, 3), dtype=complex)
 
     if spin_decomp:
-        kubo_H_spn = 1.0j * np.zeros((kubo_nfreq, 3, 3, 3))
-        kubo_AH_spn = 1.0j * np.zeros((kubo_nfreq, 3, 3, 3))
+        kubo_H_spn = np.zeros((kubo_nfreq, 3, 3, 3), dtype=complex)
+        kubo_AH_spn = np.zeros((kubo_nfreq, 3, 3, 3), dtype=complex)
     else:
         kubo_H_spn = 0.0
         kubo_AH_spn = 0.0
@@ -2035,15 +2035,18 @@ def gyrotropic_get_K(cwi, operators):
 
                 delE_ = np.array([delE[:, k, n] for k in k_list_])
                 orb_nk_ = np.array([orb_nk[k_list.index(k), :] for k in k_list_])
+                # delta_ = (
+                #     np.array(
+                #         [
+                #             utility_w0gauss((E[k, n] - fermi_energy_list[ifermi]) / eta_smr, gyrotropic_smr_type_idx)
+                #             for k in k_list_
+                #         ]
+                #     )
+                #     / eta_smr
+                #     * kweight
+                # )
                 delta_ = (
-                    np.array(
-                        [
-                            utility_w0gauss((E[k, n] - fermi_energy_list[ifermi]) / eta_smr, gyrotropic_smr_type_idx)
-                            for k in k_list_
-                        ]
-                    )
-                    / eta_smr
-                    * kweight
+                    utility_w0gauss(E[:, n] - fermi_energy_list[ifermi], gyrotropic_smr_type_idx) / eta_smr * kweight
                 )
 
                 if cwi.win.eval_spn:

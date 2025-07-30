@@ -30,6 +30,7 @@ from symclosestwannier.cw.cw_manager import CWManager
 from symclosestwannier.cw.cw_model import CWModel
 from symclosestwannier.util.band import output_linear_dispersion, output_linear_dispersion_eig
 from symclosestwannier.util.dos import output_dos
+from symclosestwannier.util.lindhard import get_lindhard, output_lindhard
 
 
 from symclosestwannier.util.message import (
@@ -716,6 +717,24 @@ def cw_creator(seedname="cwannier"):
             output_dos(
                 cwi["mp_outdir"], cwi["mp_seedname"] + "_dos.txt", Ek, Uk, ef_shift, dos_num_fermi, dos_smr_en_width
             )
+
+        cwm.log("done", end="\n", file=outfile, mode="a")
+
+    #####
+
+    if cwi["lindhard"]:
+        cwm.log("\n  * calculating lindhard ... ", None, end="", file=outfile, mode="a")
+        cwm.set_stamp()
+
+        lindhard = get_lindhard(cwi, cw_model["Hr"])
+
+        om = cwi["lindhard_freq"]
+        q = cwi["q_linear"]
+        q_dis_pos = cwi["q_dis_pos"]
+        ef = cwi["fermi_energy"]
+
+        # output_linear_dispersion(
+        output_lindhard(".", seedname + "_lindhard.txt", om, q, lindhard, q_dis_pos=q_dis_pos, ef=ef)
 
         cwm.log("done", end="\n", file=outfile, mode="a")
 

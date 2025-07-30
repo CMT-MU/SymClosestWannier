@@ -58,13 +58,23 @@ _default = {
     "dos_kmesh": [1, 1, 1],
     "dos_num_fermi": 50,
     "dos_smr_en_width": 0.001,
-    #
+    # zeeman interaction
     "zeeman_interaction": False,
     "magnetic_field": 0.0,
     "magnetic_field_theta": 0.0,
     "magnetic_field_phi": 0.0,
     "g_factor": 2.0,
-    # psotcw
+    # lindhard
+    "lindhard": False,
+    "lindhard_freq": 0.0,
+    "lindhard_eigval_max": +100000,
+    "lindhard_smr_fixed_en_width": 0.01,
+    "lindhard_smr_type": "gauss",
+    "lindhard_kmesh": [1, 1, 1],
+    "qpoint": None,
+    "qpoint_path": None,
+    "Nq1": 30,
+    # postcw
     "hr_input": "",
     "use_tb_approximation": False,
 }
@@ -171,6 +181,17 @@ class CWin(dict):
                 - magnetic_field_phi   : angle from the x-axis of the magnetic field (float), [0.0].
                 - g_factor             : spin g factor (float), [2.0].
 
+            # only used for lindhard function.
+                - lindhard                    : calculate lindhard function? (bool), [False].
+                - lindhard_freq               : frequency for computing the lindhard function. (The units are [eV]) (float), [0.0].
+                - lindhard_eigval_max         : Maximum energy eigenvalue of the eigenstates to be included in the evaluation of the lindhard function. (The units are [eV]) (float), [If an inner energy window was specified, the default value is the upper bound of the inner energy window plus 0.6667. Otherwise it is the maximum energy eigenvalue stored in seedname.eig plus 0.6667.].
+                - lindhard_smr_fixed_en_width : Overrides the smr_fixed_en_width global variable (float), [0.01].
+                - lindhard_smr_type           : Overrides the smr_type global variable (str), [gauss].
+                - lindhard_kmesh              : dimensions of the Monkhorst-Pack grid of k-points for lindhard function (list), [[1, 1, 1]].
+                - qpoint                      : representative q points (dict), [None].
+                - qpoint_path                 : q-points along high symmetry line in Brillouin zone, [[k1, k2, k3]] (crystal coordinate) (str), [None].
+                - Nq1                         : number of divisions for high symmetry lines (int, optional), [30].
+
             # only used for postcw calculation.
                 - hr_input             : full filename of hr.dat file (str), [""].
                 - use_tb_approximation : use tight-binding approximation? (bool), [False].
@@ -182,6 +203,9 @@ class CWin(dict):
         else:
             raise Exception("failed to read cwin file: " + file_name)
 
+        cwin_data = [v.replace("\n", "") for v in cwin_data]
+        cwin_data_lower = [v.lower().replace("\n", "") for v in cwin_data]
+
         # default
         d = CWin._default().copy()
 
@@ -192,7 +216,43 @@ class CWin(dict):
             if len([vi for vi in line.split(" ") if vi != ""]) == 0:
                 continue
 
-            key = line.split("=")[0]
+            if "begin qpoint_path" in line:
+                q_data = cwin_data[
+                    cwin_data_lower.index("begin qpoint_path") + 1 : cwin_data_lower.index("end qpoint_path")
+                ]
+                q_data = [[vi for vi in v.split()] for v in q_data]
+                qpoint = {}
+                qpoint_path = ""
+                cnt = 1
+                for X, qi1, qi2, qi3, Y, qf1, qf2, qf3 in q_data:
+                    if cnt == 1:
+                        qpoint_path += f"{X}-{Y}-"
+                    else:
+                        if qpoint_path.split("-")[-2] == X:
+                            qpoint_path += f"{Y}-"
+                        else:
+                            qpoint_path = qpoint_path[:-1]
+                            qpoint_path += f"|{X}-{Y}-"
+                    if X not in qpoint:
+                        qpoint[X] = [float(qi1), float(qi2), float(qi3)]
+                    if Y not in qpoint:
+                        qpoint[Y] = [float(qf1), float(qf2), float(qf3)]
+
+                    cnt += 1
+
+                qpoint_path = qpoint_path[:-1]
+
+                d["qpoint"] = qpoint
+                d["qpoint_path"] = qpoint_path
+                continue
+
+            if "=" in line:
+                key = line.split("=")[0]
+            elif ":" in line:
+                key = line.split(":")[0]
+            else:
+                continue
+
             key = key.replace(" ", "")
 
             if "!" in key or "#" in key:
@@ -209,6 +269,10 @@ class CWin(dict):
 
             if key == "dos_kmesh":
                 d["dos_kmesh"] = [int(x) for x in v.split() if x != ""]
+                continue
+
+            if key == "lindhard_kmesh":
+                d["lindhard_kmesh"] = [int(x) for x in v.split() if x != ""]
                 continue
 
             v = v.replace(" ", "")
@@ -243,7 +307,7 @@ class CWin(dict):
 
         if key not in CWin._default().keys():
             raise Exception(f"invalid keyword = {key} was given.")
-        elif key in ("seedname", "mp_seedname", "hr_input"):
+        elif key in ("seedname", "mp_seedname", "hr_input", "lindhard_smr_type"):
             pass
         elif key in ("outdir", "mp_outdir"):
             v = v[:-1] if v[-1] == "/" else v
@@ -265,12 +329,20 @@ class CWin(dict):
             "magnetic_field_theta",
             "magnetic_field_phi",
             "g_factor",
+            "lindhard_freq",
+            "lindhard_eigval_max",
+            "lindhard_adpt_smr_fac",
+            "lindhard_adpt_smr_max",
+            "lindhard_smr_fixed_en_width",
         ):
             v = float(v)
             if key == "delta":
                 if v > 1e-5:
                     raise Exception(f"delta is too large. delta must be less than 1e-5.")
-        elif key in ("N1", "dos_num_fermi"):
+            elif key == "lindhard_smr_fixed_en_width":
+                if v == 0.0:
+                    raise Exception(f"lindhard_smr_fixed_en_width must be > 0.0.")
+        elif key in ("N1", "Nq1", "dos_num_fermi"):
             v = int(v)
         elif key == "ket_amn":
             if "[" in v or "]" in v:

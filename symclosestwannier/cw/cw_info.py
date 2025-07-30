@@ -196,6 +196,21 @@ class CWInfo(dict):
         d["k_linear"] = k_linear
         d["k_dis_pos"] = k_dis_pos
 
+        if d["qpoint"] is not None and d["qpoint_path"] is not None:
+            qpoint = {i: NSArray(j, "vector", fmt="value") for i, j in d["qpoint"].items()}
+            qpoint_path = d["qpoint_path"]
+            Nq1 = d["Nq1"]
+            B = NSArray(d["unit_cell_cart"], "matrix", fmt="value").inverse()
+            qpoints_path, q_linear, q_dis_pos = NSArray.grid_path(qpoint, qpoint_path, Nq1, B)
+            qpoints_path = qpoints_path.tolist()
+            q_linear = q_linear.tolist()
+        else:
+            qpoints_path, q_linear, q_dis_pos = None, None, None
+
+        d["qpoints_path"] = qpoints_path
+        d["q_linear"] = q_linear
+        d["q_dis_pos"] = q_dis_pos
+
         # ket
         if d["ket_amn"] == "auto":
             ket_amn = [] * d["num_wann"]
