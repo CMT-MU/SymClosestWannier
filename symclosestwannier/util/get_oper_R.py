@@ -20,6 +20,7 @@
 
 import numpy as np
 
+from symclosestwannier.util.constants import elem_charge_SI, hbar_SI
 from symclosestwannier.util.utility import fourier_transform_r_to_k, fourier_transform_k_to_r
 
 
@@ -40,9 +41,10 @@ def get_oper_R(name, cwi):
         "BB_R": get_BB_R,  # <0|H(r-R)|R>
         "CC_R": get_CC_R,  # <0|r_alpha.H(r-R)_beta|R>
         "SS_R": get_SS_R,  # <0n|sigma_x,y,z|Rm>
-        "get_SHC_R": get_SHC_R,  # <0n|sigma_x,y,z.(r-R)_alpha|Rm>, <0n|sigma_x,y,z.H.(r-R)_alpha|Rm>, <0n|sigma_x,y,z.H|Rm>
+        "SHC_R": get_SHC_R,  # <0n|sigma_x,y,z.(r-R)_alpha|Rm>, <0n|sigma_x,y,z.H.(r-R)_alpha|Rm>, <0n|sigma_x,y,z.H|Rm>
         "SAA_R": get_SAA_R,  # <0n|sigma_x,y,z.(r-R)_alpha|Rm>
         "SBB_R": get_SBB_R,  # <0n|sigma_x,y,z.H.(r-R)_alpha|Rm>
+        "velocity_R": get_velocity_R,
     }
 
     return d[name](cwi)
@@ -387,6 +389,56 @@ def get_berry_phase_R(cwi):
 
 
 # ==================================================
+def get_velocity_R(cwi):
+    """
+    matrix elements of real-space velocity operator in TB approximation, <0n|v|Rm>.
+    v_k^a = 1 / (h/2π) ∇_k^a H_k [Angstrom / s]
+
+    Args:
+        cwi (CWInfo): CWInfo.
+
+    Returns:
+        ndarray: position operator, v_R(3, len(irvec), num_wann, num_wann).
+    """
+    HH_R = get_HH_R(cwi)
+
+    A = np.array(cwi["unit_cell_cart"])
+    irvec = cwi["irvec"]
+    ndegen = cwi["ndegen"]
+
+    irvec_cart = np.array([np.array(R) @ np.array(A) for R in irvec])
+
+    if cwi["tb_gauge"]:
+        atoms_list = list(cwi["atoms_frac"].values())
+        atoms_frac = np.array([atoms_list[i] for i in cwi["nw2n"]])
+        atoms_cart = np.array([r @ A for r in atoms_frac])
+        bond_cart = np.array([[[(R + rn) - rm for rn in atoms_cart] for rm in atoms_cart] for R in irvec_cart])
+        v_R_x, v_R_y, v_R_z = 1.0j * np.einsum("Rmna,Rmn->aRmn", bond_cart, HH_R, optimize=True)
+    else:
+        v_R_x, v_R_y, v_R_z = 1.0j * np.einsum("Rmna,R->aRmn", irvec_cart, HH_R, optimize=True)
+
+    v_R = np.array([v_R_x, v_R_y, v_R_z], dtype=complex)
+
+    """
+    --------------------------------------------------------------------
+    Convert to Angstrom / s
+
+    fac = 1.0 / (hbar/e) [1 / (eV s)]
+
+    'e', 'hbar' in SI units
+    --------------------------------------------------------------------
+    """
+    print(f"hbar_SI: {hbar_SI}")
+    print(f"elem_charge_SI: {elem_charge_SI}")
+
+    fac = 1.0 / (hbar_SI / elem_charge_SI)
+
+    v_R = fac * v_R
+
+    return v_R
+
+
+# ==================================================
 def get_berry_Curvature_R(cwi):
     """<0n|Ω|Rm>"""
     pass
@@ -410,10 +462,4 @@ def get_orbital_moment_R(cwi):
 def get_der_orbital_moment_R(cwi):
     """<0n|∇Morb|Rm>"""
 
-    pass
-
-
-# ==================================================
-def get_velocity_R(cwi):
-    """<0n|v|Rm>"""
     pass

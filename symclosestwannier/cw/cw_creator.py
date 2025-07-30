@@ -79,8 +79,6 @@ def cw_creator(seedname="cwannier"):
     if cwi["write_hr"]:
         filename = f"{cwi['seedname']}_hr.dat.cw"
         cw_model.write_or(cw_model["Hr"], filename, header=CWModel._hr_header())
-        # filename = f"{cwi['seedname']}_hr_nonortho.dat.cw"
-        # cw_model.write_or(cw_model["Hr_nonortho"], filename, header=CWModel._hr_header())
 
         filename = f"{cwi['seedname']}_hr_R_dep.dat.cw"
         cw_model.write_O_R_dependence(cw_model["Hr"], filename, header=CWModel._O_R_dependence_header())
@@ -104,6 +102,9 @@ def cw_creator(seedname="cwannier"):
         cw_model.write_tb(cw_model["Hr"], AA_R, filename)
 
     if cwi["write_vmn"]:
+        v_R = get_oper_R("velocity_R", cwi)
+        filename = f"{cwi['seedname']}_v.dat.cw"
+        cw_model.write_or(v_R, filename, vec=True)
         pass
 
     if cwi["write_eig"]:
