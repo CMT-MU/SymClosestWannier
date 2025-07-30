@@ -415,21 +415,21 @@ def get_v_R(cwi):
         bond_cart = np.array([[[(R + rn) - rm for rn in atoms_cart] for rm in atoms_cart] for R in irvec_cart])
         v_R_x, v_R_y, v_R_z = 1.0j * np.einsum("Rmna,Rmn->aRmn", bond_cart, HH_R, optimize=True)
     else:
-        v_R_x, v_R_y, v_R_z = 1.0j * np.einsum("Rmna,R->aRmn", irvec_cart, HH_R, optimize=True)
+        v_R_x, v_R_y, v_R_z = 1.0j * np.einsum("Ra,Rmn->aRmn", irvec_cart, HH_R, optimize=True)
 
     v_R = np.array([v_R_x, v_R_y, v_R_z], dtype=complex)
 
     """
     --------------------------------------------------------------------
-    Convert to Angstrom / s
+    Convert to Angstrom eV / (J s)
 
-    fac = 1.0 / (hbar/e) [1 / (eV s)]
+    fac = 1.0 / hbar [1 / (J s)]
 
-    'e', 'hbar' in SI units
+    'hbar' in SI units
     --------------------------------------------------------------------
     """
 
-    fac = 1.0 / (hbar_SI / elem_charge_SI)
+    fac = 1.0 / hbar_SI
 
     v_R = fac * v_R
 

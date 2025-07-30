@@ -102,7 +102,7 @@ def cw_creator(seedname="cwannier"):
         cw_model.write_tb(cw_model["Hr"], AA_R, filename)
 
     if cwi["write_vmn"]:
-        v_R = get_oper_R("velocity_R", cwi)
+        v_R = get_oper_R("v_R", cwi)
         filename = f"{cwi['seedname']}_v.dat.cw"
         cw_model.write_or(v_R, filename, vec=True)
         pass
