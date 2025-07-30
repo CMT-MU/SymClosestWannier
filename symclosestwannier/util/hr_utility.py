@@ -18,7 +18,7 @@ def read_hr(filename, orb_dict=None, encoding="UTF-8"):
 
     Returns:
         tuple: (HH_R, irvec, ndegen)
-        - HH_R (dict): H_{mn}(R) { (n1,n2,n3,m,n): (re,im) }.
+        - HH_R (ndarray): H_{mn}(R).
         - irvec (ndarray): irreducible R vectors (crystal coordinate, [[n1,n2,n3]], nj: integer).
         - ndegen (ndarray): number of degeneracy at each R.
 
@@ -55,7 +55,7 @@ def read_hr(filename, orb_dict=None, encoding="UTF-8"):
     irvec = [(n1, n2, n3) for n1, n2, n3, _, _ in hr_dict.keys()]
     irvec = sorted(set(irvec), key=irvec.index)
 
-    HH_R = {(n1, n2, n3): np.zeros((dim, dim), dtype=np.complex128) for n1, n2, n3, _, _ in hr_dict.keys()}
+    HH_R_dict = {(n1, n2, n3): np.zeros((dim, dim), dtype=complex) for n1, n2, n3, _, _ in hr_dict.keys()}
 
     for k, v in hr_dict.items():
         n1, n2, n3, m, n = k
@@ -65,11 +65,13 @@ def read_hr(filename, orb_dict=None, encoding="UTF-8"):
             n = orb_dict[n] - 1
         else:
             n = n - 1
-        HH_R[(n1, n2, n3)][m][n] += re + 1j * im
+        HH_R_dict[(n1, n2, n3)][m][n] += re + 1j * im
 
-    for v in HH_R.keys():
-        if (-v[0], -v[1], -v[2]) not in HH_R:
+    for v in HH_R_dict.keys():
+        if (-v[0], -v[1], -v[2]) not in HH_R_dict:
             raise Exception("invalid")
+
+    HH_R = np.array([HH_R_dict[(n1, n2, n3)] for n1, n2, n3 in irvec], dtype=complex)
 
     return HH_R, irvec, ndegen
 
@@ -116,7 +118,7 @@ def convert_hr_to_hk(k, Hr_mat, R_degen_dict, dim):
     Returns:
         np.array: a set of hamiltonian matrices
     """
-    hk = np.zeros((dim, dim, k.shape[0]), dtype=np.complex128)
+    hk = np.zeros((dim, dim, k.shape[0]), dtype=complex)
     for idx, m in Hr_mat.items():
         n1, n2, n3 = idx
         deg = R_degen_dict[(n1, n2, n3)]
