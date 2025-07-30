@@ -428,8 +428,6 @@ def get_velocity_R(cwi):
     'e', 'hbar' in SI units
     --------------------------------------------------------------------
     """
-    print(f"hbar_SI: {hbar_SI}")
-    print(f"elem_charge_SI: {elem_charge_SI}")
 
     fac = 1.0 / (hbar_SI / elem_charge_SI)
 
