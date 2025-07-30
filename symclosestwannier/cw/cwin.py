@@ -66,6 +66,7 @@ _default = {
     "g_factor": 2.0,
     # psotcw
     "hr_input": "",
+    "use_tb_approximation": False,
 }
 
 
@@ -171,7 +172,8 @@ class CWin(dict):
                 - g_factor             : spin g factor (float), [2.0].
 
             # only used for postcw calculation.
-                - hr_input          : full filename of hr.dat file (str), [""].
+                - hr_input             : full filename of hr.dat file (str), [""].
+                - use_tb_approximation : use tight-binding approximation? (bool), [False].
 
         """
         if os.path.exists(file_name):

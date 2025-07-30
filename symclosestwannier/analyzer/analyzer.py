@@ -69,13 +69,13 @@ def analyzer(seedname="cwannier"):
     cwm.log(system_msg(cwi), stamp=None, end="\n", file=outfile, mode="a")
 
     # ******************** #
-    #       Response       #
+    #      Hamiltoinan     #
     # ******************** #
+
+    Hr = None
 
     if type(cw_model["Hr"]) == np.ndarray:
         Hr = np.array(cw_model["Hr"], dtype=np.complex128)
-    else:
-        Hr = None
 
     if cwi["symmetrization"]:
         if cw_model["Hr_sym"] is not None:
@@ -85,7 +85,13 @@ def analyzer(seedname="cwannier"):
             Hr = sort_ket_matrix(Hr, ket_samb, ket_amn)
 
     if cwi["hr_input"] != "":
-        Hr = read_hr(cwi["hr_input"], orb_dict=None, encoding="UTF-8")
+        Hr, irvec, ndegen = read_hr(cwi["hr_input"], orb_dict=None, encoding="UTF-8")
+        if not np.array_equal(irvec, cwi["irvec"]) or not np.array_equal(ndegen, cwi["ndegen"]):
+            raise Exception("invalid HH_R. The number of R vectors are inconsistent.")
+
+    # ******************** #
+    #       Response       #
+    # ******************** #
 
     res = Response(cwi, cwm, HH_R=Hr)
 
