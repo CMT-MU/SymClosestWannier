@@ -120,7 +120,7 @@ class Response(dict):
             self["HH_R"] = get_oper_R("HH_R", self._cwi) if self["HH_R"] is None else self["HH_R"]
 
             if self._cwi["berry_task"] == "kubo":
-                self["v_R"] = get_oper_R("v_R", self._cwi) if self["v_R"] is None else self["v_R"]
+                self["v_R"] = get_oper_R("v_R", self._cwi, self["HH_R"]) if self["v_R"] is None else self["v_R"]
                 self["SS_R"] = (
                     get_oper_R("SS_R", self._cwi) if self._cwi["spin_decomp"] and self["SS_R"] is None else self["SS_R"]
                 )

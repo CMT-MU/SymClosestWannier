@@ -948,7 +948,9 @@ def berry_get_ahc(cwi, operators):
 
     num_k = np.prod(cwi["berry_kmesh"])
 
-    kpoints_chunks = np.split(kpoints, [j for j in range(100000, len(kpoints), 100000)])
+    kpoints_chunks = np.split(
+        kpoints, [j for j in range(len(kpoints) // _num_proc, len(kpoints), len(kpoints) // _num_proc)]
+    )
 
     res = Parallel(n_jobs=_num_proc, verbose=10)(delayed(berry_get_ahc_k)(kpt) for kpt in kpoints_chunks)
 
@@ -1182,7 +1184,9 @@ def berry_get_kubo(cwi, operators):
 
     num_k = np.prod(cwi["berry_kmesh"])
 
-    kpoints_chunks = np.split(kpoints, [j for j in range(100000, len(kpoints), 100000)])
+    kpoints_chunks = np.split(
+        kpoints, [j for j in range(len(kpoints) // _num_proc, len(kpoints), len(kpoints) // _num_proc)]
+    )
 
     res = Parallel(n_jobs=_num_proc, verbose=10)(delayed(berry_get_kubo_k)(kpt) for kpt in kpoints_chunks)
 
@@ -1306,8 +1310,6 @@ def berry_get_kubo_tb(cwi, operators):
             operators["HH_R"], kpt, cwi["unit_cell_cart"], cwi["irvec"], cwi["ndegen"], atoms_frac
         )
 
-        v = fourier_transform_r_to_k_vec(operators["v_R"], kpt, cwi["irvec"], cwi["ndegen"], atoms_frac)
-
         if cwi["zeeman_interaction"]:
             B = cwi["magnetic_field"]
             theta = cwi["magnetic_field_theta"]
@@ -1320,6 +1322,9 @@ def berry_get_kubo_tb(cwi, operators):
 
         E, U = np.linalg.eigh(HH)
         HH = None
+
+        v = fourier_transform_r_to_k_vec(operators["v_R"], kpt, cwi["irvec"], cwi["ndegen"], atoms_frac)
+        v = np.array([U.transpose(0, 2, 1).conjugate() @ v[i] @ U for i in range(3)])
 
         if kubo_adpt_smr:
             delE = wham_get_deleig(delHH, E, U, use_degen_pert, degen_thr)

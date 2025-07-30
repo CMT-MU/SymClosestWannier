@@ -25,7 +25,7 @@ from symclosestwannier.util.utility import fourier_transform_r_to_k, fourier_tra
 
 
 # ==================================================
-def get_oper_R(name, cwi):
+def get_oper_R(name, cwi, *args):
     """
     wrapper for getting matrix elements of the operator.
 
@@ -47,7 +47,7 @@ def get_oper_R(name, cwi):
         "v_R": get_v_R,
     }
 
-    return d[name](cwi)
+    return d[name](cwi, *args)
 
 
 # ==================================================
@@ -389,7 +389,7 @@ def get_berry_phase_R(cwi):
 
 
 # ==================================================
-def get_v_R(cwi):
+def get_v_R(cwi, HH_R=None):
     """
     matrix elements of real-space velocity operator in TB approximation, <0n|v|Rm>.
     v_k^a = 1 / (h/2π) ∇_k^a H_k [Angstrom / s]
@@ -400,7 +400,8 @@ def get_v_R(cwi):
     Returns:
         ndarray: position operator, v_R(3, len(irvec), num_wann, num_wann).
     """
-    HH_R = get_HH_R(cwi)
+    if HH_R is None:
+        HH_R = get_HH_R(cwi)
 
     A = np.array(cwi["unit_cell_cart"])
     irvec = cwi["irvec"]
