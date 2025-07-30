@@ -2082,7 +2082,7 @@ def gyrotropic_get_K(cwi, operators):
 
     start_time = time.time()
     for i, kpoints in enumerate(kpoints_chunks):
-        print(f"{i+1}/{num_chunks}")
+        print(f"{i+1}/{num_chunks}", end="")
 
         v = gyrotropic_get_K_k(kpoints)
         gyro_K_orb += v[0]

@@ -67,9 +67,7 @@ _default = {
     # lindhard
     "lindhard": False,
     "lindhard_freq": 0.0,
-    "lindhard_eigval_max": +100000,
     "lindhard_smr_fixed_en_width": 0.01,
-    "lindhard_smr_type": "gauss",
     "lindhard_kmesh": [1, 1, 1],
     "qpoint": None,
     "qpoint_path": None,
@@ -184,9 +182,7 @@ class CWin(dict):
             # only used for lindhard function.
                 - lindhard                    : calculate lindhard function? (bool), [False].
                 - lindhard_freq               : frequency for computing the lindhard function. (The units are [eV]) (float), [0.0].
-                - lindhard_eigval_max         : Maximum energy eigenvalue of the eigenstates to be included in the evaluation of the lindhard function. (The units are [eV]) (float), [If an inner energy window was specified, the default value is the upper bound of the inner energy window plus 0.6667. Otherwise it is the maximum energy eigenvalue stored in seedname.eig plus 0.6667.].
                 - lindhard_smr_fixed_en_width : Overrides the smr_fixed_en_width global variable (float), [0.01].
-                - lindhard_smr_type           : Overrides the smr_type global variable (str), [gauss].
                 - lindhard_kmesh              : dimensions of the Monkhorst-Pack grid of k-points for lindhard function (list), [[1, 1, 1]].
                 - qpoint                      : representative q points (dict), [None].
                 - qpoint_path                 : q-points along high symmetry line in Brillouin zone, [[k1, k2, k3]] (crystal coordinate) (str), [None].
@@ -330,8 +326,6 @@ class CWin(dict):
             "magnetic_field_phi",
             "g_factor",
             "lindhard_freq",
-            "lindhard_eigval_max",
-            "lindhard_adpt_smr_fac",
             "lindhard_adpt_smr_max",
             "lindhard_smr_fixed_en_width",
         ):

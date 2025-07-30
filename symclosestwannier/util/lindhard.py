@@ -41,23 +41,6 @@ def get_lindhard(cwi, HH_R):
     ef = cwi["fermi_energy"]
     num_wann = cwi["num_wann"]
 
-    if cwi["lindhard_smr_type"] == "gauss":
-        lindhard_smr_type_idx = 0
-    elif "m-p" in cwi["lindhard_smr_type"]:
-        m_pN = cwi["lindhard_smr_type"]
-        lindhard_smr_type_idx = m_pN[2:]
-    elif cwi["lindhard_smr_type"] == "m-v" or cwi["lindhard_smr_type"] == "cold":
-        lindhard_smr_type_idx = -1
-    elif cwi["lindhard_smr_type"] == "f-d":
-        lindhard_smr_type_idx = -99
-
-    if cwi["lindhard_eigval_max"] < +100000:
-        lindhard_eigval_max = cwi["lindhard_eigval_max"]
-    elif cwi["dis_froz_max"] < +100000:
-        lindhard_eigval_max = cwi["dis_froz_max"] + 0.6667
-    else:
-        lindhard_eigval_max = 100000
-
     eta_smr = cwi["lindhard_smr_fixed_en_width"]
 
     omega = cwi["lindhard_freq"]
@@ -155,9 +138,10 @@ def get_lindhard(cwi, HH_R):
         [[i / float(N1), j / float(N2), k / float(N3)] for i in range(N1) for j in range(N2) for k in range(N3)]
     )
 
-    kpoints_chunks = np.split(
-        kpoints, [j for j in range(len(kpoints) // _num_proc, len(kpoints), len(kpoints) // _num_proc)]
-    )
+    # kpoints_chunks = np.split(
+    #     kpoints, [j for j in range(len(kpoints) // _num_proc, len(kpoints), len(kpoints) // _num_proc)]
+    # )
+    kpoints_chunks = np.split(kpoints, [j for j in range(300, len(kpoints), 300)])
     num_chunks = len(kpoints_chunks)
 
     # res = Parallel(n_jobs=_num_proc, verbose=10)(delayed(get_lindhard_k)(kpt) for kpt in kpoints_chunks)
@@ -170,8 +154,9 @@ def get_lindhard(cwi, HH_R):
     import time
 
     start_time = time.time()
+    print()
     for i, kpoints in enumerate(kpoints_chunks):
-        print(f"{i+1}/{num_chunks}")
+        print(f"{i+1}/{num_chunks}", end="")
 
         lindhard += get_lindhard_k(kpoints)
 
@@ -182,7 +167,15 @@ def get_lindhard(cwi, HH_R):
         elapsed_second = elapsed_time % 3600 % 60
 
         # print as 00:00:00
-        print(str(elapsed_hour).zfill(2) + ":" + str(elapsed_minute).zfill(2) + ":" + str(elapsed_second).zfill(2))
+        print(
+            " ("
+            + str(elapsed_hour).zfill(2)
+            + ":"
+            + str(elapsed_minute).zfill(2)
+            + ":"
+            + str(elapsed_second).zfill(2)
+            + ")"
+        )
 
     fac = 1.0 / num_k
 
