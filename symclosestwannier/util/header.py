@@ -75,7 +75,7 @@ win_info = {
     "mp_grid": "dimensions of the Monkhorst-Pack grid of k-points (list), [[0, 0, 0]].",
     "kpoints": "k-points, [[k1, k2, k3]] (crystal coordinate) (list), [[[0, 0, 0]]].",
     "kpoint": "representative k points (dict), [None].",
-    "kpoint_path": "k-points along high symmetry line in Brillouin zonen, [[k1, k2, k3]] (crystal coordinate) (str), [None].",
+    "kpoint_path": "k-points along high symmetry line in Brillouin zone, [[k1, k2, k3]] (crystal coordinate) (str), [None].",
     "unit_cell_cart": "transform matrix, [a1,a2,a3], [None].",
     "atoms_frac": "atomic positions in fractional coordinates with respect to the lattice vectors, {atom: [r1,r2,r3]} [None].",
     "atoms_cart": "atomic positions in cartesian coordinates, {atom: [rx,ry,rz]} [None].",

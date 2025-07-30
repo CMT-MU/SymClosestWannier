@@ -158,7 +158,7 @@ class Win(dict):
                 - mp_grid         : dimensions of the Monkhorst-Pack grid of k-points (list), [[1, 1, 1]],
                 - kpoints         : k-points used in DFT calculation, [[k1, k2, k3]] (crystal coordinate).
                 - kpoint          : representative k points (dict), [None].
-                - kpoint_path     : k-points along high symmetry line in Brillouin zonen, [[k1, k2, k3]] (crystal coordinate) (str), [None].
+                - kpoint_path     : k-points along high symmetry line in Brillouin zone, [[k1, k2, k3]] (crystal coordinate) (str), [None].
                 - unit_cell_cart  : transform matrix, [a1,a2,a3] (list), [None].
 
             # only used for postcw calculation (same as postw90).
