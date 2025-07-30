@@ -44,7 +44,7 @@ def get_oper_R(name, cwi):
         "SHC_R": get_SHC_R,  # <0n|sigma_x,y,z.(r-R)_alpha|Rm>, <0n|sigma_x,y,z.H.(r-R)_alpha|Rm>, <0n|sigma_x,y,z.H|Rm>
         "SAA_R": get_SAA_R,  # <0n|sigma_x,y,z.(r-R)_alpha|Rm>
         "SBB_R": get_SBB_R,  # <0n|sigma_x,y,z.H.(r-R)_alpha|Rm>
-        "velocity_R": get_velocity_R,
+        "v_R": get_v_R,
     }
 
     return d[name](cwi)
@@ -389,7 +389,7 @@ def get_berry_phase_R(cwi):
 
 
 # ==================================================
-def get_velocity_R(cwi):
+def get_v_R(cwi):
     """
     matrix elements of real-space velocity operator in TB approximation, <0n|v|Rm>.
     v_k^a = 1 / (h/2π) ∇_k^a H_k [Angstrom / s]
