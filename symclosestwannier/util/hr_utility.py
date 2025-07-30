@@ -17,9 +17,10 @@ def read_hr(filename, orb_dict=None, encoding="UTF-8"):
         encoding (str, optional): encoding.
 
     Returns:
-        - dict: H_{mn}(R) { (n1,n2,n3,m,n): (re,im) }
-        - dict: degeneracy(R) { (n1,n2,n3): deg }
-        - int: matrix dimension.
+        tuple: (HH_R, irvec, ndegen)
+        - HH_R (dict): H_{mn}(R) { (n1,n2,n3,m,n): (re,im) }.
+        - irvec (ndarray): irreducible R vectors (crystal coordinate, [[n1,n2,n3]], nj: integer).
+        - ndegen (ndarray): number of degeneracy at each R.
 
     Notes:
         - R = n1 a1 + n2 a2 + n3 a3 (aj: lattice vectors, nj: integer)
@@ -40,22 +41,21 @@ def read_hr(filename, orb_dict=None, encoding="UTF-8"):
     data = [lst.rstrip("\n").split(" ") for lst in data]
     data = [[v for v in lst if v != ""] for lst in data]
 
-    R_degen_list = [lst for lst in data if len(lst) == line_block]
-    R_degen_list = [int(v) for lst in R_degen_list for v in lst]
+    ndegen = [lst for lst in data if len(lst) == line_block]
+    ndegen = [int(v) for lst in ndegen for v in lst]
 
     hr_data = [lst for lst in data if len(lst) != line_block]
     if m != 0:
-        R_degen_list += [int(v) for lst in hr_data[0] for v in lst]
+        ndegen += [int(v) for lst in hr_data[0] for v in lst]
         hr_data = hr_data[1:]
 
     hr_data = [[float(v) if "." in v else int(v) for v in lst] for lst in hr_data if lst != []]
     hr_dict = {(n1, n2, n3, m, n): (real, imag) for n1, n2, n3, m, n, real, imag in hr_data}
 
-    R_list = [(n1, n2, n3) for n1, n2, n3, _, _ in hr_dict.keys()]
-    R_list = sorted(set(R_list), key=R_list.index)
-    R_degen_dict = {R: degen for R, degen in zip(R_list, R_degen_list)}
+    irvec = [(n1, n2, n3) for n1, n2, n3, _, _ in hr_dict.keys()]
+    irvec = sorted(set(irvec), key=irvec.index)
 
-    Hr_mat = {(n1, n2, n3): np.zeros((dim, dim), dtype=np.complex128) for n1, n2, n3, _, _ in hr_dict.keys()}
+    HH_R = {(n1, n2, n3): np.zeros((dim, dim), dtype=np.complex128) for n1, n2, n3, _, _ in hr_dict.keys()}
 
     for k, v in hr_dict.items():
         n1, n2, n3, m, n = k
@@ -65,13 +65,13 @@ def read_hr(filename, orb_dict=None, encoding="UTF-8"):
             n = orb_dict[n] - 1
         else:
             n = n - 1
-        Hr_mat[(n1, n2, n3)][m][n] += re + 1j * im
+        HH_R[(n1, n2, n3)][m][n] += re + 1j * im
 
-    for v in Hr_mat.keys():
-        if (-v[0], -v[1], -v[2]) not in Hr_mat:
+    for v in HH_R.keys():
+        if (-v[0], -v[1], -v[2]) not in HH_R:
             raise Exception("invalid")
 
-    return Hr_mat, R_degen_dict, dim
+    return HH_R, irvec, ndegen
 
 
 # ==================================================
