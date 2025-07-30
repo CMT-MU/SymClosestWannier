@@ -78,14 +78,14 @@ def cw_creator(seedname="cwannier"):
 
     if cwi["write_hr"]:
         filename = f"{cwi['seedname']}_hr.dat.cw"
-        cw_model.write_or(cw_model["Hr"], filename, header=CWModel._hr_header())
+        cw_model.write_or(cw_model["Hr"], filename)  # , header=CWModel._hr_header())
 
         filename = f"{cwi['seedname']}_hr_R_dep.dat.cw"
         cw_model.write_O_R_dependence(cw_model["Hr"], filename, header=CWModel._O_R_dependence_header())
 
     if cwi["write_sr"]:
         filename = f"{cwi['seedname']}_sr.dat.cw"
-        cw_model.write_or(cw_model["Sr"], filename, header=CWModel._sr_header())
+        cw_model.write_or(cw_model["Sr"], filename)  # , header=CWModel._sr_header())
 
     if cwi["write_u_matrices"] and cwi["restart"] != "w90":
         file_names = (f"{cwi['seedname']}_u.mat.cw", f"{cwi['seedname']}_u_dis.mat.cw")

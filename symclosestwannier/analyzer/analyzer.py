@@ -38,6 +38,7 @@ from symclosestwannier.util.message import (
 )
 
 from symclosestwannier.util.utility import sort_ket_matrix
+from symclosestwannier.util.hr_utility import read_hr
 
 
 # ==================================================
@@ -82,6 +83,9 @@ def analyzer(seedname="cwannier"):
             ket_samb = samb_info["ket"]
             ket_amn = cwi.get("ket_amn", ket_samb)
             Hr = sort_ket_matrix(Hr, ket_samb, ket_amn)
+
+    if cwi["hr_input"] != "":
+        Hr = read_hr(cwi["hr_input"], orb_dict=None, encoding="UTF-8")
 
     res = Response(cwi, cwm, HH_R=Hr)
 

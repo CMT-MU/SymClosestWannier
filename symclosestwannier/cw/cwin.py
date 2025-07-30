@@ -64,6 +64,8 @@ _default = {
     "magnetic_field_theta": 0.0,
     "magnetic_field_phi": 0.0,
     "g_factor": 2.0,
+    # psotcw
+    "hr_input": "",
 }
 
 
@@ -167,6 +169,10 @@ class CWin(dict):
                 - magnetic_field_theta : angle from the z-axis of the magnetic field (float), [0.0].
                 - magnetic_field_phi   : angle from the x-axis of the magnetic field (float), [0.0].
                 - g_factor             : spin g factor (float), [2.0].
+
+            # only used for postcw calculation.
+                - hr_input          : full filename of hr.dat file (str), [""].
+
         """
         if os.path.exists(file_name):
             with open(file_name) as fp:
@@ -235,7 +241,7 @@ class CWin(dict):
 
         if key not in CWin._default().keys():
             raise Exception(f"invalid keyword = {key} was given.")
-        elif key in ("seedname", "mp_seedname"):
+        elif key in ("seedname", "mp_seedname", "hr_input"):
             pass
         elif key in ("outdir", "mp_outdir"):
             v = v[:-1] if v[-1] == "/" else v
