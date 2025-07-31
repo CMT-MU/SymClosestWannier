@@ -2,6 +2,7 @@
 utility codes for lindhard function.
 """
 
+import time
 import subprocess
 import numpy as np
 import multiprocessing
@@ -21,13 +22,17 @@ _num_proc = multiprocessing.cpu_count()
 
 
 # ==================================================
-def get_lindhard(cwi, HH_R):
+def get_lindhard(cwi, HH_R, qpoints, omega, ef, delta):
     """
     lind hard function.
 
     Args:
         cwi (CWInfo): CWInfo.
         HH_R (ndarray): Hamiltonian matrix.
+        qpoints (ndarray): qpoints.
+        omega (float): frequency.
+        ef (float): fermi energy (The units are [eV]).
+        delta (float): Energy width for the smearing function (The units are [eV]).
 
     Returns:
         ndarray: lindhard function.
@@ -38,14 +43,7 @@ def get_lindhard(cwi, HH_R):
     else:
         atoms_frac = None
 
-    ef = cwi["fermi_energy"]
     num_wann = cwi["num_wann"]
-
-    eta_smr = cwi["lindhard_smr_fixed_en_width"]
-
-    omega = cwi["lindhard_freq"]
-
-    qpoints = cwi["qpoints_path"]
     num_q = len(qpoints)
 
     # ==================================================
@@ -96,25 +94,7 @@ def get_lindhard(cwi, HH_R):
         occkq = fermi(Ekq - ef, T=0.0, unit="eV")
 
         lindhard = np.zeros(num_q, dtype=complex)
-        # # for q, qvec in enumerate(qpoints):
-        #     HHkq = fourier_transform_r_to_k(HH_R, kpt + qvec, cwi["irvec"], cwi["ndegen"], atoms_frac)
-        #     Ekq, Ukq = np.linalg.eigh(HHkq)
-        #     Ukq = None
-        #     occkq = fermi(Ekq - ef, T=0.0, unit="eV")
-        #     for m in range(num_wann):
-        #         ekqm = Ekq[:, m]
-        #         fkqm = occkq[:, m]
-        #         for n in range(num_wann):
-        #             ekn = Ek[:, n]
-        #             fkn = occk[:, n]
 
-        #             numerator = fkqm - fkn
-        #             denominator = ekqm - ekn + omega - 1.0j * eta_smr
-        #             denominator /= (ekqm - ekn + omega) ** 2 + eta_smr**2
-
-        #             return -numerator * denominator
-
-        #             lindhard[q] += -np.sum(numerator * denominator)
         for m in range(num_wann):
             ekqm = Ekq[:, :, m]
             fkqm = occkq[:, :, m]
@@ -123,8 +103,8 @@ def get_lindhard(cwi, HH_R):
                 fkn = occk[:, n]
 
                 numerator = fkqm - fkn[np.newaxis, :]
-                denominator = ekqm - ekn[np.newaxis, :] + omega - 1.0j * eta_smr
-                denominator /= (ekqm - ekn[np.newaxis, :] + omega) ** 2 + eta_smr**2
+                denominator = ekqm - ekn[np.newaxis, :] + omega - 1.0j * delta
+                denominator /= (ekqm - ekn[np.newaxis, :] + omega) ** 2 + delta**2
 
                 lindhard += -np.sum(numerator * denominator, axis=1)
 
@@ -137,21 +117,10 @@ def get_lindhard(cwi, HH_R):
     kpoints = np.array(
         [[i / float(N1), j / float(N2), k / float(N3)] for i in range(N1) for j in range(N2) for k in range(N3)]
     )
-
-    # kpoints_chunks = np.split(
-    #     kpoints, [j for j in range(len(kpoints) // _num_proc, len(kpoints), len(kpoints) // _num_proc)]
-    # )
-    kpoints_chunks = np.split(kpoints, [j for j in range(300, len(kpoints), 300)])
+    kpoints_chunks = np.split(kpoints, [j for j in range(1000, len(kpoints), 1000)])
     num_chunks = len(kpoints_chunks)
 
-    # res = Parallel(n_jobs=_num_proc, verbose=10)(delayed(get_lindhard_k)(kpt) for kpt in kpoints_chunks)
-
     lindhard = np.zeros(num_q, dtype=complex)
-
-    # for lindhard_k in res:
-    #     lindhard += lindhard_k
-
-    import time
 
     start_time = time.time()
     print()

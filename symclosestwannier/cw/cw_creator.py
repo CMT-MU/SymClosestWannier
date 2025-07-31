@@ -726,15 +726,18 @@ def cw_creator(seedname="cwannier"):
         cwm.log("\n  * calculating lindhard ... ", None, end="", file=outfile, mode="a")
         cwm.set_stamp()
 
-        lindhard = get_lindhard(cwi, cw_model["Hr"])
+        qpoints = cwi["qpoints_path"]
+        omega = cwi["lindhard_freq"]
+        ef = cwi["fermi_energy"]
+        delta = cwi["lindhard_smr_fixed_en_width"]
 
-        om = cwi["lindhard_freq"]
+        lindhard = get_lindhard(cwi, cw_model["Hr"], qpoints, omega, ef, delta)
+
         q = cwi["q_linear"]
         q_dis_pos = cwi["q_dis_pos"]
-        ef = cwi["fermi_energy"]
 
         # output_linear_dispersion(
-        output_lindhard(".", seedname + "_lindhard.txt", om, q, lindhard, q_dis_pos=q_dis_pos, ef=ef)
+        output_lindhard(".", seedname + "_lindhard.txt", omega, q, lindhard, q_dis_pos=q_dis_pos, ef=ef)
 
         cwm.log("done", end="\n", file=outfile, mode="a")
 

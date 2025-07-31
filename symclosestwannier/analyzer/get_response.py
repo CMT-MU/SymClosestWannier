@@ -2097,7 +2097,15 @@ def gyrotropic_get_K(cwi, operators):
         elapsed_second = elapsed_time % 3600 % 60
 
         # print as 00:00:00
-        print(str(elapsed_hour).zfill(2) + ":" + str(elapsed_minute).zfill(2) + ":" + str(elapsed_second).zfill(2))
+        print(
+            " ("
+            + str(elapsed_hour).zfill(2)
+            + ":"
+            + str(elapsed_minute).zfill(2)
+            + ":"
+            + str(elapsed_second).zfill(2)
+            + ")"
+        )
 
     """
     --------------------------------------------------------------------
