@@ -2,12 +2,12 @@
 
 **Note**: if symmetrization is not required, this procedure is not necessary
 
-1. Prepare input file. Example input files for [CH4](../example/ch4.py) molecule and [graphene](../example/graphene.py) are given here.
+1. Prepare input file. Example input files for [CH4](../example/ch4/ch4.py) molecule and [graphene](../example/graphene/graphene.py) are given here.
     - CH4 molecule
-    ```{literalinclude} ../example/ch4.py
+    ```{literalinclude} ../example/ch4/ch4.py
     ```
     - graphene
-    ```{literalinclude} ../example/graphene.py
+    ```{literalinclude} ../example/graphene/graphene.py
     ```
 
 2. At the folder where these two input files exist, do the following to create SAMB.
