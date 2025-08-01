@@ -76,6 +76,36 @@ def weight_proj(e, dis_win_emin, dis_win_emax, smearing_temp_min, smearing_temp_
 
 
 # ==================================================
+def num_electron(e, ef, T=0.0):
+    """number of electrons per unit-cell"""
+    num_k = e.shape[0]
+    return np.sum(fermi(e - ef, T=0.0, unit="eV")) / num_k
+
+
+# ==================================================
+def tune_fermi_level(e, filling, T, threshold=1e-8):
+    """number of electrons per unit-cell"""
+    emax = np.max(e)
+    emin = np.min(e)
+    elim = max(abs(emax), abs(emin))
+
+    efsup = 2 * elim
+    eflow = -2 * elim
+
+    while efsup - eflow > threshold:
+        efmid = 0.5 * (efsup + eflow)
+        filling_tmp = num_electron(e, efmid, T)
+        if filling_tmp < filling:
+            eflow = efmid
+        else:
+            efsup = efmid
+
+    ef = 0.5 * (efsup + eflow)
+
+    return ef
+
+
+# ==================================================
 def band_distance(Ak, Ek, Hk, ef=0.0):
     """
     band distance defined in [npj Computational Materials, 208 (2023)]:
@@ -90,7 +120,7 @@ def band_distance(Ak, Ek, Hk, ef=0.0):
         Hk (ndarray): Hamiltonian matrix elements in k-space (orthogonal).
         ef (float, optional): fermi energy.
 
-    Returns: eta_0, eta_0_max, eta_2, eta_2_max.
+    Returns: eta_0, eta_0_max, eta_2, eta_2_max, eta_4, eta_4_max.
     """
     num_k, num_wann, _ = Hk.shape
 
@@ -106,12 +136,6 @@ def band_distance(Ak, Ek, Hk, ef=0.0):
         for i, n in enumerate(Pk_max_idx_list):
             Ek_ref[k, i] = Ek[k, n]
 
-    for k in range(num_k):
-        for n in range(num_wann):
-            if Ek_ref[k, n] > ef or Ek_wan[k, n] > ef:
-                Ek_ref[k, n] = 0.0
-                Ek_wan[k, n] = 0.0
-
     fermi_ref = fermi(Ek_ref - (ef + 0.0), T=0.1, unit="eV")
     fermi_wan = fermi(Ek_wan - (ef + 0.0), T=0.1, unit="eV")
     w = np.sqrt(fermi_ref * fermi_wan)
@@ -124,7 +148,13 @@ def band_distance(Ak, Ek, Hk, ef=0.0):
     eta_2 = np.sqrt(np.sum(w * (Ek_ref - Ek_wan) ** 2) / np.sum(w)) * 1000
     eta_2_max = np.max(w * np.abs(Ek_ref - Ek_wan)) * 1000
 
-    return eta_0, eta_0_max, eta_2, eta_2_max
+    fermi_ref = fermi(Ek_ref - (ef + 5.0), T=0.0, unit="eV")
+    fermi_wan = fermi(Ek_wan - (ef + 5.0), T=0.0, unit="eV")
+    w = np.sqrt(fermi_ref * fermi_wan)
+    eta_4 = np.sum(np.abs(Ek_wan - Ek_ref)) / num_k / num_wann * 1000  # [meV]
+    eta_4_max = np.max(w * np.abs(Ek_wan - Ek_ref)) * 1000
+
+    return eta_0, eta_0_max, eta_2, eta_2_max, eta_4, eta_4_max
 
 
 # ==================================================
@@ -1013,52 +1043,3 @@ def spin_zeeman_interaction(B, theta=0.0, phi=0.0, pauli_spn=None, g_factor=2.0,
     H_zeeman = -sum([spin_oper[i] * B_vec[i] for i in range(3)])
 
     return H_zeeman
-
-
-# ==================================================
-def write_or(outdir, filename, unit_cell_cart, Or, irvec, ndegen=None, vec=False):
-    """
-    write seedname_or.dat.
-
-    Args:
-        outdir (str): input and output files are found in this directory.
-        filename (str): file name.
-        unit_cell_cart (ndarray): transform matrix, [a1,a2,a3], [None].
-        Or (ndarray): real-space representation of the given operator, O_{ab}(R) = <φ_{a}(0)|O|φ_{b}(R)>.
-        irvec (ndarray): irreducible rpoints.
-        ndegen (ndarray): number of degeneracy at each R.
-        vec (bool, optional): vector ?
-    """
-    Or = np.array(Or)
-    num_wann = Or.shape[-1]
-
-    fs = open(f"{outdir}/{filename}", "w")
-    fs.write("# written {}\n".format(datetime.datetime.now().strftime("on %d%b%Y at %H:%M:%S")))
-
-    Or_str = " {0[0]:18.15f} {0[1]:18.15f} {0[2]:18.15f}\n".format(unit_cell_cart[0, :])
-    Or_str += " {0[0]:18.15f} {0[1]:18.15f} {0[2]:18.15f}\n".format(unit_cell_cart[1, :])
-    Or_str += " {0[0]:18.15f} {0[1]:18.15f} {0[2]:18.15f}\n".format(unit_cell_cart[2, :])
-
-    if ndegen is not None:
-        Or_str += "{:12d}\n{:12d}\n".format(num_wann, len(ndegen))
-        Or_str += textwrap.fill("".join(["{:5d}".format(x) for x in ndegen]), 75, drop_whitespace=False)
-        Or_str += "\n"
-    else:
-        Or_str += "{:12d}\n".format(num_wann)
-
-    for irpts in range(len(irvec)):
-        for i, j in itertools.product(range(num_wann), repeat=2):
-            v = irvec[irpts, :]
-            line = "{:5d}{:5d}{:5d}{:5d}{:5d}  ".format(
-                int(round(v[0])), int(round(v[1])), int(round(v[2])), j + 1, i + 1
-            )
-            if vec:
-                line += "".join([" {:>15.8E}  {:>15.8E}".format(x.real, x.imag) for x in Or[:, irpts, j, i]])
-            else:
-                x = Or[irpts, j, i]
-                line += " {:>15.8E}  {:>15.8E}".format(x.real, x.imag)
-            line += "\n"
-
-            Or_str += line
-
-    fs.write(Or_str)

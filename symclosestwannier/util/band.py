@@ -2,7 +2,6 @@
 utility codes for CW.
 """
 
-import os
 import subprocess
 import numpy as np
 
@@ -177,7 +176,10 @@ def output_linear_dispersion(outdir, filename, k, e, u, **kwargs):
 
     fs = open(outdir + "/" + filename + ".txt", "w")
     fs.write("# n = band, j = orbital, E_n: energy, W_jn: weight\n")
-    fs.write("# k E_0 W_00 W_10 ... 1qW_M0 E_1 W_01 W_11 W_M1 ... E_n W_jn ... E_d W_0d W_1d ... W_dd\n")
+    fs.write("# k E_0 W_00 W_10 ... W_M0\n")
+    fs.write("# k E_1 W_01 W_11 ... W_M1\n")
+    fs.write("# ...\n")
+    fs.write("# k E_d W_0d W_1d ... W_dd\n")
     fs.write(f"# Emax = {str(emax)}\n")
     fs.write(f"# Emin = {str(emin)}\n")
     fs.write(f"# num_wann = {str(num_wann)}\n")
@@ -195,13 +197,16 @@ def output_linear_dispersion(outdir, filename, k, e, u, **kwargs):
     e = e.T
     u = np.abs(u) ** 2
 
-    for i in range(num_k):
-        s = str(k[i])
-        for n in range(Nm):
-            en = e[n] - ef
-            s += " " + str(en[i])
+    for n in range(Nm):
+        en = e[n] - ef
+        s = ""
+        for i in range(num_k):
+            s += "{k:0<20}   {e:<20}".format(k=k[i], e=en[i])
             for j in range(Nm):
                 s += " " + str(u[i, j, n])
+
+            s += "\n"
+
         s += "\n"
         fs.write(s)
 
@@ -270,9 +275,7 @@ def generate_band_gnuplot(outdir, filename, kmax, emax, emin, num_wann, **kwargs
         # fs.write(f"'{ref_filename}' u ($1/(2*pi)):2 w l lw lwidth lc 'dark-grey', ")
         fs.write(f"'{ref_filename}' u ($1/a):($2-ef) w l lw lwidth lc 'dark-grey', ")
 
-    fs.write(
-        f"for [j=2:{num_wann*(num_wann+1)}:{num_wann+1}] '{filename}.txt' u 1:j w l lw lwidth dt (3,1) lc '{lc}', "
-    )
+    fs.write(f"'{filename}.txt' u 1:2 w l lw lwidth dt (3,1) lc '{lc}', ")
 
     fs.write(f"{0.0} lw 0.5 dt (2,1) lc 'black'")
 
@@ -287,9 +290,7 @@ def generate_band_gnuplot(outdir, filename, kmax, emax, emin, num_wann, **kwargs
         # fs.write(f"'{ref_filename}' u ($1/(2*pi)):2 w l lw lwidth lc 'dark-grey', ")
         fs.write(f"'{ref_filename}' u ($1/a):($2-ef) w l lw lwidth lc 'dark-grey', ")
 
-    fs.write(
-        f"for [j=2:{num_wann*(num_wann+1)}:{num_wann+1}] '{filename}.txt' u 1:j w l lw lwidth dt (3,1) lc '{lc}', "
-    )
+    fs.write(f"'{filename}.txt' u 1:2 w l lw lwidth dt (3,1) lc '{lc}', ")
 
     fs.write(f"{0.0} lw 0.5 dt (2,1) lc 'black'")
 

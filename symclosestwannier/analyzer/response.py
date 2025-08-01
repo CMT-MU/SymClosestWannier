@@ -63,6 +63,7 @@ class Response(dict):
         # operators
         self["HH_R"] = HH_R  # <0n|H|Rm>
         self["AA_R"] = None  # <0n|r|Rm>
+        self["v_R"] = None  # <0n|v|Rm>
         self["BB_R"] = None  # <0|H(r-R)|R>
         self["CC_R"] = None  # <0|r_alpha.H(r-R)_beta|R>
         self["SS_R"] = None  # <0n|sigma_x,y,z|Rm>
@@ -102,7 +103,10 @@ class Response(dict):
     # ==================================================
     @property
     def operators(self):
-        return {k: self[k] for k in ("HH_R", "AA_R", "BB_R", "CC_R", "SS_R", "SR_R", "SHR_R", "SH_R", "SAA_R", "SBB_R")}
+        return {
+            k: self[k]
+            for k in ("HH_R", "AA_R", "v_R", "BB_R", "CC_R", "SS_R", "SR_R", "SHR_R", "SH_R", "SAA_R", "SBB_R")
+        }
 
     # ==================================================
     def set_operators(self):
@@ -112,67 +116,79 @@ class Response(dict):
         self._cwm.log(cw_start_set_operators_msg(), stamp=None, end="\n", file=self._outfile, mode="a")
         self._cwm.set_stamp()
 
-        # berry
-        if self._cwi["berry"]:
+        if self._cwi["use_tb_approximation"]:
             self["HH_R"] = get_oper_R("HH_R", self._cwi) if self["HH_R"] is None else self["HH_R"]
 
-            # (ahc)  Anomalous Hall conductivity (from Berry curvature)
-            if self._cwi["berry_task"] == "ahc":
-                self["AA_R"] = get_oper_R("AA_R", self._cwi) if self["AA_R"] is None else self["AA_R"]
-
-            # (morb) Orbital magnetization
-            if self._cwi["berry_task"] == "morb":
-                self["AA_R"] = get_oper_R("AA_R", self._cwi) if self["AA_R"] is None else self["AA_R"]
-                self["BB_R"] = get_oper_R("BB_R", self._cwi) if self["BB_R"] is None else self["BB_R"]
-                self["CC_R"] = get_oper_R("CC_R", self._cwi) if self["CC_R"] is None else self["CC_R"]
-
-            # (kubo) Complex optical conductivity (Kubo-Greenwood) & JDOS
             if self._cwi["berry_task"] == "kubo":
-                self["AA_R"] = get_oper_R("AA_R", self._cwi) if self["AA_R"] is None else self["AA_R"]
+                self["v_R"] = get_oper_R("v_R", self._cwi, self["HH_R"]) if self["v_R"] is None else self["v_R"]
                 self["SS_R"] = (
                     get_oper_R("SS_R", self._cwi) if self._cwi["spin_decomp"] and self["SS_R"] is None else self["SS_R"]
                 )
 
-            # (sc)   Nonlinear shift current
-            if self._cwi["berry_task"] == "sc":
-                self["AA_R"] = get_oper_R("AA_R", self._cwi) if self["AA_R"] is None else self["AA_R"]
+        else:
+            # berry
+            if self._cwi["berry"]:
+                self["HH_R"] = get_oper_R("HH_R", self._cwi) if self["HH_R"] is None else self["HH_R"]
 
-            # (shc)  Spin Hall conductivity
-            if self._cwi["berry_task"] == "shc":
-                self["AA_R"] = get_oper_R("AA_R", self._cwi) if self["AA_R"] is None else self["AA_R"]
-                self["SS_R"] = get_oper_R("SS_R", self._cwi) if self["SS_R"] is None else self["SS_R"]
+                # (ahc)  Anomalous Hall conductivity (from Berry curvature)
+                if self._cwi["berry_task"] == "ahc":
+                    self["AA_R"] = get_oper_R("AA_R", self._cwi) if self["AA_R"] is None else self["AA_R"]
 
-                # if self._cwi["shc_method"] == "qiao":
-                if self["SR_R"] is None:
-                    SR_R, SHR_R, SH_R = get_oper_R("get_SHC_R", self._cwi)
-                    self["SR_R"] = SR_R
-                    self["SHR_R"] = SHR_R
-                    self["SH_R"] = SH_R
+                # (morb) Orbital magnetization
+                if self._cwi["berry_task"] == "morb":
+                    self["AA_R"] = get_oper_R("AA_R", self._cwi) if self["AA_R"] is None else self["AA_R"]
+                    self["BB_R"] = get_oper_R("BB_R", self._cwi) if self["BB_R"] is None else self["BB_R"]
+                    self["CC_R"] = get_oper_R("CC_R", self._cwi) if self["CC_R"] is None else self["CC_R"]
 
-            # (kdotp) joint density of states
-            if self._cwi["berry_task"] == "kdotp":
-                pass
+                # (kubo) Complex optical conductivity (Kubo-Greenwood) & JDOS
+                if self._cwi["berry_task"] == "kubo":
+                    self["AA_R"] = get_oper_R("AA_R", self._cwi) if self["AA_R"] is None else self["AA_R"]
+                    self["SS_R"] = (
+                        get_oper_R("SS_R", self._cwi)
+                        if self._cwi["spin_decomp"] and self["SS_R"] is None
+                        else self["SS_R"]
+                    )
 
-            # (me) magnetoelectric tensor
-            if self._cwi["berry_task"] == "me":
-                self["AA_R"] = get_oper_R("AA_R", self._cwi) if self["AA_R"] is None else self["AA_R"]
-                self["SS_R"] = get_oper_R("SS_R", self._cwi) if self["SS_R"] is None else self["SS_R"]
+                # (sc)   Nonlinear shift current
+                if self._cwi["berry_task"] == "sc":
+                    self["AA_R"] = get_oper_R("AA_R", self._cwi) if self["AA_R"] is None else self["AA_R"]
 
-        # gyrotropic
-        if self._cwi["gyrotropic"]:
-            win = self._cwi.win
+                # (shc)  Spin Hall conductivity
+                if self._cwi["berry_task"] == "shc":
+                    self["AA_R"] = get_oper_R("AA_R", self._cwi) if self["AA_R"] is None else self["AA_R"]
+                    self["SS_R"] = get_oper_R("SS_R", self._cwi) if self["SS_R"] is None else self["SS_R"]
 
-            self["HH_R"] = get_oper_R("HH_R", self._cwi) if self["HH_R"] is None else self["HH_R"]
+                    # if self._cwi["shc_method"] == "qiao":
+                    if self["SR_R"] is None:
+                        SR_R, SHR_R, SH_R = get_oper_R("get_SHC_R", self._cwi)
+                        self["SR_R"] = SR_R
+                        self["SHR_R"] = SHR_R
+                        self["SH_R"] = SH_R
 
-            if win.eval_D or win.eval_Dw or win.eval_K or win.eval_NOA:
-                self["AA_R"] = get_oper_R("AA_R", self._cwi) if self["AA_R"] is None else self["AA_R"]
+                # (kdotp) joint density of states
+                if self._cwi["berry_task"] == "kdotp":
+                    pass
 
-            if win.eval_spn:
-                self["SS_R"] = get_oper_R("SS_R", self._cwi) if self["SS_R"] is None else self["SS_R"]
+                # (me) magnetoelectric tensor
+                if self._cwi["berry_task"] == "me":
+                    self["AA_R"] = get_oper_R("AA_R", self._cwi) if self["AA_R"] is None else self["AA_R"]
+                    self["SS_R"] = get_oper_R("SS_R", self._cwi) if self["SS_R"] is None else self["SS_R"]
 
-            if win.eval_K:
-                self["BB_R"] = get_oper_R("BB_R", self._cwi) if self["BB_R"] is None else self["BB_R"]
-                self["CC_R"] = get_oper_R("CC_R", self._cwi) if self["CC_R"] is None else self["CC_R"]
+            # gyrotropic
+            if self._cwi["gyrotropic"]:
+                win = self._cwi.win
+
+                self["HH_R"] = get_oper_R("HH_R", self._cwi) if self["HH_R"] is None else self["HH_R"]
+
+                if win.eval_D or win.eval_Dw or win.eval_K or win.eval_NOA:
+                    self["AA_R"] = get_oper_R("AA_R", self._cwi) if self["AA_R"] is None else self["AA_R"]
+
+                if win.eval_spn:
+                    self["SS_R"] = get_oper_R("SS_R", self._cwi) if self["SS_R"] is None else self["SS_R"]
+
+                if win.eval_K:
+                    self["BB_R"] = get_oper_R("BB_R", self._cwi) if self["BB_R"] is None else self["BB_R"]
+                    self["CC_R"] = get_oper_R("CC_R", self._cwi) if self["CC_R"] is None else self["CC_R"]
 
         # spin magnetic moment
         if self._cwi["spin_moment"]:

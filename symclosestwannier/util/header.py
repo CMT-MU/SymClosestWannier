@@ -75,7 +75,7 @@ win_info = {
     "mp_grid": "dimensions of the Monkhorst-Pack grid of k-points (list), [[0, 0, 0]].",
     "kpoints": "k-points, [[k1, k2, k3]] (crystal coordinate) (list), [[[0, 0, 0]]].",
     "kpoint": "representative k points (dict), [None].",
-    "kpoint_path": "k-points along high symmetry line in Brillouin zonen, [[k1, k2, k3]] (crystal coordinate) (str), [None].",
+    "kpoint_path": "k-points along high symmetry line in Brillouin zone, [[k1, k2, k3]] (crystal coordinate) (str), [None].",
     "unit_cell_cart": "transform matrix, [a1,a2,a3], [None].",
     "atoms_frac": "atomic positions in fractional coordinates with respect to the lattice vectors, {atom: [r1,r2,r3]} [None].",
     "atoms_cart": "atomic positions in cartesian coordinates, {atom: [rx,ry,rz]} [None].",
@@ -282,7 +282,7 @@ hk_header = """
 === Hamiltonian matrix elements in k-space ===
 - {(k2,k2,k3,a,b) = H_{ab}(k)}.
 - H_{ab}(k)      : <φ_{a}(k)|H|φ_{b}(k)>.
-- φ_{a}(k)       : orthogonalized pseudo atomic orbital.
+- φ_{a}(k)       : orthogonalized wannier function.
 - k = (k1,k2,k3) : k points (crystal coordinate).
 """
 
@@ -292,6 +292,17 @@ sk_header = """
 - {(k2,k2,k3,a,b) = S_{ab}(k)}.
 - S_{ab}(k)      : <φ_{a}(k)|φ_{b}(k)>.
 - φ_{a}(k)       : non-orthogonalized pseudo atomic orbital.
+- k = (k1,k2,k3) : k points (crystal coordinate).
+"""
+
+
+nk_header = """
+=== Electronic density matrix elements in k-space ===
+- {(k2,k2,k3,a,b) = n_{ab}(k)}.
+- n_{ab}(k)      : <φ_{a}(k)|P^{KS}|φ_{b}(k)>.
+- P^{KS}         : \sum_{nk} f_{nk} |ψ^{KS}_{n}(k)><ψ^{KS}_{n}(k)|
+- ψ^{KS}_{m}(k): Kohn-Sham orbitals (KSOs).
+- φ_{a}(k)       : orthogonalized wannier function.
 - k = (k1,k2,k3) : k points (crystal coordinate).
 """
 
@@ -310,7 +321,7 @@ hr_header = """
 === Hamiltonian matrix elements in real-space ===
 - n1 n2 n3 a b re(H_{ab}(R)) im(H_{ab}(R))
     - H_{ab}(R)      : <φ_{a}(0)|H|φ_{b}(R)>.
-    - φ_{a}(R)       : orthogonalized pseudo atomic orbital.
+    - φ_{a}(R)       : orthogonalized wannier function.
     - R = (n1,n2,n3) : lattice points (crystal coordinate, nj: integer).
 """
 
@@ -319,6 +330,14 @@ sr_header = """
 - n1 n2 n3 a b re(S_{ab}(R)) im(S_{ab}(R))
     - S_{ab}(R)      : <φ_{a}(0)|φ_{b}(R)>.
     - φ_{a}(R)       : non-orthogonalized pseudo atomic orbital.
+    - R = (n1,n2,n3) : lattice points (crystal coordinate, nj: integer).
+"""
+
+nr_header = """
+=== Electronic density matrix elements in real-space ===
+- n1 n2 n3 a b re(\rho_{ab}(R)) im(\rho_{ab}(R))
+    - \rho_{ab}(R)      : <φ_{a}(0)|P^{KS}|φ_{b}(R)>.
+    - φ_{a}(R)       : orthogonalized wannier function.
     - R = (n1,n2,n3) : lattice points (crystal coordinate, nj: integer).
 """
 
@@ -345,6 +364,14 @@ s_header = """
 - j z_j TagMultipole coefficient
     - S(R) ~ sum_{j} z_j Z_j(R)
     - z_j = sum_{R} Tr[Z_j(R)*S(R)].
+    - z_j is the expansion coefficients.
+"""
+
+n_header = """
+=== The expansion coefficients of the Electronic density matrix expressed by a linear combination of SAMBs ===
+- j z_j TagMultipole coefficient
+    - n(R) ~ sum_{j} z_j Z_j(R)
+    - z_j = sum_{R} Tr[Z_j(R)*n(R)].
     - z_j is the expansion coefficients.
 """
 
