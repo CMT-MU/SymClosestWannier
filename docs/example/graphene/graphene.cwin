@@ -13,15 +13,15 @@ svd               = true
 verbose           = true
 
 write_hr          = .true.
-write_sr          = .true.
+write_amn         = .true.
 
 N1 = 50
 
 # symmetrization
 symmetrization = true
-mp_outdir      = './'
+mp_outdir      = './graphene/'
 mp_seedname    = graphene
 ket_amn        = [pz@C_1,pz@C_2]
-irreps         = full ! full/all/list
+irreps         = all ! full/all/list
 
 

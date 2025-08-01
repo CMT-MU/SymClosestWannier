@@ -31,7 +31,7 @@
 # *  RPS19  = PRB 99, 235113 (2019)  (spin Hall conductivity - SHC)
 # *  IAdJS19 = arXiv:1910.06172 (2019) (quasi-degenerate k.p)
 # ---------------------------------------------------------------
-
+import time
 import numpy as np
 import multiprocessing
 from joblib import Parallel, delayed, wrap_non_picklable_objects
@@ -196,13 +196,19 @@ def berry_main(cwi, operators):
             "Using a translationally-invariant discretization for the band-diagonal Wannier matrix elements of r, etc."
         )
 
+    if cwi["use_tb_approximation"]:
+        print("*** Using tight-binding approximation ***")
+
     # --- #
 
     if cwi["berry_task"] == "ahc":
         d["ahc_list"] = berry_get_ahc(cwi, operators)
 
     if cwi["berry_task"] == "kubo":
-        kubo_H, kubo_AH, kubo_H_spn, kubo_AH_spn = berry_get_kubo(cwi, operators)
+        if cwi["use_tb_approximation"]:
+            kubo_H, kubo_AH, kubo_H_spn, kubo_AH_spn = berry_get_kubo_tb(cwi, operators)
+        else:
+            kubo_H, kubo_AH, kubo_H_spn, kubo_AH_spn = berry_get_kubo(cwi, operators)
 
         d["kubo_H"] = kubo_H
         d["kubo_AH"] = kubo_AH
@@ -430,13 +436,17 @@ def utility_w0gauss(x, n):
 
     (n=-99): derivative of Fermi-Dirac function: 0.5/(1.0+cosh(x))
     """
-    w0gauss = 0.0  # in case of error return
+    if not isinstance(x, np.ndarray):
+        x = np.array(x)
+
+    w0gauss = np.zeros(x.shape)  # in case of error return
 
     sqrtpm1 = 1.0 / np.sqrt(np.pi)
 
     # cold smearing  (Marzari-Vanderbilt)
     if n == -1:
-        arg = min(200, (x - 1.0 / np.sqrt(2)) ** 2)
+        arg = (x - 1.0 / np.sqrt(2)) ** 2
+        arg = np.where(np.abs(arg) < 200, arg, np.sign(arg) * 200)
         w0gauss = sqrtpm1 * np.exp(-arg) * (2.0 - np.sqrt(2.0) * x)
     # Fermi-Dirac smearing
     elif n == -99:
@@ -446,13 +456,15 @@ def utility_w0gauss(x, n):
             w0gauss = 0.0
     # Gaussian
     elif n == 0:
-        arg = min(200, x**2)
+        arg = x**2
+        arg = np.where(np.abs(arg) < 200, arg, np.sign(arg) * 200)
         w0gauss = np.exp(-arg) * sqrtpm1
     elif n > 10 or n < 0:
         raise Exception("utility_w0gauss higher order (n>10) smearing is untested and unstable")
     # Methfessel-Paxton
     else:
-        arg = min(200, x**2)
+        arg = x**2
+        arg = np.where(np.abs(arg) < 200, arg, np.sign(arg) * 200)
         w0gauss = np.exp(-arg) * sqrtpm1
         hd = 0.0
         hp = np.exp(-arg)
@@ -942,7 +954,9 @@ def berry_get_ahc(cwi, operators):
 
     num_k = np.prod(cwi["berry_kmesh"])
 
-    kpoints_chunks = np.split(kpoints, [j for j in range(100000, len(kpoints), 100000)])
+    kpoints_chunks = np.split(
+        kpoints, [j for j in range(len(kpoints) // _num_proc, len(kpoints), len(kpoints) // _num_proc)]
+    )
 
     res = Parallel(n_jobs=_num_proc, verbose=10)(delayed(berry_get_ahc_k)(kpt) for kpt in kpoints_chunks)
 
@@ -1096,12 +1110,12 @@ def berry_get_kubo(cwi, operators):
         delHH = None
         U = None
 
-        kubo_H = 1.0j * np.zeros((kubo_nfreq, 3, 3))
-        kubo_AH = 1.0j * np.zeros((kubo_nfreq, 3, 3))
+        kubo_H = np.zeros((kubo_nfreq, 3, 3), dtype=complex)
+        kubo_AH = np.zeros((kubo_nfreq, 3, 3), dtype=complex)
 
         if spin_decomp:
-            kubo_H_spn = 1.0j * np.zeros((kubo_nfreq, 3, 3, 3))
-            kubo_AH_spn = 1.0j * np.zeros((kubo_nfreq, 3, 3, 3))
+            kubo_H_spn = np.zeros((kubo_nfreq, 3, 3, 3), dtype=complex)
+            kubo_AH_spn = np.zeros((kubo_nfreq, 3, 3, 3), dtype=complex)
         else:
             kubo_H_spn = 0.0
             kubo_AH_spn = 0.0
@@ -1148,10 +1162,7 @@ def berry_get_kubo(cwi, operators):
 
                     # Broadened delta function for the Hermitian conductivity and JDOS
                     arg = (ekm - ekn - np.real(omega_list)) / eta_smr
-                    delta = (
-                        np.array([utility_w0gauss(arg[ifreq], kubo_smr_type_idx) for ifreq in range(kubo_nfreq)])
-                        / eta_smr
-                    )
+                    delta = utility_w0gauss(arg, kubo_smr_type_idx) / eta_smr
 
                     rfac1 = (fkm - fkn) * (ekm - ekn)
                     rfac2 = -np.pi * rfac1 * delta
@@ -1176,16 +1187,18 @@ def berry_get_kubo(cwi, operators):
 
     num_k = np.prod(cwi["berry_kmesh"])
 
-    kpoints_chunks = np.split(kpoints, [j for j in range(100000, len(kpoints), 100000)])
+    kpoints_chunks = np.split(
+        kpoints, [j for j in range(len(kpoints) // _num_proc, len(kpoints), len(kpoints) // _num_proc)]
+    )
 
     res = Parallel(n_jobs=_num_proc, verbose=10)(delayed(berry_get_kubo_k)(kpt) for kpt in kpoints_chunks)
 
-    kubo_H = 1.0j * np.zeros((kubo_nfreq, 3, 3))
-    kubo_AH = 1.0j * np.zeros((kubo_nfreq, 3, 3))
+    kubo_H = np.zeros((kubo_nfreq, 3, 3), dtype=complex)
+    kubo_AH = np.zeros((kubo_nfreq, 3, 3), dtype=complex)
 
     if spin_decomp:
-        kubo_H_spn = 1.0j * np.zeros((kubo_nfreq, 3, 3, 3))
-        kubo_AH_spn = 1.0j * np.zeros((kubo_nfreq, 3, 3, 3))
+        kubo_H_spn = np.zeros((kubo_nfreq, 3, 3, 3), dtype=complex)
+        kubo_AH_spn = np.zeros((kubo_nfreq, 3, 3, 3), dtype=complex)
     else:
         kubo_H_spn = 0.0
         kubo_AH_spn = 0.0
@@ -1209,6 +1222,232 @@ def berry_get_kubo(cwi, operators):
     cell_volume = cwi["unit_cell_volume"]
 
     fac = 1.0e8 * elem_charge_SI**2 / (hbar_SI * cell_volume) / num_k
+
+    kubo_H *= fac
+    kubo_AH *= fac
+
+    if spin_decomp:
+        kubo_H_spn *= fac
+        kubo_AH_spn *= fac
+
+    return kubo_H, kubo_AH, kubo_H_spn, kubo_AH_spn
+
+
+# ==================================================
+def berry_get_kubo_tb(cwi, operators):
+    """
+    Complex interband optical conductivity, in S/cm,
+    separated into Hermitian (Kubo_H) and anti-Hermitian (Kubo_AH) parts.
+    Use tight-binding approximation.
+
+    Args:
+        cwi (CWInfo): CWInfo.
+        operators (dict):
+
+    Returns:
+        tuple: Kubo_H, Kubo_AH, Kubo_H_spn, Kubo_AH_spn.
+    """
+    if cwi["tb_gauge"]:
+        atoms_list = list(cwi["atoms_frac"].values())
+        atoms_frac = np.array([atoms_list[i] for i in cwi["nw2n"]])
+    else:
+        atoms_frac = None
+
+    ef = cwi["fermi_energy"]
+    berry_kmesh = cwi["berry_kmesh"]
+    num_wann = cwi["num_wann"]
+
+    spin_decomp = cwi["spin_decomp"]
+    spn_nk = np.zeros(num_wann)
+
+    kubo_adpt_smr = cwi["kubo_adpt_smr"]
+    kubo_adpt_smr_fac = cwi["kubo_adpt_smr_fac"]
+    kubo_adpt_smr_max = cwi["kubo_adpt_smr_max"]
+    kubo_smr_fixed_en_width = cwi["kubo_smr_fixed_en_width"]
+
+    if cwi["kubo_smr_type"] == "gauss":
+        kubo_smr_type_idx = 0
+    elif "m-p" in cwi["kubo_smr_type"]:
+        m_pN = cwi["kubo_smr_type"]
+        kubo_smr_type_idx = m_pN[2:]
+    elif cwi["kubo_smr_type"] == "m-v" or cwi["kubo_smr_type"] == "cold":
+        kubo_smr_type_idx = -1
+    elif cwi["kubo_smr_type"] == "f-d":
+        kubo_smr_type_idx = -99
+
+    if cwi["kubo_eigval_max"] < +100000:
+        kubo_eigval_max = cwi["kubo_eigval_max"]
+    elif cwi["dis_froz_max"] < +100000:
+        kubo_eigval_max = cwi["dis_froz_max"] + 0.6667
+    else:
+        kubo_eigval_max = 100000
+
+    use_degen_pert = cwi["use_degen_pert"]
+    degen_thr = cwi["degen_thr"]
+
+    kubo_freq_list = np.arange(cwi["kubo_freq_min"], cwi["kubo_freq_max"], cwi["kubo_freq_step"])
+    # Replace imaginary part of frequency with a fixed value
+    if not kubo_adpt_smr and kubo_smr_fixed_en_width != 0.0:
+        kubo_freq_list = np.real(kubo_freq_list) + 1.0j * kubo_smr_fixed_en_width
+
+    kubo_nfreq = len(kubo_freq_list)
+
+    # ==================================================
+    @wrap_non_picklable_objects
+    def berry_get_kubo_k(kpt):
+        """
+        calculate
+        Complex interband optical conductivity, in S/cm,
+        separated into Hermitian (Kubo_H) and anti-Hermitian (Kubo_AH) parts.
+
+        Args:
+            kpt (ndarray): kpoint.
+
+        Returns:
+            tuple: Kubo_H, Kubo_AH, Kubo_H_spn, Kubo_AH_spn.
+        """
+        if kpt.ndim == 1:
+            kpt = np.array([kpt])
+
+        HH, delHH = fourier_transform_r_to_k_new(
+            operators["HH_R"], kpt, cwi["unit_cell_cart"], cwi["irvec"], cwi["ndegen"], atoms_frac
+        )
+
+        if cwi["zeeman_interaction"]:
+            B = cwi["magnetic_field"]
+            theta = cwi["magnetic_field_theta"]
+            phi = cwi["magnetic_field_phi"]
+            g_factor = cwi["g_factor"]
+
+            pauli_spin = fourier_transform_r_to_k_vec(operators["SS_R"], kpt, cwi["irvec"], cwi["ndegen"], atoms_frac)
+            H_zeeman = spin_zeeman_interaction(B, theta, phi, pauli_spin, g_factor, cwi["num_wann"])
+            HH += H_zeeman
+
+        E, U = np.linalg.eigh(HH)
+        HH = None
+
+        v = fourier_transform_r_to_k_vec(operators["v_R"], kpt, cwi["irvec"], cwi["ndegen"], atoms_frac)
+        v = np.array([U.transpose(0, 2, 1).conjugate() @ v[i] @ U for i in range(3)])
+
+        if kubo_adpt_smr:
+            delE = wham_get_deleig(delHH, E, U, use_degen_pert, degen_thr)
+            Delta_k = kmesh_spacing_mesh(berry_kmesh, cwi["B"])
+
+        delHH = None
+        U = None
+
+        kubo_H = np.zeros((kubo_nfreq, 3, 3), dtype=complex)
+        kubo_AH = np.zeros((kubo_nfreq, 3, 3), dtype=complex)
+
+        if spin_decomp:
+            kubo_H_spn = np.zeros((kubo_nfreq, 3, 3, 3), dtype=complex)
+            kubo_AH_spn = np.zeros((kubo_nfreq, 3, 3, 3), dtype=complex)
+        else:
+            kubo_H_spn = 0.0
+            kubo_AH_spn = 0.0
+
+        occ = fermi(E - ef, T=0.0, unit="eV")
+
+        for k in range(len(kpt)):
+            for m in range(num_wann):
+                for n in range(num_wann):
+                    if m == n:
+                        continue
+
+                    if E[k, m] > kubo_eigval_max or E[k, n] > kubo_eigval_max:
+                        continue
+
+                    ekm = E[k, m]
+                    ekn = E[k, n]
+                    fkm = occ[k, m]
+                    fkn = occ[k, n]
+
+                    if spin_decomp:
+                        if spn_nk[n] >= 0 and spn_nk[m] >= 0:
+                            ispn = 0  # up --> up transition
+                        elif spn_nk[n] < 0 and spn_nk[m] < 0:
+                            ispn = 1  # down --> down
+                        else:
+                            ispn = 2  # spin-flip
+
+                    if kubo_adpt_smr:
+                        # Eq.(35) YWVS07
+                        vdum = delE[:, k, m] - delE[:, k, n]
+                        joint_level_spacing = np.sqrt(np.dot(vdum, vdum)) * Delta_k
+                        eta_smr = min(joint_level_spacing * kubo_adpt_smr_fac, kubo_adpt_smr_max)
+                        if eta_smr < 1e-6:
+                            eta_smr = 1e-6
+                    else:
+                        eta_smr = kubo_smr_fixed_en_width
+
+                    # Complex frequency for the anti-Hermitian conductivity
+                    if kubo_adpt_smr:
+                        omega_list = np.real(kubo_freq_list) + 1.0j * eta_smr
+                    else:
+                        omega_list = kubo_freq_list
+
+                    # Broadened delta function for the Hermitian conductivity and JDOS
+                    arg = (ekm - ekn - np.real(omega_list)) / eta_smr
+                    delta = utility_w0gauss(arg, kubo_smr_type_idx) / eta_smr
+
+                    rfac1 = (fkm - fkn) / (ekm - ekn)
+                    rfac2 = -np.pi * rfac1 * delta
+                    cfac = 1.0j * rfac1 / (ekm - ekn - omega_list)
+
+                    viknm_vjkmn = np.array([[v[i, k, n, m] * v[j, k, m, n] for j in range(3)] for i in range(3)])
+
+                    kubo_H += rfac2[:, np.newaxis, np.newaxis] * viknm_vjkmn[np.newaxis, :, :]
+                    kubo_AH += cfac[:, np.newaxis, np.newaxis] * viknm_vjkmn[np.newaxis, :, :]
+
+                    if spin_decomp:
+                        kubo_H_spn += rfac2[:, np.newaxis, np.newaxis] * viknm_vjkmn[np.newaxis, :, :]
+                        kubo_AH_spn += cfac[:, np.newaxis, np.newaxis] * viknm_vjkmn[np.newaxis, :, :]
+
+        return kubo_H, kubo_AH, kubo_H_spn, kubo_AH_spn
+
+    # ==================================================
+    N1, N2, N3 = cwi["berry_kmesh"]
+    kpoints = np.array(
+        [[i / float(N1), j / float(N2), k / float(N3)] for i in range(N1) for j in range(N2) for k in range(N3)]
+    )
+
+    num_k = np.prod(cwi["berry_kmesh"])
+
+    kpoints_chunks = np.split(
+        kpoints, [j for j in range(len(kpoints) // _num_proc, len(kpoints), len(kpoints) // _num_proc)]
+    )
+
+    res = Parallel(n_jobs=_num_proc, verbose=10)(delayed(berry_get_kubo_k)(kpt) for kpt in kpoints_chunks)
+
+    kubo_H = np.zeros((kubo_nfreq, 3, 3), dtype=complex)
+    kubo_AH = np.zeros((kubo_nfreq, 3, 3), dtype=complex)
+
+    if spin_decomp:
+        kubo_H_spn = np.zeros((kubo_nfreq, 3, 3, 3), dtype=complex)
+        kubo_AH_spn = np.zeros((kubo_nfreq, 3, 3, 3), dtype=complex)
+    else:
+        kubo_H_spn = 0.0
+        kubo_AH_spn = 0.0
+
+    for kubo_H_k, kubo_AH_k, kubo_H_spn_k, kubo_AH_spn_k in res:
+        kubo_H += kubo_H_k
+        kubo_AH += kubo_AH_k
+        kubo_H_spn += kubo_H_spn_k
+        kubo_AH_spn += kubo_AH_spn_k
+
+    """
+    --------------------------------------------------------------------
+    Convert to S/cm
+
+    fac = hbar e^2/(V_c*10^-8)
+
+    with 'V_c' in Angstroms^3, and 'e', 'hbar' in SI units
+    --------------------------------------------------------------------
+    """
+
+    cell_volume = cwi["unit_cell_volume"]
+
+    fac = 1.0e8 * hbar_SI * elem_charge_SI**2 / cell_volume / num_k
 
     kubo_H *= fac
     kubo_AH *= fac
@@ -1576,7 +1815,9 @@ def berry_get_shc(cwi, operators):
 
     num_k = np.prod(cwi["berry_kmesh"])
 
-    kpoints_chunks = np.split(kpoints, [j for j in range(100000, len(kpoints), 100000)])
+    kpoints_chunks = np.split(
+        kpoints, [j for j in range(len(kpoints) // _num_proc, len(kpoints), len(kpoints) // _num_proc)]
+    )
 
     res = Parallel(n_jobs=_num_proc, verbose=10)(delayed(berry_get_shc_k)(kpoints) for kpoints in kpoints_chunks)
 
@@ -1794,15 +2035,18 @@ def gyrotropic_get_K(cwi, operators):
 
                 delE_ = np.array([delE[:, k, n] for k in k_list_])
                 orb_nk_ = np.array([orb_nk[k_list.index(k), :] for k in k_list_])
+                # delta_ = (
+                #     np.array(
+                #         [
+                #             utility_w0gauss((E[k, n] - fermi_energy_list[ifermi]) / eta_smr, gyrotropic_smr_type_idx)
+                #             for k in k_list_
+                #         ]
+                #     )
+                #     / eta_smr
+                #     * kweight
+                # )
                 delta_ = (
-                    np.array(
-                        [
-                            utility_w0gauss((E[k, n] - fermi_energy_list[ifermi]) / eta_smr, gyrotropic_smr_type_idx)
-                            for k in k_list_
-                        ]
-                    )
-                    / eta_smr
-                    * kweight
+                    utility_w0gauss(E[:, n] - fermi_energy_list[ifermi], gyrotropic_smr_type_idx) / eta_smr * kweight
                 )
 
                 if cwi.win.eval_spn:
@@ -1834,11 +2078,10 @@ def gyrotropic_get_K(cwi, operators):
     gyro_K_orb = np.zeros((3, 3, mum_fermi), dtype=float)
     gyro_K_spn = np.zeros((3, 3, mum_fermi), dtype=float)
 
-    import time
-
     start_time = time.time()
+    print()
     for i, kpoints in enumerate(kpoints_chunks):
-        print(f"{i+1}/{num_chunks}")
+        print(f"{i+1}/{num_chunks}", end="")
 
         v = gyrotropic_get_K_k(kpoints)
         gyro_K_orb += v[0]
@@ -1846,14 +2089,29 @@ def gyrotropic_get_K(cwi, operators):
 
         v = None
 
-        # convert second to hour, minute and seconds
-        elapsed_time = int(time.time() - start_time)
-        elapsed_hour = elapsed_time // 3600
-        elapsed_minute = (elapsed_time % 3600) // 60
-        elapsed_second = elapsed_time % 3600 % 60
+        progress_ratio = (i + 1) / num_chunks
+        bar_length = 30
+        num_stars = int(progress_ratio * bar_length)
+        bar = "*" * num_stars + "-" * (bar_length - num_stars)
+        print(f"\r[{bar}] ({i+1}/{num_chunks})", end="", flush=True)
 
-        # print as 00:00:00
-        print(str(elapsed_hour).zfill(2) + ":" + str(elapsed_minute).zfill(2) + ":" + str(elapsed_second).zfill(2))
+    # convert second to hour, minute and seconds
+    end_time = time.time()
+    elapsed_time = int(end_time - start_time)
+    elapsed_hour = elapsed_time // 3600
+    elapsed_minute = (elapsed_time % 3600) // 60
+    elapsed_second = elapsed_time % 3600 % 60
+
+    # print as 00:00:00
+    print(
+        " ("
+        + str(elapsed_hour).zfill(2)
+        + ":"
+        + str(elapsed_minute).zfill(2)
+        + ":"
+        + str(elapsed_second).zfill(2)
+        + ")"
+    )
 
     """
     --------------------------------------------------------------------

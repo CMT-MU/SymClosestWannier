@@ -30,6 +30,7 @@ from symclosestwannier.cw.cw_manager import CWManager
 from symclosestwannier.cw.cw_model import CWModel
 from symclosestwannier.util.band import output_linear_dispersion, output_linear_dispersion_eig
 from symclosestwannier.util.dos import output_dos
+from symclosestwannier.util.lindhard import get_lindhard, output_lindhard
 
 
 from symclosestwannier.util.message import (
@@ -42,7 +43,7 @@ from symclosestwannier.util.message import (
 
 from symclosestwannier.util.get_oper_R import get_oper_R
 
-from symclosestwannier.util.utility import sort_ket_matrix
+from symclosestwannier.util.utility import sort_ket_matrix, tune_fermi_level
 
 
 # ==================================================
@@ -78,16 +79,14 @@ def cw_creator(seedname="cwannier"):
 
     if cwi["write_hr"]:
         filename = f"{cwi['seedname']}_hr.dat.cw"
-        cw_model.write_or(cw_model["Hr"], filename, header=CWModel._hr_header())
-        # filename = f"{cwi['seedname']}_hr_nonortho.dat.cw"
-        # cw_model.write_or(cw_model["Hr_nonortho"], filename, header=CWModel._hr_header())
+        cw_model.write_or(cw_model["Hr"], filename)  # , header=CWModel._hr_header())
 
         filename = f"{cwi['seedname']}_hr_R_dep.dat.cw"
         cw_model.write_O_R_dependence(cw_model["Hr"], filename, header=CWModel._O_R_dependence_header())
 
     if cwi["write_sr"]:
         filename = f"{cwi['seedname']}_sr.dat.cw"
-        cw_model.write_or(cw_model["Sr"], filename, header=CWModel._sr_header())
+        cw_model.write_or(cw_model["Sr"], filename)  # , header=CWModel._sr_header())
 
     if cwi["write_u_matrices"] and cwi["restart"] != "w90":
         file_names = (f"{cwi['seedname']}_u.mat.cw", f"{cwi['seedname']}_u_dis.mat.cw")
@@ -104,6 +103,9 @@ def cw_creator(seedname="cwannier"):
         cw_model.write_tb(cw_model["Hr"], AA_R, filename)
 
     if cwi["write_vmn"]:
+        v_R = get_oper_R("v_R", cwi)
+        filename = f"{cwi['seedname']}_v.dat.cw"
+        cw_model.write_or(v_R, filename, vec=True)
         pass
 
     if cwi["write_eig"]:
@@ -148,6 +150,9 @@ def cw_creator(seedname="cwannier"):
 
         filename = os.path.join(cwi["mp_outdir"], "{}".format(f"{cwi['mp_seedname']}_s.dat.cw"))
         cw_model.write_samb_coeffs(filename, type="s")
+
+        filename = os.path.join(cwi["mp_outdir"], "{}".format(f"{cwi['mp_seedname']}_n.dat.cw"))
+        cw_model.write_samb_coeffs(filename, type="n")
 
         filename = os.path.join(cwi["mp_outdir"], "{}".format(f"{cwi['mp_seedname']}_z_exp.dat.cw"))
         cw_model.write_samb_exp(filename)
@@ -712,6 +717,43 @@ def cw_creator(seedname="cwannier"):
             output_dos(
                 cwi["mp_outdir"], cwi["mp_seedname"] + "_dos.txt", Ek, Uk, ef_shift, dos_num_fermi, dos_smr_en_width
             )
+
+        cwm.log("done", end="\n", file=outfile, mode="a")
+
+    #####
+
+    if cwi["lindhard"]:
+        cwm.log("\n  * calculating lindhard ... ", None, end="", file=outfile, mode="a")
+        cwm.set_stamp()
+
+        qpoints = cwi["qpoints_path"]
+        omega = cwi["lindhard_freq"]
+        ef = cwi["fermi_energy"]
+        delta = cwi["lindhard_smr_fixed_en_width"]
+
+        if cwi["filling"] is not None:
+            N1, N2, N3 = cwi["lindhard_kmesh"]
+            kpoints = np.array(
+                [[i / float(N1), j / float(N2), k / float(N3)] for i in range(N1) for j in range(N2) for k in range(N3)]
+            )
+
+            Hk_grid = CWModel.fourier_transform_r_to_k(
+                cw_model["Hr"], kpoints, cwi["irvec"], cwi["ndegen"], atoms_frac=None
+            )
+            Ek, _ = np.linalg.eigh(Hk_grid)
+
+            ef_calculated = tune_fermi_level(Ek, filling=cwi["filling"], T=cwi["temperature"], threshold=1e-8)
+            cwm.log(f"\n  * ef_calculated = {ef_calculated} (ef(input) = {ef})", None, end="", file=outfile, mode="a")
+
+            ef = ef_calculated
+
+        lindhard = get_lindhard(cwi, cw_model["Hr"], qpoints, omega, ef, delta)
+
+        q = cwi["q_linear"]
+        q_dis_pos = cwi["q_dis_pos"]
+
+        # output_linear_dispersion(
+        output_lindhard(".", seedname + "_lindhard.txt", omega, q, lindhard, q_dis_pos=q_dis_pos, ef=ef)
 
         cwm.log("done", end="\n", file=outfile, mode="a")
 
