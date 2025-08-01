@@ -335,6 +335,7 @@ class Win(dict):
 
             if "begin atoms_cart" in line:
                 units = win_data[i + 1]
+                units = units.replace(" ", "").lower()
                 n = 2 if units in ("bohr", "ang") else 1
                 ap_data = win_data[i + n : win_data_lower.index("end atoms_cart")]
                 ap_data = [[vi for vi in v.split() if vi != ""] for v in ap_data]
