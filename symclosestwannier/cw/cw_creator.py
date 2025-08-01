@@ -43,7 +43,7 @@ from symclosestwannier.util.message import (
 
 from symclosestwannier.util.get_oper_R import get_oper_R
 
-from symclosestwannier.util.utility import sort_ket_matrix
+from symclosestwannier.util.utility import sort_ket_matrix, tune_fermi_level
 
 
 # ==================================================
@@ -730,6 +730,22 @@ def cw_creator(seedname="cwannier"):
         omega = cwi["lindhard_freq"]
         ef = cwi["fermi_energy"]
         delta = cwi["lindhard_smr_fixed_en_width"]
+
+        if cwi["filling"] is not None:
+            N1, N2, N3 = cwi["lindhard_kmesh"]
+            kpoints = np.array(
+                [[i / float(N1), j / float(N2), k / float(N3)] for i in range(N1) for j in range(N2) for k in range(N3)]
+            )
+
+            Hk_grid = CWModel.fourier_transform_r_to_k(
+                cw_model["Hr"], kpoints, cwi["irvec"], cwi["ndegen"], atoms_frac=None
+            )
+            Ek, _ = np.linalg.eigh(Hk_grid)
+
+            ef_calculated = tune_fermi_level(Ek, filling=cwi["filling"], T=cwi["temperature"], threshold=1e-8)
+            cwm.log(f"\n  * ef_calculated = {ef_calculated} (ef(input) = {ef})", None, end="", file=outfile, mode="a")
+
+            ef = ef_calculated
 
         lindhard = get_lindhard(cwi, cw_model["Hr"], qpoints, omega, ef, delta)
 

@@ -46,9 +46,6 @@ _default = {
     "mp_seedname": "default",
     "ket_amn": None,
     "irreps": "all",
-    "z_exp": False,
-    "z_exp_kmesh": [1, 1, 1],
-    "z_exp_temperature": 0.0,
     # band
     "a": None,
     "N1": 50,
@@ -72,6 +69,8 @@ _default = {
     "qpoint": None,
     "qpoint_path": None,
     "Nq1": 30,
+    "filling": None,
+    "temperature": 0.0,
     # postcw
     "hr_input": "",
     "use_tb_approximation": False,
@@ -157,9 +156,6 @@ class CWin(dict):
                 - mp_seedname       : seedname for seedname_model.py, seedname_samb.py and seedname_matrix.py files (str), ["default"].
                 - ket_amn           : ket basis list in the seedname.amn file. If ket_amn == auto, the list of orbitals are set automatically, or it can be set manually. The format of each ket must be same as the "ket" in sambname_model.py file. See sambname["info"]["ket"] in sambname_model.py file for the format (list), [None].
                 - irreps            : list of irreps to be considered (str/list), ["all"].
-                - z_exp             : calculate the expectation value of the SAMB operators? (bool), [False].
-                - z_exp_kmesh       : dimensions of the Monkhorst-Pack grid of k-points for z_exp calculation (list), [[1, 1, 1]].
-                - z_exp_temperature : temperature for which we want to calculate the expectation value of the SAMB operators (float), [0.0].
 
             # only used for band dispersion calculation.
                 - a                 : lattice parameter (in Ang) used to correct units of k points in reference band data, [None].
@@ -187,6 +183,8 @@ class CWin(dict):
                 - qpoint                      : representative q points (dict), [None].
                 - qpoint_path                 : q-points along high symmetry line in Brillouin zone, [[k1, k2, k3]] (crystal coordinate) (str), [None].
                 - Nq1                         : number of divisions for high symmetry lines (int, optional), [30].
+                - filling                     : number of electrons per unit-cell, [None].
+                - temperature                 : temperature for caluclating lindhard function (float), [0.0].
 
             # only used for postcw calculation.
                 - hr_input             : full filename of hr.dat file (str), [""].
@@ -317,7 +315,6 @@ class CWin(dict):
             "smearing_temp_max",
             "smearing_temp_min",
             "delta",
-            "z_exp_temperature",
             "a",
             "dos_smr_en_width",
             "degen_thr",
@@ -326,8 +323,9 @@ class CWin(dict):
             "magnetic_field_phi",
             "g_factor",
             "lindhard_freq",
-            "lindhard_adpt_smr_max",
             "lindhard_smr_fixed_en_width",
+            "filling",
+            "temperature",
         ):
             v = float(v)
             if key == "delta":
@@ -336,6 +334,12 @@ class CWin(dict):
             elif key == "lindhard_smr_fixed_en_width":
                 if v == 0.0:
                     raise Exception(f"lindhard_smr_fixed_en_width must be > 0.0.")
+            elif key == "temperature":
+                if v < 0.0:
+                    raise Exception(f"temperature must be positive value.")
+            elif key == "filling":
+                if v < 0.0:
+                    raise Exception(f"filling must be positive value.")
         elif key in ("N1", "Nq1", "dos_num_fermi"):
             v = int(v)
         elif key == "ket_amn":

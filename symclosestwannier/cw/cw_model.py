@@ -64,10 +64,6 @@ from symclosestwannier.util.header import (
 )
 from symclosestwannier.util.utility import (
     fermi,
-    thermal_avg,
-    total_energy,
-    free_energy,
-    entropy,
     weight_proj,
     band_distance,
     fourier_transform_k_to_r,
@@ -179,12 +175,14 @@ class CWModel(dict):
         self._cwm.log("* band distance between DFT and Wannier bands:", None, file=self._outfile, mode="a")
         self._cwm.set_stamp()
 
-        eta_0, eta_0_max, eta_2, eta_2_max = band_distance(Ak, Ek, Hk, ef=self._cwi["fermi_energy"])
+        eta_0, eta_0_max, eta_2, eta_2_max, eta_4, eta_4_max = band_distance(Ak, Ek, Hk, ef=self._cwi["fermi_energy"])
 
         self._cwm.log(f" - eta_0     = {eta_0} [meV]", file=self._outfile, mode="a")
         self._cwm.log(f" - eta_0_max = {eta_0_max} [meV]", file=self._outfile, mode="a")
         self._cwm.log(f" - eta_2     = {eta_2} [meV]", file=self._outfile, mode="a")
         self._cwm.log(f" - eta_2_max = {eta_2_max} [meV]", file=self._outfile, mode="a")
+        self._cwm.log(f" - eta_4     = {eta_4} [meV]", file=self._outfile, mode="a")
+        self._cwm.log(f" - eta_4_max = {eta_4_max} [meV]", file=self._outfile, mode="a")
 
         self._cwm.log("done", file=self._outfile, mode="a")
 
@@ -510,13 +508,15 @@ class CWModel(dict):
         self._cwm.log("\n    * band distance between DFT and Wannier bands:", None, file=self._outfile, mode="a")
         self._cwm.set_stamp()
 
-        eta_0, eta_0_max, eta_2, eta_2_max = band_distance(Ak, Ek, Hk, ef=self._cwi["fermi_energy"])
+        eta_0, eta_0_max, eta_2, eta_2_max, eta_4, eta_4_max = band_distance(Ak, Ek, Hk, ef=self._cwi["fermi_energy"])
 
         # self._cwm.log(f"     - bottom_band_idx = {bottom_band_idx}", None, file=self._outfile, mode="a")
         self._cwm.log(f"     - eta_0     = {eta_0} [meV]", None, file=self._outfile, mode="a")
         self._cwm.log(f"     - eta_0_max = {eta_0_max} [meV]", None, file=self._outfile, mode="a")
         self._cwm.log(f"     - eta_2     = {eta_2} [meV]", None, file=self._outfile, mode="a")
         self._cwm.log(f"     - eta_2_max = {eta_2_max} [meV]", None, file=self._outfile, mode="a")
+        self._cwm.log(f"     - eta_4     = {eta_4} [meV]", None, file=self._outfile, mode="a")
+        self._cwm.log(f"     - eta_4_max = {eta_4_max} [meV]", None, file=self._outfile, mode="a")
 
         # zeeman interaction
         if self._cwi["zeeman_interaction"]:
@@ -798,7 +798,25 @@ class CWModel(dict):
         num_k, num_wann = Ek_grid_sym.shape
         Ek_MAE_grid = np.sum(np.abs(Ek_grid_sym - Ek_grid)) / num_k / num_wann * 1000  # [meV]
 
+        # projectability of each Kohn-Sham state in k-space.
+        from heapq import nlargest
+
+        Ek = np.array(self._cwi["Ek"], dtype=float)
+        Ak = np.array(self._cwi["Ak"], dtype=complex)
+        Pk = np.real(np.diagonal(Ak @ Ak.transpose(0, 2, 1).conjugate(), axis1=1, axis2=2))
+
+        Ek_ref = np.zeros((num_k, num_wann))
+        for k in range(num_k):
+            Pk_ = [(pnk, n) for n, pnk in enumerate(Pk[k])]
+            Pk_max_idx_list = sorted([n for _, n in nlargest(num_wann, Pk_)])
+            # print(Pk_max_idx_list, Ek[k, Pk_max_idx_list[0]])
+            for i, m in enumerate(Pk_max_idx_list):
+                Ek_ref[k, i] = Ek[k, m]
+
+        Ek_MAE_grid_DFT = np.sum(np.abs(Ek_grid_sym - Ek_ref)) / num_k / num_wann * 1000  # [meV]
+
         msg = f"     * MAE of eigen values between CW and Symmetry-Adapted CW models (grid) = {'{:.4f}'.format(Ek_MAE_grid)} [meV]"
+        msg = f"     * MAE of eigen values between DFT and Symmetry-Adapted CW models (grid) = {'{:.4f}'.format(Ek_MAE_grid_DFT)} [meV]"
         self._cwm.log(msg, None, end="\n", file=self._outfile, mode="a")
 
         #####
@@ -834,80 +852,6 @@ class CWModel(dict):
 
         #####
 
-        if self._cwi["z_exp"]:
-            T = self._cwi["z_exp_temperature"]
-            msg = f"    - evaluating expectation value of SAMBs at T = {T} ... "
-            self._cwm.log(msg, None, end="\n", file=self._outfile, mode="a")
-            self._cwm.set_stamp()
-
-            N1, N2, N3 = self._cwi["z_exp_kmesh"]
-            kpoints = np.array(
-                [[i / float(N1), j / float(N2), k / float(N3)] for i in range(N1) for j in range(N2) for k in range(N3)]
-            )
-
-            if self._cwi["tb_gauge"]:
-                Hk_grid = CWModel.fourier_transform_r_to_k(
-                    Hr_sym, kpoints, self._cwi["irvec"], self._cwi["ndegen"], atoms_frac=atoms_frac_samb
-                )
-            else:
-                Hk_grid = CWModel.fourier_transform_r_to_k(Hr_sym, kpoints, self._cwi["irvec"], self._cwi["ndegen"])
-
-            Ek, Uk = np.linalg.eigh(Hk_grid)
-
-            Nz = len(mat["matrix"])
-            dic = mat.copy()
-
-            z_exp = {}
-            percent = 10
-            for i, (tag, d) in enumerate(Zr_dict.items()):
-                if int((i + 1) / float(Nz) * 100 % 10) == percent:
-                    self._cwm.log(f"* {int(percent)} %", None, end="\n", file=self._outfile, mode="a")
-                    percent += 10
-
-                dic["matrix"] = {tag: d}
-
-                if self._cwi["tb_gauge"]:
-                    Zk = construct_Ok(
-                        [1], self._cwi["num_wann"], kpoints, self._cwi["irvec"], dic, atoms_frac=atoms_frac_samb
-                    )
-                else:
-                    Zk = construct_Ok([1], self._cwi["num_wann"], kpoints, self._cwi["irvec"], dic)
-
-                v = thermal_avg(
-                    Zk,
-                    Ek,
-                    Uk,
-                    self._cwi["fermi_energy"],
-                    T_Kelvin=self._cwi["z_exp_temperature"],
-                )
-
-                z_exp[tag] = v
-
-            self._cwm.log("done", None, end="\n", file=self._outfile, mode="a")
-        else:
-            z_exp = {}
-
-        T = self._cwi["z_exp_temperature"]
-        msg = f"    - evaluating total_energy, entropy at T = {T} ... "
-        self._cwm.log(msg, None, end="\n", file=self._outfile, mode="a")
-        self._cwm.set_stamp()
-
-        E = total_energy(Ek_grid, self._cwi["fermi_energy"], T_Kelvin=T)
-        S = entropy(Ek_grid, self._cwi["fermi_energy"], T_Kelvin=T)
-        F = E - Kelvin_to_eV(T) * S
-
-        if self._cwi["z_exp"]:
-            E_samb = np.sum([z[k] * z_exp[k] for k in z_exp.keys()])
-            msg = f" * E_samb = {E_samb} [eV] \n"
-        else:
-            msg = ""
-
-        msg += f" * E = {E} [eV] \n"
-        msg += f" * T*S = {Kelvin_to_eV(T) * S} [eV] \n"
-        msg += f" * F = E - TS = {F} [eV]"
-
-        self._cwm.log(msg, None, end="\n", file=self._outfile, mode="a")
-
         self._cwm.log("done", None, end="\n", file=self._outfile, mode="a")
 
         #####
@@ -921,7 +865,6 @@ class CWModel(dict):
                 "n": n,
                 "z": z,
                 "z_nonortho": z_nonortho,
-                "z_exp": z_exp,
                 #
                 "Sk_sym": Sk_sym,
                 "nk_sym": nk_sym,
@@ -1302,18 +1245,17 @@ class CWModel(dict):
             Or (ndarray): real-space representation of the given operator, O_{ab}(R) = <φ_{a}(0)|O|φ_{b}(R)>.
             filename (str): file name.
             rpoints (ndarray): rpoints.
-            header (str, optional): header.
+            header (str, optional): header
             vec (bool, optional): vector ?
         """
         num_wann = self._cwi["num_wann"]
         unit_cell_cart = np.array(self._cwi["unit_cell_cart"])
         Or = np.array(Or)
-        Or_str = "# created by pw2cw \n"
-        Or_str += "# written {}\n".format(datetime.datetime.now().strftime("on %d%b%Y at %H:%M:%S"))
+        Or_str = "# written {}  (created by pw2cw)\n".format(datetime.datetime.now().strftime("on %d%b%Y at %H:%M:%S"))
 
-        Or_str += " {0[0]:18.15f} {0[1]:18.15f} {0[2]:18.15f}\n".format(unit_cell_cart[0, :])
-        Or_str += " {0[0]:18.15f} {0[1]:18.15f} {0[2]:18.15f}\n".format(unit_cell_cart[1, :])
-        Or_str += " {0[0]:18.15f} {0[1]:18.15f} {0[2]:18.15f}\n".format(unit_cell_cart[2, :])
+        # Or_str += " {0[0]:18.15f} {0[1]:18.15f} {0[2]:18.15f}\n".format(unit_cell_cart[0, :])
+        # Or_str += " {0[0]:18.15f} {0[1]:18.15f} {0[2]:18.15f}\n".format(unit_cell_cart[1, :])
+        # Or_str += " {0[0]:18.15f} {0[1]:18.15f} {0[2]:18.15f}\n".format(unit_cell_cart[2, :])
 
         if rpoints is None:
             rpoints = np.array(self._cwi["irvec"])
@@ -1395,12 +1337,11 @@ class CWModel(dict):
         num_wann = self._cwi["num_wann"]
         unit_cell_cart = np.array(self._cwi["unit_cell_cart"])
         Hr = np.array(Hr)
-        tb_str = "# created by pw2cw \n"
-        tb_str += "# written {}\n".format(datetime.datetime.now().strftime("on %d%b%Y at %H:%M:%S"))
+        tb_str = "# written {}  (created by pw2cw)\n".format(datetime.datetime.now().strftime("on %d%b%Y at %H:%M:%S"))
 
-        tb_str += " {0[0]:18.15f} {0[1]:18.15f} {0[2]:18.15f}\n".format(unit_cell_cart[0, :])
-        tb_str += " {0[0]:18.15f} {0[1]:18.15f} {0[2]:18.15f}\n".format(unit_cell_cart[1, :])
-        tb_str += " {0[0]:18.15f} {0[1]:18.15f} {0[2]:18.15f}\n".format(unit_cell_cart[2, :])
+        # tb_str += " {0[0]:18.15f} {0[1]:18.15f} {0[2]:18.15f}\n".format(unit_cell_cart[0, :])
+        # tb_str += " {0[0]:18.15f} {0[1]:18.15f} {0[2]:18.15f}\n".format(unit_cell_cart[1, :])
+        # tb_str += " {0[0]:18.15f} {0[1]:18.15f} {0[2]:18.15f}\n".format(unit_cell_cart[2, :])
 
         if rpoints is None:
             rpoints = np.array(self._cwi["irvec"])

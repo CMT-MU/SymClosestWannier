@@ -31,7 +31,7 @@
 # *  RPS19  = PRB 99, 235113 (2019)  (spin Hall conductivity - SHC)
 # *  IAdJS19 = arXiv:1910.06172 (2019) (quasi-degenerate k.p)
 # ---------------------------------------------------------------
-
+import time
 import numpy as np
 import multiprocessing
 from joblib import Parallel, delayed, wrap_non_picklable_objects
@@ -2078,9 +2078,8 @@ def gyrotropic_get_K(cwi, operators):
     gyro_K_orb = np.zeros((3, 3, mum_fermi), dtype=float)
     gyro_K_spn = np.zeros((3, 3, mum_fermi), dtype=float)
 
-    import time
-
     start_time = time.time()
+    print()
     for i, kpoints in enumerate(kpoints_chunks):
         print(f"{i+1}/{num_chunks}", end="")
 
@@ -2090,22 +2089,29 @@ def gyrotropic_get_K(cwi, operators):
 
         v = None
 
-        # convert second to hour, minute and seconds
-        elapsed_time = int(time.time() - start_time)
-        elapsed_hour = elapsed_time // 3600
-        elapsed_minute = (elapsed_time % 3600) // 60
-        elapsed_second = elapsed_time % 3600 % 60
+        progress_ratio = (i + 1) / num_chunks
+        bar_length = 30
+        num_stars = int(progress_ratio * bar_length)
+        bar = "*" * num_stars + "-" * (bar_length - num_stars)
+        print(f"\r[{bar}] ({i+1}/{num_chunks})", end="", flush=True)
 
-        # print as 00:00:00
-        print(
-            " ("
-            + str(elapsed_hour).zfill(2)
-            + ":"
-            + str(elapsed_minute).zfill(2)
-            + ":"
-            + str(elapsed_second).zfill(2)
-            + ")"
-        )
+    # convert second to hour, minute and seconds
+    end_time = time.time()
+    elapsed_time = int(end_time - start_time)
+    elapsed_hour = elapsed_time // 3600
+    elapsed_minute = (elapsed_time % 3600) // 60
+    elapsed_second = elapsed_time % 3600 % 60
+
+    # print as 00:00:00
+    print(
+        " ("
+        + str(elapsed_hour).zfill(2)
+        + ":"
+        + str(elapsed_minute).zfill(2)
+        + ":"
+        + str(elapsed_second).zfill(2)
+        + ")"
+    )
 
     """
     --------------------------------------------------------------------

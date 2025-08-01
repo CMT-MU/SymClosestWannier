@@ -76,6 +76,36 @@ def weight_proj(e, dis_win_emin, dis_win_emax, smearing_temp_min, smearing_temp_
 
 
 # ==================================================
+def num_electron(e, ef, T=0.0):
+    """number of electrons per unit-cell"""
+    num_k = e.shape[0]
+    return np.sum(fermi(e - ef, T=0.0, unit="eV")) / num_k
+
+
+# ==================================================
+def tune_fermi_level(e, filling, T, threshold=1e-8):
+    """number of electrons per unit-cell"""
+    emax = np.max(e)
+    emin = np.min(e)
+    elim = max(abs(emax), abs(emin))
+
+    efsup = 2 * elim
+    eflow = -2 * elim
+
+    while efsup - eflow > threshold:
+        efmid = 0.5 * (efsup + eflow)
+        filling_tmp = num_electron(e, efmid, T)
+        if filling_tmp < filling:
+            eflow = efmid
+        else:
+            efsup = efmid
+
+    ef = 0.5 * (efsup + eflow)
+
+    return ef
+
+
+# ==================================================
 def band_distance(Ak, Ek, Hk, ef=0.0):
     """
     band distance defined in [npj Computational Materials, 208 (2023)]:

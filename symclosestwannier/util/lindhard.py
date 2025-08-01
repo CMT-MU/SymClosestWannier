@@ -13,8 +13,6 @@ from symclosestwannier.util.utility import (
     fourier_transform_r_to_k,
     fourier_transform_r_to_k_vec,
     spin_zeeman_interaction,
-    spn_operator,
-    thermal_avg,
 )
 from symclosestwannier.analyzer.get_response import utility_w0gauss
 
@@ -47,7 +45,7 @@ def get_lindhard(cwi, HH_R, qpoints, omega, ef, delta):
     num_q = len(qpoints)
 
     # ==================================================
-    @wrap_non_picklable_objects
+    # @wrap_non_picklable_objects
     def get_lindhard_k(kpt):
         """
         calculate lindhard function,
@@ -84,29 +82,25 @@ def get_lindhard(cwi, HH_R, qpoints, omega, ef, delta):
         Ek, Uk = np.linalg.eigh(HHk)
         Ekq, Ukq = np.linalg.eigh(HHkq)
 
-        HHk = None
-        HHkq = None
-        Uk = None
-        Ukq = None
+        HHk = HHkq = Uk = Ukq = None
 
         Ekq = Ekq.reshape((num_q, num_k, num_wann))
+        ek_ekq = Ek[np.newaxis, :, np.newaxis, :] - Ekq[:, :, :, np.newaxis]
         occk = fermi(Ek - ef, T=0.0, unit="eV")
         occkq = fermi(Ekq - ef, T=0.0, unit="eV")
 
-        lindhard = np.zeros(num_q, dtype=complex)
+        Ek = Ekq = None
 
-        for m in range(num_wann):
-            ekqm = Ekq[:, :, m]
-            fkqm = occkq[:, :, m]
-            for n in range(num_wann):
-                ekn = Ek[:, n]
-                fkn = occk[:, n]
+        numerator = occk[np.newaxis, :, np.newaxis, :] - occkq[:, :, :, np.newaxis]
 
-                numerator = fkqm - fkn[np.newaxis, :]
-                denominator = ekqm - ekn[np.newaxis, :] + omega - 1.0j * delta
-                denominator /= (ekqm - ekn[np.newaxis, :] + omega) ** 2 + delta**2
+        occk = occkq = None
 
-                lindhard += -np.sum(numerator * denominator, axis=1)
+        denominator = ek_ekq + omega - 1.0j * delta
+        denominator /= (ek_ekq + omega) ** 2 + delta**2
+
+        ek_ekq = None
+
+        lindhard = -np.sum(numerator * denominator, axis=(1, 2, 3))
 
         return lindhard
 
@@ -114,6 +108,7 @@ def get_lindhard(cwi, HH_R, qpoints, omega, ef, delta):
     lindhard_kmesh = cwi["lindhard_kmesh"]
     N1, N2, N3 = lindhard_kmesh
     num_k = np.prod(lindhard_kmesh)
+
     kpoints = np.array(
         [[i / float(N1), j / float(N2), k / float(N3)] for i in range(N1) for j in range(N2) for k in range(N3)]
     )
@@ -123,28 +118,32 @@ def get_lindhard(cwi, HH_R, qpoints, omega, ef, delta):
     lindhard = np.zeros(num_q, dtype=complex)
 
     start_time = time.time()
-    print()
     for i, kpoints in enumerate(kpoints_chunks):
-        print(f"{i+1}/{num_chunks}", end="")
-
         lindhard += get_lindhard_k(kpoints)
 
-        # convert second to hour, minute and seconds
-        elapsed_time = int(time.time() - start_time)
-        elapsed_hour = elapsed_time // 3600
-        elapsed_minute = (elapsed_time % 3600) // 60
-        elapsed_second = elapsed_time % 3600 % 60
+        progress_ratio = (i + 1) / num_chunks
+        bar_length = 30
+        num_stars = int(progress_ratio * bar_length)
+        bar = "*" * num_stars + "-" * (bar_length - num_stars)
+        print(f"\r[{bar}] ({i+1}/{num_chunks})", end="", flush=True)
 
-        # print as 00:00:00
-        print(
-            " ("
-            + str(elapsed_hour).zfill(2)
-            + ":"
-            + str(elapsed_minute).zfill(2)
-            + ":"
-            + str(elapsed_second).zfill(2)
-            + ")"
-        )
+    # convert second to hour, minute and seconds
+    end_time = time.time()
+    elapsed_time = int(end_time - start_time)
+    elapsed_hour = elapsed_time // 3600
+    elapsed_minute = (elapsed_time % 3600) // 60
+    elapsed_second = elapsed_time % 3600 % 60
+
+    # print as 00:00:00
+    print(
+        " ("
+        + str(elapsed_hour).zfill(2)
+        + ":"
+        + str(elapsed_minute).zfill(2)
+        + ":"
+        + str(elapsed_second).zfill(2)
+        + ")"
+    )
 
     fac = 1.0 / num_k
 
