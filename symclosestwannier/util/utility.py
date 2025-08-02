@@ -47,7 +47,7 @@ def fermi(x, T=0.0, unit="Kelvin"):
     T_eV = Kelvin_to_eV(T) if unit == "Kelvin" else T
 
     if T == 0.0:
-        return 1.0 * np.vectorize(float)(x < 0.0)
+        return np.where(x < 0.0, 1.0, 0.0)
 
     return 0.5 * (1.0 - np.tanh(0.5 * x / T_eV))
 
@@ -324,18 +324,16 @@ def fourier_transform_r_to_k(Or, kpoints, irvec, ndegen=None, atoms_frac=None):
     Returns:
         ndarray: k-space representation of the given operator, O_{ab}(k) = <φ_{a}(k)|O|φ_{b}(k)>.
     """
-    Or = np.array(Or, dtype=complex)
-    irvec = np.array(irvec, dtype=float)
-    Nr = irvec.shape[0]
+    irvec = np.asarray(irvec, dtype=float)
+
+    Nr = len(irvec)
     if ndegen is None:
-        weight = np.array([1.0 for i in range(Nr)])
+        weight = np.ones(Nr, dtype=float)
     else:
-        ndegen = np.array(ndegen)
-        weight = np.array([1.0 / ndegen[i] for i in range(Nr)])
+        ndegen = np.asarray(ndegen, dtype=float)
+        weight = 1.0 / ndegen
 
-    kpoints = np.array(kpoints, dtype=float)
-
-    kR = np.einsum("ka,Ra->kR", kpoints, irvec, optimize=True)
+    kR = np.dot(kpoints, irvec.T)
     phase_R = np.exp(+2 * np.pi * 1j * kR)
 
     if atoms_frac is not None:
