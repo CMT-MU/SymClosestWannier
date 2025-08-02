@@ -2,12 +2,12 @@
 utility codes for lindhard function.
 """
 
-import time
 import subprocess
 import numpy as np
 import multiprocessing
 from joblib import Parallel, delayed
 from tqdm import tqdm
+import gc
 
 from symclosestwannier.util.utility import (
     fermi,
@@ -38,7 +38,7 @@ def get_lindhard(cwi, HH_R, qpoints, omega, ef, T, delta):
         ndarray: lindhard function.
     """
 
-    import gc
+    HH_R = np.array(HH_R, dtype=np.complex64)
 
     def process_kpoint_chunk(kpoints, q, ef, HH_R, irvec, ndegen, atoms_frac, delta):
         lindhard_re_q = 0.0
@@ -46,37 +46,29 @@ def get_lindhard(cwi, HH_R, qpoints, omega, ef, T, delta):
 
         HHk = fourier_transform_r_to_k(HH_R, kpoints, irvec, ndegen, atoms_frac)
         Ek, _ = np.linalg.eigh(HHk)
-        del HHk
 
         kqpoints = kpoints + q
         HHkq = fourier_transform_r_to_k(HH_R, kqpoints, irvec, ndegen, atoms_frac)
         Ekq, _ = np.linalg.eigh(HHkq)
-        del kqpoints, HHkq, irvec, ndegen, HH_R
 
         delta_E = Ek[:, :, None] - Ekq[:, None, :]
         safe_delta_E = np.where(delta_E == 0, np.nan, delta_E)
-        del delta_E
 
         Ek_prod_Ekq = (Ek - ef)[:, :, None] * (Ekq - ef)[:, None, :]
         mask = Ek_prod_Ekq < 0
-        del Ek_prod_Ekq
 
         occk = fermi(Ek - ef, T, unit="eV")
         occkq = fermi(Ekq - ef, T, unit="eV")
         delta_occ = occk[:, :, None] - occkq[:, None, :]
-        del occk, occkq
 
         contrib = -delta_occ / safe_delta_E
         contrib[~mask] = 0
         lindhard_re_q += np.nansum(contrib)
-        del delta_occ, mask, contrib
 
         deltak = utility_w0gauss((Ek - ef) / delta, n=0) / delta
         deltakq = utility_w0gauss((Ekq - ef) / delta, n=0) / delta
-        del Ek, Ekq
 
         lindhard_im_q += np.sum(deltak.T @ deltakq)
-        del deltak, deltakq
 
         gc.collect()
 
@@ -101,8 +93,8 @@ def get_lindhard(cwi, HH_R, qpoints, omega, ef, T, delta):
     kpoints_chunks = np.array_split(kpoints, num_chunks)
 
     num_q = len(qpoints)
-    lindhard_re = np.zeros(num_q, dtype=float)
-    lindhard_im_om0 = np.zeros(num_q, dtype=float)
+    lindhard_re = np.zeros(num_q, dtype=np.float32)
+    lindhard_im_om0 = np.zeros(num_q, dtype=np.float32)
 
     for q in tqdm(range(num_q)):
         qvec = qpoints[q]
@@ -228,3 +220,145 @@ def generate_lindhard_gnuplot(outdir, filename, qmax, lmax, lmin, **kwargs):
     fs.close()
 
     subprocess.run(f"cd {outdir} ; gnuplot plot_lindhard.gnu", shell=True)
+
+
+# ==================================================
+def output_lindhard_surface(outdir, filename, om, qpoints_2d, lindhard_re, lindhard_im_om0, **kwargs):
+    """
+    output lindhard function along high-symmetry lines.
+
+    Args:
+        outdir (str): input and output files are found in this directory.
+        filename (str): file name.
+        om (float): frequency.
+        q (ndarray): q points along high-symmetry lines.
+        lindhard (ndarray): lindhard function L(om, q).
+        kwargs (dict, optional): key words for generate_band_gnuplot.
+    """
+    qmax_1 = np.max(qpoints_2d[:, :, 0])
+    qmin_1 = np.min(qpoints_2d[:, :, 0])
+    qmax_2 = np.max(qpoints_2d[:, :, 1])
+    qmin_2 = np.min(qpoints_2d[:, :, 1])
+
+    num_q_1, num_q_2 = qpoints_2d.shape[:2]
+
+    lmax_re = np.max([np.max(np.real(lindhard_re)), np.max(np.imag(lindhard_re))])
+    lmin_re = np.min([np.min(np.real(lindhard_re)), np.min(np.imag(lindhard_re))])
+    lmax_im = np.max([np.max(np.real(lindhard_im_om0)), np.max(np.imag(lindhard_im_om0))])
+    lmin_im = np.min([np.min(np.real(lindhard_im_om0)), np.min(np.imag(lindhard_im_om0))])
+
+    filename = filename[:-4] if filename[-4:] == ".txt" else filename
+
+    fs = open(outdir + "/" + filename + ".txt", "w")
+    fs.write("# q real imag \n")
+    fs.write(f"# max_re = {str(lmax_re)}\n")
+    fs.write(f"# min_re = {str(lmin_re)}\n")
+    fs.write(f"# max_im_om0 = {str(lmax_im)}\n")
+    fs.write(f"# min_im_om0 = {str(lmin_im)}\n")
+    fs.write(f"# omega = {str(om)}\n")
+    fs.write(f"# (num_q_1, num_q_2) = {str((num_q_1, num_q_2))}\n")
+
+    ef = kwargs.get("ef", None)
+
+    if ef is None:
+        ef = 0.0
+        kwargs["ef"] = 0.0
+        fs.write("# ef = ? (no shift) \n\n")
+    else:
+        fs.write(f"# shifted by fermi energy = {ef} [eV] \n\n")
+
+    for i in range(num_q_1):
+        for j in range(num_q_2):
+            n = num_q_2 * i + j
+            s = "{q1:0<20}    {q2:0<20}   {Lqr:<20}   {Lqi:<20} \n".format(
+                q1=qpoints_2d[i, j, 0],
+                q2=qpoints_2d[i, j, 1],
+                Lqr=np.real(lindhard_re[n]),
+                Lqi=np.real(lindhard_im_om0[n]),
+            )
+            fs.write(s)
+        fs.write("\n")
+
+    fs.close()
+
+    # generate gnuplot file
+    generate_lindhard_surface_gnuplot(
+        outdir, filename, qmax_1, qmin_1, qmax_2, qmin_2, lmax_re, lmin_re, lmax_im, lmin_im, **kwargs
+    )
+
+
+# ==================================================
+def generate_lindhard_surface_gnuplot(
+    outdir, filename, qmax_1, qmin_1, qmax_2, qmin_2, lmax_re, lmin_re, lmax_im, lmin_im, **kwargs
+):
+    """
+    generate gnuplot file to plot lindhard function.
+
+    Args:
+        outdir (str): input and output files are found in this directory.
+        filename (str): file name.
+        qmax (float): maximum value in qpoints.
+        lmax (float): maximum value of lindhard function.
+        lmin (float): minimum value of lindhard function.
+        kwargs (dict, optional): key words for generate_lindhard_gnuplot.
+            - q_dis_pos (dict): {disconnected linear position:label}.
+            - lwidth (float): line width.
+            - lc (str): line color.
+    """
+    fs = open(f"{outdir}/plot_lindhard_surface.gnu", "w")
+    fs.write("set pm3d  \n")
+    fs.write("set pm3d map \n")
+    fs.write("set ticslevel 0 \n")
+    fs.write("unset key \n")
+    fs.write("unset grid \n")
+    fs.write(f"qmax_1 = {qmax_1} \n")
+    fs.write(f"qmin_1 = {qmin_1} \n")
+    fs.write(f"qmax_2 = {qmax_2} \n")
+    fs.write(f"qmin_2 = {qmin_2} \n")
+    fs.write("set xrange [qmin_1:qmax_1] \n")
+    fs.write("set yrange [qmin_2:qmax_2] \n")
+    fs.write("set tics font 'Times Roman, 20' \n\n")
+
+    fs.write(f"set nosurface \n")
+
+    fs.write(f"lmax_re = {lmax_re} \n")
+    fs.write(f"lmin_re = {lmin_re} \n")
+    fs.write(f"lmid_re = {(lmax_re + lmin_re)/2} \n")
+    fs.write("set palette defined (lmin_re 'royalblue',lmid_re 'white', lmax_re 'salmon') \n\n")
+
+    fs.write("set terminal postscript eps color enhanced \n\n")
+
+    fs.write(f"set output '{filename}_re.eps' \n\n")
+    fs.write("splot ")
+    fs.write(f"'{filename}.txt' u 1:2:3, ")
+
+    fs.write(" \n\n")
+
+    fs.write("set terminal pdf \n\n")
+
+    fs.write(f"set output '{filename}_re.pdf' \n\n")
+    fs.write("splot ")
+    fs.write(f"'{filename}.txt' u 1:2:3, ")
+
+    fs.write(f"lmax_im = {lmax_im} \n")
+    fs.write(f"lmin_im = {lmin_im} \n")
+    fs.write(f"lmid_im = {(lmax_im + lmin_im)/2} \n")
+    fs.write("set palette defined (lmin_im 'royalblue',lmid_im 'white', lmax_im 'salmon') \n\n")
+
+    fs.write("set terminal postscript eps color enhanced \n\n")
+
+    fs.write(f"set output '{filename}_im_om0.eps' \n\n")
+    fs.write("splot ")
+    fs.write(f"'{filename}.txt' u 1:2:4, ")
+
+    fs.write(" \n\n")
+
+    fs.write("set terminal pdf \n\n")
+
+    fs.write(f"set output '{filename}_im_om0.pdf' \n\n")
+    fs.write("splot ")
+    fs.write(f"'{filename}.txt' u 1:2:4, ")
+
+    fs.close()
+
+    subprocess.run(f"cd {outdir} ; gnuplot plot_lindhard_surface.gnu", shell=True)
