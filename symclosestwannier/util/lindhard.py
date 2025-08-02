@@ -6,7 +6,8 @@ import time
 import subprocess
 import numpy as np
 import multiprocessing
-from joblib import Parallel, delayed, wrap_non_picklable_objects
+from joblib import Parallel, delayed
+from tqdm import tqdm
 
 from symclosestwannier.util.utility import (
     fermi,
@@ -20,7 +21,7 @@ _num_proc = multiprocessing.cpu_count()
 
 
 # ==================================================
-def get_lindhard(cwi, HH_R, qpoints, omega, ef, delta):
+def get_lindhard(cwi, HH_R, qpoints, omega, ef, T, delta):
     """
     lind hard function.
 
@@ -30,81 +31,65 @@ def get_lindhard(cwi, HH_R, qpoints, omega, ef, delta):
         qpoints (ndarray): qpoints.
         omega (float): frequency.
         ef (float): fermi energy (The units are [eV]).
+        temperature (float): temperature.
         delta (float): Energy width for the smearing function (The units are [eV]).
 
     Returns:
         ndarray: lindhard function.
     """
+
+    import gc
+
+    def process_kpoint_chunk(kpoints, q, ef, HH_R, irvec, ndegen, atoms_frac, delta):
+        lindhard_re_q = 0.0
+        lindhard_im_q = 0.0
+
+        HHk = fourier_transform_r_to_k(HH_R, kpoints, irvec, ndegen, atoms_frac)
+        Ek, _ = np.linalg.eigh(HHk)
+        del HHk
+
+        kqpoints = kpoints + q
+        HHkq = fourier_transform_r_to_k(HH_R, kqpoints, irvec, ndegen, atoms_frac)
+        Ekq, _ = np.linalg.eigh(HHkq)
+        del kqpoints, HHkq, irvec, ndegen, HH_R
+
+        delta_E = Ek[:, :, None] - Ekq[:, None, :]
+        safe_delta_E = np.where(delta_E == 0, np.nan, delta_E)
+        del delta_E
+
+        Ek_prod_Ekq = (Ek - ef)[:, :, None] * (Ekq - ef)[:, None, :]
+        mask = Ek_prod_Ekq < 0
+        del Ek_prod_Ekq
+
+        occk = fermi(Ek - ef, T, unit="eV")
+        occkq = fermi(Ekq - ef, T, unit="eV")
+        delta_occ = occk[:, :, None] - occkq[:, None, :]
+        del occk, occkq
+
+        contrib = -delta_occ / safe_delta_E
+        contrib[~mask] = 0
+        lindhard_re_q += np.nansum(contrib)
+        del delta_occ, mask, contrib
+
+        deltak = utility_w0gauss((Ek - ef) / delta, n=0) / delta
+        deltakq = utility_w0gauss((Ekq - ef) / delta, n=0) / delta
+        del Ek, Ekq
+
+        lindhard_im_q += np.sum(deltak.T @ deltakq)
+        del deltak, deltakq
+
+        gc.collect()
+
+        return lindhard_re_q, lindhard_im_q
+
+    # ==================================================
+
     if cwi["tb_gauge"]:
         atoms_list = list(cwi["atoms_frac"].values())
         atoms_frac = np.array([atoms_list[i] for i in cwi["nw2n"]])
     else:
         atoms_frac = None
 
-    num_wann = cwi["num_wann"]
-    num_q = len(qpoints)
-
-    # ==================================================
-    # @wrap_non_picklable_objects
-    def get_lindhard_k(kpt):
-        """
-        calculate lindhard function,
-        separated into Hermitian (lindhard_H) and anti-Hermitian (lindhard_AH) parts.
-
-        Args:
-            kpt (ndarray): qpoint.
-
-        Returns:
-            ndarray: lindhard function.
-        """
-        if kpt.ndim == 1:
-            kpt = np.array([kpt])
-
-        num_k = len(kpt)
-        kqpt = np.array([k + q for q in qpoints for k in kpt], dtype=float)
-
-        HHk = fourier_transform_r_to_k(HH_R, kpt, cwi["irvec"], cwi["ndegen"], atoms_frac)
-        HHkq = fourier_transform_r_to_k(HH_R, kqpt, cwi["irvec"], cwi["ndegen"], atoms_frac)
-
-        if cwi["zeeman_interaction"]:
-            B = cwi["magnetic_field"]
-            theta = cwi["magnetic_field_theta"]
-            phi = cwi["magnetic_field_phi"]
-            g_factor = cwi["g_factor"]
-
-            pauli_spin_k = fourier_transform_r_to_k_vec(operators["SS_R"], kpt, cwi["irvec"], cwi["ndegen"], atoms_frac)
-            HHk += spin_zeeman_interaction(B, theta, phi, pauli_spin_k, g_factor, cwi["num_wann"])
-            pauli_spin_kq = fourier_transform_r_to_k_vec(
-                operators["SS_R"], kqpt, cwi["irvec"], cwi["ndegen"], atoms_frac
-            )
-            HHkq += spin_zeeman_interaction(B, theta, phi, pauli_spin_kq, g_factor, cwi["num_wann"])
-
-        Ek, Uk = np.linalg.eigh(HHk)
-        Ekq, Ukq = np.linalg.eigh(HHkq)
-
-        HHk = HHkq = Uk = Ukq = None
-
-        Ekq = Ekq.reshape((num_q, num_k, num_wann))
-        ek_ekq = Ek[np.newaxis, :, np.newaxis, :] - Ekq[:, :, :, np.newaxis]
-        occk = fermi(Ek - ef, T=0.0, unit="eV")
-        occkq = fermi(Ekq - ef, T=0.0, unit="eV")
-
-        Ek = Ekq = None
-
-        numerator = occk[np.newaxis, :, np.newaxis, :] - occkq[:, :, :, np.newaxis]
-
-        occk = occkq = None
-
-        denominator = ek_ekq + omega - 1.0j * delta
-        denominator /= (ek_ekq + omega) ** 2 + delta**2
-
-        ek_ekq = None
-
-        lindhard = -np.sum(numerator * denominator, axis=(1, 2, 3))
-
-        return lindhard
-
-    # ==================================================
     lindhard_kmesh = cwi["lindhard_kmesh"]
     N1, N2, N3 = lindhard_kmesh
     num_k = np.prod(lindhard_kmesh)
@@ -112,44 +97,29 @@ def get_lindhard(cwi, HH_R, qpoints, omega, ef, delta):
     kpoints = np.array(
         [[i / float(N1), j / float(N2), k / float(N3)] for i in range(N1) for j in range(N2) for k in range(N3)]
     )
-    kpoints_chunks = np.split(kpoints, [j for j in range(1000, len(kpoints), 1000)])
-    num_chunks = len(kpoints_chunks)
+    num_chunks = int(np.ceil(len(kpoints) / 10000))
+    kpoints_chunks = np.array_split(kpoints, num_chunks)
 
-    lindhard = np.zeros(num_q, dtype=complex)
+    num_q = len(qpoints)
+    lindhard_re = np.zeros(num_q, dtype=float)
+    lindhard_im_om0 = np.zeros(num_q, dtype=float)
 
-    start_time = time.time()
-    for i, kpoints in enumerate(kpoints_chunks):
-        lindhard += get_lindhard_k(kpoints)
-
-        progress_ratio = (i + 1) / num_chunks
-        bar_length = 30
-        num_stars = int(progress_ratio * bar_length)
-        bar = "*" * num_stars + "-" * (bar_length - num_stars)
-        print(f"\r[{bar}] ({i+1}/{num_chunks})", end="", flush=True)
-
-    # convert second to hour, minute and seconds
-    end_time = time.time()
-    elapsed_time = int(end_time - start_time)
-    elapsed_hour = elapsed_time // 3600
-    elapsed_minute = (elapsed_time % 3600) // 60
-    elapsed_second = elapsed_time % 3600 % 60
-
-    # print as 00:00:00
-    print(
-        " ("
-        + str(elapsed_hour).zfill(2)
-        + ":"
-        + str(elapsed_minute).zfill(2)
-        + ":"
-        + str(elapsed_second).zfill(2)
-        + ")"
-    )
+    for q in tqdm(range(num_q)):
+        qvec = qpoints[q]
+        results_q = Parallel(n_jobs=_num_proc)(
+            delayed(process_kpoint_chunk)(kpoints_chunk, qvec, ef, HH_R, cwi["irvec"], cwi["ndegen"], atoms_frac, delta)
+            for kpoints_chunk in kpoints_chunks
+        )
+        re_q, im_q = zip(*results_q)
+        lindhard_re[q] = sum(re_q)
+        lindhard_im_om0[q] = sum(im_q)
 
     fac = 1.0 / num_k
 
-    lindhard *= fac
+    lindhard_re *= fac
+    lindhard_im_om0 *= fac
 
-    return lindhard
+    return lindhard_re, lindhard_im_om0
 
 
 # ==================================================

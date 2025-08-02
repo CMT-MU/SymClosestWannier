@@ -332,8 +332,9 @@ class CWin(dict):
                 if v > 1e-5:
                     raise Exception(f"delta is too large. delta must be less than 1e-5.")
             elif key == "lindhard_smr_fixed_en_width":
-                if v == 0.0:
-                    raise Exception(f"lindhard_smr_fixed_en_width must be > 0.0.")
+                pass
+                # if v == 0.0:
+                #     raise Exception(f"lindhard_smr_fixed_en_width must be > 0.0.")
             elif key == "temperature":
                 if v < 0.0:
                     raise Exception(f"temperature must be positive value.")
