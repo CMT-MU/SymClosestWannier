@@ -35,6 +35,7 @@ import time
 import numpy as np
 import multiprocessing
 from joblib import Parallel, delayed, wrap_non_picklable_objects
+from tqdm import tqdm
 
 
 from symclosestwannier.util.utility import (
@@ -2078,9 +2079,7 @@ def gyrotropic_get_K(cwi, operators):
     gyro_K_orb = np.zeros((3, 3, mum_fermi), dtype=float)
     gyro_K_spn = np.zeros((3, 3, mum_fermi), dtype=float)
 
-    start_time = time.time()
-    print()
-    for i, kpoints in enumerate(kpoints_chunks):
+    for i, kpoints in tqdm(enumerate(kpoints_chunks)):
         print(f"{i+1}/{num_chunks}", end="")
 
         v = gyrotropic_get_K_k(kpoints)
@@ -2088,30 +2087,6 @@ def gyrotropic_get_K(cwi, operators):
         gyro_K_spn += v[1]
 
         v = None
-
-        progress_ratio = (i + 1) / num_chunks
-        bar_length = 30
-        num_stars = int(progress_ratio * bar_length)
-        bar = "*" * num_stars + "-" * (bar_length - num_stars)
-        print(f"\r[{bar}] ({i+1}/{num_chunks})", end="", flush=True)
-
-    # convert second to hour, minute and seconds
-    end_time = time.time()
-    elapsed_time = int(end_time - start_time)
-    elapsed_hour = elapsed_time // 3600
-    elapsed_minute = (elapsed_time % 3600) // 60
-    elapsed_second = elapsed_time % 3600 % 60
-
-    # print as 00:00:00
-    print(
-        " ("
-        + str(elapsed_hour).zfill(2)
-        + ":"
-        + str(elapsed_minute).zfill(2)
-        + ":"
-        + str(elapsed_second).zfill(2)
-        + ")"
-    )
 
     """
     --------------------------------------------------------------------
