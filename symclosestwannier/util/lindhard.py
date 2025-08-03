@@ -324,7 +324,7 @@ def generate_lindhard_surface_gnuplot(
     fs.write(f"lmax_re = {lmax_re} \n")
     fs.write(f"lmin_re = {lmin_re} \n")
     fs.write(f"lmid_re = {(lmax_re + lmin_re)/2} \n")
-    fs.write("set palette defined (lmin_re 'royalblue',lmid_re 'white', lmax_re 'salmon') \n\n")
+    fs.write("set palette defined (lmin_re 'royalblue',lmid_re 'sea-green', lmax_re 'salmon') \n\n")
 
     fs.write("set terminal postscript eps color enhanced \n\n")
 
@@ -343,7 +343,7 @@ def generate_lindhard_surface_gnuplot(
     fs.write(f"lmax_im = {lmax_im} \n")
     fs.write(f"lmin_im = {lmin_im} \n")
     fs.write(f"lmid_im = {(lmax_im + lmin_im)/2} \n")
-    fs.write("set palette defined (lmin_im 'royalblue',lmid_im 'white', lmax_im 'salmon') \n\n")
+    fs.write("set palette defined (lmin_im 'royalblue',lmid_im 'sea-green', lmax_im 'salmon') \n\n")
 
     fs.write("set terminal postscript eps color enhanced \n\n")
 
