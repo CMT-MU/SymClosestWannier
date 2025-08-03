@@ -219,7 +219,7 @@ class CWInfo(dict):
             q2 = np.linspace(qmin_2, qmax_2, N2, endpoint=True)
 
             d["qpoints_surface_grid"] = np.array(
-                [[q1[i], q2[i], q3] for i in range(N1) for j in range(N2)], dtype=np.float64
+                [[q1[i], q2[j], q3] for i in range(N1) for j in range(N2)], dtype=np.float64
             )
 
             d["qpoints_surface_grid_2d"] = np.array(
