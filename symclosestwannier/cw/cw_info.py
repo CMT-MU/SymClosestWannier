@@ -218,12 +218,30 @@ class CWInfo(dict):
             q1 = np.linspace(qmin_1, qmax_1, N1, endpoint=True)
             q2 = np.linspace(qmin_2, qmax_2, N2, endpoint=True)
 
-            d["qpoints_surface_grid"] = np.array(
-                [[q1[i], q2[j], q3] for i in range(N1) for j in range(N2)], dtype=np.float64
-            )
+            A = np.array(d["unit_cell_cart"])
+            V = d["unit_cell_volume"]
+            B = NSArray(A, "matrix", fmt="value").inverse().T
 
             d["qpoints_surface_grid_2d"] = np.array(
-                [[[q1[i], q2[j]] for j in range(N2)] for i in range(N1)], dtype=np.float64
+                [
+                    [
+                        np.array(
+                            [
+                                q1[i] / V * np.linalg.norm(np.cross(A[1], A[2])),
+                                q2[j] / V * np.linalg.norm(np.cross(A[2], A[0])),
+                                q3 / V * np.linalg.norm(np.cross(A[0], A[1])),
+                            ]
+                        )
+                        for j in range(N2)
+                    ]
+                    for i in range(N1)
+                ],
+                dtype=np.float64,
+            )
+
+            d["qpoints_surface_grid"] = np.array(
+                [d["qpoints_surface_grid_2d"][i, j] @ B.inverse() for i in range(N1) for j in range(N2)],
+                dtype=np.float64,
             )
 
         # ket
