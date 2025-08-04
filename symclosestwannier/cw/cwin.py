@@ -71,6 +71,11 @@ _default = {
     "Nq1": 30,
     "filling": None,
     "temperature": 0.0,
+    # lindhard (surface)
+    "lindhard_surface": False,
+    "lindhard_surface_qmesh": [[-1, 1, 10], [-1, 1, 10]],
+    "lindhard_surface_view": [0, 0, 1],
+    "lindhard_surface_const": 0.0,
     # postcw
     "hr_input": "",
     "use_tb_approximation": False,
@@ -268,6 +273,14 @@ class CWin(dict):
             if key == "lindhard_kmesh":
                 d["lindhard_kmesh"] = [int(x) for x in v.split() if x != ""]
                 continue
+            if key == "lindhard_surface_qmesh":
+                qmin_1, qmax_1, N1, qmin_2, qmax_2, N2 = [int(x) for x in v.split() if x != ""]
+                d["lindhard_surface_qmesh"] = [[qmin_1, qmax_1, N1], [qmin_2, qmax_2, N2]]
+                continue
+
+            if key == "lindhard_surface_view":
+                d["lindhard_surface_view"] = [int(x) for x in v.split() if x != ""]
+                continue
 
             v = v.replace(" ", "")
 
@@ -326,14 +339,16 @@ class CWin(dict):
             "lindhard_smr_fixed_en_width",
             "filling",
             "temperature",
+            "lindhard_surface_const",
         ):
             v = float(v)
             if key == "delta":
                 if v > 1e-5:
                     raise Exception(f"delta is too large. delta must be less than 1e-5.")
             elif key == "lindhard_smr_fixed_en_width":
-                if v == 0.0:
-                    raise Exception(f"lindhard_smr_fixed_en_width must be > 0.0.")
+                pass
+                # if v == 0.0:
+                #     raise Exception(f"lindhard_smr_fixed_en_width must be > 0.0.")
             elif key == "temperature":
                 if v < 0.0:
                     raise Exception(f"temperature must be positive value.")

@@ -30,7 +30,7 @@ from symclosestwannier.cw.cw_manager import CWManager
 from symclosestwannier.cw.cw_model import CWModel
 from symclosestwannier.util.band import output_linear_dispersion, output_linear_dispersion_eig
 from symclosestwannier.util.dos import output_dos
-from symclosestwannier.util.lindhard import get_lindhard, output_lindhard
+from symclosestwannier.util.lindhard import get_lindhard, output_lindhard, output_lindhard_surface
 
 
 from symclosestwannier.util.message import (
@@ -729,6 +729,7 @@ def cw_creator(seedname="cwannier"):
         qpoints = cwi["qpoints_path"]
         omega = cwi["lindhard_freq"]
         ef = cwi["fermi_energy"]
+        T = cwi["temperature"]
         delta = cwi["lindhard_smr_fixed_en_width"]
 
         if cwi["filling"] is not None:
@@ -742,18 +743,55 @@ def cw_creator(seedname="cwannier"):
             )
             Ek, _ = np.linalg.eigh(Hk_grid)
 
-            ef_calculated = tune_fermi_level(Ek, filling=cwi["filling"], T=cwi["temperature"], threshold=1e-8)
+            ef_calculated = tune_fermi_level(Ek, filling=cwi["filling"], T=T, threshold=1e-8)
             cwm.log(f"\n  * ef_calculated = {ef_calculated} (ef(input) = {ef})", None, end="", file=outfile, mode="a")
 
             ef = ef_calculated
 
-        lindhard = get_lindhard(cwi, cw_model["Hr"], qpoints, omega, ef, delta)
+        lindhard_re, lindhard_im_om0 = get_lindhard(cwi, cw_model["Hr"], qpoints, omega, ef, T, delta)
 
         q = cwi["q_linear"]
         q_dis_pos = cwi["q_dis_pos"]
 
-        # output_linear_dispersion(
-        output_lindhard(".", seedname + "_lindhard.txt", omega, q, lindhard, q_dis_pos=q_dis_pos, ef=ef)
+        output_lindhard(".", seedname + "_lindhard_re.txt", omega, q, lindhard_re, q_dis_pos=q_dis_pos, ef=ef)
+        output_lindhard(".", seedname + "_lindhard_im_om0.txt", omega, q, lindhard_im_om0, q_dis_pos=q_dis_pos, ef=ef)
+
+        cwm.log("done", end="\n", file=outfile, mode="a")
+
+    #####
+    if cwi["lindhard_surface"]:
+        cwm.log("\n  * calculating lindhard ... ", None, end="", file=outfile, mode="a")
+        cwm.set_stamp()
+
+        qpoints = cwi["qpoints_surface_grid"]
+        omega = cwi["lindhard_freq"]
+        ef = cwi["fermi_energy"]
+        T = cwi["temperature"]
+        delta = cwi["lindhard_smr_fixed_en_width"]
+
+        if cwi["filling"] is not None:
+            N1, N2, N3 = cwi["lindhard_kmesh"]
+            kpoints = np.array(
+                [[i / float(N1), j / float(N2), k / float(N3)] for i in range(N1) for j in range(N2) for k in range(N3)]
+            )
+
+            Hk_grid = CWModel.fourier_transform_r_to_k(
+                cw_model["Hr"], kpoints, cwi["irvec"], cwi["ndegen"], atoms_frac=None
+            )
+            Ek, _ = np.linalg.eigh(Hk_grid)
+
+            ef_calculated = tune_fermi_level(Ek, filling=cwi["filling"], T=T, threshold=1e-8)
+            cwm.log(f"\n  * ef_calculated = {ef_calculated} (ef(input) = {ef})", None, end="", file=outfile, mode="a")
+
+            ef = ef_calculated
+
+        lindhard_re, lindhard_im_om0 = get_lindhard(cwi, cw_model["Hr"], qpoints, omega, ef, T, delta)
+
+        qpoints_2d = cwi["qpoints_surface_grid_2d"]
+
+        output_lindhard_surface(
+            ".", seedname + "_lindhard_surface.txt", omega, qpoints_2d, lindhard_re, lindhard_im_om0, ef=ef
+        )
 
         cwm.log("done", end="\n", file=outfile, mode="a")
 

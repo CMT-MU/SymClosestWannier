@@ -211,6 +211,39 @@ class CWInfo(dict):
         d["q_linear"] = q_linear
         d["q_dis_pos"] = q_dis_pos
 
+        if d["lindhard_surface"]:
+            [[qmin_1, qmax_1, N1], [qmin_2, qmax_2, N2]] = d["lindhard_surface_qmesh"]
+            view = d["lindhard_surface_view"]
+            q3 = d["lindhard_surface_const"]
+            q1 = np.linspace(qmin_1, qmax_1, N1, endpoint=True)
+            q2 = np.linspace(qmin_2, qmax_2, N2, endpoint=True)
+
+            A = np.array(d["unit_cell_cart"])
+            V = d["unit_cell_volume"]
+            B = NSArray(A, "matrix", fmt="value").inverse().T
+
+            d["qpoints_surface_grid_2d"] = np.array(
+                [
+                    [
+                        np.array(
+                            [
+                                q1[i] / V * np.linalg.norm(np.cross(A[1], A[2])),
+                                q2[j] / V * np.linalg.norm(np.cross(A[2], A[0])),
+                                q3 / V * np.linalg.norm(np.cross(A[0], A[1])),
+                            ]
+                        )
+                        for j in range(N2)
+                    ]
+                    for i in range(N1)
+                ],
+                dtype=np.float64,
+            )
+
+            d["qpoints_surface_grid"] = np.array(
+                [d["qpoints_surface_grid_2d"][i, j] @ B.inverse() for i in range(N1) for j in range(N2)],
+                dtype=np.float64,
+            )
+
         # ket
         if d["ket_amn"] == "auto":
             ket_amn = [] * d["num_wann"]
