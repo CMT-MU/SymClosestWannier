@@ -61,6 +61,11 @@ _default = {
     "magnetic_field_theta": 0.0,
     "magnetic_field_phi": 0.0,
     "g_factor": 2.0,
+    # fermi surface
+    "fermi_surface": False,
+    "fermi_surface_kmesh": [[-1, 1, 10], [-1, 1, 10]],
+    "fermi_surface_view": [0, 0, 1],
+    "fermi_surface_const": 0.0,
     # lindhard
     "lindhard": False,
     "lindhard_freq": 0.0,
@@ -270,6 +275,14 @@ class CWin(dict):
                 d["dos_kmesh"] = [int(x) for x in v.split() if x != ""]
                 continue
 
+            if key == "fermi_surface_kmesh":
+                kmin_1, kmax_1, N1, kmin_2, kmax_2, N2 = [int(x) for x in v.split() if x != ""]
+                d["fermi_surface_kmesh"] = [[kmin_1, kmax_1, N1], [kmin_2, kmax_2, N2]]
+                continue
+            if key == "fermi_surface_view":
+                d["fermi_surface_view"] = [int(x) for x in v.split() if x != ""]
+                continue
+
             if key == "lindhard_kmesh":
                 d["lindhard_kmesh"] = [int(x) for x in v.split() if x != ""]
                 continue
@@ -277,7 +290,6 @@ class CWin(dict):
                 qmin_1, qmax_1, N1, qmin_2, qmax_2, N2 = [int(x) for x in v.split() if x != ""]
                 d["lindhard_surface_qmesh"] = [[qmin_1, qmax_1, N1], [qmin_2, qmax_2, N2]]
                 continue
-
             if key == "lindhard_surface_view":
                 d["lindhard_surface_view"] = [int(x) for x in v.split() if x != ""]
                 continue
@@ -331,6 +343,7 @@ class CWin(dict):
             "a",
             "dos_smr_en_width",
             "degen_thr",
+            "fermi_surface_const",
             "magnetic_field",
             "magnetic_field_theta",
             "magnetic_field_phi",

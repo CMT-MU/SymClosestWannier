@@ -196,6 +196,39 @@ class CWInfo(dict):
         d["k_linear"] = k_linear
         d["k_dis_pos"] = k_dis_pos
 
+        if d["fermi_surface"]:
+            [[kmin_1, kmax_1, N1], [kmin_2, kmax_2, N2]] = d["fermi_surface_kmesh"]
+            view = d["fermi_surface_view"]
+            k3 = d["fermi_surface_const"]
+            k1 = np.linspace(kmin_1, kmax_1, N1, endpoint=True)
+            k2 = np.linspace(kmin_2, kmax_2, N2, endpoint=True)
+
+            A = np.array(d["unit_cell_cart"])
+            V = d["unit_cell_volume"]
+            B = NSArray(A, "matrix", fmt="value").inverse().T
+
+            d["fermi_surface_grid_2d"] = np.array(
+                [
+                    [
+                        np.array(
+                            [
+                                k1[i] / V * np.linalg.norm(np.cross(A[1], A[2])),
+                                k2[j] / V * np.linalg.norm(np.cross(A[2], A[0])),
+                                k3 / V * np.linalg.norm(np.cross(A[0], A[1])),
+                            ]
+                        )
+                        for j in range(N2)
+                    ]
+                    for i in range(N1)
+                ],
+                dtype=np.float64,
+            )
+
+            d["fermi_surface_grid"] = np.array(
+                [d["fermi_surface_grid_2d"][i, j] @ B.inverse() for i in range(N1) for j in range(N2)],
+                dtype=np.float64,
+            )
+
         if d["qpoint"] is not None and d["qpoint_path"] is not None:
             qpoint = {i: NSArray(j, "vector", fmt="value") for i, j in d["qpoint"].items()}
             qpoint_path = d["qpoint_path"]

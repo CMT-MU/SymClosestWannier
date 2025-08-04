@@ -29,6 +29,7 @@ from symclosestwannier.cw.cw_info import CWInfo
 from symclosestwannier.cw.cw_manager import CWManager
 from symclosestwannier.cw.cw_model import CWModel
 from symclosestwannier.util.band import output_linear_dispersion, output_linear_dispersion_eig
+from symclosestwannier.util.fermi_surface import output_fermi_surface_eig
 from symclosestwannier.util.dos import output_dos
 from symclosestwannier.util.lindhard import get_lindhard, output_lindhard, output_lindhard_surface
 
@@ -668,6 +669,37 @@ def cw_creator(seedname="cwannier"):
             )
 
         cwm.log("done", end="\n", file=outfile, mode="a")
+
+    # band calculation
+    if cwi["fermi_surface"]:
+        cwm.log("\n  * calculating fermi surface ... ", None, end="", file=outfile, mode="a")
+        kpoints = np.array(cwi["fermi_surface_grid"], dtype=float)
+
+        Hk = CWModel.fourier_transform_r_to_k(cw_model["Hr"], kpoints, cwi["irvec"], cwi["ndegen"], atoms_frac=None)
+        Ek, Uk = np.linalg.eigh(Hk)
+        ef = cwi["fermi_energy"]
+
+        kpoints_2d = np.array(cwi["fermi_surface_grid_2d"], dtype=float)
+        output_fermi_surface_eig(".", seedname, kpoints_2d, e=Ek, ef=ef)
+
+        if cwi["symmetrization"]:
+            ket_samb = samb_info["ket"]
+            cell_site = samb_info["cell_site"]
+
+            if cwi["tb_gauge"]:
+                atoms_frac = [
+                    NSArray(cell_site[ket_samb[a].split("@")[1]][0], style="vector", fmt="value").tolist()
+                    for a in range(cw_model._cwi["num_wann"])
+                ]
+            else:
+                atoms_frac = None
+
+            Hk_sym = cw_model.fourier_transform_r_to_k(
+                cw_model["Hr_sym"], kpoints, cwi["irvec"], cwi["ndegen"], atoms_frac=atoms_frac
+            )
+            Ek, Uk = np.linalg.eigh(Hk_sym)
+
+            output_fermi_surface_eig(cwi["mp_outdir"], seedname, kpoints_2d, e=Ek, ef=ef)
 
     #####
 
