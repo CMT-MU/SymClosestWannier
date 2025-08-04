@@ -225,14 +225,15 @@ def generate_lindhard_gnuplot(outdir, filename, qmax, lmax, lmin, **kwargs):
 # ==================================================
 def output_lindhard_surface(outdir, filename, om, qpoints_2d, lindhard_re, lindhard_im_om0, **kwargs):
     """
-    output lindhard function along high-symmetry lines.
+    output lindhard function (2d plane).
 
     Args:
         outdir (str): input and output files are found in this directory.
         filename (str): file name.
         om (float): frequency.
-        q (ndarray): q points along high-symmetry lines.
-        lindhard (ndarray): lindhard function L(om, q).
+        qpoints_2d (ndarray): q points.
+        lindhard_re (ndarray): real part of lindhard function L(om, q).
+        lindhard_im_om0 (ndarray): imaginary part of lindhard function lim_{om->0} L(om, q)/om
         kwargs (dict, optional): key words for generate_band_gnuplot.
     """
     qmax_1 = np.max(qpoints_2d[:, :, 0])
@@ -250,7 +251,7 @@ def output_lindhard_surface(outdir, filename, om, qpoints_2d, lindhard_re, lindh
     filename = filename[:-4] if filename[-4:] == ".txt" else filename
 
     fs = open(outdir + "/" + filename + ".txt", "w")
-    fs.write("# q real imag \n")
+    fs.write("# q1 q2 real imag \n")
     fs.write(f"# max_re = {str(lmax_re)}\n")
     fs.write(f"# min_re = {str(lmin_re)}\n")
     fs.write(f"# max_im_om0 = {str(lmax_im)}\n")
@@ -311,6 +312,7 @@ def generate_lindhard_surface_gnuplot(
     fs.write("set ticslevel 0 \n")
     fs.write("unset key \n")
     fs.write("unset grid \n")
+    fs.write("unset surface \n")
     fs.write(f"qmax_1 = {qmax_1} \n")
     fs.write(f"qmin_1 = {qmin_1} \n")
     fs.write(f"qmax_2 = {qmax_2} \n")
@@ -318,8 +320,6 @@ def generate_lindhard_surface_gnuplot(
     fs.write("set xrange [qmin_1:qmax_1] \n")
     fs.write("set yrange [qmin_2:qmax_2] \n")
     fs.write("set tics font 'Times Roman, 20' \n\n")
-
-    fs.write(f"set nosurface \n")
 
     fs.write(f"lmax_re = {lmax_re} \n")
     fs.write(f"lmin_re = {lmin_re} \n")
