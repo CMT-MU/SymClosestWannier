@@ -59,7 +59,6 @@ from symclosestwannier.util.header import (
     z_nonortho_header,
     s_header,
     n_header,
-    z_exp_header,
     O_R_dependence_header,
 )
 from symclosestwannier.util.utility import (
@@ -97,8 +96,6 @@ _default = {
     "n": None,
     "z": None,
     "z_nonortho": None,
-    #
-    "z_exp": None,
     #
     "Sk_sym": None,
     "nk_sym": None,
@@ -241,6 +238,102 @@ class CWModel(dict):
         Ek = np.array(self._cwi["Ek"], dtype=float)
         Ak = np.array(self._cwi["Ak"], dtype=complex)
 
+        # 30 orbitals
+        # Ak_tmp = np.zeros(Ak.shape, dtype=complex)
+        # Ak_tmp =  Ak.copy()
+        # 0-4
+        # 5-9
+        # 10-14
+        # #
+        # 15-17
+        # #
+        # 18-20
+        # Ak_tmp[:,:,18] = (Ak[:,:,18] + Ak[:,:,21]) / np.sqrt(2) # (pz@Sb4h1 + pz@Sb4h2)/sqrt(2)
+        # Ak_tmp[:,:,19] = (Ak[:,:,19] - Ak[:,:,22]) / np.sqrt(2) # (px@Sb4h1 - px@Sb4h2)/sqrt(2)
+        # Ak_tmp[:,:,20] = (Ak[:,:,20] - Ak[:,:,23]) / np.sqrt(2) # (py@Sb4h1 - py@Sb4h2)/sqrt(2)
+        # 21-23
+        # Ak_tmp[:,:,21] = (Ak[:,:,18] - Ak[:,:,21]) / np.sqrt(2) # (pz@Sb4h1 - pz@Sb4h2)/sqrt(2)
+        # Ak_tmp[:,:,22] = (Ak[:,:,19] + Ak[:,:,22]) / np.sqrt(2) # (px@Sb4h1 + px@Sb4h2)/sqrt(2)
+        # Ak_tmp[:,:,23] = (Ak[:,:,20] + Ak[:,:,23]) / np.sqrt(2) # (py@Sb4h1 + py@Sb4h2)/sqrt(2)
+        # 24-26
+        # Ak_tmp[:,:,24] = (Ak[:,:,24] + Ak[:,:,27]) / np.sqrt(2) # (pz@Sb4h1 + pz@Sb4h2)/sqrt(2)
+        # Ak_tmp[:,:,25] = (Ak[:,:,25] - Ak[:,:,28]) / np.sqrt(2) # (px@Sb4h1 - px@Sb4h2)/sqrt(2)
+        # Ak_tmp[:,:,26] = (Ak[:,:,26] - Ak[:,:,29]) / np.sqrt(2) # (py@Sb4h1 - py@Sb4h2)/sqrt(2)
+        # 27-29
+        # Ak_tmp[:,:,27] = (Ak[:,:,24] - Ak[:,:,27]) / np.sqrt(2) # (pz@Sb4h1 - pz@Sb4h2)/sqrt(2)
+        # Ak_tmp[:,:,28] = (Ak[:,:,25] + Ak[:,:,28]) / np.sqrt(2) # (px@Sb4h1 + px@Sb4h2)/sqrt(2)
+        # Ak_tmp[:,:,29] = (Ak[:,:,26] + Ak[:,:,29]) / np.sqrt(2) # (py@Sb4h1 + py@Sb4h2)/sqrt(2)
+        # #Ak_tmp[:,:,12:] = 0.0
+        # Ak = Ak_tmp
+        # self._cwi["Ak"] = Akf
+        # Ak = np.zeros((Ak.shape[0],Ak.shape[1],12))
+        # Ak = Ak_tmp[:,:,:12]
+        # self._cwi["num_wann"] = 12
+
+        # Mz-odd p orbital (12 orbitals)
+        # Ak_tmp = np.zeros(Ak.shape, dtype=complex)
+        # Ak_tmp = Ak.copy()
+        # Ak[:, :, 6] = (Ak_tmp[:, :, 6] + Ak_tmp[:, :, 9]) / np.sqrt(2)  # (pz@Sb4h1 + pz@Sb4h2)/sqrt(2)
+        # Ak[:, :, 7] = (Ak_tmp[:, :, 7] - Ak_tmp[:, :, 10]) / np.sqrt(2)  # (px@Sb4h1 - px@Sb4h2)/sqrt(2)
+        # Ak[:, :, 8] = (Ak_tmp[:, :, 8] - Ak_tmp[:, :, 11]) / np.sqrt(2)  # (py@Sb4h1 - py@Sb4h2)/sqrt(2)
+        # Ak[:, :, 9] = (Ak_tmp[:, :, 12] + Ak_tmp[:, :, 15]) / np.sqrt(2)  # (pz@Sb4h3 + pz@Sb4h4)/sqrt(2)
+        # Ak[:, :, 10] = (Ak_tmp[:, :, 13] - Ak_tmp[:, :, 16]) / np.sqrt(2)  # (px@Sb4h3 - px@Sb4h4)/sqrt(2)
+        # Ak[:, :, 11] = (Ak_tmp[:, :, 14] - Ak_tmp[:, :, 17]) / np.sqrt(2)  # (py@Sb4h3 - py@Sb4h4)/sqrt(2)
+        # Ak = Ak[:, :, :12]
+        # self._cwi["num_wann"] = 12
+        # self._cwi["Ak"] = Ak
+
+        # Mz-odd p orbital (15 orbitals)
+        # Ak_tmp = np.zeros(Ak.shape, dtype=complex)
+        # Ak_tmp = np.zeros(Ak.shape, dtype=complex)
+        # Ak_tmp = Ak.copy()
+        # Ak[:, :, 6] = (Ak_tmp[:, :, 6] + Ak_tmp[:, :, 9]) / np.sqrt(2)  # (pz@Sb4h1 + pz@Sb4h2)/sqrt(2)
+        # Ak[:, :, 7] = (Ak_tmp[:, :, 7] - Ak_tmp[:, :, 10]) / np.sqrt(2)  # (px@Sb4h1 - px@Sb4h2)/sqrt(2)
+        # Ak[:, :, 8] = (Ak_tmp[:, :, 8] - Ak_tmp[:, :, 11]) / np.sqrt(2)  # (py@Sb4h1 - py@Sb4h2)/sqrt(2)
+        # Ak[:, :, 9] = (Ak_tmp[:, :, 12] + Ak_tmp[:, :, 15]) / np.sqrt(2)  # (pz@Sb4h3 + pz@Sb4h4)/sqrt(2)
+        # Ak[:, :, 10] = (Ak_tmp[:, :, 13] - Ak_tmp[:, :, 16]) / np.sqrt(2)  # (px@Sb4h3 - px@Sb4h4)/sqrt(2)
+        # Ak[:, :, 11] = (Ak_tmp[:, :, 14] - Ak_tmp[:, :, 17]) / np.sqrt(2)  # (py@Sb4h3 - py@Sb4h4)/sqrt(2)
+        # Ak[:, :, 12] = (Ak_tmp[:, :, 6] - Ak_tmp[:, :, 9]) / np.sqrt(2)  # (pz@Sb4h1 - pz@Sb4h2)/sqrt(2)
+        # Ak[:, :, 13] = (Ak_tmp[:, :, 12] - Ak_tmp[:, :, 15]) / np.sqrt(2)  # (pz@Sb4h3 - pz@Sb4h4)/sqrt(2)
+        # Ak[:, :, 14] = Ak_tmp[:, :, -1]
+        # Ak[:, :, 15:] = 0.0
+        # self._cwi["num_wann"] = 15
+        # self._cwi["Ak"] = Ak
+
+        # Mz-even p orbital
+        # Ak_tmp = np.zeros(Ak.shape, dtype=complex)
+        # Ak_tmp = Ak.copy()
+        # Ak[:, :, 0] = Ak_tmp[:, :, 0]  # V1: du
+        # Ak[:, :, 1] = Ak_tmp[:, :, 3]  # V2: du
+        # Ak[:, :, 2] = Ak_tmp[:, :, 6]  # V3: du
+        # Ak[:, :, 3] = (Ak_tmp[:, :, 11] + Ak_tmp[:, :, 13]) / np.sqrt(2)  # (px@Sb4h1 + px@Sb4h2)/sqrt(2)
+        # Ak[:, :, 4] = (Ak_tmp[:, :, 12] + Ak_tmp[:, :, 14]) / np.sqrt(2)  # (py@Sb4h1 + py@Sb4h2)/sqrt(2)
+        # Ak[:, :, 5] = (Ak_tmp[:, :, 15] + Ak_tmp[:, :, 17]) / np.sqrt(2)  # (px@Sb4h3 + px@Sb4h4)/sqrt(2)
+        # Ak[:, :, 6] = (Ak_tmp[:, :, 16] + Ak_tmp[:, :, 18]) / np.sqrt(2)  # (py@Sb4h3 + py@Sb4h4)/sqrt(2)
+        # Ak = Ak[:, :, :7]
+        # self._cwi["num_wann"] = 7
+        # self._cwi["Ak"] = Ak
+
+        # H4
+        # Ak_tmp = np.zeros(Ak.shape, dtype=complex)
+        # Ak_tmp =  Ak.copy()
+        # Ak = np.zeros((Ak.shape[0],Ak.shape[1],1))
+        # Ak[:,:,0] = Ak_tmp[:,:,0]
+        # self._cwi["Ak"] = Ak
+        # self._cwi["num_wann"] = 1
+
+        # GdCo5
+        # Ak_tmp = np.zeros(Ak.shape, dtype=complex)
+        # Ak_tmp = Ak.copy()
+        # Ak = np.zeros((Ak.shape[0],Ak.shape[1],25), dtype=complex)
+        # Ak[:,:,0:5] = Ak_tmp[:,:,17:22]
+        # Ak[:,:,5:10] = Ak_tmp[:,:,26:31]
+        # Ak[:,:,10:15] = Ak_tmp[:,:,35:40]
+        # Ak[:,:,15:20] = Ak_tmp[:,:,44:49]
+        # Ak[:,:,20:25] = Ak_tmp[:,:,53:58]
+        # self._cwi["num_wann"] = 25
+        # self._cwi["Ak"] = Ak
+
         if self._cwi["proj_min"] > 0.0:
             msg = f"   - excluding bands with low projectability (proj_min = {self._cwi['proj_min']}) ... "
             self._cwm.log(msg, None, end="", file=self._outfile, mode="a")
@@ -276,11 +369,32 @@ class CWModel(dict):
 
         # electronic density matrix elements
         ef = self._cwi["fermi_energy"]
+
         fk = np.array([np.diag(fermi(eki - ef, T=0.0)) for eki in Ek], dtype=float)
         nk = Uk.transpose(0, 2, 1).conjugate() @ fk @ Uk
         nr = CWModel.fourier_transform_k_to_r(nk, self._cwi["kpoints"], self._cwi["irvec"])
 
         self._cwm.log("done", file=self._outfile, mode="a")
+
+        #####
+
+        def Hr_2d(m):
+            d = {}
+            for i, (n1, n2, n3) in enumerate(self._cwi["irvec"]):
+                if (n1, n2) not in d:
+                    d[(n1, n2)] = m[i]
+                else:
+                    d[(n1, n2)] += m[i]
+
+            m_2d = np.zeros(m.shape, dtype=complex)
+            for i, (n1, n2, n3) in enumerate(self._cwi["irvec"]):
+                if n3 == 0:
+                    m_2d[i] = d[(n1, n2)]
+
+            return m_2d
+
+        # Hr = Hr_2d(Hr)
+        # Hr_nonortho = Hr_2d(Hr_nonortho)
 
         #####
 
@@ -504,6 +618,8 @@ class CWModel(dict):
         Hk = np.einsum("klm,kl,kln->kmn", np.conj(Uk), Ek, Uk, optimize=True)
         Hk = 0.5 * (Hk + np.einsum("kmn->knm", Hk).conj())
 
+        # Hk = Hk - self._cwi["fermi_energy"] * np.eye(Hk.shape[-1])[np.newaxis,:,:]
+
         # band distance
         self._cwm.log("\n    * band distance between DFT and Wannier bands:", None, file=self._outfile, mode="a")
         self._cwm.set_stamp()
@@ -615,6 +731,23 @@ class CWModel(dict):
             Zr_dict[(zj, tag_dict[zj])] = d
             mat["matrix"][zj] = d
         ### kuniyoshi (24/08/20) ###
+
+        ### sign chagne for odd-parity site- and bond-cluster multipoles (L-handed CoSi) ###
+        # for _, zj, d in res:
+        #     tag = tag_dict[zj]
+        #     coeff, amp, sbmp = samb["data"]["Z"][zj][1][0]
+        #     if sbmp in samb["data"]["site_cluster"]:
+        #         s_tag = samb["data"]["site_cluster"][sbmp][0]
+        #         if TagMultipole(s_tag).rank % 2 == 1:
+        #             d = {k: -v for k, v in d.items()}
+        #     elif sbmp in samb["data"]["bond_cluster"]:
+        #         b_tag = samb["data"]["bond_cluster"][sbmp][0]
+        #         if TagMultipole(b_tag).rank % 2 == 1:
+        #             d = {k: -v for k, v in d.items()}
+
+        #     Zr_dict[(zj, tag)] = d
+        #     mat["matrix"][zj] = d
+        ### sign chagne for odd-parity site- and bond-cluster multipoles (L-handed CoSi) ###
 
         A = None
         A_samb = None
@@ -739,6 +872,56 @@ class CWModel(dict):
             )
 
         self._cwm.log("done", file=self._outfile, mode="a")
+
+        # if mat["molecule"]:
+        #     n = CWModel.samb_decomp_operator(nr_dict, Zr_dict, ket=ket_amn, ket_samb=ket_samb)
+        # else:
+        #     # ==================================================
+        #     def _lorentzian(e, g=0.001):
+        #         return (1.0 / np.pi) * g / (g**2 + e**2)
+
+        #     # electronic density matrix elements
+        #     Ek = np.array(self._cwi["Ek"])
+        #     Uk = np.array(self._cwi["Uk"])
+        #     ef = self._cwi["fermi_energy"]
+        #     emax = ef
+        #     emin = ef - 15
+        #     offset = 0.0 # (emax - emin) * 0.1
+
+        #     ef_max = emax + offset
+        #     ef_min = emin - offset
+        #     dos_num_fermi = 1000
+
+        #     num_k, num_wann = Ek.shape
+        #     dE = (ef_max - ef_min) / dos_num_fermi
+        #     fermi_energy_list = [ef_min + i * dE for i in range(dos_num_fermi + 1)]
+
+        #     fk = np.array([np.diag(fermi(eki - ef, T=0.0)) for eki in Ek], dtype=float)
+        #     n_list = []
+        #     for i, epsilon in enumerate(fermi_energy_list):
+        #         print(f"{i+1}/{dos_num_fermi}")
+        #         delta_func = np.array([np.diag(_lorentzian(eki - epsilon, g=0.001)) for eki in Ek], dtype=float)
+        #         nk_e = Uk.transpose(0, 2, 1).conjugate() @ fk @ delta_func @ Uk
+        #         nr_e = CWModel.fourier_transform_k_to_r(nk_e, self._cwi["kpoints"], self._cwi["irvec"])
+        #         nr_e_dict = CWModel.matrix_dict_r(nr_e, self._cwi["irvec"])
+
+        #         n_i = CWModel.samb_decomp_operator(nr_e_dict, Zr_dict, A, atoms_frac, ket_amn, A_samb, atoms_frac_samb, ket_samb)
+        #         n_list.append(n_i)
+
+        #     o_str = ""
+        #     for i, epsilon in enumerate(fermi_energy_list):
+        #         o_str += f"{epsilon}  "
+        #         n_i = n_list[i]
+        #         for v in n_i.values():
+        #             o_str += f"{v}  "
+
+        #         o_str +=  "\n "
+
+        #     filename = os.path.join(self._cwi["mp_outdir"], "{}".format(f"{self._cwi['mp_seedname']}_n_dos.dat.cw"))
+        #     self._cwm.write(filename, o_str, None, None)
+        #     n = n_list[-1]
+
+        # self._cwm.log("done", file=self._outfile, mode="a")
 
         #####
 
@@ -1430,23 +1613,3 @@ class CWModel(dict):
         )
 
         self._cwm.write(filename, o_str, header, None)
-
-    # ==================================================
-    def write_samb_exp(self, filename):
-        """
-        write seedname_or.dat.
-
-        Args:
-            filename (str): file name.
-        """
-        z_exp_str = "# created by pw2cw \n"
-        z_exp_str += "# written {}\n".format(datetime.datetime.now().strftime("on %d%b%Y at %H:%M:%S"))
-
-        z_exp_str = "".join(
-            [
-                "{:>7d}   {:>15}   {:>15}   {:>15.8E} \n ".format(j + 1, zj, tag, v)
-                for j, ((zj, tag), v) in enumerate(self["z_exp"].items())
-            ]
-        )
-
-        self._cwm.write(filename, z_exp_str, z_exp_header, None)
