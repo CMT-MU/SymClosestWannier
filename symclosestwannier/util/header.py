@@ -39,9 +39,6 @@ cwin_info = {
     "mp_seedname": "seedname for seedname_model.py, seedname_samb.py and seedname_matrix.py files (str), ['default'].",
     "ket_amn": "ket basis list in the seedname.amn file. If ket_amn == auto, the list of orbitals are set automatically, or it can be set manually. The format of each ket must be same as the 'ket' in sambname_model.py file. See sambname['info']['ket'] in sambname_model.py file for the format (list), [None].",
     "irreps": "list of irreps to be considered (str/list), ['all'].",
-    "z_exp": "calculate the expectation value of the SAMB operators? (bool), [False].",
-    "z_exp_kmesh": "dimensions of the Monkhorst-Pack grid of k-points for z_exp calculation (list), [[1, 1, 1]].",
-    "z_exp_temperature": "temperature T for which we want to calculate the expectation value of the SAMB operators (float), [0.0].",
     "a": "lattice parameter (in Ang) used to correct units of k points in reference band data (float, optional), [1.0].",
     "N1": "number of divisions for high symmetry lines (int, optional), [50].",
     "calc_dos": "calculate dos? (bool), [False].",
@@ -373,12 +370,6 @@ n_header = """
     - n(R) ~ sum_{j} z_j Z_j(R)
     - z_j = sum_{R} Tr[Z_j(R)*n(R)].
     - z_j is the expansion coefficients.
-"""
-
-z_exp_header = """
-=== expectation value of the given operator
-- j z_j TagMultipole expectation value
-- <O> = 1 / Nk * sum_{n,k} fermi_dirac[E_{n}(k)] O_{nn}(k)
 """
 
 O_R_dependence_header = """
