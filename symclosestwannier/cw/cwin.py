@@ -267,10 +267,6 @@ class CWin(dict):
             elif ":" in line:
                 v = line.split(":")[1].split("!")[0]
 
-            if key == "z_exp_kmesh":
-                d["z_exp_kmesh"] = [int(x) for x in v.split() if x != ""]
-                continue
-
             if key == "dos_kmesh":
                 d["dos_kmesh"] = [int(x) for x in v.split() if x != ""]
                 continue
