@@ -5,7 +5,6 @@
 - Hr              : Hamiltonian matrix elements in real-space (orthogonal) (ndarray).",
 - s               : The expansion coefficients of Sk expressed by a linear combination of SAMBs (ndarray).",
 - z               : The expansion coefficients of Hk expressed by a linear combination of SAMBs (ndarray).",
-- z_exp           : The expectation value of the SAMBs (dict),
 - Sk_sym          : Symmetrized overlap matrix elements in k-space (ndarray).",
 - Hk_sym          : Symmetrized Hamiltonian matrix elements in k-space (orthogonal) (ndarray).",
 - Sr_sym          : Symmetrized overlap matrix elements in real-space (ndarray).",
