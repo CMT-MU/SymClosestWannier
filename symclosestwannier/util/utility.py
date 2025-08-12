@@ -151,8 +151,8 @@ def band_distance(Ak, Ek, Hk, ef=0.0):
     fermi_ref = fermi(Ek_ref - (ef + 5.0), T=0.0, unit="eV")
     fermi_wan = fermi(Ek_wan - (ef + 5.0), T=0.0, unit="eV")
     w = np.sqrt(fermi_ref * fermi_wan)
-    eta_4 = np.sum(np.abs(Ek_wan - Ek_ref)) / num_k / num_wann * 1000  # [meV]
-    eta_4_max = np.max(w * np.abs(Ek_wan - Ek_ref)) * 1000
+    eta_4 = np.sqrt(np.sum(w * (Ek_ref - Ek_wan) ** 2) / np.sum(w)) * 1000
+    eta_4_max = np.max(w * np.abs(Ek_ref - Ek_wan)) * 1000
 
     return eta_0, eta_0_max, eta_2, eta_2_max, eta_4, eta_4_max
 
@@ -799,8 +799,11 @@ def O_R_dependence(Or, A, irvec, ndegen, ef=0.0):
     R_2_min_lst = list(np.where(R_2_norm_lst == R_2_norm_min))[0]
     Omin_F_norm = np.max(np.array(OR_F_norm_lst)[R_2_min_lst])
 
-    coefficients = np.polyfit(R_2_norm_lst, -np.log((OR_F_norm_lst) / Omin_F_norm), 1)
-    tau = 1.0 / coefficients[0]
+    if len(R_2_norm_lst) > 1:
+        coefficients = np.polyfit(R_2_norm_lst, -np.log((OR_F_norm_lst) / Omin_F_norm), 1)
+        tau = 1.0 / coefficients[0]
+    else:
+        tau = 0.0
 
     return R_2_norm_lst, OR_F_norm_lst, OR_abs_max_lst, Omin_F_norm, R_2_norm_min, tau
 

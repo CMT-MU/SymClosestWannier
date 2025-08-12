@@ -1,6 +1,3 @@
-# seedname.cwout
-Example standard output for [graphene](../../example/graphene/graphene.cwin) is given here.
-```
 
              +---------------------------------------------------+
              |                                                   |
@@ -68,7 +65,7 @@ Example standard output for [graphene](../../example/graphene/graphene.cwin) is 
              | 675 Mass Ave, Cambridge, MA 02139, USA.           |
              |                                                   |
              +---------------------------------------------------+
-             |    Execution started on 2025/08/12 14:51:54       |
+             |    Execution started on 2025/08/12 17:10:12       |
              +---------------------------------------------------+
     
 
@@ -114,24 +111,24 @@ Example standard output for [graphene](../../example/graphene/graphene.cwin) is 
 *----------------------------------------------------------------------------*
 
 
-   - excluding bands with low projectability (proj_min = 0.2) ... done ( 0.007 [sec] ).
+   - excluding bands with low projectability (proj_min = 0.2) ... done ( 0.006 [sec] ).
    - disentanglement ... done ( 0.0 [sec] ).
    - constructing TB Hamiltonian ... 
     * band distance between DFT and Wannier bands:
-     - eta_0     = 1.9960019700989895e-12 [meV]
+     - eta_0     = 1.996509955009974e-12 [meV]
      - eta_0_max = 7.993605777301127e-12 [meV]
-     - eta_2     = 1.8169064701622485e-12 [meV]
+     - eta_2     = 1.840847792590786e-12 [meV]
      - eta_2_max = 7.993605777301127e-12 [meV]
      - eta_4     = 1.7296105678905685e-12 [meV]
      - eta_4_max = 7.993605777301127e-12 [meV]
-done ( 0.032 [sec] ).
+done ( 0.027 [sec] ).
    - symmetrization ... 
     - reading output of multipie ... 
     - decomposing Hamiltonian as linear combination of SAMBs ... done ( 0.001 [sec] ).
-    - decomposing overlap as linear combination of SAMBs ... done ( 0.021 [sec] ).
+    - decomposing overlap as linear combination of SAMBs ... done ( 0.016 [sec] ).
     - decomposing non-orthogonal Hamiltonian as linear combination of SAMBs ... done ( 0.0 [sec] ).
     - decomposing electronic density as linear combination of SAMBs ... done ( 0.0 [sec] ).
-    - constructing symmetrized TB Hamiltonian ... done ( 0.019 [sec] ).
+    - constructing symmetrized TB Hamiltonian ... done ( 0.017 [sec] ).
     - evaluating fitting accuracy ... 
      * MAE of eigen values between DFT and Symmetry-Adapted CW models (grid) = 47.6916 [meV]
      * MAE of eigen values between CW and Symmetry-Adapted CW models (path) = 51.5308 [meV]
@@ -144,10 +141,10 @@ done
 
 
 
-  * calculating band dispersion ... done ( 1.001 [sec] ).
+  * calculating band dispersion ... done ( 0.858 [sec] ).
 
 
-  * total elapsed_time: ( 1.001 [sec] ).
+  * total elapsed_time: ( 0.859 [sec] ).
 
 
 *----------------------------------------------------------------------------*
@@ -155,10 +152,11 @@ done
 *----------------------------------------------------------------------------*
 
 
-  * total elapsed_time: ( 3.74 [sec] ).
+  * total elapsed_time: ( 3.348 [sec] ).
 
 
 *----------------------------------------------------------------------------*
                              cw_model: All done
 *----------------------------------------------------------------------------*
-```
+
+

@@ -28,11 +28,12 @@ def cw_open_msg():
              |                                                   |
              |  Please cite                                      |
              |                                                   |
-             |  [ref] "",                                        |
+             |  [ref] "Symmetry-adapted closest Wannier modeling |
+             |         based on complete multipole basis set"    |
              |        Rikuto Oiwa, Akane Inda, Satoru Hayami,    |
              |        Takuya Nomoto, Ryotaro Arita,              |
-             |        Hiroaki Kusunose, in preparation.          |
-             |        url                                        |
+             |        Hiroaki Kusunose,                          |
+             |        Phys. Rev. B 112, 035116 (2025)            |
              |                                                   |
              |  in any publications arising from the use of      |
              |  this code. For the method please cite            |
