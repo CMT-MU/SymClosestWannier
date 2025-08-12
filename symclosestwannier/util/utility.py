@@ -799,8 +799,11 @@ def O_R_dependence(Or, A, irvec, ndegen, ef=0.0):
     R_2_min_lst = list(np.where(R_2_norm_lst == R_2_norm_min))[0]
     Omin_F_norm = np.max(np.array(OR_F_norm_lst)[R_2_min_lst])
 
-    coefficients = np.polyfit(R_2_norm_lst, -np.log((OR_F_norm_lst) / Omin_F_norm), 1)
-    tau = 1.0 / coefficients[0]
+    if len(R_2_norm_lst) > 1:
+        coefficients = np.polyfit(R_2_norm_lst, -np.log((OR_F_norm_lst) / Omin_F_norm), 1)
+        tau = 1.0 / coefficients[0]
+    else:
+        tau = 0.0
 
     return R_2_norm_lst, OR_F_norm_lst, OR_abs_max_lst, Omin_F_norm, R_2_norm_min, tau
 
