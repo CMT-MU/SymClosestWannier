@@ -27,18 +27,21 @@ The following files are used for the next step.
     (additional files: seedname.mmn, seedname.spn, seedname.uHu, seedname.uIu, ...)
 
 2. Run `pw2cw` to create Closest Wannier tight-binding model.
+
     ```bash title="Terminal"
     pw2cw ch4
     ```
 
     Since ${\rm CH}_{4}$ is molecule, the disentanglement is not necessary, `disentanglement` can be specified in `ch4.cwin` as
+
     ```vi title="Input file"
     disentangle = false
     ```
 
     To get the Closest Wannier Hamiltonian matrix elements in real-space, `write_hr` can be specified in `ch4.cwin` as
+
     ```vi title="Input file"
-    write_hr          = .true.
+    write_hr = true
     ```
     
 - Output files:

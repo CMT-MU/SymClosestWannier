@@ -283,7 +283,18 @@ class CWModel(dict):
         # self._cwi["num_wann"] = 12
         # self._cwi["Ak"] = Ak
 
-        # Mz-odd p orbital (15 orbitals)
+        # Mz-odd p orbital (10 orbitals)
+        # Ak_tmp = np.zeros(Ak.shape, dtype=complex)
+        # Ak_tmp = Ak.copy()
+        # Ak[:, :, 6] = (Ak_tmp[:, :, 7] - Ak_tmp[:, :, 10]) / np.sqrt(2)  # (px@Sb4h1 - px@Sb4h2)/sqrt(2)
+        # Ak[:, :, 7] = (Ak_tmp[:, :, 8] - Ak_tmp[:, :, 11]) / np.sqrt(2)  # (py@Sb4h1 - py@Sb4h2)/sqrt(2)
+        # Ak[:, :, 8] = (Ak_tmp[:, :, 13] - Ak_tmp[:, :, 16]) / np.sqrt(2)  # (px@Sb4h3 - px@Sb4h4)/sqrt(2)
+        # Ak[:, :, 9] = (Ak_tmp[:, :, 14] - Ak_tmp[:, :, 17]) / np.sqrt(2)  # (py@Sb4h3 - py@Sb4h4)/sqrt(2)
+        # Ak = Ak[:, :, :10]
+        # self._cwi["num_wann"] = 10
+        # self._cwi["Ak"] = Ak
+
+        # Mz-odd p orbital (13 orbitals)
         # Ak_tmp = np.zeros(Ak.shape, dtype=complex)
         # Ak_tmp = np.zeros(Ak.shape, dtype=complex)
         # Ak_tmp = Ak.copy()
@@ -293,11 +304,9 @@ class CWModel(dict):
         # Ak[:, :, 9] = (Ak_tmp[:, :, 12] + Ak_tmp[:, :, 15]) / np.sqrt(2)  # (pz@Sb4h3 + pz@Sb4h4)/sqrt(2)
         # Ak[:, :, 10] = (Ak_tmp[:, :, 13] - Ak_tmp[:, :, 16]) / np.sqrt(2)  # (px@Sb4h3 - px@Sb4h4)/sqrt(2)
         # Ak[:, :, 11] = (Ak_tmp[:, :, 14] - Ak_tmp[:, :, 17]) / np.sqrt(2)  # (py@Sb4h3 - py@Sb4h4)/sqrt(2)
-        # Ak[:, :, 12] = (Ak_tmp[:, :, 6] - Ak_tmp[:, :, 9]) / np.sqrt(2)  # (pz@Sb4h1 - pz@Sb4h2)/sqrt(2)
-        # Ak[:, :, 13] = (Ak_tmp[:, :, 12] - Ak_tmp[:, :, 15]) / np.sqrt(2)  # (pz@Sb4h3 - pz@Sb4h4)/sqrt(2)
-        # Ak[:, :, 14] = Ak_tmp[:, :, -1]
-        # Ak[:, :, 15:] = 0.0
-        # self._cwi["num_wann"] = 15
+        # Ak[:, :, 12] = Ak_tmp[:, :, 18]
+        # Ak = Ak[:, :, :13]
+        # self._cwi["num_wann"] = 13
         # self._cwi["Ak"] = Ak
 
         # Mz-even p orbital
@@ -344,9 +353,6 @@ class CWModel(dict):
             self._cwm.log("done", file=self._outfile, mode="a")
 
         if self._cwi["disentangle"]:
-            if self._cwi["optimize_params"]:
-                self._optimize_params(Ek, Ak)
-
             msg = "   - disentanglement ... "
             self._cwm.log(msg, None, end="", file=self._outfile, mode="a")
             self._cwm.set_stamp()
@@ -477,113 +483,6 @@ class CWModel(dict):
         return w[:, :, np.newaxis] * Ak
 
     # ==================================================
-    def _optimize_params(self, Ek, Ak):
-        """
-        optimize the energy windows and smearing temperatures
-        by using the projectability of each Kohn-Sham state in k-space.
-
-        Args:
-            Ek (ndarray): Kohn-Sham energies.
-            Ak (ndarray): Overlap matrix elements.
-        """
-        # projectability of each Kohn-Sham state in k-space.
-        Pk = np.real(np.diagonal(Ak @ Ak.transpose(0, 2, 1).conjugate(), axis1=1, axis2=2))
-
-        ek = Ek.reshape(self._cwi["num_k"] * self._cwi["num_bands"])
-        pk = Pk.reshape(self._cwi["num_k"] * self._cwi["num_bands"])
-
-        # normalize
-        pk = pk / np.max(pk)
-
-        fixed_params = self._cwi["optimize_params_fixed"]
-
-        model = lmfit.Model(weight_proj)
-        params = lmfit.Parameters()
-
-        param_bound_dict = {
-            "dis_win_emin": (-np.inf, np.inf),
-            "dis_win_emax": (-np.inf, np.inf),
-            "smearing_temp_min": (0, 100),
-            "smearing_temp_max": (0, 100),
-            "delta": (0, 1e-6),
-        }
-
-        for param, (min, max) in param_bound_dict.items():
-
-            if param in fixed_params:
-                params.add(param, value=self._cwi[param], vary=False)
-                params[param].value = self._cwi[param]
-            else:
-                params.add(param, value=self._cwi[param], min=min, max=max)
-
-        result = model.fit(pk, params, e=ek)
-
-        dis_win_emin = result.params["dis_win_emin"].value
-        dis_win_emax = result.params["dis_win_emax"].value
-        smearing_temp_min = result.params["smearing_temp_min"].value
-        smearing_temp_max = result.params["smearing_temp_max"].value
-        delta = result.params["delta"].value
-
-        if "dis_win_emax" in fixed_params:
-            dis_win_emax_opt = dis_win_emax
-        else:
-            dis_win_emax_opt = dis_win_emax - 3.0 * smearing_temp_max
-
-        msg = "   - optimizing windows and smearing temperatures ... \n"
-        msg += "*----------------------------------------------------------------------------* \n"
-        if fixed_params != []:
-            msg += "    * fixed_params: \n"
-            for param in fixed_params:
-                msg += f"    - {param} = {self._cwi[param]} \n"
-            msg += "\n"
-
-        msg += "    * Initial values: \n"
-        msg += f"    - dis_win_emax      = {self._cwi['dis_win_emax']} \n"
-        msg += f"    - dis_win_emin      = {self._cwi['dis_win_emin']} \n"
-        msg += f"    - smearing_temp_max = {self._cwi['smearing_temp_max']} \n"
-        msg += f"    - smearing_temp_min = {self._cwi['smearing_temp_min']} \n"
-        msg += f"    - delta             = {self._cwi['delta']} \n"
-        msg += "\n"
-        msg += "    * Optimized values: \n"
-        if "dis_win_emax" in fixed_params:
-            msg += f"     - dis_win_emax (opt)      = {dis_win_emax_opt}\n"
-        else:
-            msg += f"     - dis_win_emax (fit)      = {dis_win_emax} \n"
-            msg += f"     - dis_win_emax (opt)      = dis_win_emax (fit) - 3 * smearing_temp_max (opt) \n"
-            msg += f"                               = {dis_win_emax_opt} \n"
-        msg += f"     - dis_win_emin (opt)      = {dis_win_emin} \n"
-        msg += f"     - smearing_temp_max (opt) = {smearing_temp_max} \n"
-        msg += f"     - smearing_temp_min (opt) = {smearing_temp_min} \n"
-        msg += f"     - delta (opt)             = {delta} \n"
-        msg += "*----------------------------------------------------------------------------* \n"
-        self._cwm.log(msg, None, end="", file=self._outfile, mode="a")
-
-        fs = open("projectability.txt", "w")
-        fs.write(f"# projectability \n")
-        fs.write(f"# enk pnk wnk(init_fit) wnk(best_fit) \n")
-        fs.write(f"# dis_win_emax_fit = {dis_win_emax} \n")
-        fs.write(f"# dis_win_emax_opt = dis_win_emax_fit - 3 * smearing_temp_max = {dis_win_emax_opt} \n")
-        fs.write(f"# dis_win_emin_opt = {dis_win_emin} \n")
-        fs.write(f"# smearing_temp_max_opt = {smearing_temp_max} \n")
-        fs.write(f"# smearing_temp_min_opt = {smearing_temp_min} \n")
-        fs.write(f"# delta_opt = {delta} \n")
-
-        for i, eki in enumerate(ek):
-            pki = pk[i]
-            init_fit = result.init_fit[i]
-            best_fit = result.best_fit[i]
-            opt_fit = weight_proj(eki, dis_win_emin, dis_win_emax_opt, smearing_temp_min, smearing_temp_max, delta)
-            fs.write(f"{eki}  {pki}  {init_fit}  {best_fit}  {opt_fit}\n")
-
-        fs.close()
-
-        self._cwi["dis_win_emin"] = dis_win_emin
-        self._cwi["dis_win_emax"] = dis_win_emax_opt
-        self._cwi["smearing_temp_min"] = smearing_temp_min
-        self._cwi["smearing_temp_max"] = smearing_temp_max
-        self._cwi["delta"] = delta
-
-    # ==================================================
     def _construct_tb(self, Ek, Ak):
         """
         construct CW TB Hamiltonian.
@@ -618,7 +517,7 @@ class CWModel(dict):
         Hk = np.einsum("klm,kl,kln->kmn", np.conj(Uk), Ek, Uk, optimize=True)
         Hk = 0.5 * (Hk + np.einsum("kmn->knm", Hk).conj())
 
-        # Hk = Hk - self._cwi["fermi_energy"] * np.eye(Hk.shape[-1])[np.newaxis,:,:]
+        # Hk = Hk - self._cwi["fermi_energy"] * np.eye(Hk.shape[-1])[np.newaxis, :, :]
 
         # band distance
         self._cwm.log("\n    * band distance between DFT and Wannier bands:", None, file=self._outfile, mode="a")
@@ -1316,6 +1215,11 @@ class CWModel(dict):
 
     # ==================================================
     @classmethod
+    def _nk_header(cls):
+        return nk_header
+
+    # ==================================================
+    @classmethod
     def _pk_header(cls):
         return pk_header
 
@@ -1331,6 +1235,11 @@ class CWModel(dict):
 
     # ==================================================
     @classmethod
+    def _nr_header(cls):
+        return nr_header
+
+    # ==================================================
+    @classmethod
     def _z_header(cls):
         return z_header
 
@@ -1338,6 +1247,11 @@ class CWModel(dict):
     @classmethod
     def _s_header(cls):
         return s_header
+
+    # ==================================================
+    @classmethod
+    def _n_header(cls):
+        return n_header
 
     # ==================================================
     @classmethod

@@ -33,6 +33,101 @@ The following files are used for the next step.
     pw2cw graphene
     ```
 
+    The disentanglement based on the closest Wannier method can be performed by specifying in `graphene.cwin`
+
+    ```vi title="Input file"
+    disentanglement = true
+    ```
+
+    Following the closest Wannier method, the overlap between Bloch states and
+    the projections is multiplied by the window function $w(\varepsilon)$
+    (See Eq. (4) in Ref. [@ozaki-prb24]):
+
+    $$
+    & A_{mn}^{(\bf{k})} = w(\varepsilon_{m\bf{k}}) \langle \psi_{m{\bf k}}|g_{n}\rangle,
+    \\
+    & w(\varepsilon)
+    = \frac{1}{e^{(\varepsilon - \mu_{\rm max})/\sigma_{\rm max}} + 1}
+    - \frac{1}{e^{(\mu_{\rm min} - \varepsilon)/\sigma_{\rm min}} + 1}
+    - 1 + \delta,
+    $$
+
+    where $\mu_{\rm min}$ and $\mu_{\rm max}$ ($\mu_{\rm min} < \mu_{\rm max}$)
+    represent the bottom and top of the energy window, and
+    $\sigma_{\rm min}$ and $\sigma_{\rm max}$ control
+    the degree of smearing around $\mu_{\rm min}$ and $\mu_{\rm max}$.
+    $\delta$ is a small constant introduced to prevent the matrix
+    consisting of $A_{mn}^{(\bf{k})}$ from becoming ill-conditioned.
+
+    $\mu_{\rm max}$, $\mu_{\rm min}$, $\sigma_{\rm max}$, $\sigma_{\rm min}$, and
+    $\delta$ can be specified in `silicon.win`
+
+    ```vi title="Input file"
+    dis_win_emax      = 10.0
+    dis_win_emin      = -30
+    smearing_temp_max = 3.0
+    smearing_temp_min = 0.0
+    delta             = 1e-12
+    ```
+    
+    and 
+
+     ```vi title="Input file"
+    proj_min          = 0.1
+    ```
+    
+    denotes the minimum value of projectability $p_{m\bf{k}} = \sum_{n} A_{mn}^{(\bf{k})}$.
+    When $p_{m\bf{k}}$ is smaller than `proj_min`, the corresponding $m$-th DFT band is removed from the wannierization process.
+
+
+    Note that the disentanglement of bands is naturally
+    taken into account by introducing a window function.
+    The unitary matrix is then obtained by
+    $\mathbf{U}^{(\mathbf{k})} = \mathbf{A}^{(\bf{k})}
+    (\mathbf{A}^{(\bf{k}) \dagger} \mathbf{A}^{(\bf{k})})^{-1/2}$
+    without iterative calculations for disentanglment of bands
+    and wannierisation.
+    
+    By properly choosing $\mu_{\rm min}$, $\mu_{\rm max}$,
+    $\sigma_{\rm min}$, $\sigma_{\rm max}$, and $\delta$,
+    one can obtain the Wannier functions *closest* to the initial guesses in
+    a Hilbert space (see Eqs. (5)~(17) in Ref. [@ozaki-prb24]).
+
+    To get $A_{mn}^{(\bf{k})}$ multiplied by the window function, `write_amn` can be specified in `ch4.cwin` as
+
+    ```vi title="Input file"
+    write_amn = true
+    ```
+
+    To get the Closest Wannier Hamiltonian matrix elements in real-space, `write_hr` can be specified in `ch4.cwin` as
+
+    ```vi title="Input file"
+    write_hr = true
+    ```
+
+    Inspect the output file `silicon.cwout`.
+    The CWFs are obtained without any iterative calculations,
+    significantly reducing the computational costs.
+    eta\_ $\nu$ and eta\_ $\nu$ \_max ($\nu = 0, 2, 4$) are the band distance between the DFT bands and the Closest Wannier bands, defined by
+
+    $$
+    \eta_{\nu} = \sqrt{\frac{\sum_{n\bf{k}}(\epsilon_{n\bf{k}}^{\rm DFT} - \epsilon_{n\bf{k}}^{\rm CW})^{2} \tilde{f}_{n\bf{k}} }{\sum_{n\bf{k}}\tilde{f}_{n\bf{k}}}}
+    $$
+    
+    $$
+    \tilde{f}_{n\bf{k}} = \sqrt{f_{n\bf{k}}^{\rm DFT}(\nu, \tau) f_{n\bf{k}}^{\rm CW}(\nu, \tau)}
+    $$
+
+    Here $f_{n\bf{k}}(\nu, \tau)$ represents the fermi-dirac distribution function with energy shift,
+    $$
+    (\nu = 0)\, \epsilon_{\rm F} + 0.0\, [{\rm eV}] \\
+    (\nu = 2)\, \epsilon_{\rm F} + 2.0\, [{\rm eV}] \\
+    (\nu = 4)\, \epsilon_{\rm F} + 4.0\, [{\rm eV}] 
+    $$
+
+    and effective temperature $\tau = 0.0$. 
+
+
 - Output files:
     - `graphene.cwout`: *The standard output*
     - `graphene.hdf5`: *calculation information and data for CWModel*

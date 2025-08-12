@@ -127,8 +127,8 @@ def generate_band_gnuplot_eig(outdir, filename, kmax, emax, emin, num_wann, **kw
     fs.write("plot ")
 
     if ref_filename is not None:
-        fs.write(f"'{ref_filename}' u ($1/(2*pi)):($2-ef) w l lw lwidth lc 'dark-grey', ")
-        # fs.write(f"'{ref_filename}' u ($1/a):($2-ef) w l lw lwidth lc 'dark-grey', ")
+        # fs.write(f"'{ref_filename}' u ($1/(2*pi)):($2-ef) w l lw lwidth lc 'dark-grey', ")
+        fs.write(f"'{ref_filename}' u ($1/a):($2-ef) w l lw lwidth lc 'dark-grey', ")
 
     fs.write(f"'{filename}.txt' u 1:2 w l lw lwidth dt (3,1) lc '{lc}', ")
 
@@ -142,8 +142,8 @@ def generate_band_gnuplot_eig(outdir, filename, kmax, emax, emin, num_wann, **kw
     fs.write("plot ")
 
     if ref_filename is not None:
-        fs.write(f"'{ref_filename}' u ($1/(2*pi)):($2-ef) w l lw lwidth lc 'dark-grey', ")
-        # fs.write(f"'{ref_filename}' u ($1/a):($2-ef) w l lw lwidth lc 'dark-grey', ")
+        # fs.write(f"'{ref_filename}' u ($1/(2*pi)):($2-ef) w l lw lwidth lc 'dark-grey', ")
+        fs.write(f"'{ref_filename}' u ($1/a):($2-ef) w l lw lwidth lc 'dark-grey', ")
 
     fs.write(f"'{filename}.txt' u 1:2 w l lw lwidth dt (3,1) lc '{lc}', ")
 
@@ -286,7 +286,7 @@ def generate_band_gnuplot(outdir, filename, kmax, emax, emin, num_wann, **kwargs
     fs.write("plot ")
 
     if ref_filename is not None:
-        # fs.write(f"'{ref_filename}' u ($1/(2*pi)):2 w l lw lwidth lc 'dark-grey', ")
+        # fs.write(f"'{ref_filename}' u ($1/(2*pi)):($2-ef) w l lw lwidth lc 'dark-grey', ")
         fs.write(f"'{ref_filename}' u ($1/a):($2-ef) w l lw lwidth lc 'dark-grey', ")
 
     fs.write(f"'{filename}.txt' u 1:2 w l lw lwidth dt (3,1) lc '{lc}', ")
