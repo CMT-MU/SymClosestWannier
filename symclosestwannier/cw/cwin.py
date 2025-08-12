@@ -18,8 +18,6 @@ _default = {
     "smearing_temp_min": 0.0,
     "delta": 0.0,
     "svd": False,
-    "optimize_params": False,
-    "optimize_params_fixed": [],
     #
     "verbose": False,
     "parallel": False,
@@ -40,7 +38,7 @@ _default = {
     "write_amn": False,
     "write_mmn": False,
     "write_spn": False,
-    #
+    # symmetrization
     "symmetrization": False,
     "mp_outdir": "./",
     "mp_seedname": "default",
@@ -134,14 +132,12 @@ class CWin(dict):
                 - restart           : the restart position 'cw'/'w90' (str), ["cw"].
                 - disentangle       : disentagle bands ? (bool), [False].
                 - proj_min          : minimum value of projectability: [0.0].
-                - dis_win_emax      : upper energy window (float), [None].
-                - dis_win_emin      : lower energy window (float), [None].
-                - smearing_temp_max : smearing temperature for upper window (float), [1.0].
-                - smearing_temp_min : smearing temperature for lower window (float), [0.0].
+                - dis_win_emax      : top of the energy window (float), [None].
+                - dis_win_emin      : bottom of the energy window (float), [None].
+                - smearing_temp_max : smearing temperature for the top of the energy window (float), [1.0].
+                - smearing_temp_min : smearing temperature for the bottom of the energy window (float), [0.0].
                 - delta             : small constant to avoid ill-conditioning of overlap matrices (< 1e-5) (float), [0.0].
                 - svd               : implement singular value decomposition ? otherwise adopt Lowdin's orthogonalization method (bool), [False].
-                - optimize_params": optimize the energy windows and smearing temperatures? (bool), [False].
-                - optimize_params_fixed":  fixed parameters for optimization (ex: ['dis_win_emin', 'smearing_temp_min']), (list) [].
                 - verbose           : verbose calculation info (bool, optional), [False].
                 - parallel          : use parallel code? (bool), [False].
                 - formatter         : format by using black? (bool), [False].
@@ -184,6 +180,12 @@ class CWin(dict):
                 - magnetic_field_theta : angle from the z-axis of the magnetic field (float), [0.0].
                 - magnetic_field_phi   : angle from the x-axis of the magnetic field (float), [0.0].
                 - g_factor             : spin g factor (float), [2.0].
+
+            # only used for fermi surface calculation.
+                - fermi_surface        : calculate fermi surface? (bool), [False].
+                - fermi_surface_kmesh  : 2d kmesh given by [[k1_min, k1_max, N1], [k2_min, k2_max, N2] ] (crystal coordinate), (list), [ [[-1, 1, 10], [-1, 1, 10]] ].
+                - fermi_surface_view   : k3 direction (list), [ [0, 0, 1] ].
+                - fermi_surface_const  : constant value for k3 axis [0.0].
 
             # only used for lindhard function.
                 - lindhard                    : calculate lindhard function? (bool), [False].

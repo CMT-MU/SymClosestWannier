@@ -1,6 +1,7 @@
-# standard output
+# seedname.cwout
 Example standard output for [graphene](../../example/graphene/graphene.cwin) is given here.
 ```
+
              +---------------------------------------------------+
              |                                                   |
              |                SymClosestWwannier                 |
@@ -22,11 +23,12 @@ Example standard output for [graphene](../../example/graphene/graphene.cwin) is 
              |                                                   |
              |  Please cite                                      |
              |                                                   |
-             |  [ref] "",                                        |
+             |  [ref] "Symmetry-adapted closest Wannier modeling |
+             |         based on complete multipole basis set"    |
              |        Rikuto Oiwa, Akane Inda, Satoru Hayami,    |
              |        Takuya Nomoto, Ryotaro Arita,              |
-             |        Hiroaki Kusunose, in preparation.          |
-             |        url                                        |
+             |        Hiroaki Kusunose,                          |
+             |        Phys. Rev. B 112, 035116 (2025)            |
              |                                                   |
              |  in any publications arising from the use of      |
              |  this code. For the method please cite            |
@@ -34,7 +36,7 @@ Example standard output for [graphene](../../example/graphene/graphene.cwin) is 
              |  [ref] "Closest Wannier functions to              |
              |         a given set of localized orbitals"        |
              |         Taisuke Ozaki,                            |
-             |         , Phys. Rev. B 110, 125115, (2024).                 |
+             |         Phys. Rev. B 110, 125115, (2024).         |
              |                                                   |
              |  [ref] "Symmetry-adapted modeling for             |
              |         molecules and crystals"                   |
@@ -43,10 +45,10 @@ Example standard output for [graphene](../../example/graphene/graphene.cwin) is 
              |                                                   |
              |                                                   |
              | Copyright (c) 2023-                               |
-             |     The SymClosestWwannier Developer Group and    |
+             |     The SymClosestWannier Developer Group and     |
              |        individual contributors                    |
              |                                                   |
-             |       Release: 1.1.19       22th January 2024      |
+             |        Release: 1.10.8      5th Aug  2025         |
              |                                                   |
              | This program is free software; you can            |
              | redistribute it and/or modify it under the terms  |
@@ -66,9 +68,9 @@ Example standard output for [graphene](../../example/graphene/graphene.cwin) is 
              | 675 Mass Ave, Cambridge, MA 02139, USA.           |
              |                                                   |
              +---------------------------------------------------+
-             |    Execution started on 2024/02/19 18:24:57       |
+             |    Execution started on 2025/08/12 14:51:54       |
              +---------------------------------------------------+
-
+    
 
 
                                    ------
@@ -78,24 +80,24 @@ Example standard output for [graphene](../../example/graphene/graphene.cwin) is 
                             Lattice Vectors (Ang)
                 a_1    2.435000   0.000000   0.000000
                 a_2    -1.217500   2.108772   0.000000
-                a_3    0.000000   0.000000   9.739999
+                a_3    0.000000   0.000000   9.740000
 
-                Unit Cell Volume:      50.01352  (Ang^3)
+                Unit Cell Volume:      50.01353  (Ang^3)
 
                       Reciprocal-Space Vectors (Ang^-1)
                 b_1    2.580364   1.489774   0.000000
                 b_2    0.000000   2.979547   0.000000
                 b_3    0.000000   0.000000   0.645091
 
-
+    
 *----------------------------------------------------------------------------*
 |   Site       Fractional Coordinate          Cartesian Coordinate (Ang)     |
 +----------------------------------------------------------------------------+
-
+    
   C   1   0.66667   0.33333   0.00000    |    1.21750   0.70292   0.00000
-
+    
   C   2   0.33333   0.66667   0.00000    |    0.00000   1.40585   0.00000
-
+    
 *----------------------------------------------------------------------------*
 
 
@@ -108,25 +110,31 @@ Example standard output for [graphene](../../example/graphene/graphene.cwin) is 
 
 
 *----------------------------------------------------------------------------*
-       Starting a new SymClosestWannier calculation of ''graphene_pz''
+       Starting a new SymClosestWannier calculation of ''graphene''
 *----------------------------------------------------------------------------*
 
 
+   - excluding bands with low projectability (proj_min = 0.2) ... done ( 0.007 [sec] ).
    - disentanglement ... done ( 0.0 [sec] ).
-   - constructing TB Hamiltonian ... done ( 0.068 [sec] ).
-   - symmetrization ...
-    - reading output of multipie ...
-  * read './sym/graphene_pz_20_model.py'.
-  * read './sym/graphene_pz_20_samb.py'.
-  * read './sym/graphene_pz_20_matrix.py'.
-    - decomposing Hamiltonian as linear combination of SAMBs ... done ( 0.008 [sec] ).
-    - decomposing overlap as linear combination of SAMBs ... done ( 0.0 [sec] ).
+   - constructing TB Hamiltonian ... 
+    * band distance between DFT and Wannier bands:
+     - eta_0     = 1.9960019700989895e-12 [meV]
+     - eta_0_max = 7.993605777301127e-12 [meV]
+     - eta_2     = 1.8169064701622485e-12 [meV]
+     - eta_2_max = 7.993605777301127e-12 [meV]
+     - eta_4     = 1.7296105678905685e-12 [meV]
+     - eta_4_max = 7.993605777301127e-12 [meV]
+done ( 0.032 [sec] ).
+   - symmetrization ... 
+    - reading output of multipie ... 
+    - decomposing Hamiltonian as linear combination of SAMBs ... done ( 0.001 [sec] ).
+    - decomposing overlap as linear combination of SAMBs ... done ( 0.021 [sec] ).
     - decomposing non-orthogonal Hamiltonian as linear combination of SAMBs ... done ( 0.0 [sec] ).
-    - constructing symmetrized TB Hamiltonian ... done ( 0.025 [sec] ).
-    - evaluating fitting accuracy ...
-     * MAE of eigen values between CW and Symmetry-Adapted CW models (grid) = 2.6820 [meV]
-     * MAE of eigen values between CW and Symmetry-Adapted CW models (path) = 3.7451 [meV]
-    - evaluating expectation value of {Zj} at T = 0 ...
+    - decomposing electronic density as linear combination of SAMBs ... done ( 0.0 [sec] ).
+    - constructing symmetrized TB Hamiltonian ... done ( 0.019 [sec] ).
+    - evaluating fitting accuracy ... 
+     * MAE of eigen values between DFT and Symmetry-Adapted CW models (grid) = 47.6916 [meV]
+     * MAE of eigen values between CW and Symmetry-Adapted CW models (path) = 51.5308 [meV]
 done
 
 
@@ -135,17 +143,11 @@ done
 *----------------------------------------------------------------------------*
 
 
-  * wrote 'graphene_pz_hr.dat.cw'.
-  * wrote 'graphene_pz_sr.dat.cw'.
-  * wrote 'graphene_pz_r.dat.cw'.
-  * wrote './sym/graphene_pz_20_hr_sym.dat.cw'.
-  * wrote './sym/graphene_pz_20_sr_sym.dat.cw'.
-  * wrote './sym/graphene_pz_20_z.dat.cw'.
-  * wrote './sym/graphene_pz_20_s.dat.cw'.
-  * wrote './sym/graphene_pz_20_z_exp.dat.cw'.
+
+  * calculating band dispersion ... done ( 1.001 [sec] ).
 
 
-  * total elapsed_time: ( 1.175 [sec] ).
+  * total elapsed_time: ( 1.001 [sec] ).
 
 
 *----------------------------------------------------------------------------*
@@ -153,7 +155,7 @@ done
 *----------------------------------------------------------------------------*
 
 
-  * total elapsed_time: ( 5.717 [sec] ).
+  * total elapsed_time: ( 3.74 [sec] ).
 
 
 *----------------------------------------------------------------------------*

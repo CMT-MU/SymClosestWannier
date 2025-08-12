@@ -4,24 +4,36 @@
 format: jb-book
 root: README
 parts:
-- caption: SAMB Construction
+- caption: MultiPie
   chapters:
-    - file: src/samb_construction
-    - file: src/scw_tb
-    - file: src/example
+    - file: src/multipie
+
+- caption: Closest Wannier method
+  chapters:
+    - file: src/cw
+
+- caption: Construction of symmetry-adapted Closest Wannier model
+  chapters:
+    - file: src/scw
+
 - caption: File Format
   chapters:
     - file: src/format/cwin
     - file: src/format/cwout
-    - file: src/format/info
-    - file: src/format/data
+    - file: src/format/hdf5
     - file: src/format/hr
     - file: src/format/sr
     - file: src/format/z
     - file: src/format/s
-    - file: src/format/z_exp
+    - file: src/format/n
+
+- caption: Tutorials
+  chapters:
+    - file: src/tutorials/tutorial_1
+    - file: src/tutorials/tutorial_2
+
 - caption: API
   chapters:
-    - file: src/api/analyzer
     - file: src/api/cw
+    - file: src/api/analyzer
     - file: src/api/util
