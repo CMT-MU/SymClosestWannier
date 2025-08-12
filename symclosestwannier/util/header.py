@@ -8,10 +8,10 @@ cwin_info = {
     "outdir": "input and output files are found in this directory (str), ['./'].",
     "disentangle": "disentagle bands ? (bool), [False].",
     "proj_min": "minimum value of projectability (float), [0.0].",
-    "dis_win_emax": "upper energy window (float), [None].",
-    "dis_win_emin": "lower energy window (float), [None].",
-    "smearing_temp_max": "smearing temperature for upper window (float), [5.0].",
-    "smearing_temp_min": "smearing temperature for lower window (float), [0.01].",
+    "dis_win_emax": "top of the energy window (float), [None].",
+    "dis_win_emin": "bottom of the energy window (float), [None].",
+    "smearing_temp_max": "smearing temperature for the top of the energy window (float), [5.0].",
+    "smearing_temp_min": "smearing temperature for the bottom of the energy window (float), [0.01].",
     "delta": "small constant to avoid ill-conditioning of overlap matrices (< 1e-6) (float), [0.0].",
     "svd": "implement singular value decomposition ? otherwise adopt Lowdin's orthogonalization method (bool), [False].",
     "optimize_params": "optimize the energy windows and smearing temperatures? (bool), [False].",
@@ -255,10 +255,12 @@ cw_info_header += "\n".join(["    - {:<17} : {:<100} \n".format(k, v) for k, v i
 
 cw_data = {
     "Sk": "Overlap matrix elements in k-space (ndarray).",
+    "nk": "Electronic density matrix elements in k-space (ndarray).",
     "Hk": "Hamiltonian matrix elements in k-space (orthogonal) (ndarray).",
     "Hk_nonortho": "Hamiltonian matrix elements in k-space (non-orthogonal) (ndarray).",
     #
     "Sr": "Overlap matrix elements in real-space (ndarray).",
+    "nr": "Electronic density matrix elements in real-space (ndarray).",
     "Hr": "Hamiltonian matrix elements in real-space (orthogonal) (ndarray).",
     "Hr_nonortho": "Hamiltonian matrix elements in real-space (non-orthogonal) (ndarray).",
     #

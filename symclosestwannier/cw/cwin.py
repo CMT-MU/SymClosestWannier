@@ -18,8 +18,6 @@ _default = {
     "smearing_temp_min": 0.0,
     "delta": 0.0,
     "svd": False,
-    "optimize_params": False,
-    "optimize_params_fixed": [],
     #
     "verbose": False,
     "parallel": False,
@@ -40,7 +38,7 @@ _default = {
     "write_amn": False,
     "write_mmn": False,
     "write_spn": False,
-    #
+    # symmetrization
     "symmetrization": False,
     "mp_outdir": "./",
     "mp_seedname": "default",
@@ -134,14 +132,12 @@ class CWin(dict):
                 - restart           : the restart position 'cw'/'w90' (str), ["cw"].
                 - disentangle       : disentagle bands ? (bool), [False].
                 - proj_min          : minimum value of projectability: [0.0].
-                - dis_win_emax      : upper energy window (float), [None].
-                - dis_win_emin      : lower energy window (float), [None].
-                - smearing_temp_max : smearing temperature for upper window (float), [1.0].
-                - smearing_temp_min : smearing temperature for lower window (float), [0.0].
+                - dis_win_emax      : top of the energy window (float), [None].
+                - dis_win_emin      : bottom of the energy window (float), [None].
+                - smearing_temp_max : smearing temperature for the top of the energy window (float), [1.0].
+                - smearing_temp_min : smearing temperature for the bottom of the energy window (float), [0.0].
                 - delta             : small constant to avoid ill-conditioning of overlap matrices (< 1e-5) (float), [0.0].
                 - svd               : implement singular value decomposition ? otherwise adopt Lowdin's orthogonalization method (bool), [False].
-                - optimize_params": optimize the energy windows and smearing temperatures? (bool), [False].
-                - optimize_params_fixed":  fixed parameters for optimization (ex: ['dis_win_emin', 'smearing_temp_min']), (list) [].
                 - verbose           : verbose calculation info (bool, optional), [False].
                 - parallel          : use parallel code? (bool), [False].
                 - formatter         : format by using black? (bool), [False].
