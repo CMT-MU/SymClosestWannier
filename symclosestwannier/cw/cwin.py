@@ -185,6 +185,12 @@ class CWin(dict):
                 - magnetic_field_phi   : angle from the x-axis of the magnetic field (float), [0.0].
                 - g_factor             : spin g factor (float), [2.0].
 
+            # only used for fermi surface calculation.
+                - fermi_surface        : calculate fermi surface? (bool), [False].
+                - fermi_surface_kmesh  : 2d kmesh given by [[k1_min, k1_max, N1], [k2_min, k2_max, N2] ] (crystal coordinate), (list), [ [[-1, 1, 10], [-1, 1, 10]] ].
+                - fermi_surface_view   : k3 direction (list), [ [0, 0, 1] ].
+                - fermi_surface_const  : constant value for k3 axis [0.0].
+
             # only used for lindhard function.
                 - lindhard                    : calculate lindhard function? (bool), [False].
                 - lindhard_freq               : frequency for computing the lindhard function. (The units are [eV]) (float), [0.0].
