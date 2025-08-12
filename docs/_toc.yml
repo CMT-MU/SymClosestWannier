@@ -29,8 +29,8 @@ parts:
 
 - caption: Tutorials
   chapters:
-    - file: src/tutorials/tutorial_1
-    - file: src/tutorials/tutorial_2
+    - file: src/tutorials/tutorial01
+    - file: src/tutorials/tutorial02
 
 - caption: API
   chapters:
