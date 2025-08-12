@@ -1,4 +1,4 @@
-# information in CWModel [default]
+# seedname.hdf5 [default]
 - seedname          : seedname (str), [cwannier].
 - restart           : the restart position 'cw'/'w90' (str), ['cw'].
 - outdir            : input and output files are found in this directory (str), ['./'].

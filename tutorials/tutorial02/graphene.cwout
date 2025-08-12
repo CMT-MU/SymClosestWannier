@@ -45,7 +45,7 @@
              |     The SymClosestWannier Developer Group and     |
              |        individual contributors                    |
              |                                                   |
-             |        Release: 1.10.8      5th Aug  2025         |
+             |        Release: 1.10.9      5th Aug  2025         |
              |                                                   |
              | This program is free software; you can            |
              | redistribute it and/or modify it under the terms  |
@@ -65,7 +65,7 @@
              | 675 Mass Ave, Cambridge, MA 02139, USA.           |
              |                                                   |
              +---------------------------------------------------+
-             |    Execution started on 2025/08/12 17:10:12       |
+             |    Execution started on 2025/08/12 17:58:57       |
              +---------------------------------------------------+
     
 
@@ -111,27 +111,27 @@
 *----------------------------------------------------------------------------*
 
 
-   - excluding bands with low projectability (proj_min = 0.2) ... done ( 0.006 [sec] ).
+   - excluding bands with low projectability (proj_min = 0.1) ... done ( 0.006 [sec] ).
    - disentanglement ... done ( 0.0 [sec] ).
    - constructing TB Hamiltonian ... 
     * band distance between DFT and Wannier bands:
-     - eta_0     = 1.996509955009974e-12 [meV]
+     - eta_0     = 1.8043037804580827e-12 [meV]
      - eta_0_max = 7.993605777301127e-12 [meV]
-     - eta_2     = 1.840847792590786e-12 [meV]
+     - eta_2     = 1.6648786380714914e-12 [meV]
      - eta_2_max = 7.993605777301127e-12 [meV]
-     - eta_4     = 1.7296105678905685e-12 [meV]
+     - eta_4     = 1.5979644357502678e-12 [meV]
      - eta_4_max = 7.993605777301127e-12 [meV]
-done ( 0.027 [sec] ).
+done ( 0.026 [sec] ).
    - symmetrization ... 
     - reading output of multipie ... 
     - decomposing Hamiltonian as linear combination of SAMBs ... done ( 0.001 [sec] ).
-    - decomposing overlap as linear combination of SAMBs ... done ( 0.016 [sec] ).
+    - decomposing overlap as linear combination of SAMBs ... done ( 0.014 [sec] ).
     - decomposing non-orthogonal Hamiltonian as linear combination of SAMBs ... done ( 0.0 [sec] ).
     - decomposing electronic density as linear combination of SAMBs ... done ( 0.0 [sec] ).
-    - constructing symmetrized TB Hamiltonian ... done ( 0.017 [sec] ).
+    - constructing symmetrized TB Hamiltonian ... done ( 0.015 [sec] ).
     - evaluating fitting accuracy ... 
-     * MAE of eigen values between DFT and Symmetry-Adapted CW models (grid) = 47.6916 [meV]
-     * MAE of eigen values between CW and Symmetry-Adapted CW models (path) = 51.5308 [meV]
+     * MAE of eigen values between DFT and Symmetry-Adapted CW models (grid) = 47.7270 [meV]
+     * MAE of eigen values between CW and Symmetry-Adapted CW models (path) = 51.2894 [meV]
 done
 
 
@@ -141,10 +141,10 @@ done
 
 
 
-  * calculating band dispersion ... done ( 0.858 [sec] ).
+  * calculating band dispersion ... done ( 0.853 [sec] ).
 
 
-  * total elapsed_time: ( 0.859 [sec] ).
+  * total elapsed_time: ( 0.853 [sec] ).
 
 
 *----------------------------------------------------------------------------*
@@ -152,7 +152,7 @@ done
 *----------------------------------------------------------------------------*
 
 
-  * total elapsed_time: ( 3.348 [sec] ).
+  * total elapsed_time: ( 3.115 [sec] ).
 
 
 *----------------------------------------------------------------------------*

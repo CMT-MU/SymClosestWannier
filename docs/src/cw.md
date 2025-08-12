@@ -11,14 +11,14 @@ introduce a window function $w(\varepsilon)$ (See Eq. (4) in
 Ref. [ozaki-prb24]) for the projection of the Bloch states
     $|\psi_{n\bf{k}}\rangle$ onto trial localised orbitals
     $|g_{n}\rangle$
+
 $$
-\begin{align}
 & A_{mn}^{(\bf{k})} = w(\varepsilon_{m\bf{k}}) \langle \psi_{m{\bf k}}|g_{n}\rangle,
 \\
 & w(\varepsilon) = \frac{1}{e^{(\varepsilon - \mu_{\rm max})/\sigma_{\rm max}} + 1}
 - \frac{1}{e^{(\mu_{\rm min} - \varepsilon)/\sigma_{\rm min}} + 1} - 1 + \delta.
-\end{align}
 $$
+
 $\mu_{\rm min}$ and $\mu_{\rm max}$ ($\mu_{\rm min} < \mu_{\rm max}$)
 represent the bottom and top of the energy window and
 $\sigma_{\rm min}$ and $\sigma_{\rm max}$ control
