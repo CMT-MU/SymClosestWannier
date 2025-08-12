@@ -13,4 +13,5 @@
 .. automodule:: symclosestwannier.cw.mmn
 .. automodule:: symclosestwannier.cw.spn
 .. automodule:: symclosestwannier.cw.win
+.. automodule:: symclosestwannier.cw.uHu
 ```
