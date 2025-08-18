@@ -1,0 +1,603 @@
+
+<!DOCTYPE html>
+
+
+<html lang="jp" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Graphene: Closest Wannier tight-binding model &#8212; SymClosestWannier</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../../_static/documentation_options.js?v=8cf54648"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"loader": {"load": ["[tex]/physics"]}, "tex": {"packages": {"[+]": ["physics"]}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'src/tutorials/tutorial02';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Closest Wannier" href="../api/cw.html" />
+    <link rel="prev" title="CH4: Closest Wannier tight-binding model" href="tutorial01.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="jp"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../README.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">SymClosestWannier</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">MultiPie</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../multipie.html">Construction of SAMBs by using MultiPie</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Closest Wannier method</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../cw.html">Closest Wannier method</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Construction of symmetry-adapted Closest Wannier model</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../scw.html">Symmetry-adapted Closest Wannier model</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">File Format</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../format/cwin.html">seedname.cwin [default]</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../format/cwout.html">seedname.cwout</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../format/hdf5.html">seedname.hdf5 [default]</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="../format/hr.html">seedname_hr.dat.cw</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../format/sr.html">seedname_sr.dat.cw</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../format/z.html">seedname_z.dat.cw</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../format/s.html">seedname_s.dat.cw</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../format/n.html">seedname_n.dat.cw</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="tutorial01.html">CH4: Closest Wannier tight-binding model</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Graphene: Closest Wannier tight-binding model</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">API</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../api/cw.html">Closest Wannier</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/analyzer.html">Utility</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/util.html">Utility</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+<a href="https://github.com/CMT-MU/SymClosestWannier.git" target="_blank"
+   class="btn btn-sm btn-source-repository-button"
+   title="Source repository"
+   data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+
+</a>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Graphene: Closest Wannier tight-binding model</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="graphene-closest-wannier-tight-binding-model">
+<h1>Graphene: Closest Wannier tight-binding model<a class="headerlink" href="#graphene-closest-wannier-tight-binding-model" title="Link to this heading">#</a></h1>
+<ul class="simple">
+<li><p>Outline: Compute the closest Wannier model and
+the Wannier interpolated band structure of
+graphene based on the closest Wannier method
+using hydrogenic atomic <span class="math notranslate nohighlight">\(p_{z}\)</span> orbitals.
+For the detail of the theoretical background, see Ref.[&#64;ozaki-prb24].</p></li>
+<li><p>Directory: <code class="docutils literal notranslate"><span class="pre">tutorials/tutorial02/</span></code> <em>Files can be downloaded from
+<a class="reference external" href="https://github.com/CMT-MU/SymClosestWannier/tree/main/tutorials/tutorial02">here</a></em></p></li>
+<li><p>Input files</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">graphene.cwin</span></code>:  <em>The input file for <code class="docutils literal notranslate"><span class="pre">pw2cw</span></code></em></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">graphene.win</span></code>:  <em>The input file for <code class="docutils literal notranslate"><span class="pre">wannier90.x</span></code></em></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">graphene.nnkp</span></code>: <em>The output file of crystal data generated by <code class="docutils literal notranslate"><span class="pre">wannier90.x</span></code></em></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">graphene.eig,</span> <span class="pre">graphene.amn</span></code>: <em>The output files generated by <code class="docutils literal notranslate"><span class="pre">pw2wannier.x</span></code></em> or <code class="docutils literal notranslate"><span class="pre">VASP2WANNIER</span></code>* or <code class="docutils literal notranslate"><span class="pre">WIEN2WANNIER</span></code>*</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">graphene.band.gnu</span></code>: <em>The DFT band data</em></p></li>
+</ul>
+</li>
+</ul>
+<p> </p>
+<ol class="arabic">
+<li><p>Calculate overlapes between Kohn-Sham orbitals and pseudo atomic orbitals based on the Plane-Wave (PW) DFT calculation softwares, such as <a class="reference external" href="https://www.quantum-espresso.org/">QuantumEspresso</a> and <a class="reference external" href="https://www.vasp.at/">VASP</a>.
+The following files are used for the next step.</p>
+<ul class="simple">
+<li><p>seedname.win, seedname.nnkp, seedname.eig, seedname.amn (generated by <a class="reference external" href="https://wannier.org/">Wannier90</a>)
+(additional files: seedname.mmn, seedname.spn, seedname.uHu, seedname.uIu, …)</p></li>
+</ul>
+</li>
+<li><p>Run <code class="docutils literal notranslate"><span class="pre">pw2cw</span></code> to create Closest Wannier tight-binding model.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pw2cw<span class="w"> </span>graphene
+</pre></div>
+</div>
+<p>The disentanglement based on the closest Wannier method can be performed by specifying in <code class="docutils literal notranslate"><span class="pre">graphene.cwin</span></code></p>
+<div class="highlight-vi notranslate"><div class="highlight"><pre><span></span>disentanglement = true
+</pre></div>
+</div>
+<p>Following the closest Wannier method, the overlap between Bloch states and
+the projections is multiplied by the window function <span class="math notranslate nohighlight">\(w(\varepsilon)\)</span>
+(See Eq. (4) in Ref. [&#64;ozaki-prb24]):</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+    &amp; A_{mn}^{(\bf{k})} = w(\varepsilon_{m\bf{k}}) \langle \psi_{m{\bf k}}|g_{n}\rangle,
+    \\
+    &amp; w(\varepsilon)
+    = \frac{1}{e^{(\varepsilon - \mu_{\rm max})/\sigma_{\rm max}} + 1}
+    - \frac{1}{e^{(\mu_{\rm min} - \varepsilon)/\sigma_{\rm min}} + 1}
+    - 1 + \delta,
+    \end{split}\]</div>
+<p>where <span class="math notranslate nohighlight">\(\mu_{\rm min}\)</span> and <span class="math notranslate nohighlight">\(\mu_{\rm max}\)</span> (<span class="math notranslate nohighlight">\(\mu_{\rm min} &lt; \mu_{\rm max}\)</span>)
+represent the bottom and top of the energy window, and
+<span class="math notranslate nohighlight">\(\sigma_{\rm min}\)</span> and <span class="math notranslate nohighlight">\(\sigma_{\rm max}\)</span> control
+the degree of smearing around <span class="math notranslate nohighlight">\(\mu_{\rm min}\)</span> and <span class="math notranslate nohighlight">\(\mu_{\rm max}\)</span>.
+<span class="math notranslate nohighlight">\(\delta\)</span> is a small constant introduced to prevent the matrix
+consisting of <span class="math notranslate nohighlight">\(A_{mn}^{(\bf{k})}\)</span> from becoming ill-conditioned.</p>
+<p><span class="math notranslate nohighlight">\(\mu_{\rm max}\)</span>, <span class="math notranslate nohighlight">\(\mu_{\rm min}\)</span>, <span class="math notranslate nohighlight">\(\sigma_{\rm max}\)</span>, <span class="math notranslate nohighlight">\(\sigma_{\rm min}\)</span>, and
+<span class="math notranslate nohighlight">\(\delta\)</span> can be specified in <code class="docutils literal notranslate"><span class="pre">silicon.win</span></code></p>
+<div class="highlight-vi notranslate"><div class="highlight"><pre><span></span>dis_win_emax      = 10.0
+dis_win_emin      = -30
+smearing_temp_max = 3.0
+smearing_temp_min = 0.0
+delta             = 1e-12
+</pre></div>
+</div>
+<p>and</p>
+<div class="highlight-vi notranslate"><div class="highlight"><pre><span></span>proj_min          = 0.1
+</pre></div>
+</div>
+<p>denotes the minimum value of projectability <span class="math notranslate nohighlight">\(p_{m\bf{k}} = \sum_{n} A_{mn}^{(\bf{k})}\)</span>.
+When <span class="math notranslate nohighlight">\(p_{m\bf{k}}\)</span> is smaller than <code class="docutils literal notranslate"><span class="pre">proj_min</span></code>, the corresponding <span class="math notranslate nohighlight">\(m\)</span>-th DFT band is removed from the wannierization process.</p>
+<p>Note that the disentanglement of bands is naturally
+taken into account by introducing a window function.
+The unitary matrix is then obtained by
+<span class="math notranslate nohighlight">\(\mathbf{U}^{(\mathbf{k})} = \mathbf{A}^{(\bf{k})}
+ (\mathbf{A}^{(\bf{k}) \dagger} \mathbf{A}^{(\bf{k})})^{-1/2}\)</span>
+without iterative calculations for disentanglment of bands
+and wannierisation.</p>
+<p>By properly choosing <span class="math notranslate nohighlight">\(\mu_{\rm min}\)</span>, <span class="math notranslate nohighlight">\(\mu_{\rm max}\)</span>,
+<span class="math notranslate nohighlight">\(\sigma_{\rm min}\)</span>, <span class="math notranslate nohighlight">\(\sigma_{\rm max}\)</span>, and <span class="math notranslate nohighlight">\(\delta\)</span>,
+one can obtain the Wannier functions <em>closest</em> to the initial guesses in
+a Hilbert space (see Eqs. (5)~(17) in Ref. [&#64;ozaki-prb24]).</p>
+<p>To get <span class="math notranslate nohighlight">\(A_{mn}^{(\bf{k})}\)</span> multiplied by the window function, <code class="docutils literal notranslate"><span class="pre">write_amn</span></code> can be specified in <code class="docutils literal notranslate"><span class="pre">ch4.cwin</span></code> as</p>
+<div class="highlight-vi notranslate"><div class="highlight"><pre><span></span>write_amn = true
+</pre></div>
+</div>
+<p>To get the Closest Wannier Hamiltonian matrix elements in real-space, <code class="docutils literal notranslate"><span class="pre">write_hr</span></code> can be specified in <code class="docutils literal notranslate"><span class="pre">ch4.cwin</span></code> as</p>
+<div class="highlight-vi notranslate"><div class="highlight"><pre><span></span>write_hr = true
+</pre></div>
+</div>
+<p>Inspect the output file <code class="docutils literal notranslate"><span class="pre">silicon.cwout</span></code>.
+The CWFs are obtained without any iterative calculations,
+significantly reducing the computational costs.
+eta_ <span class="math notranslate nohighlight">\(\nu\)</span> and eta_ <span class="math notranslate nohighlight">\(\nu\)</span> _max (<span class="math notranslate nohighlight">\(\nu = 0, 2, 4\)</span>) are the band distance between the DFT bands and the Closest Wannier bands, defined by</p>
+<div class="math notranslate nohighlight">
+\[
+    \eta_{\nu} = \sqrt{\frac{\sum_{n\bf{k}}(\epsilon_{n\bf{k}}^{\rm DFT} - \epsilon_{n\bf{k}}^{\rm CW})^{2} \tilde{f}_{n\bf{k}} }{\sum_{n\bf{k}}\tilde{f}_{n\bf{k}}}}
+    \]</div>
+<div class="math notranslate nohighlight">
+\[
+    \tilde{f}_{n\bf{k}} = \sqrt{f_{n\bf{k}}^{\rm DFT}(\nu, \tau) f_{n\bf{k}}^{\rm CW}(\nu, \tau)}
+    \]</div>
+<p>Here <span class="math notranslate nohighlight">\(f_{n\bf{k}}(\nu, \tau)\)</span> represents the fermi-dirac distribution function with energy shift,
+$<span class="math notranslate nohighlight">\(
+ (\nu = 0)\, \epsilon_{\rm F} + 0.0\, [{\rm eV}] \\
+ (\nu = 2)\, \epsilon_{\rm F} + 2.0\, [{\rm eV}] \\
+ (\nu = 4)\, \epsilon_{\rm F} + 4.0\, [{\rm eV}] 
+ \)</span>$</p>
+<p>and effective temperature <span class="math notranslate nohighlight">\(\tau = 0.0\)</span>.</p>
+</li>
+</ol>
+<ul>
+<li><p>Output files:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">graphene.cwout</span></code>: <em>The standard output</em></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">graphene.hdf5</span></code>: <em>calculation information and data for CWModel</em></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">graphene_hr.dat.cw</span></code>: <em>Closest Wannier Hamiltonian matrix elements in real-space <span class="math notranslate nohighlight">\(H(R)\)</span></em></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">graphene_hr_R_dep.dat.cw</span></code>: <em>Bond length ||R|| (the 2-norm of lattice vector) dependence of the Frobenius norm of the Hamiltonian and the decay length <span class="math notranslate nohighlight">\(\tau\)</span> [Ang] defined by Exponential-form fitting <span class="math notranslate nohighlight">\(||H(R)|| = ||H(0)|| \exp(-||R||/\tau)\)</span>.</em></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">graphene.amn.cw</span></code>: <em>The projection of the Bloch states onto trial localised orbitals based on the Closest Wannier method</em></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">graphene_band.txt</span></code> : band dispersion data of the Closest Wannier tight-binding model.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">graphene_band_detail.txt</span></code> : band dispersion data of the Closest Wannier tight-binding model including orbital contributions.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">plot_band.gnu</span></code>: <em>The gnuplot script to compare DFT and Closest Wannier bands</em></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">plot_band_detail.gnu</span></code>: <em>The gnuplot script to compare DFT and Closest Wannier bands</em></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">graphene_band.pdf(eps)</span></code> : <em>Comparison between DFT and Closest Wannier bands</em></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">graphene_band_detail.pdf(eps)</span></code> : <em>Comparison between DFT and Closest Wannier bands</em></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">graphene/</span></code></p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">graphene_hr_sym.dat</span></code>: <em>Symmetry-adapted Closest Wannier Hamiltonian matrix elements in real-space</em></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">graphene_z.dat.cw</span></code>: <em>The expansion coefficients of the Hamiltonian matrix expressed by a linear combination of SAMBs</em></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">graphene_s.dat.cw</span></code>: <em>The expansion coefficients of the Overlap matrix expressed by a linear combination of SAMBs</em></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">graphene_n.dat.cw</span></code>: <em>The expansion coefficients of the Electronic density matrix expressed by a linear combination of SAMBs.</em></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">graphene_band.txt</span></code> : band dispersion data of the symmetry-adapted Closest Wannier tight-binding model.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">graphene_band_detail.txt</span></code> : band dispersion data of the symmetry-adapted Closest Wannier tight-binding model including orbital contributions.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">plot_band.gnu</span></code>: <em>The gnuplot script to compare Closest Wannier and symmetry-adapted Closest Wannier bands</em></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">plot_band_detail.gnu</span></code>: <em>The gnuplot script to compare Closest Wannier and symmetry-adapted Closest Wannier bands</em></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">graphene_band.pdf(eps)</span></code> : <em>Comparison between Closest Wannier and symmetry-adapted Closest Wannier bands</em></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">graphene_band_detail.pdf(eps)</span></code> : <em>Comparison between Closest Wannier and symmetry-adapted Closest Wannier bands</em></p></li>
+</ul>
+</li>
+</ul>
+<p>The detailed file formats are given as follows:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="../format/cwin.html"><span class="std std-doc">seedname.cwin</span></a></p></li>
+<li><p><a class="reference internal" href="../format/cwout.html"><span class="std std-doc">seedname.cwout</span></a></p></li>
+<li><p><a class="reference internal" href="#../format/info.md"><span class="xref myst">seedname.hdf5(info)</span></a></p></li>
+<li><p><a class="reference internal" href="#../format/data.md"><span class="xref myst">seedname.hdf5(data)</span></a></p></li>
+<li><p><a class="reference internal" href="../format/hr.html"><span class="std std-doc">seedname_hr.dat</span></a></p></li>
+<li><p><a class="reference internal" href="../format/z.html"><span class="std std-doc">mp_seedname_z.dat</span></a></p></li>
+<li><p><a class="reference internal" href="../format/s.html"><span class="std std-doc">mp_seedname_s.dat</span></a></p></li>
+<li><p><a class="reference internal" href="../format/n.html"><span class="std std-doc">mp_seedname_n.dat</span></a></p></li>
+</ul>
+</li>
+</ul>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./src/tutorials"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Rikuto Oiwa
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2021-2025.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

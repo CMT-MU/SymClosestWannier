@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>seedname_hr.dat.cw &#8212; SymClosestWannier</title>
+    <title>CH4: Closest Wannier tight-binding model &#8212; SymClosestWannier</title>
   
   
   
@@ -59,11 +59,11 @@
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
     <script>window.MathJax = {"loader": {"load": ["[tex]/physics"]}, "tex": {"packages": {"[+]": ["physics"]}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'src/format/hr';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'src/tutorials/tutorial01';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="seedname_sr.dat.cw" href="sr.html" />
-    <link rel="prev" title="seedname.hdf5 [default]" href="hdf5.html" />
+    <link rel="next" title="Graphene: Closest Wannier tight-binding model" href="tutorial02.html" />
+    <link rel="prev" title="seedname_n.dat.cw" href="../format/n.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="jp"/>
   </head>
@@ -180,21 +180,21 @@
 <li class="toctree-l1"><a class="reference internal" href="../scw.html">Symmetry-adapted Closest Wannier model</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">File Format</span></p>
-<ul class="current nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="cwin.html">seedname.cwin [default]</a></li>
-<li class="toctree-l1"><a class="reference internal" href="cwout.html">seedname.cwout</a></li>
-<li class="toctree-l1"><a class="reference internal" href="hdf5.html">seedname.hdf5 [default]</a></li>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../format/cwin.html">seedname.cwin [default]</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../format/cwout.html">seedname.cwout</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../format/hdf5.html">seedname.hdf5 [default]</a></li>
 
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">seedname_hr.dat.cw</a></li>
-<li class="toctree-l1"><a class="reference internal" href="sr.html">seedname_sr.dat.cw</a></li>
-<li class="toctree-l1"><a class="reference internal" href="z.html">seedname_z.dat.cw</a></li>
-<li class="toctree-l1"><a class="reference internal" href="s.html">seedname_s.dat.cw</a></li>
-<li class="toctree-l1"><a class="reference internal" href="n.html">seedname_n.dat.cw</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../format/hr.html">seedname_hr.dat.cw</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../format/sr.html">seedname_sr.dat.cw</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../format/z.html">seedname_z.dat.cw</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../format/s.html">seedname_s.dat.cw</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../format/n.html">seedname_n.dat.cw</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
-<ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../tutorials/tutorial01.html">CH4: Closest Wannier tight-binding model</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../tutorials/tutorial02.html">Graphene: Closest Wannier tight-binding model</a></li>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">CH4: Closest Wannier tight-binding model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial02.html">Graphene: Closest Wannier tight-binding model</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">API</span></p>
 <ul class="nav bd-sidenav">
@@ -352,7 +352,7 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>seedname_hr.dat.cw</h1>
+    <h1>CH4: Closest Wannier tight-binding model</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -366,15 +366,73 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="seedname-hr-dat-cw">
-<h1>seedname_hr.dat.cw<a class="headerlink" href="#seedname-hr-dat-cw" title="Link to this heading">#</a></h1>
+  <section id="ch4-closest-wannier-tight-binding-model">
+<h1>CH4: Closest Wannier tight-binding model<a class="headerlink" href="#ch4-closest-wannier-tight-binding-model" title="Link to this heading">#</a></h1>
 <ul class="simple">
-<li><p>Hamiltonian matrix elements in real-space</p></li>
-<li><p>n1 n2 n3 a b re(H_{ab}®) im(H_{ab}®)</p>
+<li><p>Outline: Compute the closest Wannier model and
+the Wannier interpolated band structure of
+<span class="math notranslate nohighlight">\({\rm CH}_{4}\)</span> molecule based on the closest Wannier method
+using hydrogenic atomic <span class="math notranslate nohighlight">\(s\)</span> and <span class="math notranslate nohighlight">\(p\)</span> orbitals.
+For the detail of the theoretical background, see Ref.[&#64;ozaki-prb24].</p></li>
+<li><p>Directory: <code class="docutils literal notranslate"><span class="pre">tutorials/tutorial01/</span></code> <em>Files can be downloaded from
+<a class="reference external" href="https://github.com/CMT-MU/SymClosestWannier/tree/main/tutorials/tutorial01">here</a></em></p></li>
+<li><p>Input files</p>
 <ul>
-<li><p><span class="math notranslate nohighlight">\(H_{ab}(R)\)</span> : <span class="math notranslate nohighlight">\(\langle \phi_{a}(0)|H|\phi_{b}(R)\rangle\)</span>.</p></li>
-<li><p><span class="math notranslate nohighlight">\(\phi_{a}(R)\)</span> : orthogonalized pseudo atomic orbital.</p></li>
-<li><p>R = (n1,n2,n3) : lattice points (crystal coordinate, nj: integer).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ch4.cwin</span></code>:  <em>The input file for <code class="docutils literal notranslate"><span class="pre">pw2cw</span></code></em></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ch4.win</span></code>:  <em>The input file for <code class="docutils literal notranslate"><span class="pre">wannier90.x</span></code></em></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ch4.nnkp</span></code>: <em>The output file of crystal data generated by <code class="docutils literal notranslate"><span class="pre">wannier90.x</span></code></em></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ch4.eig,</span> <span class="pre">ch4.amn</span></code>: <em>The output files generated by <code class="docutils literal notranslate"><span class="pre">pw2wannier.x</span></code></em> or <code class="docutils literal notranslate"><span class="pre">VASP2WANNIER</span></code>* or <code class="docutils literal notranslate"><span class="pre">WIEN2WANNIER</span></code>*</p></li>
+</ul>
+</li>
+</ul>
+<p> </p>
+<ol class="arabic">
+<li><p>Calculate overlapes between Kohn-Sham orbitals and pseudo atomic orbitals based on the Plane-Wave (PW) DFT calculation softwares, such as <a class="reference external" href="https://www.quantum-espresso.org/">QuantumEspresso</a> and <a class="reference external" href="https://www.vasp.at/">VASP</a>.
+The following files are used for the next step.</p>
+<ul class="simple">
+<li><p>seedname.win, seedname.nnkp, seedname.eig, seedname.amn (generated by <a class="reference external" href="https://wannier.org/">Wannier90</a>)
+(additional files: seedname.mmn, seedname.spn, seedname.uHu, seedname.uIu, …)</p></li>
+</ul>
+</li>
+<li><p>Run <code class="docutils literal notranslate"><span class="pre">pw2cw</span></code> to create Closest Wannier tight-binding model.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pw2cw<span class="w"> </span>ch4
+</pre></div>
+</div>
+<p>Since <span class="math notranslate nohighlight">\({\rm CH}_{4}\)</span> is molecule, the disentanglement is not necessary, <code class="docutils literal notranslate"><span class="pre">disentanglement</span></code> can be specified in <code class="docutils literal notranslate"><span class="pre">ch4.cwin</span></code> as</p>
+<div class="highlight-vi notranslate"><div class="highlight"><pre><span></span>disentangle = false
+</pre></div>
+</div>
+<p>To get the Closest Wannier Hamiltonian matrix elements in real-space, <code class="docutils literal notranslate"><span class="pre">write_hr</span></code> can be specified in <code class="docutils literal notranslate"><span class="pre">ch4.cwin</span></code> as</p>
+<div class="highlight-vi notranslate"><div class="highlight"><pre><span></span>write_hr = true
+</pre></div>
+</div>
+</li>
+</ol>
+<ul>
+<li><p>Output files:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">ch4.cwout</span></code>: <em>The standard output</em></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ch4.hdf5</span></code>: <em>calculation information and data for CWModel</em></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ch4_hr.dat.cw</span></code>: <em>Closest Wannier Hamiltonian matrix elements in real-space <span class="math notranslate nohighlight">\(H(R)\)</span> (in this case, <span class="math notranslate nohighlight">\(H(0)\)</span>)</em></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">plot_band.gnu</span></code>: <em>The gnuplot script to compare DFT and Wannier bands</em></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ch4/</span></code></p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">ch4_hr_sym.dat</span></code>: <em>Symmetry-adapted Closest Wannier Hamiltonian matrix elements in real-space</em></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ch4_z.dat.cw</span></code>: <em>The expansion coefficients of the Hamiltonian matrix expressed by a linear combination of SAMBs</em></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ch4_s.dat.cw</span></code>: <em>The expansion coefficients of the Overlap matrix expressed by a linear combination of SAMBs</em></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ch4_n.dat.cw</span></code>: <em>The expansion coefficients of the Electronic density matrix expressed by a linear combination of SAMBs.</em></p></li>
+</ul>
+</li>
+</ul>
+<p>The detailed file formats are given as follows:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="../format/cwin.html"><span class="std std-doc">seedname.cwin</span></a></p></li>
+<li><p><a class="reference internal" href="../format/cwout.html"><span class="std std-doc">seedname.cwout</span></a></p></li>
+<li><p><a class="reference internal" href="../format/hdf5.html"><span class="std std-doc">seedname.hdf5</span></a></p></li>
+<li><p><a class="reference internal" href="../format/hr.html"><span class="std std-doc">seedname_hr.dat</span></a></p></li>
+<li><p><a class="reference internal" href="../format/z.html"><span class="std std-doc">mp_seedname_z.dat</span></a></p></li>
+<li><p><a class="reference internal" href="../format/s.html"><span class="std std-doc">mp_seedname_s.dat</span></a></p></li>
+<li><p><a class="reference internal" href="../format/n.html"><span class="std std-doc">mp_seedname_n.dat</span></a></p></li>
 </ul>
 </li>
 </ul>
@@ -393,7 +451,7 @@ document.write(`
         },
         kernelOptions: {
             name: "python3",
-            path: "./src/format"
+            path: "./src/tutorials"
         },
         predefinedOutput: true
     }

@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>information in CWModel [default] &#8212; SymClosestWannier</title>
+    <title>seedname.hdf5 [default] &#8212; SymClosestWannier</title>
   
   
   
@@ -16,36 +16,33 @@
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
     document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
   </script>
-  <!--
-    this give us a css class that will be invisible only if js is disabled
-  -->
-  <noscript>
-    <style>
-      .pst-js-only { display: none !important; }
-
-    </style>
-  </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
-<link href="../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+  <link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=eba8b062" />
     <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
   
-  <!-- So that users can add custom icons -->
-  <script src="../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
-<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
     <script src="../../_static/documentation_options.js?v=8cf54648"></script>
-    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../../_static/copybutton.js?v=f281be69"></script>
@@ -58,16 +55,17 @@
     <script src="../../_static/design-tabs.js?v=f930bc37"></script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
     <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
     <script>window.MathJax = {"loader": {"load": ["[tex]/physics"]}, "tex": {"packages": {"[+]": ["physics"]}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'src/format/info';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'src/format/hdf5';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="data for SymCW (* optional [default] or only for crystal value)" href="data.html" />
-    <link rel="prev" title="standard output" href="cwout.html" />
+    <link rel="next" title="seedname_hr.dat.cw" href="hr.html" />
+    <link rel="prev" title="seedname.cwout" href="cwout.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="jp"/>
-  <meta name="docsearch:version" content="" />
   </head>
   
   
@@ -83,8 +81,19 @@
     <i class="fa-solid fa-arrow-up"></i>Back to top</button>
 
   
-  <dialog id="pst-search-dialog">
-    
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
 <form class="bd-search d-flex align-items-center"
       action="../../search.html"
       method="get">
@@ -92,6 +101,7 @@
   <input type="search"
          class="form-control"
          name="q"
+         id="search-input"
          placeholder="Search this book..."
          aria-label="Search this book..."
          autocomplete="off"
@@ -99,8 +109,8 @@
          autocapitalize="off"
          spellcheck="false"/>
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
-</form>
-  </dialog>
+</form></div>
+  </div>
 
   <div class="pst-async-banner-revealer d-none">
   <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
@@ -116,8 +126,7 @@
       
       
       
-      <dialog id="pst-primary-sidebar-modal"></dialog>
-      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+      <div class="bd-sidebar-primary bd-sidebar">
         
 
   
@@ -147,35 +156,50 @@
 </a></div>
         <div class="sidebar-primary-item">
 
-<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
- <i class="fa-solid fa-magnifying-glass"></i>
- <span class="search-button__default-text">Search</span>
- <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
-</button></div>
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
         <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
-        <p aria-level="2" class="caption" role="heading"><span class="caption-text">SAMB Construction</span></p>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">MultiPie</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../samb_construction.html">Construction of SAMBs</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../scw_tb.html">Construction of SymCW tight-binding model</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../example.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../multipie.html">Construction of SAMBs by using MultiPie</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Closest Wannier method</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../cw.html">Closest Wannier method</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Construction of symmetry-adapted Closest Wannier model</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../scw.html">Symmetry-adapted Closest Wannier model</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">File Format</span></p>
 <ul class="current nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="cwin.html">input parameters in the *.cwin file [default]</a></li>
-<li class="toctree-l1"><a class="reference internal" href="cwout.html">standard output</a></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">information in CWModel [default]</a></li>
-<li class="toctree-l1"><a class="reference internal" href="data.html">data for SymCW (* optional [default] or only for crystal value)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="hr.html">Hamiltonian matrix elements in real-space</a></li>
-<li class="toctree-l1"><a class="reference internal" href="sr.html">Overlap matrix elements in real-space</a></li>
-<li class="toctree-l1"><a class="reference internal" href="z.html">The expansion coefficients of the Hamiltonian matrix (orthogonal) H expressed by a linear combination of SAMBs</a></li>
-<li class="toctree-l1"><a class="reference internal" href="s.html">The expansion coefficients of the Overlap matrix expressed by a linear combination of SAMBs</a></li>
-<li class="toctree-l1"><a class="reference internal" href="z_exp.html">expectation value of the SAMBs.</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cwin.html">seedname.cwin [default]</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cwout.html">seedname.cwout</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">seedname.hdf5 [default]</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="hr.html">seedname_hr.dat.cw</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sr.html">seedname_sr.dat.cw</a></li>
+<li class="toctree-l1"><a class="reference internal" href="z.html">seedname_z.dat.cw</a></li>
+<li class="toctree-l1"><a class="reference internal" href="s.html">seedname_s.dat.cw</a></li>
+<li class="toctree-l1"><a class="reference internal" href="n.html">seedname_n.dat.cw</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/tutorial01.html">CH4: Closest Wannier tight-binding model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/tutorial02.html">Graphene: Closest Wannier tight-binding model</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">API</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../api/analyzer.html">Utility</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../api/cw.html">Closest Wannier</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/analyzer.html">Utility</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../api/util.html">Utility</a></li>
 </ul>
 
@@ -185,14 +209,9 @@
   
   
   <div class="sidebar-primary-items__end sidebar-primary__section">
-      <div class="sidebar-primary-item">
-<div id="ethical-ad-placement"
-      class="flat"
-      data-ea-publisher="readthedocs"
-      data-ea-type="readthedocs-sidebar"
-      data-ea-manual="true">
-</div></div>
   </div>
+  
+  <div id="rtd-footer-container"></div>
 
 
       </div>
@@ -304,17 +323,27 @@
 
 
 
-<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
-  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
-  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
-  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
-</button>
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
 
 
-<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
 </button>
-
 </div></div>
       
     </div>
@@ -325,11 +354,21 @@
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>information in CWModel [default]</h1>
+    <h1>seedname.hdf5 [default]</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
             
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">seedname.hdf5 [default]</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#data-default">data [default]</a></li>
+</ul>
+
+            </nav>
         </div>
     </div>
 </div>
@@ -339,8 +378,8 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="information-in-cwmodel-default">
-<h1>information in CWModel [default]<a class="headerlink" href="#information-in-cwmodel-default" title="Link to this heading">#</a></h1>
+  <section class="tex2jax_ignore mathjax_ignore" id="seedname-hdf5-default">
+<h1>seedname.hdf5 [default]<a class="headerlink" href="#seedname-hdf5-default" title="Link to this heading">#</a></h1>
 <ul class="simple">
 <li><p>seedname          : seedname (str), [cwannier].</p></li>
 <li><p>restart           : the restart position ‘cw’/‘w90’ (str), [‘cw’].</p></li>
@@ -375,12 +414,31 @@
 <li><p>irreps            : list of irreps to be considered (str/list), [None].</p></li>
 <li><p>a                 : lattice parameter (in Ang) used to correct units of k points in reference band data (float, optional), [1.0].</p></li>
 <li><p>N1                : number of divisions for high symmetry lines (int, optional), [50].</p></li>
-<li><p>fermi_energy      : fermi energy (float, optional), [0.0].</p></li>
+<li><p>calc_spin_2d      : add expectation value of spin operator given by *.spn in output file ? (bool). [False].</p></li>
+<li><p>calc_dos          : calculate dos? (bool), [False].</p></li>
+<li><p>dos_kmesh         : dimensions of the Monkhorst-Pack grid of k-points for dos calculation (list), [[1, 1, 1]].</p></li>
+<li><p>dos_num_fermi     : number of fermi energies (int), [50].</p></li>
+<li><p>dos_smr_en_width  : Energy width for the smearing function for the DOS (The units are [eV]) (flaot), [0.001].</p></li>
 <li><p>zeeman_interaction   : consider zeeman interaction ? (bool), [False].</p></li>
 <li><p>magnetic_field       : strength of the magnetic field (float), [0.0].</p></li>
 <li><p>magnetic_field_theta : angle from the z-axis of the magnetic field (float), [0.0].</p></li>
 <li><p>magnetic_field_phi   : angle from the x-axis of the magnetic field (float), [0.0].</p></li>
 <li><p>g_factor             : spin g factor (float), [2.0].</p></li>
+<li><p>fermi_surface        : calculate fermi surface? (bool), [False].</p></li>
+<li><p>fermi_surface_kmesh  : 2d kmesh given by [[k1_min, k1_max, N1], [k2_min, k2_max, N2] ] (crystal coordinate), (list), [ [[-1, 1, 10], [-1, 1, 10]] ].</p></li>
+<li><p>fermi_surface_view   : k3 direction (list), [ [0, 0, 1] ].</p></li>
+<li><p>fermi_surface_const  : constant value for k3 axis [0.0].</p></li>
+<li><p>lindhard                    : calculate lindhard function? (bool), [False].</p></li>
+<li><p>lindhard_freq               : frequency for computing the lindhard function. (The units are [eV]) (float), [0.0].</p></li>
+<li><p>lindhard_smr_fixed_en_width : Overrides the smr_fixed_en_width global variable (float), [0.01].</p></li>
+<li><p>lindhard_kmesh              : dimensions of the Monkhorst-Pack grid of k-points for lindhard function (list), [[1, 1, 1]].</p></li>
+<li><p>qpoint                      : representative q points (dict), [None].</p></li>
+<li><p>qpoint_path                 : q-points along high symmetry line in Brillouin zone, [[k1, k2, k3]] (crystal coordinate) (str), [None].</p></li>
+<li><p>Nq1                         : number of divisions for high symmetry lines (int, optional), [30].</p></li>
+<li><p>filling                     : number of electrons per unit-cell, [None].</p></li>
+<li><p>temperature                 : temperature for caluclating lindhard function (float), [0.0].</p></li>
+<li><p>hr_input             : full filename of hr.dat file (str), [“”].</p></li>
+<li><p>use_tb_approximation : use tight-binding approximation? (bool), [False].</p></li>
 <li><p>num_k             : # of k points (int), [1].</p></li>
 <li><p>num_bands         : # of bands passed to the code (int), [1].</p></li>
 <li><p>num_wann          : # of WFs (int), [1].</p></li>
@@ -394,7 +452,7 @@
 <li><p>mp_grid           : dimensions of the Monkhorst-Pack grid of k-points (list), [0, 0, 0].</p></li>
 <li><p>kpoints           : k-points, [[k1, k2, k3]] (crystal coordinate) (list), [[[0, 0, 0]]].</p></li>
 <li><p>kpoint            : representative k points (dict), [None].</p></li>
-<li><p>kpoint_path       : k-points along high symmetry line in Brillouin zonen, [[k1, k2, k3]] (crystal coordinate) (str), [None].</p></li>
+<li><p>kpoint_path       : k-points along high symmetry line in Brillouin zone, [[k1, k2, k3]] (crystal coordinate) (str), [None].</p></li>
 <li><p>unit_cell_cart    : transform matrix, [a1,a2,a3], [None].</p></li>
 <li><p>atoms_frac        : atomic positions in fractional coordinates with respect to the lattice vectors, {atom: [r1,r2,r3]} [None].</p></li>
 <li><p>atoms_cart        : atomic positions in cartesian coordinates, {atom: [rx,ry,rz]} [None].</p></li>
@@ -420,6 +478,30 @@
 <li><p>Uoptk             : num_wann×num_wann full unitary matrix (ndarray), [None].</p></li>
 <li><p>Udisk             : num_wann×num_bands partial unitary matrix (ndarray), [None].</p></li>
 <li><p>Uk                : num_wann×num_bands full unitary matrix (ndarray), [None].</p></li>
+</ul>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="data-default">
+<h1>data [default]<a class="headerlink" href="#data-default" title="Link to this heading">#</a></h1>
+<ul class="simple">
+<li><p>Sk              : Overlap matrix elements in k-space (ndarray).,</p></li>
+<li><p>nk              : Electronic density matrix elements in k-space (ndarray).,</p></li>
+<li><p>Hk              : Hamiltonian matrix elements in k-space (orthogonal) (ndarray).,</p></li>
+<li><p>Hk_nonortho     : Hamiltonian matrix elements in k-space (non-orthogonal) (ndarray).,</p></li>
+<li><p>Sr              : Overlap matrix elements in real-space (ndarray).,</p></li>
+<li><p>nr              : Electronic density matrix elements in real-space (ndarray).,</p></li>
+<li><p>Hr              : Hamiltonian matrix elements in real-space (orthogonal) (ndarray).,</p></li>
+<li><p>Hr_nonortho     : Hamiltonian matrix elements in real-space (non-orthogonal) (ndarray).,</p></li>
+<li><p>s               : The expansion coefficients of Sk expressed by a linear combination of SAMBs (ndarray).,</p></li>
+<li><p>z               : The expansion coefficients of Hk expressed by a linear combination of SAMBs (ndarray).,</p></li>
+<li><p>z_nonortho      : The expansion coefficients of Hk_nonortho expressed by a linear combination of SAMBs (ndarray).,</p></li>
+<li><p>Sk_sym          : Symmetrized overlap matrix elements in k-space (ndarray).,</p></li>
+<li><p>Hk_sym          : Symmetrized Hamiltonian matrix elements in k-space (orthogonal) (ndarray).,</p></li>
+<li><p>Hk_nonortho_sym : Symmetrized Hamiltonian matrix elements in k-space (non-orthogonal) (ndarray).,</p></li>
+<li><p>Sr_sym          : Symmetrized overlap matrix elements in real-space (ndarray).,</p></li>
+<li><p>Hr_sym          : Symmetrized Hamiltonian matrix elements in real-space (orthogonal) (ndarray).,</p></li>
+<li><p>Hr_nonortho_sym : Symmetrized Hamiltonian matrix elements in real-space (non-orthogonal) (ndarray).,</p></li>
+<li><p>Ek_MAE_grid    : mean squared error of eigen energies between symmetrized and non-symmetrized closed wannier TB model (grid) (float).,</p></li>
+<li><p>Ek_MAE_path    : mean squared error of eigen energies between symmetrized and non-symmetrized closed wannier TB model (path) (float).,</p></li>
 </ul>
 </section>
 
@@ -454,6 +536,23 @@
             
             
               
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">seedname.hdf5 [default]</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#data-default">data [default]</a></li>
+</ul>
+
+  </nav></div>
+
+</div></div>
+              
             
           </div>
           <footer class="bd-footer-content">
@@ -473,7 +572,7 @@ By Rikuto Oiwa
 
   <p class="copyright">
     
-      © Copyright 2021-2024.
+      © Copyright 2021-2025.
       <br/>
     
   </p>
@@ -497,8 +596,8 @@ By Rikuto Oiwa
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script defer src="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
-<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+  <script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
 
   <footer class="bd-footer">
   </footer>

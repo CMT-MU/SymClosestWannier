@@ -15,19 +15,17 @@
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
     document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
   </script>
-  <!--
-    this give us a css class that will be invisible only if js is disabled
-  -->
-  <noscript>
-    <style>
-      .pst-js-only { display: none !important; }
-
-    </style>
-  </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
-<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+  <link href="../../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/sphinx-book-theme.css?v=eba8b062" />
@@ -37,14 +35,13 @@
     <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-design.min.css?v=95c83b7e" />
   
-  <!-- So that users can add custom icons -->
-  <script src="../../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
-<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
     <script src="../../../_static/documentation_options.js?v=8cf54648"></script>
-    <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../../../_static/copybutton.js?v=f281be69"></script>
@@ -57,12 +54,13 @@
     <script src="../../../_static/design-tabs.js?v=f930bc37"></script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
     <script async="async" src="../../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_modules/symclosestwannier/analyzer/get_response';</script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="jp"/>
-  <meta name="docsearch:version" content="" />
   </head>
   
   
@@ -78,8 +76,19 @@
     <i class="fa-solid fa-arrow-up"></i>Back to top</button>
 
   
-  <dialog id="pst-search-dialog">
-    
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
 <form class="bd-search d-flex align-items-center"
       action="../../../search.html"
       method="get">
@@ -87,6 +96,7 @@
   <input type="search"
          class="form-control"
          name="q"
+         id="search-input"
          placeholder="Search this book..."
          aria-label="Search this book..."
          autocomplete="off"
@@ -94,8 +104,8 @@
          autocapitalize="off"
          spellcheck="false"/>
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
-</form>
-  </dialog>
+</form></div>
+  </div>
 
   <div class="pst-async-banner-revealer d-none">
   <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
@@ -113,8 +123,7 @@
       
         
       
-      <dialog id="pst-primary-sidebar-modal"></dialog>
-      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+      <div class="bd-sidebar-primary bd-sidebar">
         
 
   
@@ -144,35 +153,50 @@
 </a></div>
         <div class="sidebar-primary-item">
 
-<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
- <i class="fa-solid fa-magnifying-glass"></i>
- <span class="search-button__default-text">Search</span>
- <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
-</button></div>
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
         <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
-        <p aria-level="2" class="caption" role="heading"><span class="caption-text">SAMB Construction</span></p>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">MultiPie</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../../../src/samb_construction.html">Construction of SAMBs</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../src/scw_tb.html">Construction of SymCW tight-binding model</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../src/example.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/multipie.html">Construction of SAMBs by using MultiPie</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Closest Wannier method</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../../src/cw.html">Closest Wannier method</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Construction of symmetry-adapted Closest Wannier model</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../../src/scw.html">Symmetry-adapted Closest Wannier model</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">File Format</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../../../src/format/cwin.html">input parameters in the *.cwin file [default]</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../src/format/cwout.html">standard output</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../src/format/info.html">information in CWModel [default]</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../src/format/data.html">data for SymCW (* optional [default] or only for crystal value)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../src/format/hr.html">Hamiltonian matrix elements in real-space</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../src/format/sr.html">Overlap matrix elements in real-space</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../src/format/z.html">The expansion coefficients of the Hamiltonian matrix (orthogonal) H expressed by a linear combination of SAMBs</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../src/format/s.html">The expansion coefficients of the Overlap matrix expressed by a linear combination of SAMBs</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../src/format/z_exp.html">expectation value of the SAMBs.</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/format/cwin.html">seedname.cwin [default]</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/format/cwout.html">seedname.cwout</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/format/hdf5.html">seedname.hdf5 [default]</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="../../../src/format/hr.html">seedname_hr.dat.cw</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/format/sr.html">seedname_sr.dat.cw</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/format/z.html">seedname_z.dat.cw</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/format/s.html">seedname_s.dat.cw</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/format/n.html">seedname_n.dat.cw</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../../src/tutorials/tutorial01.html">CH4: Closest Wannier tight-binding model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/tutorials/tutorial02.html">Graphene: Closest Wannier tight-binding model</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">API</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../../../src/api/analyzer.html">Utility</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../src/api/cw.html">Closest Wannier</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/api/analyzer.html">Utility</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../src/api/util.html">Utility</a></li>
 </ul>
 
@@ -182,14 +206,9 @@
   
   
   <div class="sidebar-primary-items__end sidebar-primary__section">
-      <div class="sidebar-primary-item">
-<div id="ethical-ad-placement"
-      class="flat"
-      data-ea-publisher="readthedocs"
-      data-ea-type="readthedocs-sidebar"
-      data-ea-manual="true">
-</div></div>
   </div>
+  
+  <div id="rtd-footer-container"></div>
 
 
       </div>
@@ -253,16 +272,24 @@
 
 
 
-<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
-  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
-  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
-  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
-</button>
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
 
 
-<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <i class="fa-solid fa-magnifying-glass fa-lg"></i>
-</button>
+  </button>
+`);
+</script>
 
 </div></div>
       
@@ -322,10 +349,11 @@
 <span class="c1"># *  RPS19  = PRB 99, 235113 (2019)  (spin Hall conductivity - SHC)</span>
 <span class="c1"># *  IAdJS19 = arXiv:1910.06172 (2019) (quasi-degenerate k.p)</span>
 <span class="c1"># ---------------------------------------------------------------</span>
-
+<span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">multiprocessing</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">joblib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Parallel</span><span class="p">,</span> <span class="n">delayed</span><span class="p">,</span> <span class="n">wrap_non_picklable_objects</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tqdm</span><span class="w"> </span><span class="kn">import</span> <span class="n">tqdm</span>
 
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">symclosestwannier.util.utility</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
@@ -492,13 +520,19 @@
             <span class="s2">&quot;Using a translationally-invariant discretization for the band-diagonal Wannier matrix elements of r, etc.&quot;</span>
         <span class="p">)</span>
 
+    <span class="k">if</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;use_tb_approximation&quot;</span><span class="p">]:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;*** Using tight-binding approximation ***&quot;</span><span class="p">)</span>
+
     <span class="c1"># --- #</span>
 
     <span class="k">if</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;berry_task&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;ahc&quot;</span><span class="p">:</span>
         <span class="n">d</span><span class="p">[</span><span class="s2">&quot;ahc_list&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">berry_get_ahc</span><span class="p">(</span><span class="n">cwi</span><span class="p">,</span> <span class="n">operators</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;berry_task&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;kubo&quot;</span><span class="p">:</span>
-        <span class="n">kubo_H</span><span class="p">,</span> <span class="n">kubo_AH</span><span class="p">,</span> <span class="n">kubo_H_spn</span><span class="p">,</span> <span class="n">kubo_AH_spn</span> <span class="o">=</span> <span class="n">berry_get_kubo</span><span class="p">(</span><span class="n">cwi</span><span class="p">,</span> <span class="n">operators</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;use_tb_approximation&quot;</span><span class="p">]:</span>
+            <span class="n">kubo_H</span><span class="p">,</span> <span class="n">kubo_AH</span><span class="p">,</span> <span class="n">kubo_H_spn</span><span class="p">,</span> <span class="n">kubo_AH_spn</span> <span class="o">=</span> <span class="n">berry_get_kubo_tb</span><span class="p">(</span><span class="n">cwi</span><span class="p">,</span> <span class="n">operators</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">kubo_H</span><span class="p">,</span> <span class="n">kubo_AH</span><span class="p">,</span> <span class="n">kubo_H_spn</span><span class="p">,</span> <span class="n">kubo_AH_spn</span> <span class="o">=</span> <span class="n">berry_get_kubo</span><span class="p">(</span><span class="n">cwi</span><span class="p">,</span> <span class="n">operators</span><span class="p">)</span>
 
         <span class="n">d</span><span class="p">[</span><span class="s2">&quot;kubo_H&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">kubo_H</span>
         <span class="n">d</span><span class="p">[</span><span class="s2">&quot;kubo_AH&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">kubo_AH</span>
@@ -744,13 +778,17 @@
 
 <span class="sd">    (n=-99): derivative of Fermi-Dirac function: 0.5/(1.0+cosh(x))</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">w0gauss</span> <span class="o">=</span> <span class="mf">0.0</span>  <span class="c1"># in case of error return</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+
+    <span class="n">w0gauss</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>  <span class="c1"># in case of error return</span>
 
     <span class="n">sqrtpm1</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span>
 
     <span class="c1"># cold smearing  (Marzari-Vanderbilt)</span>
     <span class="k">if</span> <span class="n">n</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
-        <span class="n">arg</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="n">arg</span> <span class="o">=</span> <span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span> <span class="o">**</span> <span class="mi">2</span>
+        <span class="n">arg</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">200</span><span class="p">,</span> <span class="n">arg</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span> <span class="o">*</span> <span class="mi">200</span><span class="p">)</span>
         <span class="n">w0gauss</span> <span class="o">=</span> <span class="n">sqrtpm1</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">arg</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mf">2.0</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mf">2.0</span><span class="p">)</span> <span class="o">*</span> <span class="n">x</span><span class="p">)</span>
     <span class="c1"># Fermi-Dirac smearing</span>
     <span class="k">elif</span> <span class="n">n</span> <span class="o">==</span> <span class="o">-</span><span class="mi">99</span><span class="p">:</span>
@@ -760,13 +798,15 @@
             <span class="n">w0gauss</span> <span class="o">=</span> <span class="mf">0.0</span>
     <span class="c1"># Gaussian</span>
     <span class="k">elif</span> <span class="n">n</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="n">arg</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="n">x</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+        <span class="n">arg</span> <span class="o">=</span> <span class="n">x</span><span class="o">**</span><span class="mi">2</span>
+        <span class="n">arg</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">200</span><span class="p">,</span> <span class="n">arg</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span> <span class="o">*</span> <span class="mi">200</span><span class="p">)</span>
         <span class="n">w0gauss</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">arg</span><span class="p">)</span> <span class="o">*</span> <span class="n">sqrtpm1</span>
     <span class="k">elif</span> <span class="n">n</span> <span class="o">&gt;</span> <span class="mi">10</span> <span class="ow">or</span> <span class="n">n</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;utility_w0gauss higher order (n&gt;10) smearing is untested and unstable&quot;</span><span class="p">)</span>
     <span class="c1"># Methfessel-Paxton</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="n">arg</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="n">x</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+        <span class="n">arg</span> <span class="o">=</span> <span class="n">x</span><span class="o">**</span><span class="mi">2</span>
+        <span class="n">arg</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">200</span><span class="p">,</span> <span class="n">arg</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span> <span class="o">*</span> <span class="mi">200</span><span class="p">)</span>
         <span class="n">w0gauss</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">arg</span><span class="p">)</span> <span class="o">*</span> <span class="n">sqrtpm1</span>
         <span class="n">hd</span> <span class="o">=</span> <span class="mf">0.0</span>
         <span class="n">hp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">arg</span><span class="p">)</span>
@@ -1274,7 +1314,9 @@
 
     <span class="n">num_k</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">prod</span><span class="p">(</span><span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;berry_kmesh&quot;</span><span class="p">])</span>
 
-    <span class="n">kpoints_chunks</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">kpoints</span><span class="p">,</span> <span class="p">[</span><span class="n">j</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">100000</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">kpoints</span><span class="p">),</span> <span class="mi">100000</span><span class="p">)])</span>
+    <span class="n">kpoints_chunks</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">split</span><span class="p">(</span>
+        <span class="n">kpoints</span><span class="p">,</span> <span class="p">[</span><span class="n">j</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">kpoints</span><span class="p">)</span> <span class="o">//</span> <span class="n">_num_proc</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">kpoints</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">kpoints</span><span class="p">)</span> <span class="o">//</span> <span class="n">_num_proc</span><span class="p">)]</span>
+    <span class="p">)</span>
 
     <span class="n">res</span> <span class="o">=</span> <span class="n">Parallel</span><span class="p">(</span><span class="n">n_jobs</span><span class="o">=</span><span class="n">_num_proc</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">10</span><span class="p">)(</span><span class="n">delayed</span><span class="p">(</span><span class="n">berry_get_ahc_k</span><span class="p">)(</span><span class="n">kpt</span><span class="p">)</span> <span class="k">for</span> <span class="n">kpt</span> <span class="ow">in</span> <span class="n">kpoints_chunks</span><span class="p">)</span>
 
@@ -1431,12 +1473,12 @@
         <span class="n">delHH</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="n">U</span> <span class="o">=</span> <span class="kc">None</span>
 
-        <span class="n">kubo_H</span> <span class="o">=</span> <span class="mf">1.0</span><span class="n">j</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">kubo_nfreq</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
-        <span class="n">kubo_AH</span> <span class="o">=</span> <span class="mf">1.0</span><span class="n">j</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">kubo_nfreq</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+        <span class="n">kubo_H</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">kubo_nfreq</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">complex</span><span class="p">)</span>
+        <span class="n">kubo_AH</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">kubo_nfreq</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">complex</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">spin_decomp</span><span class="p">:</span>
-            <span class="n">kubo_H_spn</span> <span class="o">=</span> <span class="mf">1.0</span><span class="n">j</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">kubo_nfreq</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
-            <span class="n">kubo_AH_spn</span> <span class="o">=</span> <span class="mf">1.0</span><span class="n">j</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">kubo_nfreq</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+            <span class="n">kubo_H_spn</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">kubo_nfreq</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">complex</span><span class="p">)</span>
+            <span class="n">kubo_AH_spn</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">kubo_nfreq</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">complex</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">kubo_H_spn</span> <span class="o">=</span> <span class="mf">0.0</span>
             <span class="n">kubo_AH_spn</span> <span class="o">=</span> <span class="mf">0.0</span>
@@ -1483,10 +1525,7 @@
 
                     <span class="c1"># Broadened delta function for the Hermitian conductivity and JDOS</span>
                     <span class="n">arg</span> <span class="o">=</span> <span class="p">(</span><span class="n">ekm</span> <span class="o">-</span> <span class="n">ekn</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">real</span><span class="p">(</span><span class="n">omega_list</span><span class="p">))</span> <span class="o">/</span> <span class="n">eta_smr</span>
-                    <span class="n">delta</span> <span class="o">=</span> <span class="p">(</span>
-                        <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">utility_w0gauss</span><span class="p">(</span><span class="n">arg</span><span class="p">[</span><span class="n">ifreq</span><span class="p">],</span> <span class="n">kubo_smr_type_idx</span><span class="p">)</span> <span class="k">for</span> <span class="n">ifreq</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">kubo_nfreq</span><span class="p">)])</span>
-                        <span class="o">/</span> <span class="n">eta_smr</span>
-                    <span class="p">)</span>
+                    <span class="n">delta</span> <span class="o">=</span> <span class="n">utility_w0gauss</span><span class="p">(</span><span class="n">arg</span><span class="p">,</span> <span class="n">kubo_smr_type_idx</span><span class="p">)</span> <span class="o">/</span> <span class="n">eta_smr</span>
 
                     <span class="n">rfac1</span> <span class="o">=</span> <span class="p">(</span><span class="n">fkm</span> <span class="o">-</span> <span class="n">fkn</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">ekm</span> <span class="o">-</span> <span class="n">ekn</span><span class="p">)</span>
                     <span class="n">rfac2</span> <span class="o">=</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">rfac1</span> <span class="o">*</span> <span class="n">delta</span>
@@ -1511,16 +1550,18 @@
 
     <span class="n">num_k</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">prod</span><span class="p">(</span><span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;berry_kmesh&quot;</span><span class="p">])</span>
 
-    <span class="n">kpoints_chunks</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">kpoints</span><span class="p">,</span> <span class="p">[</span><span class="n">j</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">100000</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">kpoints</span><span class="p">),</span> <span class="mi">100000</span><span class="p">)])</span>
+    <span class="n">kpoints_chunks</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">split</span><span class="p">(</span>
+        <span class="n">kpoints</span><span class="p">,</span> <span class="p">[</span><span class="n">j</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">kpoints</span><span class="p">)</span> <span class="o">//</span> <span class="n">_num_proc</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">kpoints</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">kpoints</span><span class="p">)</span> <span class="o">//</span> <span class="n">_num_proc</span><span class="p">)]</span>
+    <span class="p">)</span>
 
     <span class="n">res</span> <span class="o">=</span> <span class="n">Parallel</span><span class="p">(</span><span class="n">n_jobs</span><span class="o">=</span><span class="n">_num_proc</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">10</span><span class="p">)(</span><span class="n">delayed</span><span class="p">(</span><span class="n">berry_get_kubo_k</span><span class="p">)(</span><span class="n">kpt</span><span class="p">)</span> <span class="k">for</span> <span class="n">kpt</span> <span class="ow">in</span> <span class="n">kpoints_chunks</span><span class="p">)</span>
 
-    <span class="n">kubo_H</span> <span class="o">=</span> <span class="mf">1.0</span><span class="n">j</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">kubo_nfreq</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
-    <span class="n">kubo_AH</span> <span class="o">=</span> <span class="mf">1.0</span><span class="n">j</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">kubo_nfreq</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+    <span class="n">kubo_H</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">kubo_nfreq</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">complex</span><span class="p">)</span>
+    <span class="n">kubo_AH</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">kubo_nfreq</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">complex</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">spin_decomp</span><span class="p">:</span>
-        <span class="n">kubo_H_spn</span> <span class="o">=</span> <span class="mf">1.0</span><span class="n">j</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">kubo_nfreq</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
-        <span class="n">kubo_AH_spn</span> <span class="o">=</span> <span class="mf">1.0</span><span class="n">j</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">kubo_nfreq</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+        <span class="n">kubo_H_spn</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">kubo_nfreq</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">complex</span><span class="p">)</span>
+        <span class="n">kubo_AH_spn</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">kubo_nfreq</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">complex</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">kubo_H_spn</span> <span class="o">=</span> <span class="mf">0.0</span>
         <span class="n">kubo_AH_spn</span> <span class="o">=</span> <span class="mf">0.0</span>
@@ -1544,6 +1585,235 @@
     <span class="n">cell_volume</span> <span class="o">=</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;unit_cell_volume&quot;</span><span class="p">]</span>
 
     <span class="n">fac</span> <span class="o">=</span> <span class="mf">1.0e8</span> <span class="o">*</span> <span class="n">elem_charge_SI</span><span class="o">**</span><span class="mi">2</span> <span class="o">/</span> <span class="p">(</span><span class="n">hbar_SI</span> <span class="o">*</span> <span class="n">cell_volume</span><span class="p">)</span> <span class="o">/</span> <span class="n">num_k</span>
+
+    <span class="n">kubo_H</span> <span class="o">*=</span> <span class="n">fac</span>
+    <span class="n">kubo_AH</span> <span class="o">*=</span> <span class="n">fac</span>
+
+    <span class="k">if</span> <span class="n">spin_decomp</span><span class="p">:</span>
+        <span class="n">kubo_H_spn</span> <span class="o">*=</span> <span class="n">fac</span>
+        <span class="n">kubo_AH_spn</span> <span class="o">*=</span> <span class="n">fac</span>
+
+    <span class="k">return</span> <span class="n">kubo_H</span><span class="p">,</span> <span class="n">kubo_AH</span><span class="p">,</span> <span class="n">kubo_H_spn</span><span class="p">,</span> <span class="n">kubo_AH_spn</span></div>
+
+
+
+<span class="c1"># ==================================================</span>
+<div class="viewcode-block" id="berry_get_kubo_tb">
+<a class="viewcode-back" href="../../../src/api/analyzer.html#symclosestwannier.analyzer.get_response.berry_get_kubo_tb">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">berry_get_kubo_tb</span><span class="p">(</span><span class="n">cwi</span><span class="p">,</span> <span class="n">operators</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Complex interband optical conductivity, in S/cm,</span>
+<span class="sd">    separated into Hermitian (Kubo_H) and anti-Hermitian (Kubo_AH) parts.</span>
+<span class="sd">    Use tight-binding approximation.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        cwi (CWInfo): CWInfo.</span>
+<span class="sd">        operators (dict):</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        tuple: Kubo_H, Kubo_AH, Kubo_H_spn, Kubo_AH_spn.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;tb_gauge&quot;</span><span class="p">]:</span>
+        <span class="n">atoms_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;atoms_frac&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+        <span class="n">atoms_frac</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">atoms_list</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;nw2n&quot;</span><span class="p">]])</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">atoms_frac</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="n">ef</span> <span class="o">=</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;fermi_energy&quot;</span><span class="p">]</span>
+    <span class="n">berry_kmesh</span> <span class="o">=</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;berry_kmesh&quot;</span><span class="p">]</span>
+    <span class="n">num_wann</span> <span class="o">=</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;num_wann&quot;</span><span class="p">]</span>
+
+    <span class="n">spin_decomp</span> <span class="o">=</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;spin_decomp&quot;</span><span class="p">]</span>
+    <span class="n">spn_nk</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">num_wann</span><span class="p">)</span>
+
+    <span class="n">kubo_adpt_smr</span> <span class="o">=</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;kubo_adpt_smr&quot;</span><span class="p">]</span>
+    <span class="n">kubo_adpt_smr_fac</span> <span class="o">=</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;kubo_adpt_smr_fac&quot;</span><span class="p">]</span>
+    <span class="n">kubo_adpt_smr_max</span> <span class="o">=</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;kubo_adpt_smr_max&quot;</span><span class="p">]</span>
+    <span class="n">kubo_smr_fixed_en_width</span> <span class="o">=</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;kubo_smr_fixed_en_width&quot;</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;kubo_smr_type&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;gauss&quot;</span><span class="p">:</span>
+        <span class="n">kubo_smr_type_idx</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">elif</span> <span class="s2">&quot;m-p&quot;</span> <span class="ow">in</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;kubo_smr_type&quot;</span><span class="p">]:</span>
+        <span class="n">m_pN</span> <span class="o">=</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;kubo_smr_type&quot;</span><span class="p">]</span>
+        <span class="n">kubo_smr_type_idx</span> <span class="o">=</span> <span class="n">m_pN</span><span class="p">[</span><span class="mi">2</span><span class="p">:]</span>
+    <span class="k">elif</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;kubo_smr_type&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;m-v&quot;</span> <span class="ow">or</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;kubo_smr_type&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;cold&quot;</span><span class="p">:</span>
+        <span class="n">kubo_smr_type_idx</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+    <span class="k">elif</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;kubo_smr_type&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;f-d&quot;</span><span class="p">:</span>
+        <span class="n">kubo_smr_type_idx</span> <span class="o">=</span> <span class="o">-</span><span class="mi">99</span>
+
+    <span class="k">if</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;kubo_eigval_max&quot;</span><span class="p">]</span> <span class="o">&lt;</span> <span class="o">+</span><span class="mi">100000</span><span class="p">:</span>
+        <span class="n">kubo_eigval_max</span> <span class="o">=</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;kubo_eigval_max&quot;</span><span class="p">]</span>
+    <span class="k">elif</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;dis_froz_max&quot;</span><span class="p">]</span> <span class="o">&lt;</span> <span class="o">+</span><span class="mi">100000</span><span class="p">:</span>
+        <span class="n">kubo_eigval_max</span> <span class="o">=</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;dis_froz_max&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="mf">0.6667</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">kubo_eigval_max</span> <span class="o">=</span> <span class="mi">100000</span>
+
+    <span class="n">use_degen_pert</span> <span class="o">=</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;use_degen_pert&quot;</span><span class="p">]</span>
+    <span class="n">degen_thr</span> <span class="o">=</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;degen_thr&quot;</span><span class="p">]</span>
+
+    <span class="n">kubo_freq_list</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;kubo_freq_min&quot;</span><span class="p">],</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;kubo_freq_max&quot;</span><span class="p">],</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;kubo_freq_step&quot;</span><span class="p">])</span>
+    <span class="c1"># Replace imaginary part of frequency with a fixed value</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">kubo_adpt_smr</span> <span class="ow">and</span> <span class="n">kubo_smr_fixed_en_width</span> <span class="o">!=</span> <span class="mf">0.0</span><span class="p">:</span>
+        <span class="n">kubo_freq_list</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">real</span><span class="p">(</span><span class="n">kubo_freq_list</span><span class="p">)</span> <span class="o">+</span> <span class="mf">1.0</span><span class="n">j</span> <span class="o">*</span> <span class="n">kubo_smr_fixed_en_width</span>
+
+    <span class="n">kubo_nfreq</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">kubo_freq_list</span><span class="p">)</span>
+
+    <span class="c1"># ==================================================</span>
+    <span class="nd">@wrap_non_picklable_objects</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">berry_get_kubo_k</span><span class="p">(</span><span class="n">kpt</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        calculate</span>
+<span class="sd">        Complex interband optical conductivity, in S/cm,</span>
+<span class="sd">        separated into Hermitian (Kubo_H) and anti-Hermitian (Kubo_AH) parts.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            kpt (ndarray): kpoint.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            tuple: Kubo_H, Kubo_AH, Kubo_H_spn, Kubo_AH_spn.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">kpt</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">kpt</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">kpt</span><span class="p">])</span>
+
+        <span class="n">HH</span><span class="p">,</span> <span class="n">delHH</span> <span class="o">=</span> <span class="n">fourier_transform_r_to_k_new</span><span class="p">(</span>
+            <span class="n">operators</span><span class="p">[</span><span class="s2">&quot;HH_R&quot;</span><span class="p">],</span> <span class="n">kpt</span><span class="p">,</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;unit_cell_cart&quot;</span><span class="p">],</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;irvec&quot;</span><span class="p">],</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;ndegen&quot;</span><span class="p">],</span> <span class="n">atoms_frac</span>
+        <span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;zeeman_interaction&quot;</span><span class="p">]:</span>
+            <span class="n">B</span> <span class="o">=</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;magnetic_field&quot;</span><span class="p">]</span>
+            <span class="n">theta</span> <span class="o">=</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;magnetic_field_theta&quot;</span><span class="p">]</span>
+            <span class="n">phi</span> <span class="o">=</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;magnetic_field_phi&quot;</span><span class="p">]</span>
+            <span class="n">g_factor</span> <span class="o">=</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;g_factor&quot;</span><span class="p">]</span>
+
+            <span class="n">pauli_spin</span> <span class="o">=</span> <span class="n">fourier_transform_r_to_k_vec</span><span class="p">(</span><span class="n">operators</span><span class="p">[</span><span class="s2">&quot;SS_R&quot;</span><span class="p">],</span> <span class="n">kpt</span><span class="p">,</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;irvec&quot;</span><span class="p">],</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;ndegen&quot;</span><span class="p">],</span> <span class="n">atoms_frac</span><span class="p">)</span>
+            <span class="n">H_zeeman</span> <span class="o">=</span> <span class="n">spin_zeeman_interaction</span><span class="p">(</span><span class="n">B</span><span class="p">,</span> <span class="n">theta</span><span class="p">,</span> <span class="n">phi</span><span class="p">,</span> <span class="n">pauli_spin</span><span class="p">,</span> <span class="n">g_factor</span><span class="p">,</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;num_wann&quot;</span><span class="p">])</span>
+            <span class="n">HH</span> <span class="o">+=</span> <span class="n">H_zeeman</span>
+
+        <span class="n">E</span><span class="p">,</span> <span class="n">U</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">eigh</span><span class="p">(</span><span class="n">HH</span><span class="p">)</span>
+        <span class="n">HH</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="n">v</span> <span class="o">=</span> <span class="n">fourier_transform_r_to_k_vec</span><span class="p">(</span><span class="n">operators</span><span class="p">[</span><span class="s2">&quot;v_R&quot;</span><span class="p">],</span> <span class="n">kpt</span><span class="p">,</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;irvec&quot;</span><span class="p">],</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;ndegen&quot;</span><span class="p">],</span> <span class="n">atoms_frac</span><span class="p">)</span>
+        <span class="n">v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">U</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">conjugate</span><span class="p">()</span> <span class="o">@</span> <span class="n">v</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">@</span> <span class="n">U</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">)])</span>
+
+        <span class="k">if</span> <span class="n">kubo_adpt_smr</span><span class="p">:</span>
+            <span class="n">delE</span> <span class="o">=</span> <span class="n">wham_get_deleig</span><span class="p">(</span><span class="n">delHH</span><span class="p">,</span> <span class="n">E</span><span class="p">,</span> <span class="n">U</span><span class="p">,</span> <span class="n">use_degen_pert</span><span class="p">,</span> <span class="n">degen_thr</span><span class="p">)</span>
+            <span class="n">Delta_k</span> <span class="o">=</span> <span class="n">kmesh_spacing_mesh</span><span class="p">(</span><span class="n">berry_kmesh</span><span class="p">,</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;B&quot;</span><span class="p">])</span>
+
+        <span class="n">delHH</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">U</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="n">kubo_H</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">kubo_nfreq</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">complex</span><span class="p">)</span>
+        <span class="n">kubo_AH</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">kubo_nfreq</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">complex</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">spin_decomp</span><span class="p">:</span>
+            <span class="n">kubo_H_spn</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">kubo_nfreq</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">complex</span><span class="p">)</span>
+            <span class="n">kubo_AH_spn</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">kubo_nfreq</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">complex</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">kubo_H_spn</span> <span class="o">=</span> <span class="mf">0.0</span>
+            <span class="n">kubo_AH_spn</span> <span class="o">=</span> <span class="mf">0.0</span>
+
+        <span class="n">occ</span> <span class="o">=</span> <span class="n">fermi</span><span class="p">(</span><span class="n">E</span> <span class="o">-</span> <span class="n">ef</span><span class="p">,</span> <span class="n">T</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s2">&quot;eV&quot;</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">kpt</span><span class="p">)):</span>
+            <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_wann</span><span class="p">):</span>
+                <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_wann</span><span class="p">):</span>
+                    <span class="k">if</span> <span class="n">m</span> <span class="o">==</span> <span class="n">n</span><span class="p">:</span>
+                        <span class="k">continue</span>
+
+                    <span class="k">if</span> <span class="n">E</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="n">m</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">kubo_eigval_max</span> <span class="ow">or</span> <span class="n">E</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="n">n</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">kubo_eigval_max</span><span class="p">:</span>
+                        <span class="k">continue</span>
+
+                    <span class="n">ekm</span> <span class="o">=</span> <span class="n">E</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="n">m</span><span class="p">]</span>
+                    <span class="n">ekn</span> <span class="o">=</span> <span class="n">E</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="n">n</span><span class="p">]</span>
+                    <span class="n">fkm</span> <span class="o">=</span> <span class="n">occ</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="n">m</span><span class="p">]</span>
+                    <span class="n">fkn</span> <span class="o">=</span> <span class="n">occ</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="n">n</span><span class="p">]</span>
+
+                    <span class="k">if</span> <span class="n">spin_decomp</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="n">spn_nk</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">spn_nk</span><span class="p">[</span><span class="n">m</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">:</span>
+                            <span class="n">ispn</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># up --&gt; up transition</span>
+                        <span class="k">elif</span> <span class="n">spn_nk</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">spn_nk</span><span class="p">[</span><span class="n">m</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+                            <span class="n">ispn</span> <span class="o">=</span> <span class="mi">1</span>  <span class="c1"># down --&gt; down</span>
+                        <span class="k">else</span><span class="p">:</span>
+                            <span class="n">ispn</span> <span class="o">=</span> <span class="mi">2</span>  <span class="c1"># spin-flip</span>
+
+                    <span class="k">if</span> <span class="n">kubo_adpt_smr</span><span class="p">:</span>
+                        <span class="c1"># Eq.(35) YWVS07</span>
+                        <span class="n">vdum</span> <span class="o">=</span> <span class="n">delE</span><span class="p">[:,</span> <span class="n">k</span><span class="p">,</span> <span class="n">m</span><span class="p">]</span> <span class="o">-</span> <span class="n">delE</span><span class="p">[:,</span> <span class="n">k</span><span class="p">,</span> <span class="n">n</span><span class="p">]</span>
+                        <span class="n">joint_level_spacing</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">vdum</span><span class="p">,</span> <span class="n">vdum</span><span class="p">))</span> <span class="o">*</span> <span class="n">Delta_k</span>
+                        <span class="n">eta_smr</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">joint_level_spacing</span> <span class="o">*</span> <span class="n">kubo_adpt_smr_fac</span><span class="p">,</span> <span class="n">kubo_adpt_smr_max</span><span class="p">)</span>
+                        <span class="k">if</span> <span class="n">eta_smr</span> <span class="o">&lt;</span> <span class="mf">1e-6</span><span class="p">:</span>
+                            <span class="n">eta_smr</span> <span class="o">=</span> <span class="mf">1e-6</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">eta_smr</span> <span class="o">=</span> <span class="n">kubo_smr_fixed_en_width</span>
+
+                    <span class="c1"># Complex frequency for the anti-Hermitian conductivity</span>
+                    <span class="k">if</span> <span class="n">kubo_adpt_smr</span><span class="p">:</span>
+                        <span class="n">omega_list</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">real</span><span class="p">(</span><span class="n">kubo_freq_list</span><span class="p">)</span> <span class="o">+</span> <span class="mf">1.0</span><span class="n">j</span> <span class="o">*</span> <span class="n">eta_smr</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">omega_list</span> <span class="o">=</span> <span class="n">kubo_freq_list</span>
+
+                    <span class="c1"># Broadened delta function for the Hermitian conductivity and JDOS</span>
+                    <span class="n">arg</span> <span class="o">=</span> <span class="p">(</span><span class="n">ekm</span> <span class="o">-</span> <span class="n">ekn</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">real</span><span class="p">(</span><span class="n">omega_list</span><span class="p">))</span> <span class="o">/</span> <span class="n">eta_smr</span>
+                    <span class="n">delta</span> <span class="o">=</span> <span class="n">utility_w0gauss</span><span class="p">(</span><span class="n">arg</span><span class="p">,</span> <span class="n">kubo_smr_type_idx</span><span class="p">)</span> <span class="o">/</span> <span class="n">eta_smr</span>
+
+                    <span class="n">rfac1</span> <span class="o">=</span> <span class="p">(</span><span class="n">fkm</span> <span class="o">-</span> <span class="n">fkn</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">ekm</span> <span class="o">-</span> <span class="n">ekn</span><span class="p">)</span>
+                    <span class="n">rfac2</span> <span class="o">=</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">rfac1</span> <span class="o">*</span> <span class="n">delta</span>
+                    <span class="n">cfac</span> <span class="o">=</span> <span class="mf">1.0</span><span class="n">j</span> <span class="o">*</span> <span class="n">rfac1</span> <span class="o">/</span> <span class="p">(</span><span class="n">ekm</span> <span class="o">-</span> <span class="n">ekn</span> <span class="o">-</span> <span class="n">omega_list</span><span class="p">)</span>
+
+                    <span class="n">viknm_vjkmn</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="n">v</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">m</span><span class="p">]</span> <span class="o">*</span> <span class="n">v</span><span class="p">[</span><span class="n">j</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">]</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">)]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">)])</span>
+
+                    <span class="n">kubo_H</span> <span class="o">+=</span> <span class="n">rfac2</span><span class="p">[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span> <span class="o">*</span> <span class="n">viknm_vjkmn</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:]</span>
+                    <span class="n">kubo_AH</span> <span class="o">+=</span> <span class="n">cfac</span><span class="p">[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span> <span class="o">*</span> <span class="n">viknm_vjkmn</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:]</span>
+
+                    <span class="k">if</span> <span class="n">spin_decomp</span><span class="p">:</span>
+                        <span class="n">kubo_H_spn</span> <span class="o">+=</span> <span class="n">rfac2</span><span class="p">[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span> <span class="o">*</span> <span class="n">viknm_vjkmn</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:]</span>
+                        <span class="n">kubo_AH_spn</span> <span class="o">+=</span> <span class="n">cfac</span><span class="p">[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span> <span class="o">*</span> <span class="n">viknm_vjkmn</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:]</span>
+
+        <span class="k">return</span> <span class="n">kubo_H</span><span class="p">,</span> <span class="n">kubo_AH</span><span class="p">,</span> <span class="n">kubo_H_spn</span><span class="p">,</span> <span class="n">kubo_AH_spn</span>
+
+    <span class="c1"># ==================================================</span>
+    <span class="n">N1</span><span class="p">,</span> <span class="n">N2</span><span class="p">,</span> <span class="n">N3</span> <span class="o">=</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;berry_kmesh&quot;</span><span class="p">]</span>
+    <span class="n">kpoints</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+        <span class="p">[[</span><span class="n">i</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="n">N1</span><span class="p">),</span> <span class="n">j</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="n">N2</span><span class="p">),</span> <span class="n">k</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="n">N3</span><span class="p">)]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N1</span><span class="p">)</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N2</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N3</span><span class="p">)]</span>
+    <span class="p">)</span>
+
+    <span class="n">num_k</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">prod</span><span class="p">(</span><span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;berry_kmesh&quot;</span><span class="p">])</span>
+
+    <span class="n">kpoints_chunks</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">split</span><span class="p">(</span>
+        <span class="n">kpoints</span><span class="p">,</span> <span class="p">[</span><span class="n">j</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">kpoints</span><span class="p">)</span> <span class="o">//</span> <span class="n">_num_proc</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">kpoints</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">kpoints</span><span class="p">)</span> <span class="o">//</span> <span class="n">_num_proc</span><span class="p">)]</span>
+    <span class="p">)</span>
+
+    <span class="n">res</span> <span class="o">=</span> <span class="n">Parallel</span><span class="p">(</span><span class="n">n_jobs</span><span class="o">=</span><span class="n">_num_proc</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">10</span><span class="p">)(</span><span class="n">delayed</span><span class="p">(</span><span class="n">berry_get_kubo_k</span><span class="p">)(</span><span class="n">kpt</span><span class="p">)</span> <span class="k">for</span> <span class="n">kpt</span> <span class="ow">in</span> <span class="n">kpoints_chunks</span><span class="p">)</span>
+
+    <span class="n">kubo_H</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">kubo_nfreq</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">complex</span><span class="p">)</span>
+    <span class="n">kubo_AH</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">kubo_nfreq</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">complex</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">spin_decomp</span><span class="p">:</span>
+        <span class="n">kubo_H_spn</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">kubo_nfreq</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">complex</span><span class="p">)</span>
+        <span class="n">kubo_AH_spn</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">kubo_nfreq</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">complex</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">kubo_H_spn</span> <span class="o">=</span> <span class="mf">0.0</span>
+        <span class="n">kubo_AH_spn</span> <span class="o">=</span> <span class="mf">0.0</span>
+
+    <span class="k">for</span> <span class="n">kubo_H_k</span><span class="p">,</span> <span class="n">kubo_AH_k</span><span class="p">,</span> <span class="n">kubo_H_spn_k</span><span class="p">,</span> <span class="n">kubo_AH_spn_k</span> <span class="ow">in</span> <span class="n">res</span><span class="p">:</span>
+        <span class="n">kubo_H</span> <span class="o">+=</span> <span class="n">kubo_H_k</span>
+        <span class="n">kubo_AH</span> <span class="o">+=</span> <span class="n">kubo_AH_k</span>
+        <span class="n">kubo_H_spn</span> <span class="o">+=</span> <span class="n">kubo_H_spn_k</span>
+        <span class="n">kubo_AH_spn</span> <span class="o">+=</span> <span class="n">kubo_AH_spn_k</span>
+
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    --------------------------------------------------------------------</span>
+<span class="sd">    Convert to S/cm</span>
+
+<span class="sd">    fac = hbar e^2/(V_c*10^-8)</span>
+
+<span class="sd">    with &#39;V_c&#39; in Angstroms^3, and &#39;e&#39;, &#39;hbar&#39; in SI units</span>
+<span class="sd">    --------------------------------------------------------------------</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">cell_volume</span> <span class="o">=</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;unit_cell_volume&quot;</span><span class="p">]</span>
+
+    <span class="n">fac</span> <span class="o">=</span> <span class="mf">1.0e8</span> <span class="o">*</span> <span class="n">hbar_SI</span> <span class="o">*</span> <span class="n">elem_charge_SI</span><span class="o">**</span><span class="mi">2</span> <span class="o">/</span> <span class="n">cell_volume</span> <span class="o">/</span> <span class="n">num_k</span>
 
     <span class="n">kubo_H</span> <span class="o">*=</span> <span class="n">fac</span>
     <span class="n">kubo_AH</span> <span class="o">*=</span> <span class="n">fac</span>
@@ -1920,7 +2190,9 @@
 
     <span class="n">num_k</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">prod</span><span class="p">(</span><span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;berry_kmesh&quot;</span><span class="p">])</span>
 
-    <span class="n">kpoints_chunks</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">kpoints</span><span class="p">,</span> <span class="p">[</span><span class="n">j</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">100000</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">kpoints</span><span class="p">),</span> <span class="mi">100000</span><span class="p">)])</span>
+    <span class="n">kpoints_chunks</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">split</span><span class="p">(</span>
+        <span class="n">kpoints</span><span class="p">,</span> <span class="p">[</span><span class="n">j</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">kpoints</span><span class="p">)</span> <span class="o">//</span> <span class="n">_num_proc</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">kpoints</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">kpoints</span><span class="p">)</span> <span class="o">//</span> <span class="n">_num_proc</span><span class="p">)]</span>
+    <span class="p">)</span>
 
     <span class="n">res</span> <span class="o">=</span> <span class="n">Parallel</span><span class="p">(</span><span class="n">n_jobs</span><span class="o">=</span><span class="n">_num_proc</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">10</span><span class="p">)(</span><span class="n">delayed</span><span class="p">(</span><span class="n">berry_get_shc_k</span><span class="p">)(</span><span class="n">kpoints</span><span class="p">)</span> <span class="k">for</span> <span class="n">kpoints</span> <span class="ow">in</span> <span class="n">kpoints_chunks</span><span class="p">)</span>
 
@@ -2141,15 +2413,18 @@
 
                 <span class="n">delE_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">delE</span><span class="p">[:,</span> <span class="n">k</span><span class="p">,</span> <span class="n">n</span><span class="p">]</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">k_list_</span><span class="p">])</span>
                 <span class="n">orb_nk_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">orb_nk</span><span class="p">[</span><span class="n">k_list</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">k</span><span class="p">),</span> <span class="p">:]</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">k_list_</span><span class="p">])</span>
+                <span class="c1"># delta_ = (</span>
+                <span class="c1">#     np.array(</span>
+                <span class="c1">#         [</span>
+                <span class="c1">#             utility_w0gauss((E[k, n] - fermi_energy_list[ifermi]) / eta_smr, gyrotropic_smr_type_idx)</span>
+                <span class="c1">#             for k in k_list_</span>
+                <span class="c1">#         ]</span>
+                <span class="c1">#     )</span>
+                <span class="c1">#     / eta_smr</span>
+                <span class="c1">#     * kweight</span>
+                <span class="c1"># )</span>
                 <span class="n">delta_</span> <span class="o">=</span> <span class="p">(</span>
-                    <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
-                        <span class="p">[</span>
-                            <span class="n">utility_w0gauss</span><span class="p">((</span><span class="n">E</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="n">n</span><span class="p">]</span> <span class="o">-</span> <span class="n">fermi_energy_list</span><span class="p">[</span><span class="n">ifermi</span><span class="p">])</span> <span class="o">/</span> <span class="n">eta_smr</span><span class="p">,</span> <span class="n">gyrotropic_smr_type_idx</span><span class="p">)</span>
-                            <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">k_list_</span>
-                        <span class="p">]</span>
-                    <span class="p">)</span>
-                    <span class="o">/</span> <span class="n">eta_smr</span>
-                    <span class="o">*</span> <span class="n">kweight</span>
+                    <span class="n">utility_w0gauss</span><span class="p">(</span><span class="n">E</span><span class="p">[:,</span> <span class="n">n</span><span class="p">]</span> <span class="o">-</span> <span class="n">fermi_energy_list</span><span class="p">[</span><span class="n">ifermi</span><span class="p">],</span> <span class="n">gyrotropic_smr_type_idx</span><span class="p">)</span> <span class="o">/</span> <span class="n">eta_smr</span> <span class="o">*</span> <span class="n">kweight</span>
                 <span class="p">)</span>
 
                 <span class="k">if</span> <span class="n">cwi</span><span class="o">.</span><span class="n">win</span><span class="o">.</span><span class="n">eval_spn</span><span class="p">:</span>
@@ -2181,26 +2456,14 @@
     <span class="n">gyro_K_orb</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">mum_fermi</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
     <span class="n">gyro_K_spn</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">mum_fermi</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
 
-    <span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
-
-    <span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
-    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">kpoints</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">kpoints_chunks</span><span class="p">):</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">num_chunks</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">kpoints</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="p">(</span><span class="nb">enumerate</span><span class="p">(</span><span class="n">kpoints_chunks</span><span class="p">)):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">num_chunks</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
 
         <span class="n">v</span> <span class="o">=</span> <span class="n">gyrotropic_get_K_k</span><span class="p">(</span><span class="n">kpoints</span><span class="p">)</span>
         <span class="n">gyro_K_orb</span> <span class="o">+=</span> <span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
         <span class="n">gyro_K_spn</span> <span class="o">+=</span> <span class="n">v</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
 
         <span class="n">v</span> <span class="o">=</span> <span class="kc">None</span>
-
-        <span class="c1"># convert second to hour, minute and seconds</span>
-        <span class="n">elapsed_time</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start_time</span><span class="p">)</span>
-        <span class="n">elapsed_hour</span> <span class="o">=</span> <span class="n">elapsed_time</span> <span class="o">//</span> <span class="mi">3600</span>
-        <span class="n">elapsed_minute</span> <span class="o">=</span> <span class="p">(</span><span class="n">elapsed_time</span> <span class="o">%</span> <span class="mi">3600</span><span class="p">)</span> <span class="o">//</span> <span class="mi">60</span>
-        <span class="n">elapsed_second</span> <span class="o">=</span> <span class="n">elapsed_time</span> <span class="o">%</span> <span class="mi">3600</span> <span class="o">%</span> <span class="mi">60</span>
-
-        <span class="c1"># print as 00:00:00</span>
-        <span class="nb">print</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">elapsed_hour</span><span class="p">)</span><span class="o">.</span><span class="n">zfill</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;:&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">elapsed_minute</span><span class="p">)</span><span class="o">.</span><span class="n">zfill</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;:&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">elapsed_second</span><span class="p">)</span><span class="o">.</span><span class="n">zfill</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>
 
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    --------------------------------------------------------------------</span>
@@ -2329,7 +2592,7 @@ By Rikuto Oiwa
 
   <p class="copyright">
     
-      © Copyright 2021-2024.
+      © Copyright 2021-2025.
       <br/>
     
   </p>
@@ -2353,8 +2616,8 @@ By Rikuto Oiwa
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script defer src="../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
-<script defer src="../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+  <script src="../../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
 
   <footer class="bd-footer">
   </footer>

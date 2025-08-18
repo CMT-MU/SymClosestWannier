@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>symclosestwannier.cw.eig &#8212; SymClosestWannier</title>
+    <title>symclosestwannier.cw.uHu &#8212; SymClosestWannier</title>
   
   
   
@@ -56,7 +56,7 @@
     <script async="async" src="../../../_static/sphinx-thebe.js?v=c100c467"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
-    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/symclosestwannier/cw/eig';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/symclosestwannier/cw/uHu';</script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
@@ -315,9 +315,10 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <h1>Source code for symclosestwannier.cw.eig</h1><div class="highlight"><pre>
+  <h1>Source code for symclosestwannier.cw.uHu</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">Eig manages Kohn-Sham energies in seedname.eig file, E_{m}(k).</span>
+<span class="sd">uHu manages the matrix elements in seedname.uHu file, H_{mn}(k,b1,b2) = &lt;u^{KS}_{m}(k+b1)|H(k)|u^{KS}_{n}(k+b2)&gt;.</span>
+<span class="sd">- ψ^{KS}_{m}(k) = u^{KS}_{m}(k) e^{ik.r}.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
@@ -325,52 +326,53 @@ document.write(`
 <span class="kn">import</span><span class="w"> </span><span class="nn">tarfile</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">itertools</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">datetime</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">itertools</span><span class="w"> </span><span class="kn">import</span> <span class="n">islice</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
+<span class="kn">from</span><span class="w"> </span><span class="nn">symclosestwannier.util.utility</span><span class="w"> </span><span class="kn">import</span> <span class="n">FortranFileR</span>
 
-<span class="n">_default</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;num_k&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;num_bands&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;Ek&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">}</span>
+
+<span class="n">_default</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;num_k&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;num_bands&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;num_b&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;Hkb1b2&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">}</span>
 
 
 <span class="c1"># ==================================================</span>
-<div class="viewcode-block" id="Eig">
-<a class="viewcode-back" href="../../../src/api/cw.html#symclosestwannier.cw.eig.Eig">[docs]</a>
-<span class="k">class</span><span class="w"> </span><span class="nc">Eig</span><span class="p">(</span><span class="nb">dict</span><span class="p">):</span>
+<div class="viewcode-block" id="UHu">
+<a class="viewcode-back" href="../../../src/api/cw.html#symclosestwannier.cw.uHu.UHu">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">UHu</span><span class="p">(</span><span class="nb">dict</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Eig manages Kohn-Sham energies in seedname.eig file, E_{m}(k).</span>
+<span class="sd">    UHu manages the matrix elements in seedname.uHu file, H_{mn}(k,b1,b2) = &lt;u^{KS}_{m}(k+b1)|H(k)|u^{KS}_{n}(k+b2)&gt;.</span>
+
+<span class="sd">    pw2wannier90 writes data_pw2w90[n, m, ib1, ib2, ik] = &lt;u^{KS}_{m}(k+b1)|H(k)|u^{KS}_{n}(k+b2)&gt;</span>
+<span class="sd">    in column-major order.</span>
+<span class="sd">    Here, we read to have data[ik, ib1, ib2, m, n] = &lt;u^{KS}_{m}(k+b1)|H(k)|u^{KS}_{n}(k+b2)&gt;</span>
 
 <span class="sd">    Attributes:</span>
 <span class="sd">        _topdir (str): top directory.</span>
 <span class="sd">        _seedname (str): seedname.</span>
+<span class="sd">        _formatted (bool): formatted file?</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="c1"># ==================================================</span>
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">topdir</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">seedname</span><span class="o">=</span><span class="s2">&quot;cwannier&quot;</span><span class="p">,</span> <span class="n">dic</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Eig manages Kohn-Sham energies in seedname.eig file, E_{m}(k).</span>
-
-<span class="sd">        Args:</span>
-<span class="sd">            topdir (str, optional): directory of seedname.eig file.</span>
-<span class="sd">            seedname (str, optional): seedname.</span>
-<span class="sd">            dic (dict, optional): dictionary of Eig.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+    <span class="c1"># def __init__(self, seedname=&quot;wannier90&quot;, formatted=False, suffix=&quot;uHu&quot;):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">topdir</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">seedname</span><span class="o">=</span><span class="s2">&quot;cwannier&quot;</span><span class="p">,</span> <span class="n">formatted</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">dic</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_topdir</span> <span class="o">=</span> <span class="n">topdir</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_seedname</span> <span class="o">=</span> <span class="n">seedname</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_formatted</span> <span class="o">=</span> <span class="n">formatted</span>
 
         <span class="k">if</span> <span class="n">dic</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">file_name</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">topdir</span><span class="p">,</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">.</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">seedname</span><span class="p">,</span> <span class="s2">&quot;eig&quot;</span><span class="p">))</span>
+            <span class="n">file_name</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">topdir</span><span class="p">,</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">.</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">seedname</span><span class="p">,</span> <span class="s2">&quot;uHu&quot;</span><span class="p">))</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">file_name</span><span class="p">))</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">dic</span><span class="p">)</span>
 
     <span class="c1"># ==================================================</span>
-<div class="viewcode-block" id="Eig.read">
-<a class="viewcode-back" href="../../../src/api/cw.html#symclosestwannier.cw.eig.Eig.read">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">read</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_name</span><span class="o">=</span><span class="s2">&quot;cwannier.eig&quot;</span><span class="p">):</span>
+<div class="viewcode-block" id="UHu.read">
+<a class="viewcode-back" href="../../../src/api/cw.html#symclosestwannier.cw.uHu.UHu.read">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">read</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_name</span><span class="o">=</span><span class="s2">&quot;cwannier.uHu&quot;</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        read seedname.eig file.</span>
+<span class="sd">        read seedname.uHu file.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            file_name (str, optional): file name.</span>
@@ -379,49 +381,50 @@ document.write(`
 <span class="sd">            dict:</span>
 <span class="sd">                - num_k     : # of k points (int), [1].</span>
 <span class="sd">                - num_bands : # of bands passed to the code (int), [1].</span>
-<span class="sd">                - Ek        : Kohn-Sham energies, E_{m}(k) (list), [None].</span>
+<span class="sd">                - num_b     : # of b-vectors (int), [1].</span>
+<span class="sd">                - nnkpts    : nearest-neighbor k-points (list), [None].</span>
+<span class="sd">                - Hkb1b2    : Overlap matrix elements, H_{mn}(k,b1,b2) = &lt;u^{KS}_{m}(k+b1)|H(k)|u^{KS}_{n}(k+b2)&gt;.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">file_name</span><span class="p">):</span>
-            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">file_name</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
-                <span class="n">eig_data</span> <span class="o">=</span> <span class="n">fp</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
+            <span class="k">pass</span>
         <span class="k">elif</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">file_name</span> <span class="o">+</span> <span class="s2">&quot;.gz&quot;</span><span class="p">):</span>
-            <span class="k">with</span> <span class="n">gzip</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">file_name</span> <span class="o">+</span> <span class="s2">&quot;.gz&quot;</span><span class="p">,</span> <span class="s2">&quot;rt&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
-                <span class="n">eig_data</span> <span class="o">=</span> <span class="n">fp</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
+            <span class="k">pass</span>
         <span class="k">elif</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">file_name</span> <span class="o">+</span> <span class="s2">&quot;.tar.gz&quot;</span><span class="p">):</span>
-            <span class="k">with</span> <span class="n">tarfile</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">file_name</span> <span class="o">+</span> <span class="s2">&quot;tar.gz&quot;</span><span class="p">,</span> <span class="s2">&quot;rt&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
-                <span class="n">eig_data</span> <span class="o">=</span> <span class="n">fp</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
+            <span class="k">pass</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;failed to read eig file: &quot;</span> <span class="o">+</span> <span class="n">file_name</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;failed to read uHu file: &quot;</span> <span class="o">+</span> <span class="n">file_name</span><span class="p">)</span>
 
-        <span class="n">eig_data</span> <span class="o">=</span> <span class="p">[[</span><span class="n">v</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">lst</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">)</span> <span class="k">if</span> <span class="n">v</span> <span class="o">!=</span> <span class="s2">&quot;&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">lst</span> <span class="ow">in</span> <span class="n">eig_data</span><span class="p">]</span>
-        <span class="n">eig_data</span> <span class="o">=</span> <span class="p">[[</span><span class="nb">float</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="k">if</span> <span class="s2">&quot;.&quot;</span> <span class="ow">in</span> <span class="n">v</span> <span class="k">else</span> <span class="nb">int</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">lst</span><span class="p">]</span> <span class="k">for</span> <span class="n">lst</span> <span class="ow">in</span> <span class="n">eig_data</span><span class="p">]</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_formatted</span><span class="p">:</span>
+            <span class="n">f_uHu_in</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">file_name</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span>
+            <span class="n">header</span> <span class="o">=</span> <span class="n">f_uHu_in</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+            <span class="n">num_bands</span><span class="p">,</span> <span class="n">num_k</span><span class="p">,</span> <span class="n">num_b</span> <span class="o">=</span> <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">f_uHu_in</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">())</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">f_uHu_in</span> <span class="o">=</span> <span class="n">FortranFileR</span><span class="p">(</span><span class="n">file_name</span><span class="p">)</span>
+            <span class="n">header</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;ascii&quot;</span><span class="p">)</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">f_uHu_in</span><span class="o">.</span><span class="n">read_record</span><span class="p">(</span><span class="s2">&quot;c&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+            <span class="n">num_bands</span><span class="p">,</span> <span class="n">num_k</span><span class="p">,</span> <span class="n">num_b</span> <span class="o">=</span> <span class="n">f_uHu_in</span><span class="o">.</span><span class="n">read_record</span><span class="p">(</span><span class="s2">&quot;i4&quot;</span><span class="p">)</span>
 
-        <span class="n">num_bands</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">([</span><span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">eig_data</span><span class="p">])</span>
-        <span class="n">num_k</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">([</span><span class="n">v</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">eig_data</span><span class="p">])</span>
-        <span class="n">Ek</span> <span class="o">=</span> <span class="p">[[</span><span class="n">eig_data</span><span class="p">[</span><span class="n">k</span> <span class="o">*</span> <span class="n">num_bands</span> <span class="o">+</span> <span class="n">m</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_bands</span><span class="p">)]</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_k</span><span class="p">)]</span>
+        <span class="n">Hkb1b2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">num_k</span><span class="p">,</span> <span class="n">num_b</span><span class="p">,</span> <span class="n">num_b</span><span class="p">,</span> <span class="n">num_bands</span><span class="p">,</span> <span class="n">num_bands</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">complex</span><span class="p">)</span>
 
-        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;num_k&quot;</span><span class="p">:</span> <span class="n">num_k</span><span class="p">,</span> <span class="s2">&quot;num_bands&quot;</span><span class="p">:</span> <span class="n">num_bands</span><span class="p">,</span> <span class="s2">&quot;Ek&quot;</span><span class="p">:</span> <span class="n">Ek</span><span class="p">}</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_formatted</span><span class="p">:</span>
+            <span class="n">tmp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+                <span class="p">[</span><span class="n">f_uHu_in</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">()</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_k</span> <span class="o">*</span> <span class="n">num_b</span> <span class="o">*</span> <span class="n">num_b</span> <span class="o">*</span> <span class="n">num_bands</span> <span class="o">*</span> <span class="n">num_bands</span><span class="p">)],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span>
+            <span class="p">)</span>
+            <span class="n">tmp_cplx</span> <span class="o">=</span> <span class="n">tmp</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="mf">1.0</span><span class="n">j</span> <span class="o">*</span> <span class="n">tmp</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span>
+            <span class="n">Hkb1b2</span> <span class="o">=</span> <span class="n">tmp_cplx</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">num_k</span><span class="p">,</span> <span class="n">num_b</span><span class="p">,</span> <span class="n">num_b</span><span class="p">,</span> <span class="n">num_bands</span><span class="p">,</span> <span class="n">num_bands</span><span class="p">)</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">ik</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_k</span><span class="p">):</span>
+                <span class="k">for</span> <span class="n">ib2</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_b</span><span class="p">):</span>
+                    <span class="k">for</span> <span class="n">ib1</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_b</span><span class="p">):</span>
+                        <span class="n">tmp</span> <span class="o">=</span> <span class="p">(</span>
+                            <span class="n">f_uHu_in</span><span class="o">.</span><span class="n">read_record</span><span class="p">(</span><span class="s2">&quot;f8&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="n">num_bands</span><span class="p">,</span> <span class="n">num_bands</span><span class="p">),</span> <span class="n">order</span><span class="o">=</span><span class="s2">&quot;F&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+                        <span class="p">)</span>
+                        <span class="n">Hkb1b2</span><span class="p">[</span><span class="n">ik</span><span class="p">,</span> <span class="n">ib1</span><span class="p">,</span> <span class="n">ib2</span><span class="p">]</span> <span class="o">=</span> <span class="n">tmp</span><span class="p">[:,</span> <span class="p">:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="n">tmp</span><span class="p">[:,</span> <span class="p">:,</span> <span class="mi">1</span><span class="p">]</span>
+
+        <span class="n">f_uHu_in</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;num_k&quot;</span><span class="p">:</span> <span class="n">num_k</span><span class="p">,</span> <span class="s2">&quot;num_bands&quot;</span><span class="p">:</span> <span class="n">num_bands</span><span class="p">,</span> <span class="s2">&quot;num_b&quot;</span><span class="p">:</span> <span class="n">num_b</span><span class="p">,</span> <span class="s2">&quot;Hkb1b2&quot;</span><span class="p">:</span> <span class="n">Hkb1b2</span><span class="o">.</span><span class="n">tolist</span><span class="p">()}</span>
 
         <span class="k">return</span> <span class="n">d</span></div>
-
-
-    <span class="c1"># ==================================================</span>
-<div class="viewcode-block" id="Eig.write">
-<a class="viewcode-back" href="../../../src/api/cw.html#symclosestwannier.cw.eig.Eig.write">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">write</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_name</span><span class="o">=</span><span class="s2">&quot;cwannier.eig.cw&quot;</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        write eig data.</span>
-
-<span class="sd">        Args:</span>
-<span class="sd">            file_name (str, optional): file name.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">Ek</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="p">[</span><span class="s2">&quot;Ek&quot;</span><span class="p">])</span>
-
-        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">file_name</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
-            <span class="k">for</span> <span class="n">ik</span><span class="p">,</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">itertools</span><span class="o">.</span><span class="n">product</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="p">[</span><span class="s2">&quot;num_k&quot;</span><span class="p">]),</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="p">[</span><span class="s2">&quot;num_bands&quot;</span><span class="p">])):</span>
-                <span class="n">fp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{:5d}{:5d}{:&gt;18.12f}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">ik</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">Ek</span><span class="p">[</span><span class="n">ik</span><span class="p">,</span> <span class="n">n</span><span class="p">]))</span>
-
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  * wrote &#39;</span><span class="si">{</span><span class="n">file_name</span><span class="si">}</span><span class="s2">&#39;.&quot;</span><span class="p">)</span></div>
 
 
     <span class="c1"># ==================================================</span>

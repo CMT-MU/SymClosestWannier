@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>standard output &#8212; SymClosestWannier</title>
+    <title>seedname.cwout &#8212; SymClosestWannier</title>
   
   
   
@@ -16,36 +16,33 @@
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
     document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
   </script>
-  <!--
-    this give us a css class that will be invisible only if js is disabled
-  -->
-  <noscript>
-    <style>
-      .pst-js-only { display: none !important; }
-
-    </style>
-  </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
-<link href="../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+  <link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=eba8b062" />
     <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
   
-  <!-- So that users can add custom icons -->
-  <script src="../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
-<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
     <script src="../../_static/documentation_options.js?v=8cf54648"></script>
-    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../../_static/copybutton.js?v=f281be69"></script>
@@ -58,14 +55,15 @@
     <script src="../../_static/design-tabs.js?v=f930bc37"></script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
     <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'src/format/cwout';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="information in CWModel [default]" href="info.html" />
-    <link rel="prev" title="input parameters in the *.cwin file [default]" href="cwin.html" />
+    <link rel="next" title="seedname.hdf5 [default]" href="hdf5.html" />
+    <link rel="prev" title="seedname.cwin [default]" href="cwin.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="jp"/>
-  <meta name="docsearch:version" content="" />
   </head>
   
   
@@ -81,8 +79,19 @@
     <i class="fa-solid fa-arrow-up"></i>Back to top</button>
 
   
-  <dialog id="pst-search-dialog">
-    
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
 <form class="bd-search d-flex align-items-center"
       action="../../search.html"
       method="get">
@@ -90,6 +99,7 @@
   <input type="search"
          class="form-control"
          name="q"
+         id="search-input"
          placeholder="Search this book..."
          aria-label="Search this book..."
          autocomplete="off"
@@ -97,8 +107,8 @@
          autocapitalize="off"
          spellcheck="false"/>
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
-</form>
-  </dialog>
+</form></div>
+  </div>
 
   <div class="pst-async-banner-revealer d-none">
   <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
@@ -114,8 +124,7 @@
       
       
       
-      <dialog id="pst-primary-sidebar-modal"></dialog>
-      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+      <div class="bd-sidebar-primary bd-sidebar">
         
 
   
@@ -145,35 +154,50 @@
 </a></div>
         <div class="sidebar-primary-item">
 
-<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
- <i class="fa-solid fa-magnifying-glass"></i>
- <span class="search-button__default-text">Search</span>
- <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
-</button></div>
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
         <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
-        <p aria-level="2" class="caption" role="heading"><span class="caption-text">SAMB Construction</span></p>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">MultiPie</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../samb_construction.html">Construction of SAMBs</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../scw_tb.html">Construction of SymCW tight-binding model</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../example.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../multipie.html">Construction of SAMBs by using MultiPie</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Closest Wannier method</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../cw.html">Closest Wannier method</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Construction of symmetry-adapted Closest Wannier model</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../scw.html">Symmetry-adapted Closest Wannier model</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">File Format</span></p>
 <ul class="current nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="cwin.html">input parameters in the *.cwin file [default]</a></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">standard output</a></li>
-<li class="toctree-l1"><a class="reference internal" href="info.html">information in CWModel [default]</a></li>
-<li class="toctree-l1"><a class="reference internal" href="data.html">data for SymCW (* optional [default] or only for crystal value)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="hr.html">Hamiltonian matrix elements in real-space</a></li>
-<li class="toctree-l1"><a class="reference internal" href="sr.html">Overlap matrix elements in real-space</a></li>
-<li class="toctree-l1"><a class="reference internal" href="z.html">The expansion coefficients of the Hamiltonian matrix (orthogonal) H expressed by a linear combination of SAMBs</a></li>
-<li class="toctree-l1"><a class="reference internal" href="s.html">The expansion coefficients of the Overlap matrix expressed by a linear combination of SAMBs</a></li>
-<li class="toctree-l1"><a class="reference internal" href="z_exp.html">expectation value of the SAMBs.</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cwin.html">seedname.cwin [default]</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">seedname.cwout</a></li>
+<li class="toctree-l1"><a class="reference internal" href="hdf5.html">seedname.hdf5 [default]</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="hr.html">seedname_hr.dat.cw</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sr.html">seedname_sr.dat.cw</a></li>
+<li class="toctree-l1"><a class="reference internal" href="z.html">seedname_z.dat.cw</a></li>
+<li class="toctree-l1"><a class="reference internal" href="s.html">seedname_s.dat.cw</a></li>
+<li class="toctree-l1"><a class="reference internal" href="n.html">seedname_n.dat.cw</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/tutorial01.html">CH4: Closest Wannier tight-binding model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/tutorial02.html">Graphene: Closest Wannier tight-binding model</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">API</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../api/analyzer.html">Utility</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../api/cw.html">Closest Wannier</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/analyzer.html">Utility</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../api/util.html">Utility</a></li>
 </ul>
 
@@ -183,14 +207,9 @@
   
   
   <div class="sidebar-primary-items__end sidebar-primary__section">
-      <div class="sidebar-primary-item">
-<div id="ethical-ad-placement"
-      class="flat"
-      data-ea-publisher="readthedocs"
-      data-ea-type="readthedocs-sidebar"
-      data-ea-manual="true">
-</div></div>
   </div>
+  
+  <div id="rtd-footer-container"></div>
 
 
       </div>
@@ -302,16 +321,24 @@
 
 
 
-<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
-  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
-  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
-  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
-</button>
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
 
 
-<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <i class="fa-solid fa-magnifying-glass fa-lg"></i>
-</button>
+  </button>
+`);
+</script>
 
 </div></div>
       
@@ -323,7 +350,7 @@
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>standard output</h1>
+    <h1>seedname.cwout</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -337,10 +364,11 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="standard-output">
-<h1>standard output<a class="headerlink" href="#standard-output" title="Link to this heading">#</a></h1>
-<p>Example standard output for <a class="reference download internal" download="" href="../../_downloads/426bd9b996199c4a85abdc0f26581726/graphene.cwin"><span class="xref download myst">graphene</span></a> is given here.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>             <span class="o">+---------------------------------------------------+</span>
+  <section class="tex2jax_ignore mathjax_ignore" id="seedname-cwout">
+<h1>seedname.cwout<a class="headerlink" href="#seedname-cwout" title="Link to this heading">#</a></h1>
+<p>Example standard output for <a class="reference internal" href="#../../example/graphene/graphene.cwin"><span class="xref myst">graphene</span></a> is given here.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>
+             <span class="o">+---------------------------------------------------+</span>
              <span class="o">|</span>                                                   <span class="o">|</span>
              <span class="o">|</span>                <span class="n">SymClosestWwannier</span>                 <span class="o">|</span>
              <span class="o">|</span>                                                   <span class="o">|</span>
@@ -361,11 +389,12 @@
              <span class="o">|</span>                                                   <span class="o">|</span>
              <span class="o">|</span>  <span class="n">Please</span> <span class="n">cite</span>                                      <span class="o">|</span>
              <span class="o">|</span>                                                   <span class="o">|</span>
-             <span class="o">|</span>  <span class="p">[</span><span class="n">ref</span><span class="p">]</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>                                        <span class="o">|</span>
+             <span class="o">|</span>  <span class="p">[</span><span class="n">ref</span><span class="p">]</span> <span class="s2">&quot;Symmetry-adapted closest Wannier modeling |</span>
+             <span class="o">|</span>         <span class="n">based</span> <span class="n">on</span> <span class="n">complete</span> <span class="n">multipole</span> <span class="n">basis</span> <span class="nb">set</span><span class="s2">&quot;    |</span>
              <span class="o">|</span>        <span class="n">Rikuto</span> <span class="n">Oiwa</span><span class="p">,</span> <span class="n">Akane</span> <span class="n">Inda</span><span class="p">,</span> <span class="n">Satoru</span> <span class="n">Hayami</span><span class="p">,</span>    <span class="o">|</span>
              <span class="o">|</span>        <span class="n">Takuya</span> <span class="n">Nomoto</span><span class="p">,</span> <span class="n">Ryotaro</span> <span class="n">Arita</span><span class="p">,</span>              <span class="o">|</span>
-             <span class="o">|</span>        <span class="n">Hiroaki</span> <span class="n">Kusunose</span><span class="p">,</span> <span class="ow">in</span> <span class="n">preparation</span><span class="o">.</span>          <span class="o">|</span>
-             <span class="o">|</span>        <span class="n">url</span>                                        <span class="o">|</span>
+             <span class="o">|</span>        <span class="n">Hiroaki</span> <span class="n">Kusunose</span><span class="p">,</span>                          <span class="o">|</span>
+             <span class="o">|</span>        <span class="n">Phys</span><span class="o">.</span> <span class="n">Rev</span><span class="o">.</span> <span class="n">B</span> <span class="mi">112</span><span class="p">,</span> <span class="mi">035116</span> <span class="p">(</span><span class="mi">2025</span><span class="p">)</span>            <span class="o">|</span>
              <span class="o">|</span>                                                   <span class="o">|</span>
              <span class="o">|</span>  <span class="ow">in</span> <span class="nb">any</span> <span class="n">publications</span> <span class="n">arising</span> <span class="kn">from</span><span class="w"> </span><span class="nn">the</span> <span class="n">use</span> <span class="n">of</span>      <span class="o">|</span>
              <span class="o">|</span>  <span class="n">this</span> <span class="n">code</span><span class="o">.</span> <span class="n">For</span> <span class="n">the</span> <span class="n">method</span> <span class="n">please</span> <span class="n">cite</span>            <span class="o">|</span>
@@ -373,7 +402,7 @@
              <span class="o">|</span>  <span class="p">[</span><span class="n">ref</span><span class="p">]</span> <span class="s2">&quot;Closest Wannier functions to              |</span>
              <span class="o">|</span>         <span class="n">a</span> <span class="n">given</span> <span class="nb">set</span> <span class="n">of</span> <span class="n">localized</span> <span class="n">orbitals</span><span class="s2">&quot;        |</span>
              <span class="o">|</span>         <span class="n">Taisuke</span> <span class="n">Ozaki</span><span class="p">,</span>                            <span class="o">|</span>
-             <span class="o">|</span>         <span class="p">,</span> <span class="n">Phys</span><span class="o">.</span> <span class="n">Rev</span><span class="o">.</span> <span class="n">B</span> <span class="mi">110</span><span class="p">,</span> <span class="mi">125115</span><span class="p">,</span> <span class="p">(</span><span class="mi">2024</span><span class="p">)</span><span class="o">.</span>                 <span class="o">|</span>
+             <span class="o">|</span>         <span class="n">Phys</span><span class="o">.</span> <span class="n">Rev</span><span class="o">.</span> <span class="n">B</span> <span class="mi">110</span><span class="p">,</span> <span class="mi">125115</span><span class="p">,</span> <span class="p">(</span><span class="mi">2024</span><span class="p">)</span><span class="o">.</span>         <span class="o">|</span>
              <span class="o">|</span>                                                   <span class="o">|</span>
              <span class="o">|</span>  <span class="p">[</span><span class="n">ref</span><span class="p">]</span> <span class="s2">&quot;Symmetry-adapted modeling for             |</span>
              <span class="o">|</span>         <span class="n">molecules</span> <span class="ow">and</span> <span class="n">crystals</span><span class="s2">&quot;                   |</span>
@@ -382,10 +411,10 @@
              <span class="o">|</span>                                                   <span class="o">|</span>
              <span class="o">|</span>                                                   <span class="o">|</span>
              <span class="o">|</span> <span class="n">Copyright</span> <span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="mi">2023</span><span class="o">-</span>                               <span class="o">|</span>
-             <span class="o">|</span>     <span class="n">The</span> <span class="n">SymClosestWwannier</span> <span class="n">Developer</span> <span class="n">Group</span> <span class="ow">and</span>    <span class="o">|</span>
+             <span class="o">|</span>     <span class="n">The</span> <span class="n">SymClosestWannier</span> <span class="n">Developer</span> <span class="n">Group</span> <span class="ow">and</span>     <span class="o">|</span>
              <span class="o">|</span>        <span class="n">individual</span> <span class="n">contributors</span>                    <span class="o">|</span>
              <span class="o">|</span>                                                   <span class="o">|</span>
-             <span class="o">|</span>       <span class="n">Release</span><span class="p">:</span> <span class="mf">1.1.19</span>       <span class="mi">22</span><span class="n">th</span> <span class="n">January</span> <span class="mi">2024</span>      <span class="o">|</span>
+             <span class="o">|</span>        <span class="n">Release</span><span class="p">:</span> <span class="mf">1.10.8</span>      <span class="mi">5</span><span class="n">th</span> <span class="n">Aug</span>  <span class="mi">2025</span>         <span class="o">|</span>
              <span class="o">|</span>                                                   <span class="o">|</span>
              <span class="o">|</span> <span class="n">This</span> <span class="n">program</span> <span class="ow">is</span> <span class="n">free</span> <span class="n">software</span><span class="p">;</span> <span class="n">you</span> <span class="n">can</span>            <span class="o">|</span>
              <span class="o">|</span> <span class="n">redistribute</span> <span class="n">it</span> <span class="ow">and</span><span class="o">/</span><span class="ow">or</span> <span class="n">modify</span> <span class="n">it</span> <span class="n">under</span> <span class="n">the</span> <span class="n">terms</span>  <span class="o">|</span>
@@ -405,9 +434,9 @@
              <span class="o">|</span> <span class="mi">675</span> <span class="n">Mass</span> <span class="n">Ave</span><span class="p">,</span> <span class="n">Cambridge</span><span class="p">,</span> <span class="n">MA</span> <span class="mi">02139</span><span class="p">,</span> <span class="n">USA</span><span class="o">.</span>           <span class="o">|</span>
              <span class="o">|</span>                                                   <span class="o">|</span>
              <span class="o">+---------------------------------------------------+</span>
-             <span class="o">|</span>    <span class="n">Execution</span> <span class="n">started</span> <span class="n">on</span> <span class="mi">2024</span><span class="o">/</span><span class="mi">02</span><span class="o">/</span><span class="mi">19</span> <span class="mi">18</span><span class="p">:</span><span class="mi">24</span><span class="p">:</span><span class="mi">57</span>       <span class="o">|</span>
+             <span class="o">|</span>    <span class="n">Execution</span> <span class="n">started</span> <span class="n">on</span> <span class="mi">2025</span><span class="o">/</span><span class="mi">08</span><span class="o">/</span><span class="mi">12</span> <span class="mi">14</span><span class="p">:</span><span class="mi">51</span><span class="p">:</span><span class="mi">54</span>       <span class="o">|</span>
              <span class="o">+---------------------------------------------------+</span>
-
+    
 
 
                                    <span class="o">------</span>
@@ -417,24 +446,24 @@
                             <span class="n">Lattice</span> <span class="n">Vectors</span> <span class="p">(</span><span class="n">Ang</span><span class="p">)</span>
                 <span class="n">a_1</span>    <span class="mf">2.435000</span>   <span class="mf">0.000000</span>   <span class="mf">0.000000</span>
                 <span class="n">a_2</span>    <span class="o">-</span><span class="mf">1.217500</span>   <span class="mf">2.108772</span>   <span class="mf">0.000000</span>
-                <span class="n">a_3</span>    <span class="mf">0.000000</span>   <span class="mf">0.000000</span>   <span class="mf">9.739999</span>
+                <span class="n">a_3</span>    <span class="mf">0.000000</span>   <span class="mf">0.000000</span>   <span class="mf">9.740000</span>
 
-                <span class="n">Unit</span> <span class="n">Cell</span> <span class="n">Volume</span><span class="p">:</span>      <span class="mf">50.01352</span>  <span class="p">(</span><span class="n">Ang</span><span class="o">^</span><span class="mi">3</span><span class="p">)</span>
+                <span class="n">Unit</span> <span class="n">Cell</span> <span class="n">Volume</span><span class="p">:</span>      <span class="mf">50.01353</span>  <span class="p">(</span><span class="n">Ang</span><span class="o">^</span><span class="mi">3</span><span class="p">)</span>
 
                       <span class="n">Reciprocal</span><span class="o">-</span><span class="n">Space</span> <span class="n">Vectors</span> <span class="p">(</span><span class="n">Ang</span><span class="o">^-</span><span class="mi">1</span><span class="p">)</span>
                 <span class="n">b_1</span>    <span class="mf">2.580364</span>   <span class="mf">1.489774</span>   <span class="mf">0.000000</span>
                 <span class="n">b_2</span>    <span class="mf">0.000000</span>   <span class="mf">2.979547</span>   <span class="mf">0.000000</span>
                 <span class="n">b_3</span>    <span class="mf">0.000000</span>   <span class="mf">0.000000</span>   <span class="mf">0.645091</span>
 
-
+    
 <span class="o">*----------------------------------------------------------------------------*</span>
 <span class="o">|</span>   <span class="n">Site</span>       <span class="n">Fractional</span> <span class="n">Coordinate</span>          <span class="n">Cartesian</span> <span class="n">Coordinate</span> <span class="p">(</span><span class="n">Ang</span><span class="p">)</span>     <span class="o">|</span>
 <span class="o">+----------------------------------------------------------------------------+</span>
-
+    
   <span class="n">C</span>   <span class="mi">1</span>   <span class="mf">0.66667</span>   <span class="mf">0.33333</span>   <span class="mf">0.00000</span>    <span class="o">|</span>    <span class="mf">1.21750</span>   <span class="mf">0.70292</span>   <span class="mf">0.00000</span>
-
+    
   <span class="n">C</span>   <span class="mi">2</span>   <span class="mf">0.33333</span>   <span class="mf">0.66667</span>   <span class="mf">0.00000</span>    <span class="o">|</span>    <span class="mf">0.00000</span>   <span class="mf">1.40585</span>   <span class="mf">0.00000</span>
-
+    
 <span class="o">*----------------------------------------------------------------------------*</span>
 
 
@@ -447,25 +476,31 @@
 
 
 <span class="o">*----------------------------------------------------------------------------*</span>
-       <span class="n">Starting</span> <span class="n">a</span> <span class="n">new</span> <span class="n">SymClosestWannier</span> <span class="n">calculation</span> <span class="n">of</span> <span class="s1">&#39;&#39;</span><span class="n">graphene_pz</span><span class="s1">&#39;&#39;</span>
+       <span class="n">Starting</span> <span class="n">a</span> <span class="n">new</span> <span class="n">SymClosestWannier</span> <span class="n">calculation</span> <span class="n">of</span> <span class="s1">&#39;&#39;</span><span class="n">graphene</span><span class="s1">&#39;&#39;</span>
 <span class="o">*----------------------------------------------------------------------------*</span>
 
 
+   <span class="o">-</span> <span class="n">excluding</span> <span class="n">bands</span> <span class="k">with</span> <span class="n">low</span> <span class="n">projectability</span> <span class="p">(</span><span class="n">proj_min</span> <span class="o">=</span> <span class="mf">0.2</span><span class="p">)</span> <span class="o">...</span> <span class="n">done</span> <span class="p">(</span> <span class="mf">0.007</span> <span class="p">[</span><span class="n">sec</span><span class="p">]</span> <span class="p">)</span><span class="o">.</span>
    <span class="o">-</span> <span class="n">disentanglement</span> <span class="o">...</span> <span class="n">done</span> <span class="p">(</span> <span class="mf">0.0</span> <span class="p">[</span><span class="n">sec</span><span class="p">]</span> <span class="p">)</span><span class="o">.</span>
-   <span class="o">-</span> <span class="n">constructing</span> <span class="n">TB</span> <span class="n">Hamiltonian</span> <span class="o">...</span> <span class="n">done</span> <span class="p">(</span> <span class="mf">0.068</span> <span class="p">[</span><span class="n">sec</span><span class="p">]</span> <span class="p">)</span><span class="o">.</span>
-   <span class="o">-</span> <span class="n">symmetrization</span> <span class="o">...</span>
-    <span class="o">-</span> <span class="n">reading</span> <span class="n">output</span> <span class="n">of</span> <span class="n">multipie</span> <span class="o">...</span>
-  <span class="o">*</span> <span class="n">read</span> <span class="s1">&#39;./sym/graphene_pz_20_model.py&#39;</span><span class="o">.</span>
-  <span class="o">*</span> <span class="n">read</span> <span class="s1">&#39;./sym/graphene_pz_20_samb.py&#39;</span><span class="o">.</span>
-  <span class="o">*</span> <span class="n">read</span> <span class="s1">&#39;./sym/graphene_pz_20_matrix.py&#39;</span><span class="o">.</span>
-    <span class="o">-</span> <span class="n">decomposing</span> <span class="n">Hamiltonian</span> <span class="k">as</span> <span class="n">linear</span> <span class="n">combination</span> <span class="n">of</span> <span class="n">SAMBs</span> <span class="o">...</span> <span class="n">done</span> <span class="p">(</span> <span class="mf">0.008</span> <span class="p">[</span><span class="n">sec</span><span class="p">]</span> <span class="p">)</span><span class="o">.</span>
-    <span class="o">-</span> <span class="n">decomposing</span> <span class="n">overlap</span> <span class="k">as</span> <span class="n">linear</span> <span class="n">combination</span> <span class="n">of</span> <span class="n">SAMBs</span> <span class="o">...</span> <span class="n">done</span> <span class="p">(</span> <span class="mf">0.0</span> <span class="p">[</span><span class="n">sec</span><span class="p">]</span> <span class="p">)</span><span class="o">.</span>
+   <span class="o">-</span> <span class="n">constructing</span> <span class="n">TB</span> <span class="n">Hamiltonian</span> <span class="o">...</span> 
+    <span class="o">*</span> <span class="n">band</span> <span class="n">distance</span> <span class="n">between</span> <span class="n">DFT</span> <span class="ow">and</span> <span class="n">Wannier</span> <span class="n">bands</span><span class="p">:</span>
+     <span class="o">-</span> <span class="n">eta_0</span>     <span class="o">=</span> <span class="mf">1.9960019700989895e-12</span> <span class="p">[</span><span class="n">meV</span><span class="p">]</span>
+     <span class="o">-</span> <span class="n">eta_0_max</span> <span class="o">=</span> <span class="mf">7.993605777301127e-12</span> <span class="p">[</span><span class="n">meV</span><span class="p">]</span>
+     <span class="o">-</span> <span class="n">eta_2</span>     <span class="o">=</span> <span class="mf">1.8169064701622485e-12</span> <span class="p">[</span><span class="n">meV</span><span class="p">]</span>
+     <span class="o">-</span> <span class="n">eta_2_max</span> <span class="o">=</span> <span class="mf">7.993605777301127e-12</span> <span class="p">[</span><span class="n">meV</span><span class="p">]</span>
+     <span class="o">-</span> <span class="n">eta_4</span>     <span class="o">=</span> <span class="mf">1.7296105678905685e-12</span> <span class="p">[</span><span class="n">meV</span><span class="p">]</span>
+     <span class="o">-</span> <span class="n">eta_4_max</span> <span class="o">=</span> <span class="mf">7.993605777301127e-12</span> <span class="p">[</span><span class="n">meV</span><span class="p">]</span>
+<span class="n">done</span> <span class="p">(</span> <span class="mf">0.032</span> <span class="p">[</span><span class="n">sec</span><span class="p">]</span> <span class="p">)</span><span class="o">.</span>
+   <span class="o">-</span> <span class="n">symmetrization</span> <span class="o">...</span> 
+    <span class="o">-</span> <span class="n">reading</span> <span class="n">output</span> <span class="n">of</span> <span class="n">multipie</span> <span class="o">...</span> 
+    <span class="o">-</span> <span class="n">decomposing</span> <span class="n">Hamiltonian</span> <span class="k">as</span> <span class="n">linear</span> <span class="n">combination</span> <span class="n">of</span> <span class="n">SAMBs</span> <span class="o">...</span> <span class="n">done</span> <span class="p">(</span> <span class="mf">0.001</span> <span class="p">[</span><span class="n">sec</span><span class="p">]</span> <span class="p">)</span><span class="o">.</span>
+    <span class="o">-</span> <span class="n">decomposing</span> <span class="n">overlap</span> <span class="k">as</span> <span class="n">linear</span> <span class="n">combination</span> <span class="n">of</span> <span class="n">SAMBs</span> <span class="o">...</span> <span class="n">done</span> <span class="p">(</span> <span class="mf">0.021</span> <span class="p">[</span><span class="n">sec</span><span class="p">]</span> <span class="p">)</span><span class="o">.</span>
     <span class="o">-</span> <span class="n">decomposing</span> <span class="n">non</span><span class="o">-</span><span class="n">orthogonal</span> <span class="n">Hamiltonian</span> <span class="k">as</span> <span class="n">linear</span> <span class="n">combination</span> <span class="n">of</span> <span class="n">SAMBs</span> <span class="o">...</span> <span class="n">done</span> <span class="p">(</span> <span class="mf">0.0</span> <span class="p">[</span><span class="n">sec</span><span class="p">]</span> <span class="p">)</span><span class="o">.</span>
-    <span class="o">-</span> <span class="n">constructing</span> <span class="n">symmetrized</span> <span class="n">TB</span> <span class="n">Hamiltonian</span> <span class="o">...</span> <span class="n">done</span> <span class="p">(</span> <span class="mf">0.025</span> <span class="p">[</span><span class="n">sec</span><span class="p">]</span> <span class="p">)</span><span class="o">.</span>
-    <span class="o">-</span> <span class="n">evaluating</span> <span class="n">fitting</span> <span class="n">accuracy</span> <span class="o">...</span>
-     <span class="o">*</span> <span class="n">MAE</span> <span class="n">of</span> <span class="n">eigen</span> <span class="n">values</span> <span class="n">between</span> <span class="n">CW</span> <span class="ow">and</span> <span class="n">Symmetry</span><span class="o">-</span><span class="n">Adapted</span> <span class="n">CW</span> <span class="n">models</span> <span class="p">(</span><span class="n">grid</span><span class="p">)</span> <span class="o">=</span> <span class="mf">2.6820</span> <span class="p">[</span><span class="n">meV</span><span class="p">]</span>
-     <span class="o">*</span> <span class="n">MAE</span> <span class="n">of</span> <span class="n">eigen</span> <span class="n">values</span> <span class="n">between</span> <span class="n">CW</span> <span class="ow">and</span> <span class="n">Symmetry</span><span class="o">-</span><span class="n">Adapted</span> <span class="n">CW</span> <span class="n">models</span> <span class="p">(</span><span class="n">path</span><span class="p">)</span> <span class="o">=</span> <span class="mf">3.7451</span> <span class="p">[</span><span class="n">meV</span><span class="p">]</span>
-    <span class="o">-</span> <span class="n">evaluating</span> <span class="n">expectation</span> <span class="n">value</span> <span class="n">of</span> <span class="p">{</span><span class="n">Zj</span><span class="p">}</span> <span class="n">at</span> <span class="n">T</span> <span class="o">=</span> <span class="mi">0</span> <span class="o">...</span>
+    <span class="o">-</span> <span class="n">decomposing</span> <span class="n">electronic</span> <span class="n">density</span> <span class="k">as</span> <span class="n">linear</span> <span class="n">combination</span> <span class="n">of</span> <span class="n">SAMBs</span> <span class="o">...</span> <span class="n">done</span> <span class="p">(</span> <span class="mf">0.0</span> <span class="p">[</span><span class="n">sec</span><span class="p">]</span> <span class="p">)</span><span class="o">.</span>
+    <span class="o">-</span> <span class="n">constructing</span> <span class="n">symmetrized</span> <span class="n">TB</span> <span class="n">Hamiltonian</span> <span class="o">...</span> <span class="n">done</span> <span class="p">(</span> <span class="mf">0.019</span> <span class="p">[</span><span class="n">sec</span><span class="p">]</span> <span class="p">)</span><span class="o">.</span>
+    <span class="o">-</span> <span class="n">evaluating</span> <span class="n">fitting</span> <span class="n">accuracy</span> <span class="o">...</span> 
+     <span class="o">*</span> <span class="n">MAE</span> <span class="n">of</span> <span class="n">eigen</span> <span class="n">values</span> <span class="n">between</span> <span class="n">DFT</span> <span class="ow">and</span> <span class="n">Symmetry</span><span class="o">-</span><span class="n">Adapted</span> <span class="n">CW</span> <span class="n">models</span> <span class="p">(</span><span class="n">grid</span><span class="p">)</span> <span class="o">=</span> <span class="mf">47.6916</span> <span class="p">[</span><span class="n">meV</span><span class="p">]</span>
+     <span class="o">*</span> <span class="n">MAE</span> <span class="n">of</span> <span class="n">eigen</span> <span class="n">values</span> <span class="n">between</span> <span class="n">CW</span> <span class="ow">and</span> <span class="n">Symmetry</span><span class="o">-</span><span class="n">Adapted</span> <span class="n">CW</span> <span class="n">models</span> <span class="p">(</span><span class="n">path</span><span class="p">)</span> <span class="o">=</span> <span class="mf">51.5308</span> <span class="p">[</span><span class="n">meV</span><span class="p">]</span>
 <span class="n">done</span>
 
 
@@ -474,17 +509,11 @@
 <span class="o">*----------------------------------------------------------------------------*</span>
 
 
-  <span class="o">*</span> <span class="n">wrote</span> <span class="s1">&#39;graphene_pz_hr.dat.cw&#39;</span><span class="o">.</span>
-  <span class="o">*</span> <span class="n">wrote</span> <span class="s1">&#39;graphene_pz_sr.dat.cw&#39;</span><span class="o">.</span>
-  <span class="o">*</span> <span class="n">wrote</span> <span class="s1">&#39;graphene_pz_r.dat.cw&#39;</span><span class="o">.</span>
-  <span class="o">*</span> <span class="n">wrote</span> <span class="s1">&#39;./sym/graphene_pz_20_hr_sym.dat.cw&#39;</span><span class="o">.</span>
-  <span class="o">*</span> <span class="n">wrote</span> <span class="s1">&#39;./sym/graphene_pz_20_sr_sym.dat.cw&#39;</span><span class="o">.</span>
-  <span class="o">*</span> <span class="n">wrote</span> <span class="s1">&#39;./sym/graphene_pz_20_z.dat.cw&#39;</span><span class="o">.</span>
-  <span class="o">*</span> <span class="n">wrote</span> <span class="s1">&#39;./sym/graphene_pz_20_s.dat.cw&#39;</span><span class="o">.</span>
-  <span class="o">*</span> <span class="n">wrote</span> <span class="s1">&#39;./sym/graphene_pz_20_z_exp.dat.cw&#39;</span><span class="o">.</span>
+
+  <span class="o">*</span> <span class="n">calculating</span> <span class="n">band</span> <span class="n">dispersion</span> <span class="o">...</span> <span class="n">done</span> <span class="p">(</span> <span class="mf">1.001</span> <span class="p">[</span><span class="n">sec</span><span class="p">]</span> <span class="p">)</span><span class="o">.</span>
 
 
-  <span class="o">*</span> <span class="n">total</span> <span class="n">elapsed_time</span><span class="p">:</span> <span class="p">(</span> <span class="mf">1.175</span> <span class="p">[</span><span class="n">sec</span><span class="p">]</span> <span class="p">)</span><span class="o">.</span>
+  <span class="o">*</span> <span class="n">total</span> <span class="n">elapsed_time</span><span class="p">:</span> <span class="p">(</span> <span class="mf">1.001</span> <span class="p">[</span><span class="n">sec</span><span class="p">]</span> <span class="p">)</span><span class="o">.</span>
 
 
 <span class="o">*----------------------------------------------------------------------------*</span>
@@ -492,7 +521,7 @@
 <span class="o">*----------------------------------------------------------------------------*</span>
 
 
-  <span class="o">*</span> <span class="n">total</span> <span class="n">elapsed_time</span><span class="p">:</span> <span class="p">(</span> <span class="mf">5.717</span> <span class="p">[</span><span class="n">sec</span><span class="p">]</span> <span class="p">)</span><span class="o">.</span>
+  <span class="o">*</span> <span class="n">total</span> <span class="n">elapsed_time</span><span class="p">:</span> <span class="p">(</span> <span class="mf">3.74</span> <span class="p">[</span><span class="n">sec</span><span class="p">]</span> <span class="p">)</span><span class="o">.</span>
 
 
 <span class="o">*----------------------------------------------------------------------------*</span>
@@ -552,7 +581,7 @@ By Rikuto Oiwa
 
   <p class="copyright">
     
-      © Copyright 2021-2024.
+      © Copyright 2021-2025.
       <br/>
     
   </p>
@@ -576,8 +605,8 @@ By Rikuto Oiwa
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script defer src="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
-<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+  <script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
 
   <footer class="bd-footer">
   </footer>

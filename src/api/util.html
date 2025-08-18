@@ -16,36 +16,33 @@
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
     document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
   </script>
-  <!--
-    this give us a css class that will be invisible only if js is disabled
-  -->
-  <noscript>
-    <style>
-      .pst-js-only { display: none !important; }
-
-    </style>
-  </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
-<link href="../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+  <link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=eba8b062" />
     <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
   
-  <!-- So that users can add custom icons -->
-  <script src="../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
-<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
     <script src="../../_static/documentation_options.js?v=8cf54648"></script>
-    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../../_static/copybutton.js?v=f281be69"></script>
@@ -58,13 +55,14 @@
     <script src="../../_static/design-tabs.js?v=f930bc37"></script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
     <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'src/api/util';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="prev" title="Closest Wannier" href="cw.html" />
+    <link rel="prev" title="Utility" href="analyzer.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="jp"/>
-  <meta name="docsearch:version" content="" />
   </head>
   
   
@@ -80,8 +78,19 @@
     <i class="fa-solid fa-arrow-up"></i>Back to top</button>
 
   
-  <dialog id="pst-search-dialog">
-    
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
 <form class="bd-search d-flex align-items-center"
       action="../../search.html"
       method="get">
@@ -89,6 +98,7 @@
   <input type="search"
          class="form-control"
          name="q"
+         id="search-input"
          placeholder="Search this book..."
          aria-label="Search this book..."
          autocomplete="off"
@@ -96,8 +106,8 @@
          autocapitalize="off"
          spellcheck="false"/>
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
-</form>
-  </dialog>
+</form></div>
+  </div>
 
   <div class="pst-async-banner-revealer d-none">
   <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
@@ -113,8 +123,7 @@
       
       
       
-      <dialog id="pst-primary-sidebar-modal"></dialog>
-      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+      <div class="bd-sidebar-primary bd-sidebar">
         
 
   
@@ -144,35 +153,50 @@
 </a></div>
         <div class="sidebar-primary-item">
 
-<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
- <i class="fa-solid fa-magnifying-glass"></i>
- <span class="search-button__default-text">Search</span>
- <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
-</button></div>
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
         <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
-        <p aria-level="2" class="caption" role="heading"><span class="caption-text">SAMB Construction</span></p>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">MultiPie</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../samb_construction.html">Construction of SAMBs</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../scw_tb.html">Construction of SymCW tight-binding model</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../example.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../multipie.html">Construction of SAMBs by using MultiPie</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Closest Wannier method</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../cw.html">Closest Wannier method</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Construction of symmetry-adapted Closest Wannier model</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../scw.html">Symmetry-adapted Closest Wannier model</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">File Format</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../format/cwin.html">input parameters in the *.cwin file [default]</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../format/cwout.html">standard output</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../format/info.html">information in CWModel [default]</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../format/data.html">data for SymCW (* optional [default] or only for crystal value)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../format/hr.html">Hamiltonian matrix elements in real-space</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../format/sr.html">Overlap matrix elements in real-space</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../format/z.html">The expansion coefficients of the Hamiltonian matrix (orthogonal) H expressed by a linear combination of SAMBs</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../format/s.html">The expansion coefficients of the Overlap matrix expressed by a linear combination of SAMBs</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../format/z_exp.html">expectation value of the SAMBs.</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../format/cwin.html">seedname.cwin [default]</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../format/cwout.html">seedname.cwout</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../format/hdf5.html">seedname.hdf5 [default]</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="../format/hr.html">seedname_hr.dat.cw</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../format/sr.html">seedname_sr.dat.cw</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../format/z.html">seedname_z.dat.cw</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../format/s.html">seedname_s.dat.cw</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../format/n.html">seedname_n.dat.cw</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/tutorial01.html">CH4: Closest Wannier tight-binding model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/tutorial02.html">Graphene: Closest Wannier tight-binding model</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">API</span></p>
 <ul class="current nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="analyzer.html">Utility</a></li>
 <li class="toctree-l1"><a class="reference internal" href="cw.html">Closest Wannier</a></li>
+<li class="toctree-l1"><a class="reference internal" href="analyzer.html">Utility</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">Utility</a></li>
 </ul>
 
@@ -182,14 +206,9 @@
   
   
   <div class="sidebar-primary-items__end sidebar-primary__section">
-      <div class="sidebar-primary-item">
-<div id="ethical-ad-placement"
-      class="flat"
-      data-ea-publisher="readthedocs"
-      data-ea-type="readthedocs-sidebar"
-      data-ea-manual="true">
-</div></div>
   </div>
+  
+  <div id="rtd-footer-container"></div>
 
 
       </div>
@@ -301,16 +320,24 @@
 
 
 
-<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
-  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
-  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
-  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
-</button>
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
 
 
-<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <i class="fa-solid fa-magnifying-glass fa-lg"></i>
-</button>
+  </button>
+`);
+</script>
 <button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <span class="fa-solid fa-list"></span>
 </button>
@@ -334,6 +361,38 @@
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.band.generate_band_gnuplot"><code class="docutils literal notranslate"><span class="pre">generate_band_gnuplot()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.band.generate_band_gnuplot_eig"><code class="docutils literal notranslate"><span class="pre">generate_band_gnuplot_eig()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.band.output_linear_dispersion"><code class="docutils literal notranslate"><span class="pre">output_linear_dispersion()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.band.output_linear_dispersion_eig"><code class="docutils literal notranslate"><span class="pre">output_linear_dispersion_eig()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.dos.generate_dos_gnuplot"><code class="docutils literal notranslate"><span class="pre">generate_dos_gnuplot()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.dos.output_dos"><code class="docutils literal notranslate"><span class="pre">output_dos()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.fermi_surface.generate_fermi_surface_gnuplot_eig"><code class="docutils literal notranslate"><span class="pre">generate_fermi_surface_gnuplot_eig()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.fermi_surface.output_fermi_surface_eig"><code class="docutils literal notranslate"><span class="pre">output_fermi_surface_eig()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.get_oper_R.get_AA_R"><code class="docutils literal notranslate"><span class="pre">get_AA_R()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.get_oper_R.get_BB_R"><code class="docutils literal notranslate"><span class="pre">get_BB_R()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.get_oper_R.get_CC_R"><code class="docutils literal notranslate"><span class="pre">get_CC_R()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.get_oper_R.get_HH_R"><code class="docutils literal notranslate"><span class="pre">get_HH_R()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.get_oper_R.get_SAA_R"><code class="docutils literal notranslate"><span class="pre">get_SAA_R()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.get_oper_R.get_SBB_R"><code class="docutils literal notranslate"><span class="pre">get_SBB_R()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.get_oper_R.get_SHC_R"><code class="docutils literal notranslate"><span class="pre">get_SHC_R()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.get_oper_R.get_SS_R"><code class="docutils literal notranslate"><span class="pre">get_SS_R()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.get_oper_R.get_berry_Curvature_R"><code class="docutils literal notranslate"><span class="pre">get_berry_Curvature_R()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.get_oper_R.get_berry_phase_R"><code class="docutils literal notranslate"><span class="pre">get_berry_phase_R()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.get_oper_R.get_der_berry_Curvature_Rcwi"><code class="docutils literal notranslate"><span class="pre">get_der_berry_Curvature_Rcwi()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.get_oper_R.get_der_orbital_moment_R"><code class="docutils literal notranslate"><span class="pre">get_der_orbital_moment_R()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.get_oper_R.get_oper_R"><code class="docutils literal notranslate"><span class="pre">get_oper_R()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.get_oper_R.get_orbital_moment_R"><code class="docutils literal notranslate"><span class="pre">get_orbital_moment_R()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.get_oper_R.get_v_R"><code class="docutils literal notranslate"><span class="pre">get_v_R()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.hr_utility.convert_hr_to_hk"><code class="docutils literal notranslate"><span class="pre">convert_hr_to_hk()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.hr_utility.read_hr"><code class="docutils literal notranslate"><span class="pre">read_hr()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.hr_utility.remove_elements"><code class="docutils literal notranslate"><span class="pre">remove_elements()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.lindhard.generate_lindhard_gnuplot"><code class="docutils literal notranslate"><span class="pre">generate_lindhard_gnuplot()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.lindhard.generate_lindhard_surface_gnuplot"><code class="docutils literal notranslate"><span class="pre">generate_lindhard_surface_gnuplot()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.lindhard.get_lindhard"><code class="docutils literal notranslate"><span class="pre">get_lindhard()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.lindhard.output_lindhard"><code class="docutils literal notranslate"><span class="pre">output_lindhard()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.lindhard.output_lindhard_surface"><code class="docutils literal notranslate"><span class="pre">output_lindhard_surface()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.tb_slater_koster.sk_parameter"><code class="docutils literal notranslate"><span class="pre">sk_parameter()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.utility.FortranFileR"><code class="docutils literal notranslate"><span class="pre">FortranFileR</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.utility.Kelvin_to_eV"><code class="docutils literal notranslate"><span class="pre">Kelvin_to_eV()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.utility.O_R_dependence"><code class="docutils literal notranslate"><span class="pre">O_R_dependence()</span></code></a></li>
@@ -351,34 +410,16 @@
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.utility.interpolate"><code class="docutils literal notranslate"><span class="pre">interpolate()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.utility.matrix_dict_k"><code class="docutils literal notranslate"><span class="pre">matrix_dict_k()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.utility.matrix_dict_r"><code class="docutils literal notranslate"><span class="pre">matrix_dict_r()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.utility.num_electron"><code class="docutils literal notranslate"><span class="pre">num_electron()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.utility.samb_decomp_operator"><code class="docutils literal notranslate"><span class="pre">samb_decomp_operator()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.utility.sort_ket_list"><code class="docutils literal notranslate"><span class="pre">sort_ket_list()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.utility.sort_ket_matrix"><code class="docutils literal notranslate"><span class="pre">sort_ket_matrix()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.utility.sort_ket_matrix_dict"><code class="docutils literal notranslate"><span class="pre">sort_ket_matrix_dict()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.utility.thermal_avg"><code class="docutils literal notranslate"><span class="pre">thermal_avg()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.utility.total_energy"><code class="docutils literal notranslate"><span class="pre">total_energy()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.utility.tune_fermi_level"><code class="docutils literal notranslate"><span class="pre">tune_fermi_level()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.utility.weight_proj"><code class="docutils literal notranslate"><span class="pre">weight_proj()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.utility.wigner_seitz"><code class="docutils literal notranslate"><span class="pre">wigner_seitz()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.utility.write_or"><code class="docutils literal notranslate"><span class="pre">write_or()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.band.generate_band_gnuplot"><code class="docutils literal notranslate"><span class="pre">generate_band_gnuplot()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.band.generate_band_gnuplot_eig"><code class="docutils literal notranslate"><span class="pre">generate_band_gnuplot_eig()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.band.output_linear_dispersion"><code class="docutils literal notranslate"><span class="pre">output_linear_dispersion()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.band.output_linear_dispersion_eig"><code class="docutils literal notranslate"><span class="pre">output_linear_dispersion_eig()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.get_oper_R.get_AA_R"><code class="docutils literal notranslate"><span class="pre">get_AA_R()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.get_oper_R.get_BB_R"><code class="docutils literal notranslate"><span class="pre">get_BB_R()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.get_oper_R.get_CC_R"><code class="docutils literal notranslate"><span class="pre">get_CC_R()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.get_oper_R.get_HH_R"><code class="docutils literal notranslate"><span class="pre">get_HH_R()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.get_oper_R.get_SAA_R"><code class="docutils literal notranslate"><span class="pre">get_SAA_R()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.get_oper_R.get_SBB_R"><code class="docutils literal notranslate"><span class="pre">get_SBB_R()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.get_oper_R.get_SHC_R"><code class="docutils literal notranslate"><span class="pre">get_SHC_R()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.get_oper_R.get_SS_R"><code class="docutils literal notranslate"><span class="pre">get_SS_R()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.get_oper_R.get_berry_Curvature_R"><code class="docutils literal notranslate"><span class="pre">get_berry_Curvature_R()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.get_oper_R.get_berry_phase_R"><code class="docutils literal notranslate"><span class="pre">get_berry_phase_R()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.get_oper_R.get_der_berry_Curvature_Rcwi"><code class="docutils literal notranslate"><span class="pre">get_der_berry_Curvature_Rcwi()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.get_oper_R.get_der_orbital_moment_R"><code class="docutils literal notranslate"><span class="pre">get_der_orbital_moment_R()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.get_oper_R.get_oper_R"><code class="docutils literal notranslate"><span class="pre">get_oper_R()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.get_oper_R.get_orbital_moment_R"><code class="docutils literal notranslate"><span class="pre">get_orbital_moment_R()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.get_oper_R.get_velocity_R"><code class="docutils literal notranslate"><span class="pre">get_velocity_R()</span></code></a></li>
 </ul>
             </nav>
         </div>
@@ -390,12 +431,608 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="module-symclosestwannier.util.utility">
-<span id="utility"></span><h1>Utility<a class="headerlink" href="#module-symclosestwannier.util.utility" title="Link to this heading">#</a></h1>
-<p>utility codes.</p>
+  <section class="tex2jax_ignore mathjax_ignore" id="module-symclosestwannier.util.band">
+<span id="utility"></span><h1>Utility<a class="headerlink" href="#module-symclosestwannier.util.band" title="Link to this heading">#</a></h1>
+<p>utility codes for CW.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="symclosestwannier.util.band.generate_band_gnuplot">
+<span class="sig-name descname"><span class="pre">generate_band_gnuplot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">outdir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kmax</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">emax</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">emin</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_wann</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/util/band.html#generate_band_gnuplot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.util.band.generate_band_gnuplot" title="Link to this definition">#</a></dt>
+<dd><p>generate gnuplot file to plot band dispersion.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>outdir</strong> (<em>str</em>) -- input and output files are found in this directory.</p></li>
+<li><p><strong>filename</strong> (<em>str</em>) -- file name.</p></li>
+<li><p><strong>kmax</strong> (<em>float</em>) -- maximum value in kpoints.</p></li>
+<li><p><strong>emax</strong> (<em>float</em>) -- maximum value of eigen values.</p></li>
+<li><p><strong>emin</strong> (<em>float</em>) -- minimum value of eigen values.</p></li>
+<li><p><strong>num_wann</strong> (<em>int</em>) -- # of wannier functions.</p></li>
+<li><p><strong>kwargs</strong> (<em>dict</em><em>, </em><em>optional</em>) -- key words for generate_band_gnuplot.
+- a (float): length of lattice vector.
+- ef (float): fermi energy.
+- k_dis_pos (dict): {disconnected linear position:label}.
+- lwidth (float): line width.
+- lc (str): line color.
+- ref_filename (str): file name of reference band data.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="symclosestwannier.util.band.generate_band_gnuplot_eig">
+<span class="sig-name descname"><span class="pre">generate_band_gnuplot_eig</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">outdir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kmax</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">emax</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">emin</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_wann</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/util/band.html#generate_band_gnuplot_eig"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.util.band.generate_band_gnuplot_eig" title="Link to this definition">#</a></dt>
+<dd><p>generate gnuplot file to plot band dispersion.
+(only eigen values)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>outdir</strong> (<em>str</em>) -- input and output files are found in this directory.</p></li>
+<li><p><strong>filename</strong> (<em>str</em>) -- file name.</p></li>
+<li><p><strong>kmax</strong> (<em>float</em>) -- maximum value in kpoints.</p></li>
+<li><p><strong>emax</strong> (<em>float</em>) -- maximum value of eigen values.</p></li>
+<li><p><strong>emin</strong> (<em>float</em>) -- minimum value of eigen values.</p></li>
+<li><p><strong>num_wann</strong> (<em>int</em>) -- # of wannier functions.</p></li>
+<li><p><strong>kwargs</strong> (<em>dict</em><em>, </em><em>optional</em>) -- key words for generate_band_gnuplot.
+- a (float): length of lattice vector.
+- ef (float): fermi energy.
+- k_dis_pos (dict): {disconnected linear position:label}.
+- lwidth (float): line width.
+- lc (str): line color.
+- ref_filename (str): file name of reference band data.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="symclosestwannier.util.band.output_linear_dispersion">
+<span class="sig-name descname"><span class="pre">output_linear_dispersion</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">outdir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">k</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">e</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">u</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/util/band.html#output_linear_dispersion"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.util.band.output_linear_dispersion" title="Link to this definition">#</a></dt>
+<dd><p>output band dispersion along high-symmetry lines.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>outdir</strong> (<em>str</em>) -- input and output files are found in this directory.</p></li>
+<li><p><strong>filename</strong> (<em>str</em>) -- file name.</p></li>
+<li><p><strong>k</strong> (<em>str</em>) -- k points along high-symmetry lines.</p></li>
+<li><p><strong>e</strong> (<em>ndarray</em>) -- eigen values.</p></li>
+<li><p><strong>u</strong> (<em>ndarray</em>) -- eigen vectors.</p></li>
+<li><p><strong>kwargs</strong> (<em>dict</em><em>, </em><em>optional</em>) -- key words for generate_band_gnuplot.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="symclosestwannier.util.band.output_linear_dispersion_eig">
+<span class="sig-name descname"><span class="pre">output_linear_dispersion_eig</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">outdir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">k</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">e</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">o</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/util/band.html#output_linear_dispersion_eig"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.util.band.output_linear_dispersion_eig" title="Link to this definition">#</a></dt>
+<dd><p>output band dispersion along high-symmetry lines.
+(only eigen values)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>outdir</strong> (<em>str</em>) -- input and output files are found in this directory.</p></li>
+<li><p><strong>filename</strong> (<em>str</em>) -- file name.</p></li>
+<li><p><strong>k</strong> (<em>str</em>) -- k points along high-symmetry lines.</p></li>
+<li><p><strong>e</strong> (<em>ndarray</em>) -- eigen values.</p></li>
+<li><p><strong>o</strong> (<em>ndarray</em><em>, </em><em>optional</em>) -- expectation value of any operator for each band, [num_band, num_k, component].</p></li>
+<li><p><strong>kwargs</strong> (<em>dict</em><em>, </em><em>optional</em>) -- key words for generate_band_gnuplot.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<p id="module-symclosestwannier.util.dos"><span id="module-symclosestwannier.util.constants"></span>utility codes for CW.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="symclosestwannier.util.dos.generate_dos_gnuplot">
+<span class="sig-name descname"><span class="pre">generate_dos_gnuplot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">outdir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">emax</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">emin</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ef_shift</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dos_max</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_wann</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/util/dos.html#generate_dos_gnuplot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.util.dos.generate_dos_gnuplot" title="Link to this definition">#</a></dt>
+<dd><p>generate gnuplot file to plot dos.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>outdir</strong> (<em>str</em>) -- input and output files are found in this directory.</p></li>
+<li><p><strong>filename</strong> (<em>str</em>) -- file name.</p></li>
+<li><p><strong>ef_max</strong> (<em>float</em>) -- maximum value of the fermi energy.</p></li>
+<li><p><strong>ef_min</strong> (<em>float</em>) -- minimum value of the fermi energy.</p></li>
+<li><p><strong>ef_shift</strong> (<em>float</em>) -- fermi energy shift.</p></li>
+<li><p><strong>dos_max</strong> (<em>float</em>) -- maximum value of the DOS.</p></li>
+<li><p><strong>num_wann</strong> (<em>int</em>) -- # of wannier functions.</p></li>
+<li><p><strong>kwargs</strong> (<em>dict</em><em>, </em><em>optional</em>) -- key words for generate_dos_gnuplot.
+- a (float): length of lattice vector.
+- ef (float): fermi energy.
+- lwidth (float): line width.
+- lc (str): line color.
+- ref_filename (str): file name of reference band data.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="symclosestwannier.util.dos.output_dos">
+<span class="sig-name descname"><span class="pre">output_dos</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">outdir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">e</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">u</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ef_shift</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dos_num_fermi</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">50</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dos_smr_en_width</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.001</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/util/dos.html#output_dos"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.util.dos.output_dos" title="Link to this definition">#</a></dt>
+<dd><p>output density of states (DOS).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>outdir</strong> (<em>str</em>) -- input and output files are found in this directory.</p></li>
+<li><p><strong>filename</strong> (<em>str</em>) -- file name.</p></li>
+<li><p><strong>e</strong> (<em>ndarray</em>) -- eigen values.</p></li>
+<li><p><strong>u</strong> (<em>ndarray</em>) -- eigen vectors.</p></li>
+<li><p><strong>ef_shift</strong> (<em>float</em><em>, </em><em>optional</em>) -- fermi energy shift, [0.0].</p></li>
+<li><p><strong>dos_num_fermi</strong> (<em>int</em><em>, </em><em>optional</em>) -- number of fermi energies (int), [50].</p></li>
+<li><p><strong>dos_smr_en_width</strong> (<em>float</em>) -- Energy width for the smearing function for the DOS (The units are [eV]) (flaot), [0.001].</p></li>
+<li><p><strong>kwargs</strong> (<em>dict</em><em>, </em><em>optional</em>) -- key words for generate_dos_gnuplot.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<p id="module-symclosestwannier.util.fermi_surface">utility codes for lindhard function.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="symclosestwannier.util.fermi_surface.generate_fermi_surface_gnuplot_eig">
+<span class="sig-name descname"><span class="pre">generate_fermi_surface_gnuplot_eig</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">outdir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seedname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kmax_1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kmin_1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kmax_2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kmin_2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">emax</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">emin</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_wann</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/util/fermi_surface.html#generate_fermi_surface_gnuplot_eig"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.util.fermi_surface.generate_fermi_surface_gnuplot_eig" title="Link to this definition">#</a></dt>
+<dd><p>generate gnuplot file to plot band dispersion.
+(only eigen values)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>outdir</strong> (<em>str</em>) -- input and output files are found in this directory.</p></li>
+<li><p><strong>seedname</strong> (<em>str</em>) -- seedname.</p></li>
+<li><p><strong>kmax</strong> (<em>float</em>) -- maximum value in kpoints.</p></li>
+<li><p><strong>emax</strong> (<em>float</em>) -- maximum value of eigen values.</p></li>
+<li><p><strong>emin</strong> (<em>float</em>) -- minimum value of eigen values.</p></li>
+<li><p><strong>num_wann</strong> (<em>int</em>) -- # of wannier functions.</p></li>
+<li><p><strong>kwargs</strong> (<em>dict</em><em>, </em><em>optional</em>) -- key words for generate_band_gnuplot.
+- a (float): length of lattice vector.
+- ef (float): fermi energy.
+- k_dis_pos (dict): {disconnected linear position:label}.
+- lwidth (float): line width.
+- lc (str): line color.
+- ref_filename (str): file name of reference band data.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="symclosestwannier.util.fermi_surface.output_fermi_surface_eig">
+<span class="sig-name descname"><span class="pre">output_fermi_surface_eig</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">outdir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seedname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kpoints_2d</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">e</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/util/fermi_surface.html#output_fermi_surface_eig"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.util.fermi_surface.output_fermi_surface_eig" title="Link to this definition">#</a></dt>
+<dd><p>output fermi surface.
+(only eigen values)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>outdir</strong> (<em>str</em>) -- input and output files are found in this directory.</p></li>
+<li><p><strong>seedname</strong> (<em>str</em>) -- seedname.</p></li>
+<li><p><strong>k</strong> (<em>str</em>) -- k points.</p></li>
+<li><p><strong>e</strong> (<em>ndarray</em>) -- eigen values.</p></li>
+<li><p><strong>kwargs</strong> (<em>dict</em><em>, </em><em>optional</em>) -- key words for generate_band_gnuplot.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function" id="module-symclosestwannier.util.get_oper_R">
+<dt class="sig sig-object py" id="symclosestwannier.util.get_oper_R.get_AA_R">
+<span class="sig-name descname"><span class="pre">get_AA_R</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cwi</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/util/get_oper_R.html#get_AA_R"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.util.get_oper_R.get_AA_R" title="Link to this definition">#</a></dt>
+<dd><p>matrix elements of real-space position operator, &lt;0n|r|Rm&gt;.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>cwi</strong> (<a class="reference internal" href="cw.html#symclosestwannier.cw.cw_info.CWInfo" title="symclosestwannier.cw.cw_info.CWInfo"><em>CWInfo</em></a>) -- CWInfo.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>position operator, AA_R(3, len(irvec), num_wann, num_wann).</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="symclosestwannier.util.get_oper_R.get_BB_R">
+<span class="sig-name descname"><span class="pre">get_BB_R</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cwi</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/util/get_oper_R.html#get_BB_R"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.util.get_oper_R.get_BB_R" title="Link to this definition">#</a></dt>
+<dd><dl class="simple">
+<dt>matrix elements of real-space BB operator,</dt><dd><p>BB_a(R)=&lt;0n|H(r-R)_a|Rm&gt;</p>
+</dd>
+<dt>BB_a(R) is the Fourier transform of</dt><dd><p>BB_a(k) = i&lt;u|H|del_a u&gt; (a=x,y,z)</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>cwi</strong> (<a class="reference internal" href="cw.html#symclosestwannier.cw.cw_info.CWInfo" title="symclosestwannier.cw.cw_info.CWInfo"><em>CWInfo</em></a>) -- CWInfo.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>position operator, BB_R(3, len(irvec), num_wann, num_wann).</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="symclosestwannier.util.get_oper_R.get_CC_R">
+<span class="sig-name descname"><span class="pre">get_CC_R</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cwi</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/util/get_oper_R.html#get_CC_R"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.util.get_oper_R.get_CC_R" title="Link to this definition">#</a></dt>
+<dd><dl class="simple">
+<dt>matrix elements of real-space CC operator,</dt><dd><p>CC_ab(R)=&lt;0n|r_a.H.(r-R)_b|Rm&gt;</p>
+</dd>
+<dt>CC_ab(R) is the Fourier transform of</dt><dd><p>CC_ab(k) = &lt;del_a u|H|del_b u&gt; (a,b=x,y,z)</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>cwi</strong> (<a class="reference internal" href="cw.html#symclosestwannier.cw.cw_info.CWInfo" title="symclosestwannier.cw.cw_info.CWInfo"><em>CWInfo</em></a>) -- CWInfo.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>position operator, CC_R(3, 3, len(irvec), num_wann, num_wann).</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="symclosestwannier.util.get_oper_R.get_HH_R">
+<span class="sig-name descname"><span class="pre">get_HH_R</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cwi</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/util/get_oper_R.html#get_HH_R"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.util.get_oper_R.get_HH_R" title="Link to this definition">#</a></dt>
+<dd><p>matrix elements of real-space Hamiltonian, &lt;0n|H|Rm&gt;.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>cwi</strong> (<a class="reference internal" href="cw.html#symclosestwannier.cw.cw_info.CWInfo" title="symclosestwannier.cw.cw_info.CWInfo"><em>CWInfo</em></a>) -- CWInfo.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Hamiltonian, HH_R(len(irvec), num_wann, num_wann).</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="symclosestwannier.util.get_oper_R.get_SAA_R">
+<span class="sig-name descname"><span class="pre">get_SAA_R</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cwi</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/util/get_oper_R.html#get_SAA_R"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.util.get_oper_R.get_SAA_R" title="Link to this definition">#</a></dt>
+<dd><p>&lt;0n|sigma_x,y,z.(r-R)_alpha|Rm&gt;</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="symclosestwannier.util.get_oper_R.get_SBB_R">
+<span class="sig-name descname"><span class="pre">get_SBB_R</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cwi</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/util/get_oper_R.html#get_SBB_R"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.util.get_oper_R.get_SBB_R" title="Link to this definition">#</a></dt>
+<dd><p>&lt;0n|sigma_x,y,z.H.(r-R)_alpha|Rm&gt;</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="symclosestwannier.util.get_oper_R.get_SHC_R">
+<span class="sig-name descname"><span class="pre">get_SHC_R</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cwi</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/util/get_oper_R.html#get_SHC_R"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.util.get_oper_R.get_SHC_R" title="Link to this definition">#</a></dt>
+<dd><dl class="simple">
+<dt>Compute several matrices for spin Hall conductivity</dt><dd><ul class="simple">
+<li><p>SR_R  = &lt;0n|sigma_{x,y,z}.(r-R)_alpha|Rm&gt;</p></li>
+<li><p>SHR_R = &lt;0n|sigma_{x,y,z}.H.(r-R)_alpha|Rm&gt;</p></li>
+<li><p>SH_R  = &lt;0n|sigma_{x,y,z}.H|Rm&gt;</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>cwi</strong> (<a class="reference internal" href="cw.html#symclosestwannier.cw.cw_info.CWInfo" title="symclosestwannier.cw.cw_info.CWInfo"><em>CWInfo</em></a>) -- CWInfo.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>SR_R(3, 3, len(irvec), num_wann, num_wann), SHR_R(3, 3, len(irvec), num_wann, num_wann), SH_R(3, len(irvec), num_wann, num_wann).</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="symclosestwannier.util.get_oper_R.get_SS_R">
+<span class="sig-name descname"><span class="pre">get_SS_R</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cwi</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/util/get_oper_R.html#get_SS_R"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.util.get_oper_R.get_SS_R" title="Link to this definition">#</a></dt>
+<dd><p>matrix elements of real-space spin operator, &lt;0n|sigma_x,y,z|Rm&gt;.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>cwi</strong> (<a class="reference internal" href="cw.html#symclosestwannier.cw.cw_info.CWInfo" title="symclosestwannier.cw.cw_info.CWInfo"><em>CWInfo</em></a>) -- CWInfo.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>spin operator, SS_R(3, len(irvec), num_wann, num_wann).</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="symclosestwannier.util.get_oper_R.get_berry_Curvature_R">
+<span class="sig-name descname"><span class="pre">get_berry_Curvature_R</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cwi</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/util/get_oper_R.html#get_berry_Curvature_R"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.util.get_oper_R.get_berry_Curvature_R" title="Link to this definition">#</a></dt>
+<dd><p>&lt;0n|Ω|Rm&gt;</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="symclosestwannier.util.get_oper_R.get_berry_phase_R">
+<span class="sig-name descname"><span class="pre">get_berry_phase_R</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cwi</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/util/get_oper_R.html#get_berry_phase_R"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.util.get_oper_R.get_berry_phase_R" title="Link to this definition">#</a></dt>
+<dd><p>matrix elements of berry phase, &lt;0n|A_x,y,z|Rm&gt;.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>cwi</strong> (<a class="reference internal" href="cw.html#symclosestwannier.cw.cw_info.CWInfo" title="symclosestwannier.cw.cw_info.CWInfo"><em>CWInfo</em></a>) -- CWInfo.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>spin operator, SS_R(3, len(irvec), num_wann, num_wann).</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="symclosestwannier.util.get_oper_R.get_der_berry_Curvature_Rcwi">
+<span class="sig-name descname"><span class="pre">get_der_berry_Curvature_Rcwi</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/util/get_oper_R.html#get_der_berry_Curvature_Rcwi"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.util.get_oper_R.get_der_berry_Curvature_Rcwi" title="Link to this definition">#</a></dt>
+<dd><p>&lt;0n|∇Ω|Rm&gt;</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="symclosestwannier.util.get_oper_R.get_der_orbital_moment_R">
+<span class="sig-name descname"><span class="pre">get_der_orbital_moment_R</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cwi</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/util/get_oper_R.html#get_der_orbital_moment_R"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.util.get_oper_R.get_der_orbital_moment_R" title="Link to this definition">#</a></dt>
+<dd><p>&lt;0n|∇Morb|Rm&gt;</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="symclosestwannier.util.get_oper_R.get_oper_R">
+<span class="sig-name descname"><span class="pre">get_oper_R</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cwi</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/util/get_oper_R.html#get_oper_R"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.util.get_oper_R.get_oper_R" title="Link to this definition">#</a></dt>
+<dd><p>wrapper for getting matrix elements of the operator.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>cwi</strong> (<a class="reference internal" href="cw.html#symclosestwannier.cw.cw_info.CWInfo" title="symclosestwannier.cw.cw_info.CWInfo"><em>CWInfo</em></a>) -- CWInfo.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>matrix elements of the operator.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="symclosestwannier.util.get_oper_R.get_orbital_moment_R">
+<span class="sig-name descname"><span class="pre">get_orbital_moment_R</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cwi</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/util/get_oper_R.html#get_orbital_moment_R"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.util.get_oper_R.get_orbital_moment_R" title="Link to this definition">#</a></dt>
+<dd><p>&lt;0n|Morb|Rm&gt;</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="symclosestwannier.util.get_oper_R.get_v_R">
+<span class="sig-name descname"><span class="pre">get_v_R</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cwi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">HH_R</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/util/get_oper_R.html#get_v_R"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.util.get_oper_R.get_v_R" title="Link to this definition">#</a></dt>
+<dd><p>matrix elements of real-space velocity operator in TB approximation, &lt;0n|v|Rm&gt;.
+v_k^a = 1 / (h/2π) ∇_k^a H_k [Angstrom / s]</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>cwi</strong> (<a class="reference internal" href="cw.html#symclosestwannier.cw.cw_info.CWInfo" title="symclosestwannier.cw.cw_info.CWInfo"><em>CWInfo</em></a>) -- CWInfo.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>position operator, v_R(3, len(irvec), num_wann, num_wann).</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<p id="module-symclosestwannier.util.header">headers.</p>
+<p id="module-symclosestwannier.util.hr_utility">tool codes for seedname_hr.dat.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="symclosestwannier.util.hr_utility.convert_hr_to_hk">
+<span class="sig-name descname"><span class="pre">convert_hr_to_hk</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">k</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Hr_mat</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">R_degen_dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dim</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/util/hr_utility.html#convert_hr_to_hk"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.util.hr_utility.convert_hr_to_hk" title="Link to this definition">#</a></dt>
+<dd><p>create hamiltonian matrix from wanner90 output file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>k</strong> (<em>np.array</em>) -- k grid.</p></li>
+<li><p><strong>Hr_mat</strong> (<em>dict</em>) -- H_{mn}(R) { (n1,n2,n3,m,n): (re,im) }.</p></li>
+<li><p><strong>R_degen_dict</strong> (<em>dict</em>) -- degeneracy(R) { (n1,n2,n3): deg }.</p></li>
+<li><p><strong>dim</strong> (<em>int</em>) -- matrix dimension.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>a set of hamiltonian matrices</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>np.array</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="symclosestwannier.util.hr_utility.read_hr">
+<span class="sig-name descname"><span class="pre">read_hr</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">orb_dict</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">encoding</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'UTF-8'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/util/hr_utility.html#read_hr"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.util.hr_utility.read_hr" title="Link to this definition">#</a></dt>
+<dd><p>read seedname_hr.dat file which is obtained by Wannier90.
+seedname_hr.dat file includes the wannier tight-binding Hamiltoinan's matrix elements in real space, H_{mn}(R).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>filename</strong> (<em>str</em>) -- file name of seedname_hr.dat file.</p></li>
+<li><p><strong>orb_dict</strong> (<em>dict</em>) -- dictionary of orbitals information, { wannier orbital #: pseudo atomic orbital # }.</p></li>
+<li><p><strong>encoding</strong> (<em>str</em><em>, </em><em>optional</em>) -- encoding.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>(HH_R, irvec, ndegen)
+- HH_R (ndarray): H_{mn}(R).
+- irvec (ndarray): irreducible R vectors (crystal coordinate, [[n1,n2,n3]], nj: integer).
+- ndegen (ndarray): number of degeneracy at each R.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<ul class="simple">
+<li><p>R = n1 a1 + n2 a2 + n3 a3 (aj: lattice vectors, nj: integer)</p></li>
+<li><p>m: wannier orbital # starting from 1.</p></li>
+<li><p>n: pseudo atomic orbital # starting from 1.</p></li>
+</ul>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="symclosestwannier.util.hr_utility.remove_elements">
+<span class="sig-name descname"><span class="pre">remove_elements</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Hr_mat</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">idx_list</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/util/hr_utility.html#remove_elements"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.util.hr_utility.remove_elements" title="Link to this definition">#</a></dt>
+<dd><p>read seedname_hr.dat file which is obtained by Wannier90.
+seedname_hr.dat file includes the wannier tight-binding Hamiltoinan's matrix elements in real space, H_{mn}(R).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>Hr_mat</strong> (<em>dict</em>) -- H_{mn}(R) { (n1,n2,n3,m,n): (re,im) }.</p></li>
+<li><p><strong>idx_list</strong> (<em>list</em>) -- index list to be removed.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>H_{mn}(R) { (n1,n2,n3,m,n): (re,im) }</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><ul class="simple">
+<li><p>dict</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<ul class="simple">
+<li><p>R = n1 a1 + n2 a2 + n3 a3 (aj: lattice vectors, nj: integer)</p></li>
+<li><p>m: wannier orbital # starting from 1.</p></li>
+<li><p>n: pseudo atomic orbital # starting from 1.</p></li>
+</ul>
+</dd></dl>
+
+<p id="module-symclosestwannier.util.lindhard">utility codes for lindhard function.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="symclosestwannier.util.lindhard.generate_lindhard_gnuplot">
+<span class="sig-name descname"><span class="pre">generate_lindhard_gnuplot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">outdir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">qmax</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lmax</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lmin</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/util/lindhard.html#generate_lindhard_gnuplot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.util.lindhard.generate_lindhard_gnuplot" title="Link to this definition">#</a></dt>
+<dd><p>generate gnuplot file to plot lindhard function.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>outdir</strong> (<em>str</em>) -- input and output files are found in this directory.</p></li>
+<li><p><strong>filename</strong> (<em>str</em>) -- file name.</p></li>
+<li><p><strong>qmax</strong> (<em>float</em>) -- maximum value in qpoints.</p></li>
+<li><p><strong>lmax</strong> (<em>float</em>) -- maximum value of lindhard function.</p></li>
+<li><p><strong>lmin</strong> (<em>float</em>) -- minimum value of lindhard function.</p></li>
+<li><p><strong>kwargs</strong> (<em>dict</em><em>, </em><em>optional</em>) -- key words for generate_lindhard_gnuplot.
+- q_dis_pos (dict): {disconnected linear position:label}.
+- lwidth (float): line width.
+- lc (str): line color.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="symclosestwannier.util.lindhard.generate_lindhard_surface_gnuplot">
+<span class="sig-name descname"><span class="pre">generate_lindhard_surface_gnuplot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">outdir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">qmax_1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">qmin_1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">qmax_2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">qmin_2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lmax_re</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lmin_re</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lmax_im</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lmin_im</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/util/lindhard.html#generate_lindhard_surface_gnuplot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.util.lindhard.generate_lindhard_surface_gnuplot" title="Link to this definition">#</a></dt>
+<dd><p>generate gnuplot file to plot lindhard function.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>outdir</strong> (<em>str</em>) -- input and output files are found in this directory.</p></li>
+<li><p><strong>filename</strong> (<em>str</em>) -- file name.</p></li>
+<li><p><strong>qmax</strong> (<em>float</em>) -- maximum value in qpoints.</p></li>
+<li><p><strong>lmax</strong> (<em>float</em>) -- maximum value of lindhard function.</p></li>
+<li><p><strong>lmin</strong> (<em>float</em>) -- minimum value of lindhard function.</p></li>
+<li><p><strong>kwargs</strong> (<em>dict</em><em>, </em><em>optional</em>) -- key words for generate_lindhard_gnuplot.
+- q_dis_pos (dict): {disconnected linear position:label}.
+- lwidth (float): line width.
+- lc (str): line color.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="symclosestwannier.util.lindhard.get_lindhard">
+<span class="sig-name descname"><span class="pre">get_lindhard</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cwi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">HH_R</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">qpoints</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">omega</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ef</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">T</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delta</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/util/lindhard.html#get_lindhard"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.util.lindhard.get_lindhard" title="Link to this definition">#</a></dt>
+<dd><p>lind hard function.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>cwi</strong> (<a class="reference internal" href="cw.html#symclosestwannier.cw.cw_info.CWInfo" title="symclosestwannier.cw.cw_info.CWInfo"><em>CWInfo</em></a>) -- CWInfo.</p></li>
+<li><p><strong>HH_R</strong> (<em>ndarray</em>) -- Hamiltonian matrix.</p></li>
+<li><p><strong>qpoints</strong> (<em>ndarray</em>) -- qpoints.</p></li>
+<li><p><strong>omega</strong> (<em>float</em>) -- frequency.</p></li>
+<li><p><strong>ef</strong> (<em>float</em>) -- fermi energy (The units are [eV]).</p></li>
+<li><p><strong>temperature</strong> (<em>float</em>) -- temperature.</p></li>
+<li><p><strong>delta</strong> (<em>float</em>) -- Energy width for the smearing function (The units are [eV]).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>lindhard function.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="symclosestwannier.util.lindhard.output_lindhard">
+<span class="sig-name descname"><span class="pre">output_lindhard</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">outdir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">om</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">q</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lindhard</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/util/lindhard.html#output_lindhard"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.util.lindhard.output_lindhard" title="Link to this definition">#</a></dt>
+<dd><p>output lindhard function along high-symmetry lines.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>outdir</strong> (<em>str</em>) -- input and output files are found in this directory.</p></li>
+<li><p><strong>filename</strong> (<em>str</em>) -- file name.</p></li>
+<li><p><strong>om</strong> (<em>float</em>) -- frequency.</p></li>
+<li><p><strong>q</strong> (<em>ndarray</em>) -- q points along high-symmetry lines.</p></li>
+<li><p><strong>lindhard</strong> (<em>ndarray</em>) -- lindhard function L(om, q).</p></li>
+<li><p><strong>kwargs</strong> (<em>dict</em><em>, </em><em>optional</em>) -- key words for generate_band_gnuplot.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="symclosestwannier.util.lindhard.output_lindhard_surface">
+<span class="sig-name descname"><span class="pre">output_lindhard_surface</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">outdir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">om</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">qpoints_2d</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lindhard_re</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lindhard_im_om0</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/util/lindhard.html#output_lindhard_surface"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.util.lindhard.output_lindhard_surface" title="Link to this definition">#</a></dt>
+<dd><p>output lindhard function (2d plane).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>outdir</strong> (<em>str</em>) -- input and output files are found in this directory.</p></li>
+<li><p><strong>filename</strong> (<em>str</em>) -- file name.</p></li>
+<li><p><strong>om</strong> (<em>float</em>) -- frequency.</p></li>
+<li><p><strong>qpoints_2d</strong> (<em>ndarray</em>) -- q points.</p></li>
+<li><p><strong>lindhard_re</strong> (<em>ndarray</em>) -- real part of lindhard function L(om, q).</p></li>
+<li><p><strong>lindhard_im_om0</strong> (<em>ndarray</em>) -- imaginary part of lindhard function lim_{om-&gt;0} L(om, q)/om</p></li>
+<li><p><strong>kwargs</strong> (<em>dict</em><em>, </em><em>optional</em>) -- key words for generate_band_gnuplot.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<p id="module-symclosestwannier.util.tb_slater_koster"><span id="module-symclosestwannier.util.message"></span>Slater-Koster parameters</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="symclosestwannier.util.tb_slater_koster.sk_parameter">
+<span class="sig-name descname"><span class="pre">sk_parameter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">o1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">o2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">l</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/util/tb_slater_koster.html#sk_parameter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.util.tb_slater_koster.sk_parameter" title="Link to this definition">#</a></dt>
+<dd><p>Slater-Koster parameters list</p>
+<p>r/<a href="#id1"><span class="problematic" id="id2">|r|</span></a> = (l,m,n)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>o1</strong> (<em>str</em>) -- &lt;o1|</p></li>
+<li><p><strong>o2</strong> (<em>str</em>) -- <a href="#id1"><span class="problematic" id="id2">|</span></a>o2&gt;</p></li>
+<li><p><strong>l</strong> (<em>sympy/float</em>)</p></li>
+<li><p><strong>m</strong> (<em>sympy/float</em>)</p></li>
+<li><p><strong>n</strong> (<em>sympy/float</em>)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<p id="module-symclosestwannier.util.utility">utility codes.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="symclosestwannier.util.utility.FortranFileR">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">FortranFileR</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/util/utility.html#FortranFileR"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.util.utility.FortranFileR" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">FortranFileR</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/util/utility.html#FortranFileR"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.util.utility.FortranFileR" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">FortranFile</span></code></p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -439,7 +1076,7 @@ Rmin is the bond with minimum length.</p>
 </dd>
 </dl>
 <dl class="simple">
-<dt>Returns: (list, list, list, float, float, float)</dt><dd><p>[||R||], [||O(R)||], [max(<a href="#id1"><span class="problematic" id="id2">|O(R)|</span></a>)], ||O(Rmin)||, ||Rmin||, τ.</p>
+<dt>Returns: (list, list, list, float, float, float)</dt><dd><p>[||R||], [||O(R)||], [max(<a href="#id3"><span class="problematic" id="id4">|O(R)|</span></a>)], ||O(Rmin)||, ||Rmin||, τ.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -466,7 +1103,7 @@ Rmin is the bond with minimum length.</p>
 </ul>
 </dd>
 </dl>
-<p>Returns: eta_0, eta_0_max, eta_2, eta_2_max.</p>
+<p>Returns: eta_0, eta_0_max, eta_2, eta_2_max, eta_4, eta_4_max.</p>
 </dd></dl>
 
 <dl class="py function">
@@ -727,6 +1364,12 @@ fourier transformation from real-space representation into k-space representatio
 </dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="symclosestwannier.util.utility.num_electron">
+<span class="sig-name descname"><span class="pre">num_electron</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">e</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ef</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">T</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/util/utility.html#num_electron"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.util.utility.num_electron" title="Link to this definition">#</a></dt>
+<dd><p>number of electrons per unit-cell</p>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="symclosestwannier.util.utility.samb_decomp_operator">
 <span class="sig-name descname"><span class="pre">samb_decomp_operator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Or_dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Zr_dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">A</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">atoms_frac</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ket</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">A_samb</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">atoms_frac_samb</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ket_samb</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/util/utility.html#samb_decomp_operator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.util.utility.samb_decomp_operator" title="Link to this definition">#</a></dt>
 <dd><p>decompose arbitrary operator into linear combination of SAMBs.</p>
@@ -846,6 +1489,12 @@ fourier transformation from real-space representation into k-space representatio
 </dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="symclosestwannier.util.utility.tune_fermi_level">
+<span class="sig-name descname"><span class="pre">tune_fermi_level</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">e</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filling</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">T</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threshold</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-08</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/util/utility.html#tune_fermi_level"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.util.utility.tune_fermi_level" title="Link to this definition">#</a></dt>
+<dd><p>number of electrons per unit-cell</p>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="symclosestwannier.util.utility.weight_proj">
 <span class="sig-name descname"><span class="pre">weight_proj</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">e</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dis_win_emin</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dis_win_emax</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">smearing_temp_min</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">smearing_temp_max</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delta</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-11</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/util/utility.html#weight_proj"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.util.utility.weight_proj" title="Link to this definition">#</a></dt>
 <dd><p>weight function for projection</p>
@@ -879,311 +1528,7 @@ return irreducible R vectors and number of degeneracy at each R.</p>
 </dl>
 </dd></dl>
 
-<dl class="py function">
-<dt class="sig sig-object py" id="symclosestwannier.util.utility.write_or">
-<span class="sig-name descname"><span class="pre">write_or</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">outdir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unit_cell_cart</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Or</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">irvec</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ndegen</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vec</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/util/utility.html#write_or"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.util.utility.write_or" title="Link to this definition">#</a></dt>
-<dd><p>write seedname_or.dat.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>outdir</strong> (<em>str</em>) -- input and output files are found in this directory.</p></li>
-<li><p><strong>filename</strong> (<em>str</em>) -- file name.</p></li>
-<li><p><strong>unit_cell_cart</strong> (<em>ndarray</em>) -- transform matrix, [a1,a2,a3], [None].</p></li>
-<li><p><strong>Or</strong> (<em>ndarray</em>) -- real-space representation of the given operator, O_{ab}(R) = &lt;φ_{a}(0)|O|φ_{b}(R)&gt;.</p></li>
-<li><p><strong>irvec</strong> (<em>ndarray</em>) -- irreducible rpoints.</p></li>
-<li><p><strong>ndegen</strong> (<em>ndarray</em>) -- number of degeneracy at each R.</p></li>
-<li><p><strong>vec</strong> (<em>bool</em><em>, </em><em>optional</em>) -- vector ?</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<p id="module-symclosestwannier.util.band">utility codes for CW.</p>
-<dl class="py function">
-<dt class="sig sig-object py" id="symclosestwannier.util.band.generate_band_gnuplot">
-<span class="sig-name descname"><span class="pre">generate_band_gnuplot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">outdir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kmax</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">emax</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">emin</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_wann</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/util/band.html#generate_band_gnuplot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.util.band.generate_band_gnuplot" title="Link to this definition">#</a></dt>
-<dd><p>generate gnuplot file to plot band dispersion.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>outdir</strong> (<em>str</em>) -- input and output files are found in this directory.</p></li>
-<li><p><strong>filename</strong> (<em>str</em>) -- file name.</p></li>
-<li><p><strong>kmax</strong> (<em>float</em>) -- maximum value in kpoints.</p></li>
-<li><p><strong>emax</strong> (<em>float</em>) -- maximum value of eigen values.</p></li>
-<li><p><strong>emin</strong> (<em>float</em>) -- minimum value of eigen values.</p></li>
-<li><p><strong>num_wann</strong> (<em>int</em>) -- # of wannier functions.</p></li>
-<li><p><strong>kwargs</strong> (<em>dict</em><em>, </em><em>optional</em>) -- key words for generate_band_gnuplot.
-- a (float): length of lattice vector.
-- ef (float): fermi energy.
-- k_dis_pos (dict): {disconnected linear position:label}.
-- lwidth (float): line width.
-- lc (str): line color.
-- ref_filename (str): file name of reference band data.</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="symclosestwannier.util.band.generate_band_gnuplot_eig">
-<span class="sig-name descname"><span class="pre">generate_band_gnuplot_eig</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">outdir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kmax</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">emax</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">emin</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_wann</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/util/band.html#generate_band_gnuplot_eig"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.util.band.generate_band_gnuplot_eig" title="Link to this definition">#</a></dt>
-<dd><p>generate gnuplot file to plot band dispersion.
-(only eigen values)</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>outdir</strong> (<em>str</em>) -- input and output files are found in this directory.</p></li>
-<li><p><strong>filename</strong> (<em>str</em>) -- file name.</p></li>
-<li><p><strong>kmax</strong> (<em>float</em>) -- maximum value in kpoints.</p></li>
-<li><p><strong>emax</strong> (<em>float</em>) -- maximum value of eigen values.</p></li>
-<li><p><strong>emin</strong> (<em>float</em>) -- minimum value of eigen values.</p></li>
-<li><p><strong>num_wann</strong> (<em>int</em>) -- # of wannier functions.</p></li>
-<li><p><strong>kwargs</strong> (<em>dict</em><em>, </em><em>optional</em>) -- key words for generate_band_gnuplot.
-- a (float): length of lattice vector.
-- ef (float): fermi energy.
-- k_dis_pos (dict): {disconnected linear position:label}.
-- lwidth (float): line width.
-- lc (str): line color.
-- ref_filename (str): file name of reference band data.</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="symclosestwannier.util.band.output_linear_dispersion">
-<span class="sig-name descname"><span class="pre">output_linear_dispersion</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">outdir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">k</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">e</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">u</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/util/band.html#output_linear_dispersion"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.util.band.output_linear_dispersion" title="Link to this definition">#</a></dt>
-<dd><p>output band dispersion along high-symmetry lines.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>outdir</strong> (<em>str</em>) -- input and output files are found in this directory.</p></li>
-<li><p><strong>filename</strong> (<em>str</em>) -- file name.</p></li>
-<li><p><strong>k</strong> (<em>str</em>) -- k points along high-symmetry lines.</p></li>
-<li><p><strong>e</strong> (<em>ndarray</em>) -- eigen values.</p></li>
-<li><p><strong>u</strong> (<em>ndarray</em>) -- eigen vectors.</p></li>
-<li><p><strong>kwargs</strong> (<em>dict</em><em>, </em><em>optional</em>) -- key words for generate_band_gnuplot.</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="symclosestwannier.util.band.output_linear_dispersion_eig">
-<span class="sig-name descname"><span class="pre">output_linear_dispersion_eig</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">outdir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">k</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">e</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">o</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/util/band.html#output_linear_dispersion_eig"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.util.band.output_linear_dispersion_eig" title="Link to this definition">#</a></dt>
-<dd><p>output band dispersion along high-symmetry lines.
-(only eigen values)</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>outdir</strong> (<em>str</em>) -- input and output files are found in this directory.</p></li>
-<li><p><strong>filename</strong> (<em>str</em>) -- file name.</p></li>
-<li><p><strong>k</strong> (<em>str</em>) -- k points along high-symmetry lines.</p></li>
-<li><p><strong>e</strong> (<em>ndarray</em>) -- eigen values.</p></li>
-<li><p><strong>o</strong> (<em>ndarray</em><em>, </em><em>optional</em>) -- expectation value of any operator for each band, [num_band, num_k, component].</p></li>
-<li><p><strong>kwargs</strong> (<em>dict</em><em>, </em><em>optional</em>) -- key words for generate_band_gnuplot.</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function" id="module-symclosestwannier.util.get_oper_R">
-<span id="module-symclosestwannier.util.constants"></span><dt class="sig sig-object py" id="symclosestwannier.util.get_oper_R.get_AA_R">
-<span class="sig-name descname"><span class="pre">get_AA_R</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cwi</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/util/get_oper_R.html#get_AA_R"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.util.get_oper_R.get_AA_R" title="Link to this definition">#</a></dt>
-<dd><p>matrix elements of real-space position operator, &lt;0n|r|Rm&gt;.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>cwi</strong> (<a class="reference internal" href="cw.html#symclosestwannier.cw.cw_info.CWInfo" title="symclosestwannier.cw.cw_info.CWInfo"><em>CWInfo</em></a>) -- CWInfo.</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>position operator, AA_R(3, len(irvec), num_wann, num_wann).</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>ndarray</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="symclosestwannier.util.get_oper_R.get_BB_R">
-<span class="sig-name descname"><span class="pre">get_BB_R</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cwi</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/util/get_oper_R.html#get_BB_R"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.util.get_oper_R.get_BB_R" title="Link to this definition">#</a></dt>
-<dd><dl class="simple">
-<dt>matrix elements of real-space BB operator,</dt><dd><p>BB_a(R)=&lt;0n|H(r-R)_a|Rm&gt;</p>
-</dd>
-<dt>BB_a(R) is the Fourier transform of</dt><dd><p>BB_a(k) = i&lt;u|H|del_a u&gt; (a=x,y,z)</p>
-</dd>
-</dl>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>cwi</strong> (<a class="reference internal" href="cw.html#symclosestwannier.cw.cw_info.CWInfo" title="symclosestwannier.cw.cw_info.CWInfo"><em>CWInfo</em></a>) -- CWInfo.</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>position operator, BB_R(3, len(irvec), num_wann, num_wann).</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>ndarray</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="symclosestwannier.util.get_oper_R.get_CC_R">
-<span class="sig-name descname"><span class="pre">get_CC_R</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cwi</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/util/get_oper_R.html#get_CC_R"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.util.get_oper_R.get_CC_R" title="Link to this definition">#</a></dt>
-<dd><dl class="simple">
-<dt>matrix elements of real-space CC operator,</dt><dd><p>CC_ab(R)=&lt;0n|r_a.H.(r-R)_b|Rm&gt;</p>
-</dd>
-<dt>CC_ab(R) is the Fourier transform of</dt><dd><p>CC_ab(k) = &lt;del_a u|H|del_b u&gt; (a,b=x,y,z)</p>
-</dd>
-</dl>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>cwi</strong> (<a class="reference internal" href="cw.html#symclosestwannier.cw.cw_info.CWInfo" title="symclosestwannier.cw.cw_info.CWInfo"><em>CWInfo</em></a>) -- CWInfo.</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>position operator, CC_R(3, 3, len(irvec), num_wann, num_wann).</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>ndarray</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="symclosestwannier.util.get_oper_R.get_HH_R">
-<span class="sig-name descname"><span class="pre">get_HH_R</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cwi</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/util/get_oper_R.html#get_HH_R"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.util.get_oper_R.get_HH_R" title="Link to this definition">#</a></dt>
-<dd><p>matrix elements of real-space Hamiltonian, &lt;0n|H|Rm&gt;.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>cwi</strong> (<a class="reference internal" href="cw.html#symclosestwannier.cw.cw_info.CWInfo" title="symclosestwannier.cw.cw_info.CWInfo"><em>CWInfo</em></a>) -- CWInfo.</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Hamiltonian, HH_R(len(irvec), num_wann, num_wann).</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>ndarray</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="symclosestwannier.util.get_oper_R.get_SAA_R">
-<span class="sig-name descname"><span class="pre">get_SAA_R</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cwi</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/util/get_oper_R.html#get_SAA_R"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.util.get_oper_R.get_SAA_R" title="Link to this definition">#</a></dt>
-<dd><p>&lt;0n|sigma_x,y,z.(r-R)_alpha|Rm&gt;</p>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="symclosestwannier.util.get_oper_R.get_SBB_R">
-<span class="sig-name descname"><span class="pre">get_SBB_R</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cwi</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/util/get_oper_R.html#get_SBB_R"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.util.get_oper_R.get_SBB_R" title="Link to this definition">#</a></dt>
-<dd><p>&lt;0n|sigma_x,y,z.H.(r-R)_alpha|Rm&gt;</p>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="symclosestwannier.util.get_oper_R.get_SHC_R">
-<span class="sig-name descname"><span class="pre">get_SHC_R</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cwi</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/util/get_oper_R.html#get_SHC_R"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.util.get_oper_R.get_SHC_R" title="Link to this definition">#</a></dt>
-<dd><dl class="simple">
-<dt>Compute several matrices for spin Hall conductivity</dt><dd><ul class="simple">
-<li><p>SR_R  = &lt;0n|sigma_{x,y,z}.(r-R)_alpha|Rm&gt;</p></li>
-<li><p>SHR_R = &lt;0n|sigma_{x,y,z}.H.(r-R)_alpha|Rm&gt;</p></li>
-<li><p>SH_R  = &lt;0n|sigma_{x,y,z}.H|Rm&gt;</p></li>
-</ul>
-</dd>
-</dl>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>cwi</strong> (<a class="reference internal" href="cw.html#symclosestwannier.cw.cw_info.CWInfo" title="symclosestwannier.cw.cw_info.CWInfo"><em>CWInfo</em></a>) -- CWInfo.</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>SR_R(3, 3, len(irvec), num_wann, num_wann), SHR_R(3, 3, len(irvec), num_wann, num_wann), SH_R(3, len(irvec), num_wann, num_wann).</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>tuple</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="symclosestwannier.util.get_oper_R.get_SS_R">
-<span class="sig-name descname"><span class="pre">get_SS_R</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cwi</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/util/get_oper_R.html#get_SS_R"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.util.get_oper_R.get_SS_R" title="Link to this definition">#</a></dt>
-<dd><p>matrix elements of real-space spin operator, &lt;0n|sigma_x,y,z|Rm&gt;.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>cwi</strong> (<a class="reference internal" href="cw.html#symclosestwannier.cw.cw_info.CWInfo" title="symclosestwannier.cw.cw_info.CWInfo"><em>CWInfo</em></a>) -- CWInfo.</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>spin operator, SS_R(3, len(irvec), num_wann, num_wann).</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>ndarray</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="symclosestwannier.util.get_oper_R.get_berry_Curvature_R">
-<span class="sig-name descname"><span class="pre">get_berry_Curvature_R</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cwi</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/util/get_oper_R.html#get_berry_Curvature_R"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.util.get_oper_R.get_berry_Curvature_R" title="Link to this definition">#</a></dt>
-<dd><p>&lt;0n|Ω|Rm&gt;</p>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="symclosestwannier.util.get_oper_R.get_berry_phase_R">
-<span class="sig-name descname"><span class="pre">get_berry_phase_R</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cwi</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/util/get_oper_R.html#get_berry_phase_R"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.util.get_oper_R.get_berry_phase_R" title="Link to this definition">#</a></dt>
-<dd><p>matrix elements of berry phase, &lt;0n|A_x,y,z|Rm&gt;.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>cwi</strong> (<a class="reference internal" href="cw.html#symclosestwannier.cw.cw_info.CWInfo" title="symclosestwannier.cw.cw_info.CWInfo"><em>CWInfo</em></a>) -- CWInfo.</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>spin operator, SS_R(3, len(irvec), num_wann, num_wann).</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>ndarray</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="symclosestwannier.util.get_oper_R.get_der_berry_Curvature_Rcwi">
-<span class="sig-name descname"><span class="pre">get_der_berry_Curvature_Rcwi</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/util/get_oper_R.html#get_der_berry_Curvature_Rcwi"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.util.get_oper_R.get_der_berry_Curvature_Rcwi" title="Link to this definition">#</a></dt>
-<dd><p>&lt;0n|∇Ω|Rm&gt;</p>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="symclosestwannier.util.get_oper_R.get_der_orbital_moment_R">
-<span class="sig-name descname"><span class="pre">get_der_orbital_moment_R</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cwi</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/util/get_oper_R.html#get_der_orbital_moment_R"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.util.get_oper_R.get_der_orbital_moment_R" title="Link to this definition">#</a></dt>
-<dd><p>&lt;0n|∇Morb|Rm&gt;</p>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="symclosestwannier.util.get_oper_R.get_oper_R">
-<span class="sig-name descname"><span class="pre">get_oper_R</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cwi</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/util/get_oper_R.html#get_oper_R"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.util.get_oper_R.get_oper_R" title="Link to this definition">#</a></dt>
-<dd><p>wrapper for getting matrix elements of the operator.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>cwi</strong> (<a class="reference internal" href="cw.html#symclosestwannier.cw.cw_info.CWInfo" title="symclosestwannier.cw.cw_info.CWInfo"><em>CWInfo</em></a>) -- CWInfo.</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>matrix elements of the operator.</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>ndarray</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="symclosestwannier.util.get_oper_R.get_orbital_moment_R">
-<span class="sig-name descname"><span class="pre">get_orbital_moment_R</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cwi</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/util/get_oper_R.html#get_orbital_moment_R"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.util.get_oper_R.get_orbital_moment_R" title="Link to this definition">#</a></dt>
-<dd><p>&lt;0n|Morb|Rm&gt;</p>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="symclosestwannier.util.get_oper_R.get_velocity_R">
-<span class="sig-name descname"><span class="pre">get_velocity_R</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cwi</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/util/get_oper_R.html#get_velocity_R"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.util.get_oper_R.get_velocity_R" title="Link to this definition">#</a></dt>
-<dd><p>&lt;0n|v|Rm&gt;</p>
-</dd></dl>
-
-<p id="module-symclosestwannier.util.header">headers.</p>
-<span class="target" id="module-symclosestwannier.util.message"></span></section>
+</section>
 
     <script type="text/x-thebe-config">
     {
@@ -1216,8 +1561,7 @@ return irreducible R vectors and number of degeneracy at each R.</p>
             
             
               
-                <dialog id="pst-secondary-sidebar-modal"></dialog>
-                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
 
 
   <div class="sidebar-secondary-item">
@@ -1226,6 +1570,38 @@ return irreducible R vectors and number of degeneracy at each R.</p>
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.band.generate_band_gnuplot"><code class="docutils literal notranslate"><span class="pre">generate_band_gnuplot()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.band.generate_band_gnuplot_eig"><code class="docutils literal notranslate"><span class="pre">generate_band_gnuplot_eig()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.band.output_linear_dispersion"><code class="docutils literal notranslate"><span class="pre">output_linear_dispersion()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.band.output_linear_dispersion_eig"><code class="docutils literal notranslate"><span class="pre">output_linear_dispersion_eig()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.dos.generate_dos_gnuplot"><code class="docutils literal notranslate"><span class="pre">generate_dos_gnuplot()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.dos.output_dos"><code class="docutils literal notranslate"><span class="pre">output_dos()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.fermi_surface.generate_fermi_surface_gnuplot_eig"><code class="docutils literal notranslate"><span class="pre">generate_fermi_surface_gnuplot_eig()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.fermi_surface.output_fermi_surface_eig"><code class="docutils literal notranslate"><span class="pre">output_fermi_surface_eig()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.get_oper_R.get_AA_R"><code class="docutils literal notranslate"><span class="pre">get_AA_R()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.get_oper_R.get_BB_R"><code class="docutils literal notranslate"><span class="pre">get_BB_R()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.get_oper_R.get_CC_R"><code class="docutils literal notranslate"><span class="pre">get_CC_R()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.get_oper_R.get_HH_R"><code class="docutils literal notranslate"><span class="pre">get_HH_R()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.get_oper_R.get_SAA_R"><code class="docutils literal notranslate"><span class="pre">get_SAA_R()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.get_oper_R.get_SBB_R"><code class="docutils literal notranslate"><span class="pre">get_SBB_R()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.get_oper_R.get_SHC_R"><code class="docutils literal notranslate"><span class="pre">get_SHC_R()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.get_oper_R.get_SS_R"><code class="docutils literal notranslate"><span class="pre">get_SS_R()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.get_oper_R.get_berry_Curvature_R"><code class="docutils literal notranslate"><span class="pre">get_berry_Curvature_R()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.get_oper_R.get_berry_phase_R"><code class="docutils literal notranslate"><span class="pre">get_berry_phase_R()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.get_oper_R.get_der_berry_Curvature_Rcwi"><code class="docutils literal notranslate"><span class="pre">get_der_berry_Curvature_Rcwi()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.get_oper_R.get_der_orbital_moment_R"><code class="docutils literal notranslate"><span class="pre">get_der_orbital_moment_R()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.get_oper_R.get_oper_R"><code class="docutils literal notranslate"><span class="pre">get_oper_R()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.get_oper_R.get_orbital_moment_R"><code class="docutils literal notranslate"><span class="pre">get_orbital_moment_R()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.get_oper_R.get_v_R"><code class="docutils literal notranslate"><span class="pre">get_v_R()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.hr_utility.convert_hr_to_hk"><code class="docutils literal notranslate"><span class="pre">convert_hr_to_hk()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.hr_utility.read_hr"><code class="docutils literal notranslate"><span class="pre">read_hr()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.hr_utility.remove_elements"><code class="docutils literal notranslate"><span class="pre">remove_elements()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.lindhard.generate_lindhard_gnuplot"><code class="docutils literal notranslate"><span class="pre">generate_lindhard_gnuplot()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.lindhard.generate_lindhard_surface_gnuplot"><code class="docutils literal notranslate"><span class="pre">generate_lindhard_surface_gnuplot()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.lindhard.get_lindhard"><code class="docutils literal notranslate"><span class="pre">get_lindhard()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.lindhard.output_lindhard"><code class="docutils literal notranslate"><span class="pre">output_lindhard()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.lindhard.output_lindhard_surface"><code class="docutils literal notranslate"><span class="pre">output_lindhard_surface()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.tb_slater_koster.sk_parameter"><code class="docutils literal notranslate"><span class="pre">sk_parameter()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.utility.FortranFileR"><code class="docutils literal notranslate"><span class="pre">FortranFileR</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.utility.Kelvin_to_eV"><code class="docutils literal notranslate"><span class="pre">Kelvin_to_eV()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.utility.O_R_dependence"><code class="docutils literal notranslate"><span class="pre">O_R_dependence()</span></code></a></li>
@@ -1243,34 +1619,16 @@ return irreducible R vectors and number of degeneracy at each R.</p>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.utility.interpolate"><code class="docutils literal notranslate"><span class="pre">interpolate()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.utility.matrix_dict_k"><code class="docutils literal notranslate"><span class="pre">matrix_dict_k()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.utility.matrix_dict_r"><code class="docutils literal notranslate"><span class="pre">matrix_dict_r()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.utility.num_electron"><code class="docutils literal notranslate"><span class="pre">num_electron()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.utility.samb_decomp_operator"><code class="docutils literal notranslate"><span class="pre">samb_decomp_operator()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.utility.sort_ket_list"><code class="docutils literal notranslate"><span class="pre">sort_ket_list()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.utility.sort_ket_matrix"><code class="docutils literal notranslate"><span class="pre">sort_ket_matrix()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.utility.sort_ket_matrix_dict"><code class="docutils literal notranslate"><span class="pre">sort_ket_matrix_dict()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.utility.thermal_avg"><code class="docutils literal notranslate"><span class="pre">thermal_avg()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.utility.total_energy"><code class="docutils literal notranslate"><span class="pre">total_energy()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.utility.tune_fermi_level"><code class="docutils literal notranslate"><span class="pre">tune_fermi_level()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.utility.weight_proj"><code class="docutils literal notranslate"><span class="pre">weight_proj()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.utility.wigner_seitz"><code class="docutils literal notranslate"><span class="pre">wigner_seitz()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.utility.write_or"><code class="docutils literal notranslate"><span class="pre">write_or()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.band.generate_band_gnuplot"><code class="docutils literal notranslate"><span class="pre">generate_band_gnuplot()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.band.generate_band_gnuplot_eig"><code class="docutils literal notranslate"><span class="pre">generate_band_gnuplot_eig()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.band.output_linear_dispersion"><code class="docutils literal notranslate"><span class="pre">output_linear_dispersion()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.band.output_linear_dispersion_eig"><code class="docutils literal notranslate"><span class="pre">output_linear_dispersion_eig()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.get_oper_R.get_AA_R"><code class="docutils literal notranslate"><span class="pre">get_AA_R()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.get_oper_R.get_BB_R"><code class="docutils literal notranslate"><span class="pre">get_BB_R()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.get_oper_R.get_CC_R"><code class="docutils literal notranslate"><span class="pre">get_CC_R()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.get_oper_R.get_HH_R"><code class="docutils literal notranslate"><span class="pre">get_HH_R()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.get_oper_R.get_SAA_R"><code class="docutils literal notranslate"><span class="pre">get_SAA_R()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.get_oper_R.get_SBB_R"><code class="docutils literal notranslate"><span class="pre">get_SBB_R()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.get_oper_R.get_SHC_R"><code class="docutils literal notranslate"><span class="pre">get_SHC_R()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.get_oper_R.get_SS_R"><code class="docutils literal notranslate"><span class="pre">get_SS_R()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.get_oper_R.get_berry_Curvature_R"><code class="docutils literal notranslate"><span class="pre">get_berry_Curvature_R()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.get_oper_R.get_berry_phase_R"><code class="docutils literal notranslate"><span class="pre">get_berry_phase_R()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.get_oper_R.get_der_berry_Curvature_Rcwi"><code class="docutils literal notranslate"><span class="pre">get_der_berry_Curvature_Rcwi()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.get_oper_R.get_der_orbital_moment_R"><code class="docutils literal notranslate"><span class="pre">get_der_orbital_moment_R()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.get_oper_R.get_oper_R"><code class="docutils literal notranslate"><span class="pre">get_oper_R()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.get_oper_R.get_orbital_moment_R"><code class="docutils literal notranslate"><span class="pre">get_orbital_moment_R()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.get_oper_R.get_velocity_R"><code class="docutils literal notranslate"><span class="pre">get_velocity_R()</span></code></a></li>
 </ul>
   </nav></div>
 
@@ -1295,7 +1653,7 @@ By Rikuto Oiwa
 
   <p class="copyright">
     
-      © Copyright 2021-2024.
+      © Copyright 2021-2025.
       <br/>
     
   </p>
@@ -1319,8 +1677,8 @@ By Rikuto Oiwa
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script defer src="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
-<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+  <script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
 
   <footer class="bd-footer">
   </footer>

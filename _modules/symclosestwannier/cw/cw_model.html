@@ -15,19 +15,17 @@
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
     document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
   </script>
-  <!--
-    this give us a css class that will be invisible only if js is disabled
-  -->
-  <noscript>
-    <style>
-      .pst-js-only { display: none !important; }
-
-    </style>
-  </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
-<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+  <link href="../../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/sphinx-book-theme.css?v=eba8b062" />
@@ -37,14 +35,13 @@
     <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-design.min.css?v=95c83b7e" />
   
-  <!-- So that users can add custom icons -->
-  <script src="../../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
-<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
     <script src="../../../_static/documentation_options.js?v=8cf54648"></script>
-    <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../../../_static/copybutton.js?v=f281be69"></script>
@@ -57,12 +54,13 @@
     <script src="../../../_static/design-tabs.js?v=f930bc37"></script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
     <script async="async" src="../../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_modules/symclosestwannier/cw/cw_model';</script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="jp"/>
-  <meta name="docsearch:version" content="" />
   </head>
   
   
@@ -78,8 +76,19 @@
     <i class="fa-solid fa-arrow-up"></i>Back to top</button>
 
   
-  <dialog id="pst-search-dialog">
-    
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
 <form class="bd-search d-flex align-items-center"
       action="../../../search.html"
       method="get">
@@ -87,6 +96,7 @@
   <input type="search"
          class="form-control"
          name="q"
+         id="search-input"
          placeholder="Search this book..."
          aria-label="Search this book..."
          autocomplete="off"
@@ -94,8 +104,8 @@
          autocapitalize="off"
          spellcheck="false"/>
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
-</form>
-  </dialog>
+</form></div>
+  </div>
 
   <div class="pst-async-banner-revealer d-none">
   <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
@@ -113,8 +123,7 @@
       
         
       
-      <dialog id="pst-primary-sidebar-modal"></dialog>
-      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+      <div class="bd-sidebar-primary bd-sidebar">
         
 
   
@@ -144,35 +153,50 @@
 </a></div>
         <div class="sidebar-primary-item">
 
-<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
- <i class="fa-solid fa-magnifying-glass"></i>
- <span class="search-button__default-text">Search</span>
- <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
-</button></div>
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
         <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
-        <p aria-level="2" class="caption" role="heading"><span class="caption-text">SAMB Construction</span></p>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">MultiPie</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../../../src/samb_construction.html">Construction of SAMBs</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../src/scw_tb.html">Construction of SymCW tight-binding model</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../src/example.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/multipie.html">Construction of SAMBs by using MultiPie</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Closest Wannier method</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../../src/cw.html">Closest Wannier method</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Construction of symmetry-adapted Closest Wannier model</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../../src/scw.html">Symmetry-adapted Closest Wannier model</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">File Format</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../../../src/format/cwin.html">input parameters in the *.cwin file [default]</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../src/format/cwout.html">standard output</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../src/format/info.html">information in CWModel [default]</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../src/format/data.html">data for SymCW (* optional [default] or only for crystal value)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../src/format/hr.html">Hamiltonian matrix elements in real-space</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../src/format/sr.html">Overlap matrix elements in real-space</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../src/format/z.html">The expansion coefficients of the Hamiltonian matrix (orthogonal) H expressed by a linear combination of SAMBs</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../src/format/s.html">The expansion coefficients of the Overlap matrix expressed by a linear combination of SAMBs</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../src/format/z_exp.html">expectation value of the SAMBs.</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/format/cwin.html">seedname.cwin [default]</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/format/cwout.html">seedname.cwout</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/format/hdf5.html">seedname.hdf5 [default]</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="../../../src/format/hr.html">seedname_hr.dat.cw</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/format/sr.html">seedname_sr.dat.cw</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/format/z.html">seedname_z.dat.cw</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/format/s.html">seedname_s.dat.cw</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/format/n.html">seedname_n.dat.cw</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../../src/tutorials/tutorial01.html">CH4: Closest Wannier tight-binding model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/tutorials/tutorial02.html">Graphene: Closest Wannier tight-binding model</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">API</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../../../src/api/analyzer.html">Utility</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../src/api/cw.html">Closest Wannier</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/api/analyzer.html">Utility</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../src/api/util.html">Utility</a></li>
 </ul>
 
@@ -182,14 +206,9 @@
   
   
   <div class="sidebar-primary-items__end sidebar-primary__section">
-      <div class="sidebar-primary-item">
-<div id="ethical-ad-placement"
-      class="flat"
-      data-ea-publisher="readthedocs"
-      data-ea-type="readthedocs-sidebar"
-      data-ea-manual="true">
-</div></div>
   </div>
+  
+  <div id="rtd-footer-container"></div>
 
 
       </div>
@@ -253,16 +272,24 @@
 
 
 
-<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
-  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
-  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
-  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
-</button>
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
 
 
-<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <i class="fa-solid fa-magnifying-glass fa-lg"></i>
-</button>
+  </button>
+`);
+</script>
 
 </div></div>
       
@@ -341,20 +368,19 @@
     <span class="n">rpoints_header</span><span class="p">,</span>
     <span class="n">hk_header</span><span class="p">,</span>
     <span class="n">sk_header</span><span class="p">,</span>
+    <span class="n">nk_header</span><span class="p">,</span>
     <span class="n">pk_header</span><span class="p">,</span>
     <span class="n">hr_header</span><span class="p">,</span>
     <span class="n">sr_header</span><span class="p">,</span>
+    <span class="n">nr_header</span><span class="p">,</span>
     <span class="n">z_header</span><span class="p">,</span>
     <span class="n">z_nonortho_header</span><span class="p">,</span>
     <span class="n">s_header</span><span class="p">,</span>
-    <span class="n">z_exp_header</span><span class="p">,</span>
+    <span class="n">n_header</span><span class="p">,</span>
     <span class="n">O_R_dependence_header</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">symclosestwannier.util.utility</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
-    <span class="n">thermal_avg</span><span class="p">,</span>
-    <span class="n">total_energy</span><span class="p">,</span>
-    <span class="n">free_energy</span><span class="p">,</span>
-    <span class="n">entropy</span><span class="p">,</span>
+    <span class="n">fermi</span><span class="p">,</span>
     <span class="n">weight_proj</span><span class="p">,</span>
     <span class="n">band_distance</span><span class="p">,</span>
     <span class="n">fourier_transform_k_to_r</span><span class="p">,</span>
@@ -375,23 +401,26 @@
 
 <span class="n">_default</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s2">&quot;Sk&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="s2">&quot;nk&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
     <span class="s2">&quot;Hk&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
     <span class="s2">&quot;Hk_nonortho&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
     <span class="c1">#</span>
     <span class="s2">&quot;Sr&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="s2">&quot;nr&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
     <span class="s2">&quot;Hr&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
     <span class="s2">&quot;Hr_nonortho&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
     <span class="c1">#</span>
     <span class="s2">&quot;s&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="s2">&quot;n&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
     <span class="s2">&quot;z&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
     <span class="s2">&quot;z_nonortho&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
     <span class="c1">#</span>
-    <span class="s2">&quot;z_exp&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="c1">#</span>
     <span class="s2">&quot;Sk_sym&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="s2">&quot;nk_sym&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
     <span class="s2">&quot;Hk_sym&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
     <span class="s2">&quot;Hk_nonortho_sym&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
     <span class="s2">&quot;Sr_sym&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="s2">&quot;nr_sym&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
     <span class="s2">&quot;Hr_sym&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
     <span class="s2">&quot;Hr_nonortho_sym&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
     <span class="c1">#</span>
@@ -463,12 +492,14 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_cwm</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="s2">&quot;* band distance between DFT and Wannier bands:&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_outfile</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;a&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_cwm</span><span class="o">.</span><span class="n">set_stamp</span><span class="p">()</span>
 
-        <span class="n">eta_0</span><span class="p">,</span> <span class="n">eta_0_max</span><span class="p">,</span> <span class="n">eta_2</span><span class="p">,</span> <span class="n">eta_2_max</span> <span class="o">=</span> <span class="n">band_distance</span><span class="p">(</span><span class="n">Ak</span><span class="p">,</span> <span class="n">Ek</span><span class="p">,</span> <span class="n">Hk</span><span class="p">,</span> <span class="n">ef</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;fermi_energy&quot;</span><span class="p">])</span>
+        <span class="n">eta_0</span><span class="p">,</span> <span class="n">eta_0_max</span><span class="p">,</span> <span class="n">eta_2</span><span class="p">,</span> <span class="n">eta_2_max</span><span class="p">,</span> <span class="n">eta_4</span><span class="p">,</span> <span class="n">eta_4_max</span> <span class="o">=</span> <span class="n">band_distance</span><span class="p">(</span><span class="n">Ak</span><span class="p">,</span> <span class="n">Ek</span><span class="p">,</span> <span class="n">Hk</span><span class="p">,</span> <span class="n">ef</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;fermi_energy&quot;</span><span class="p">])</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_cwm</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot; - eta_0     = </span><span class="si">{</span><span class="n">eta_0</span><span class="si">}</span><span class="s2"> [meV]&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_outfile</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;a&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_cwm</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot; - eta_0_max = </span><span class="si">{</span><span class="n">eta_0_max</span><span class="si">}</span><span class="s2"> [meV]&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_outfile</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;a&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_cwm</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot; - eta_2     = </span><span class="si">{</span><span class="n">eta_2</span><span class="si">}</span><span class="s2"> [meV]&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_outfile</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;a&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_cwm</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot; - eta_2_max = </span><span class="si">{</span><span class="n">eta_2_max</span><span class="si">}</span><span class="s2"> [meV]&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_outfile</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;a&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_cwm</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot; - eta_4     = </span><span class="si">{</span><span class="n">eta_4</span><span class="si">}</span><span class="s2"> [meV]&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_outfile</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;a&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_cwm</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot; - eta_4_max = </span><span class="si">{</span><span class="n">eta_4_max</span><span class="si">}</span><span class="s2"> [meV]&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_outfile</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;a&quot;</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_cwm</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="s2">&quot;done&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_outfile</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;a&quot;</span><span class="p">)</span>
 
@@ -486,7 +517,13 @@
         <span class="n">S2k</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">spl</span><span class="o">.</span><span class="n">sqrtm</span><span class="p">(</span><span class="n">Sk</span><span class="p">[</span><span class="n">k</span><span class="p">])</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;num_k&quot;</span><span class="p">])])</span>
         <span class="n">Hk_nonortho</span> <span class="o">=</span> <span class="n">S2k</span> <span class="o">@</span> <span class="n">Hk</span> <span class="o">@</span> <span class="n">S2k</span>
 
+        <span class="c1"># electronic density matrix elements</span>
+        <span class="n">ef</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;fermi_energy&quot;</span><span class="p">]</span>
+        <span class="n">fk</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">fermi</span><span class="p">(</span><span class="n">eki</span> <span class="o">-</span> <span class="n">ef</span><span class="p">,</span> <span class="n">T</span><span class="o">=</span><span class="mf">0.0</span><span class="p">))</span> <span class="k">for</span> <span class="n">eki</span> <span class="ow">in</span> <span class="n">Ek</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+        <span class="n">nk</span> <span class="o">=</span> <span class="n">Uk</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">conjugate</span><span class="p">()</span> <span class="o">@</span> <span class="n">fk</span> <span class="o">@</span> <span class="n">Uk</span>
+
         <span class="n">Sr</span> <span class="o">=</span> <span class="n">CWModel</span><span class="o">.</span><span class="n">fourier_transform_k_to_r</span><span class="p">(</span><span class="n">Sk</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;kpoints&quot;</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;irvec&quot;</span><span class="p">])</span>
+        <span class="n">nr</span> <span class="o">=</span> <span class="n">CWModel</span><span class="o">.</span><span class="n">fourier_transform_k_to_r</span><span class="p">(</span><span class="n">nk</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;kpoints&quot;</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;irvec&quot;</span><span class="p">])</span>
         <span class="n">Hr</span> <span class="o">=</span> <span class="n">CWModel</span><span class="o">.</span><span class="n">fourier_transform_k_to_r</span><span class="p">(</span><span class="n">Hk</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;kpoints&quot;</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;irvec&quot;</span><span class="p">])</span>
         <span class="n">Hr_nonortho</span> <span class="o">=</span> <span class="n">CWModel</span><span class="o">.</span><span class="n">fourier_transform_k_to_r</span><span class="p">(</span><span class="n">Hk_nonortho</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;kpoints&quot;</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;irvec&quot;</span><span class="p">])</span>
 
@@ -495,10 +532,12 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
             <span class="p">{</span>
                 <span class="s2">&quot;Sk&quot;</span><span class="p">:</span> <span class="n">Sk</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span>
+                <span class="s2">&quot;nk&quot;</span><span class="p">:</span> <span class="n">nk</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span>
                 <span class="s2">&quot;Hk&quot;</span><span class="p">:</span> <span class="n">Hk</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span>
                 <span class="s2">&quot;Hk_nonortho&quot;</span><span class="p">:</span> <span class="n">Hk_nonortho</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span>
                 <span class="c1">#</span>
                 <span class="s2">&quot;Sr&quot;</span><span class="p">:</span> <span class="n">Sr</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span>
+                <span class="s2">&quot;nr&quot;</span><span class="p">:</span> <span class="n">nr</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span>
                 <span class="s2">&quot;Hr&quot;</span><span class="p">:</span> <span class="n">Hr</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span>
                 <span class="s2">&quot;Hr_nonortho&quot;</span><span class="p">:</span> <span class="n">Hr_nonortho</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span>
             <span class="p">}</span>
@@ -519,6 +558,111 @@
         <span class="n">Ek</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;Ek&quot;</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
         <span class="n">Ak</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;Ak&quot;</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">complex</span><span class="p">)</span>
 
+        <span class="c1"># 30 orbitals</span>
+        <span class="c1"># Ak_tmp = np.zeros(Ak.shape, dtype=complex)</span>
+        <span class="c1"># Ak_tmp =  Ak.copy()</span>
+        <span class="c1"># 0-4</span>
+        <span class="c1"># 5-9</span>
+        <span class="c1"># 10-14</span>
+        <span class="c1"># #</span>
+        <span class="c1"># 15-17</span>
+        <span class="c1"># #</span>
+        <span class="c1"># 18-20</span>
+        <span class="c1"># Ak_tmp[:,:,18] = (Ak[:,:,18] + Ak[:,:,21]) / np.sqrt(2) # (pz@Sb4h1 + pz@Sb4h2)/sqrt(2)</span>
+        <span class="c1"># Ak_tmp[:,:,19] = (Ak[:,:,19] - Ak[:,:,22]) / np.sqrt(2) # (px@Sb4h1 - px@Sb4h2)/sqrt(2)</span>
+        <span class="c1"># Ak_tmp[:,:,20] = (Ak[:,:,20] - Ak[:,:,23]) / np.sqrt(2) # (py@Sb4h1 - py@Sb4h2)/sqrt(2)</span>
+        <span class="c1"># 21-23</span>
+        <span class="c1"># Ak_tmp[:,:,21] = (Ak[:,:,18] - Ak[:,:,21]) / np.sqrt(2) # (pz@Sb4h1 - pz@Sb4h2)/sqrt(2)</span>
+        <span class="c1"># Ak_tmp[:,:,22] = (Ak[:,:,19] + Ak[:,:,22]) / np.sqrt(2) # (px@Sb4h1 + px@Sb4h2)/sqrt(2)</span>
+        <span class="c1"># Ak_tmp[:,:,23] = (Ak[:,:,20] + Ak[:,:,23]) / np.sqrt(2) # (py@Sb4h1 + py@Sb4h2)/sqrt(2)</span>
+        <span class="c1"># 24-26</span>
+        <span class="c1"># Ak_tmp[:,:,24] = (Ak[:,:,24] + Ak[:,:,27]) / np.sqrt(2) # (pz@Sb4h1 + pz@Sb4h2)/sqrt(2)</span>
+        <span class="c1"># Ak_tmp[:,:,25] = (Ak[:,:,25] - Ak[:,:,28]) / np.sqrt(2) # (px@Sb4h1 - px@Sb4h2)/sqrt(2)</span>
+        <span class="c1"># Ak_tmp[:,:,26] = (Ak[:,:,26] - Ak[:,:,29]) / np.sqrt(2) # (py@Sb4h1 - py@Sb4h2)/sqrt(2)</span>
+        <span class="c1"># 27-29</span>
+        <span class="c1"># Ak_tmp[:,:,27] = (Ak[:,:,24] - Ak[:,:,27]) / np.sqrt(2) # (pz@Sb4h1 - pz@Sb4h2)/sqrt(2)</span>
+        <span class="c1"># Ak_tmp[:,:,28] = (Ak[:,:,25] + Ak[:,:,28]) / np.sqrt(2) # (px@Sb4h1 + px@Sb4h2)/sqrt(2)</span>
+        <span class="c1"># Ak_tmp[:,:,29] = (Ak[:,:,26] + Ak[:,:,29]) / np.sqrt(2) # (py@Sb4h1 + py@Sb4h2)/sqrt(2)</span>
+        <span class="c1"># #Ak_tmp[:,:,12:] = 0.0</span>
+        <span class="c1"># Ak = Ak_tmp</span>
+        <span class="c1"># self._cwi[&quot;Ak&quot;] = Akf</span>
+        <span class="c1"># Ak = np.zeros((Ak.shape[0],Ak.shape[1],12))</span>
+        <span class="c1"># Ak = Ak_tmp[:,:,:12]</span>
+        <span class="c1"># self._cwi[&quot;num_wann&quot;] = 12</span>
+
+        <span class="c1"># Mz-odd p orbital (12 orbitals)</span>
+        <span class="c1"># Ak_tmp = np.zeros(Ak.shape, dtype=complex)</span>
+        <span class="c1"># Ak_tmp = Ak.copy()</span>
+        <span class="c1"># Ak[:, :, 6] = (Ak_tmp[:, :, 6] + Ak_tmp[:, :, 9]) / np.sqrt(2)  # (pz@Sb4h1 + pz@Sb4h2)/sqrt(2)</span>
+        <span class="c1"># Ak[:, :, 7] = (Ak_tmp[:, :, 7] - Ak_tmp[:, :, 10]) / np.sqrt(2)  # (px@Sb4h1 - px@Sb4h2)/sqrt(2)</span>
+        <span class="c1"># Ak[:, :, 8] = (Ak_tmp[:, :, 8] - Ak_tmp[:, :, 11]) / np.sqrt(2)  # (py@Sb4h1 - py@Sb4h2)/sqrt(2)</span>
+        <span class="c1"># Ak[:, :, 9] = (Ak_tmp[:, :, 12] + Ak_tmp[:, :, 15]) / np.sqrt(2)  # (pz@Sb4h3 + pz@Sb4h4)/sqrt(2)</span>
+        <span class="c1"># Ak[:, :, 10] = (Ak_tmp[:, :, 13] - Ak_tmp[:, :, 16]) / np.sqrt(2)  # (px@Sb4h3 - px@Sb4h4)/sqrt(2)</span>
+        <span class="c1"># Ak[:, :, 11] = (Ak_tmp[:, :, 14] - Ak_tmp[:, :, 17]) / np.sqrt(2)  # (py@Sb4h3 - py@Sb4h4)/sqrt(2)</span>
+        <span class="c1"># Ak = Ak[:, :, :12]</span>
+        <span class="c1"># self._cwi[&quot;num_wann&quot;] = 12</span>
+        <span class="c1"># self._cwi[&quot;Ak&quot;] = Ak</span>
+
+        <span class="c1"># Mz-odd p orbital (10 orbitals)</span>
+        <span class="c1"># Ak_tmp = np.zeros(Ak.shape, dtype=complex)</span>
+        <span class="c1"># Ak_tmp = Ak.copy()</span>
+        <span class="c1"># Ak[:, :, 6] = (Ak_tmp[:, :, 7] - Ak_tmp[:, :, 10]) / np.sqrt(2)  # (px@Sb4h1 - px@Sb4h2)/sqrt(2)</span>
+        <span class="c1"># Ak[:, :, 7] = (Ak_tmp[:, :, 8] - Ak_tmp[:, :, 11]) / np.sqrt(2)  # (py@Sb4h1 - py@Sb4h2)/sqrt(2)</span>
+        <span class="c1"># Ak[:, :, 8] = (Ak_tmp[:, :, 13] - Ak_tmp[:, :, 16]) / np.sqrt(2)  # (px@Sb4h3 - px@Sb4h4)/sqrt(2)</span>
+        <span class="c1"># Ak[:, :, 9] = (Ak_tmp[:, :, 14] - Ak_tmp[:, :, 17]) / np.sqrt(2)  # (py@Sb4h3 - py@Sb4h4)/sqrt(2)</span>
+        <span class="c1"># Ak = Ak[:, :, :10]</span>
+        <span class="c1"># self._cwi[&quot;num_wann&quot;] = 10</span>
+        <span class="c1"># self._cwi[&quot;Ak&quot;] = Ak</span>
+
+        <span class="c1"># Mz-odd p orbital (13 orbitals)</span>
+        <span class="c1"># Ak_tmp = np.zeros(Ak.shape, dtype=complex)</span>
+        <span class="c1"># Ak_tmp = np.zeros(Ak.shape, dtype=complex)</span>
+        <span class="c1"># Ak_tmp = Ak.copy()</span>
+        <span class="c1"># Ak[:, :, 6] = (Ak_tmp[:, :, 6] + Ak_tmp[:, :, 9]) / np.sqrt(2)  # (pz@Sb4h1 + pz@Sb4h2)/sqrt(2)</span>
+        <span class="c1"># Ak[:, :, 7] = (Ak_tmp[:, :, 7] - Ak_tmp[:, :, 10]) / np.sqrt(2)  # (px@Sb4h1 - px@Sb4h2)/sqrt(2)</span>
+        <span class="c1"># Ak[:, :, 8] = (Ak_tmp[:, :, 8] - Ak_tmp[:, :, 11]) / np.sqrt(2)  # (py@Sb4h1 - py@Sb4h2)/sqrt(2)</span>
+        <span class="c1"># Ak[:, :, 9] = (Ak_tmp[:, :, 12] + Ak_tmp[:, :, 15]) / np.sqrt(2)  # (pz@Sb4h3 + pz@Sb4h4)/sqrt(2)</span>
+        <span class="c1"># Ak[:, :, 10] = (Ak_tmp[:, :, 13] - Ak_tmp[:, :, 16]) / np.sqrt(2)  # (px@Sb4h3 - px@Sb4h4)/sqrt(2)</span>
+        <span class="c1"># Ak[:, :, 11] = (Ak_tmp[:, :, 14] - Ak_tmp[:, :, 17]) / np.sqrt(2)  # (py@Sb4h3 - py@Sb4h4)/sqrt(2)</span>
+        <span class="c1"># Ak[:, :, 12] = Ak_tmp[:, :, 18]</span>
+        <span class="c1"># Ak = Ak[:, :, :13]</span>
+        <span class="c1"># self._cwi[&quot;num_wann&quot;] = 13</span>
+        <span class="c1"># self._cwi[&quot;Ak&quot;] = Ak</span>
+
+        <span class="c1"># Mz-even p orbital</span>
+        <span class="c1"># Ak_tmp = np.zeros(Ak.shape, dtype=complex)</span>
+        <span class="c1"># Ak_tmp = Ak.copy()</span>
+        <span class="c1"># Ak[:, :, 0] = Ak_tmp[:, :, 0]  # V1: du</span>
+        <span class="c1"># Ak[:, :, 1] = Ak_tmp[:, :, 3]  # V2: du</span>
+        <span class="c1"># Ak[:, :, 2] = Ak_tmp[:, :, 6]  # V3: du</span>
+        <span class="c1"># Ak[:, :, 3] = (Ak_tmp[:, :, 11] + Ak_tmp[:, :, 13]) / np.sqrt(2)  # (px@Sb4h1 + px@Sb4h2)/sqrt(2)</span>
+        <span class="c1"># Ak[:, :, 4] = (Ak_tmp[:, :, 12] + Ak_tmp[:, :, 14]) / np.sqrt(2)  # (py@Sb4h1 + py@Sb4h2)/sqrt(2)</span>
+        <span class="c1"># Ak[:, :, 5] = (Ak_tmp[:, :, 15] + Ak_tmp[:, :, 17]) / np.sqrt(2)  # (px@Sb4h3 + px@Sb4h4)/sqrt(2)</span>
+        <span class="c1"># Ak[:, :, 6] = (Ak_tmp[:, :, 16] + Ak_tmp[:, :, 18]) / np.sqrt(2)  # (py@Sb4h3 + py@Sb4h4)/sqrt(2)</span>
+        <span class="c1"># Ak = Ak[:, :, :7]</span>
+        <span class="c1"># self._cwi[&quot;num_wann&quot;] = 7</span>
+        <span class="c1"># self._cwi[&quot;Ak&quot;] = Ak</span>
+
+        <span class="c1"># H4</span>
+        <span class="c1"># Ak_tmp = np.zeros(Ak.shape, dtype=complex)</span>
+        <span class="c1"># Ak_tmp =  Ak.copy()</span>
+        <span class="c1"># Ak = np.zeros((Ak.shape[0],Ak.shape[1],1))</span>
+        <span class="c1"># Ak[:,:,0] = Ak_tmp[:,:,0]</span>
+        <span class="c1"># self._cwi[&quot;Ak&quot;] = Ak</span>
+        <span class="c1"># self._cwi[&quot;num_wann&quot;] = 1</span>
+
+        <span class="c1"># GdCo5</span>
+        <span class="c1"># Ak_tmp = np.zeros(Ak.shape, dtype=complex)</span>
+        <span class="c1"># Ak_tmp = Ak.copy()</span>
+        <span class="c1"># Ak = np.zeros((Ak.shape[0],Ak.shape[1],25), dtype=complex)</span>
+        <span class="c1"># Ak[:,:,0:5] = Ak_tmp[:,:,17:22]</span>
+        <span class="c1"># Ak[:,:,5:10] = Ak_tmp[:,:,26:31]</span>
+        <span class="c1"># Ak[:,:,10:15] = Ak_tmp[:,:,35:40]</span>
+        <span class="c1"># Ak[:,:,15:20] = Ak_tmp[:,:,44:49]</span>
+        <span class="c1"># Ak[:,:,20:25] = Ak_tmp[:,:,53:58]</span>
+        <span class="c1"># self._cwi[&quot;num_wann&quot;] = 25</span>
+        <span class="c1"># self._cwi[&quot;Ak&quot;] = Ak</span>
+
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;proj_min&quot;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mf">0.0</span><span class="p">:</span>
             <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;   - excluding bands with low projectability (proj_min = </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s1">&#39;proj_min&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">) ... &quot;</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_cwm</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_outfile</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;a&quot;</span><span class="p">)</span>
@@ -529,9 +673,6 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">_cwm</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="s2">&quot;done&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_outfile</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;a&quot;</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;disentangle&quot;</span><span class="p">]:</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;optimize_params&quot;</span><span class="p">]:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_optimize_params</span><span class="p">(</span><span class="n">Ek</span><span class="p">,</span> <span class="n">Ak</span><span class="p">)</span>
-
             <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;   - disentanglement ... &quot;</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_cwm</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_outfile</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;a&quot;</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_cwm</span><span class="o">.</span><span class="n">set_stamp</span><span class="p">()</span>
@@ -552,7 +693,34 @@
 
         <span class="n">Sk</span><span class="p">,</span> <span class="n">Uk</span><span class="p">,</span> <span class="n">Hk</span><span class="p">,</span> <span class="n">Sr</span><span class="p">,</span> <span class="n">Hr</span><span class="p">,</span> <span class="n">Hk_nonortho</span><span class="p">,</span> <span class="n">Hr_nonortho</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_construct_tb</span><span class="p">(</span><span class="n">Ek</span><span class="p">,</span> <span class="n">Ak</span><span class="p">)</span>
 
+        <span class="c1"># electronic density matrix elements</span>
+        <span class="n">ef</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;fermi_energy&quot;</span><span class="p">]</span>
+
+        <span class="n">fk</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">fermi</span><span class="p">(</span><span class="n">eki</span> <span class="o">-</span> <span class="n">ef</span><span class="p">,</span> <span class="n">T</span><span class="o">=</span><span class="mf">0.0</span><span class="p">))</span> <span class="k">for</span> <span class="n">eki</span> <span class="ow">in</span> <span class="n">Ek</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+        <span class="n">nk</span> <span class="o">=</span> <span class="n">Uk</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">conjugate</span><span class="p">()</span> <span class="o">@</span> <span class="n">fk</span> <span class="o">@</span> <span class="n">Uk</span>
+        <span class="n">nr</span> <span class="o">=</span> <span class="n">CWModel</span><span class="o">.</span><span class="n">fourier_transform_k_to_r</span><span class="p">(</span><span class="n">nk</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;kpoints&quot;</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;irvec&quot;</span><span class="p">])</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">_cwm</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="s2">&quot;done&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_outfile</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;a&quot;</span><span class="p">)</span>
+
+        <span class="c1">#####</span>
+
+        <span class="k">def</span><span class="w"> </span><span class="nf">Hr_2d</span><span class="p">(</span><span class="n">m</span><span class="p">):</span>
+            <span class="n">d</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">n1</span><span class="p">,</span> <span class="n">n2</span><span class="p">,</span> <span class="n">n3</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;irvec&quot;</span><span class="p">]):</span>
+                <span class="k">if</span> <span class="p">(</span><span class="n">n1</span><span class="p">,</span> <span class="n">n2</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">d</span><span class="p">:</span>
+                    <span class="n">d</span><span class="p">[(</span><span class="n">n1</span><span class="p">,</span> <span class="n">n2</span><span class="p">)]</span> <span class="o">=</span> <span class="n">m</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">d</span><span class="p">[(</span><span class="n">n1</span><span class="p">,</span> <span class="n">n2</span><span class="p">)]</span> <span class="o">+=</span> <span class="n">m</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+
+            <span class="n">m_2d</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">complex</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">n1</span><span class="p">,</span> <span class="n">n2</span><span class="p">,</span> <span class="n">n3</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;irvec&quot;</span><span class="p">]):</span>
+                <span class="k">if</span> <span class="n">n3</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="n">m_2d</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">d</span><span class="p">[(</span><span class="n">n1</span><span class="p">,</span> <span class="n">n2</span><span class="p">)]</span>
+
+            <span class="k">return</span> <span class="n">m_2d</span>
+
+        <span class="c1"># Hr = Hr_2d(Hr)</span>
+        <span class="c1"># Hr_nonortho = Hr_2d(Hr_nonortho)</span>
 
         <span class="c1">#####</span>
 
@@ -564,10 +732,12 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
             <span class="p">{</span>
                 <span class="s2">&quot;Sk&quot;</span><span class="p">:</span> <span class="n">Sk</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span>
+                <span class="s2">&quot;nk&quot;</span><span class="p">:</span> <span class="n">nk</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span>
                 <span class="s2">&quot;Hk&quot;</span><span class="p">:</span> <span class="n">Hk</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span>
                 <span class="s2">&quot;Hk_nonortho&quot;</span><span class="p">:</span> <span class="n">Hk_nonortho</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span>
                 <span class="c1">#</span>
                 <span class="s2">&quot;Sr&quot;</span><span class="p">:</span> <span class="n">Sr</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span>
+                <span class="s2">&quot;nr&quot;</span><span class="p">:</span> <span class="n">nr</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span>
                 <span class="s2">&quot;Hr&quot;</span><span class="p">:</span> <span class="n">Hr</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span>
                 <span class="s2">&quot;Hr_nonortho&quot;</span><span class="p">:</span> <span class="n">Hr_nonortho</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span>
             <span class="p">}</span>
@@ -633,113 +803,6 @@
         <span class="k">return</span> <span class="n">w</span><span class="p">[:,</span> <span class="p">:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span> <span class="o">*</span> <span class="n">Ak</span>
 
     <span class="c1"># ==================================================</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">_optimize_params</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Ek</span><span class="p">,</span> <span class="n">Ak</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        optimize the energy windows and smearing temperatures</span>
-<span class="sd">        by using the projectability of each Kohn-Sham state in k-space.</span>
-
-<span class="sd">        Args:</span>
-<span class="sd">            Ek (ndarray): Kohn-Sham energies.</span>
-<span class="sd">            Ak (ndarray): Overlap matrix elements.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c1"># projectability of each Kohn-Sham state in k-space.</span>
-        <span class="n">Pk</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">real</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diagonal</span><span class="p">(</span><span class="n">Ak</span> <span class="o">@</span> <span class="n">Ak</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">conjugate</span><span class="p">(),</span> <span class="n">axis1</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">axis2</span><span class="o">=</span><span class="mi">2</span><span class="p">))</span>
-
-        <span class="n">ek</span> <span class="o">=</span> <span class="n">Ek</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;num_k&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;num_bands&quot;</span><span class="p">])</span>
-        <span class="n">pk</span> <span class="o">=</span> <span class="n">Pk</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;num_k&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;num_bands&quot;</span><span class="p">])</span>
-
-        <span class="c1"># normalize</span>
-        <span class="n">pk</span> <span class="o">=</span> <span class="n">pk</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">pk</span><span class="p">)</span>
-
-        <span class="n">fixed_params</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;optimize_params_fixed&quot;</span><span class="p">]</span>
-
-        <span class="n">model</span> <span class="o">=</span> <span class="n">lmfit</span><span class="o">.</span><span class="n">Model</span><span class="p">(</span><span class="n">weight_proj</span><span class="p">)</span>
-        <span class="n">params</span> <span class="o">=</span> <span class="n">lmfit</span><span class="o">.</span><span class="n">Parameters</span><span class="p">()</span>
-
-        <span class="n">param_bound_dict</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s2">&quot;dis_win_emin&quot;</span><span class="p">:</span> <span class="p">(</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">),</span>
-            <span class="s2">&quot;dis_win_emax&quot;</span><span class="p">:</span> <span class="p">(</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">),</span>
-            <span class="s2">&quot;smearing_temp_min&quot;</span><span class="p">:</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">),</span>
-            <span class="s2">&quot;smearing_temp_max&quot;</span><span class="p">:</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">),</span>
-            <span class="s2">&quot;delta&quot;</span><span class="p">:</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">1e-6</span><span class="p">),</span>
-        <span class="p">}</span>
-
-        <span class="k">for</span> <span class="n">param</span><span class="p">,</span> <span class="p">(</span><span class="nb">min</span><span class="p">,</span> <span class="nb">max</span><span class="p">)</span> <span class="ow">in</span> <span class="n">param_bound_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-
-            <span class="k">if</span> <span class="n">param</span> <span class="ow">in</span> <span class="n">fixed_params</span><span class="p">:</span>
-                <span class="n">params</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">param</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="n">param</span><span class="p">],</span> <span class="n">vary</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-                <span class="n">params</span><span class="p">[</span><span class="n">param</span><span class="p">]</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="n">param</span><span class="p">]</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="n">params</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">param</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="n">param</span><span class="p">],</span> <span class="nb">min</span><span class="o">=</span><span class="nb">min</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="nb">max</span><span class="p">)</span>
-
-        <span class="n">result</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">pk</span><span class="p">,</span> <span class="n">params</span><span class="p">,</span> <span class="n">e</span><span class="o">=</span><span class="n">ek</span><span class="p">)</span>
-
-        <span class="n">dis_win_emin</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="s2">&quot;dis_win_emin&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">value</span>
-        <span class="n">dis_win_emax</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="s2">&quot;dis_win_emax&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">value</span>
-        <span class="n">smearing_temp_min</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="s2">&quot;smearing_temp_min&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">value</span>
-        <span class="n">smearing_temp_max</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="s2">&quot;smearing_temp_max&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">value</span>
-        <span class="n">delta</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="s2">&quot;delta&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">value</span>
-
-        <span class="k">if</span> <span class="s2">&quot;dis_win_emax&quot;</span> <span class="ow">in</span> <span class="n">fixed_params</span><span class="p">:</span>
-            <span class="n">dis_win_emax_opt</span> <span class="o">=</span> <span class="n">dis_win_emax</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">dis_win_emax_opt</span> <span class="o">=</span> <span class="n">dis_win_emax</span> <span class="o">-</span> <span class="mf">3.0</span> <span class="o">*</span> <span class="n">smearing_temp_max</span>
-
-        <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;   - optimizing windows and smearing temperatures ... </span><span class="se">\n</span><span class="s2">&quot;</span>
-        <span class="n">msg</span> <span class="o">+=</span> <span class="s2">&quot;*----------------------------------------------------------------------------* </span><span class="se">\n</span><span class="s2">&quot;</span>
-        <span class="k">if</span> <span class="n">fixed_params</span> <span class="o">!=</span> <span class="p">[]:</span>
-            <span class="n">msg</span> <span class="o">+=</span> <span class="s2">&quot;    * fixed_params: </span><span class="se">\n</span><span class="s2">&quot;</span>
-            <span class="k">for</span> <span class="n">param</span> <span class="ow">in</span> <span class="n">fixed_params</span><span class="p">:</span>
-                <span class="n">msg</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;    - </span><span class="si">{</span><span class="n">param</span><span class="si">}</span><span class="s2"> = </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="n">param</span><span class="p">]</span><span class="si">}</span><span class="s2"> </span><span class="se">\n</span><span class="s2">&quot;</span>
-            <span class="n">msg</span> <span class="o">+=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
-
-        <span class="n">msg</span> <span class="o">+=</span> <span class="s2">&quot;    * Initial values: </span><span class="se">\n</span><span class="s2">&quot;</span>
-        <span class="n">msg</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;    - dis_win_emax      = </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s1">&#39;dis_win_emax&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2"> </span><span class="se">\n</span><span class="s2">&quot;</span>
-        <span class="n">msg</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;    - dis_win_emin      = </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s1">&#39;dis_win_emin&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2"> </span><span class="se">\n</span><span class="s2">&quot;</span>
-        <span class="n">msg</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;    - smearing_temp_max = </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s1">&#39;smearing_temp_max&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2"> </span><span class="se">\n</span><span class="s2">&quot;</span>
-        <span class="n">msg</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;    - smearing_temp_min = </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s1">&#39;smearing_temp_min&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2"> </span><span class="se">\n</span><span class="s2">&quot;</span>
-        <span class="n">msg</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;    - delta             = </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s1">&#39;delta&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2"> </span><span class="se">\n</span><span class="s2">&quot;</span>
-        <span class="n">msg</span> <span class="o">+=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
-        <span class="n">msg</span> <span class="o">+=</span> <span class="s2">&quot;    * Optimized values: </span><span class="se">\n</span><span class="s2">&quot;</span>
-        <span class="k">if</span> <span class="s2">&quot;dis_win_emax&quot;</span> <span class="ow">in</span> <span class="n">fixed_params</span><span class="p">:</span>
-            <span class="n">msg</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;     - dis_win_emax (opt)      = </span><span class="si">{</span><span class="n">dis_win_emax_opt</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">msg</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;     - dis_win_emax (fit)      = </span><span class="si">{</span><span class="n">dis_win_emax</span><span class="si">}</span><span class="s2"> </span><span class="se">\n</span><span class="s2">&quot;</span>
-            <span class="n">msg</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;     - dis_win_emax (opt)      = dis_win_emax (fit) - 3 * smearing_temp_max (opt) </span><span class="se">\n</span><span class="s2">&quot;</span>
-            <span class="n">msg</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;                               = </span><span class="si">{</span><span class="n">dis_win_emax_opt</span><span class="si">}</span><span class="s2"> </span><span class="se">\n</span><span class="s2">&quot;</span>
-        <span class="n">msg</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;     - dis_win_emin (opt)      = </span><span class="si">{</span><span class="n">dis_win_emin</span><span class="si">}</span><span class="s2"> </span><span class="se">\n</span><span class="s2">&quot;</span>
-        <span class="n">msg</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;     - smearing_temp_max (opt) = </span><span class="si">{</span><span class="n">smearing_temp_max</span><span class="si">}</span><span class="s2"> </span><span class="se">\n</span><span class="s2">&quot;</span>
-        <span class="n">msg</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;     - smearing_temp_min (opt) = </span><span class="si">{</span><span class="n">smearing_temp_min</span><span class="si">}</span><span class="s2"> </span><span class="se">\n</span><span class="s2">&quot;</span>
-        <span class="n">msg</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;     - delta (opt)             = </span><span class="si">{</span><span class="n">delta</span><span class="si">}</span><span class="s2"> </span><span class="se">\n</span><span class="s2">&quot;</span>
-        <span class="n">msg</span> <span class="o">+=</span> <span class="s2">&quot;*----------------------------------------------------------------------------* </span><span class="se">\n</span><span class="s2">&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_cwm</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_outfile</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;a&quot;</span><span class="p">)</span>
-
-        <span class="n">fs</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;projectability.txt&quot;</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span>
-        <span class="n">fs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;# projectability </span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
-        <span class="n">fs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;# enk pnk wnk(init_fit) wnk(best_fit) </span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
-        <span class="n">fs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;# dis_win_emax_fit = </span><span class="si">{</span><span class="n">dis_win_emax</span><span class="si">}</span><span class="s2"> </span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
-        <span class="n">fs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;# dis_win_emax_opt = dis_win_emax_fit - 3 * smearing_temp_max = </span><span class="si">{</span><span class="n">dis_win_emax_opt</span><span class="si">}</span><span class="s2"> </span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
-        <span class="n">fs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;# dis_win_emin_opt = </span><span class="si">{</span><span class="n">dis_win_emin</span><span class="si">}</span><span class="s2"> </span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
-        <span class="n">fs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;# smearing_temp_max_opt = </span><span class="si">{</span><span class="n">smearing_temp_max</span><span class="si">}</span><span class="s2"> </span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
-        <span class="n">fs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;# smearing_temp_min_opt = </span><span class="si">{</span><span class="n">smearing_temp_min</span><span class="si">}</span><span class="s2"> </span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
-        <span class="n">fs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;# delta_opt = </span><span class="si">{</span><span class="n">delta</span><span class="si">}</span><span class="s2"> </span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
-
-        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">eki</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">ek</span><span class="p">):</span>
-            <span class="n">pki</span> <span class="o">=</span> <span class="n">pk</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
-            <span class="n">init_fit</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">init_fit</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
-            <span class="n">best_fit</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">best_fit</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
-            <span class="n">opt_fit</span> <span class="o">=</span> <span class="n">weight_proj</span><span class="p">(</span><span class="n">eki</span><span class="p">,</span> <span class="n">dis_win_emin</span><span class="p">,</span> <span class="n">dis_win_emax_opt</span><span class="p">,</span> <span class="n">smearing_temp_min</span><span class="p">,</span> <span class="n">smearing_temp_max</span><span class="p">,</span> <span class="n">delta</span><span class="p">)</span>
-            <span class="n">fs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">eki</span><span class="si">}</span><span class="s2">  </span><span class="si">{</span><span class="n">pki</span><span class="si">}</span><span class="s2">  </span><span class="si">{</span><span class="n">init_fit</span><span class="si">}</span><span class="s2">  </span><span class="si">{</span><span class="n">best_fit</span><span class="si">}</span><span class="s2">  </span><span class="si">{</span><span class="n">opt_fit</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
-
-        <span class="n">fs</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;dis_win_emin&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dis_win_emin</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;dis_win_emax&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dis_win_emax_opt</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;smearing_temp_min&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">smearing_temp_min</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;smearing_temp_max&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">smearing_temp_max</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;delta&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">delta</span>
-
-    <span class="c1"># ==================================================</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">_construct_tb</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Ek</span><span class="p">,</span> <span class="n">Ak</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        construct CW TB Hamiltonian.</span>
@@ -774,17 +837,21 @@
         <span class="n">Hk</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">&quot;klm,kl,kln-&gt;kmn&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">conj</span><span class="p">(</span><span class="n">Uk</span><span class="p">),</span> <span class="n">Ek</span><span class="p">,</span> <span class="n">Uk</span><span class="p">,</span> <span class="n">optimize</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="n">Hk</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">Hk</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">&quot;kmn-&gt;knm&quot;</span><span class="p">,</span> <span class="n">Hk</span><span class="p">)</span><span class="o">.</span><span class="n">conj</span><span class="p">())</span>
 
+        <span class="c1"># Hk = Hk - self._cwi[&quot;fermi_energy&quot;] * np.eye(Hk.shape[-1])[np.newaxis, :, :]</span>
+
         <span class="c1"># band distance</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_cwm</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">    * band distance between DFT and Wannier bands:&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_outfile</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;a&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_cwm</span><span class="o">.</span><span class="n">set_stamp</span><span class="p">()</span>
 
-        <span class="n">eta_0</span><span class="p">,</span> <span class="n">eta_0_max</span><span class="p">,</span> <span class="n">eta_2</span><span class="p">,</span> <span class="n">eta_2_max</span> <span class="o">=</span> <span class="n">band_distance</span><span class="p">(</span><span class="n">Ak</span><span class="p">,</span> <span class="n">Ek</span><span class="p">,</span> <span class="n">Hk</span><span class="p">,</span> <span class="n">ef</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;fermi_energy&quot;</span><span class="p">])</span>
+        <span class="n">eta_0</span><span class="p">,</span> <span class="n">eta_0_max</span><span class="p">,</span> <span class="n">eta_2</span><span class="p">,</span> <span class="n">eta_2_max</span><span class="p">,</span> <span class="n">eta_4</span><span class="p">,</span> <span class="n">eta_4_max</span> <span class="o">=</span> <span class="n">band_distance</span><span class="p">(</span><span class="n">Ak</span><span class="p">,</span> <span class="n">Ek</span><span class="p">,</span> <span class="n">Hk</span><span class="p">,</span> <span class="n">ef</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;fermi_energy&quot;</span><span class="p">])</span>
 
         <span class="c1"># self._cwm.log(f&quot;     - bottom_band_idx = {bottom_band_idx}&quot;, None, file=self._outfile, mode=&quot;a&quot;)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_cwm</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;     - eta_0     = </span><span class="si">{</span><span class="n">eta_0</span><span class="si">}</span><span class="s2"> [meV]&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_outfile</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;a&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_cwm</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;     - eta_0_max = </span><span class="si">{</span><span class="n">eta_0_max</span><span class="si">}</span><span class="s2"> [meV]&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_outfile</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;a&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_cwm</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;     - eta_2     = </span><span class="si">{</span><span class="n">eta_2</span><span class="si">}</span><span class="s2"> [meV]&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_outfile</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;a&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_cwm</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;     - eta_2_max = </span><span class="si">{</span><span class="n">eta_2_max</span><span class="si">}</span><span class="s2"> [meV]&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_outfile</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;a&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_cwm</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;     - eta_4     = </span><span class="si">{</span><span class="n">eta_4</span><span class="si">}</span><span class="s2"> [meV]&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_outfile</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;a&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_cwm</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;     - eta_4_max = </span><span class="si">{</span><span class="n">eta_4_max</span><span class="si">}</span><span class="s2"> [meV]&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_outfile</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;a&quot;</span><span class="p">)</span>
 
         <span class="c1"># zeeman interaction</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;zeeman_interaction&quot;</span><span class="p">]:</span>
@@ -813,8 +880,10 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">Hk</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="p">[</span><span class="s2">&quot;Hk&quot;</span><span class="p">])</span>
         <span class="n">Sk</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="p">[</span><span class="s2">&quot;Sk&quot;</span><span class="p">])</span>
+        <span class="n">nk</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="p">[</span><span class="s2">&quot;nk&quot;</span><span class="p">])</span>
         <span class="n">Hr_dict</span> <span class="o">=</span> <span class="n">CWModel</span><span class="o">.</span><span class="n">matrix_dict_r</span><span class="p">(</span><span class="bp">self</span><span class="p">[</span><span class="s2">&quot;Hr&quot;</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;irvec&quot;</span><span class="p">])</span>
         <span class="n">Sr_dict</span> <span class="o">=</span> <span class="n">CWModel</span><span class="o">.</span><span class="n">matrix_dict_r</span><span class="p">(</span><span class="bp">self</span><span class="p">[</span><span class="s2">&quot;Sr&quot;</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;irvec&quot;</span><span class="p">])</span>
+        <span class="n">nr_dict</span> <span class="o">=</span> <span class="n">CWModel</span><span class="o">.</span><span class="n">matrix_dict_r</span><span class="p">(</span><span class="bp">self</span><span class="p">[</span><span class="s2">&quot;nr&quot;</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;irvec&quot;</span><span class="p">])</span>
         <span class="n">Hr_nonortho_dict</span> <span class="o">=</span> <span class="n">CWModel</span><span class="o">.</span><span class="n">matrix_dict_r</span><span class="p">(</span><span class="bp">self</span><span class="p">[</span><span class="s2">&quot;Hr_nonortho&quot;</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;irvec&quot;</span><span class="p">])</span>
 
         <span class="c1">#####</span>
@@ -843,6 +912,8 @@
 
         <span class="c1"># sort orbitals</span>
         <span class="n">Hk</span> <span class="o">=</span> <span class="n">sort_ket_matrix</span><span class="p">(</span><span class="n">Hk</span><span class="p">,</span> <span class="n">ket_amn</span><span class="p">,</span> <span class="n">ket_samb</span><span class="p">)</span>
+        <span class="n">Sk</span> <span class="o">=</span> <span class="n">sort_ket_matrix</span><span class="p">(</span><span class="n">Sk</span><span class="p">,</span> <span class="n">ket_amn</span><span class="p">,</span> <span class="n">ket_samb</span><span class="p">)</span>
+        <span class="n">nk</span> <span class="o">=</span> <span class="n">sort_ket_matrix</span><span class="p">(</span><span class="n">nk</span><span class="p">,</span> <span class="n">ket_amn</span><span class="p">,</span> <span class="n">ket_samb</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;irreps&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;all&quot;</span><span class="p">:</span>
             <span class="n">irreps</span> <span class="o">=</span> <span class="n">model</span><span class="p">[</span><span class="s2">&quot;info&quot;</span><span class="p">][</span><span class="s2">&quot;generate&quot;</span><span class="p">][</span><span class="s2">&quot;irrep&quot;</span><span class="p">]</span>
@@ -879,6 +950,23 @@
             <span class="n">Zr_dict</span><span class="p">[(</span><span class="n">zj</span><span class="p">,</span> <span class="n">tag_dict</span><span class="p">[</span><span class="n">zj</span><span class="p">])]</span> <span class="o">=</span> <span class="n">d</span>
             <span class="n">mat</span><span class="p">[</span><span class="s2">&quot;matrix&quot;</span><span class="p">][</span><span class="n">zj</span><span class="p">]</span> <span class="o">=</span> <span class="n">d</span>
         <span class="c1">### kuniyoshi (24/08/20) ###</span>
+
+        <span class="c1">### sign chagne for odd-parity site- and bond-cluster multipoles (L-handed CoSi) ###</span>
+        <span class="c1"># for _, zj, d in res:</span>
+        <span class="c1">#     tag = tag_dict[zj]</span>
+        <span class="c1">#     coeff, amp, sbmp = samb[&quot;data&quot;][&quot;Z&quot;][zj][1][0]</span>
+        <span class="c1">#     if sbmp in samb[&quot;data&quot;][&quot;site_cluster&quot;]:</span>
+        <span class="c1">#         s_tag = samb[&quot;data&quot;][&quot;site_cluster&quot;][sbmp][0]</span>
+        <span class="c1">#         if TagMultipole(s_tag).rank % 2 == 1:</span>
+        <span class="c1">#             d = {k: -v for k, v in d.items()}</span>
+        <span class="c1">#     elif sbmp in samb[&quot;data&quot;][&quot;bond_cluster&quot;]:</span>
+        <span class="c1">#         b_tag = samb[&quot;data&quot;][&quot;bond_cluster&quot;][sbmp][0]</span>
+        <span class="c1">#         if TagMultipole(b_tag).rank % 2 == 1:</span>
+        <span class="c1">#             d = {k: -v for k, v in d.items()}</span>
+
+        <span class="c1">#     Zr_dict[(zj, tag)] = d</span>
+        <span class="c1">#     mat[&quot;matrix&quot;][zj] = d</span>
+        <span class="c1">### sign chagne for odd-parity site- and bond-cluster multipoles (L-handed CoSi) ###</span>
 
         <span class="n">A</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="n">A_samb</span> <span class="o">=</span> <span class="kc">None</span>
@@ -987,8 +1075,72 @@
                 <span class="n">Hr_nonortho_dict</span><span class="p">,</span> <span class="n">Zr_dict</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">atoms_frac</span><span class="p">,</span> <span class="n">ket_amn</span><span class="p">,</span> <span class="n">A_samb</span><span class="p">,</span> <span class="n">atoms_frac_samb</span><span class="p">,</span> <span class="n">ket_samb</span>
             <span class="p">)</span>
 
-        <span class="c1"># z_nonortho = z</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_cwm</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="s2">&quot;done&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_outfile</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;a&quot;</span><span class="p">)</span>
+
+        <span class="c1">#####</span>
+
+        <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;    - decomposing electronic density as linear combination of SAMBs ... &quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_cwm</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_outfile</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;a&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_cwm</span><span class="o">.</span><span class="n">set_stamp</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="n">mat</span><span class="p">[</span><span class="s2">&quot;molecule&quot;</span><span class="p">]:</span>
+            <span class="n">n</span> <span class="o">=</span> <span class="n">CWModel</span><span class="o">.</span><span class="n">samb_decomp_operator</span><span class="p">(</span><span class="n">nr_dict</span><span class="p">,</span> <span class="n">Zr_dict</span><span class="p">,</span> <span class="n">ket</span><span class="o">=</span><span class="n">ket_amn</span><span class="p">,</span> <span class="n">ket_samb</span><span class="o">=</span><span class="n">ket_samb</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">n</span> <span class="o">=</span> <span class="n">CWModel</span><span class="o">.</span><span class="n">samb_decomp_operator</span><span class="p">(</span>
+                <span class="n">nr_dict</span><span class="p">,</span> <span class="n">Zr_dict</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">atoms_frac</span><span class="p">,</span> <span class="n">ket_amn</span><span class="p">,</span> <span class="n">A_samb</span><span class="p">,</span> <span class="n">atoms_frac_samb</span><span class="p">,</span> <span class="n">ket_samb</span>
+            <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_cwm</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="s2">&quot;done&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_outfile</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;a&quot;</span><span class="p">)</span>
+
+        <span class="c1"># if mat[&quot;molecule&quot;]:</span>
+        <span class="c1">#     n = CWModel.samb_decomp_operator(nr_dict, Zr_dict, ket=ket_amn, ket_samb=ket_samb)</span>
+        <span class="c1"># else:</span>
+        <span class="c1">#     # ==================================================</span>
+        <span class="c1">#     def _lorentzian(e, g=0.001):</span>
+        <span class="c1">#         return (1.0 / np.pi) * g / (g**2 + e**2)</span>
+
+        <span class="c1">#     # electronic density matrix elements</span>
+        <span class="c1">#     Ek = np.array(self._cwi[&quot;Ek&quot;])</span>
+        <span class="c1">#     Uk = np.array(self._cwi[&quot;Uk&quot;])</span>
+        <span class="c1">#     ef = self._cwi[&quot;fermi_energy&quot;]</span>
+        <span class="c1">#     emax = ef</span>
+        <span class="c1">#     emin = ef - 15</span>
+        <span class="c1">#     offset = 0.0 # (emax - emin) * 0.1</span>
+
+        <span class="c1">#     ef_max = emax + offset</span>
+        <span class="c1">#     ef_min = emin - offset</span>
+        <span class="c1">#     dos_num_fermi = 1000</span>
+
+        <span class="c1">#     num_k, num_wann = Ek.shape</span>
+        <span class="c1">#     dE = (ef_max - ef_min) / dos_num_fermi</span>
+        <span class="c1">#     fermi_energy_list = [ef_min + i * dE for i in range(dos_num_fermi + 1)]</span>
+
+        <span class="c1">#     fk = np.array([np.diag(fermi(eki - ef, T=0.0)) for eki in Ek], dtype=float)</span>
+        <span class="c1">#     n_list = []</span>
+        <span class="c1">#     for i, epsilon in enumerate(fermi_energy_list):</span>
+        <span class="c1">#         print(f&quot;{i+1}/{dos_num_fermi}&quot;)</span>
+        <span class="c1">#         delta_func = np.array([np.diag(_lorentzian(eki - epsilon, g=0.001)) for eki in Ek], dtype=float)</span>
+        <span class="c1">#         nk_e = Uk.transpose(0, 2, 1).conjugate() @ fk @ delta_func @ Uk</span>
+        <span class="c1">#         nr_e = CWModel.fourier_transform_k_to_r(nk_e, self._cwi[&quot;kpoints&quot;], self._cwi[&quot;irvec&quot;])</span>
+        <span class="c1">#         nr_e_dict = CWModel.matrix_dict_r(nr_e, self._cwi[&quot;irvec&quot;])</span>
+
+        <span class="c1">#         n_i = CWModel.samb_decomp_operator(nr_e_dict, Zr_dict, A, atoms_frac, ket_amn, A_samb, atoms_frac_samb, ket_samb)</span>
+        <span class="c1">#         n_list.append(n_i)</span>
+
+        <span class="c1">#     o_str = &quot;&quot;</span>
+        <span class="c1">#     for i, epsilon in enumerate(fermi_energy_list):</span>
+        <span class="c1">#         o_str += f&quot;{epsilon}  &quot;</span>
+        <span class="c1">#         n_i = n_list[i]</span>
+        <span class="c1">#         for v in n_i.values():</span>
+        <span class="c1">#             o_str += f&quot;{v}  &quot;</span>
+
+        <span class="c1">#         o_str +=  &quot;\n &quot;</span>
+
+        <span class="c1">#     filename = os.path.join(self._cwi[&quot;mp_outdir&quot;], &quot;{}&quot;.format(f&quot;{self._cwi[&#39;mp_seedname&#39;]}_n_dos.dat.cw&quot;))</span>
+        <span class="c1">#     self._cwm.write(filename, o_str, None, None)</span>
+        <span class="c1">#     n = n_list[-1]</span>
+
+        <span class="c1"># self._cwm.log(&quot;done&quot;, file=self._outfile, mode=&quot;a&quot;)</span>
 
         <span class="c1">#####</span>
 
@@ -1001,6 +1153,7 @@
         <span class="n">Hr_nonortho_sym</span> <span class="o">=</span> <span class="n">CWModel</span><span class="o">.</span><span class="n">construct_Or</span><span class="p">(</span>
             <span class="nb">list</span><span class="p">(</span><span class="n">z_nonortho</span><span class="o">.</span><span class="n">values</span><span class="p">()),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;num_wann&quot;</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;irvec&quot;</span><span class="p">],</span> <span class="n">mat</span>
         <span class="p">)</span>
+        <span class="n">nr_sym</span> <span class="o">=</span> <span class="n">CWModel</span><span class="o">.</span><span class="n">construct_Or</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">n</span><span class="o">.</span><span class="n">values</span><span class="p">()),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;num_wann&quot;</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;irvec&quot;</span><span class="p">],</span> <span class="n">mat</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;tb_gauge&quot;</span><span class="p">]:</span>
             <span class="n">Sk_sym</span> <span class="o">=</span> <span class="n">CWModel</span><span class="o">.</span><span class="n">fourier_transform_r_to_k</span><span class="p">(</span>
@@ -1016,6 +1169,9 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;ndegen&quot;</span><span class="p">],</span>
                 <span class="n">atoms_frac</span><span class="o">=</span><span class="n">atoms_frac_samb</span><span class="p">,</span>
             <span class="p">)</span>
+            <span class="n">nk_sym</span> <span class="o">=</span> <span class="n">CWModel</span><span class="o">.</span><span class="n">fourier_transform_r_to_k</span><span class="p">(</span>
+                <span class="n">nr_sym</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;kpoints&quot;</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;irvec&quot;</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;ndegen&quot;</span><span class="p">],</span> <span class="n">atoms_frac</span><span class="o">=</span><span class="n">atoms_frac_samb</span>
+            <span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">Sk_sym</span> <span class="o">=</span> <span class="n">CWModel</span><span class="o">.</span><span class="n">fourier_transform_r_to_k</span><span class="p">(</span>
                 <span class="n">Sr_sym</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;kpoints&quot;</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;irvec&quot;</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;ndegen&quot;</span><span class="p">]</span>
@@ -1025,6 +1181,9 @@
             <span class="p">)</span>
             <span class="n">Hk_nonortho_sym</span> <span class="o">=</span> <span class="n">CWModel</span><span class="o">.</span><span class="n">fourier_transform_r_to_k</span><span class="p">(</span>
                 <span class="n">Hr_nonortho_sym</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;kpoints&quot;</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;irvec&quot;</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;ndegen&quot;</span><span class="p">]</span>
+            <span class="p">)</span>
+            <span class="n">nk_sym</span> <span class="o">=</span> <span class="n">CWModel</span><span class="o">.</span><span class="n">fourier_transform_r_to_k</span><span class="p">(</span>
+                <span class="n">nr_sym</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;kpoints&quot;</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;irvec&quot;</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;ndegen&quot;</span><span class="p">]</span>
             <span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_cwm</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="s2">&quot;done&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_outfile</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;a&quot;</span><span class="p">)</span>
@@ -1041,8 +1200,47 @@
         <span class="n">num_k</span><span class="p">,</span> <span class="n">num_wann</span> <span class="o">=</span> <span class="n">Ek_grid_sym</span><span class="o">.</span><span class="n">shape</span>
         <span class="n">Ek_MAE_grid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">Ek_grid_sym</span> <span class="o">-</span> <span class="n">Ek_grid</span><span class="p">))</span> <span class="o">/</span> <span class="n">num_k</span> <span class="o">/</span> <span class="n">num_wann</span> <span class="o">*</span> <span class="mi">1000</span>  <span class="c1"># [meV]</span>
 
-        <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;     * MAE of eigen values between CW and Symmetry-Adapted CW models (grid) = </span><span class="si">{</span><span class="s1">&#39;</span><span class="si">{:.4f}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">Ek_MAE_grid</span><span class="p">)</span><span class="si">}</span><span class="s2"> [meV]&quot;</span>
+        <span class="c1"># projectability of each Kohn-Sham state in k-space.</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">heapq</span><span class="w"> </span><span class="kn">import</span> <span class="n">nlargest</span>
+
+        <span class="n">Ek</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;Ek&quot;</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+        <span class="n">Ak</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;Ak&quot;</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">complex</span><span class="p">)</span>
+        <span class="n">Pk</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">real</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diagonal</span><span class="p">(</span><span class="n">Ak</span> <span class="o">@</span> <span class="n">Ak</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">conjugate</span><span class="p">(),</span> <span class="n">axis1</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">axis2</span><span class="o">=</span><span class="mi">2</span><span class="p">))</span>
+
+        <span class="n">Ek_ref</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">num_k</span><span class="p">,</span> <span class="n">num_wann</span><span class="p">))</span>
+        <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_k</span><span class="p">):</span>
+            <span class="n">Pk_</span> <span class="o">=</span> <span class="p">[(</span><span class="n">pnk</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span> <span class="k">for</span> <span class="n">n</span><span class="p">,</span> <span class="n">pnk</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">Pk</span><span class="p">[</span><span class="n">k</span><span class="p">])]</span>
+            <span class="n">Pk_max_idx_list</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">([</span><span class="n">n</span> <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">nlargest</span><span class="p">(</span><span class="n">num_wann</span><span class="p">,</span> <span class="n">Pk_</span><span class="p">)])</span>
+            <span class="c1"># print(Pk_max_idx_list, Ek[k, Pk_max_idx_list[0]])</span>
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">m</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">Pk_max_idx_list</span><span class="p">):</span>
+                <span class="n">Ek_ref</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">Ek</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="n">m</span><span class="p">]</span>
+
+        <span class="n">Ek_MAE_grid_DFT</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">Ek_grid_sym</span> <span class="o">-</span> <span class="n">Ek_ref</span><span class="p">))</span> <span class="o">/</span> <span class="n">num_k</span> <span class="o">/</span> <span class="n">num_wann</span> <span class="o">*</span> <span class="mi">1000</span>  <span class="c1"># [meV]</span>
+
+        <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;     * MAE of eigen values between CW and Symmetry-Adapted CW models (grid) = </span><span class="si">{</span><span class="s1">&#39;</span><span class="si">{:.4f}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">Ek_MAE_grid</span><span class="p">)</span><span class="si">}</span><span class="s2"> [meV] </span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="n">msg</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;     * MAE of eigen values between DFT and Symmetry-Adapted CW models (grid) = </span><span class="si">{</span><span class="s1">&#39;</span><span class="si">{:.4f}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">Ek_MAE_grid_DFT</span><span class="p">)</span><span class="si">}</span><span class="s2"> [meV]&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_cwm</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_outfile</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;a&quot;</span><span class="p">)</span>
+
+        <span class="c1">#####</span>
+
+        <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;    - band energy </span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_cwm</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_outfile</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;a&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_cwm</span><span class="o">.</span><span class="n">set_stamp</span><span class="p">()</span>
+
+        <span class="c1"># electronic density matrix elements</span>
+        <span class="n">ef</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;fermi_energy&quot;</span><span class="p">]</span>
+        <span class="n">fk_grid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">fermi</span><span class="p">(</span><span class="n">eki</span> <span class="o">-</span> <span class="n">ef</span><span class="p">,</span> <span class="n">T</span><span class="o">=</span><span class="mf">0.0</span><span class="p">)</span> <span class="k">for</span> <span class="n">eki</span> <span class="ow">in</span> <span class="n">Ek_grid</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+        <span class="n">E_cw</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">Ek_grid</span> <span class="o">*</span> <span class="n">fk_grid</span><span class="p">)</span> <span class="o">/</span> <span class="n">num_k</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;     * CW: </span><span class="si">{</span><span class="n">E_cw</span><span class="si">}</span><span class="s2"> </span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="n">E_scw</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">z</span><span class="o">.</span><span class="n">values</span><span class="p">()))</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">n</span><span class="o">.</span><span class="n">values</span><span class="p">())))</span>
+        <span class="n">msg</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;     * SCW: </span><span class="si">{</span><span class="n">E_scw</span><span class="si">}</span><span class="s2"> </span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="n">fk_grid_sym</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">fermi</span><span class="p">(</span><span class="n">eki</span> <span class="o">-</span> <span class="n">ef</span><span class="p">,</span> <span class="n">T</span><span class="o">=</span><span class="mf">0.0</span><span class="p">)</span> <span class="k">for</span> <span class="n">eki</span> <span class="ow">in</span> <span class="n">Ek_grid_sym</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+        <span class="n">E_scw</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">Ek_grid_sym</span> <span class="o">*</span> <span class="n">fk_grid_sym</span><span class="p">)</span> <span class="o">/</span> <span class="n">num_k</span>
+        <span class="n">msg</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;     * SCW: </span><span class="si">{</span><span class="n">E_scw</span><span class="si">}</span><span class="s2"> </span><span class="se">\n</span><span class="s2">&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_cwm</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_outfile</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;a&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_cwm</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="s2">&quot;done&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_outfile</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;a&quot;</span><span class="p">)</span>
 
         <span class="c1">#####</span>
 
@@ -1077,80 +1275,6 @@
 
         <span class="c1">#####</span>
 
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;z_exp&quot;</span><span class="p">]:</span>
-            <span class="n">T</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;z_exp_temperature&quot;</span><span class="p">]</span>
-            <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;    - evaluating expectation value of SAMBs at T = </span><span class="si">{</span><span class="n">T</span><span class="si">}</span><span class="s2"> ... &quot;</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_cwm</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_outfile</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;a&quot;</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_cwm</span><span class="o">.</span><span class="n">set_stamp</span><span class="p">()</span>
-
-            <span class="n">N1</span><span class="p">,</span> <span class="n">N2</span><span class="p">,</span> <span class="n">N3</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;z_exp_kmesh&quot;</span><span class="p">]</span>
-            <span class="n">kpoints</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
-                <span class="p">[[</span><span class="n">i</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="n">N1</span><span class="p">),</span> <span class="n">j</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="n">N2</span><span class="p">),</span> <span class="n">k</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="n">N3</span><span class="p">)]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N1</span><span class="p">)</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N2</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N3</span><span class="p">)]</span>
-            <span class="p">)</span>
-
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;tb_gauge&quot;</span><span class="p">]:</span>
-                <span class="n">Hk_grid</span> <span class="o">=</span> <span class="n">CWModel</span><span class="o">.</span><span class="n">fourier_transform_r_to_k</span><span class="p">(</span>
-                    <span class="n">Hr_sym</span><span class="p">,</span> <span class="n">kpoints</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;irvec&quot;</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;ndegen&quot;</span><span class="p">],</span> <span class="n">atoms_frac</span><span class="o">=</span><span class="n">atoms_frac_samb</span>
-                <span class="p">)</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="n">Hk_grid</span> <span class="o">=</span> <span class="n">CWModel</span><span class="o">.</span><span class="n">fourier_transform_r_to_k</span><span class="p">(</span><span class="n">Hr_sym</span><span class="p">,</span> <span class="n">kpoints</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;irvec&quot;</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;ndegen&quot;</span><span class="p">])</span>
-
-            <span class="n">Ek</span><span class="p">,</span> <span class="n">Uk</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">eigh</span><span class="p">(</span><span class="n">Hk_grid</span><span class="p">)</span>
-
-            <span class="n">Nz</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">mat</span><span class="p">[</span><span class="s2">&quot;matrix&quot;</span><span class="p">])</span>
-            <span class="n">dic</span> <span class="o">=</span> <span class="n">mat</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-
-            <span class="n">z_exp</span> <span class="o">=</span> <span class="p">{}</span>
-            <span class="n">percent</span> <span class="o">=</span> <span class="mi">10</span>
-            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">tag</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">Zr_dict</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
-                <span class="k">if</span> <span class="nb">int</span><span class="p">((</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="n">Nz</span><span class="p">)</span> <span class="o">*</span> <span class="mi">100</span> <span class="o">%</span> <span class="mi">10</span><span class="p">)</span> <span class="o">==</span> <span class="n">percent</span><span class="p">:</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">_cwm</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;* </span><span class="si">{</span><span class="nb">int</span><span class="p">(</span><span class="n">percent</span><span class="p">)</span><span class="si">}</span><span class="s2"> %&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_outfile</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;a&quot;</span><span class="p">)</span>
-                    <span class="n">percent</span> <span class="o">+=</span> <span class="mi">10</span>
-
-                <span class="n">dic</span><span class="p">[</span><span class="s2">&quot;matrix&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="n">tag</span><span class="p">:</span> <span class="n">d</span><span class="p">}</span>
-
-                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;tb_gauge&quot;</span><span class="p">]:</span>
-                    <span class="n">Zk</span> <span class="o">=</span> <span class="n">construct_Ok</span><span class="p">(</span>
-                        <span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;num_wann&quot;</span><span class="p">],</span> <span class="n">kpoints</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;irvec&quot;</span><span class="p">],</span> <span class="n">dic</span><span class="p">,</span> <span class="n">atoms_frac</span><span class="o">=</span><span class="n">atoms_frac_samb</span>
-                    <span class="p">)</span>
-                <span class="k">else</span><span class="p">:</span>
-                    <span class="n">Zk</span> <span class="o">=</span> <span class="n">construct_Ok</span><span class="p">([</span><span class="mi">1</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;num_wann&quot;</span><span class="p">],</span> <span class="n">kpoints</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;irvec&quot;</span><span class="p">],</span> <span class="n">dic</span><span class="p">)</span>
-
-                <span class="n">v</span> <span class="o">=</span> <span class="n">thermal_avg</span><span class="p">(</span>
-                    <span class="n">Zk</span><span class="p">,</span>
-                    <span class="n">Ek</span><span class="p">,</span>
-                    <span class="n">Uk</span><span class="p">,</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;fermi_energy&quot;</span><span class="p">],</span>
-                    <span class="n">T_Kelvin</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;z_exp_temperature&quot;</span><span class="p">],</span>
-                <span class="p">)</span>
-
-                <span class="n">z_exp</span><span class="p">[</span><span class="n">tag</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span>
-
-            <span class="bp">self</span><span class="o">.</span><span class="n">_cwm</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="s2">&quot;done&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_outfile</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;a&quot;</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">z_exp</span> <span class="o">=</span> <span class="p">{}</span>
-
-        <span class="n">T</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;z_exp_temperature&quot;</span><span class="p">]</span>
-        <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;    - evaluating total_energy, entropy at T = </span><span class="si">{</span><span class="n">T</span><span class="si">}</span><span class="s2"> ... &quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_cwm</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_outfile</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;a&quot;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_cwm</span><span class="o">.</span><span class="n">set_stamp</span><span class="p">()</span>
-
-        <span class="n">E</span> <span class="o">=</span> <span class="n">total_energy</span><span class="p">(</span><span class="n">Ek_grid</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;fermi_energy&quot;</span><span class="p">],</span> <span class="n">T_Kelvin</span><span class="o">=</span><span class="n">T</span><span class="p">)</span>
-        <span class="n">S</span> <span class="o">=</span> <span class="n">entropy</span><span class="p">(</span><span class="n">Ek_grid</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;fermi_energy&quot;</span><span class="p">],</span> <span class="n">T_Kelvin</span><span class="o">=</span><span class="n">T</span><span class="p">)</span>
-        <span class="n">F</span> <span class="o">=</span> <span class="n">E</span> <span class="o">-</span> <span class="n">Kelvin_to_eV</span><span class="p">(</span><span class="n">T</span><span class="p">)</span> <span class="o">*</span> <span class="n">S</span>
-
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;z_exp&quot;</span><span class="p">]:</span>
-            <span class="n">E_samb</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">([</span><span class="n">z</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">*</span> <span class="n">z_exp</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">z_exp</span><span class="o">.</span><span class="n">keys</span><span class="p">()])</span>
-            <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot; * E_samb = </span><span class="si">{</span><span class="n">E_samb</span><span class="si">}</span><span class="s2"> [eV] </span><span class="se">\n</span><span class="s2">&quot;</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
-
-        <span class="n">msg</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot; * E = </span><span class="si">{</span><span class="n">E</span><span class="si">}</span><span class="s2"> [eV] </span><span class="se">\n</span><span class="s2">&quot;</span>
-        <span class="n">msg</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot; * T*S = </span><span class="si">{</span><span class="n">Kelvin_to_eV</span><span class="p">(</span><span class="n">T</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">S</span><span class="si">}</span><span class="s2"> [eV] </span><span class="se">\n</span><span class="s2">&quot;</span>
-        <span class="n">msg</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot; * F = E - TS = </span><span class="si">{</span><span class="n">F</span><span class="si">}</span><span class="s2"> [eV]&quot;</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">_cwm</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_outfile</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;a&quot;</span><span class="p">)</span>
-
         <span class="bp">self</span><span class="o">.</span><span class="n">_cwm</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="s2">&quot;done&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_outfile</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;a&quot;</span><span class="p">)</span>
 
         <span class="c1">#####</span>
@@ -1161,14 +1285,16 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
             <span class="p">{</span>
                 <span class="s2">&quot;s&quot;</span><span class="p">:</span> <span class="n">s</span><span class="p">,</span>
+                <span class="s2">&quot;n&quot;</span><span class="p">:</span> <span class="n">n</span><span class="p">,</span>
                 <span class="s2">&quot;z&quot;</span><span class="p">:</span> <span class="n">z</span><span class="p">,</span>
                 <span class="s2">&quot;z_nonortho&quot;</span><span class="p">:</span> <span class="n">z_nonortho</span><span class="p">,</span>
-                <span class="s2">&quot;z_exp&quot;</span><span class="p">:</span> <span class="n">z_exp</span><span class="p">,</span>
                 <span class="c1">#</span>
                 <span class="s2">&quot;Sk_sym&quot;</span><span class="p">:</span> <span class="n">Sk_sym</span><span class="p">,</span>
+                <span class="s2">&quot;nk_sym&quot;</span><span class="p">:</span> <span class="n">nk_sym</span><span class="p">,</span>
                 <span class="s2">&quot;Hk_sym&quot;</span><span class="p">:</span> <span class="n">Hk_sym</span><span class="p">,</span>
                 <span class="s2">&quot;Hk_nonortho_sym&quot;</span><span class="p">:</span> <span class="n">Hk_nonortho_sym</span><span class="p">,</span>
                 <span class="s2">&quot;Sr_sym&quot;</span><span class="p">:</span> <span class="n">Sr_sym</span><span class="p">,</span>
+                <span class="s2">&quot;nr_sym&quot;</span><span class="p">:</span> <span class="n">nr_sym</span><span class="p">,</span>
                 <span class="s2">&quot;Hr_sym&quot;</span><span class="p">:</span> <span class="n">Hr_sym</span><span class="p">,</span>
                 <span class="s2">&quot;Hr_nonortho_sym&quot;</span><span class="p">:</span> <span class="n">Hr_nonortho_sym</span><span class="p">,</span>
                 <span class="c1">#</span>
@@ -1460,6 +1586,11 @@
 
     <span class="c1"># ==================================================</span>
     <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_nk_header</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">nk_header</span>
+
+    <span class="c1"># ==================================================</span>
+    <span class="nd">@classmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">_pk_header</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">pk_header</span>
 
@@ -1475,6 +1606,11 @@
 
     <span class="c1"># ==================================================</span>
     <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_nr_header</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">nr_header</span>
+
+    <span class="c1"># ==================================================</span>
+    <span class="nd">@classmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">_z_header</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">z_header</span>
 
@@ -1482,6 +1618,11 @@
     <span class="nd">@classmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">_s_header</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">s_header</span>
+
+    <span class="c1"># ==================================================</span>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_n_header</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">n_header</span>
 
     <span class="c1"># ==================================================</span>
     <span class="nd">@classmethod</span>
@@ -1580,18 +1721,17 @@
 <span class="sd">            Or (ndarray): real-space representation of the given operator, O_{ab}(R) = &lt;φ_{a}(0)|O|φ_{b}(R)&gt;.</span>
 <span class="sd">            filename (str): file name.</span>
 <span class="sd">            rpoints (ndarray): rpoints.</span>
-<span class="sd">            header (str, optional): header.</span>
+<span class="sd">            header (str, optional): header</span>
 <span class="sd">            vec (bool, optional): vector ?</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">num_wann</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;num_wann&quot;</span><span class="p">]</span>
         <span class="n">unit_cell_cart</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;unit_cell_cart&quot;</span><span class="p">])</span>
         <span class="n">Or</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">Or</span><span class="p">)</span>
-        <span class="n">Or_str</span> <span class="o">=</span> <span class="s2">&quot;# created by pw2cw </span><span class="se">\n</span><span class="s2">&quot;</span>
-        <span class="n">Or_str</span> <span class="o">+=</span> <span class="s2">&quot;# written </span><span class="si">{}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;on </span><span class="si">%d</span><span class="s2">%b%Y at %H:%M:%S&quot;</span><span class="p">))</span>
+        <span class="n">Or_str</span> <span class="o">=</span> <span class="s2">&quot;# written </span><span class="si">{}</span><span class="s2">  (created by pw2cw)</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;on </span><span class="si">%d</span><span class="s2">%b%Y at %H:%M:%S&quot;</span><span class="p">))</span>
 
-        <span class="n">Or_str</span> <span class="o">+=</span> <span class="s2">&quot; </span><span class="si">{0[0]:18.15f}</span><span class="s2"> </span><span class="si">{0[1]:18.15f}</span><span class="s2"> </span><span class="si">{0[2]:18.15f}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">unit_cell_cart</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:])</span>
-        <span class="n">Or_str</span> <span class="o">+=</span> <span class="s2">&quot; </span><span class="si">{0[0]:18.15f}</span><span class="s2"> </span><span class="si">{0[1]:18.15f}</span><span class="s2"> </span><span class="si">{0[2]:18.15f}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">unit_cell_cart</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="p">:])</span>
-        <span class="n">Or_str</span> <span class="o">+=</span> <span class="s2">&quot; </span><span class="si">{0[0]:18.15f}</span><span class="s2"> </span><span class="si">{0[1]:18.15f}</span><span class="s2"> </span><span class="si">{0[2]:18.15f}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">unit_cell_cart</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="p">:])</span>
+        <span class="c1"># Or_str += &quot; {0[0]:18.15f} {0[1]:18.15f} {0[2]:18.15f}\n&quot;.format(unit_cell_cart[0, :])</span>
+        <span class="c1"># Or_str += &quot; {0[0]:18.15f} {0[1]:18.15f} {0[2]:18.15f}\n&quot;.format(unit_cell_cart[1, :])</span>
+        <span class="c1"># Or_str += &quot; {0[0]:18.15f} {0[1]:18.15f} {0[2]:18.15f}\n&quot;.format(unit_cell_cart[2, :])</span>
 
         <span class="k">if</span> <span class="n">rpoints</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">rpoints</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;irvec&quot;</span><span class="p">])</span>
@@ -1679,12 +1819,11 @@
         <span class="n">num_wann</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;num_wann&quot;</span><span class="p">]</span>
         <span class="n">unit_cell_cart</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;unit_cell_cart&quot;</span><span class="p">])</span>
         <span class="n">Hr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">Hr</span><span class="p">)</span>
-        <span class="n">tb_str</span> <span class="o">=</span> <span class="s2">&quot;# created by pw2cw </span><span class="se">\n</span><span class="s2">&quot;</span>
-        <span class="n">tb_str</span> <span class="o">+=</span> <span class="s2">&quot;# written </span><span class="si">{}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;on </span><span class="si">%d</span><span class="s2">%b%Y at %H:%M:%S&quot;</span><span class="p">))</span>
+        <span class="n">tb_str</span> <span class="o">=</span> <span class="s2">&quot;# written </span><span class="si">{}</span><span class="s2">  (created by pw2cw)</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;on </span><span class="si">%d</span><span class="s2">%b%Y at %H:%M:%S&quot;</span><span class="p">))</span>
 
-        <span class="n">tb_str</span> <span class="o">+=</span> <span class="s2">&quot; </span><span class="si">{0[0]:18.15f}</span><span class="s2"> </span><span class="si">{0[1]:18.15f}</span><span class="s2"> </span><span class="si">{0[2]:18.15f}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">unit_cell_cart</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:])</span>
-        <span class="n">tb_str</span> <span class="o">+=</span> <span class="s2">&quot; </span><span class="si">{0[0]:18.15f}</span><span class="s2"> </span><span class="si">{0[1]:18.15f}</span><span class="s2"> </span><span class="si">{0[2]:18.15f}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">unit_cell_cart</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="p">:])</span>
-        <span class="n">tb_str</span> <span class="o">+=</span> <span class="s2">&quot; </span><span class="si">{0[0]:18.15f}</span><span class="s2"> </span><span class="si">{0[1]:18.15f}</span><span class="s2"> </span><span class="si">{0[2]:18.15f}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">unit_cell_cart</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="p">:])</span>
+        <span class="c1"># tb_str += &quot; {0[0]:18.15f} {0[1]:18.15f} {0[2]:18.15f}\n&quot;.format(unit_cell_cart[0, :])</span>
+        <span class="c1"># tb_str += &quot; {0[0]:18.15f} {0[1]:18.15f} {0[2]:18.15f}\n&quot;.format(unit_cell_cart[1, :])</span>
+        <span class="c1"># tb_str += &quot; {0[0]:18.15f} {0[1]:18.15f} {0[2]:18.15f}\n&quot;.format(unit_cell_cart[2, :])</span>
 
         <span class="k">if</span> <span class="n">rpoints</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">rpoints</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;irvec&quot;</span><span class="p">])</span>
@@ -1743,8 +1882,12 @@
 <span class="sd">            filename (str): file name.</span>
 <span class="sd">            type (str): &#39;z&#39;/&#39;z_nonortho&#39;/&#39;s&#39;.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">assert</span> <span class="nb">type</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;z&quot;</span><span class="p">,</span> <span class="s2">&quot;z_nonortho&quot;</span><span class="p">,</span> <span class="s2">&quot;s&quot;</span><span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;invalid type = </span><span class="si">{</span><span class="nb">type</span><span class="si">}</span><span class="s2"> was given. choose from &#39;z&#39;/&#39;z_nonortho&#39;/&#39;s&#39;.&quot;</span>
-        <span class="c1"># assert type in (&quot;z&quot;, &quot;s&quot;), f&quot;invalid type = {type} was given. choose from &#39;z&#39;/&#39;s&#39;.&quot;</span>
+        <span class="k">assert</span> <span class="nb">type</span> <span class="ow">in</span> <span class="p">(</span>
+            <span class="s2">&quot;z&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;z_nonortho&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;s&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;n&quot;</span><span class="p">,</span>
+        <span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;invalid type = </span><span class="si">{</span><span class="nb">type</span><span class="si">}</span><span class="s2"> was given. choose from &#39;z&#39;/&#39;z_nonortho&#39;/&#39;s&#39;/&#39;n&#39;.&quot;</span>
 
         <span class="k">if</span> <span class="nb">type</span> <span class="o">==</span> <span class="s2">&quot;z&quot;</span><span class="p">:</span>
             <span class="n">header</span> <span class="o">=</span> <span class="n">z_header</span>
@@ -1755,9 +1898,11 @@
         <span class="k">elif</span> <span class="nb">type</span> <span class="o">==</span> <span class="s2">&quot;s&quot;</span><span class="p">:</span>
             <span class="n">header</span> <span class="o">=</span> <span class="n">s_header</span>
             <span class="n">o</span> <span class="o">=</span> <span class="bp">self</span><span class="p">[</span><span class="s2">&quot;s&quot;</span><span class="p">]</span>
+        <span class="k">elif</span> <span class="nb">type</span> <span class="o">==</span> <span class="s2">&quot;n&quot;</span><span class="p">:</span>
+            <span class="n">header</span> <span class="o">=</span> <span class="n">n_header</span>
+            <span class="n">o</span> <span class="o">=</span> <span class="bp">self</span><span class="p">[</span><span class="s2">&quot;n&quot;</span><span class="p">]</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;invalid type = </span><span class="si">{</span><span class="nb">type</span><span class="si">}</span><span class="s2"> was given. choose from &#39;z&#39;/&#39;z_nonortho&#39;/&#39;s&#39;.&quot;</span><span class="p">)</span>
-            <span class="c1"># raise Exception(f&quot;invalid type = {type} was given. choose from &#39;z&#39;/&#39;s&#39;.&quot;)</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;invalid type = </span><span class="si">{</span><span class="nb">type</span><span class="si">}</span><span class="s2"> was given. choose from &#39;z&#39;/&#39;z_nonortho&#39;/&#39;s&#39;/&#39;n&#39;.&quot;</span><span class="p">)</span>
 
         <span class="n">o_str</span> <span class="o">=</span> <span class="s2">&quot;# created by pw2cw </span><span class="se">\n</span><span class="s2">&quot;</span>
         <span class="n">o_str</span> <span class="o">+=</span> <span class="s2">&quot;# written </span><span class="si">{}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;on </span><span class="si">%d</span><span class="s2">%b%Y at %H:%M:%S&quot;</span><span class="p">))</span>
@@ -1770,29 +1915,6 @@
         <span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_cwm</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">o_str</span><span class="p">,</span> <span class="n">header</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span></div>
-
-
-    <span class="c1"># ==================================================</span>
-<div class="viewcode-block" id="CWModel.write_samb_exp">
-<a class="viewcode-back" href="../../../src/api/cw.html#symclosestwannier.cw.cw_model.CWModel.write_samb_exp">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">write_samb_exp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        write seedname_or.dat.</span>
-
-<span class="sd">        Args:</span>
-<span class="sd">            filename (str): file name.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">z_exp_str</span> <span class="o">=</span> <span class="s2">&quot;# created by pw2cw </span><span class="se">\n</span><span class="s2">&quot;</span>
-        <span class="n">z_exp_str</span> <span class="o">+=</span> <span class="s2">&quot;# written </span><span class="si">{}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;on </span><span class="si">%d</span><span class="s2">%b%Y at %H:%M:%S&quot;</span><span class="p">))</span>
-
-        <span class="n">z_exp_str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
-            <span class="p">[</span>
-                <span class="s2">&quot;</span><span class="si">{:&gt;7d}</span><span class="s2">   </span><span class="si">{:&gt;15}</span><span class="s2">   </span><span class="si">{:&gt;15}</span><span class="s2">   </span><span class="si">{:&gt;15.8E}</span><span class="s2"> </span><span class="se">\n</span><span class="s2"> &quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">zj</span><span class="p">,</span> <span class="n">tag</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
-                <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="p">((</span><span class="n">zj</span><span class="p">,</span> <span class="n">tag</span><span class="p">),</span> <span class="n">v</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="p">[</span><span class="s2">&quot;z_exp&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">())</span>
-            <span class="p">]</span>
-        <span class="p">)</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">_cwm</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">z_exp_str</span><span class="p">,</span> <span class="n">z_exp_header</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span></div>
 </div>
 
 </pre></div>
@@ -1827,7 +1949,7 @@ By Rikuto Oiwa
 
   <p class="copyright">
     
-      © Copyright 2021-2024.
+      © Copyright 2021-2025.
       <br/>
     
   </p>
@@ -1851,8 +1973,8 @@ By Rikuto Oiwa
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script defer src="../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
-<script defer src="../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+  <script src="../../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
 
   <footer class="bd-footer">
   </footer>
