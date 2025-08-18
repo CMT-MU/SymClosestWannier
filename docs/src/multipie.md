@@ -4,10 +4,10 @@
 
 1. Prepare input file. Example input files for [CH4](../../tutorials/tutorial_1/ch4.py) molecule and [graphene](../../tutorials/tutorial_2/graphene.py) are given here.
     - CH4 molecule
-    ```{literalinclude} ../../tutorials/tutorial_1/ch4.py
+    ```{literalinclude} tutorials/tutorial_1/ch4.py
     ```
     - graphene
-    ```{literalinclude} ../../tutorials/tutorial_2/graphene.py
+    ```{literalinclude} tutorials/tutorial_2/graphene.py
     ```
 
 2. At the folder where these two input files exist, do the following to create SAMB.
