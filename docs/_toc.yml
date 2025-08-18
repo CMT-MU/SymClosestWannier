@@ -7,15 +7,12 @@ parts:
 - caption: MultiPie
   chapters:
     - file: src/multipie
-
 - caption: Closest Wannier method
   chapters:
     - file: src/cw
-
 - caption: Construction of symmetry-adapted Closest Wannier model
   chapters:
     - file: src/scw
-
 - caption: File Format
   chapters:
     - file: src/format/cwin
@@ -26,12 +23,10 @@ parts:
     - file: src/format/z
     - file: src/format/s
     - file: src/format/n
-
 - caption: Tutorials
   chapters:
     - file: src/tutorials/tutorial01
     - file: src/tutorials/tutorial02
-
 - caption: API
   chapters:
     - file: src/api/cw
