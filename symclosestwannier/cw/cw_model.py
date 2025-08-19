@@ -909,14 +909,18 @@ class CWModel(dict):
 
         # electronic density matrix elements
         ef = self._cwi["fermi_energy"]
+        fk = np.array([fermi(eki - ef, T=0.0) for eki in Ek], dtype=float)
+        E_dft = np.sum(Ek * fk) / num_k
+        msg = f"     * DFT: {E_dft} \n"
+
         fk_grid = np.array([fermi(eki - ef, T=0.0) for eki in Ek_grid], dtype=float)
         E_cw = np.sum(Ek_grid * fk_grid) / num_k
         msg = f"     * CW: {E_cw} \n"
-        E_scw = np.sum(np.array(list(z.values())) * np.array(list(n.values())))
-        msg += f"     * SCW: {E_scw} \n"
         fk_grid_sym = np.array([fermi(eki - ef, T=0.0) for eki in Ek_grid_sym], dtype=float)
         E_scw = np.sum(Ek_grid_sym * fk_grid_sym) / num_k
         msg += f"     * SCW: {E_scw} \n"
+        E_scw = np.sum(np.array(list(z.values())) * np.array(list(n.values())))
+        msg += f"     * SCW2: {E_scw} \n"
 
         self._cwm.log(msg, None, end="\n", file=self._outfile, mode="a")
 
