@@ -8,7 +8,8 @@
     For the detail of the theoretical background, see Ref.[@ozaki-prb24].
 
 - Directory: `tutorials/tutorial01/` *Files can be downloaded from
-    [here](https://github.com/CMT-MU/SymClosestWannier/tutorials/tutorial01)*
+    [here](https://github.com/CMT-MU/SymClosestWannier/tree/main/tutorials/tutorial01)*
+
 
 - Input files
     - `ch4.cwin`:  *The input file for `pw2cw`*
