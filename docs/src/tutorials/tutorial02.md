@@ -8,7 +8,7 @@
     For the detail of the theoretical background, see Ref.[@ozaki-prb24].
 
 - Directory: `tutorials/tutorial02/` *Files can be downloaded from
-    [here](https://github.com/CMT-MU/SymClosestWannier/tutorials/tutorial02)*
+    [here](https://github.com/CMT-MU/SymClosestWannier/tree/main/tutorials/tutorial02)*
 
 - Input files
     - `graphene.cwin`:  *The input file for `pw2cw`*
