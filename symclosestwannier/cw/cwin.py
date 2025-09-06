@@ -53,6 +53,8 @@ _default = {
     "dos_kmesh": [1, 1, 1],
     "dos_num_fermi": 50,
     "dos_smr_en_width": 0.001,
+    "dos_emax": None,
+    "dos_emin": None,
     # zeeman interaction
     "zeeman_interaction": False,
     "magnetic_field": 0.0,
@@ -122,7 +124,7 @@ class CWin(dict):
         """
         read seedname.cwin file.
 
-        Args:d
+        Args:
             file_name (str, optional): file name.
 
         Returns:
@@ -173,6 +175,8 @@ class CWin(dict):
                 - dos_kmesh         : dimensions of the Monkhorst-Pack grid of k-points for dos calculation (list), [[1, 1, 1]].
                 - dos_num_fermi     : number of fermi energies (int), [50].
                 - dos_smr_en_width  : Energy width for the smearing function for the DOS (The units are [eV]) (flaot), [0.001].
+                - dos_emax          : maximun energy to be calculated (flaot), [None].
+                - dos_emin          : minimum energy to be calculated (flaot), [None].
 
             # only used for when zeeman interaction is considered.
                 - zeeman_interaction   : consider zeeman interaction ? (bool), [False].
@@ -340,6 +344,8 @@ class CWin(dict):
             "delta",
             "a",
             "dos_smr_en_width",
+            "dos_emax",
+            "dos_emin",
             "degen_thr",
             "fermi_surface_const",
             "magnetic_field",

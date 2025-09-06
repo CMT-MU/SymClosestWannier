@@ -13,7 +13,18 @@ def _lorentzian(e, g=0.001):
 
 
 # ==================================================
-def output_dos(outdir, filename, e, u, ef_shift=0.0, dos_num_fermi=50, dos_smr_en_width=0.001, **kwargs):
+def output_dos(
+    outdir,
+    filename,
+    e,
+    u,
+    ef_shift=0.0,
+    dos_num_fermi=50,
+    dos_smr_en_width=0.001,
+    dos_emax=None,
+    dos_emin=None,
+    **kwargs,
+):
     """
     output density of states (DOS).
 
@@ -25,12 +36,13 @@ def output_dos(outdir, filename, e, u, ef_shift=0.0, dos_num_fermi=50, dos_smr_e
         ef_shift (float, optional): fermi energy shift, [0.0].
         dos_num_fermi (int, optional): number of fermi energies (int), [50].
         dos_smr_en_width (float): Energy width for the smearing function for the DOS (The units are [eV]) (flaot), [0.001].
+        dos_emax (float, optional): maximun energy to be calculated.
+        dos_emin (float, optional): minimun energy to be calculated.
         kwargs (dict, optional): key words for generate_dos_gnuplot.
     """
-    emax = np.max(e)
-    emin = np.min(e)
+    emax = np.max(e) if dos_emax is None else dos_emax
+    emin = np.min(e) if dos_emin is None else dos_emin
     offset = (emax - emin) * 0.1
-
     ef_max = emax + offset
     ef_min = emin - offset
 

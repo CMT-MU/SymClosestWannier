@@ -718,7 +718,10 @@ def cw_creator(seedname="cwannier"):
         dos_num_fermi = cwi["dos_num_fermi"]
         dos_smr_en_width = cwi["dos_smr_en_width"]
 
-        output_dos(".", seedname + "_dos.txt", Ek, Uk, ef_shift, dos_num_fermi, dos_smr_en_width)
+        dos_emax = cwi["dos_emax"]
+        dos_emin = cwi["dos_emin"]
+
+        output_dos(".", seedname + "_dos.txt", Ek, Uk, ef_shift, dos_num_fermi, dos_smr_en_width, dos_emax, dos_emin)
 
         if cwi["symmetrization"]:
             ket_samb = samb_info["ket"]
@@ -727,15 +730,6 @@ def cw_creator(seedname="cwannier"):
                 NSArray(cell_site[ket_samb[a].split("@")[1]][0], style="vector", fmt="value").tolist()
                 for a in range(cw_model._cwi["num_wann"])
             ]
-
-            rel = os.path.relpath(cwi["outdir"], cwi["mp_outdir"])
-
-            if os.path.isfile(f"{seedname}.band.gnu"):
-                ref_filename = f"{rel}/{seedname}.band.gnu"
-            elif os.path.isfile(f"{seedname}.band.gnu.dat"):
-                ref_filename = f"{rel}/{seedname}.band.gnu.dat"
-            else:
-                ref_filename = None
 
             Hk_sym_grid = cw_model.fourier_transform_r_to_k(
                 cw_model["Hr_sym"], kpoints, cwi["irvec"], cwi["ndegen"], atoms_frac=atoms_frac
