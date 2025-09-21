@@ -729,17 +729,6 @@ class CWModel(dict):
                 Sr_dict, Zr_dict, A, atoms_frac, ket_amn, A_samb, atoms_frac_samb, ket_samb
             )
 
-        S2k_inv = np.array([npl.inv(spl.sqrtm(Sk[k])) for k in range(self._cwi["num_k"])])
-        S2r_inv = CWModel.fourier_transform_k_to_r(S2k_inv, self._cwi["kpoints"], self._cwi["irvec"])
-        S2r_inv_dict = CWModel.matrix_dict_r(S2r_inv, self._cwi["irvec"])
-
-        if mat["molecule"]:
-            s2_inv = CWModel.samb_decomp_operator(S2r_inv_dict, Zr_dict, ket=ket_amn, ket_samb=ket_samb)
-        else:
-            s2_inv = CWModel.samb_decomp_operator(
-                S2r_inv_dict, Zr_dict, A, atoms_frac, ket_amn, A_samb, atoms_frac_samb, ket_samb
-            )
-
         self._cwm.log("done", file=self._outfile, mode="a")
 
         #####
@@ -772,55 +761,99 @@ class CWModel(dict):
 
         self._cwm.log("done", file=self._outfile, mode="a")
 
-        # if mat["molecule"]:
-        #     n = CWModel.samb_decomp_operator(nr_dict, Zr_dict, ket=ket_amn, ket_samb=ket_samb)
-        # else:
-        #     # ==================================================
-        #     def _lorentzian(e, g=0.001):
-        #         return (1.0 / np.pi) * g / (g**2 + e**2)
+        if self._cwi["calc_cohp_samb_decomp"]:
+            msg = "    - decomposing electronic density as linear combination of SAMBs ... "
 
-        #     # electronic density matrix elements
-        #     Ek = np.array(self._cwi["Ek"])
-        #     Uk = np.array(self._cwi["Uk"])
-        #     ef = self._cwi["fermi_energy"]
-        #     emax = ef
-        #     emin = ef - 15
-        #     offset = 0.0 # (emax - emin) * 0.1
+            # ==================================================
+            def _lorentzian(e, g=0.001):
+                return (1.0 / np.pi) * g / (g**2 + e**2)
 
-        #     ef_max = emax + offset
-        #     ef_min = emin - offset
-        #     dos_num_fermi = 1000
+            cohp_num_fermi = self._cwi["cohp_num_fermi"]
+            cohp_smr_en_width = self._cwi["cohp_smr_en_width"]
+            cohp_emax = self._cwi["cohp_emax"]
+            cohp_emin = self._cwi["cohp_emin"]
 
-        #     num_k, num_wann = Ek.shape
-        #     dE = (ef_max - ef_min) / dos_num_fermi
-        #     fermi_energy_list = [ef_min + i * dE for i in range(dos_num_fermi + 1)]
+            # electronic density matrix elements
+            Ek = np.array(self._cwi["Ek"])
+            Uk = np.array(self._cwi["Uk"])
+            ef_shift = self._cwi["fermi_energy"]
 
-        #     fk = np.array([np.diag(fermi(eki - ef, T=0.0)) for eki in Ek], dtype=float)
-        #     n_list = []
-        #     for i, epsilon in enumerate(fermi_energy_list):
-        #         print(f"{i+1}/{dos_num_fermi}")
-        #         delta_func = np.array([np.diag(_lorentzian(eki - epsilon, g=0.001)) for eki in Ek], dtype=float)
-        #         nk_e = Uk.transpose(0, 2, 1).conjugate() @ fk @ delta_func @ Uk
-        #         nr_e = CWModel.fourier_transform_k_to_r(nk_e, self._cwi["kpoints"], self._cwi["irvec"])
-        #         nr_e_dict = CWModel.matrix_dict_r(nr_e, self._cwi["irvec"])
+            emax = np.max(Ek) if cohp_emax is None else cohp_emax
+            emin = np.min(Ek) if cohp_emin is None else cohp_emin
+            offset = (emax - emin) * 0.1
+            ef_max = emax + offset
+            ef_min = emin - offset
 
-        #         n_i = CWModel.samb_decomp_operator(nr_e_dict, Zr_dict, A, atoms_frac, ket_amn, A_samb, atoms_frac_samb, ket_samb)
-        #         n_list.append(n_i)
+            num_k, num_wann = Ek.shape
+            dE = (ef_max - ef_min) / cohp_num_fermi
+            fermi_energy_list = [ef_min + i * dE for i in range(cohp_num_fermi + 1)]
 
-        #     o_str = ""
-        #     for i, epsilon in enumerate(fermi_energy_list):
-        #         o_str += f"{epsilon}  "
-        #         n_i = n_list[i]
-        #         for v in n_i.values():
-        #             o_str += f"{v}  "
+            # fk = np.array([np.diag(fermi(eki - ef_shift, T=0.0)) for eki in Ek], dtype=float)
+            n_list = []
+            for ief in range(cohp_num_fermi + 1):
+                print(f"{ief+1}/{cohp_num_fermi + 1}")
+                ef = fermi_energy_list[ief]
+                # if i > 19:
+                #     continue
+                delta_func = _lorentzian(Ek - ef, cohp_smr_en_width)
+                delta_func = np.array([np.diag(delta_func_k) for delta_func_k in delta_func], dtype=float)
+                # nk_delta_func = Uk.transpose(0, 2, 1).conjugate() @ fk @ delta_func @ Uk
+                nk_delta_func = Uk.transpose(0, 2, 1).conjugate() @ delta_func @ Uk
+                nr_delta_func = CWModel.fourier_transform_k_to_r(
+                    nk_delta_func, self._cwi["kpoints"], self._cwi["irvec"]
+                )
+                nr_delta_dict = CWModel.matrix_dict_r(nr_delta_func, self._cwi["irvec"])
 
-        #         o_str +=  "\n "
+                n_i = CWModel.samb_decomp_operator(
+                    nr_delta_dict, Zr_dict, A, atoms_frac, ket_amn, A_samb, atoms_frac_samb, ket_samb
+                )
+                n_list.append(n_i)
 
-        #     filename = os.path.join(self._cwi["mp_outdir"], "{}".format(f"{self._cwi['mp_seedname']}_n_dos.dat.cw"))
-        #     self._cwm.write(filename, o_str, None, None)
-        #     n = n_list[-1]
+            n_list_integrated = []
+            for ief in range(cohp_num_fermi + 1):
+                d_integated = {k: 0.0 for k in n_list[0].keys()}
+                for d in n_list[: ief + 1]:
+                    for k, v in d.items():
+                        d_integated[k] += v * dE
+                n_list_integrated.append(d_integated)
 
-        # self._cwm.log("done", file=self._outfile, mode="a")
+            z_n_list = [{k: z[k] * nj for k, nj in n_list[ief].items()} for ief in range(cohp_num_fermi + 1)]
+            z_n_list_integrated = [
+                {k: z[k] * nj for k, nj in n_list_integrated[ief].items()} for ief in range(cohp_num_fermi + 1)
+            ]
+            cohp_str = ""
+            icohp_str = ""
+            for ief in range(cohp_num_fermi + 1):
+                ef = fermi_energy_list[ief]
+                z_n_i = z_n_list[ief]
+                z_n_integrated_i = z_n_list_integrated[ief]
+                cohp = np.sum([zj_nj for zj_nj in z_n_i.values()])
+                icohp = np.sum([zj_nj for zj_nj in z_n_integrated_i.values()])
+                cohp_str += str(ef - ef_shift) + "  " + str(cohp)
+                icohp_str += str(ef - ef_shift) + "  " + str(icohp)
+
+                for v, v_integrated in zip(z_n_i.values(), z_n_integrated_i.values()):
+                    cohp_str += "  " + str(v)
+                    icohp_str += "  " + str(v_integrated)
+
+                cohp_str += "\n "
+                icohp_str += "\n "
+
+            filename = os.path.join(self._cwi["mp_outdir"], "{}".format(f"{self._cwi['mp_seedname']}_cohp.dat.cw"))
+            self._cwm.write(filename, cohp_str, None, None)
+
+            filename = os.path.join(self._cwi["mp_outdir"], "{}".format(f"{self._cwi['mp_seedname']}_icohp.dat.cw"))
+            self._cwm.write(filename, icohp_str, None, None)
+
+            n_ = n_list[-1]
+            filename = os.path.join(self._cwi["mp_outdir"], "{}".format(f"{self._cwi['mp_seedname']}_n_.dat.cw"))
+            self.write_samb_coeffs(filename, type="", o=n_)
+
+            z_n_ = z_n_list[-1]
+            filename = os.path.join(self._cwi["mp_outdir"], "{}".format(f"{self._cwi['mp_seedname']}_z_n_.dat.cw"))
+            self.write_samb_coeffs(filename, type="", o=z_n_)
+
+        self._cwm.log("done", file=self._outfile, mode="a")
 
         #####
 
@@ -1511,22 +1544,27 @@ class CWModel(dict):
         self._cwm.write(filename, tb_str, None, None)
 
     # ==================================================
-    def write_samb_coeffs(self, filename, type="z"):
+    def write_samb_coeffs(self, filename, type="", o=None):
         """
         write seedname_z.dat.
 
         Args:
             filename (str): file name.
-            type (str): 'z'/'z_nonortho'/'s'.
+            type (str, optional): 'z'/'z_nonortho'/'s'.
+            o (dict, optional): coefficients of SAMBs.
         """
         assert type in (
+            "",
             "z",
             "z_nonortho",
             "s",
             "n",
-        ), f"invalid type = {type} was given. choose from 'z'/'z_nonortho'/'s'/'n'."
+        ), f"invalid type = {type} was given. choose from ''/'z'/'z_nonortho'/'s'/'n'."
 
-        if type == "z":
+        if type == "" and o is not None:
+            header = ""
+            o = o
+        elif type == "z":
             header = z_header
             o = self["z"]
         elif type == "z_nonortho":

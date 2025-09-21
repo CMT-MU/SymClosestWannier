@@ -13,7 +13,18 @@ def _lorentzian(e, g=0.001):
 
 
 # ==================================================
-def output_dos(outdir, filename, e, u, ef_shift=0.0, dos_num_fermi=50, dos_smr_en_width=0.001, **kwargs):
+def output_dos(
+    outdir,
+    filename,
+    e,
+    u,
+    ef_shift=0.0,
+    dos_num_fermi=50,
+    dos_smr_en_width=0.001,
+    dos_emax=None,
+    dos_emin=None,
+    **kwargs,
+):
     """
     output density of states (DOS).
 
@@ -25,19 +36,20 @@ def output_dos(outdir, filename, e, u, ef_shift=0.0, dos_num_fermi=50, dos_smr_e
         ef_shift (float, optional): fermi energy shift, [0.0].
         dos_num_fermi (int, optional): number of fermi energies (int), [50].
         dos_smr_en_width (float): Energy width for the smearing function for the DOS (The units are [eV]) (flaot), [0.001].
+        dos_emax (float, optional): maximun energy to be calculated.
+        dos_emin (float, optional): minimun energy to be calculated.
         kwargs (dict, optional): key words for generate_dos_gnuplot.
     """
-    emax = np.max(e)
-    emin = np.min(e)
+    emax = np.max(e) if dos_emax is None else dos_emax
+    emin = np.min(e) if dos_emin is None else dos_emin
     offset = (emax - emin) * 0.1
-
     ef_max = emax + offset
     ef_min = emin - offset
 
     num_k, num_wann = e.shape
     dE = (ef_max - ef_min) / dos_num_fermi
+    fermi_energy_list = [ef_min + i * dE for i in range(dos_num_fermi + 1)]
 
-    fermi_energy_list = [ef_min + i * dE for i in range(dos_num_fermi)]
     dos = (1.0 / num_k) * np.array([np.sum(_lorentzian(e - ef, dos_smr_en_width)) for ef in fermi_energy_list])
 
     u_abs2 = np.abs(u) ** 2
@@ -61,6 +73,7 @@ def output_dos(outdir, filename, e, u, ef_shift=0.0, dos_num_fermi=50, dos_smr_e
 
     for i, ef in enumerate(fermi_energy_list):
         total_dos = dos[i]
+
         s = str(ef - ef_shift) + "  " + str(total_dos) + " "
         for m in range(num_wann):
             s += " " + str(pdos[m, i])
@@ -110,7 +123,7 @@ def generate_dos_gnuplot(outdir, filename, emax, emin, ef_shift, dos_max, num_wa
     fs.write(f"lwidth = {lwidth} \n")
     fs.write(f"set xrange [:{dos_max}] \n")
     fs.write(f"set yrange [{ef_min - ef_shift}:{ef_max - ef_shift}] \n")
-    fs.write("set tics font 'Times Roman, 30' \n\n")
+    fs.write("set tics font 'Times New Roman, 30' \n\n")
     fs.write("set size ratio 1.3 \n\n")
     fs.write(f"ef = {ef_shift} \n")
 

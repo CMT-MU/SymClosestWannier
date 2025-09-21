@@ -118,7 +118,7 @@ def generate_fermi_surface_gnuplot_eig(
     fs.write("set xrange [kmin_1:kmax_1] \n")
     fs.write("set yrange [kmin_2:kmax_2] \n")
     fs.write(f"# ef = {ef} is set as zero.\n")
-    fs.write("set tics font 'Times Roman, 20' \n\n")
+    fs.write("set tics font 'Times New Roman, 20' \n\n")
 
     fs.write(f"emax = {emax - ef} \n")
     fs.write(f"emin = {emin - ef} \n")
