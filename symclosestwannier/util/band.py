@@ -106,7 +106,7 @@ def generate_band_gnuplot_eig(outdir, filename, kmax, emax, emin, num_wann, **kw
     fs.write(f"lwidth = {lwidth} \n")
     fs.write(f"set xrange [:{kmax}] \n")
     fs.write(f"set yrange [{emin-ef-offset}:{emax-ef+offset}] \n")
-    fs.write("set tics font 'Times Roman, 30' \n\n")
+    fs.write("set tics font 'Times New Roman, 30' \n\n")
     fs.write("set size ratio 0.7 \n\n")
 
     if k_dis_pos is not None:
@@ -251,7 +251,7 @@ def generate_band_gnuplot(outdir, filename, kmax, emax, emin, num_wann, **kwargs
     fs.write(f"lwidth = {lwidth} \n")
     fs.write(f"set xrange [:{kmax}] \n")
     fs.write(f"set yrange [{emin-ef-offset}:{emax-ef+offset}] \n")
-    fs.write("set tics font 'Times Roman, 30' \n\n")
+    fs.write("set tics font 'Times New Roman, 30' \n\n")
     fs.write("set size ratio 0.7 \n\n")
 
     if k_dis_pos is not None:

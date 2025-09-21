@@ -53,6 +53,22 @@ _default = {
     "dos_kmesh": [1, 1, 1],
     "dos_num_fermi": 50,
     "dos_smr_en_width": 0.001,
+    "dos_emax": None,
+    "dos_emin": None,
+    # cohp
+    "calc_cohp": False,
+    "cohp_kmesh": [1, 1, 1],
+    "cohp_bond_length_max": 6,
+    "cohp_bond_length_min": 0,
+    "cohp_head_atom": None,
+    "cohp_tail_atom": None,
+    "cohp_head_atom_idx": None,
+    "cohp_tail_atom_idx": None,
+    "cohp_num_fermi": 50,
+    "cohp_smr_en_width": 0.001,
+    "cohp_emax": None,
+    "cohp_emin": None,
+    "calc_cohp_samb_decomp": False,
     # zeeman interaction
     "zeeman_interaction": False,
     "magnetic_field": 0.0,
@@ -122,7 +138,7 @@ class CWin(dict):
         """
         read seedname.cwin file.
 
-        Args:d
+        Args:
             file_name (str, optional): file name.
 
         Returns:
@@ -173,6 +189,23 @@ class CWin(dict):
                 - dos_kmesh         : dimensions of the Monkhorst-Pack grid of k-points for dos calculation (list), [[1, 1, 1]].
                 - dos_num_fermi     : number of fermi energies (int), [50].
                 - dos_smr_en_width  : Energy width for the smearing function for the DOS (The units are [eV]) (flaot), [0.001].
+                - dos_emax          : maximun energy to be calculated (flaot), [None].
+                - dos_emin          : minimum energy to be calculated (flaot), [None].
+
+            # only used for cohp calculation.
+                - calc_cohp             : calculate cohp? (bool), [False].
+                - cohp_kmesh            : dimensions of the Monkhorst-Pack grid of k-points for cohp calculation (list), [[1, 1, 1]].
+                - cohp_bond_length_max  : maximum bond length (ang) to be calculated (float), [6.0].
+                - cohp_bond_length_min  : minimum bond length (ang) to be calculated (float), [0.0].
+                - cohp_head_atom        : head atom to be calculated (float), [None].
+                - cohp_tail_atom        : tail atom to be calculated (float), [None].
+                - cohp_head_atom_idx    : head atom index to be calculated (float), [None].
+                - cohp_tail_atom_idx    : tail atom index to be calculated (float), [None].
+                - cohp_num_fermi        : number of fermi energies (int), [50].
+                - cohp_smr_en_width     : Energy width for the smearing function for the COHP (The units are [eV]) (flaot), [0.001].
+                - cohp_emax             : maximun energy to be calculated (flaot), [None].
+                - cohp_emin             : minimum energy to be calculated (flaot), [None].
+                - calc_cohp_samb_decomp : decompose cohp by SAMBs? (bool), [False].
 
             # only used for when zeeman interaction is considered.
                 - zeeman_interaction   : consider zeeman interaction ? (bool), [False].
@@ -273,6 +306,10 @@ class CWin(dict):
                 d["dos_kmesh"] = [int(x) for x in v.split() if x != ""]
                 continue
 
+            if key == "cohp_kmesh":
+                d["cohp_kmesh"] = [int(x) for x in v.split() if x != ""]
+                continue
+
             if key == "fermi_surface_kmesh":
                 kmin_1, kmax_1, N1, kmin_2, kmax_2, N2 = [int(x) for x in v.split() if x != ""]
                 d["fermi_surface_kmesh"] = [[kmin_1, kmax_1, N1], [kmin_2, kmax_2, N2]]
@@ -324,7 +361,7 @@ class CWin(dict):
 
         if key not in CWin._default().keys():
             raise Exception(f"invalid keyword = {key} was given.")
-        elif key in ("seedname", "mp_seedname", "hr_input", "lindhard_smr_type"):
+        elif key in ("seedname", "mp_seedname", "hr_input", "lindhard_smr_type", "cohp_head_atom", "cohp_tail_atom"):
             pass
         elif key in ("outdir", "mp_outdir"):
             v = v[:-1] if v[-1] == "/" else v
@@ -340,6 +377,13 @@ class CWin(dict):
             "delta",
             "a",
             "dos_smr_en_width",
+            "dos_emax",
+            "dos_emin",
+            "cohp_bond_length_max",
+            "cohp_bond_length_min",
+            "cohp_smr_en_width",
+            "cohp_emax",
+            "cohp_emin",
             "degen_thr",
             "fermi_surface_const",
             "magnetic_field",
@@ -366,7 +410,7 @@ class CWin(dict):
             elif key == "filling":
                 if v < 0.0:
                     raise Exception(f"filling must be positive value.")
-        elif key in ("N1", "Nq1", "dos_num_fermi"):
+        elif key in ("N1", "Nq1", "dos_num_fermi", "cohp_head_atom_idx", "cohp_tail_atom_idx", "cohp_num_fermi"):
             v = int(v)
         elif key == "ket_amn":
             if "[" in v or "]" in v:
