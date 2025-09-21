@@ -3,7 +3,7 @@ unset grid
 lwidth = 3 
 set xrange [:0.6477783446554766] 
 set yrange [-9.774194382239433:13.707620150813074] 
-set tics font 'Times Roman, 30' 
+set tics font 'Times New Roman, 30' 
 
 set size ratio 0.7 
 

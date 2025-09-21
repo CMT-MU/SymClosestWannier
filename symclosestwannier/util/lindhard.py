@@ -189,7 +189,7 @@ def generate_lindhard_gnuplot(outdir, filename, qmax, lmax, lmin, **kwargs):
     fs.write(f"lwidth = {lwidth} \n")
     fs.write(f"set xrange [:{qmax}] \n")
     fs.write(f"set yrange [{lmin-offset}:{lmax+offset}] \n")
-    fs.write("set tics font 'Times Roman, 30' \n\n")
+    fs.write("set tics font 'Times New Roman, 30' \n\n")
     fs.write("set size ratio 0.7 \n\n")
 
     if q_dis_pos is not None:
@@ -319,7 +319,7 @@ def generate_lindhard_surface_gnuplot(
     fs.write(f"qmin_2 = {qmin_2} \n")
     fs.write("set xrange [qmin_1:qmax_1] \n")
     fs.write("set yrange [qmin_2:qmax_2] \n")
-    fs.write("set tics font 'Times Roman, 20' \n\n")
+    fs.write("set tics font 'Times New Roman, 20' \n\n")
 
     fs.write(f"lmax_re = {lmax_re} \n")
     fs.write(f"lmin_re = {lmin_re} \n")

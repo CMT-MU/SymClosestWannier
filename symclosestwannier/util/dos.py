@@ -48,8 +48,8 @@ def output_dos(
 
     num_k, num_wann = e.shape
     dE = (ef_max - ef_min) / dos_num_fermi
+    fermi_energy_list = [ef_min + i * dE for i in range(dos_num_fermi + 1)]
 
-    fermi_energy_list = [ef_min + i * dE for i in range(dos_num_fermi)]
     dos = (1.0 / num_k) * np.array([np.sum(_lorentzian(e - ef, dos_smr_en_width)) for ef in fermi_energy_list])
 
     u_abs2 = np.abs(u) ** 2
@@ -73,6 +73,7 @@ def output_dos(
 
     for i, ef in enumerate(fermi_energy_list):
         total_dos = dos[i]
+
         s = str(ef - ef_shift) + "  " + str(total_dos) + " "
         for m in range(num_wann):
             s += " " + str(pdos[m, i])
@@ -122,7 +123,7 @@ def generate_dos_gnuplot(outdir, filename, emax, emin, ef_shift, dos_max, num_wa
     fs.write(f"lwidth = {lwidth} \n")
     fs.write(f"set xrange [:{dos_max}] \n")
     fs.write(f"set yrange [{ef_min - ef_shift}:{ef_max - ef_shift}] \n")
-    fs.write("set tics font 'Times Roman, 30' \n\n")
+    fs.write("set tics font 'Times New Roman, 30' \n\n")
     fs.write("set size ratio 1.3 \n\n")
     fs.write(f"ef = {ef_shift} \n")
 
