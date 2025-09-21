@@ -31,6 +31,7 @@ from symclosestwannier.cw.cw_model import CWModel
 from symclosestwannier.util.band import output_linear_dispersion, output_linear_dispersion_eig
 from symclosestwannier.util.fermi_surface import output_fermi_surface_eig
 from symclosestwannier.util.dos import output_dos
+from symclosestwannier.util.cohp import output_cohp
 from symclosestwannier.util.lindhard import get_lindhard, output_lindhard, output_lindhard_surface
 
 
@@ -738,10 +739,74 @@ def cw_creator(seedname="cwannier"):
 
             # output_linear_dispersion(
             output_dos(
-                cwi["mp_outdir"], cwi["mp_seedname"] + "_dos.txt", Ek, Uk, ef_shift, dos_num_fermi, dos_smr_en_width
+                cwi["mp_outdir"],
+                cwi["mp_seedname"] + "_dos.txt",
+                Ek,
+                Uk,
+                ef_shift,
+                dos_num_fermi,
+                dos_smr_en_width,
+                dos_emax,
+                dos_emin,
             )
 
         cwm.log("done", end="\n", file=outfile, mode="a")
+
+    #####
+    if cwi["calc_cohp"]:
+        cwm.log("\n  * calculating COHP ... ", None, end="", file=outfile, mode="a")
+        cwm.set_stamp()
+
+        N1, N2, N3 = cwi["cohp_kmesh"]
+        kpoints = np.array(
+            [[i / float(N1), j / float(N2), k / float(N3)] for i in range(N1) for j in range(N2) for k in range(N3)]
+        )
+
+        A = NSArray(cwi["unit_cell_cart"], "matrix", fmt="value")
+
+        ef_shift = cwi["fermi_energy"]
+        cohp_bond_length_max = cwi["cohp_bond_length_max"]
+        cohp_bond_length_min = cwi["cohp_bond_length_min"]
+        cohp_head_atom = cwi["cohp_head_atom"]
+        cohp_tail_atom = cwi["cohp_tail_atom"]
+        cohp_head_atom_idx = cwi["cohp_head_atom_idx"]
+        cohp_tail_atom_idx = cwi["cohp_tail_atom_idx"]
+        cohp_num_fermi = cwi["cohp_num_fermi"]
+        cohp_smr_en_width = cwi["cohp_smr_en_width"]
+        cohp_emax = cwi["cohp_emax"]
+        cohp_emin = cwi["cohp_emin"]
+
+        atoms_list = list(cwi["atoms_frac"].values())
+        atoms_frac = np.array([atoms_list[i] for i in cwi["nw2n"]])
+
+        output_cohp(
+            ".",
+            seedname + "_cohp.txt",
+            cw_model["Hr"],
+            cwi["Ek"],
+            cwi["Uk"],
+            cwi["kpoints"],
+            cwi["irvec"],
+            cwi["ndegen"],
+            cwi["atoms_frac"],
+            cwi["nw2n"],
+            cwi["nw2l"],
+            cwi["nw2m"],
+            cwi["nw2r"],
+            cwi["nw2s"],
+            A,
+            cohp_bond_length_max,
+            cohp_bond_length_min,
+            cohp_head_atom,
+            cohp_tail_atom,
+            cohp_head_atom_idx,
+            cohp_tail_atom_idx,
+            cohp_num_fermi,
+            cohp_smr_en_width,
+            cohp_emax,
+            cohp_emin,
+            ef_shift,
+        )
 
     #####
 
