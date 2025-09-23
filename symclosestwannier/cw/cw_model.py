@@ -32,6 +32,9 @@ from scipy import linalg as spl
 import lmfit
 
 from gcoreutils.nsarray import NSArray
+
+from multipie2.core.material_model import MaterialModel
+
 from multipie.tag.tag_multipole import TagMultipole
 from multipie.model.construct_model import construct_samb_matrix
 from multipie.data.data_transform_matrix import _data_trans_lattice_p
@@ -568,53 +571,31 @@ class CWModel(dict):
 
         #####
 
-        msg = "    - reading output of multipie ... "
+        msg = "    - reading output of multipie2 ... "
         self._cwm.log(msg, None, end="\n", file=self._outfile, mode="a")
         self._cwm.set_stamp()
 
-        model = self._cwm.read(
-            os.path.join(self._cwi["mp_outdir"], "{}".format(f"{self._cwi['mp_seedname']}_model.py"))
-        )
+        mm = MaterialModel(topdir=self._cwi["mp_outdir"], verbose=True)
+        mm.load(self._cwi["mp_seedname"])
 
-        samb = self._cwm.read(os.path.join(self._cwi["mp_outdir"], "{}".format(f"{self._cwi['mp_seedname']}_samb.py")))
+        if self._cwi["irreps"] == "all":
+            irreps = list(mm.group["character"]["table"].keys())
+        elif self._cwi["irreps"] == "full":
+            irreps = list(mm.group["character"]["table"].keys())[0]
+        else:
+            irreps = self._cwi["irreps"]
 
-        try:
-            mat = self._cwm.read(
-                os.path.join(self._cwi["mp_outdir"], "{}".format(f"{self._cwi['mp_seedname']}_matrix.pkl"))
-            )
-        except:
-            mat = self._cwm.read(
-                os.path.join(self._cwi["mp_outdir"], "{}".format(f"{self._cwi['mp_seedname']}_matrix.py"))
-            )
+        matrix_select = {"Gamma": irreps} | self._cwi.get("matrix_select", {})
+        mat = mm._get_combined_samb_matrix(**matrix_select)
 
-        ket_samb = model["info"]["ket"]
+        ket_samb = mat["ket"]
+        ket_samb = [f"{v[-1]}@{v[0]}{v[1]}" for v in ket_samb]
         ket_amn = self._cwi.get("ket_amn", ket_samb)
 
         # sort orbitals
         Hk = sort_ket_matrix(Hk, ket_amn, ket_samb)
         Sk = sort_ket_matrix(Sk, ket_amn, ket_samb)
         nk = sort_ket_matrix(nk, ket_amn, ket_samb)
-
-        if self._cwi["irreps"] == "all":
-            irreps = model["info"]["generate"]["irrep"]
-        elif self._cwi["irreps"] == "full":
-            irreps = [model["info"]["generate"]["irrep"][0]]
-        else:
-            irreps = self._cwi["irreps"]
-
-        for zj, (tag, _) in samb["data"]["Z"].items():
-            if TagMultipole(tag).irrep not in irreps:
-                del mat["matrix"][zj]
-
-        tag_dict = {zj: tag for zj, (tag, _) in samb["data"]["Z"].items()}
-
-        # Zr_dict = {
-        #     (zj, tag_dict[zj]): {tuple(sp.sympify(k)): complex(sp.sympify(v)) for k, v in d.items()}
-        #     for zj, d in mat["matrix"].items()
-        # }
-        # mat["matrix"] = {
-        #     zj: {tuple(sp.sympify(k)): complex(sp.sympify(v)) for k, v in d.items()} for zj, d in mat["matrix"].items()
-        # }
 
         ### kuniyoshi (24/08/20) ###
         def proc(j, zj, d):
@@ -627,8 +608,9 @@ class CWModel(dict):
 
         Zr_dict = {}
         for _, zj, d in res:
-            Zr_dict[(zj, tag_dict[zj])] = d
+            Zr_dict[(zj, *mat["info"][zj])] = d
             mat["matrix"][zj] = d
+
         ### kuniyoshi (24/08/20) ###
 
         ### sign chagne for odd-parity site- and bond-cluster multipoles (L-handed CoSi) ###
@@ -648,33 +630,6 @@ class CWModel(dict):
         #     mat["matrix"][zj] = d
         ### sign chagne for odd-parity site- and bond-cluster multipoles (L-handed CoSi) ###
 
-        A = None
-        A_samb = None
-
-        lattice = model["info"]["group"][1].split("/")[1].replace(" ", "")[0]
-        if lattice != "P":
-            cell_site = {}
-            for site, v in mat["cell_site"].items():
-                if "(" in site and ")" in site:
-                    if "(1)" in site:
-                        cell_site[site[:-3]] = v
-                else:
-                    cell_site[site] = v
-
-            mat["cell_site"] = cell_site
-
-        if not mat["molecule"]:
-            A = self._cwi["unit_cell_cart"]
-            A_samb = NSArray(mat["A"], style="matrix", fmt="value").T
-            if lattice != "P":
-                # 4x4 matrix to convert from conventioanl to primitive coordinate.
-                latticeP = {
-                    lat: np.array(NSArray(d).numpy().tolist(), dtype=float) for lat, d in _data_trans_lattice_p.items()
-                }
-                lattice_const = model["info"]["cell"]["a"]
-                A_samb = lattice_const * latticeP[lattice][:-1, :-1]
-
-            mat["A"] = A_samb
         #####
 
         atoms_list = list(self._cwi["atoms_frac"].values())
@@ -685,34 +640,15 @@ class CWModel(dict):
             for a in range(self._cwi["num_wann"])
         ]
 
+        self._cwm.log("done", file=self._outfile, mode="a")
+
+        #####
+
         msg = "    - decomposing Hamiltonian as linear combination of SAMBs ... "
         self._cwm.log(msg, None, end="", file=self._outfile, mode="a")
         self._cwm.set_stamp()
 
-        if mat["molecule"]:
-            z = CWModel.samb_decomp_operator(Hr_dict, Zr_dict, ket=ket_amn, ket_samb=ket_samb)
-        else:
-            z = CWModel.samb_decomp_operator(
-                Hr_dict, Zr_dict, A, atoms_frac, ket_amn, A_samb, atoms_frac_samb, ket_samb
-            )
-
-        i = 0
-        # for tag, d in Zr_dict.items():
-        # i += 1
-        # if i in (1, 2, 8, 9, 10, 12, 17, 20, 29, 30, 32, 33, 34, 35, 81, 83, 85):
-        #    z[tag] = z[tag]
-        # else:
-        #    z[tag] = 0.0
-        # if i in (1, 2, 8, 9, 10, 12, 17, 20, 29, 30, 32, 33, 34, 35, 81, 82, 83, 84, 85, 86):
-        #    z[tag] = z[tag]
-        # if i in (1, 8, 10, 12, 32, 34, 83, 85):
-        #    z[tag] = z[tag]
-        # else:
-        #    z[tag] = 0.0
-        # if i in (10, 34, 83, 85):  # Gu
-        #    z[tag] = -z[tag]
-        # else:
-        #    z[tag] = z[tag]
+        z = CWModel.samb_decomp_operator(Hr_dict, Zr_dict, ket_amn, ket_samb)
 
         self._cwm.log("done", file=self._outfile, mode="a")
 
@@ -722,12 +658,7 @@ class CWModel(dict):
         self._cwm.log(msg, None, end="", file=self._outfile, mode="a")
         self._cwm.set_stamp()
 
-        if mat["molecule"]:
-            s = CWModel.samb_decomp_operator(Sr_dict, Zr_dict, ket=ket_amn, ket_samb=ket_samb)
-        else:
-            s = CWModel.samb_decomp_operator(
-                Sr_dict, Zr_dict, A, atoms_frac, ket_amn, A_samb, atoms_frac_samb, ket_samb
-            )
+        s = CWModel.samb_decomp_operator(Sr_dict, Zr_dict, ket=ket_amn, ket_samb=ket_samb)
 
         self._cwm.log("done", file=self._outfile, mode="a")
 
@@ -737,12 +668,7 @@ class CWModel(dict):
         self._cwm.log(msg, None, end="", file=self._outfile, mode="a")
         self._cwm.set_stamp()
 
-        if mat["molecule"]:
-            z_nonortho = CWModel.samb_decomp_operator(Hr_nonortho_dict, Zr_dict, ket=ket_amn, ket_samb=ket_samb)
-        else:
-            z_nonortho = CWModel.samb_decomp_operator(
-                Hr_nonortho_dict, Zr_dict, A, atoms_frac, ket_amn, A_samb, atoms_frac_samb, ket_samb
-            )
+        z_nonortho = CWModel.samb_decomp_operator(Hr_nonortho_dict, Zr_dict, ket=ket_amn, ket_samb=ket_samb)
 
         self._cwm.log("done", file=self._outfile, mode="a")
 
@@ -752,12 +678,7 @@ class CWModel(dict):
         self._cwm.log(msg, None, end="", file=self._outfile, mode="a")
         self._cwm.set_stamp()
 
-        if mat["molecule"]:
-            n = CWModel.samb_decomp_operator(nr_dict, Zr_dict, ket=ket_amn, ket_samb=ket_samb)
-        else:
-            n = CWModel.samb_decomp_operator(
-                nr_dict, Zr_dict, A, atoms_frac, ket_amn, A_samb, atoms_frac_samb, ket_samb
-            )
+        n = CWModel.samb_decomp_operator(nr_dict, Zr_dict, ket=ket_amn, ket_samb=ket_samb)
 
         self._cwm.log("done", file=self._outfile, mode="a")
 
@@ -804,9 +725,7 @@ class CWModel(dict):
                 )
                 nr_delta_dict = CWModel.matrix_dict_r(nr_delta_func, self._cwi["irvec"])
 
-                n_i = CWModel.samb_decomp_operator(
-                    nr_delta_dict, Zr_dict, A, atoms_frac, ket_amn, A_samb, atoms_frac_samb, ket_samb
-                )
+                n_i = CWModel.samb_decomp_operator(nr_delta_dict, Zr_dict, ket_amn, ket_samb)
                 n_list.append(n_i)
 
             n_list_integrated = []
@@ -1584,8 +1503,8 @@ class CWModel(dict):
 
         o_str = "".join(
             [
-                "{:>7d}   {:>15}   {:>15}   {:>15.8E} \n ".format(j + 1, zj, tag, v)
-                for j, ((zj, tag), v) in enumerate(o.items())
+                "{:>7d}   {:>15}   {:>15}   {:>15}   {:>15.8E} \n ".format(j + 1, zj, mat_info, tag, v)
+                for j, ((zj, mat_info, tag), v) in enumerate(o.items())
             ]
         )
 

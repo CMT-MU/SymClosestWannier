@@ -669,74 +669,20 @@ def sort_ket_list(lst, ket, ket_samb):
 
 
 # ==================================================
-def samb_decomp_operator(
-    Or_dict, Zr_dict, A=None, atoms_frac=None, ket=None, A_samb=None, atoms_frac_samb=None, ket_samb=None
-):
+def samb_decomp_operator(Or_dict, Zr_dict, ket=None, ket_samb=None):
     """
     decompose arbitrary operator into linear combination of SAMBs.
 
     Args:
         Or_dict (dict): dictionary form of an arbitrary operator matrix in real-space/k-space representation.
         Zr_dict (dict): dictionary form of SAMBs.
-        A (list/ndarray, optional): real lattice vectors for the given operator, A = [a1,a2,a3] (list), [[[1,0,0], [0,1,0], [0,0,1]]].
-        atoms_frac (ndarray, optional): atom's position in fractional coordinates for the given operator.
         ket (list, optional): ket basis list, orbital@site.
-        A_samb (list/ndarray, optional): real lattice vectors for SAMBs, A = [a1,a2,a3] (list), [[[1,0,0], [0,1,0], [0,0,1]]].
-        atoms_frac_samb (ndarray, optional): atom's position in fractional coordinates for SAMBs.
         ket_samb (list, optional): ket basis list for SAMBs, orbital@site.
 
     Returns:
         z (dict): parameter set, {tag: z_j}.
     """
     Or_dict = sort_ket_matrix_dict(Or_dict, ket, ket_samb)
-
-    # if A is not None:
-    #     if not np.allclose(A, A_samb, rtol=1e-03, atol=1e-03):
-    # if True:
-    #     if True:
-    #         print("ok!!!")
-    #         A = np.array(A, dtype=float)
-    #         A_samb = np.array(A_samb, dtype=float)
-    #         atoms_frac = np.array(sort_ket_list(atoms_frac, ket, ket_samb), dtype=float)
-    #         atoms_frac_samb = np.array(atoms_frac_samb, dtype=float)
-
-    #         Or_dict_ = {}
-    #         for (R1, R2, R3, m, n), v in Or_dict.items():
-    #             if np.abs(v) < 0.0:
-    #                 continue
-
-    #             R = np.array([R1, R2, R3], dtype=float)
-    #             rm = atoms_frac[m]
-    #             rn = atoms_frac[n]
-    #             bond = ((R + rn) - rm) @ A
-
-    #             bond = tuple([format(bi, ".3f") for bi in bond])
-    #             bond = tuple([float(bi) for bi in bond])
-
-    #             Or_dict_[(*bond, m, n)] = v
-
-    #         Or_dict = Or_dict_
-
-    #         Zr_dict_ = {}
-    #         for tag, d in Zr_dict.items():
-    #             dic = {}
-    #             for (R1, R2, R3, m, n), v in d.items():
-    #                 if np.abs(v) < 0.0:
-    #                     continue
-
-    #                 R = np.array([R1, R2, R3], dtype=float)
-    #                 rm = atoms_frac_samb[m]
-    #                 rn = atoms_frac_samb[n]
-    #                 bond = ((R + rn) - rm) @ A_samb
-
-    #                 bond = tuple([format(bi, ".3f") for bi in bond])
-    #                 bond = tuple([float(bi) for bi in bond])
-
-    #                 dic[(*bond, m, n)] = v
-
-    #             Zr_dict_[tag] = dic
-
-    #         Zr_dict = Zr_dict_
 
     z = {
         tag: np.real(np.sum([v * Or_dict.get((-k[0], -k[1], -k[2], k[4], k[3]), 0) for k, v in d.items()]))
@@ -822,13 +768,16 @@ def construct_Or(z, num_wann, rpoints, matrix_dict):
     Returns:
         ndarray: matrix, [#r, dim, dim].
     """
-    Or_dict = {(n1, n2, n3, a, b): 0.0 for (n1, n2, n3) in rpoints for a in range(num_wann) for b in range(num_wann)}
-    for j, d in enumerate(matrix_dict["matrix"].values()):
-        zj = z[j]
-        for (n1, n2, n3, a, b), v in d.items():
-            if (n1, n2, n3, a, b) in Or_dict:
-                Or_dict[(n1, n2, n3, a, b)] += zj * v
-
+    # Or_dict = {(n1, n2, n3, a, b): 0.0 for (n1, n2, n3) in rpoints for a in range(num_wann) for b in range(num_wann)}
+    # for j, d in enumerate(matrix_dict["matrix"].values()):
+    # zj = z[j]
+    # for (n1, n2, n3, a, b), v in d.items():
+    #     Or_dict[(n1, n2, n3, a, b)] = Or_dict.get((n1, n2, n3, a, b), 0.0) + zj * v
+    Or_dict = {
+        (n1, n2, n3, a, b): Or_dict.get((n1, n2, n3, a, b), 0.0) + z[j] * v
+        for j, d in enumerate(matrix_dict["matrix"].values())
+        for (n1, n2, n3, a, b), v in d.items()
+    }
     Or = np.array(
         [
             [[Or_dict.get((n1, n2, n3, a, b), 0.0) for b in range(num_wann)] for a in range(num_wann)]
