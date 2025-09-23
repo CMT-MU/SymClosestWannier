@@ -575,7 +575,6 @@ class CWModel(dict):
         self._cwm.log(msg, None, end="\n", file=self._outfile, mode="a")
         self._cwm.set_stamp()
 
-<<<<<<< HEAD
         mm = MaterialModel(topdir=os.getcwd() + "/" + self._cwi["mp_outdir"] + "/", verbose=True)
         mm.load(self._cwi["mp_seedname"])
 
@@ -583,15 +582,6 @@ class CWModel(dict):
             irreps = list(mm._group.point_group["character"]["table"].keys())
         elif self._cwi["irreps"] == "full":
             irreps = list(mm._group.point_group["character"]["table"].keys())[0]
-=======
-        mm = MaterialModel(topdir=self._cwi["mp_outdir"], verbose=True)
-        mm.load(self._cwi["mp_seedname"])
-
-        if self._cwi["irreps"] == "all":
-            irreps = list(mm.group["character"]["table"].keys())
-        elif self._cwi["irreps"] == "full":
-            irreps = list(mm.group["character"]["table"].keys())[0]
->>>>>>> 323ecdd552b40c6ce5eeba94785a639b3e0cfce5
         else:
             irreps = self._cwi["irreps"]
 
@@ -599,11 +589,7 @@ class CWModel(dict):
         mat = mm._get_combined_samb_matrix(**matrix_select)
 
         ket_samb = mat["ket"]
-<<<<<<< HEAD
         ket_samb = [f"{v[-1]}@{v[0]}_{v[1]}" for v in ket_samb]
-=======
-        ket_samb = [f"{v[-1]}@{v[0]}{v[1]}" for v in ket_samb]
->>>>>>> 323ecdd552b40c6ce5eeba94785a639b3e0cfce5
         ket_amn = self._cwi.get("ket_amn", ket_samb)
 
         # sort orbitals
@@ -611,23 +597,7 @@ class CWModel(dict):
         Sk = sort_ket_matrix(Sk, ket_amn, ket_samb)
         nk = sort_ket_matrix(nk, ket_amn, ket_samb)
 
-<<<<<<< HEAD
         Zr_dict = {(zj, *mat["info"][zj]): d for zj, d in mat["matrix"].items()}
-=======
-        ### kuniyoshi (24/08/20) ###
-        def proc(j, zj, d):
-            return j, zj, {tuple(sp.sympify(k)): complex(sp.sympify(v)) for k, v in d.items()}
-
-        res = Parallel(n_jobs=_num_proc, verbose=1)(
-            delayed(proc)(j, zj, d) for j, (zj, d) in enumerate(mat["matrix"].items())
-        )
-        res = sorted(res, key=lambda x: x[0])
-
-        Zr_dict = {}
-        for _, zj, d in res:
-            Zr_dict[(zj, *mat["info"][zj])] = d
-            mat["matrix"][zj] = d
->>>>>>> 323ecdd552b40c6ce5eeba94785a639b3e0cfce5
 
         ### kuniyoshi (24/08/20) ###
 
