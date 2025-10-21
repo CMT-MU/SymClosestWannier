@@ -65,6 +65,8 @@ from symclosestwannier.util.utility import (
     fermi,
     weight_proj,
     band_distance,
+    get_wannier_center_spread,
+    get_spreads,
     fourier_transform_k_to_r,
     fourier_transform_r_to_k,
     fourier_transform_r_to_k_vec,
@@ -168,21 +170,6 @@ class CWModel(dict):
         Hk = np.einsum("klm,kl,kln->kmn", np.conj(Uk), Ek, Uk, optimize=True)
         Hk = 0.5 * (Hk + np.einsum("kmn->knm", Hk).conj())
 
-        # band distance
-        self._cwm.log("* band distance between DFT and Wannier bands:", None, file=self._outfile, mode="a")
-        self._cwm.set_stamp()
-
-        eta_0, eta_0_max, eta_2, eta_2_max, eta_4, eta_4_max = band_distance(Ak, Ek, Hk, ef=self._cwi["fermi_energy"])
-
-        self._cwm.log(f" - eta_0     = {eta_0} [meV]", file=self._outfile, mode="a")
-        self._cwm.log(f" - eta_0_max = {eta_0_max} [meV]", file=self._outfile, mode="a")
-        self._cwm.log(f" - eta_2     = {eta_2} [meV]", file=self._outfile, mode="a")
-        self._cwm.log(f" - eta_2_max = {eta_2_max} [meV]", file=self._outfile, mode="a")
-        self._cwm.log(f" - eta_4     = {eta_4} [meV]", file=self._outfile, mode="a")
-        self._cwm.log(f" - eta_4_max = {eta_4_max} [meV]", file=self._outfile, mode="a")
-
-        self._cwm.log("done", file=self._outfile, mode="a")
-
         # zeeman interaction
         if self._cwi["zeeman_interaction"]:
             B = self._cwi["magnetic_field"]
@@ -222,6 +209,74 @@ class CWModel(dict):
                 "Hr_nonortho": Hr_nonortho.tolist(),
             }
         )
+
+        # band distance
+        self._cwm.log("* band distance between DFT and Wannier bands:", None, file=self._outfile, mode="a")
+        self._cwm.set_stamp()
+
+        eta_0, eta_0_max, eta_2, eta_2_max, eta_4, eta_4_max = band_distance(Ak, Ek, Hk, ef=self._cwi["fermi_energy"])
+
+        self._cwm.log(f" - eta_0     = {eta_0} [meV]", file=self._outfile, mode="a")
+        self._cwm.log(f" - eta_0_max = {eta_0_max} [meV]", file=self._outfile, mode="a")
+        self._cwm.log(f" - eta_2     = {eta_2} [meV]", file=self._outfile, mode="a")
+        self._cwm.log(f" - eta_2_max = {eta_2_max} [meV]", file=self._outfile, mode="a")
+        self._cwm.log(f" - eta_4     = {eta_4} [meV]", file=self._outfile, mode="a")
+        self._cwm.log(f" - eta_4_max = {eta_4_max} [meV]", file=self._outfile, mode="a")
+
+        self._cwm.log("done", file=self._outfile, mode="a")
+
+        # spreads
+        if self._cwi.mmn["Mkb"] is not None:
+
+            #
+            self._cwm.set_stamp()
+
+            self._cwm.log("\n    * WF center and Spread:", None, file=self._outfile, mode="a")
+
+            r, Omega = get_wannier_center_spread(self._cwi)
+
+            self._cwm.log(
+                "     idx        center (cartesian)                             Spread (Ang^2)",
+                None,
+                file=self._outfile,
+                mode="a",
+            )
+
+            for m in range(self._cwi["num_wann"]):
+                self._cwm.log(
+                    "  {0:6d}        ( {1[0]:12.6f}, {1[1]:12.6f}, {1[2]:12.6f} )  {2:15.8f}".format(
+                        m + 1, r[m].real, Omega[m].real
+                    ),
+                    None,
+                    file=self._outfile,
+                    mode="a",
+                )
+
+            self._cwm.log(
+                "     Sum        ( {0[0]:12.6f}, {0[1]:12.6f}, {0[2]:12.6f} )  {1:15.8f}".format(
+                    np.sum(r, axis=0).real, np.sum(Omega).real
+                ),
+                None,
+                file=self._outfile,
+                mode="a",
+            )
+
+            #
+            self._cwm.log("\n    * Spreads (Ang^2):", None, file=self._outfile, mode="a")
+
+            OmegaI, OmegaD, OmegaOD = get_spreads(self._cwi)
+
+            self._cwm.log("     - Omega I      = {0:15.8f}".format(OmegaI), None, file=self._outfile, mode="a")
+            self._cwm.log("     - Omega D      = {0:15.8f}".format(OmegaD), None, file=self._outfile, mode="a")
+            self._cwm.log("     - Omega OD     = {0:15.8f}".format(OmegaOD), None, file=self._outfile, mode="a")
+            self._cwm.log(
+                "     - Omega Total  = {0:15.8f}".format(OmegaI + OmegaD + OmegaOD),
+                None,
+                file=self._outfile,
+                mode="a",
+            )
+
+            self._cwm.log("done", file=self._outfile, mode="a")
 
         if self._cwi["symmetrization"]:
             msg = "   - symmetrization ... "
@@ -423,6 +478,76 @@ class CWModel(dict):
             }
         )
 
+        # band distance
+        self._cwm.log("\n    * band distance between DFT and Wannier bands:", None, file=self._outfile, mode="a")
+        self._cwm.set_stamp()
+
+        eta_0, eta_0_max, eta_2, eta_2_max, eta_4, eta_4_max = band_distance(Ak, Ek, Hk, ef=self._cwi["fermi_energy"])
+
+        # self._cwm.log(f"     - bottom_band_idx = {bottom_band_idx}", None, file=self._outfile, mode="a")
+        self._cwm.log(f"     - eta_0     = {eta_0} [meV]", None, file=self._outfile, mode="a")
+        self._cwm.log(f"     - eta_0_max = {eta_0_max} [meV]", None, file=self._outfile, mode="a")
+        self._cwm.log(f"     - eta_2     = {eta_2} [meV]", None, file=self._outfile, mode="a")
+        self._cwm.log(f"     - eta_2_max = {eta_2_max} [meV]", None, file=self._outfile, mode="a")
+        self._cwm.log(f"     - eta_4     = {eta_4} [meV]", None, file=self._outfile, mode="a")
+        self._cwm.log(f"     - eta_4_max = {eta_4_max} [meV]", None, file=self._outfile, mode="a")
+
+        self._cwm.log("done", file=self._outfile, mode="a")
+
+        # spreads
+        if self._cwi.mmn["Mkb"] is not None:
+
+            #
+            self._cwm.set_stamp()
+
+            self._cwm.log("\n    * WF center and Spread:", None, file=self._outfile, mode="a")
+
+            r, Omega = get_wannier_center_spread(self._cwi)
+
+            self._cwm.log(
+                "     idx        center (cartesian)                             Spread (Ang^2)",
+                None,
+                file=self._outfile,
+                mode="a",
+            )
+
+            for m in range(self._cwi["num_wann"]):
+                self._cwm.log(
+                    "  {0:6d}        ( {1[0]:12.6f}, {1[1]:12.6f}, {1[2]:12.6f} )  {2:15.8f}".format(
+                        m + 1, r[m].real, Omega[m].real
+                    ),
+                    None,
+                    file=self._outfile,
+                    mode="a",
+                )
+
+            self._cwm.log(
+                "     Sum        ( {0[0]:12.6f}, {0[1]:12.6f}, {0[2]:12.6f} )  {1:15.8f}".format(
+                    np.sum(r, axis=0).real, np.sum(Omega).real
+                ),
+                None,
+                file=self._outfile,
+                mode="a",
+            )
+
+            #
+            self._cwm.log("\n    * Spreads (Ang^2):", None, file=self._outfile, mode="a")
+
+            OmegaI, OmegaD, OmegaOD = get_spreads(self._cwi)
+
+            self._cwm.log("     - Omega I      = {0:15.8f}".format(OmegaI), None, file=self._outfile, mode="a")
+            self._cwm.log("     - Omega D      = {0:15.8f}".format(OmegaD), None, file=self._outfile, mode="a")
+            self._cwm.log("     - Omega OD     = {0:15.8f}".format(OmegaOD), None, file=self._outfile, mode="a")
+            self._cwm.log(
+                "     - Omega Total  = {0:15.8f}".format(OmegaI + OmegaD + OmegaOD),
+                None,
+                file=self._outfile,
+                mode="a",
+            )
+
+            self._cwm.log("done", file=self._outfile, mode="a")
+
+        # symmetrization
         if self._cwi["symmetrization"]:
             msg = "   - symmetrization ... "
             self._cwm.log(msg, None, end="\n", file=self._outfile, mode="a")
@@ -518,20 +643,6 @@ class CWModel(dict):
         Hk = 0.5 * (Hk + np.einsum("kmn->knm", Hk).conj())
 
         # Hk = Hk - self._cwi["fermi_energy"] * np.eye(Hk.shape[-1])[np.newaxis, :, :]
-
-        # band distance
-        self._cwm.log("\n    * band distance between DFT and Wannier bands:", None, file=self._outfile, mode="a")
-        self._cwm.set_stamp()
-
-        eta_0, eta_0_max, eta_2, eta_2_max, eta_4, eta_4_max = band_distance(Ak, Ek, Hk, ef=self._cwi["fermi_energy"])
-
-        # self._cwm.log(f"     - bottom_band_idx = {bottom_band_idx}", None, file=self._outfile, mode="a")
-        self._cwm.log(f"     - eta_0     = {eta_0} [meV]", None, file=self._outfile, mode="a")
-        self._cwm.log(f"     - eta_0_max = {eta_0_max} [meV]", None, file=self._outfile, mode="a")
-        self._cwm.log(f"     - eta_2     = {eta_2} [meV]", None, file=self._outfile, mode="a")
-        self._cwm.log(f"     - eta_2_max = {eta_2_max} [meV]", None, file=self._outfile, mode="a")
-        self._cwm.log(f"     - eta_4     = {eta_4} [meV]", None, file=self._outfile, mode="a")
-        self._cwm.log(f"     - eta_4_max = {eta_4_max} [meV]", None, file=self._outfile, mode="a")
 
         # zeeman interaction
         if self._cwi["zeeman_interaction"]:
