@@ -158,7 +158,44 @@ def band_distance(Ak, Ek, Hk, ef=0.0):
 
 
 # ==================================================
-def spreads(cwi):
+def get_wannier_center_spread(cwi):
+    """
+    Wannier center (r) and spread (Omega) for each atom.
+
+    - r     = <r>
+    - Omega = sum <r^2> - <r>^2
+
+    Args:
+        cwi (CWInfo): CWInfo.
+
+    Returns:
+        tuple: (r, Omega).
+    """
+    num_k = cwi["num_k"]
+
+    kb2k = cwi.nnkp.kb2k()
+    bveck = cwi.nnkp.bveck()
+    wb = cwi["wb"]
+
+    Mkb = np.array(cwi["Mkb"])
+    Uk = np.array(cwi["Uk"])
+    Mkb_w = np.einsum("klm, kblp, kbpn->kbmn", np.conj(Uk), Mkb, Uk[kb2k[:, :], :, :], optimize=True)
+
+    Mkb_w_diag = np.einsum("kbnn->kbn", Mkb_w, optimize=True)
+    imln_Mkb_w_diag = np.log(Mkb_w_diag).imag
+    r = -1 / num_k * np.einsum("b,kba,kbn->na", wb, bveck, imln_Mkb_w_diag, optimize=True)
+
+    r2a = np.sum(wb) * num_k - np.einsum("b,kbn,kbn->n", wb, Mkb_w_diag, np.conj(Mkb_w_diag), optimize=True)
+    r2b = np.einsum("b,kbn->n", wb, imln_Mkb_w_diag**2)
+    r2 = 1 / num_k * (r2a + r2b).real
+
+    omega = r2 - np.sum(r[:, :].real ** 2, axis=1)
+
+    return r, omega
+
+
+# ==================================================
+def get_spreads(cwi):
     """
     spreads (OmegaI, Omega_D, Omega_OD).
 
@@ -168,16 +205,15 @@ def spreads(cwi):
     Returns:
         ndarray: lindhard function.
     """
-    Mkb = np.array(cwi["Mkb"])
-    Uk = np.array(cwi["Uk"])
+    num_wann = cwi["num_wann"]
+    num_k = cwi["num_k"]
 
     kb2k = cwi.nnkp.kb2k()
     bveck = cwi.nnkp.bveck()
     wb = cwi["wb"]
 
-    num_wann = cwi["num_wann"]
-    num_k = cwi["num_k"]
-
+    Mkb = np.array(cwi["Mkb"])
+    Uk = np.array(cwi["Uk"])
     Mkb_w = np.einsum("klm, kblp, kbpn->kbmn", np.conj(Uk), Mkb, Uk[kb2k[:, :], :, :], optimize=True)
 
     # OmegaI

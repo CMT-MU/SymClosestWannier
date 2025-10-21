@@ -65,7 +65,8 @@ from symclosestwannier.util.utility import (
     fermi,
     weight_proj,
     band_distance,
-    spreads,
+    get_wannier_center_spread,
+    get_spreads,
     fourier_transform_k_to_r,
     fourier_transform_r_to_k,
     fourier_transform_r_to_k_vec,
@@ -226,15 +227,55 @@ class CWModel(dict):
 
         # spreads
         if self._cwi.mmn["Mkb"] is not None:
-            self._cwm.log("\n    * Spreads (Ang^2):", None, file=self._outfile, mode="a")
+
+            #
             self._cwm.set_stamp()
 
-            OmegaI, OmegaD, OmegaOD = spreads(self._cwi)
+            self._cwm.log("\n    * WF center and Spread:", None, file=self._outfile, mode="a")
 
-            self._cwm.log(f"     - Omega I      =   {OmegaI}", file=self._outfile, mode="a")
-            self._cwm.log(f"     - Omega D      =   {OmegaD}", file=self._outfile, mode="a")
-            self._cwm.log(f"     - Omega OD     =   {OmegaOD}", file=self._outfile, mode="a")
-            self._cwm.log(f"     - Omega Total  =   {OmegaI+OmegaD+OmegaOD}", file=self._outfile, mode="a")
+            r, Omega = get_wannier_center_spread(self._cwi)
+
+            self._cwm.log(
+                "     idx        center (cartesian)                             Spread (Ang^2)",
+                None,
+                file=self._outfile,
+                mode="a",
+            )
+
+            for m in range(self._cwi["num_wann"]):
+                self._cwm.log(
+                    "  {0:6d}        ( {1[0]:12.6f}, {1[1]:12.6f}, {1[2]:12.6f} )  {2:15.8f}".format(
+                        m + 1, r[m].real, Omega[m].real
+                    ),
+                    None,
+                    file=self._outfile,
+                    mode="a",
+                )
+
+            self._cwm.log(
+                "     Sum        ( {0[0]:12.6f}, {0[1]:12.6f}, {0[2]:12.6f} )  {1:15.8f}".format(
+                    np.sum(r, axis=0).real, np.sum(Omega).real
+                ),
+                None,
+                file=self._outfile,
+                mode="a",
+            )
+
+            #
+            self._cwm.log("\n    * Spreads (Ang^2):", None, file=self._outfile, mode="a")
+
+            OmegaI, OmegaD, OmegaOD = get_spreads(self._cwi)
+
+            self._cwm.log("     - Omega I      = {0:15.8f}".format(OmegaI), None, file=self._outfile, mode="a")
+            self._cwm.log("     - Omega D      = {0:15.8f}".format(OmegaD), None, file=self._outfile, mode="a")
+            self._cwm.log("     - Omega OD     = {0:15.8f}".format(OmegaOD), None, file=self._outfile, mode="a")
+            self._cwm.log(
+                "     - Omega Total  = {0:15.8f}".format(OmegaI + OmegaD + OmegaOD),
+                None,
+                file=self._outfile,
+                mode="a",
+            )
+
             self._cwm.log("done", file=self._outfile, mode="a")
 
         if self._cwi["symmetrization"]:
@@ -451,17 +492,59 @@ class CWModel(dict):
         self._cwm.log(f"     - eta_4     = {eta_4} [meV]", None, file=self._outfile, mode="a")
         self._cwm.log(f"     - eta_4_max = {eta_4_max} [meV]", None, file=self._outfile, mode="a")
 
+        self._cwm.log("done", file=self._outfile, mode="a")
+
         # spreads
         if self._cwi.mmn["Mkb"] is not None:
-            self._cwm.log("\n    * Spreads (Ang^2):", None, file=self._outfile, mode="a")
+
+            #
             self._cwm.set_stamp()
 
-            OmegaI, OmegaD, OmegaOD = spreads(self._cwi)
+            self._cwm.log("\n    * WF center and Spread:", None, file=self._outfile, mode="a")
 
-            self._cwm.log(f"     - Omega I      =   {OmegaI}", file=self._outfile, mode="a")
-            self._cwm.log(f"     - Omega D      =   {OmegaD}", file=self._outfile, mode="a")
-            self._cwm.log(f"     - Omega OD     =   {OmegaOD}", file=self._outfile, mode="a")
-            self._cwm.log(f"     - Omega Total  =   {OmegaI+OmegaD+OmegaOD}", file=self._outfile, mode="a")
+            r, Omega = get_wannier_center_spread(self._cwi)
+
+            self._cwm.log(
+                "     idx        center (cartesian)                             Spread (Ang^2)",
+                None,
+                file=self._outfile,
+                mode="a",
+            )
+
+            for m in range(self._cwi["num_wann"]):
+                self._cwm.log(
+                    "  {0:6d}        ( {1[0]:12.6f}, {1[1]:12.6f}, {1[2]:12.6f} )  {2:15.8f}".format(
+                        m + 1, r[m].real, Omega[m].real
+                    ),
+                    None,
+                    file=self._outfile,
+                    mode="a",
+                )
+
+            self._cwm.log(
+                "     Sum        ( {0[0]:12.6f}, {0[1]:12.6f}, {0[2]:12.6f} )  {1:15.8f}".format(
+                    np.sum(r, axis=0).real, np.sum(Omega).real
+                ),
+                None,
+                file=self._outfile,
+                mode="a",
+            )
+
+            #
+            self._cwm.log("\n    * Spreads (Ang^2):", None, file=self._outfile, mode="a")
+
+            OmegaI, OmegaD, OmegaOD = get_spreads(self._cwi)
+
+            self._cwm.log("     - Omega I      = {0:15.8f}".format(OmegaI), None, file=self._outfile, mode="a")
+            self._cwm.log("     - Omega D      = {0:15.8f}".format(OmegaD), None, file=self._outfile, mode="a")
+            self._cwm.log("     - Omega OD     = {0:15.8f}".format(OmegaOD), None, file=self._outfile, mode="a")
+            self._cwm.log(
+                "     - Omega Total  = {0:15.8f}".format(OmegaI + OmegaD + OmegaOD),
+                None,
+                file=self._outfile,
+                mode="a",
+            )
+
             self._cwm.log("done", file=self._outfile, mode="a")
 
         # symmetrization
