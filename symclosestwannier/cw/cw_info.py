@@ -106,7 +106,15 @@ class CWInfo(dict):
                 continue
             if name == "mmn":
                 if not np.any(
-                    [d["write_mmn"], d["write_rmn"], d["write_vmn"], d["write_tb"], d["berry"], d["gyrotropic"]]
+                    [
+                        d["calc_spreads"],
+                        d["write_mmn"],
+                        d["write_rmn"],
+                        d["write_vmn"],
+                        d["write_tb"],
+                        d["berry"],
+                        d["gyrotropic"],
+                    ]
                 ):
                     continue
             if name == "spn":

@@ -23,6 +23,8 @@ _default = {
     "parallel": False,
     "formatter": False,
     #
+    "calc_spreads": True,
+    #
     "transl_inv": False,
     "use_degen_pert": False,
     "degen_thr": 1e-4,
@@ -157,6 +159,7 @@ class CWin(dict):
                 - verbose           : verbose calculation info (bool, optional), [False].
                 - parallel          : use parallel code? (bool), [False].
                 - formatter         : format by using black? (bool), [False].
+                - calc_spreads      : calculate spreads? (bool), [True].
                 - transl_inv        : use Eq.(31) of Marzari&Vanderbilt PRB 56, 12847 (1997) for band-diagonal position matrix elements? (bool), [False].
                 - use_degen_pert    : use degenerate perturbation theory when bands are degenerate and band derivatives are needed? (bool), [False].
                 - degen_thr         : threshold to exclude degenerate bands from the calculation, [0.0].
