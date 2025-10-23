@@ -226,7 +226,7 @@ class CWModel(dict):
         self._cwm.log("done", file=self._outfile, mode="a")
 
         # spreads
-        if self._cwi.mmn["Mkb"] is not None:
+        if self._cwi["calc_spreads"] and self._cwi.mmn["Mkb"] is not None:
 
             #
             self._cwm.set_stamp()
@@ -495,7 +495,7 @@ class CWModel(dict):
         self._cwm.log("done", file=self._outfile, mode="a")
 
         # spreads
-        if self._cwi.mmn["Mkb"] is not None:
+        if self._cwi["calc_spreads"] and self._cwi.mmn["Mkb"] is not None:
 
             #
             self._cwm.set_stamp()
