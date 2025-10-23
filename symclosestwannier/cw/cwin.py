@@ -23,7 +23,7 @@ _default = {
     "parallel": False,
     "formatter": False,
     #
-    "calc_spreads": True,
+    "calc_spreads": False,
     #
     "transl_inv": False,
     "use_degen_pert": False,
