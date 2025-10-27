@@ -264,7 +264,7 @@ def generate_cohp_gnuplot(
 
     fs.write("set terminal postscript eps color enhanced \n\n")
 
-    fs.write(f"set output '{filename.replace("cohp", "icohp")}.eps' \n\n")
+    fs.write(f"set output '{filename.replace('cohp', 'icohp')}.eps' \n\n")
     fs.write("plot ")
 
     fs.write(f"'{filename}.txt' u (-$3):1 w l lw lwidth dt (3,1) lc '{lc}', ")
@@ -273,7 +273,7 @@ def generate_cohp_gnuplot(
     fs.write(" \n\n")
 
     fs.write("set terminal pdf \n\n")
-    fs.write(f"set output '{filename.replace("cohp", "icohp")}.pdf' \n\n")
+    fs.write(f"set output '{filename.replace('cohp', 'icohp')}.pdf' \n\n")
     fs.write("replot")
 
     fs.close()
