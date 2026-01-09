@@ -751,7 +751,7 @@ class CWModel(dict):
             select = {"Gamma": self._cwi["irreps"]}
 
         cid, sel, _ = mm.select_combined_samb(**select)
-        combined_samb_matrix = mm.get_combined_samb_matrix(**select)
+        combined_samb_matrix = mm.get_combined_samb_matrix(fmt="value", **select)
 
         ket_samb = [
             o.replace("u)", "U)").replace("d)", "D)") + "@" + atom + "_" + str(n)
@@ -765,29 +765,7 @@ class CWModel(dict):
         nk = sort_ket_matrix(nk, ket_amn, ket_samb)
 
         tag_dict = {zj: mm["combined_id"][zj][0] for zj in cid.keys()}
-
-        # Zr_dict = {
-        #     (zj, tag_dict[zj]): {tuple(sp.sympify(k)): complex(sp.sympify(v)) for k, v in d.items()}
-        #     for zj, d in mat["matrix"].items()
-        # }
-        # mat["matrix"] = {
-        #     zj: {tuple(sp.sympify(k)): complex(sp.sympify(v)) for k, v in d.items()} for zj, d in mat["matrix"].items()
-        # }
-
-        ### kuniyoshi (24/08/20) ###
-        def proc(j, zj, d):
-            return j, zj, {tuple(sp.sympify(k)): complex(sp.sympify(v)) for k, v in d.items()}
-
-        res = Parallel(n_jobs=_num_proc, verbose=1)(
-            delayed(proc)(j, zj, d) for j, (zj, d) in enumerate(combined_samb_matrix.items())
-        )
-        res = sorted(res, key=lambda x: x[0])
-
-        Zr_dict = {}
-        for _, zj, d in res:
-            Zr_dict[(zj, tag_dict[zj])] = d
-            combined_samb_matrix[zj] = d
-        ### kuniyoshi (24/08/20) ###
+        Zr_dict = {(zj, tag_dict[zj]): d for zj, d in combined_samb_matrix.items()}
 
         ### sign chagne for odd-parity site- and bond-cluster multipoles (L-handed CoSi) ###
         # for _, zj, d in res:
