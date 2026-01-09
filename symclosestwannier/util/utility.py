@@ -750,9 +750,7 @@ def sort_ket_list(lst, ket, ket_samb):
 
 
 # ==================================================
-def samb_decomp_operator(
-    Or_dict, Zr_dict, A=None, atoms_frac=None, ket=None, A_samb=None, atoms_frac_samb=None, ket_samb=None
-):
+def samb_decomp_operator(Or_dict, Zr_dict, ket=None, ket_samb=None):
     """
     decompose arbitrary operator into linear combination of SAMBs.
 

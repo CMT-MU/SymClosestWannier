@@ -180,10 +180,13 @@ def cw_creator(seedname="cwannier"):
     # cell_site = samb_info["cell_site"]
 
     if cwi["tb_gauge"]:
-        atoms_frac = [
-            NSArray(cell_site[ket_samb[a].split("@")[1]][0], style="vector", fmt="value").tolist()
-            for a in range(cw_model._cwi["num_wann"])
-        ]
+        site_dict = {
+            k + "_" + str(vi.sublattice): vi.position_primitive.tolist()
+            for k, v in cell_site.items()
+            for vi in v
+            if vi.plus_set == 1
+        }
+        atoms_frac = [site_dict[atom + "_" + str(sl)] for atom, sl, rank, orbital in samb_info["full_matrix"]["ket"]]
     else:
         atoms_frac = None
 
@@ -470,9 +473,14 @@ def cw_creator(seedname="cwannier"):
             cell_site = samb_info["cell_site"]
 
             if cwi["tb_gauge"]:
+                site_dict = {
+                    k + "_" + str(vi.sublattice): vi.position_primitive.tolist()
+                    for k, v in cell_site.items()
+                    for vi in v
+                    if vi.plus_set == 1
+                }
                 atoms_frac = [
-                    NSArray(cell_site[ket_samb[a].split("@")[1]][0], style="vector", fmt="value").tolist()
-                    for a in range(cw_model._cwi["num_wann"])
+                    site_dict[atom + "_" + str(sl)] for atom, sl, rank, orbital in samb_info["full_matrix"]["ket"]
                 ]
             else:
                 atoms_frac = None
@@ -706,9 +714,14 @@ def cw_creator(seedname="cwannier"):
             cell_site = samb_info["cell_site"]
 
             if cwi["tb_gauge"]:
+                site_dict = {
+                    k + "_" + str(vi.sublattice): vi.position_primitive.tolist()
+                    for k, v in cell_site.items()
+                    for vi in v
+                    if vi.plus_set == 1
+                }
                 atoms_frac = [
-                    NSArray(cell_site[ket_samb[a].split("@")[1]][0], style="vector", fmt="value").tolist()
-                    for a in range(cw_model._cwi["num_wann"])
+                    site_dict[atom + "_" + str(sl)] for atom, sl, rank, orbital in samb_info["full_matrix"]["ket"]
                 ]
             else:
                 atoms_frac = None

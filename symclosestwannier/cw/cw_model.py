@@ -29,15 +29,11 @@ import sympy as sp
 import numpy as np
 from numpy import linalg as npl
 from scipy import linalg as spl
-import lmfit
 
 from gcoreutils.nsarray import NSArray
-from multipie.tag.tag_multipole import TagMultipole
-from multipie.model.construct_model import construct_samb_matrix
-from multipie.data.data_transform_matrix import _data_trans_lattice_p
 
 import multiprocessing
-from joblib import Parallel, delayed, wrap_non_picklable_objects
+from joblib import Parallel, delayed
 
 _num_proc = multiprocessing.cpu_count()
 
@@ -744,22 +740,26 @@ class CWModel(dict):
         self._cwm.log(msg, None, end="\n", file=self._outfile, mode="a")
         self._cwm.set_stamp()
 
-        model = self._cwm.read(
-            os.path.join(self._cwi["mp_outdir"], "{}".format(f"{self._cwi['mp_seedname']}_model.py"))
-        )
+        from multipie import MaterialModel
 
-        samb = self._cwm.read(os.path.join(self._cwi["mp_outdir"], "{}".format(f"{self._cwi['mp_seedname']}_samb.py")))
+        mm = MaterialModel(topdir="./", verbose=True)
+        mm.load(self._cwi["mp_seedname"])
 
-        try:
-            mat = self._cwm.read(
-                os.path.join(self._cwi["mp_outdir"], "{}".format(f"{self._cwi['mp_seedname']}_matrix.pkl"))
-            )
-        except:
-            mat = self._cwm.read(
-                os.path.join(self._cwi["mp_outdir"], "{}".format(f"{self._cwi['mp_seedname']}_matrix.py"))
-            )
+        if self._cwi["irreps"] == "all":
+            select = {"Gamma": []}
+        else:
+            select = {"Gamma": self._cwi["irreps"]}
 
-        ket_samb = model["info"]["ket"]
+        cid, sel, _ = mm.select_combined_samb(**select)
+        print("select:", select)
+        print("select SAMB:", sel)
+        combined_samb_matrix = mm.get_combined_samb_matrix(**select)
+        print("selected:", list(combined_samb_matrix.keys()))
+
+        ket_samb = [
+            o.replace("u)", "U)").replace("d)", "D)") + "@" + atom + "_" + str(n)
+            for atom, n, _, o in mm["full_matrix"]["ket"]
+        ]
         ket_amn = self._cwi.get("ket_amn", ket_samb)
 
         # sort orbitals
@@ -767,18 +767,7 @@ class CWModel(dict):
         Sk = sort_ket_matrix(Sk, ket_amn, ket_samb)
         nk = sort_ket_matrix(nk, ket_amn, ket_samb)
 
-        if self._cwi["irreps"] == "all":
-            irreps = model["info"]["generate"]["irrep"]
-        elif self._cwi["irreps"] == "full":
-            irreps = [model["info"]["generate"]["irrep"][0]]
-        else:
-            irreps = self._cwi["irreps"]
-
-        for zj, (tag, _) in samb["data"]["Z"].items():
-            if TagMultipole(tag).irrep not in irreps:
-                del mat["matrix"][zj]
-
-        tag_dict = {zj: tag for zj, (tag, _) in samb["data"]["Z"].items()}
+        tag_dict = {zj: mm["combined_id"][zj][0] for zj in cid.keys()}
 
         # Zr_dict = {
         #     (zj, tag_dict[zj]): {tuple(sp.sympify(k)): complex(sp.sympify(v)) for k, v in d.items()}
@@ -793,14 +782,14 @@ class CWModel(dict):
             return j, zj, {tuple(sp.sympify(k)): complex(sp.sympify(v)) for k, v in d.items()}
 
         res = Parallel(n_jobs=_num_proc, verbose=1)(
-            delayed(proc)(j, zj, d) for j, (zj, d) in enumerate(mat["matrix"].items())
+            delayed(proc)(j, zj, d) for j, (zj, d) in enumerate(combined_samb_matrix.items())
         )
         res = sorted(res, key=lambda x: x[0])
 
         Zr_dict = {}
         for _, zj, d in res:
             Zr_dict[(zj, tag_dict[zj])] = d
-            mat["matrix"][zj] = d
+            combined_samb_matrix[zj] = d
         ### kuniyoshi (24/08/20) ###
 
         ### sign chagne for odd-parity site- and bond-cluster multipoles (L-handed CoSi) ###
@@ -839,56 +828,33 @@ class CWModel(dict):
                 for _, k, d in res:
                     zj, _ = k
                     Zr_dict[k] = d
-                    mat["matrix"][zj] = d
+                    combined_samb_matrix[zj] = d
         ### change spin quantization axis
 
         A = None
-        A_samb = None
+        A_samb = mm["cell_info"]["A"][:3, :3]
 
-        lattice = model["info"]["group"][1].split("/")[1].replace(" ", "")[0]
-        if lattice != "P":
-            cell_site = {}
-            for site, v in mat["cell_site"].items():
-                if "(" in site and ")" in site:
-                    if "(1)" in site:
-                        cell_site[site[:-3]] = v
-                else:
-                    cell_site[site] = v
+        lattice = mm.group.info.lattice
+        molecule = mm.group.is_point_group
 
-            mat["cell_site"] = cell_site
-
-        if not mat["molecule"]:
-            A = self._cwi["unit_cell_cart"]
-            A_samb = NSArray(mat["A"], style="matrix", fmt="value").T
-            if lattice != "P":
-                # 4x4 matrix to convert from conventioanl to primitive coordinate.
-                latticeP = {
-                    lat: np.array(NSArray(d).numpy().tolist(), dtype=float) for lat, d in _data_trans_lattice_p.items()
-                }
-                lattice_const = model["info"]["cell"]["a"]
-                A_samb = lattice_const * latticeP[lattice][:-1, :-1]
-
-            mat["A"] = A_samb
         #####
 
         atoms_list = list(self._cwi["atoms_frac"].values())
         atoms_frac = np.array([atoms_list[i] for i in self._cwi["nw2n"]])
 
-        atoms_frac_samb = [
-            NSArray(mat["cell_site"][ket_samb[a].split("@")[1]][0], style="vector", fmt="value").tolist()
-            for a in range(self._cwi["num_wann"])
-        ]
+        site_dict = {
+            k + "_" + str(vi.sublattice): vi.position_primitive.tolist()
+            for k, v in mm["site"]["cell"].items()
+            for vi in v
+            if vi.plus_set == 1
+        }
+        atoms_frac_samb = [site_dict[atom + "_" + str(sl)] for atom, sl, rank, orbital in mm["full_matrix"]["ket"]]
 
         msg = "    - decomposing Hamiltonian as linear combination of SAMBs ... "
         self._cwm.log(msg, None, end="", file=self._outfile, mode="a")
         self._cwm.set_stamp()
 
-        if mat["molecule"]:
-            z = CWModel.samb_decomp_operator(Hr_dict, Zr_dict, ket=ket_amn, ket_samb=ket_samb)
-        else:
-            z = CWModel.samb_decomp_operator(
-                Hr_dict, Zr_dict, A, atoms_frac, ket_amn, A_samb, atoms_frac_samb, ket_samb
-            )
+        z = CWModel.samb_decomp_operator(Hr_dict, Zr_dict, ket=ket_amn, ket_samb=ket_samb)
 
         i = 0
         # for tag, d in Zr_dict.items():
@@ -916,12 +882,7 @@ class CWModel(dict):
         self._cwm.log(msg, None, end="", file=self._outfile, mode="a")
         self._cwm.set_stamp()
 
-        if mat["molecule"]:
-            s = CWModel.samb_decomp_operator(Sr_dict, Zr_dict, ket=ket_amn, ket_samb=ket_samb)
-        else:
-            s = CWModel.samb_decomp_operator(
-                Sr_dict, Zr_dict, A, atoms_frac, ket_amn, A_samb, atoms_frac_samb, ket_samb
-            )
+        s = CWModel.samb_decomp_operator(Sr_dict, Zr_dict, ket=ket_amn, ket_samb=ket_samb)
 
         self._cwm.log("done", file=self._outfile, mode="a")
 
@@ -931,12 +892,7 @@ class CWModel(dict):
         self._cwm.log(msg, None, end="", file=self._outfile, mode="a")
         self._cwm.set_stamp()
 
-        if mat["molecule"]:
-            z_nonortho = CWModel.samb_decomp_operator(Hr_nonortho_dict, Zr_dict, ket=ket_amn, ket_samb=ket_samb)
-        else:
-            z_nonortho = CWModel.samb_decomp_operator(
-                Hr_nonortho_dict, Zr_dict, A, atoms_frac, ket_amn, A_samb, atoms_frac_samb, ket_samb
-            )
+        z_nonortho = CWModel.samb_decomp_operator(Hr_nonortho_dict, Zr_dict, ket=ket_amn, ket_samb=ket_samb)
 
         self._cwm.log("done", file=self._outfile, mode="a")
 
@@ -946,25 +902,10 @@ class CWModel(dict):
         self._cwm.log(msg, None, end="", file=self._outfile, mode="a")
         self._cwm.set_stamp()
 
-        if mat["molecule"]:
-            n = CWModel.samb_decomp_operator(nr_dict, Zr_dict, ket=ket_amn, ket_samb=ket_samb)
-        else:
-            n = CWModel.samb_decomp_operator(
-                nr_dict, Zr_dict, A, atoms_frac, ket_amn, A_samb, atoms_frac_samb, ket_samb
-            )
+        n = CWModel.samb_decomp_operator(nr_dict, Zr_dict, ket=ket_amn, ket_samb=ket_samb)
 
         if self._cwi["calc_spin_2d"] and self._cwi["pauli_spn"] is not None:
-            if mat["molecule"]:
-                ss = [
-                    CWModel.samb_decomp_operator(SSr_dict[a], Zr_dict, ket=ket_amn, ket_samb=ket_samb) for a in range(3)
-                ]
-            else:
-                ss = [
-                    CWModel.samb_decomp_operator(
-                        SSr_dict[a], Zr_dict, A, atoms_frac, ket_amn, A_samb, atoms_frac_samb, ket_samb
-                    )
-                    for a in range(3)
-                ]
+            ss = [CWModel.samb_decomp_operator(SSr_dict[a], Zr_dict, ket=ket_amn, ket_samb=ket_samb) for a in range(3)]
         else:
             ss = None
 
@@ -1013,9 +954,7 @@ class CWModel(dict):
                 )
                 nr_delta_dict = CWModel.matrix_dict_r(nr_delta_func, self._cwi["irvec"])
 
-                n_i = CWModel.samb_decomp_operator(
-                    nr_delta_dict, Zr_dict, A, atoms_frac, ket_amn, A_samb, atoms_frac_samb, ket_samb
-                )
+                n_i = CWModel.samb_decomp_operator(nr_delta_dict, Zr_dict, ket_amn, ket_samb)
                 n_list.append(n_i)
 
             n_list_integrated = []
@@ -1069,6 +1008,13 @@ class CWModel(dict):
         msg = "    - constructing symmetrized TB Hamiltonian ... "
         self._cwm.log(msg, None, end="", file=self._outfile, mode="a")
         self._cwm.set_stamp()
+
+        mat = {
+            "matrix": combined_samb_matrix,
+            "ket": ket_samb,
+            "cell_site": mm["site"]["cell"],
+            "full_matrix": mm["full_matrix"],
+        }
 
         Sr_sym = CWModel.construct_Or(list(s.values()), self._cwi["num_wann"], self._cwi["irvec"], mat)
         Hr_sym = CWModel.construct_Or(list(z.values()), self._cwi["num_wann"], self._cwi["irvec"], mat)
@@ -1170,7 +1116,7 @@ class CWModel(dict):
 
         #####
 
-        if not mat["molecule"]:
+        if not molecule:
             Hk_path = CWModel.fourier_transform_r_to_k(
                 self["Hr"], self._cwi["kpoints_path"], self._cwi["irvec"], self._cwi["ndegen"]
             )
@@ -1357,26 +1303,20 @@ class CWModel(dict):
 
     # ==================================================
     @classmethod
-    def samb_decomp_operator(
-        cls, Or_dict, Zr_dict, A=None, atoms_frac=None, ket=None, A_samb=None, atoms_frac_samb=None, ket_samb=None
-    ):
+    def samb_decomp_operator(cls, Or_dict, Zr_dict, ket=None, ket_samb=None):
         """
         decompose arbitrary operator into linear combination of SAMBs.
 
         Args:
             Or_dict (dict): dictionary form of an arbitrary operator matrix in reak-space/k-space representation.
             Zr_dict (dict): dictionary form of SAMBs.
-            A (list/ndarray, optional): real lattice vectors for the given operator, A = [a1,a2,a3] (list), [[[1,0,0], [0,1,0], [0,0,1]]].
-            atoms_frac (ndarray, optional): atom's position in fractional coordinates for the given operator.
             ket (list, optional): ket basis list, orbital@site.
-            A_samb (list/ndarray, optional): real lattice vectors for SAMBs, A = [a1,a2,a3] (list), [[[1,0,0], [0,1,0], [0,0,1]]].
-            atoms_frac_samb (ndarray, optional): atom's position in fractional coordinates for SAMBs.
             ket_samb (list, optional): ket basis list for SAMBs, orbital@site.
 
         Returns:
             z (dict): parameter set, {tag: z_j}.
         """
-        return samb_decomp_operator(Or_dict, Zr_dict, A, atoms_frac, ket, A_samb, atoms_frac_samb, ket_samb)
+        return samb_decomp_operator(Or_dict, Zr_dict, ket, ket_samb)
 
     # ==================================================
     @classmethod
