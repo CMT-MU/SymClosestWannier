@@ -751,10 +751,7 @@ class CWModel(dict):
             select = {"Gamma": self._cwi["irreps"]}
 
         cid, sel, _ = mm.select_combined_samb(**select)
-        print("select:", select)
-        print("select SAMB:", sel)
         combined_samb_matrix = mm.get_combined_samb_matrix(**select)
-        print("selected:", list(combined_samb_matrix.keys()))
 
         ket_samb = [
             o.replace("u)", "U)").replace("d)", "D)") + "@" + atom + "_" + str(n)
