@@ -26,6 +26,7 @@ _default = {
     "nw2m": None,
     "nw2r": None,
     "nw2s": None,
+    "nw2saxis": None,
     "atom_orb": None,
     "atom_pos": None,
     "atom_pos_r": None,
@@ -90,6 +91,7 @@ class Nnkp(dict):
                 - nw2m             : m specifies the angular part Θlm(θ, φ) (list), [None].
                 - nw2r             : r specifies the radial part Rr(r) (list), [None].
                 - nw2s             : s specifies the spin, 1(up)/-1(dn) (list), [None].
+                - nw2saxis         : saxis specifies the spin quantization axis (list), [[[0,0,1]]].
                 - atom_orb         : WFs indexes of each atom (list), [None].
                 - atom_pos         : atom position index of each atom (list), [None].
                 - atom_pos_r       : atom position of each atom in fractional coordinates with respect to the lattice vectors (list), [None].
@@ -143,6 +145,7 @@ class Nnkp(dict):
                     nw2m = np.zeros([d["num_wann"]], dtype=int)
                     nw2r = np.zeros([d["num_wann"]], dtype=int)
                     nw2s = np.zeros([d["num_wann"]], dtype=int)
+                    nw2saxis = np.zeros([d["num_wann"], 3], dtype=float)
                     atom_orb_strlist = []
                     atom_pos_strlist = []
                     # read projections
@@ -151,13 +154,15 @@ class Nnkp(dict):
                             proj_str = nnkp_data[i + 2 + 3 * j]
                         else:
                             proj_str = nnkp_data[i + 2 + 2 * j]
+
                         proj_dat = proj_str.split()
                         nw2l[j] = int(proj_dat[3])
                         nw2m[j] = int(proj_dat[4])
                         nw2r[j] = int(proj_dat[5])
                         if spinors:
-                            spn_dat = nnkp_data[i + 2 + 3 * j + 2].split()[0]
-                            nw2s[j] = int(spn_dat)
+                            spn_comp, saxis1, saxis2, saxis3 = nnkp_data[i + 2 + 3 * j + 2].split()
+                            nw2s[j] = int(spn_comp)
+                            nw2saxis[j] = [saxis1, saxis2, saxis3]
                         atom_orb_strlist.append(proj_str[0:40])
                         atom_pos_strlist.append(proj_str[0:35])
 
@@ -186,6 +191,7 @@ class Nnkp(dict):
                     d["nw2m"] = nw2m.tolist()
                     d["nw2r"] = nw2r.tolist()
                     d["nw2s"] = nw2s.tolist()
+                    d["nw2saxis"] = nw2saxis.tolist()
                     d["atom_orb"] = atom_orb
                     d["atom_pos"] = atom_pos
                     d["atom_pos_r"] = atom_pos_r

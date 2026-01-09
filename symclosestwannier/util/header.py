@@ -159,6 +159,7 @@ nnkp_info = {
     "nw2m": "m specifies the angular part Θlm(θ, φ) (list), [None].",
     "nw2r": "r specifies the radial part Rr(r) (list), [None].",
     "nw2s": "s specifies the spin, 1(up)/-1(dn) (list), [None].",
+    "nw2saxis": "saxis specifies the spin quantization axis (list), [[[0,0,1]]].",
     "atom_orb": "WFs indexes of each atom (list), [None].",
     "atom_pos": "atom position index of each atom (list), [None].",
     "atom_pos_r": "atom position of each atom in fractional coordinates with respect to the lattice vectors (list), [None].",
@@ -386,6 +387,30 @@ n_header = """
 - j z_j TagMultipole coefficient
     - n(R) ~ sum_{j} z_j Z_j(R)
     - z_j = sum_{R} Tr[Z_j(R)*n(R)].
+    - z_j is the expansion coefficients.
+"""
+
+sx_header = """
+=== The expansion coefficients of the x component of Spin density matrix expressed by a linear combination of SAMBs ===
+- j z_j TagMultipole coefficient
+    - sx(R) ~ sum_{j} z_j Z_j(R)
+    - z_j = sum_{R} Tr[Z_j(R)*sx(R)].
+    - z_j is the expansion coefficients.
+"""
+
+sy_header = """
+=== The expansion coefficients of the y component of Spin density matrix expressed by a linear combination of SAMBs ===
+- j z_j TagMultipole coefficient
+    - sy(R) ~ sum_{j} z_j Z_j(R)
+    - z_j = sum_{R} Tr[Z_j(R)*sy(R)].
+    - z_j is the expansion coefficients.
+"""
+
+sz_header = """
+=== The expansion coefficients of the z component of Spin density matrix expressed by a linear combination of SAMBs ===
+- j z_j TagMultipole coefficient
+    - sz(R) ~ sum_{j} z_j Z_j(R)
+    - z_j = sum_{R} Tr[Z_j(R)*sz(R)].
     - z_j is the expansion coefficients.
 """
 
