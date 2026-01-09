@@ -59,6 +59,9 @@ from symclosestwannier.util.header import (
     z_nonortho_header,
     s_header,
     n_header,
+    sx_header,
+    sy_header,
+    sz_header,
     O_R_dependence_header,
 )
 from symclosestwannier.util.utility import (
@@ -80,6 +83,8 @@ from symclosestwannier.util.utility import (
     construct_Or,
     construct_Ok,
     spin_zeeman_interaction,
+    su2_that_maps_z_to_n,
+    embed_spin_unitary,
     Kelvin_to_eV,
 )
 
@@ -189,6 +194,18 @@ class CWModel(dict):
         fk = np.array([np.diag(fermi(eki - ef, T=0.0)) for eki in Ek], dtype=float)
         nk = Uk.transpose(0, 2, 1).conjugate() @ fk @ Uk
 
+        if self._cwi["calc_spin_2d"]:
+            SSk = np.array(self._cwi["pauli_spn"])
+            SSk = np.array([(fk @ SSk[a] + SSk[a] @ fk) / 2 for a in range(3)])
+            SSk = np.einsum("klm,aklp,kpn->akmn", np.conj(Uk), SSk, Uk, optimize=True)
+            SSk = 0.5 * (SSk + np.einsum("akmn->aknm", SSk).conj())
+            SSr = np.array(
+                [CWModel.fourier_transform_k_to_r(SSk[a], self._cwi["kpoints"], self._cwi["irvec"]) for a in range(3)]
+            )
+        else:
+            SSk = None
+            SSr = None
+
         Sr = CWModel.fourier_transform_k_to_r(Sk, self._cwi["kpoints"], self._cwi["irvec"])
         nr = CWModel.fourier_transform_k_to_r(nk, self._cwi["kpoints"], self._cwi["irvec"])
         Hr = CWModel.fourier_transform_k_to_r(Hk, self._cwi["kpoints"], self._cwi["irvec"])
@@ -202,11 +219,13 @@ class CWModel(dict):
                 "nk": nk.tolist(),
                 "Hk": Hk.tolist(),
                 "Hk_nonortho": Hk_nonortho.tolist(),
+                "SSk": SSk.tolist() if SSk is not None else SSk,
                 #
                 "Sr": Sr.tolist(),
                 "nr": nr.tolist(),
                 "Hr": Hr.tolist(),
                 "Hr_nonortho": Hr_nonortho.tolist(),
+                "SSr": SSr.tolist() if SSk is not None else SSk,
             }
         )
 
@@ -422,6 +441,31 @@ class CWModel(dict):
 
             self._cwm.log("done", file=self._outfile, mode="a")
 
+        with open(f"{self._cwi['seedname']}.amn_window.cw", "w") as fp:
+
+            Ak_ = Ak
+            # Ak_ = np.array(self._cwi["Ak"], dtype=complex)
+
+            def U_mat(k):
+                u, _, vd = np.linalg.svd(Ak_[k], full_matrices=False)
+                return u @ vd
+
+            Uk = np.array([U_mat(k) for k in range(self._cwi["num_k"])])
+
+            fp.write("Created by amn.py {}\n".format(datetime.datetime.now().strftime("on %d%b%Y at %H:%M:%S")))
+            fp.write(
+                "       {:5d}       {:5d}       {:5d}\n".format(
+                    self._cwi["num_bands"], self._cwi["num_k"], self._cwi["num_wann"]
+                )
+            )
+            for ik, m, n in itertools.product(
+                range(self._cwi["num_k"]), range(self._cwi["num_wann"]), range(self._cwi["num_bands"])
+            ):
+                # num_bands, num_wann, nk
+                fp.write(
+                    "{0:5d}{1:5d}{2:5d}{3.real:18.12f}{3.imag:18.12f}\n".format(n + 1, m + 1, ik + 1, Uk[ik, n, m])
+                )
+
         msg = "   - constructing TB Hamiltonian ... "
         self._cwm.log(msg, None, end="", file=self._outfile, mode="a")
         self._cwm.set_stamp()
@@ -434,6 +478,18 @@ class CWModel(dict):
         fk = np.array([np.diag(fermi(eki - ef, T=0.0)) for eki in Ek], dtype=float)
         nk = Uk.transpose(0, 2, 1).conjugate() @ fk @ Uk
         nr = CWModel.fourier_transform_k_to_r(nk, self._cwi["kpoints"], self._cwi["irvec"])
+
+        if self._cwi["calc_spin_2d"] and self._cwi["pauli_spn"] is not None:
+            SSk = np.array(self._cwi["pauli_spn"])
+            SSk = np.array([(fk @ SSk[a] + SSk[a] @ fk) / 2 for a in range(3)])
+            SSk = np.einsum("klm,aklp,kpn->akmn", np.conj(Uk), SSk, Uk, optimize=True)
+            SSk = 0.5 * (SSk + np.einsum("akmn->aknm", SSk).conj())
+            SSr = np.array(
+                [CWModel.fourier_transform_k_to_r(SSk[a], self._cwi["kpoints"], self._cwi["irvec"]) for a in range(3)]
+            )
+        else:
+            SSk = None
+            SSr = None
 
         self._cwm.log("done", file=self._outfile, mode="a")
 
@@ -470,11 +526,13 @@ class CWModel(dict):
                 "nk": nk.tolist(),
                 "Hk": Hk.tolist(),
                 "Hk_nonortho": Hk_nonortho.tolist(),
+                "SSk": SSk.tolist() if SSk is not None else SSk,
                 #
                 "Sr": Sr.tolist(),
                 "nr": nr.tolist(),
                 "Hr": Hr.tolist(),
                 "Hr_nonortho": Hr_nonortho.tolist(),
+                "SSr": SSr.tolist() if SSk is not None else SSk,
             }
         )
 
@@ -677,6 +735,9 @@ class CWModel(dict):
         nr_dict = CWModel.matrix_dict_r(self["nr"], self._cwi["irvec"])
         Hr_nonortho_dict = CWModel.matrix_dict_r(self["Hr_nonortho"], self._cwi["irvec"])
 
+        if self._cwi["calc_spin_2d"] and self._cwi["pauli_spn"] is not None:
+            SSr_dict = np.array([CWModel.matrix_dict_r(self["SSr"][a], self._cwi["irvec"]) for a in range(3)])
+
         #####
 
         msg = "    - reading output of multipie ... "
@@ -758,6 +819,28 @@ class CWModel(dict):
         #     Zr_dict[(zj, tag)] = d
         #     mat["matrix"][zj] = d
         ### sign chagne for odd-parity site- and bond-cluster multipoles (L-handed CoSi) ###
+
+        ### change spin quantization axis
+        if self._cwi["spinors"]:
+            saxis = self._cwi["nw2saxis"][0]
+            if saxis != [0, 0, 1.0]:
+                U = su2_that_maps_z_to_n(saxis)
+                U = embed_spin_unitary(self._cwi["num_wann"], U)
+
+                def proc(j, k, d):
+                    m, rpoints = CWModel.dict_to_matrix(d, dim=self._cwi["num_wann"])
+                    m = U.conj().T @ m[:] @ U
+                    d = CWModel.matrix_dict_r(m, rpoints)
+                    return j, k, {k: v for k, v in d.items() if v != 0.0}
+
+                res = Parallel(n_jobs=1, verbose=10)(delayed(proc)(j, k, d) for j, (k, d) in enumerate(Zr_dict.items()))
+                res = sorted(res, key=lambda x: x[0])
+
+                for _, k, d in res:
+                    zj, _ = k
+                    Zr_dict[k] = d
+                    mat["matrix"][zj] = d
+        ### change spin quantization axis
 
         A = None
         A_samb = None
@@ -869,6 +952,21 @@ class CWModel(dict):
             n = CWModel.samb_decomp_operator(
                 nr_dict, Zr_dict, A, atoms_frac, ket_amn, A_samb, atoms_frac_samb, ket_samb
             )
+
+        if self._cwi["calc_spin_2d"] and self._cwi["pauli_spn"] is not None:
+            if mat["molecule"]:
+                ss = [
+                    CWModel.samb_decomp_operator(SSr_dict[a], Zr_dict, ket=ket_amn, ket_samb=ket_samb) for a in range(3)
+                ]
+            else:
+                ss = [
+                    CWModel.samb_decomp_operator(
+                        SSr_dict[a], Zr_dict, A, atoms_frac, ket_amn, A_samb, atoms_frac_samb, ket_samb
+                    )
+                    for a in range(3)
+                ]
+        else:
+            ss = None
 
         self._cwm.log("done", file=self._outfile, mode="a")
 
@@ -1116,6 +1214,7 @@ class CWModel(dict):
                 "n": n,
                 "z": z,
                 "z_nonortho": z_nonortho,
+                "ss": ss,
                 #
                 "Sk_sym": Sk_sym,
                 "nk_sym": nk_sym,
@@ -1242,17 +1341,19 @@ class CWModel(dict):
 
     # ==================================================
     @classmethod
-    def dict_to_matrix(cls, Or_dict):
+    def dict_to_matrix(cls, Or_dict, dim=None):
         """
         convert dictionary form to matrix form of an arbitrary operator matrix.
 
         Args:
             dic (dict): dictionary form of an arbitrary operator matrix in reak-space/k-space representation.
+            dim (int, optional): Matrix dimension, [None].
 
         Returns:
             ndarray: matrix form of the given operator.
+            ndarray: lattice or k points.
         """
-        return dict_to_matrix(Or_dict)
+        return dict_to_matrix(Or_dict, dim)
 
     # ==================================================
     @classmethod
@@ -1670,6 +1771,9 @@ class CWModel(dict):
             "z_nonortho",
             "s",
             "n",
+            "sx",
+            "sy",
+            "sz",
         ), f"invalid type = {type} was given. choose from ''/'z'/'z_nonortho'/'s'/'n'."
 
         if type == "" and o is not None:
@@ -1687,8 +1791,17 @@ class CWModel(dict):
         elif type == "n":
             header = n_header
             o = self["n"]
+        elif type == "sx":
+            header = sx_header
+            o = self["ss"][0]
+        elif type == "sy":
+            header = sy_header
+            o = self["ss"][1]
+        elif type == "sz":
+            header = sz_header
+            o = self["ss"][2]
         else:
-            raise Exception(f"invalid type = {type} was given. choose from 'z'/'z_nonortho'/'s'/'n'.")
+            raise Exception(f"invalid type = {type} was given. choose from 'z'/'z_nonortho'/'s'/'n'/'sx'/'sy'/'sz'.")
 
         o_str = "# created by pw2cw \n"
         o_str += "# written {}\n".format(datetime.datetime.now().strftime("on %d%b%Y at %H:%M:%S"))

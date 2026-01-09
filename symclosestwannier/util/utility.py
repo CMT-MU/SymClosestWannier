@@ -649,22 +649,25 @@ def matrix_dict_k(Ok, kpoints, diagonal=False):
 
 
 # ==================================================
-def dict_to_matrix(Or_dict):
+def dict_to_matrix(Or_dict, dim=None):
     """
     convert dictionary form to matrix form of an arbitrary operator matrix.
 
     Args:
         Or_dict (dict): dictionary form of an arbitrary operator matrix in reak-space/k-space representation.
+        dim (int, optional): Matrix dimension, [None].
 
     Returns:
         ndarray: matrix form of the given operator.
+        ndarray: lattice or k points.
     """
-    dim = max([a for (_, _, _, a, _) in Or_dict.keys()]) + 1
+    if dim is None:
+        dim = max([a for (_, _, _, a, _) in Or_dict.keys()]) + 1
 
     O_mat = [np.zeros((dim, dim), dtype=complex)]
     idx = 0
     g0 = list(Or_dict.keys())[0][:3]
-
+    points = [g0]
     for (g1, g2, g3, a, b), v in Or_dict.items():
         g = (g1, g2, g3)
         if g != g0:
@@ -673,8 +676,9 @@ def dict_to_matrix(Or_dict):
             g0 = g
 
         O_mat[idx][a, b] = complex(v)
+        points[idx] = g
 
-    return np.array(O_mat)
+    return np.array(O_mat), points
 
 
 # ==================================================
@@ -769,9 +773,6 @@ def samb_decomp_operator(
 
     # if A is not None:
     #     if not np.allclose(A, A_samb, rtol=1e-03, atol=1e-03):
-    # if True:
-    #     if True:
-    #         print("ok!!!")
     #         A = np.array(A, dtype=float)
     #         A_samb = np.array(A_samb, dtype=float)
     #         atoms_frac = np.array(sort_ket_list(atoms_frac, ket, ket_samb), dtype=float)
@@ -785,7 +786,7 @@ def samb_decomp_operator(
     #             R = np.array([R1, R2, R3], dtype=float)
     #             rm = atoms_frac[m]
     #             rn = atoms_frac[n]
-    #             bond = ((R + rn) - rm) @ A
+    #             bond = ((R + rn) - rm) @ A_samb
 
     #             bond = tuple([format(bi, ".3f") for bi in bond])
     #             bond = tuple([float(bi) for bi in bond])
@@ -1121,3 +1122,107 @@ def spin_zeeman_interaction(B, theta=0.0, phi=0.0, pauli_spn=None, g_factor=2.0,
     H_zeeman = -sum([spin_oper[i] * B_vec[i] for i in range(3)])
 
     return H_zeeman
+
+
+# ==================================================
+def _normalize(v, eps=1e-15):
+    v = np.array(v, dtype=float)
+    n = np.linalg.norm(v)
+    if n < eps:
+        raise ValueError("Direction vector is (almost) zero.")
+    return v / n
+
+
+# ==================================================
+def su2_rotation_right(theta, lam, mu, nu):
+    """
+    Your formula:
+    U = cos(theta/2) I - i sin(theta/2) (lam*sx + mu*sy + nu*sz)
+    where (lam,mu,nu) is the axis direction cosine (unit vector).
+    """
+    axis = _normalize([lam, mu, nu])
+    lam, mu, nu = axis
+
+    I2 = np.eye(2, dtype=complex)
+    sx = np.array([[0.0, 1.0], [1.0, 0.0]], dtype=complex)
+    sy = np.array([[0.0, -1.0j], [1.0j, 0.0]], dtype=complex)
+    sz = np.array([[1.0, 0.0], [0.0, -1.0]], dtype=complex)
+
+    n_dot_sigma = lam * sx + mu * sy + nu * sz
+    return np.cos(theta / 2) * I2 - 1.0j * np.sin(theta / 2) * n_dot_sigma
+
+
+# ==================================================
+def su2_that_maps_z_to_n(n):
+    """
+    Construct U such that:
+        U * sigma_z * U^\dagger = n·sigma
+    using the axis-angle rotation that rotates z-hat -> n (right-handed).
+
+    n : array-like (nx, ny, nz)  (not necessarily normalized)
+    """
+    n = _normalize(n)
+    z = np.array([0.0, 0.0, 1.0])
+
+    # If n is (almost) z: no rotation
+    if np.linalg.norm(n - z) < 1e-12:
+        return np.eye(2, dtype=complex)
+
+    # If n is (almost) -z: rotate by pi about x (or any in-plane axis)
+    if np.linalg.norm(n + z) < 1e-12:
+        return su2_rotation_right(np.pi, 1.0, 0.0, 0.0)
+
+    # Rotation axis a = z × n, angle theta = arccos(z·n)
+    a = np.cross(z, n)
+    a = _normalize(a)
+    theta = np.arccos(np.clip(np.dot(z, n), -1.0, 1.0))
+
+    # Use your U(theta, axis=a)
+    return su2_rotation_right(theta, a[0], a[1], a[2])
+
+
+# ==================================================
+def embed_spin_unitary(dim, U2):
+    """
+    Embed 2x2 spin unitary into full Hilbert space:
+        U_full = I_(dim/2) ⊗ U2
+    """
+    I_orb = np.eye(int(dim / 2), dtype=complex)
+    return TensorProduct(I_orb, U2)
+
+
+# ==================================================
+def change_quantization_axis_operators(dim, n):
+    """
+    Return rotated spin operators (Sx', Sy', Sz') in the new basis
+    where the quantization axis is n, i.e. Sz' corresponds to n·sigma
+    in the original basis.
+
+    Convention:
+      U maps sigma_z -> n·sigma via  U sigma_z U^\dagger = n·sigma.
+      Basis change (state transformation): |psi>' = U^\dagger |psi|
+      Operator in new basis: O' = U^\dagger O U
+    """
+    U2 = su2_that_maps_z_to_n(n)
+    U = embed_spin_unitary(dim, U2)
+
+    Sx = pauli_spn_x(dim)
+    Sy = pauli_spn_y(dim)
+    Sz = pauli_spn_z(dim)
+
+    # Operator in the rotated (new) basis
+    Sx_new = U.conj().T @ Sx @ U
+    Sy_new = U.conj().T @ Sy @ U
+    Sz_new = U.conj().T @ Sz @ U
+
+    return Sx_new, Sy_new, Sz_new, U
+
+
+# ==================================================
+def sigma_n_in_original_basis(dim, n):
+    """
+    Directly return n·sigma in the original basis (no basis change).
+    Useful if you just want the spin projection along n.
+    """
+    n = _normalize(n)
+    return n[0] * pauli_spn_x(dim) + n[1] * pauli_spn_y(dim) + n[2] * pauli_spn_z(dim)

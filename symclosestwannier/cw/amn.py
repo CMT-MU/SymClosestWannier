@@ -78,6 +78,20 @@ class Amn(dict):
         amn_data = np.genfromtxt(amn_data[2:]).reshape(num_k, num_wann, num_bands, 5)
         Ak = np.transpose(amn_data[:, :, :, 3] + 1j * amn_data[:, :, :, 4], axes=(0, 2, 1))
 
+        # CrSb atom_proj
+        # minus_sign_idx_lst = [1, 5, 6, 10, 14, 15, 19, 20, 24, 28, 29, 33]
+
+        # CoSi atom_proj (NC pseudopotential)
+        # minus_sign_idx_lst = [1, 5, 6, 10, 14, 15, 19, 23, 24, 28, 32, 33, 37, 41, 45, 49]
+
+        # CoSi atom_proj (PAW pseudopotential)
+        # minus_sign_idx_lst = [1, 5, 6, 10, 14, 15, 19, 23, 24, 28, 32, 33, 37, 41, 45, 49]
+
+        # FeSi atom_proj (PAW pseudopotential)
+        # minus_sign_idx_lst = [0, 1, 5, 6, 9, 10, 14, 15, 18, 19, 20, 21, 24, 27, 28, 32, 33, 35, 37, 40, 41, 45, 48, 49]
+
+        # Ak[:, :, minus_sign_idx_lst] = -Ak[:, :, minus_sign_idx_lst]
+
         d = {"num_k": num_k, "num_bands": num_bands, "num_wann": num_wann, "Ak": Ak}
 
         return d
@@ -91,6 +105,13 @@ class Amn(dict):
             file_name (str, optional): file name.
         """
         Ak = np.array(self["Ak"])
+
+        def U_mat(k):
+            u, _, vd = np.linalg.svd(Ak[k], full_matrices=False)
+            return u @ vd
+
+        Uk = np.array([U_mat(k) for k in range(self["num_k"])])
+        Ak = Uk
 
         with open(file_name, "w") as fp:
             fp.write("Created by amn.py {}\n".format(datetime.datetime.now().strftime("on %d%b%Y at %H:%M:%S")))
