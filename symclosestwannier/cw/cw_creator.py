@@ -86,6 +86,9 @@ def cw_creator(seedname="cwannier"):
         filename = f"{cwi['seedname']}_hr_R_dep.dat.cw"
         cw_model.write_O_R_dependence(cw_model["Hr"], filename, header=CWModel._O_R_dependence_header())
 
+        filename = f"{cwi['seedname']}_nr.dat.cw"
+        cw_model.write_or(cw_model["nr"], filename)  # , header=CWModel._hr_header())
+
     if cwi["write_sr"]:
         filename = f"{cwi['seedname']}_sr.dat.cw"
         cw_model.write_or(cw_model["Sr"], filename)  # , header=CWModel._sr_header())
@@ -135,6 +138,9 @@ def cw_creator(seedname="cwannier"):
             # filename = os.path.join(cwi["mp_outdir"], "{}".format(f"{cwi['mp_seedname']}_hr_nonortho_sym.dat.cw"))
             # cw_model.write_or(cw_model["Hr_nonortho_sym"], filename, header=CWModel._hr_header())
 
+            filename = os.path.join(cwi["mp_outdir"], "{}".format(f"{cwi['mp_seedname']}_nr_sym.dat.cw"))
+            cw_model.write_or(cw_model["nr_sym"], filename, header=CWModel._hr_header())
+
         if cwi["write_sr"]:
             filename = os.path.join(cwi["mp_outdir"], "{}".format(f"{cwi['mp_seedname']}_sr_sym.dat.cw"))
             cw_model.write_or(cw_model["Sr_sym"], filename, header=CWModel._sr_header())
@@ -156,9 +162,30 @@ def cw_creator(seedname="cwannier"):
         filename = os.path.join(cwi["mp_outdir"], "{}".format(f"{cwi['mp_seedname']}_n.dat.cw"))
         cw_model.write_samb_coeffs(filename, type="n")
 
+        if cwi["calc_spin_2d"] and cwi["pauli_spn"] is not None:
+            filename = os.path.join(cwi["mp_outdir"], "{}".format(f"{cwi['mp_seedname']}_sx.dat.cw"))
+            cw_model.write_samb_coeffs(filename, type="sx")
+
+            filename = os.path.join(cwi["mp_outdir"], "{}".format(f"{cwi['mp_seedname']}_sy.dat.cw"))
+            cw_model.write_samb_coeffs(filename, type="sy")
+
+            filename = os.path.join(cwi["mp_outdir"], "{}".format(f"{cwi['mp_seedname']}_sz.dat.cw"))
+            cw_model.write_samb_coeffs(filename, type="sz")
+
     # # the order of atoms are different from that of SAMBs
-    # atoms_list = list(cw_model._cwi["atoms_frac_shift"].values())
-    # atoms_frac = [atoms_list[i] for i in cw_model._cwi["nw2n"]]
+    atoms_list = list(cw_model._cwi["atoms_frac_shift"].values())
+    atoms_frac = [atoms_list[i] for i in cw_model._cwi["nw2n"]]
+
+    # ket_samb = samb_info["ket"]
+    # cell_site = samb_info["cell_site"]
+
+    if cwi["tb_gauge"]:
+        atoms_frac = [
+            NSArray(cell_site[ket_samb[a].split("@")[1]][0], style="vector", fmt="value").tolist()
+            for a in range(cw_model._cwi["num_wann"])
+        ]
+    else:
+        atoms_frac = None
 
     # band calculation
     if cwi["kpoint"] is not None and cwi["kpoint_path"] is not None:
@@ -178,12 +205,6 @@ def cw_creator(seedname="cwannier"):
         if a is None:
             A = NSArray(cwi["unit_cell_cart"], "matrix", fmt="value")
             a = A[0].norm()
-
-        if cwi["tb_gauge"]:
-            atoms_list = list(cwi["atoms_frac"].values())
-            atoms_frac = np.array([atoms_list[i] for i in cwi["nw2n"]])
-        else:
-            atoms_frac = None
 
         Hk_path = cw_model.fourier_transform_r_to_k(
             cw_model["Hr"], cwi["kpoints_path"], cwi["irvec"], cwi["ndegen"], atoms_frac=atoms_frac
