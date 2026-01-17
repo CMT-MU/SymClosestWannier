@@ -12,11 +12,11 @@ _default = {
     #
     "disentangle": False,
     "proj_min": 0.0,
-    "dis_win_emax": None,
-    "dis_win_emin": None,
-    "smearing_temp_max": 1.0,
-    "smearing_temp_min": 0.0,
-    "delta": 0.0,
+    "cwf_mu_max": None,
+    "cwf_mu_min": None,
+    "cwf_sigma_max": 1.0,
+    "cwf_sigma_min": 0.0,
+    "cwf_delta": 0.0,
     "svd": False,
     #
     "verbose": False,
@@ -30,6 +30,7 @@ _default = {
     "degen_thr": 1e-4,
     "tb_gauge": False,
     #
+    "write_info_data": False,
     "write_hr": False,
     "write_sr": False,
     "write_u_matrices": False,
@@ -150,11 +151,11 @@ class CWin(dict):
                 - restart           : the restart position 'cw'/'w90' (str), ["cw"].
                 - disentangle       : disentagle bands ? (bool), [False].
                 - proj_min          : minimum value of projectability: [0.0].
-                - dis_win_emax      : top of the energy window (float), [None].
-                - dis_win_emin      : bottom of the energy window (float), [None].
-                - smearing_temp_max : smearing temperature for the top of the energy window (float), [1.0].
-                - smearing_temp_min : smearing temperature for the bottom of the energy window (float), [0.0].
-                - delta             : small constant to avoid ill-conditioning of overlap matrices (< 1e-5) (float), [0.0].
+                - cwf_mu_max      : top of the energy window (float), [None].
+                - cwf_mu_min      : bottom of the energy window (float), [None].
+                - cwf_sigma_max : smearing temperature for the top of the energy window (float), [1.0].
+                - cwf_sigma_min : smearing temperature for the bottom of the energy window (float), [0.0].
+                - cwf_delta             : small constant to avoid ill-conditioning of overlap matrices (< 1e-5) (float), [0.0].
                 - svd               : implement singular value decomposition ? otherwise adopt Lowdin's orthogonalization method (bool), [False].
                 - verbose           : verbose calculation info (bool, optional), [False].
                 - parallel          : use parallel code? (bool), [False].
@@ -164,6 +165,7 @@ class CWin(dict):
                 - use_degen_pert    : use degenerate perturbation theory when bands are degenerate and band derivatives are needed? (bool), [False].
                 - degen_thr         : threshold to exclude degenerate bands from the calculation, [0.0].
                 - tb_gauge          : use tb gauge? (bool), [False].
+                - write_info_data   : write info and data to seedname.hdf5 (hdf5 format) ? (bool), [False].
                 - write_hr          : write seedname_hr.py ? (bool), [False].
                 - write_sr          : write seedname_sr.py ? (bool), [False].
                 - write_u_matrices  : write seedname_u.dat and seedname_u_dis.dat ? (bool), [False].
@@ -348,13 +350,11 @@ class CWin(dict):
         # ), "Symmetrization cannot be performed when restart == w90."
 
         assert not (
-            d["disentangle"] and (d["dis_win_emax"] is None or d["dis_win_emin"] is None)
-        ), "dis_win_emax and dis_win_emin must be specified when disentangle == true."
+            d["disentangle"] and (d["cwf_mu_max"] is None or d["cwf_mu_min"] is None)
+        ), "cwf_mu_max and cwf_mu_min must be specified when disentangle == true."
 
-        if d["dis_win_emax"] is not None and d["dis_win_emin"] is not None:
-            assert not (
-                d["dis_win_emax"] < d["dis_win_emin"]
-            ), "check disentanglement windows (dis_win_emax < dis_win_emin !)"
+        if d["cwf_mu_max"] is not None and d["cwf_mu_min"] is not None:
+            assert not (d["cwf_mu_max"] < d["cwf_mu_min"]), "check disentanglement windows (cwf_mu_max < cwf_mu_min !)"
 
         return d
 
@@ -373,11 +373,11 @@ class CWin(dict):
                 raise Exception(f"invalid restart = {v} was given. choose from 'cw'/'w90'.")
         elif key in (
             "proj_min",
-            "dis_win_emax",
-            "dis_win_emin",
-            "smearing_temp_max",
-            "smearing_temp_min",
-            "delta",
+            "cwf_mu_max",
+            "cwf_mu_min",
+            "cwf_sigma_max",
+            "cwf_sigma_min",
+            "cwf_delta",
             "a",
             "dos_smr_en_width",
             "dos_emax",
@@ -400,9 +400,9 @@ class CWin(dict):
             "lindhard_surface_const",
         ):
             v = float(v)
-            if key == "delta":
+            if key == "cwf_delta":
                 if v > 1e-5:
-                    raise Exception(f"delta is too large. delta must be less than 1e-5.")
+                    raise Exception(f"cwf_delta is too large. cwf_delta must be less than 1e-5.")
             elif key == "lindhard_smr_fixed_en_width":
                 pass
                 # if v == 0.0:
@@ -416,19 +416,21 @@ class CWin(dict):
         elif key in ("N1", "Nq1", "dos_num_fermi", "cohp_head_atom_idx", "cohp_tail_atom_idx", "cohp_num_fermi"):
             v = int(v)
         elif key == "ket_amn":
-            if "[" in v or "]" in v:
-                if "(" in str(v) and ")" in str(v):
-                    v = [str(o) if i == 0 else f"({str(o)}" for i, o in enumerate(v[1:-1].split(",("))]
-                else:
-                    v = [str(o) for o in v[1:-1].split(",")]
+            v = v.replace(" ", "")
+            if "(" in v or ")" in v:
+                v = [[oi.replace("]", "") for oi in o[1:].split(",")] for o in v[1:-1].split("],")]
+                v = [[str(o[0]), int(o[1]), int(o[2]), str(o[3] + "," + o[4])] for o in v]
+            else:
+                v = [[oi.replace("]", "") for oi in o[1:].split(",")] for o in v[1:-1].split("],")]
+                v = [[str(o[0]), int(o[1]), int(o[2]), str(o[3])] for o in v]
         elif key == "optimize_params_fixed":
             if "[" in v or "]" in v:
                 v = [str(o) for o in v[1:-1].split(",")]
             if len(v) > 0:
                 for vi in v:
-                    if vi not in ("dis_win_emin", "dis_win_emax", "smearing_temp_min", "smearing_temp_max", "delta"):
+                    if vi not in ("cwf_mu_min", "cwf_mu_max", "cwf_sigma_min", "cwf_sigma_max", "cwf_delta"):
                         raise Exception(
-                            f"invalid optimize_params_fixed: {vi} was given. choose from 'dis_win_emin'/'dis_win_emax'/'smearing_temp_min'/'smearing_temp_max'/'delta'."
+                            f"invalid optimize_params_fixed: {vi} was given. choose from 'cwf_mu_min'/'cwf_mu_max'/'cwf_sigma_min'/'cwf_sigma_max'/'cwf_delta'."
                         )
 
         elif key == "irreps":

@@ -1,5 +1,7 @@
 import datetime
 
+from symclosestwannier.util.header import cwin_info
+
 
 # ==================================================
 def cw_open_msg():
@@ -191,6 +193,32 @@ def system_msg(cwi):
 
               Grid size =  {mp_grid[0]} x {mp_grid[1]} x {mp_grid[2]}      Total points = {num_k}
 """
+
+    return msg
+
+
+def cwin_msg(cwi):
+
+    label_width = 35
+    value_width = 36
+
+    msg = """
+                               --------------
+                               CLOSESTWANNIER
+                               --------------
+    """
+
+    msg += "\n*----------------------------------------------------------------------------*\n"
+
+    for k in cwin_info.keys():
+        if k == "ket_amn":
+            msg += f"| {k:<{label_width}} : {"":>{value_width}} |\n"
+            for ket in cwi[k]:
+                msg += f"| {"":<{label_width}}   {str(ket):>{value_width}} |\n"
+        else:
+            msg += f"| {k:<{label_width}} : {str(cwi[k]):>{value_width}} |\n"
+
+    msg += "*----------------------------------------------------------------------------*"
 
     return msg
 

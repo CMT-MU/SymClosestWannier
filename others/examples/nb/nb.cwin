@@ -3,11 +3,11 @@ restart = cw ! 'cw'/'w90'
 outdir = './'
 
 disentangle       = true
-dis_win_emax      = 24
-dis_win_emin      = 10
-smearing_temp_max = 5.5
-smearing_temp_min = 0.0
-delta             = 0.0
+cwf_mu_max      = 24
+cwf_mu_min      = 10
+cwf_sigma_max = 5.5
+cwf_sigma_min = 0.0
+cwf_delta             = 0.0
 svd               = true
 verbose           = true
 

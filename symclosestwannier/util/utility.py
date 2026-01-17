@@ -65,13 +65,13 @@ def fermi_ddt(x, T=0.01, unit="Kelvin"):
 
 
 # ==================================================
-def weight_proj(e, dis_win_emin, dis_win_emax, smearing_temp_min, smearing_temp_max, delta=10e-12):
+def weight_proj(e, cwf_mu_min, cwf_mu_max, cwf_sigma_min, cwf_sigma_max, cwf_delta=10e-12):
     """weight function for projection"""
     return (
-        fermi(dis_win_emin - e, smearing_temp_min, unit="eV")
-        + fermi(e - dis_win_emax, smearing_temp_max, unit="eV")
+        fermi(cwf_mu_min - e, cwf_sigma_min, unit="eV")
+        + fermi(e - cwf_mu_max, cwf_sigma_max, unit="eV")
         - 1.0
-        + delta
+        + cwf_delta
     )
 
 
@@ -109,9 +109,9 @@ def tune_fermi_level(e, filling, T, threshold=1e-8):
 def band_distance(Ak, Ek, Hk, ef=0.0):
     """
     band distance defined in [npj Computational Materials, 208 (2023)]:
-        - eta_x = \sqrt{ \sum w_{nk}(x) (e_{nk}^{DFT} - e_{nk}^{Wan})**2 / \sum w_{nk} }.
-        - eta_x_max = \max{ w_{nk}(x) \abs{e_{nk}^{DFT} - e_{nk}^{Wan}} }.
-        - w_{nk}(x) = \sqrt{ f_{nk}^{DFT}(Ef+x,T=0.1) * f_{nk}^{Wan}(Ef+x,T=0.1) }
+        - eta_x = sqrt{ sum w_{nk}(x) (e_{nk}^{DFT} - e_{nk}^{Wan})**2 / sum w_{nk} }.
+        - eta_x_max = max{ w_{nk}(x) \abs{e_{nk}^{DFT} - e_{nk}^{Wan}} }.
+        - w_{nk}(x) = sqrt{ f_{nk}^{DFT}(Ef+x,T=0.1) * f_{nk}^{Wan}(Ef+x,T=0.1) }
         - f_{nk}: fermi-dirac distribution function.
 
     Args:
@@ -120,7 +120,7 @@ def band_distance(Ak, Ek, Hk, ef=0.0):
         Hk (ndarray): Hamiltonian matrix elements in k-space (orthogonal).
         ef (float, optional): fermi energy.
 
-    Returns: eta_0, eta_0_max, eta_2, eta_2_max, eta_4, eta_4_max.
+    Returns: eta_0, eta_0_max, eta_2, eta_2_max, eta_5, eta_5_max.
     """
     num_k, num_wann, _ = Hk.shape
 
@@ -136,14 +136,14 @@ def band_distance(Ak, Ek, Hk, ef=0.0):
         for i, n in enumerate(Pk_max_idx_list):
             Ek_ref[k, i] = Ek[k, n]
 
-    fermi_ref = fermi(Ek_ref - (ef + 0.0), T=0.1, unit="eV")
-    fermi_wan = fermi(Ek_wan - (ef + 0.0), T=0.1, unit="eV")
+    fermi_ref = fermi(Ek_ref - (ef + 0.0), T=0.0, unit="eV")
+    fermi_wan = fermi(Ek_wan - (ef + 0.0), T=0.0, unit="eV")
     w = np.sqrt(fermi_ref * fermi_wan)
     eta_0 = np.sqrt(np.sum(w * (Ek_ref - Ek_wan) ** 2) / np.sum(w)) * 1000
     eta_0_max = np.max(w * np.abs(Ek_ref - Ek_wan)) * 1000
 
-    fermi_ref = fermi(Ek_ref - (ef + 2.0), T=0.1, unit="eV")
-    fermi_wan = fermi(Ek_wan - (ef + 2.0), T=0.1, unit="eV")
+    fermi_ref = fermi(Ek_ref - (ef + 2.0), T=0.0, unit="eV")
+    fermi_wan = fermi(Ek_wan - (ef + 2.0), T=0.0, unit="eV")
     w = np.sqrt(fermi_ref * fermi_wan)
     eta_2 = np.sqrt(np.sum(w * (Ek_ref - Ek_wan) ** 2) / np.sum(w)) * 1000
     eta_2_max = np.max(w * np.abs(Ek_ref - Ek_wan)) * 1000
@@ -151,10 +151,10 @@ def band_distance(Ak, Ek, Hk, ef=0.0):
     fermi_ref = fermi(Ek_ref - (ef + 5.0), T=0.0, unit="eV")
     fermi_wan = fermi(Ek_wan - (ef + 5.0), T=0.0, unit="eV")
     w = np.sqrt(fermi_ref * fermi_wan)
-    eta_4 = np.sqrt(np.sum(w * (Ek_ref - Ek_wan) ** 2) / np.sum(w)) * 1000
-    eta_4_max = np.max(w * np.abs(Ek_ref - Ek_wan)) * 1000
+    eta_5 = np.sqrt(np.sum(w * (Ek_ref - Ek_wan) ** 2) / np.sum(w)) * 1000
+    eta_5_max = np.max(w * np.abs(Ek_ref - Ek_wan)) * 1000
 
-    return eta_0, eta_0_max, eta_2, eta_2_max, eta_4, eta_4_max
+    return eta_0, eta_0_max, eta_2, eta_2_max, eta_5, eta_5_max
 
 
 # ==================================================
@@ -263,7 +263,7 @@ def convert_w90_orbital(l, m, r, s):
         if m == 1:
             orbital = "du"  # dz2
         elif m == 2:
-            orbital = "dzx"  # dxz
+            orbital = "dxz"
         elif m == 3:
             orbital = "dyz"
         elif m == 4:
@@ -290,9 +290,9 @@ def convert_w90_orbital(l, m, r, s):
         raise Exception(f"invalid orbital projection was given, (l={l},m={m},r={r},s={s}).")
 
     if s == 1:
-        orbital = f"({orbital},U)".replace("'", "")
+        orbital = f"({orbital},u)".replace("'", "")
     elif s == -1:
-        orbital = f"({orbital},D)".replace("'", "")
+        orbital = f"({orbital},d)".replace("'", "")
 
     return orbital
 
@@ -417,7 +417,6 @@ def fourier_transform_r_to_k(Or, kpoints, irvec, ndegen=None, atoms_frac=None):
         tau = np.array(atoms_frac)
         ktau = np.einsum("ka,ma->km", kpoints, tau, optimize=True)
         eiktau = np.exp(-2 * np.pi * 1j * ktau)
-
         Ok = np.einsum("R,kR,km,Rmn,kn->kmn", weight, phase_R, eiktau, Or, eiktau.conjugate(), optimize=True)
     else:
         Ok = np.einsum("R,kR,Rmn->kmn", weight, phase_R, Or, optimize=True)
@@ -688,7 +687,7 @@ def sort_ket_matrix(Ok, ket1, ket2):
 
     Args:
         Ok (ndarray): arbitrary operator in k-space representation, O_{ab}(k) = <φ_{a}(k)|H|φ_{b}(k)>.
-        ket1 (list): ket basis list, orbital@site.
+        ket1 (list): ket basis list, [[atom name, sublattice, rank, orbital]]
         ket2 (list): ket basis list, orbital@site.
 
     Returns:
@@ -750,75 +749,24 @@ def sort_ket_list(lst, ket, ket_samb):
 
 
 # ==================================================
-def samb_decomp_operator(
-    Or_dict, Zr_dict, A=None, atoms_frac=None, ket=None, A_samb=None, atoms_frac_samb=None, ket_samb=None
-):
+def samb_decomp_operator(Or_dict, Zr_dict, ket=None, ket_samb=None):
     """
     decompose arbitrary operator into linear combination of SAMBs.
 
     Args:
         Or_dict (dict): dictionary form of an arbitrary operator matrix in real-space/k-space representation.
         Zr_dict (dict): dictionary form of SAMBs.
-        A (list/ndarray, optional): real lattice vectors for the given operator, A = [a1,a2,a3] (list), [[[1,0,0], [0,1,0], [0,0,1]]].
-        atoms_frac (ndarray, optional): atom's position in fractional coordinates for the given operator.
         ket (list, optional): ket basis list, orbital@site.
-        A_samb (list/ndarray, optional): real lattice vectors for SAMBs, A = [a1,a2,a3] (list), [[[1,0,0], [0,1,0], [0,0,1]]].
-        atoms_frac_samb (ndarray, optional): atom's position in fractional coordinates for SAMBs.
         ket_samb (list, optional): ket basis list for SAMBs, orbital@site.
 
     Returns:
-        z (dict): parameter set, {tag: z_j}.
+        z (dict): parameter set, {zj: coeff}.
     """
     Or_dict = sort_ket_matrix_dict(Or_dict, ket, ket_samb)
 
-    # if A is not None:
-    #     if not np.allclose(A, A_samb, rtol=1e-03, atol=1e-03):
-    #         A = np.array(A, dtype=float)
-    #         A_samb = np.array(A_samb, dtype=float)
-    #         atoms_frac = np.array(sort_ket_list(atoms_frac, ket, ket_samb), dtype=float)
-    #         atoms_frac_samb = np.array(atoms_frac_samb, dtype=float)
-
-    #         Or_dict_ = {}
-    #         for (R1, R2, R3, m, n), v in Or_dict.items():
-    #             if np.abs(v) < 0.0:
-    #                 continue
-
-    #             R = np.array([R1, R2, R3], dtype=float)
-    #             rm = atoms_frac[m]
-    #             rn = atoms_frac[n]
-    #             bond = ((R + rn) - rm) @ A_samb
-
-    #             bond = tuple([format(bi, ".3f") for bi in bond])
-    #             bond = tuple([float(bi) for bi in bond])
-
-    #             Or_dict_[(*bond, m, n)] = v
-
-    #         Or_dict = Or_dict_
-
-    #         Zr_dict_ = {}
-    #         for tag, d in Zr_dict.items():
-    #             dic = {}
-    #             for (R1, R2, R3, m, n), v in d.items():
-    #                 if np.abs(v) < 0.0:
-    #                     continue
-
-    #                 R = np.array([R1, R2, R3], dtype=float)
-    #                 rm = atoms_frac_samb[m]
-    #                 rn = atoms_frac_samb[n]
-    #                 bond = ((R + rn) - rm) @ A_samb
-
-    #                 bond = tuple([format(bi, ".3f") for bi in bond])
-    #                 bond = tuple([float(bi) for bi in bond])
-
-    #                 dic[(*bond, m, n)] = v
-
-    #             Zr_dict_[tag] = dic
-
-    #         Zr_dict = Zr_dict_
-
     z = {
-        tag: np.real(np.sum([v * Or_dict.get((-k[0], -k[1], -k[2], k[4], k[3]), 0) for k, v in d.items()]))
-        for tag, d in Zr_dict.items()
+        zj: np.real(np.sum([v * Or_dict.get((-k[0], -k[1], -k[2], k[4], k[3]), 0) for k, v in d.items()]))
+        for zj, d in Zr_dict.items()
     }
 
     return z
@@ -887,12 +835,12 @@ def O_R_dependence(Or, A, irvec, ndegen, ef=0.0):
 
 
 # ==================================================
-def construct_Or(z, num_wann, rpoints, matrix_dict):
+def construct_Or(coeff, num_wann, rpoints, matrix_dict):
     """
     arbitrary operator constructed by linear combination of SAMBs in real-space representation.
 
     Args:
-        z (list): parameter set, [z_j].
+        coeff (dict): coefficients, {zj: coeff}.
         num_wann (int): # of WFs.
         rpoints (ndarray, optional): lattice points (crystal coordinate, [[n1,n2,n3]], nj: integer).
         matrix_dict (dict): SAMBs.
@@ -901,11 +849,10 @@ def construct_Or(z, num_wann, rpoints, matrix_dict):
         ndarray: matrix, [#r, dim, dim].
     """
     Or_dict = {(n1, n2, n3, a, b): 0.0 for (n1, n2, n3) in rpoints for a in range(num_wann) for b in range(num_wann)}
-    for j, d in enumerate(matrix_dict["matrix"].values()):
-        zj = z[j]
+    for zj, d in matrix_dict.items():
         for (n1, n2, n3, a, b), v in d.items():
             if (n1, n2, n3, a, b) in Or_dict:
-                Or_dict[(n1, n2, n3, a, b)] += zj * v
+                Or_dict[(n1, n2, n3, a, b)] += coeff[zj] * v
 
     Or = np.array(
         [
@@ -1156,7 +1103,7 @@ def su2_rotation_right(theta, lam, mu, nu):
 def su2_that_maps_z_to_n(n):
     """
     Construct U such that:
-        U * sigma_z * U^\dagger = n·sigma
+        U * sigma_z * U^dagger = n·sigma
     using the axis-angle rotation that rotates z-hat -> n (right-handed).
 
     n : array-like (nx, ny, nz)  (not necessarily normalized)
@@ -1199,9 +1146,9 @@ def change_quantization_axis_operators(dim, n):
     in the original basis.
 
     Convention:
-      U maps sigma_z -> n·sigma via  U sigma_z U^\dagger = n·sigma.
-      Basis change (state transformation): |psi>' = U^\dagger |psi|
-      Operator in new basis: O' = U^\dagger O U
+      U maps sigma_z -> n·sigma via  U sigma_z U^dagger = n·sigma.
+      Basis change (state transformation): |psi>' = U^dagger |psi|
+      Operator in new basis: O' = U^dagger O U
     """
     U2 = su2_that_maps_z_to_n(n)
     U = embed_spin_unitary(dim, U2)

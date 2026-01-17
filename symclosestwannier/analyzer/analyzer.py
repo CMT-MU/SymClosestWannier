@@ -69,7 +69,7 @@ def analyzer(seedname="cwannier"):
     cwm.log(system_msg(cwi), stamp=None, end="\n", file=outfile, mode="a")
 
     # ******************** #
-    #      Hamiltoinan     #
+    #      Hamiltonian     #
     # ******************** #
 
     Hr = None

@@ -8,11 +8,11 @@
   - outdir            : input and output files are found in this directory (str), ["./"].
   - disentangle       : disentagle bands ? (bool), [False].
   - proj_min          : minimum value of projectability: [0.0].
-  - dis_win_emax      : top of the energy window (float), [None].
-  - dis_win_emin      : bottom of the energy window (float), [None].
-  - smearing_temp_max : smearing temperature for the top of the energy window (float), [5.0].
-  - smearing_temp_min : smearing temperature for the bottom of the energy window (float), [0.01].
-  - delta             : small constant to avoid ill-conditioning of overlap matrices (< 1e-5) (float), [0.0].
+  - cwf_mu_max      : top of the energy window (float), [None].
+  - cwf_mu_min      : bottom of the energy window (float), [None].
+  - cwf_sigma_max : smearing temperature for the top of the energy window (float), [5.0].
+  - cwf_sigma_min : smearing temperature for the bottom of the energy window (float), [0.01].
+  - cwf_delta             : small constant to avoid ill-conditioning of overlap matrices (< 1e-5) (float), [0.0].
   - svd               : implement singular value decomposition ? otherwise adopt Lowdin's orthogonalization method (bool), [False].
   - verbose           : verbose calculation info (bool, optional), [False].
   - parallel          : use parallel code? (bool), [False].

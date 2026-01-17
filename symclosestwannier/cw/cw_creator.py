@@ -39,6 +39,7 @@ from symclosestwannier.util.message import (
     cw_open_msg,
     cw_end_msg,
     system_msg,
+    cwin_msg,
     cw_start_output_msg,
     cw_end_output_msg,
 )
@@ -68,16 +69,17 @@ def cw_creator(seedname="cwannier"):
 
     cwm.log(cw_open_msg(), stamp=None, end="\n", file=outfile, mode="w")
     cwm.log(system_msg(cwi), stamp=None, end="\n", file=outfile, mode="a")
+    cwm.log(cwin_msg(cwi), stamp=None, end="\n", file=outfile, mode="a")
 
     cw_model = CWModel(cwi, cwm)
     cwi = cw_model._cwi
-    samb_info = cw_model._samb_info
 
     cwm.log(cw_start_output_msg(), stamp=None, end="\n", file=outfile, mode="a")
     cwm.set_stamp()
 
-    filename = os.path.join(cwi["outdir"], "{}".format(f"{cwi['seedname']}.hdf5"))
-    cw_model.write_info_data(filename)
+    if cwi["write_info_data"]:
+        filename = os.path.join(cwi["outdir"], "{}".format(f"{cwi['seedname']}.hdf5"))
+        cw_model.write_info_data(filename)
 
     if cwi["write_hr"]:
         filename = f"{cwi['seedname']}_hr.dat.cw"
@@ -135,8 +137,8 @@ def cw_creator(seedname="cwannier"):
             filename = os.path.join(cwi["mp_outdir"], "{}".format(f"{cwi['mp_seedname']}_hr_sym.dat.cw"))
             cw_model.write_or(cw_model["Hr_sym"], filename, header=CWModel._hr_header())
 
-            # filename = os.path.join(cwi["mp_outdir"], "{}".format(f"{cwi['mp_seedname']}_hr_nonortho_sym.dat.cw"))
-            # cw_model.write_or(cw_model["Hr_nonortho_sym"], filename, header=CWModel._hr_header())
+            filename = os.path.join(cwi["mp_outdir"], "{}".format(f"{cwi['mp_seedname']}_hr_nonortho_sym.dat.cw"))
+            cw_model.write_or(cw_model["Hr_nonortho_sym"], filename, header=CWModel._hr_header())
 
             filename = os.path.join(cwi["mp_outdir"], "{}".format(f"{cwi['mp_seedname']}_nr_sym.dat.cw"))
             cw_model.write_or(cw_model["nr_sym"], filename, header=CWModel._hr_header())
@@ -176,14 +178,9 @@ def cw_creator(seedname="cwannier"):
     atoms_list = list(cw_model._cwi["atoms_frac_shift"].values())
     atoms_frac = [atoms_list[i] for i in cw_model._cwi["nw2n"]]
 
-    # ket_samb = samb_info["ket"]
-    # cell_site = samb_info["cell_site"]
-
     if cwi["tb_gauge"]:
-        atoms_frac = [
-            NSArray(cell_site[ket_samb[a].split("@")[1]][0], style="vector", fmt="value").tolist()
-            for a in range(cw_model._cwi["num_wann"])
-        ]
+        atoms_list = list(cw_model._cwi["atoms_frac_shift"].values())
+        atoms_frac = [atoms_list[i] for i in cw_model._cwi["nw2n"]]
     else:
         atoms_frac = None
 
@@ -466,14 +463,16 @@ def cw_creator(seedname="cwannier"):
         )
 
         if cwi["symmetrization"]:
-            ket_samb = samb_info["ket"]
-            cell_site = samb_info["cell_site"]
+            ket_samb = cwi._mm["full_matrix"]["ket"]
 
             if cwi["tb_gauge"]:
-                atoms_frac = [
-                    NSArray(cell_site[ket_samb[a].split("@")[1]][0], style="vector", fmt="value").tolist()
-                    for a in range(cw_model._cwi["num_wann"])
-                ]
+                site_dict = {
+                    k + "_" + str(vi.sublattice): vi.position_primitive.tolist()
+                    for k, v in self._cwi._mm["site"]["cell"].items()
+                    for vi in v
+                    if vi.plus_set == 1
+                }
+                atoms_frac = [site_dict[atom + "_" + str(sl)] for atom, sl, rank, orbital in ket_samb]
             else:
                 atoms_frac = None
 
@@ -496,7 +495,6 @@ def cw_creator(seedname="cwannier"):
                 SS_k = cw_model.fourier_transform_r_to_k_vec(
                     SS_R, cwi["kpoints_path"], cwi["irvec"], cwi["ndegen"], atoms_frac=atoms_frac
                 )
-                ket_samb = samb_info["ket"]
                 ket_amn = cwi.get("ket_amn", ket_samb)
                 SS_k = np.array([sort_ket_matrix(SS_k[a], ket_amn, ket_samb) for a in range(3)])
                 SS_H = np.array([Uk.transpose(0, 2, 1).conjugate() @ SS_k[a] @ Uk for a in range(3)])
@@ -702,14 +700,16 @@ def cw_creator(seedname="cwannier"):
         output_fermi_surface_eig(".", seedname, kpoints_2d, e=Ek, ef=ef)
 
         if cwi["symmetrization"]:
-            ket_samb = samb_info["ket"]
-            cell_site = samb_info["cell_site"]
+            ket_samb = cwi._mm["full_matrix"]["ket"]
 
             if cwi["tb_gauge"]:
-                atoms_frac = [
-                    NSArray(cell_site[ket_samb[a].split("@")[1]][0], style="vector", fmt="value").tolist()
-                    for a in range(cw_model._cwi["num_wann"])
-                ]
+                site_dict = {
+                    k + "_" + str(vi.sublattice): vi.position_primitive.tolist()
+                    for k, v in self._cwi._mm["site"]["cell"].items()
+                    for vi in v
+                    if vi.plus_set == 1
+                }
+                atoms_frac = [site_dict[atom + "_" + str(sl)] for atom, sl, rank, orbital in ket_samb]
             else:
                 atoms_frac = None
 
@@ -746,12 +746,18 @@ def cw_creator(seedname="cwannier"):
         output_dos(".", seedname + "_dos.txt", Ek, Uk, ef_shift, dos_num_fermi, dos_smr_en_width, dos_emax, dos_emin)
 
         if cwi["symmetrization"]:
-            ket_samb = samb_info["ket"]
-            cell_site = samb_info["cell_site"]
-            atoms_frac = [
-                NSArray(cell_site[ket_samb[a].split("@")[1]][0], style="vector", fmt="value").tolist()
-                for a in range(cw_model._cwi["num_wann"])
-            ]
+            ket_samb = cwi._mm["full_matrix"]["ket"]
+
+            if cwi["tb_gauge"]:
+                site_dict = {
+                    k + "_" + str(vi.sublattice): vi.position_primitive.tolist()
+                    for k, v in self._cwi._mm["site"]["cell"].items()
+                    for vi in v
+                    if vi.plus_set == 1
+                }
+                atoms_frac = [site_dict[atom + "_" + str(sl)] for atom, sl, rank, orbital in ket_samb]
+            else:
+                atoms_frac = None
 
             Hk_sym_grid = cw_model.fourier_transform_r_to_k(
                 cw_model["Hr_sym"], kpoints, cwi["irvec"], cwi["ndegen"], atoms_frac=atoms_frac
@@ -839,7 +845,7 @@ def cw_creator(seedname="cwannier"):
         omega = cwi["lindhard_freq"]
         ef = cwi["fermi_energy"]
         T = cwi["temperature"]
-        delta = cwi["lindhard_smr_fixed_en_width"]
+        cwf_delta = cwi["lindhard_smr_fixed_en_width"]
 
         if cwi["filling"] is not None:
             N1, N2, N3 = cwi["lindhard_kmesh"]

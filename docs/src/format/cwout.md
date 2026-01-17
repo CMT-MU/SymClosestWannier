@@ -122,8 +122,8 @@ Example standard output for [graphene](../../example/graphene/graphene.cwin) is 
      - eta_0_max = 7.993605777301127e-12 [meV]
      - eta_2     = 1.8169064701622485e-12 [meV]
      - eta_2_max = 7.993605777301127e-12 [meV]
-     - eta_4     = 1.7296105678905685e-12 [meV]
-     - eta_4_max = 7.993605777301127e-12 [meV]
+     - eta_5     = 1.7296105678905685e-12 [meV]
+     - eta_5_max = 7.993605777301127e-12 [meV]
 done ( 0.032 [sec] ).
    - symmetrization ...
     - reading output of multipie ...
