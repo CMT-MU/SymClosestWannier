@@ -4,13 +4,13 @@ the closest Wannier functions (CWFs) and the closest Wannier (CW) Hamitonian $H^
 Then, following the symmetry-adapted modeling in Ref. [hk-prb23], we can decompose the CW Hamiltonian as the linear combination of the symmetry-adapted multipole bases (SAMBs) as
 
 $$
-H^{\rm (SymCW)} = \sum_{j} z_{j} \mathbb{Z}_{j}
+H^{\rm (SymCW)} = sum_{j} z_{j} \mathbb{Z}_{j}
 $$
 
 where $\{z_{j}\}$ denote the weight of each SAMBs and correspond to the the model parameters, obtained by
 
 $$
-z_{j} = \frac{1}{N_{k}} \sum_{\bf{R}} \mathrm{Tr}\left[H^{\rm (CW)}(\bf{R}) \mathbb{Z}_{j}(-\bf{R}) \right]
+z_{j} = \frac{1}{N_{k}} sum_{\bf{R}} \mathrm{Tr}\left[H^{\rm (CW)}(\bf{R}) \mathbb{Z}_{j}(-\bf{R}) \right]
 $$
 
 Here $N_{k}$ is the number of $k$ points.

@@ -19,6 +19,7 @@
 # ****************************************************************** #
 
 import numpy as np
+from multipie import MaterialModel
 from gcoreutils.nsarray import NSArray
 
 from symclosestwannier.cw.cwin import CWin
@@ -54,6 +55,7 @@ class CWInfo(dict):
     Attributes:
         _topdir (str): top directory.
         _seedname (str): seedname.
+        _mm (MaterialModel): material model (MultiPie).
         _postcw (bool): postcw calculation?
     """
 
@@ -73,6 +75,8 @@ class CWInfo(dict):
         self._topdir = topdir
         self._seedname = seedname
         self._postcw = postcw
+
+        self._mm = None
 
         self.update(self.read(topdir, seedname, dic))
 
@@ -285,21 +289,36 @@ class CWInfo(dict):
                 dtype=np.float64,
             )
 
-        # ket
-        if d["ket_amn"] == "auto":
-            ket_amn = [] * d["num_wann"]
-            for pos_idx, l, m, r, s in zip(d["nw2n"], d["nw2l"], d["nw2m"], d["nw2r"], d["nw2s"]):
-                pos = d["atom_pos_r"][pos_idx]
+        if d["symmetrization"]:
+            self._mm = MaterialModel(topdir="./", verbose=True)
+            self._mm.load(d["mp_seedname"])
 
-                name = ""
-                for name_, pos_ in d["atoms_frac"].items():
-                    if np.allclose(np.array(pos), np.array(pos_), rtol=1e-04, atol=1e-04):
-                        name = f"{name_[0]}_{name_[1]}"
+            # ket
+            if d["ket_amn"] == "auto":
+                site_dict = {
+                    (k, vi.sublattice): vi.position_primitive.tolist()
+                    for k, v in self._mm["site"]["cell"].items()
+                    for vi in v
+                    if vi.plus_set == 1
+                }
 
-                orb = convert_w90_orbital(l, m, r, s)
-                ket_amn.append(f"{orb}@{name}")
+                ket_amn = [] * d["num_wann"]
+                for pos_idx, l, m, r, s in zip(d["nw2n"], d["nw2l"], d["nw2m"], d["nw2r"], d["nw2s"]):
+                    pos = d["atom_pos_r"][pos_idx]
 
-            d["ket_amn"] = ket_amn
+                    name = ""
+                    sl = 0
+                    for (name_, sl_), pos_ in site_dict.items():
+                        if np.allclose(np.array(pos), np.array(pos_), rtol=1e-04, atol=1e-04):
+                            name = name_
+                            sl = sl_
+                    if name == "":
+                        raise Exception("The atomic positions in MultiPie are incorrect.")
+
+                    orbital = convert_w90_orbital(l, m, r, s)
+                    ket_amn.append([name, sl, l, orbital])
+
+                d["ket_amn"] = ket_amn
 
         return d
 

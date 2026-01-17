@@ -25,22 +25,9 @@ import datetime
 import itertools
 import textwrap
 
-import sympy as sp
 import numpy as np
 from numpy import linalg as npl
 from scipy import linalg as spl
-import lmfit
-
-from gcoreutils.nsarray import NSArray
-from multipie.tag.tag_multipole import TagMultipole
-from multipie.model.construct_model import construct_samb_matrix
-from multipie.data.data_transform_matrix import _data_trans_lattice_p
-
-import multiprocessing
-from joblib import Parallel, delayed, wrap_non_picklable_objects
-
-_num_proc = multiprocessing.cpu_count()
-
 
 from symclosestwannier.util.message import cw_start_msg, cw_start_msg_w90
 from symclosestwannier.util.header import (
@@ -233,14 +220,14 @@ class CWModel(dict):
         self._cwm.log("* band distance between DFT and Wannier bands:", None, file=self._outfile, mode="a")
         self._cwm.set_stamp()
 
-        eta_0, eta_0_max, eta_2, eta_2_max, eta_4, eta_4_max = band_distance(Ak, Ek, Hk, ef=self._cwi["fermi_energy"])
+        eta_0, eta_0_max, eta_2, eta_2_max, eta_5, eta_5_max = band_distance(Ak, Ek, Hk, ef=self._cwi["fermi_energy"])
 
         self._cwm.log(f" - eta_0     = {eta_0} [meV]", file=self._outfile, mode="a")
         self._cwm.log(f" - eta_0_max = {eta_0_max} [meV]", file=self._outfile, mode="a")
         self._cwm.log(f" - eta_2     = {eta_2} [meV]", file=self._outfile, mode="a")
         self._cwm.log(f" - eta_2_max = {eta_2_max} [meV]", file=self._outfile, mode="a")
-        self._cwm.log(f" - eta_4     = {eta_4} [meV]", file=self._outfile, mode="a")
-        self._cwm.log(f" - eta_4_max = {eta_4_max} [meV]", file=self._outfile, mode="a")
+        self._cwm.log(f" - eta_5     = {eta_5} [meV]", file=self._outfile, mode="a")
+        self._cwm.log(f" - eta_5_max = {eta_5_max} [meV]", file=self._outfile, mode="a")
 
         self._cwm.log("done", file=self._outfile, mode="a")
 
@@ -431,13 +418,13 @@ class CWModel(dict):
             self._cwm.log(msg, None, end="", file=self._outfile, mode="a")
             self._cwm.set_stamp()
 
-            dis_win_emin, dis_win_emax, smearing_temp_min, smearing_temp_max = (
-                self._cwi["dis_win_emin"],
-                self._cwi["dis_win_emax"],
-                self._cwi["smearing_temp_min"],
-                self._cwi["smearing_temp_max"],
+            cwf_mu_min, cwf_mu_max, cwf_sigma_min, cwf_sigma_max = (
+                self._cwi["cwf_mu_min"],
+                self._cwi["cwf_mu_max"],
+                self._cwi["cwf_sigma_min"],
+                self._cwi["cwf_sigma_max"],
             )
-            Ak = self._disentangle(Ek, Ak, dis_win_emin, dis_win_emax, smearing_temp_min, smearing_temp_max)
+            Ak = self._disentangle(Ek, Ak, cwf_mu_min, cwf_mu_max, cwf_sigma_min, cwf_sigma_max)
 
             self._cwm.log("done", file=self._outfile, mode="a")
 
@@ -540,15 +527,15 @@ class CWModel(dict):
         self._cwm.log("\n    * band distance between DFT and Wannier bands:", None, file=self._outfile, mode="a")
         self._cwm.set_stamp()
 
-        eta_0, eta_0_max, eta_2, eta_2_max, eta_4, eta_4_max = band_distance(Ak, Ek, Hk, ef=self._cwi["fermi_energy"])
+        eta_0, eta_0_max, eta_2, eta_2_max, eta_5, eta_5_max = band_distance(Ak, Ek, Hk, ef=self._cwi["fermi_energy"])
 
         # self._cwm.log(f"     - bottom_band_idx = {bottom_band_idx}", None, file=self._outfile, mode="a")
         self._cwm.log(f"     - eta_0     = {eta_0} [meV]", None, file=self._outfile, mode="a")
         self._cwm.log(f"     - eta_0_max = {eta_0_max} [meV]", None, file=self._outfile, mode="a")
         self._cwm.log(f"     - eta_2     = {eta_2} [meV]", None, file=self._outfile, mode="a")
         self._cwm.log(f"     - eta_2_max = {eta_2_max} [meV]", None, file=self._outfile, mode="a")
-        self._cwm.log(f"     - eta_4     = {eta_4} [meV]", None, file=self._outfile, mode="a")
-        self._cwm.log(f"     - eta_4_max = {eta_4_max} [meV]", None, file=self._outfile, mode="a")
+        self._cwm.log(f"     - eta_5     = {eta_5} [meV]", None, file=self._outfile, mode="a")
+        self._cwm.log(f"     - eta_5_max = {eta_5_max} [meV]", None, file=self._outfile, mode="a")
 
         self._cwm.log("done", file=self._outfile, mode="a")
 
@@ -643,7 +630,7 @@ class CWModel(dict):
         return Ak
 
     # ==================================================
-    def _disentangle(self, Ek, Ak, dis_win_emin, dis_win_emax, smearing_temp_min, smearing_temp_max):
+    def _disentangle(self, Ek, Ak, cwf_mu_min, cwf_mu_max, cwf_sigma_min, cwf_sigma_max):
         """
         disentangle bands.
 
@@ -656,11 +643,11 @@ class CWModel(dict):
         """
         w = weight_proj(
             Ek,
-            dis_win_emin,
-            dis_win_emax,
-            smearing_temp_min,
-            smearing_temp_max,
-            self._cwi["delta"],
+            cwf_mu_min,
+            cwf_mu_max,
+            cwf_sigma_min,
+            cwf_sigma_max,
+            self._cwi["cwf_delta"],
         )
 
         return w[:, :, np.newaxis] * Ak
@@ -740,68 +727,16 @@ class CWModel(dict):
 
         #####
 
-        msg = "    - reading output of multipie ... "
+        msg = "    - creating combined samb matrix ... "
         self._cwm.log(msg, None, end="\n", file=self._outfile, mode="a")
         self._cwm.set_stamp()
 
-        model = self._cwm.read(
-            os.path.join(self._cwi["mp_outdir"], "{}".format(f"{self._cwi['mp_seedname']}_model.py"))
-        )
-
-        samb = self._cwm.read(os.path.join(self._cwi["mp_outdir"], "{}".format(f"{self._cwi['mp_seedname']}_samb.py")))
-
-        try:
-            mat = self._cwm.read(
-                os.path.join(self._cwi["mp_outdir"], "{}".format(f"{self._cwi['mp_seedname']}_matrix.pkl"))
-            )
-        except:
-            mat = self._cwm.read(
-                os.path.join(self._cwi["mp_outdir"], "{}".format(f"{self._cwi['mp_seedname']}_matrix.py"))
-            )
-
-        ket_samb = model["info"]["ket"]
-        ket_amn = self._cwi.get("ket_amn", ket_samb)
-
-        # sort orbitals
-        Hk = sort_ket_matrix(Hk, ket_amn, ket_samb)
-        Sk = sort_ket_matrix(Sk, ket_amn, ket_samb)
-        nk = sort_ket_matrix(nk, ket_amn, ket_samb)
-
         if self._cwi["irreps"] == "all":
-            irreps = model["info"]["generate"]["irrep"]
-        elif self._cwi["irreps"] == "full":
-            irreps = [model["info"]["generate"]["irrep"][0]]
+            select = {"Gamma": []}
         else:
-            irreps = self._cwi["irreps"]
+            select = {"Gamma": self._cwi["irreps"]}
 
-        for zj, (tag, _) in samb["data"]["Z"].items():
-            if TagMultipole(tag).irrep not in irreps:
-                del mat["matrix"][zj]
-
-        tag_dict = {zj: tag for zj, (tag, _) in samb["data"]["Z"].items()}
-
-        # Zr_dict = {
-        #     (zj, tag_dict[zj]): {tuple(sp.sympify(k)): complex(sp.sympify(v)) for k, v in d.items()}
-        #     for zj, d in mat["matrix"].items()
-        # }
-        # mat["matrix"] = {
-        #     zj: {tuple(sp.sympify(k)): complex(sp.sympify(v)) for k, v in d.items()} for zj, d in mat["matrix"].items()
-        # }
-
-        ### kuniyoshi (24/08/20) ###
-        def proc(j, zj, d):
-            return j, zj, {tuple(sp.sympify(k)): complex(sp.sympify(v)) for k, v in d.items()}
-
-        res = Parallel(n_jobs=_num_proc, verbose=1)(
-            delayed(proc)(j, zj, d) for j, (zj, d) in enumerate(mat["matrix"].items())
-        )
-        res = sorted(res, key=lambda x: x[0])
-
-        Zr_dict = {}
-        for _, zj, d in res:
-            Zr_dict[(zj, tag_dict[zj])] = d
-            mat["matrix"][zj] = d
-        ### kuniyoshi (24/08/20) ###
+        combined_samb_matrix = self._cwi._mm.get_combined_samb_matrix(fmt="value", **select)
 
         ### sign chagne for odd-parity site- and bond-cluster multipoles (L-handed CoSi) ###
         # for _, zj, d in res:
@@ -827,86 +762,29 @@ class CWModel(dict):
                 U = su2_that_maps_z_to_n(saxis)
                 U = embed_spin_unitary(self._cwi["num_wann"], U)
 
-                def proc(j, k, d):
+                for zj, d in combined_samb_matrix.items():
                     m, rpoints = CWModel.dict_to_matrix(d, dim=self._cwi["num_wann"])
                     m = U.conj().T @ m[:] @ U
                     d = CWModel.matrix_dict_r(m, rpoints)
-                    return j, k, {k: v for k, v in d.items() if v != 0.0}
+                    d = {k: v for k, v in d.items() if v != 0.0}
 
-                res = Parallel(n_jobs=1, verbose=10)(delayed(proc)(j, k, d) for j, (k, d) in enumerate(Zr_dict.items()))
-                res = sorted(res, key=lambda x: x[0])
-
-                for _, k, d in res:
-                    zj, _ = k
-                    Zr_dict[k] = d
-                    mat["matrix"][zj] = d
+                    combined_samb_matrix[zj] = d
         ### change spin quantization axis
 
-        A = None
-        A_samb = None
+        self._cwm.log("done", file=self._outfile, mode="a")
 
-        lattice = model["info"]["group"][1].split("/")[1].replace(" ", "")[0]
-        if lattice != "P":
-            cell_site = {}
-            for site, v in mat["cell_site"].items():
-                if "(" in site and ")" in site:
-                    if "(1)" in site:
-                        cell_site[site[:-3]] = v
-                else:
-                    cell_site[site] = v
+        ###
 
-            mat["cell_site"] = cell_site
+        ket_samb = self._cwi._mm["full_matrix"]["ket"]
+        ket_amn = self._cwi.get("ket_amn", ket_samb)
 
-        if not mat["molecule"]:
-            A = self._cwi["unit_cell_cart"]
-            A_samb = NSArray(mat["A"], style="matrix", fmt="value").T
-            if lattice != "P":
-                # 4x4 matrix to convert from conventioanl to primitive coordinate.
-                latticeP = {
-                    lat: np.array(NSArray(d).numpy().tolist(), dtype=float) for lat, d in _data_trans_lattice_p.items()
-                }
-                lattice_const = model["info"]["cell"]["a"]
-                A_samb = lattice_const * latticeP[lattice][:-1, :-1]
-
-            mat["A"] = A_samb
-        #####
-
-        atoms_list = list(self._cwi["atoms_frac"].values())
-        atoms_frac = np.array([atoms_list[i] for i in self._cwi["nw2n"]])
-
-        atoms_frac_samb = [
-            NSArray(mat["cell_site"][ket_samb[a].split("@")[1]][0], style="vector", fmt="value").tolist()
-            for a in range(self._cwi["num_wann"])
-        ]
+        ###
 
         msg = "    - decomposing Hamiltonian as linear combination of SAMBs ... "
         self._cwm.log(msg, None, end="", file=self._outfile, mode="a")
         self._cwm.set_stamp()
 
-        if mat["molecule"]:
-            z = CWModel.samb_decomp_operator(Hr_dict, Zr_dict, ket=ket_amn, ket_samb=ket_samb)
-        else:
-            z = CWModel.samb_decomp_operator(
-                Hr_dict, Zr_dict, A, atoms_frac, ket_amn, A_samb, atoms_frac_samb, ket_samb
-            )
-
-        i = 0
-        # for tag, d in Zr_dict.items():
-        # i += 1
-        # if i in (1, 2, 8, 9, 10, 12, 17, 20, 29, 30, 32, 33, 34, 35, 81, 83, 85):
-        #    z[tag] = z[tag]
-        # else:
-        #    z[tag] = 0.0
-        # if i in (1, 2, 8, 9, 10, 12, 17, 20, 29, 30, 32, 33, 34, 35, 81, 82, 83, 84, 85, 86):
-        #    z[tag] = z[tag]
-        # if i in (1, 8, 10, 12, 32, 34, 83, 85):
-        #    z[tag] = z[tag]
-        # else:
-        #    z[tag] = 0.0
-        # if i in (10, 34, 83, 85):  # Gu
-        #    z[tag] = -z[tag]
-        # else:
-        #    z[tag] = z[tag]
+        z = CWModel.samb_decomp_operator(Hr_dict, combined_samb_matrix, ket=ket_amn, ket_samb=ket_samb)
 
         self._cwm.log("done", file=self._outfile, mode="a")
 
@@ -916,12 +794,7 @@ class CWModel(dict):
         self._cwm.log(msg, None, end="", file=self._outfile, mode="a")
         self._cwm.set_stamp()
 
-        if mat["molecule"]:
-            s = CWModel.samb_decomp_operator(Sr_dict, Zr_dict, ket=ket_amn, ket_samb=ket_samb)
-        else:
-            s = CWModel.samb_decomp_operator(
-                Sr_dict, Zr_dict, A, atoms_frac, ket_amn, A_samb, atoms_frac_samb, ket_samb
-            )
+        s = CWModel.samb_decomp_operator(Sr_dict, combined_samb_matrix, ket=ket_amn, ket_samb=ket_samb)
 
         self._cwm.log("done", file=self._outfile, mode="a")
 
@@ -931,12 +804,9 @@ class CWModel(dict):
         self._cwm.log(msg, None, end="", file=self._outfile, mode="a")
         self._cwm.set_stamp()
 
-        if mat["molecule"]:
-            z_nonortho = CWModel.samb_decomp_operator(Hr_nonortho_dict, Zr_dict, ket=ket_amn, ket_samb=ket_samb)
-        else:
-            z_nonortho = CWModel.samb_decomp_operator(
-                Hr_nonortho_dict, Zr_dict, A, atoms_frac, ket_amn, A_samb, atoms_frac_samb, ket_samb
-            )
+        z_nonortho = CWModel.samb_decomp_operator(
+            Hr_nonortho_dict, combined_samb_matrix, ket=ket_amn, ket_samb=ket_samb
+        )
 
         self._cwm.log("done", file=self._outfile, mode="a")
 
@@ -946,29 +816,26 @@ class CWModel(dict):
         self._cwm.log(msg, None, end="", file=self._outfile, mode="a")
         self._cwm.set_stamp()
 
-        if mat["molecule"]:
-            n = CWModel.samb_decomp_operator(nr_dict, Zr_dict, ket=ket_amn, ket_samb=ket_samb)
-        else:
-            n = CWModel.samb_decomp_operator(
-                nr_dict, Zr_dict, A, atoms_frac, ket_amn, A_samb, atoms_frac_samb, ket_samb
-            )
-
-        if self._cwi["calc_spin_2d"] and self._cwi["pauli_spn"] is not None:
-            if mat["molecule"]:
-                ss = [
-                    CWModel.samb_decomp_operator(SSr_dict[a], Zr_dict, ket=ket_amn, ket_samb=ket_samb) for a in range(3)
-                ]
-            else:
-                ss = [
-                    CWModel.samb_decomp_operator(
-                        SSr_dict[a], Zr_dict, A, atoms_frac, ket_amn, A_samb, atoms_frac_samb, ket_samb
-                    )
-                    for a in range(3)
-                ]
-        else:
-            ss = None
+        n = CWModel.samb_decomp_operator(nr_dict, combined_samb_matrix, ket=ket_amn, ket_samb=ket_samb)
 
         self._cwm.log("done", file=self._outfile, mode="a")
+        ###
+
+        ###
+
+        if self._cwi["calc_spin_2d"] and self._cwi["pauli_spn"] is not None:
+            msg = "    - decomposing spin density as linear combination of SAMBs ... "
+            self._cwm.log(msg, None, end="", file=self._outfile, mode="a")
+            self._cwm.set_stamp()
+
+            ss = [
+                CWModel.samb_decomp_operator(SSr_dict[a], combined_samb_matrix, ket=ket_amn, ket_samb=ket_samb)
+                for a in range(3)
+            ]
+
+            self._cwm.log("done", file=self._outfile, mode="a")
+        else:
+            ss = None
 
         if self._cwi["calc_cohp_samb_decomp"]:
             msg = "    - decomposing electronic density as linear combination of SAMBs ... "
@@ -1013,9 +880,7 @@ class CWModel(dict):
                 )
                 nr_delta_dict = CWModel.matrix_dict_r(nr_delta_func, self._cwi["irvec"])
 
-                n_i = CWModel.samb_decomp_operator(
-                    nr_delta_dict, Zr_dict, A, atoms_frac, ket_amn, A_samb, atoms_frac_samb, ket_samb
-                )
+                n_i = CWModel.samb_decomp_operator(nr_delta_dict, combined_samb_matrix, ket_amn, ket_samb)
                 n_list.append(n_i)
 
             n_list_integrated = []
@@ -1066,16 +931,26 @@ class CWModel(dict):
 
         #####
 
+        site_dict = {
+            k + "_" + str(vi.sublattice): vi.position_primitive.tolist()
+            for k, v in self._cwi._mm["site"]["cell"].items()
+            for vi in v
+            if vi.plus_set == 1
+        }
+        atoms_frac_samb = [
+            site_dict[atom + "_" + str(sl)] for atom, sl, rank, orbital in self._cwi._mm["full_matrix"]["ket"]
+        ]
+
         msg = "    - constructing symmetrized TB Hamiltonian ... "
         self._cwm.log(msg, None, end="", file=self._outfile, mode="a")
         self._cwm.set_stamp()
 
-        Sr_sym = CWModel.construct_Or(list(s.values()), self._cwi["num_wann"], self._cwi["irvec"], mat)
-        Hr_sym = CWModel.construct_Or(list(z.values()), self._cwi["num_wann"], self._cwi["irvec"], mat)
+        Sr_sym = CWModel.construct_Or(s, self._cwi["num_wann"], self._cwi["irvec"], combined_samb_matrix)
+        Hr_sym = CWModel.construct_Or(z, self._cwi["num_wann"], self._cwi["irvec"], combined_samb_matrix)
         Hr_nonortho_sym = CWModel.construct_Or(
-            list(z_nonortho.values()), self._cwi["num_wann"], self._cwi["irvec"], mat
+            z_nonortho, self._cwi["num_wann"], self._cwi["irvec"], combined_samb_matrix
         )
-        nr_sym = CWModel.construct_Or(list(n.values()), self._cwi["num_wann"], self._cwi["irvec"], mat)
+        nr_sym = CWModel.construct_Or(n, self._cwi["num_wann"], self._cwi["irvec"], combined_samb_matrix)
 
         if self._cwi["tb_gauge"]:
             Sk_sym = CWModel.fourier_transform_r_to_k(
@@ -1116,6 +991,11 @@ class CWModel(dict):
         self._cwm.log(msg, None, end="\n", file=self._outfile, mode="a")
         self._cwm.set_stamp()
 
+        # sort orbitals
+        Hk = sort_ket_matrix(Hk, ket_amn, ket_samb)
+        Sk = sort_ket_matrix(Sk, ket_amn, ket_samb)
+        nk = sort_ket_matrix(nk, ket_amn, ket_samb)
+
         Ek_grid, _ = np.linalg.eigh(Hk)
         Ek_grid_sym, _ = np.linalg.eigh(Hk_sym)
 
@@ -1140,37 +1020,11 @@ class CWModel(dict):
         Ek_MAE_grid_DFT = np.sum(np.abs(Ek_grid_sym - Ek_ref)) / num_k / num_wann * 1000  # [meV]
 
         msg = f"     * MAE of eigen values between CW and Symmetry-Adapted CW models (grid) = {'{:.4f}'.format(Ek_MAE_grid)} [meV] \n"
-        msg += f"     * MAE of eigen values between DFT and Symmetry-Adapted CW models (grid) = {'{:.4f}'.format(Ek_MAE_grid_DFT)} [meV]"
-        self._cwm.log(msg, None, end="\n", file=self._outfile, mode="a")
+        msg += f"     * MAE of eigen values between DFT and Symmetry-Adapted CW models (grid) = {'{:.4f}'.format(Ek_MAE_grid_DFT)} [meV] \n"
 
-        #####
+        molecule = self._cwi._mm.group.is_point_group
 
-        msg = "    - band energy \n"
-        self._cwm.log(msg, None, end="", file=self._outfile, mode="a")
-        self._cwm.set_stamp()
-
-        # electronic density matrix elements
-        ef = self._cwi["fermi_energy"]
-        fk = np.array([fermi(eki - ef, T=0.0) for eki in Ek], dtype=float)
-        E_dft = np.sum(Ek * fk) / num_k
-        msg = f"     * DFT: {E_dft} \n"
-
-        fk_grid = np.array([fermi(eki - ef, T=0.0) for eki in Ek_grid], dtype=float)
-        E_cw = np.sum(Ek_grid * fk_grid) / num_k
-        msg = f"     * CW: {E_cw} \n"
-        fk_grid_sym = np.array([fermi(eki - ef, T=0.0) for eki in Ek_grid_sym], dtype=float)
-        E_scw = np.sum(Ek_grid_sym * fk_grid_sym) / num_k
-        msg += f"     * SCW: {E_scw} \n"
-        E_scw = np.sum(np.array(list(z.values())) * np.array(list(n.values())))
-        msg += f"     * SCW2: {E_scw} \n"
-
-        self._cwm.log(msg, None, end="\n", file=self._outfile, mode="a")
-
-        self._cwm.log("done", file=self._outfile, mode="a")
-
-        #####
-
-        if not mat["molecule"]:
+        if not molecule:
             Hk_path = CWModel.fourier_transform_r_to_k(
                 self["Hr"], self._cwi["kpoints_path"], self._cwi["irvec"], self._cwi["ndegen"]
             )
@@ -1194,19 +1048,36 @@ class CWModel(dict):
             num_k, num_wann = Ek_path_sym.shape
             Ek_MAE_path = np.sum(np.abs(Ek_path_sym - Ek_path)) / num_k / num_wann * 1000  # [meV]
 
-            msg = f"     * MAE of eigen values between CW and Symmetry-Adapted CW models (path) = {'{:.4f}'.format(Ek_MAE_path)} [meV]"
-            self._cwm.log(msg, None, end="\n", file=self._outfile, mode="a")
+            msg += f"     * MAE of eigen values between CW and Symmetry-Adapted CW models (path) = {'{:.4f}'.format(Ek_MAE_path)} [meV]\n"
         else:
             Ek_MAE_path = None
 
-        #####
-
-        self._cwm.log("done", None, end="\n", file=self._outfile, mode="a")
+        self._cwm.log(msg, None, end="\n", file=self._outfile, mode="a")
 
         #####
+        msg = "    - band energy \n"
+        self._cwm.log(msg, None, end="", file=self._outfile, mode="a")
+        self._cwm.set_stamp()
 
-        del mat["matrix"]
-        self._samb_info = mat
+        # electronic density matrix elements
+        ef = self._cwi["fermi_energy"]
+        fk = np.array([fermi(eki - ef, T=0.0) for eki in Ek], dtype=float)
+        E_dft = np.sum(Ek * fk) / num_k
+        msg = f"     * DFT: {E_dft} \n"
+
+        fk_grid = np.array([fermi(eki - ef, T=0.0) for eki in Ek_grid], dtype=float)
+        E_cw = np.sum(Ek_grid * fk_grid) / num_k
+        msg = f"     * CW: {E_cw} \n"
+        fk_grid_sym = np.array([fermi(eki - ef, T=0.0) for eki in Ek_grid_sym], dtype=float)
+        E_scw = np.sum(Ek_grid_sym * fk_grid_sym) / num_k
+        msg += f"     * SCW: {E_scw} \n"
+        E_scw = np.sum(np.array(list(z.values())) * np.array(list(n.values())))
+        msg += f"     * SCW2: {E_scw} \n"
+
+        self._cwm.log(msg, None, end="\n", file=self._outfile, mode="a")
+        #####
+
+        #####
 
         self.update(
             {
@@ -1357,35 +1228,29 @@ class CWModel(dict):
 
     # ==================================================
     @classmethod
-    def samb_decomp_operator(
-        cls, Or_dict, Zr_dict, A=None, atoms_frac=None, ket=None, A_samb=None, atoms_frac_samb=None, ket_samb=None
-    ):
+    def samb_decomp_operator(cls, Or_dict, Zr_dict, ket=None, ket_samb=None):
         """
         decompose arbitrary operator into linear combination of SAMBs.
 
         Args:
             Or_dict (dict): dictionary form of an arbitrary operator matrix in reak-space/k-space representation.
             Zr_dict (dict): dictionary form of SAMBs.
-            A (list/ndarray, optional): real lattice vectors for the given operator, A = [a1,a2,a3] (list), [[[1,0,0], [0,1,0], [0,0,1]]].
-            atoms_frac (ndarray, optional): atom's position in fractional coordinates for the given operator.
             ket (list, optional): ket basis list, orbital@site.
-            A_samb (list/ndarray, optional): real lattice vectors for SAMBs, A = [a1,a2,a3] (list), [[[1,0,0], [0,1,0], [0,0,1]]].
-            atoms_frac_samb (ndarray, optional): atom's position in fractional coordinates for SAMBs.
             ket_samb (list, optional): ket basis list for SAMBs, orbital@site.
 
         Returns:
             z (dict): parameter set, {tag: z_j}.
         """
-        return samb_decomp_operator(Or_dict, Zr_dict, A, atoms_frac, ket, A_samb, atoms_frac_samb, ket_samb)
+        return samb_decomp_operator(Or_dict, Zr_dict, ket, ket_samb)
 
     # ==================================================
     @classmethod
-    def construct_Or(cls, z, num_wann, rpoints, matrix_dict):
+    def construct_Or(cls, coeff, num_wann, rpoints, matrix_dict):
         """
         arbitrary operator constructed by linear combination of SAMBs in real-space representation.
 
         Args:
-            z (list): parameter set, [z_j].
+            coeff (dict): coefficients, {zj: coeff}.
             num_wann (int): # of WFs.
             rpoints (ndarray, optional): lattice points (crystal coordinate, [[n1,n2,n3]], nj: integer).
             matrix_dict (dict): SAMBs.
@@ -1393,7 +1258,7 @@ class CWModel(dict):
         Returns:
             ndarray: matrix, [#r, dim, dim].
         """
-        return construct_Or(z, num_wann, rpoints, matrix_dict)
+        return construct_Or(coeff, num_wann, rpoints, matrix_dict)
 
     # ==================================================
     @classmethod
@@ -1808,8 +1673,8 @@ class CWModel(dict):
 
         o_str = "".join(
             [
-                "{:>7d}   {:>15}   {:>15}   {:>15.8E} \n ".format(j + 1, zj, tag, v)
-                for j, ((zj, tag), v) in enumerate(o.items())
+                "{:>7d}   {:>15}   {:>15}   {:>15.8E} \n ".format(j + 1, zj, self._cwi._mm["combined_id"][zj][0], v)
+                for j, (zj, v) in enumerate(o.items())
             ]
         )
 

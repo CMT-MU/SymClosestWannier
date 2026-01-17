@@ -8,14 +8,12 @@ cwin_info = {
     "outdir": "input and output files are found in this directory (str), ['./'].",
     "disentangle": "disentagle bands ? (bool), [False].",
     "proj_min": "minimum value of projectability (float), [0.0].",
-    "dis_win_emax": "top of the energy window (float), [None].",
-    "dis_win_emin": "bottom of the energy window (float), [None].",
-    "smearing_temp_max": "smearing temperature for the top of the energy window (float), [5.0].",
-    "smearing_temp_min": "smearing temperature for the bottom of the energy window (float), [0.01].",
-    "delta": "small constant to avoid ill-conditioning of overlap matrices (< 1e-6) (float), [0.0].",
+    "cwf_mu_max": "top of the energy window (float), [None].",
+    "cwf_mu_min": "bottom of the energy window (float), [None].",
+    "cwf_sigma_max": "smearing temperature for the top of the energy window (float), [5.0].",
+    "cwf_sigma_min": "smearing temperature for the bottom of the energy window (float), [0.01].",
+    "cwf_delta": "small constant to avoid ill-conditioning of overlap matrices (< 1e-6) (float), [0.0].",
     "svd": "implement singular value decomposition ? otherwise adopt Lowdin's orthogonalization method (bool), [False].",
-    "optimize_params": "optimize the energy windows and smearing temperatures? (bool), [False].",
-    "optimize_params_fixed": "fixed parameters for optimization (ex: ['dis_win_emin', 'smearing_temp_min']), (list) [].",
     "verbose": "verbose calculation info (bool, optional), [False].",
     "parallel": "use parallel code? (bool), [False].",
     "formatter": "format by using black? (bool), [False].",
@@ -24,6 +22,7 @@ cwin_info = {
     "use_degen_pert": "use degenerate perturbation theory when bands are degenerate and band derivatives are needed? (bool), [False].",
     "degen_thr": "threshold to exclude degenerate bands from the calculation, [0.0].",
     "tb_gauge": "use tb gauge? (bool), [False].",
+    "write_info_data": "write info and data to seedname.hdf5 (hdf5 format) ? (bool), [False]",
     "write_hr": "write seedname_hr.dat ? (bool), [False].",
     "write_sr": "write seedname_sr.dat ? (bool), [False].",
     "write_u_matrices": "write seedname_u.dat and seedname_u_dis.dat ? (bool), [False].",
@@ -315,7 +314,7 @@ nk_header = """
 === Electronic density matrix elements in k-space ===
 - {(k2,k2,k3,a,b) = n_{ab}(k)}.
 - n_{ab}(k)      : <φ_{a}(k)|P^{KS}|φ_{b}(k)>.
-- P^{KS}         : \sum_{nk} f_{nk} |ψ^{KS}_{n}(k)><ψ^{KS}_{n}(k)|
+- P^{KS}         : sum_{nk} f_{nk} |ψ^{KS}_{n}(k)><ψ^{KS}_{n}(k)|
 - ψ^{KS}_{m}(k): Kohn-Sham orbitals (KSOs).
 - φ_{a}(k)       : orthogonalized wannier function.
 - k = (k1,k2,k3) : k points (crystal coordinate).
