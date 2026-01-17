@@ -48,7 +48,7 @@ Example standard output for [graphene](../../example/graphene/graphene.cwin) is 
              |     The SymClosestWannier Developer Group and     |
              |        individual contributors                    |
              |                                                   |
-             |        Release: 1.10.16      5th Aug  2025         |
+             |        Release: 2.0.0      5th Aug  2025         |
              |                                                   |
              | This program is free software; you can            |
              | redistribute it and/or modify it under the terms  |
@@ -70,7 +70,7 @@ Example standard output for [graphene](../../example/graphene/graphene.cwin) is 
              +---------------------------------------------------+
              |    Execution started on 2025/08/12 14:51:54       |
              +---------------------------------------------------+
-    
+
 
 
                                    ------
@@ -89,15 +89,15 @@ Example standard output for [graphene](../../example/graphene/graphene.cwin) is 
                 b_2    0.000000   2.979547   0.000000
                 b_3    0.000000   0.000000   0.645091
 
-    
+
 *----------------------------------------------------------------------------*
 |   Site       Fractional Coordinate          Cartesian Coordinate (Ang)     |
 +----------------------------------------------------------------------------+
-    
+
   C   1   0.66667   0.33333   0.00000    |    1.21750   0.70292   0.00000
-    
+
   C   2   0.33333   0.66667   0.00000    |    0.00000   1.40585   0.00000
-    
+
 *----------------------------------------------------------------------------*
 
 
@@ -116,7 +116,7 @@ Example standard output for [graphene](../../example/graphene/graphene.cwin) is 
 
    - excluding bands with low projectability (proj_min = 0.2) ... done ( 0.007 [sec] ).
    - disentanglement ... done ( 0.0 [sec] ).
-   - constructing TB Hamiltonian ... 
+   - constructing TB Hamiltonian ...
     * band distance between DFT and Wannier bands:
      - eta_0     = 1.9960019700989895e-12 [meV]
      - eta_0_max = 7.993605777301127e-12 [meV]
@@ -125,14 +125,14 @@ Example standard output for [graphene](../../example/graphene/graphene.cwin) is 
      - eta_4     = 1.7296105678905685e-12 [meV]
      - eta_4_max = 7.993605777301127e-12 [meV]
 done ( 0.032 [sec] ).
-   - symmetrization ... 
-    - reading output of multipie ... 
+   - symmetrization ...
+    - reading output of multipie ...
     - decomposing Hamiltonian as linear combination of SAMBs ... done ( 0.001 [sec] ).
     - decomposing overlap as linear combination of SAMBs ... done ( 0.021 [sec] ).
     - decomposing non-orthogonal Hamiltonian as linear combination of SAMBs ... done ( 0.0 [sec] ).
     - decomposing electronic density as linear combination of SAMBs ... done ( 0.0 [sec] ).
     - constructing symmetrized TB Hamiltonian ... done ( 0.019 [sec] ).
-    - evaluating fitting accuracy ... 
+    - evaluating fitting accuracy ...
      * MAE of eigen values between DFT and Symmetry-Adapted CW models (grid) = 47.6916 [meV]
      * MAE of eigen values between CW and Symmetry-Adapted CW models (path) = 51.5308 [meV]
 done
