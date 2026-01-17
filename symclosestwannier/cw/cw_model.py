@@ -732,7 +732,7 @@ class CWModel(dict):
         self._cwm.set_stamp()
 
         if self._cwi["irreps"] == "all":
-            select = {"Gamma": []}
+            select = {}
         else:
             select = {"Gamma": self._cwi["irreps"]}
 
