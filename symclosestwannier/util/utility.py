@@ -120,7 +120,7 @@ def band_distance(Ak, Ek, Hk, ef=0.0):
         Hk (ndarray): Hamiltonian matrix elements in k-space (orthogonal).
         ef (float, optional): fermi energy.
 
-    Returns: eta_0, eta_0_max, eta_2, eta_2_max, eta_4, eta_4_max.
+    Returns: eta_0, eta_0_max, eta_2, eta_2_max, eta_5, eta_5_max.
     """
     num_k, num_wann, _ = Hk.shape
 
@@ -136,14 +136,14 @@ def band_distance(Ak, Ek, Hk, ef=0.0):
         for i, n in enumerate(Pk_max_idx_list):
             Ek_ref[k, i] = Ek[k, n]
 
-    fermi_ref = fermi(Ek_ref - (ef + 0.0), T=0.1, unit="eV")
-    fermi_wan = fermi(Ek_wan - (ef + 0.0), T=0.1, unit="eV")
+    fermi_ref = fermi(Ek_ref - (ef + 0.0), T=0.0, unit="eV")
+    fermi_wan = fermi(Ek_wan - (ef + 0.0), T=0.0, unit="eV")
     w = np.sqrt(fermi_ref * fermi_wan)
     eta_0 = np.sqrt(np.sum(w * (Ek_ref - Ek_wan) ** 2) / np.sum(w)) * 1000
     eta_0_max = np.max(w * np.abs(Ek_ref - Ek_wan)) * 1000
 
-    fermi_ref = fermi(Ek_ref - (ef + 2.0), T=0.1, unit="eV")
-    fermi_wan = fermi(Ek_wan - (ef + 2.0), T=0.1, unit="eV")
+    fermi_ref = fermi(Ek_ref - (ef + 2.0), T=0.0, unit="eV")
+    fermi_wan = fermi(Ek_wan - (ef + 2.0), T=0.0, unit="eV")
     w = np.sqrt(fermi_ref * fermi_wan)
     eta_2 = np.sqrt(np.sum(w * (Ek_ref - Ek_wan) ** 2) / np.sum(w)) * 1000
     eta_2_max = np.max(w * np.abs(Ek_ref - Ek_wan)) * 1000
@@ -151,10 +151,10 @@ def band_distance(Ak, Ek, Hk, ef=0.0):
     fermi_ref = fermi(Ek_ref - (ef + 5.0), T=0.0, unit="eV")
     fermi_wan = fermi(Ek_wan - (ef + 5.0), T=0.0, unit="eV")
     w = np.sqrt(fermi_ref * fermi_wan)
-    eta_4 = np.sqrt(np.sum(w * (Ek_ref - Ek_wan) ** 2) / np.sum(w)) * 1000
-    eta_4_max = np.max(w * np.abs(Ek_ref - Ek_wan)) * 1000
+    eta_5 = np.sqrt(np.sum(w * (Ek_ref - Ek_wan) ** 2) / np.sum(w)) * 1000
+    eta_5_max = np.max(w * np.abs(Ek_ref - Ek_wan)) * 1000
 
-    return eta_0, eta_0_max, eta_2, eta_2_max, eta_4, eta_4_max
+    return eta_0, eta_0_max, eta_2, eta_2_max, eta_5, eta_5_max
 
 
 # ==================================================

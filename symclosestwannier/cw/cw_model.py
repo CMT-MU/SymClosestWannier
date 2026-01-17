@@ -229,14 +229,14 @@ class CWModel(dict):
         self._cwm.log("* band distance between DFT and Wannier bands:", None, file=self._outfile, mode="a")
         self._cwm.set_stamp()
 
-        eta_0, eta_0_max, eta_2, eta_2_max, eta_4, eta_4_max = band_distance(Ak, Ek, Hk, ef=self._cwi["fermi_energy"])
+        eta_0, eta_0_max, eta_2, eta_2_max, eta_5, eta_5_max = band_distance(Ak, Ek, Hk, ef=self._cwi["fermi_energy"])
 
         self._cwm.log(f" - eta_0     = {eta_0} [meV]", file=self._outfile, mode="a")
         self._cwm.log(f" - eta_0_max = {eta_0_max} [meV]", file=self._outfile, mode="a")
         self._cwm.log(f" - eta_2     = {eta_2} [meV]", file=self._outfile, mode="a")
         self._cwm.log(f" - eta_2_max = {eta_2_max} [meV]", file=self._outfile, mode="a")
-        self._cwm.log(f" - eta_4     = {eta_4} [meV]", file=self._outfile, mode="a")
-        self._cwm.log(f" - eta_4_max = {eta_4_max} [meV]", file=self._outfile, mode="a")
+        self._cwm.log(f" - eta_5     = {eta_5} [meV]", file=self._outfile, mode="a")
+        self._cwm.log(f" - eta_5_max = {eta_5_max} [meV]", file=self._outfile, mode="a")
 
         self._cwm.log("done", file=self._outfile, mode="a")
 
@@ -536,15 +536,15 @@ class CWModel(dict):
         self._cwm.log("\n    * band distance between DFT and Wannier bands:", None, file=self._outfile, mode="a")
         self._cwm.set_stamp()
 
-        eta_0, eta_0_max, eta_2, eta_2_max, eta_4, eta_4_max = band_distance(Ak, Ek, Hk, ef=self._cwi["fermi_energy"])
+        eta_0, eta_0_max, eta_2, eta_2_max, eta_5, eta_5_max = band_distance(Ak, Ek, Hk, ef=self._cwi["fermi_energy"])
 
         # self._cwm.log(f"     - bottom_band_idx = {bottom_band_idx}", None, file=self._outfile, mode="a")
         self._cwm.log(f"     - eta_0     = {eta_0} [meV]", None, file=self._outfile, mode="a")
         self._cwm.log(f"     - eta_0_max = {eta_0_max} [meV]", None, file=self._outfile, mode="a")
         self._cwm.log(f"     - eta_2     = {eta_2} [meV]", None, file=self._outfile, mode="a")
         self._cwm.log(f"     - eta_2_max = {eta_2_max} [meV]", None, file=self._outfile, mode="a")
-        self._cwm.log(f"     - eta_4     = {eta_4} [meV]", None, file=self._outfile, mode="a")
-        self._cwm.log(f"     - eta_4_max = {eta_4_max} [meV]", None, file=self._outfile, mode="a")
+        self._cwm.log(f"     - eta_5     = {eta_5} [meV]", None, file=self._outfile, mode="a")
+        self._cwm.log(f"     - eta_5_max = {eta_5_max} [meV]", None, file=self._outfile, mode="a")
 
         self._cwm.log("done", file=self._outfile, mode="a")
 
