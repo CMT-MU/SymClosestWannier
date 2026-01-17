@@ -4,11 +4,11 @@ outdir = './'
 
 disentangle       = true
 proj_min          = 0.0
-dis_win_emax      = 12.5
-dis_win_emin      = 4
-smearing_temp_max = 2.5
-smearing_temp_min = 1e-6
-delta             = 0.0
+cwf_mu_max      = 12.5
+cwf_mu_min      = 4
+cwf_sigma_max = 2.5
+cwf_sigma_min = 1e-6
+cwf_delta             = 0.0
 svd               = true
 verbose           = true
 
