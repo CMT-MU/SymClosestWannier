@@ -736,7 +736,7 @@ class CWModel(dict):
         else:
             select = {"Gamma": self._cwi["irreps"]}
 
-        combined_samb_matrix = self._cwi._mm.get_combined_samb_matrix(fmt="value", **select)
+        combined_samb_matrix = self._cwi._mm.get_combined_samb_matrix(fmt="value", digit=15, **select)
 
         ### sign chagne for odd-parity site- and bond-cluster multipoles (L-handed CoSi) ###
         # for _, zj, d in res:
