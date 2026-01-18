@@ -48,7 +48,7 @@ Example standard output for [graphene](../../example/graphene/graphene.cwin) is 
              |     The SymClosestWannier Developer Group and     |
              |        individual contributors                    |
              |                                                   |
-             |        Release: 1.10.12      5th Aug  2025         |
+             |        Release: 1.10.16      5th Aug  2025         |
              |                                                   |
              | This program is free software; you can            |
              | redistribute it and/or modify it under the terms  |
