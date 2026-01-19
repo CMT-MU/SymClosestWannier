@@ -10,7 +10,8 @@ dependencies = [
     "xmltodict",
     "fortio",
     "h5py",
-    "lmfit"
+    "tqdm",
+    "
 ]
 dynamic = ["version"]
 requires-python = ">=3.9"
