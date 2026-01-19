@@ -85,12 +85,12 @@ class Amn(dict):
         # minus_sign_idx_lst = [1, 5, 6, 10, 14, 15, 19, 23, 24, 28, 32, 33, 37, 41, 45, 49]
 
         # CoSi atom_proj (PAW pseudopotential)
-        # minus_sign_idx_lst = [1, 5, 6, 10, 14, 15, 19, 23, 24, 28, 32, 33, 37, 41, 45, 49]
+        minus_sign_idx_lst = [1, 5, 6, 10, 14, 15, 19, 23, 24, 28, 32, 33, 37, 41, 45, 49]
 
         # FeSi atom_proj (PAW pseudopotential)
         # minus_sign_idx_lst = [0, 1, 5, 6, 9, 10, 14, 15, 18, 19, 20, 21, 24, 27, 28, 32, 33, 35, 37, 40, 41, 45, 48, 49]
 
-        # Ak[:, :, minus_sign_idx_lst] = -Ak[:, :, minus_sign_idx_lst]
+        Ak[:, :, minus_sign_idx_lst] = -Ak[:, :, minus_sign_idx_lst]
 
         d = {"num_k": num_k, "num_bands": num_bands, "num_wann": num_wann, "Ak": Ak}
 
