@@ -211,6 +211,8 @@ def cwin_msg(cwi):
     msg += "\n*----------------------------------------------------------------------------*\n"
 
     for k in cwin_info.keys():
+        if cwi[k] == None:
+            continue
         if k == "ket_amn":
             msg += f"| {k:<{label_width}} : {"":>{value_width}} |\n"
             for ket in cwi[k]:
