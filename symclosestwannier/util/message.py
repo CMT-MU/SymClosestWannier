@@ -55,7 +55,7 @@ def cw_open_msg():
              |     The SymClosestWannier Developer Group and     |
              |        individual contributors                    |
              |                                                   |
-             |        Release: 2.0.0     27th Oct  2025        |
+             |        Release: 2.0.1     19th Jan  2026          |
              |                                                   |
              | This program is free software; you can            |
              | redistribute it and/or modify it under the terms  |
@@ -211,6 +211,8 @@ def cwin_msg(cwi):
     msg += "\n*----------------------------------------------------------------------------*\n"
 
     for k in cwin_info.keys():
+        if cwi[k] == None:
+            continue
         if k == "ket_amn":
             msg += f"| {k:<{label_width}} : {"":>{value_width}} |\n"
             for ket in cwi[k]:
