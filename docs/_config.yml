@@ -1,16 +1,14 @@
-# Learn more at https://jupyterbook.org/customize/config.html
-
 # ==================================================
 # Book settings
 title: SymClosestWannier
 author: Rikuto Oiwa
-copyright: "2021-2025"
+copyright: "2021-"
 # logo: scw_logo.png
 
 # ==================================================
 # Execution settings
 execute:
-  execute_notebooks: cache
+  execute_notebooks: off
   stderr_output: "remove"
   allow_errors: true
   timeout: 120
@@ -18,8 +16,6 @@ execute:
 # ==================================================
 # Parse and render settings
 parse:
-  myst_substitutions:
-      sub3: My _global_ value!
   myst_enable_extensions:
     - amsmath
     - colon_fence
@@ -35,6 +31,7 @@ parse:
 # ==================================================
 # HTML-specific settings
 html:
+  extra_css: ["_static/custom.css"]
   home_page_in_navbar: false
   use_edit_page_button: false
   use_repository_button: true
@@ -76,6 +73,9 @@ sphinx:
       undoc-members": true
       show-inheritance: true
     html_theme: sphinx_book_theme
+    html_static_path: ["_static"]
+    html_js_files:
+      - custom.js
     html_theme_options:
       show_prev_next: false
       navigation_with_keys: false
@@ -90,3 +90,5 @@ sphinx:
         load: ["[tex]/physics"]
       tex:
         packages: { "[+]": ["physics"] }
+        macros:
+          "bm": ["\\boldsymbol{#1}", 1]

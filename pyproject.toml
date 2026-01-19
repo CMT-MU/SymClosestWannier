@@ -19,20 +19,19 @@ authors = [
   { name="Rikuto Oiwa", email="ro.qp.07@gmail.com" },
 ]
 description = "A Python library for Symmetry-Adapted Closest Wannier (SymCW) Tight-Binding model based on Plane-Wave DFT calculation."
-readme = "docs/README.md"
-license = {text = "GPL"}
+readme = {file = "docs/README.md", content-type = "text/markdown"}
+license = {file = "GPL"}
 keywords = ["dft", "wannier function", "tight-binding model", "symmetry", "materials science"]
 classifiers = [
     "Intended Audience :: Science/Research",
     "Topic :: Scientific/Engineering :: Information Analysis",
-    "License :: OSI Approved :: MIT License",
+    "License :: OSI Approved :: GPL License",
     "Operating System :: Microsoft :: Windows",
     "Operating System :: POSIX",
     "Operating System :: MacOS",
-    "Programming Language :: Python :: 3.9",
-    "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
 ]
 
 [project.urls]
@@ -47,7 +46,6 @@ Issues = "https://github.com/CMT-MU/SymClosestWannier/issues"
 dev = [
     "jupyter-book",
     "ghp-import",
-    "jupytext",
     "multipie",
     "qtdraw",
 ]

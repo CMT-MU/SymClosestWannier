@@ -1,4 +1,4 @@
-# Utility
+# Analyzer
 
 ```{eval-rst}
 .. automodule:: symclosestwannier.analyzer.analyzer
