@@ -417,7 +417,9 @@ class CWin(dict):
             v = int(v)
         elif key == "ket_amn":
             v = v.replace(" ", "")
-            if "(" in v or ")" in v:
+            if v == "auto":
+                pass
+            elif "(" in v or ")" in v:
                 v = [[oi.replace("]", "") for oi in o[1:].split(",")] for o in v[1:-1].split("],")]
                 v = [[str(o[0]), int(o[1]), int(o[2]), str(o[3] + "," + o[4])] for o in v]
             else:
