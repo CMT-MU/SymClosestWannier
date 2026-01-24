@@ -24,7 +24,7 @@ keywords = ["dft", "wannier function", "tight-binding model", "symmetry", "mater
 classifiers = [
     "Intended Audience :: Science/Research",
     "Topic :: Scientific/Engineering :: Information Analysis",
-    "License :: OSI Approved :: GPL License",
+    "License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)",
     "Operating System :: Microsoft :: Windows",
     "Operating System :: POSIX",
     "Operating System :: MacOS",
