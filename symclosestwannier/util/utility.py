@@ -154,6 +154,12 @@ def band_distance(Ak, Ek, Hk, ef=0.0):
     eta_5 = np.sqrt(np.sum(w * (Ek_ref - Ek_wan) ** 2) / np.sum(w)) * 1000
     eta_5_max = np.max(w * np.abs(Ek_ref - Ek_wan)) * 1000
 
+    fermi_ref = fermi(Ek_ref - (ef + 10.0), T=0.0, unit="eV")
+    fermi_wan = fermi(Ek_wan - (ef + 10.0), T=0.0, unit="eV")
+    w = np.sqrt(fermi_ref * fermi_wan)
+    eta_5 = np.sqrt(np.sum(w * (Ek_ref - Ek_wan) ** 2) / np.sum(w)) * 1000
+    eta_5_max = np.max(w * np.abs(Ek_ref - Ek_wan)) * 1000
+
     return eta_0, eta_0_max, eta_2, eta_2_max, eta_5, eta_5_max
 
 
