@@ -15,52 +15,56 @@
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
     document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
   </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-<link href="../../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-
-  
-  <link href="../../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+  <link href="../../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 
     <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/sphinx-book-theme.css?v=eba8b062" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css?v=9c3e77be" />
     <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/custom.css?v=34ddd5e8" />
   
+  <!-- So that users can add custom icons -->
+  <script src="../../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
-<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
-  <script src="../../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
     <script src="../../../_static/documentation_options.js?v=8cf54648"></script>
-    <script src="../../../_static/doctools.js?v=9a2dae69"></script>
-    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../../../_static/copybutton.js?v=f281be69"></script>
     <script src="../../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
-    <script src="../../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script src="../../../_static/togglebutton.js?v=1ae7504c"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script src="../../../_static/design-tabs.js?v=f930bc37"></script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
     <script async="async" src="../../../_static/sphinx-thebe.js?v=c100c467"></script>
-    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
-    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_modules/symclosestwannier/cw/cw_creator';</script>
+    <script src="../../../_static/custom.js?v=9c3a2667"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="jp"/>
+  <meta name="docsearch:version" content="" />
   </head>
   
   
@@ -76,19 +80,8 @@
     <i class="fa-solid fa-arrow-up"></i>Back to top</button>
 
   
-  <input type="checkbox"
-          class="sidebar-toggle"
-          id="pst-primary-sidebar-checkbox"/>
-  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
-  
-  <input type="checkbox"
-          class="sidebar-toggle"
-          id="pst-secondary-sidebar-checkbox"/>
-  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
-  
-  <div class="search-button__wrapper">
-    <div class="search-button__overlay"></div>
-    <div class="search-button__search-container">
+  <dialog id="pst-search-dialog">
+    
 <form class="bd-search d-flex align-items-center"
       action="../../../search.html"
       method="get">
@@ -96,7 +89,6 @@
   <input type="search"
          class="form-control"
          name="q"
-         id="search-input"
          placeholder="Search this book..."
          aria-label="Search this book..."
          autocomplete="off"
@@ -104,8 +96,8 @@
          autocapitalize="off"
          spellcheck="false"/>
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
-</form></div>
-  </div>
+</form>
+  </dialog>
 
   <div class="pst-async-banner-revealer d-none">
   <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
@@ -123,7 +115,8 @@
       
         
       
-      <div class="bd-sidebar-primary bd-sidebar">
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
         
 
   
@@ -153,15 +146,11 @@
 </a></div>
         <div class="sidebar-primary-item">
 
- <script>
- document.write(`
-   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="fa-solid fa-magnifying-glass"></i>
-    <span class="search-button__default-text">Search</span>
-    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
-   </button>
- `);
- </script></div>
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
         <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
         <p aria-level="2" class="caption" role="heading"><span class="caption-text">MultiPie</span></p>
@@ -196,7 +185,7 @@
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">API</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../../../src/api/cw.html">Closest Wannier</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../src/api/analyzer.html">Utility</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/api/analyzer.html">Analyzer</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../src/api/util.html">Utility</a></li>
 </ul>
 
@@ -206,9 +195,14 @@
   
   
   <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
   </div>
-  
-  <div id="rtd-footer-container"></div>
 
 
       </div>
@@ -272,24 +266,16 @@
 
 
 
-<script>
-document.write(`
-  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
-    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
-    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
-  </button>
-`);
-</script>
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
 
 
-<script>
-document.write(`
-  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <i class="fa-solid fa-magnifying-glass fa-lg"></i>
-  </button>
-`);
-</script>
+</button>
 
 </div></div>
       
@@ -349,6 +335,7 @@ document.write(`
 <span class="kn">from</span><span class="w"> </span><span class="nn">symclosestwannier.util.band</span><span class="w"> </span><span class="kn">import</span> <span class="n">output_linear_dispersion</span><span class="p">,</span> <span class="n">output_linear_dispersion_eig</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">symclosestwannier.util.fermi_surface</span><span class="w"> </span><span class="kn">import</span> <span class="n">output_fermi_surface_eig</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">symclosestwannier.util.dos</span><span class="w"> </span><span class="kn">import</span> <span class="n">output_dos</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">symclosestwannier.util.cohp</span><span class="w"> </span><span class="kn">import</span> <span class="n">output_cohp</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">symclosestwannier.util.lindhard</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_lindhard</span><span class="p">,</span> <span class="n">output_lindhard</span><span class="p">,</span> <span class="n">output_lindhard_surface</span>
 
 
@@ -356,6 +343,7 @@ document.write(`
     <span class="n">cw_open_msg</span><span class="p">,</span>
     <span class="n">cw_end_msg</span><span class="p">,</span>
     <span class="n">system_msg</span><span class="p">,</span>
+    <span class="n">cwin_msg</span><span class="p">,</span>
     <span class="n">cw_start_output_msg</span><span class="p">,</span>
     <span class="n">cw_end_output_msg</span><span class="p">,</span>
 <span class="p">)</span>
@@ -387,16 +375,17 @@ document.write(`
 
     <span class="n">cwm</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">cw_open_msg</span><span class="p">(),</span> <span class="n">stamp</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">outfile</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;w&quot;</span><span class="p">)</span>
     <span class="n">cwm</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">system_msg</span><span class="p">(</span><span class="n">cwi</span><span class="p">),</span> <span class="n">stamp</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">outfile</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;a&quot;</span><span class="p">)</span>
+    <span class="n">cwm</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">cwin_msg</span><span class="p">(</span><span class="n">cwi</span><span class="p">),</span> <span class="n">stamp</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">outfile</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;a&quot;</span><span class="p">)</span>
 
     <span class="n">cw_model</span> <span class="o">=</span> <span class="n">CWModel</span><span class="p">(</span><span class="n">cwi</span><span class="p">,</span> <span class="n">cwm</span><span class="p">)</span>
     <span class="n">cwi</span> <span class="o">=</span> <span class="n">cw_model</span><span class="o">.</span><span class="n">_cwi</span>
-    <span class="n">samb_info</span> <span class="o">=</span> <span class="n">cw_model</span><span class="o">.</span><span class="n">_samb_info</span>
 
     <span class="n">cwm</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">cw_start_output_msg</span><span class="p">(),</span> <span class="n">stamp</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">outfile</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;a&quot;</span><span class="p">)</span>
     <span class="n">cwm</span><span class="o">.</span><span class="n">set_stamp</span><span class="p">()</span>
 
-    <span class="n">filename</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;outdir&quot;</span><span class="p">],</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">cwi</span><span class="p">[</span><span class="s1">&#39;seedname&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">.hdf5&quot;</span><span class="p">))</span>
-    <span class="n">cw_model</span><span class="o">.</span><span class="n">write_info_data</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;write_info_data&quot;</span><span class="p">]:</span>
+        <span class="n">filename</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;outdir&quot;</span><span class="p">],</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">cwi</span><span class="p">[</span><span class="s1">&#39;seedname&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">.hdf5&quot;</span><span class="p">))</span>
+        <span class="n">cw_model</span><span class="o">.</span><span class="n">write_info_data</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;write_hr&quot;</span><span class="p">]:</span>
         <span class="n">filename</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">cwi</span><span class="p">[</span><span class="s1">&#39;seedname&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">_hr.dat.cw&quot;</span>
@@ -404,6 +393,12 @@ document.write(`
 
         <span class="n">filename</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">cwi</span><span class="p">[</span><span class="s1">&#39;seedname&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">_hr_R_dep.dat.cw&quot;</span>
         <span class="n">cw_model</span><span class="o">.</span><span class="n">write_O_R_dependence</span><span class="p">(</span><span class="n">cw_model</span><span class="p">[</span><span class="s2">&quot;Hr&quot;</span><span class="p">],</span> <span class="n">filename</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="n">CWModel</span><span class="o">.</span><span class="n">_O_R_dependence_header</span><span class="p">())</span>
+
+        <span class="n">filename</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">cwi</span><span class="p">[</span><span class="s1">&#39;seedname&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">_nr.dat.cw&quot;</span>
+        <span class="n">cw_model</span><span class="o">.</span><span class="n">write_or</span><span class="p">(</span><span class="n">cw_model</span><span class="p">[</span><span class="s2">&quot;nr&quot;</span><span class="p">],</span> <span class="n">filename</span><span class="p">)</span>  <span class="c1"># , header=CWModel._hr_header())</span>
+
+        <span class="n">filename</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">cwi</span><span class="p">[</span><span class="s1">&#39;seedname&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">_nr_R_dep.dat.cw&quot;</span>
+        <span class="n">cw_model</span><span class="o">.</span><span class="n">write_O_R_dependence</span><span class="p">(</span><span class="n">cw_model</span><span class="p">[</span><span class="s2">&quot;nr&quot;</span><span class="p">],</span> <span class="n">filename</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="n">CWModel</span><span class="o">.</span><span class="n">_O_R_dependence_header</span><span class="p">())</span>
 
     <span class="k">if</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;write_sr&quot;</span><span class="p">]:</span>
         <span class="n">filename</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">cwi</span><span class="p">[</span><span class="s1">&#39;seedname&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">_sr.dat.cw&quot;</span>
@@ -451,8 +446,11 @@ document.write(`
             <span class="n">filename</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;mp_outdir&quot;</span><span class="p">],</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">cwi</span><span class="p">[</span><span class="s1">&#39;mp_seedname&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">_hr_sym.dat.cw&quot;</span><span class="p">))</span>
             <span class="n">cw_model</span><span class="o">.</span><span class="n">write_or</span><span class="p">(</span><span class="n">cw_model</span><span class="p">[</span><span class="s2">&quot;Hr_sym&quot;</span><span class="p">],</span> <span class="n">filename</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="n">CWModel</span><span class="o">.</span><span class="n">_hr_header</span><span class="p">())</span>
 
-            <span class="c1"># filename = os.path.join(cwi[&quot;mp_outdir&quot;], &quot;{}&quot;.format(f&quot;{cwi[&#39;mp_seedname&#39;]}_hr_nonortho_sym.dat.cw&quot;))</span>
-            <span class="c1"># cw_model.write_or(cw_model[&quot;Hr_nonortho_sym&quot;], filename, header=CWModel._hr_header())</span>
+            <span class="n">filename</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;mp_outdir&quot;</span><span class="p">],</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">cwi</span><span class="p">[</span><span class="s1">&#39;mp_seedname&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">_hr_nonortho_sym.dat.cw&quot;</span><span class="p">))</span>
+            <span class="n">cw_model</span><span class="o">.</span><span class="n">write_or</span><span class="p">(</span><span class="n">cw_model</span><span class="p">[</span><span class="s2">&quot;Hr_nonortho_sym&quot;</span><span class="p">],</span> <span class="n">filename</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="n">CWModel</span><span class="o">.</span><span class="n">_hr_header</span><span class="p">())</span>
+
+            <span class="n">filename</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;mp_outdir&quot;</span><span class="p">],</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">cwi</span><span class="p">[</span><span class="s1">&#39;mp_seedname&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">_nr_sym.dat.cw&quot;</span><span class="p">))</span>
+            <span class="n">cw_model</span><span class="o">.</span><span class="n">write_or</span><span class="p">(</span><span class="n">cw_model</span><span class="p">[</span><span class="s2">&quot;nr_sym&quot;</span><span class="p">],</span> <span class="n">filename</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="n">CWModel</span><span class="o">.</span><span class="n">_hr_header</span><span class="p">())</span>
 
         <span class="k">if</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;write_sr&quot;</span><span class="p">]:</span>
             <span class="n">filename</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;mp_outdir&quot;</span><span class="p">],</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">cwi</span><span class="p">[</span><span class="s1">&#39;mp_seedname&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">_sr_sym.dat.cw&quot;</span><span class="p">))</span>
@@ -475,9 +473,25 @@ document.write(`
         <span class="n">filename</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;mp_outdir&quot;</span><span class="p">],</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">cwi</span><span class="p">[</span><span class="s1">&#39;mp_seedname&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">_n.dat.cw&quot;</span><span class="p">))</span>
         <span class="n">cw_model</span><span class="o">.</span><span class="n">write_samb_coeffs</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="s2">&quot;n&quot;</span><span class="p">)</span>
 
+        <span class="k">if</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;calc_spin_2d&quot;</span><span class="p">]</span> <span class="ow">and</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;pauli_spn&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">filename</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;mp_outdir&quot;</span><span class="p">],</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">cwi</span><span class="p">[</span><span class="s1">&#39;mp_seedname&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">_sx.dat.cw&quot;</span><span class="p">))</span>
+            <span class="n">cw_model</span><span class="o">.</span><span class="n">write_samb_coeffs</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="s2">&quot;sx&quot;</span><span class="p">)</span>
+
+            <span class="n">filename</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;mp_outdir&quot;</span><span class="p">],</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">cwi</span><span class="p">[</span><span class="s1">&#39;mp_seedname&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">_sy.dat.cw&quot;</span><span class="p">))</span>
+            <span class="n">cw_model</span><span class="o">.</span><span class="n">write_samb_coeffs</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="s2">&quot;sy&quot;</span><span class="p">)</span>
+
+            <span class="n">filename</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;mp_outdir&quot;</span><span class="p">],</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">cwi</span><span class="p">[</span><span class="s1">&#39;mp_seedname&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">_sz.dat.cw&quot;</span><span class="p">))</span>
+            <span class="n">cw_model</span><span class="o">.</span><span class="n">write_samb_coeffs</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="s2">&quot;sz&quot;</span><span class="p">)</span>
+
     <span class="c1"># # the order of atoms are different from that of SAMBs</span>
-    <span class="c1"># atoms_list = list(cw_model._cwi[&quot;atoms_frac_shift&quot;].values())</span>
-    <span class="c1"># atoms_frac = [atoms_list[i] for i in cw_model._cwi[&quot;nw2n&quot;]]</span>
+    <span class="n">atoms_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">cw_model</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;atoms_frac_shift&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+    <span class="n">atoms_frac</span> <span class="o">=</span> <span class="p">[</span><span class="n">atoms_list</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">cw_model</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;nw2n&quot;</span><span class="p">]]</span>
+
+    <span class="k">if</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;tb_gauge&quot;</span><span class="p">]:</span>
+        <span class="n">atoms_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">cw_model</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;atoms_frac_shift&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+        <span class="n">atoms_frac</span> <span class="o">=</span> <span class="p">[</span><span class="n">atoms_list</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">cw_model</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;nw2n&quot;</span><span class="p">]]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">atoms_frac</span> <span class="o">=</span> <span class="kc">None</span>
 
     <span class="c1"># band calculation</span>
     <span class="k">if</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;kpoint&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;kpoint_path&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -497,12 +511,6 @@ document.write(`
         <span class="k">if</span> <span class="n">a</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">A</span> <span class="o">=</span> <span class="n">NSArray</span><span class="p">(</span><span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;unit_cell_cart&quot;</span><span class="p">],</span> <span class="s2">&quot;matrix&quot;</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s2">&quot;value&quot;</span><span class="p">)</span>
             <span class="n">a</span> <span class="o">=</span> <span class="n">A</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">norm</span><span class="p">()</span>
-
-        <span class="k">if</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;tb_gauge&quot;</span><span class="p">]:</span>
-            <span class="n">atoms_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;atoms_frac&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
-            <span class="n">atoms_frac</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">atoms_list</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;nw2n&quot;</span><span class="p">]])</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">atoms_frac</span> <span class="o">=</span> <span class="kc">None</span>
 
         <span class="n">Hk_path</span> <span class="o">=</span> <span class="n">cw_model</span><span class="o">.</span><span class="n">fourier_transform_r_to_k</span><span class="p">(</span>
             <span class="n">cw_model</span><span class="p">[</span><span class="s2">&quot;Hr&quot;</span><span class="p">],</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;kpoints_path&quot;</span><span class="p">],</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;irvec&quot;</span><span class="p">],</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;ndegen&quot;</span><span class="p">],</span> <span class="n">atoms_frac</span><span class="o">=</span><span class="n">atoms_frac</span>
@@ -764,14 +772,16 @@ document.write(`
         <span class="p">)</span>
 
         <span class="k">if</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;symmetrization&quot;</span><span class="p">]:</span>
-            <span class="n">ket_samb</span> <span class="o">=</span> <span class="n">samb_info</span><span class="p">[</span><span class="s2">&quot;ket&quot;</span><span class="p">]</span>
-            <span class="n">cell_site</span> <span class="o">=</span> <span class="n">samb_info</span><span class="p">[</span><span class="s2">&quot;cell_site&quot;</span><span class="p">]</span>
+            <span class="n">ket_samb</span> <span class="o">=</span> <span class="n">cwi</span><span class="o">.</span><span class="n">_mm</span><span class="p">[</span><span class="s2">&quot;full_matrix&quot;</span><span class="p">][</span><span class="s2">&quot;ket&quot;</span><span class="p">]</span>
 
             <span class="k">if</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;tb_gauge&quot;</span><span class="p">]:</span>
-                <span class="n">atoms_frac</span> <span class="o">=</span> <span class="p">[</span>
-                    <span class="n">NSArray</span><span class="p">(</span><span class="n">cell_site</span><span class="p">[</span><span class="n">ket_samb</span><span class="p">[</span><span class="n">a</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;@&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]][</span><span class="mi">0</span><span class="p">],</span> <span class="n">style</span><span class="o">=</span><span class="s2">&quot;vector&quot;</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s2">&quot;value&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
-                    <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">cw_model</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;num_wann&quot;</span><span class="p">])</span>
-                <span class="p">]</span>
+                <span class="n">site_dict</span> <span class="o">=</span> <span class="p">{</span>
+                    <span class="n">k</span> <span class="o">+</span> <span class="s2">&quot;_&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">vi</span><span class="o">.</span><span class="n">sublattice</span><span class="p">):</span> <span class="n">vi</span><span class="o">.</span><span class="n">position_primitive</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+                    <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="o">.</span><span class="n">_mm</span><span class="p">[</span><span class="s2">&quot;site&quot;</span><span class="p">][</span><span class="s2">&quot;cell&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+                    <span class="k">for</span> <span class="n">vi</span> <span class="ow">in</span> <span class="n">v</span>
+                    <span class="k">if</span> <span class="n">vi</span><span class="o">.</span><span class="n">plus_set</span> <span class="o">==</span> <span class="mi">1</span>
+                <span class="p">}</span>
+                <span class="n">atoms_frac</span> <span class="o">=</span> <span class="p">[</span><span class="n">site_dict</span><span class="p">[</span><span class="n">atom</span> <span class="o">+</span> <span class="s2">&quot;_&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">sl</span><span class="p">)]</span> <span class="k">for</span> <span class="n">atom</span><span class="p">,</span> <span class="n">sl</span><span class="p">,</span> <span class="n">rank</span><span class="p">,</span> <span class="n">orbital</span> <span class="ow">in</span> <span class="n">ket_samb</span><span class="p">]</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">atoms_frac</span> <span class="o">=</span> <span class="kc">None</span>
 
@@ -794,7 +804,6 @@ document.write(`
                 <span class="n">SS_k</span> <span class="o">=</span> <span class="n">cw_model</span><span class="o">.</span><span class="n">fourier_transform_r_to_k_vec</span><span class="p">(</span>
                     <span class="n">SS_R</span><span class="p">,</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;kpoints_path&quot;</span><span class="p">],</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;irvec&quot;</span><span class="p">],</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;ndegen&quot;</span><span class="p">],</span> <span class="n">atoms_frac</span><span class="o">=</span><span class="n">atoms_frac</span>
                 <span class="p">)</span>
-                <span class="n">ket_samb</span> <span class="o">=</span> <span class="n">samb_info</span><span class="p">[</span><span class="s2">&quot;ket&quot;</span><span class="p">]</span>
                 <span class="n">ket_amn</span> <span class="o">=</span> <span class="n">cwi</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;ket_amn&quot;</span><span class="p">,</span> <span class="n">ket_samb</span><span class="p">)</span>
                 <span class="n">SS_k</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">sort_ket_matrix</span><span class="p">(</span><span class="n">SS_k</span><span class="p">[</span><span class="n">a</span><span class="p">],</span> <span class="n">ket_amn</span><span class="p">,</span> <span class="n">ket_samb</span><span class="p">)</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">)])</span>
                 <span class="n">SS_H</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">Uk</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">conjugate</span><span class="p">()</span> <span class="o">@</span> <span class="n">SS_k</span><span class="p">[</span><span class="n">a</span><span class="p">]</span> <span class="o">@</span> <span class="n">Uk</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">)])</span>
@@ -1000,14 +1009,16 @@ document.write(`
         <span class="n">output_fermi_surface_eig</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="n">seedname</span><span class="p">,</span> <span class="n">kpoints_2d</span><span class="p">,</span> <span class="n">e</span><span class="o">=</span><span class="n">Ek</span><span class="p">,</span> <span class="n">ef</span><span class="o">=</span><span class="n">ef</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;symmetrization&quot;</span><span class="p">]:</span>
-            <span class="n">ket_samb</span> <span class="o">=</span> <span class="n">samb_info</span><span class="p">[</span><span class="s2">&quot;ket&quot;</span><span class="p">]</span>
-            <span class="n">cell_site</span> <span class="o">=</span> <span class="n">samb_info</span><span class="p">[</span><span class="s2">&quot;cell_site&quot;</span><span class="p">]</span>
+            <span class="n">ket_samb</span> <span class="o">=</span> <span class="n">cwi</span><span class="o">.</span><span class="n">_mm</span><span class="p">[</span><span class="s2">&quot;full_matrix&quot;</span><span class="p">][</span><span class="s2">&quot;ket&quot;</span><span class="p">]</span>
 
             <span class="k">if</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;tb_gauge&quot;</span><span class="p">]:</span>
-                <span class="n">atoms_frac</span> <span class="o">=</span> <span class="p">[</span>
-                    <span class="n">NSArray</span><span class="p">(</span><span class="n">cell_site</span><span class="p">[</span><span class="n">ket_samb</span><span class="p">[</span><span class="n">a</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;@&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]][</span><span class="mi">0</span><span class="p">],</span> <span class="n">style</span><span class="o">=</span><span class="s2">&quot;vector&quot;</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s2">&quot;value&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
-                    <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">cw_model</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;num_wann&quot;</span><span class="p">])</span>
-                <span class="p">]</span>
+                <span class="n">site_dict</span> <span class="o">=</span> <span class="p">{</span>
+                    <span class="n">k</span> <span class="o">+</span> <span class="s2">&quot;_&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">vi</span><span class="o">.</span><span class="n">sublattice</span><span class="p">):</span> <span class="n">vi</span><span class="o">.</span><span class="n">position_primitive</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+                    <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="o">.</span><span class="n">_mm</span><span class="p">[</span><span class="s2">&quot;site&quot;</span><span class="p">][</span><span class="s2">&quot;cell&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+                    <span class="k">for</span> <span class="n">vi</span> <span class="ow">in</span> <span class="n">v</span>
+                    <span class="k">if</span> <span class="n">vi</span><span class="o">.</span><span class="n">plus_set</span> <span class="o">==</span> <span class="mi">1</span>
+                <span class="p">}</span>
+                <span class="n">atoms_frac</span> <span class="o">=</span> <span class="p">[</span><span class="n">site_dict</span><span class="p">[</span><span class="n">atom</span> <span class="o">+</span> <span class="s2">&quot;_&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">sl</span><span class="p">)]</span> <span class="k">for</span> <span class="n">atom</span><span class="p">,</span> <span class="n">sl</span><span class="p">,</span> <span class="n">rank</span><span class="p">,</span> <span class="n">orbital</span> <span class="ow">in</span> <span class="n">ket_samb</span><span class="p">]</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">atoms_frac</span> <span class="o">=</span> <span class="kc">None</span>
 
@@ -1038,24 +1049,24 @@ document.write(`
         <span class="n">dos_num_fermi</span> <span class="o">=</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;dos_num_fermi&quot;</span><span class="p">]</span>
         <span class="n">dos_smr_en_width</span> <span class="o">=</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;dos_smr_en_width&quot;</span><span class="p">]</span>
 
-        <span class="n">output_dos</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="n">seedname</span> <span class="o">+</span> <span class="s2">&quot;_dos.txt&quot;</span><span class="p">,</span> <span class="n">Ek</span><span class="p">,</span> <span class="n">Uk</span><span class="p">,</span> <span class="n">ef_shift</span><span class="p">,</span> <span class="n">dos_num_fermi</span><span class="p">,</span> <span class="n">dos_smr_en_width</span><span class="p">)</span>
+        <span class="n">dos_emax</span> <span class="o">=</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;dos_emax&quot;</span><span class="p">]</span>
+        <span class="n">dos_emin</span> <span class="o">=</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;dos_emin&quot;</span><span class="p">]</span>
+
+        <span class="n">output_dos</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="n">seedname</span> <span class="o">+</span> <span class="s2">&quot;_dos.txt&quot;</span><span class="p">,</span> <span class="n">Ek</span><span class="p">,</span> <span class="n">Uk</span><span class="p">,</span> <span class="n">ef_shift</span><span class="p">,</span> <span class="n">dos_num_fermi</span><span class="p">,</span> <span class="n">dos_smr_en_width</span><span class="p">,</span> <span class="n">dos_emax</span><span class="p">,</span> <span class="n">dos_emin</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;symmetrization&quot;</span><span class="p">]:</span>
-            <span class="n">ket_samb</span> <span class="o">=</span> <span class="n">samb_info</span><span class="p">[</span><span class="s2">&quot;ket&quot;</span><span class="p">]</span>
-            <span class="n">cell_site</span> <span class="o">=</span> <span class="n">samb_info</span><span class="p">[</span><span class="s2">&quot;cell_site&quot;</span><span class="p">]</span>
-            <span class="n">atoms_frac</span> <span class="o">=</span> <span class="p">[</span>
-                <span class="n">NSArray</span><span class="p">(</span><span class="n">cell_site</span><span class="p">[</span><span class="n">ket_samb</span><span class="p">[</span><span class="n">a</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;@&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]][</span><span class="mi">0</span><span class="p">],</span> <span class="n">style</span><span class="o">=</span><span class="s2">&quot;vector&quot;</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s2">&quot;value&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
-                <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">cw_model</span><span class="o">.</span><span class="n">_cwi</span><span class="p">[</span><span class="s2">&quot;num_wann&quot;</span><span class="p">])</span>
-            <span class="p">]</span>
+            <span class="n">ket_samb</span> <span class="o">=</span> <span class="n">cwi</span><span class="o">.</span><span class="n">_mm</span><span class="p">[</span><span class="s2">&quot;full_matrix&quot;</span><span class="p">][</span><span class="s2">&quot;ket&quot;</span><span class="p">]</span>
 
-            <span class="n">rel</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">relpath</span><span class="p">(</span><span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;outdir&quot;</span><span class="p">],</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;mp_outdir&quot;</span><span class="p">])</span>
-
-            <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">seedname</span><span class="si">}</span><span class="s2">.band.gnu&quot;</span><span class="p">):</span>
-                <span class="n">ref_filename</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">rel</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">seedname</span><span class="si">}</span><span class="s2">.band.gnu&quot;</span>
-            <span class="k">elif</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">seedname</span><span class="si">}</span><span class="s2">.band.gnu.dat&quot;</span><span class="p">):</span>
-                <span class="n">ref_filename</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">rel</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">seedname</span><span class="si">}</span><span class="s2">.band.gnu.dat&quot;</span>
+            <span class="k">if</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;tb_gauge&quot;</span><span class="p">]:</span>
+                <span class="n">site_dict</span> <span class="o">=</span> <span class="p">{</span>
+                    <span class="n">k</span> <span class="o">+</span> <span class="s2">&quot;_&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">vi</span><span class="o">.</span><span class="n">sublattice</span><span class="p">):</span> <span class="n">vi</span><span class="o">.</span><span class="n">position_primitive</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+                    <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cwi</span><span class="o">.</span><span class="n">_mm</span><span class="p">[</span><span class="s2">&quot;site&quot;</span><span class="p">][</span><span class="s2">&quot;cell&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+                    <span class="k">for</span> <span class="n">vi</span> <span class="ow">in</span> <span class="n">v</span>
+                    <span class="k">if</span> <span class="n">vi</span><span class="o">.</span><span class="n">plus_set</span> <span class="o">==</span> <span class="mi">1</span>
+                <span class="p">}</span>
+                <span class="n">atoms_frac</span> <span class="o">=</span> <span class="p">[</span><span class="n">site_dict</span><span class="p">[</span><span class="n">atom</span> <span class="o">+</span> <span class="s2">&quot;_&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">sl</span><span class="p">)]</span> <span class="k">for</span> <span class="n">atom</span><span class="p">,</span> <span class="n">sl</span><span class="p">,</span> <span class="n">rank</span><span class="p">,</span> <span class="n">orbital</span> <span class="ow">in</span> <span class="n">ket_samb</span><span class="p">]</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">ref_filename</span> <span class="o">=</span> <span class="kc">None</span>
+                <span class="n">atoms_frac</span> <span class="o">=</span> <span class="kc">None</span>
 
             <span class="n">Hk_sym_grid</span> <span class="o">=</span> <span class="n">cw_model</span><span class="o">.</span><span class="n">fourier_transform_r_to_k</span><span class="p">(</span>
                 <span class="n">cw_model</span><span class="p">[</span><span class="s2">&quot;Hr_sym&quot;</span><span class="p">],</span> <span class="n">kpoints</span><span class="p">,</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;irvec&quot;</span><span class="p">],</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;ndegen&quot;</span><span class="p">],</span> <span class="n">atoms_frac</span><span class="o">=</span><span class="n">atoms_frac</span>
@@ -1064,10 +1075,74 @@ document.write(`
 
             <span class="c1"># output_linear_dispersion(</span>
             <span class="n">output_dos</span><span class="p">(</span>
-                <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;mp_outdir&quot;</span><span class="p">],</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;mp_seedname&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot;_dos.txt&quot;</span><span class="p">,</span> <span class="n">Ek</span><span class="p">,</span> <span class="n">Uk</span><span class="p">,</span> <span class="n">ef_shift</span><span class="p">,</span> <span class="n">dos_num_fermi</span><span class="p">,</span> <span class="n">dos_smr_en_width</span>
+                <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;mp_outdir&quot;</span><span class="p">],</span>
+                <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;mp_seedname&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot;_dos.txt&quot;</span><span class="p">,</span>
+                <span class="n">Ek</span><span class="p">,</span>
+                <span class="n">Uk</span><span class="p">,</span>
+                <span class="n">ef_shift</span><span class="p">,</span>
+                <span class="n">dos_num_fermi</span><span class="p">,</span>
+                <span class="n">dos_smr_en_width</span><span class="p">,</span>
+                <span class="n">dos_emax</span><span class="p">,</span>
+                <span class="n">dos_emin</span><span class="p">,</span>
             <span class="p">)</span>
 
         <span class="n">cwm</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="s2">&quot;done&quot;</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">outfile</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;a&quot;</span><span class="p">)</span>
+
+    <span class="c1">#####</span>
+    <span class="k">if</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;calc_cohp&quot;</span><span class="p">]:</span>
+        <span class="n">cwm</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">  * calculating COHP ... &quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">outfile</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;a&quot;</span><span class="p">)</span>
+        <span class="n">cwm</span><span class="o">.</span><span class="n">set_stamp</span><span class="p">()</span>
+
+        <span class="n">N1</span><span class="p">,</span> <span class="n">N2</span><span class="p">,</span> <span class="n">N3</span> <span class="o">=</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;cohp_kmesh&quot;</span><span class="p">]</span>
+        <span class="n">kpoints</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+            <span class="p">[[</span><span class="n">i</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="n">N1</span><span class="p">),</span> <span class="n">j</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="n">N2</span><span class="p">),</span> <span class="n">k</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="n">N3</span><span class="p">)]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N1</span><span class="p">)</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N2</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N3</span><span class="p">)]</span>
+        <span class="p">)</span>
+
+        <span class="n">A</span> <span class="o">=</span> <span class="n">NSArray</span><span class="p">(</span><span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;unit_cell_cart&quot;</span><span class="p">],</span> <span class="s2">&quot;matrix&quot;</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s2">&quot;value&quot;</span><span class="p">)</span>
+
+        <span class="n">ef_shift</span> <span class="o">=</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;fermi_energy&quot;</span><span class="p">]</span>
+        <span class="n">cohp_bond_length_max</span> <span class="o">=</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;cohp_bond_length_max&quot;</span><span class="p">]</span>
+        <span class="n">cohp_bond_length_min</span> <span class="o">=</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;cohp_bond_length_min&quot;</span><span class="p">]</span>
+        <span class="n">cohp_head_atom</span> <span class="o">=</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;cohp_head_atom&quot;</span><span class="p">]</span>
+        <span class="n">cohp_tail_atom</span> <span class="o">=</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;cohp_tail_atom&quot;</span><span class="p">]</span>
+        <span class="n">cohp_head_atom_idx</span> <span class="o">=</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;cohp_head_atom_idx&quot;</span><span class="p">]</span>
+        <span class="n">cohp_tail_atom_idx</span> <span class="o">=</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;cohp_tail_atom_idx&quot;</span><span class="p">]</span>
+        <span class="n">cohp_num_fermi</span> <span class="o">=</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;cohp_num_fermi&quot;</span><span class="p">]</span>
+        <span class="n">cohp_smr_en_width</span> <span class="o">=</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;cohp_smr_en_width&quot;</span><span class="p">]</span>
+        <span class="n">cohp_emax</span> <span class="o">=</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;cohp_emax&quot;</span><span class="p">]</span>
+        <span class="n">cohp_emin</span> <span class="o">=</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;cohp_emin&quot;</span><span class="p">]</span>
+
+        <span class="n">atoms_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;atoms_frac&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+        <span class="n">atoms_frac</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">atoms_list</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;nw2n&quot;</span><span class="p">]])</span>
+
+        <span class="n">output_cohp</span><span class="p">(</span>
+            <span class="s2">&quot;.&quot;</span><span class="p">,</span>
+            <span class="n">seedname</span> <span class="o">+</span> <span class="s2">&quot;_cohp.txt&quot;</span><span class="p">,</span>
+            <span class="n">cw_model</span><span class="p">[</span><span class="s2">&quot;Hr&quot;</span><span class="p">],</span>
+            <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;Ek&quot;</span><span class="p">],</span>
+            <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;Uk&quot;</span><span class="p">],</span>
+            <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;kpoints&quot;</span><span class="p">],</span>
+            <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;irvec&quot;</span><span class="p">],</span>
+            <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;ndegen&quot;</span><span class="p">],</span>
+            <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;atoms_frac&quot;</span><span class="p">],</span>
+            <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;nw2n&quot;</span><span class="p">],</span>
+            <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;nw2l&quot;</span><span class="p">],</span>
+            <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;nw2m&quot;</span><span class="p">],</span>
+            <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;nw2r&quot;</span><span class="p">],</span>
+            <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;nw2s&quot;</span><span class="p">],</span>
+            <span class="n">A</span><span class="p">,</span>
+            <span class="n">cohp_bond_length_max</span><span class="p">,</span>
+            <span class="n">cohp_bond_length_min</span><span class="p">,</span>
+            <span class="n">cohp_head_atom</span><span class="p">,</span>
+            <span class="n">cohp_tail_atom</span><span class="p">,</span>
+            <span class="n">cohp_head_atom_idx</span><span class="p">,</span>
+            <span class="n">cohp_tail_atom_idx</span><span class="p">,</span>
+            <span class="n">cohp_num_fermi</span><span class="p">,</span>
+            <span class="n">cohp_smr_en_width</span><span class="p">,</span>
+            <span class="n">cohp_emax</span><span class="p">,</span>
+            <span class="n">cohp_emin</span><span class="p">,</span>
+            <span class="n">ef_shift</span><span class="p">,</span>
+        <span class="p">)</span>
 
     <span class="c1">#####</span>
 
@@ -1079,7 +1154,7 @@ document.write(`
         <span class="n">omega</span> <span class="o">=</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;lindhard_freq&quot;</span><span class="p">]</span>
         <span class="n">ef</span> <span class="o">=</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;fermi_energy&quot;</span><span class="p">]</span>
         <span class="n">T</span> <span class="o">=</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;temperature&quot;</span><span class="p">]</span>
-        <span class="n">delta</span> <span class="o">=</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;lindhard_smr_fixed_en_width&quot;</span><span class="p">]</span>
+        <span class="n">cwf_delta</span> <span class="o">=</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;lindhard_smr_fixed_en_width&quot;</span><span class="p">]</span>
 
         <span class="k">if</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;filling&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">N1</span><span class="p">,</span> <span class="n">N2</span><span class="p">,</span> <span class="n">N3</span> <span class="o">=</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;lindhard_kmesh&quot;</span><span class="p">]</span>
@@ -1184,7 +1259,7 @@ By Rikuto Oiwa
 
   <p class="copyright">
     
-      © Copyright 2021-2025.
+      © Copyright 2021-.
       <br/>
     
   </p>
@@ -1208,8 +1283,8 @@ By Rikuto Oiwa
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="../../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
-<script src="../../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+  <script defer src="../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
 
   <footer class="bd-footer">
   </footer>

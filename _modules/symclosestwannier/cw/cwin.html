@@ -15,52 +15,56 @@
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
     document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
   </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-<link href="../../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-
-  
-  <link href="../../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+  <link href="../../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 
     <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/sphinx-book-theme.css?v=eba8b062" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css?v=9c3e77be" />
     <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/custom.css?v=34ddd5e8" />
   
+  <!-- So that users can add custom icons -->
+  <script src="../../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
-<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
-  <script src="../../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
     <script src="../../../_static/documentation_options.js?v=8cf54648"></script>
-    <script src="../../../_static/doctools.js?v=9a2dae69"></script>
-    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../../../_static/copybutton.js?v=f281be69"></script>
     <script src="../../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
-    <script src="../../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script src="../../../_static/togglebutton.js?v=1ae7504c"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script src="../../../_static/design-tabs.js?v=f930bc37"></script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
     <script async="async" src="../../../_static/sphinx-thebe.js?v=c100c467"></script>
-    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
-    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_modules/symclosestwannier/cw/cwin';</script>
+    <script src="../../../_static/custom.js?v=9c3a2667"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="jp"/>
+  <meta name="docsearch:version" content="" />
   </head>
   
   
@@ -76,19 +80,8 @@
     <i class="fa-solid fa-arrow-up"></i>Back to top</button>
 
   
-  <input type="checkbox"
-          class="sidebar-toggle"
-          id="pst-primary-sidebar-checkbox"/>
-  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
-  
-  <input type="checkbox"
-          class="sidebar-toggle"
-          id="pst-secondary-sidebar-checkbox"/>
-  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
-  
-  <div class="search-button__wrapper">
-    <div class="search-button__overlay"></div>
-    <div class="search-button__search-container">
+  <dialog id="pst-search-dialog">
+    
 <form class="bd-search d-flex align-items-center"
       action="../../../search.html"
       method="get">
@@ -96,7 +89,6 @@
   <input type="search"
          class="form-control"
          name="q"
-         id="search-input"
          placeholder="Search this book..."
          aria-label="Search this book..."
          autocomplete="off"
@@ -104,8 +96,8 @@
          autocapitalize="off"
          spellcheck="false"/>
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
-</form></div>
-  </div>
+</form>
+  </dialog>
 
   <div class="pst-async-banner-revealer d-none">
   <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
@@ -123,7 +115,8 @@
       
         
       
-      <div class="bd-sidebar-primary bd-sidebar">
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
         
 
   
@@ -153,15 +146,11 @@
 </a></div>
         <div class="sidebar-primary-item">
 
- <script>
- document.write(`
-   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="fa-solid fa-magnifying-glass"></i>
-    <span class="search-button__default-text">Search</span>
-    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
-   </button>
- `);
- </script></div>
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
         <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
         <p aria-level="2" class="caption" role="heading"><span class="caption-text">MultiPie</span></p>
@@ -196,7 +185,7 @@
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">API</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../../../src/api/cw.html">Closest Wannier</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../src/api/analyzer.html">Utility</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/api/analyzer.html">Analyzer</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../src/api/util.html">Utility</a></li>
 </ul>
 
@@ -206,9 +195,14 @@
   
   
   <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
   </div>
-  
-  <div id="rtd-footer-container"></div>
 
 
       </div>
@@ -272,24 +266,16 @@
 
 
 
-<script>
-document.write(`
-  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
-    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
-    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
-  </button>
-`);
-</script>
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
 
 
-<script>
-document.write(`
-  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <i class="fa-solid fa-magnifying-glass fa-lg"></i>
-  </button>
-`);
-</script>
+</button>
 
 </div></div>
       
@@ -330,22 +316,25 @@ document.write(`
     <span class="c1">#</span>
     <span class="s2">&quot;disentangle&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
     <span class="s2">&quot;proj_min&quot;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
-    <span class="s2">&quot;dis_win_emax&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="s2">&quot;dis_win_emin&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="s2">&quot;smearing_temp_max&quot;</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">,</span>
-    <span class="s2">&quot;smearing_temp_min&quot;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
-    <span class="s2">&quot;delta&quot;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+    <span class="s2">&quot;cwf_mu_max&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="s2">&quot;cwf_mu_min&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="s2">&quot;cwf_sigma_max&quot;</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">,</span>
+    <span class="s2">&quot;cwf_sigma_min&quot;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+    <span class="s2">&quot;cwf_delta&quot;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
     <span class="s2">&quot;svd&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
     <span class="c1">#</span>
     <span class="s2">&quot;verbose&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
     <span class="s2">&quot;parallel&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
     <span class="s2">&quot;formatter&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
     <span class="c1">#</span>
+    <span class="s2">&quot;calc_spreads&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="c1">#</span>
     <span class="s2">&quot;transl_inv&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
     <span class="s2">&quot;use_degen_pert&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
     <span class="s2">&quot;degen_thr&quot;</span><span class="p">:</span> <span class="mf">1e-4</span><span class="p">,</span>
     <span class="s2">&quot;tb_gauge&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
     <span class="c1">#</span>
+    <span class="s2">&quot;write_info_data&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
     <span class="s2">&quot;write_hr&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
     <span class="s2">&quot;write_sr&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
     <span class="s2">&quot;write_u_matrices&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
@@ -371,6 +360,22 @@ document.write(`
     <span class="s2">&quot;dos_kmesh&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
     <span class="s2">&quot;dos_num_fermi&quot;</span><span class="p">:</span> <span class="mi">50</span><span class="p">,</span>
     <span class="s2">&quot;dos_smr_en_width&quot;</span><span class="p">:</span> <span class="mf">0.001</span><span class="p">,</span>
+    <span class="s2">&quot;dos_emax&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="s2">&quot;dos_emin&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="c1"># cohp</span>
+    <span class="s2">&quot;calc_cohp&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="s2">&quot;cohp_kmesh&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
+    <span class="s2">&quot;cohp_bond_length_max&quot;</span><span class="p">:</span> <span class="mi">6</span><span class="p">,</span>
+    <span class="s2">&quot;cohp_bond_length_min&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="s2">&quot;cohp_head_atom&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="s2">&quot;cohp_tail_atom&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="s2">&quot;cohp_head_atom_idx&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="s2">&quot;cohp_tail_atom_idx&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="s2">&quot;cohp_num_fermi&quot;</span><span class="p">:</span> <span class="mi">50</span><span class="p">,</span>
+    <span class="s2">&quot;cohp_smr_en_width&quot;</span><span class="p">:</span> <span class="mf">0.001</span><span class="p">,</span>
+    <span class="s2">&quot;cohp_emax&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="s2">&quot;cohp_emin&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="s2">&quot;calc_cohp_samb_decomp&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
     <span class="c1"># zeeman interaction</span>
     <span class="s2">&quot;zeeman_interaction&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
     <span class="s2">&quot;magnetic_field&quot;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
@@ -444,7 +449,7 @@ document.write(`
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        read seedname.cwin file.</span>
 
-<span class="sd">        Args:d</span>
+<span class="sd">        Args:</span>
 <span class="sd">            file_name (str, optional): file name.</span>
 
 <span class="sd">        Returns:</span>
@@ -454,19 +459,21 @@ document.write(`
 <span class="sd">                - restart           : the restart position &#39;cw&#39;/&#39;w90&#39; (str), [&quot;cw&quot;].</span>
 <span class="sd">                - disentangle       : disentagle bands ? (bool), [False].</span>
 <span class="sd">                - proj_min          : minimum value of projectability: [0.0].</span>
-<span class="sd">                - dis_win_emax      : top of the energy window (float), [None].</span>
-<span class="sd">                - dis_win_emin      : bottom of the energy window (float), [None].</span>
-<span class="sd">                - smearing_temp_max : smearing temperature for the top of the energy window (float), [1.0].</span>
-<span class="sd">                - smearing_temp_min : smearing temperature for the bottom of the energy window (float), [0.0].</span>
-<span class="sd">                - delta             : small constant to avoid ill-conditioning of overlap matrices (&lt; 1e-5) (float), [0.0].</span>
+<span class="sd">                - cwf_mu_max      : top of the energy window (float), [None].</span>
+<span class="sd">                - cwf_mu_min      : bottom of the energy window (float), [None].</span>
+<span class="sd">                - cwf_sigma_max : smearing temperature for the top of the energy window (float), [1.0].</span>
+<span class="sd">                - cwf_sigma_min : smearing temperature for the bottom of the energy window (float), [0.0].</span>
+<span class="sd">                - cwf_delta             : small constant to avoid ill-conditioning of overlap matrices (&lt; 1e-5) (float), [0.0].</span>
 <span class="sd">                - svd               : implement singular value decomposition ? otherwise adopt Lowdin&#39;s orthogonalization method (bool), [False].</span>
 <span class="sd">                - verbose           : verbose calculation info (bool, optional), [False].</span>
 <span class="sd">                - parallel          : use parallel code? (bool), [False].</span>
 <span class="sd">                - formatter         : format by using black? (bool), [False].</span>
+<span class="sd">                - calc_spreads      : calculate spreads? (bool), [True].</span>
 <span class="sd">                - transl_inv        : use Eq.(31) of Marzari&amp;Vanderbilt PRB 56, 12847 (1997) for band-diagonal position matrix elements? (bool), [False].</span>
 <span class="sd">                - use_degen_pert    : use degenerate perturbation theory when bands are degenerate and band derivatives are needed? (bool), [False].</span>
 <span class="sd">                - degen_thr         : threshold to exclude degenerate bands from the calculation, [0.0].</span>
 <span class="sd">                - tb_gauge          : use tb gauge? (bool), [False].</span>
+<span class="sd">                - write_info_data   : write info and data to seedname.hdf5 (hdf5 format) ? (bool), [False].</span>
 <span class="sd">                - write_hr          : write seedname_hr.py ? (bool), [False].</span>
 <span class="sd">                - write_sr          : write seedname_sr.py ? (bool), [False].</span>
 <span class="sd">                - write_u_matrices  : write seedname_u.dat and seedname_u_dis.dat ? (bool), [False].</span>
@@ -495,6 +502,23 @@ document.write(`
 <span class="sd">                - dos_kmesh         : dimensions of the Monkhorst-Pack grid of k-points for dos calculation (list), [[1, 1, 1]].</span>
 <span class="sd">                - dos_num_fermi     : number of fermi energies (int), [50].</span>
 <span class="sd">                - dos_smr_en_width  : Energy width for the smearing function for the DOS (The units are [eV]) (flaot), [0.001].</span>
+<span class="sd">                - dos_emax          : maximun energy to be calculated (flaot), [None].</span>
+<span class="sd">                - dos_emin          : minimum energy to be calculated (flaot), [None].</span>
+
+<span class="sd">            # only used for cohp calculation.</span>
+<span class="sd">                - calc_cohp             : calculate cohp? (bool), [False].</span>
+<span class="sd">                - cohp_kmesh            : dimensions of the Monkhorst-Pack grid of k-points for cohp calculation (list), [[1, 1, 1]].</span>
+<span class="sd">                - cohp_bond_length_max  : maximum bond length (ang) to be calculated (float), [6.0].</span>
+<span class="sd">                - cohp_bond_length_min  : minimum bond length (ang) to be calculated (float), [0.0].</span>
+<span class="sd">                - cohp_head_atom        : head atom to be calculated (float), [None].</span>
+<span class="sd">                - cohp_tail_atom        : tail atom to be calculated (float), [None].</span>
+<span class="sd">                - cohp_head_atom_idx    : head atom index to be calculated (float), [None].</span>
+<span class="sd">                - cohp_tail_atom_idx    : tail atom index to be calculated (float), [None].</span>
+<span class="sd">                - cohp_num_fermi        : number of fermi energies (int), [50].</span>
+<span class="sd">                - cohp_smr_en_width     : Energy width for the smearing function for the COHP (The units are [eV]) (flaot), [0.001].</span>
+<span class="sd">                - cohp_emax             : maximun energy to be calculated (flaot), [None].</span>
+<span class="sd">                - cohp_emin             : minimum energy to be calculated (flaot), [None].</span>
+<span class="sd">                - calc_cohp_samb_decomp : decompose cohp by SAMBs? (bool), [False].</span>
 
 <span class="sd">            # only used for when zeeman interaction is considered.</span>
 <span class="sd">                - zeeman_interaction   : consider zeeman interaction ? (bool), [False].</span>
@@ -595,6 +619,10 @@ document.write(`
                 <span class="n">d</span><span class="p">[</span><span class="s2">&quot;dos_kmesh&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">v</span><span class="o">.</span><span class="n">split</span><span class="p">()</span> <span class="k">if</span> <span class="n">x</span> <span class="o">!=</span> <span class="s2">&quot;&quot;</span><span class="p">]</span>
                 <span class="k">continue</span>
 
+            <span class="k">if</span> <span class="n">key</span> <span class="o">==</span> <span class="s2">&quot;cohp_kmesh&quot;</span><span class="p">:</span>
+                <span class="n">d</span><span class="p">[</span><span class="s2">&quot;cohp_kmesh&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">v</span><span class="o">.</span><span class="n">split</span><span class="p">()</span> <span class="k">if</span> <span class="n">x</span> <span class="o">!=</span> <span class="s2">&quot;&quot;</span><span class="p">]</span>
+                <span class="k">continue</span>
+
             <span class="k">if</span> <span class="n">key</span> <span class="o">==</span> <span class="s2">&quot;fermi_surface_kmesh&quot;</span><span class="p">:</span>
                 <span class="n">kmin_1</span><span class="p">,</span> <span class="n">kmax_1</span><span class="p">,</span> <span class="n">N1</span><span class="p">,</span> <span class="n">kmin_2</span><span class="p">,</span> <span class="n">kmax_2</span><span class="p">,</span> <span class="n">N2</span> <span class="o">=</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">v</span><span class="o">.</span><span class="n">split</span><span class="p">()</span> <span class="k">if</span> <span class="n">x</span> <span class="o">!=</span> <span class="s2">&quot;&quot;</span><span class="p">]</span>
                 <span class="n">d</span><span class="p">[</span><span class="s2">&quot;fermi_surface_kmesh&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[[</span><span class="n">kmin_1</span><span class="p">,</span> <span class="n">kmax_1</span><span class="p">,</span> <span class="n">N1</span><span class="p">],</span> <span class="p">[</span><span class="n">kmin_2</span><span class="p">,</span> <span class="n">kmax_2</span><span class="p">,</span> <span class="n">N2</span><span class="p">]]</span>
@@ -630,13 +658,11 @@ document.write(`
         <span class="c1"># ), &quot;Symmetrization cannot be performed when restart == w90.&quot;</span>
 
         <span class="k">assert</span> <span class="ow">not</span> <span class="p">(</span>
-            <span class="n">d</span><span class="p">[</span><span class="s2">&quot;disentangle&quot;</span><span class="p">]</span> <span class="ow">and</span> <span class="p">(</span><span class="n">d</span><span class="p">[</span><span class="s2">&quot;dis_win_emax&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">d</span><span class="p">[</span><span class="s2">&quot;dis_win_emin&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">)</span>
-        <span class="p">),</span> <span class="s2">&quot;dis_win_emax and dis_win_emin must be specified when disentangle == true.&quot;</span>
+            <span class="n">d</span><span class="p">[</span><span class="s2">&quot;disentangle&quot;</span><span class="p">]</span> <span class="ow">and</span> <span class="p">(</span><span class="n">d</span><span class="p">[</span><span class="s2">&quot;cwf_mu_max&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">d</span><span class="p">[</span><span class="s2">&quot;cwf_mu_min&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="p">),</span> <span class="s2">&quot;cwf_mu_max and cwf_mu_min must be specified when disentangle == true.&quot;</span>
 
-        <span class="k">if</span> <span class="n">d</span><span class="p">[</span><span class="s2">&quot;dis_win_emax&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">d</span><span class="p">[</span><span class="s2">&quot;dis_win_emin&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">assert</span> <span class="ow">not</span> <span class="p">(</span>
-                <span class="n">d</span><span class="p">[</span><span class="s2">&quot;dis_win_emax&quot;</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">d</span><span class="p">[</span><span class="s2">&quot;dis_win_emin&quot;</span><span class="p">]</span>
-            <span class="p">),</span> <span class="s2">&quot;check disentanglement windows (dis_win_emax &lt; dis_win_emin !)&quot;</span>
+        <span class="k">if</span> <span class="n">d</span><span class="p">[</span><span class="s2">&quot;cwf_mu_max&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">d</span><span class="p">[</span><span class="s2">&quot;cwf_mu_min&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="ow">not</span> <span class="p">(</span><span class="n">d</span><span class="p">[</span><span class="s2">&quot;cwf_mu_max&quot;</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">d</span><span class="p">[</span><span class="s2">&quot;cwf_mu_min&quot;</span><span class="p">]),</span> <span class="s2">&quot;check disentanglement windows (cwf_mu_max &lt; cwf_mu_min !)&quot;</span>
 
         <span class="k">return</span> <span class="n">d</span></div>
 
@@ -647,7 +673,7 @@ document.write(`
 
         <span class="k">if</span> <span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">CWin</span><span class="o">.</span><span class="n">_default</span><span class="p">()</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
             <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;invalid keyword = </span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2"> was given.&quot;</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="n">key</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;seedname&quot;</span><span class="p">,</span> <span class="s2">&quot;mp_seedname&quot;</span><span class="p">,</span> <span class="s2">&quot;hr_input&quot;</span><span class="p">,</span> <span class="s2">&quot;lindhard_smr_type&quot;</span><span class="p">):</span>
+        <span class="k">elif</span> <span class="n">key</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;seedname&quot;</span><span class="p">,</span> <span class="s2">&quot;mp_seedname&quot;</span><span class="p">,</span> <span class="s2">&quot;hr_input&quot;</span><span class="p">,</span> <span class="s2">&quot;lindhard_smr_type&quot;</span><span class="p">,</span> <span class="s2">&quot;cohp_head_atom&quot;</span><span class="p">,</span> <span class="s2">&quot;cohp_tail_atom&quot;</span><span class="p">):</span>
             <span class="k">pass</span>
         <span class="k">elif</span> <span class="n">key</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;outdir&quot;</span><span class="p">,</span> <span class="s2">&quot;mp_outdir&quot;</span><span class="p">):</span>
             <span class="n">v</span> <span class="o">=</span> <span class="n">v</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="k">if</span> <span class="n">v</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;/&quot;</span> <span class="k">else</span> <span class="n">v</span>
@@ -656,13 +682,20 @@ document.write(`
                 <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;invalid restart = </span><span class="si">{</span><span class="n">v</span><span class="si">}</span><span class="s2"> was given. choose from &#39;cw&#39;/&#39;w90&#39;.&quot;</span><span class="p">)</span>
         <span class="k">elif</span> <span class="n">key</span> <span class="ow">in</span> <span class="p">(</span>
             <span class="s2">&quot;proj_min&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;dis_win_emax&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;dis_win_emin&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;smearing_temp_max&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;smearing_temp_min&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;delta&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;cwf_mu_max&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;cwf_mu_min&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;cwf_sigma_max&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;cwf_sigma_min&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;cwf_delta&quot;</span><span class="p">,</span>
             <span class="s2">&quot;a&quot;</span><span class="p">,</span>
             <span class="s2">&quot;dos_smr_en_width&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;dos_emax&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;dos_emin&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;cohp_bond_length_max&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;cohp_bond_length_min&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;cohp_smr_en_width&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;cohp_emax&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;cohp_emin&quot;</span><span class="p">,</span>
             <span class="s2">&quot;degen_thr&quot;</span><span class="p">,</span>
             <span class="s2">&quot;fermi_surface_const&quot;</span><span class="p">,</span>
             <span class="s2">&quot;magnetic_field&quot;</span><span class="p">,</span>
@@ -676,9 +709,9 @@ document.write(`
             <span class="s2">&quot;lindhard_surface_const&quot;</span><span class="p">,</span>
         <span class="p">):</span>
             <span class="n">v</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">key</span> <span class="o">==</span> <span class="s2">&quot;delta&quot;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">key</span> <span class="o">==</span> <span class="s2">&quot;cwf_delta&quot;</span><span class="p">:</span>
                 <span class="k">if</span> <span class="n">v</span> <span class="o">&gt;</span> <span class="mf">1e-5</span><span class="p">:</span>
-                    <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;delta is too large. delta must be less than 1e-5.&quot;</span><span class="p">)</span>
+                    <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;cwf_delta is too large. cwf_delta must be less than 1e-5.&quot;</span><span class="p">)</span>
             <span class="k">elif</span> <span class="n">key</span> <span class="o">==</span> <span class="s2">&quot;lindhard_smr_fixed_en_width&quot;</span><span class="p">:</span>
                 <span class="k">pass</span>
                 <span class="c1"># if v == 0.0:</span>
@@ -689,22 +722,26 @@ document.write(`
             <span class="k">elif</span> <span class="n">key</span> <span class="o">==</span> <span class="s2">&quot;filling&quot;</span><span class="p">:</span>
                 <span class="k">if</span> <span class="n">v</span> <span class="o">&lt;</span> <span class="mf">0.0</span><span class="p">:</span>
                     <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;filling must be positive value.&quot;</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="n">key</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;N1&quot;</span><span class="p">,</span> <span class="s2">&quot;Nq1&quot;</span><span class="p">,</span> <span class="s2">&quot;dos_num_fermi&quot;</span><span class="p">):</span>
+        <span class="k">elif</span> <span class="n">key</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;N1&quot;</span><span class="p">,</span> <span class="s2">&quot;Nq1&quot;</span><span class="p">,</span> <span class="s2">&quot;dos_num_fermi&quot;</span><span class="p">,</span> <span class="s2">&quot;cohp_head_atom_idx&quot;</span><span class="p">,</span> <span class="s2">&quot;cohp_tail_atom_idx&quot;</span><span class="p">,</span> <span class="s2">&quot;cohp_num_fermi&quot;</span><span class="p">):</span>
             <span class="n">v</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
         <span class="k">elif</span> <span class="n">key</span> <span class="o">==</span> <span class="s2">&quot;ket_amn&quot;</span><span class="p">:</span>
-            <span class="k">if</span> <span class="s2">&quot;[&quot;</span> <span class="ow">in</span> <span class="n">v</span> <span class="ow">or</span> <span class="s2">&quot;]&quot;</span> <span class="ow">in</span> <span class="n">v</span><span class="p">:</span>
-                <span class="k">if</span> <span class="s2">&quot;(&quot;</span> <span class="ow">in</span> <span class="nb">str</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="ow">and</span> <span class="s2">&quot;)&quot;</span> <span class="ow">in</span> <span class="nb">str</span><span class="p">(</span><span class="n">v</span><span class="p">):</span>
-                    <span class="n">v</span> <span class="o">=</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">o</span><span class="p">)</span> <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="sa">f</span><span class="s2">&quot;(</span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">o</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">o</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">v</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,(&quot;</span><span class="p">))]</span>
-                <span class="k">else</span><span class="p">:</span>
-                    <span class="n">v</span> <span class="o">=</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">o</span><span class="p">)</span> <span class="k">for</span> <span class="n">o</span> <span class="ow">in</span> <span class="n">v</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">)]</span>
+            <span class="n">v</span> <span class="o">=</span> <span class="n">v</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">v</span> <span class="o">==</span> <span class="s2">&quot;auto&quot;</span><span class="p">:</span>
+                <span class="k">pass</span>
+            <span class="k">elif</span> <span class="s2">&quot;(&quot;</span> <span class="ow">in</span> <span class="n">v</span> <span class="ow">or</span> <span class="s2">&quot;)&quot;</span> <span class="ow">in</span> <span class="n">v</span><span class="p">:</span>
+                <span class="n">v</span> <span class="o">=</span> <span class="p">[[</span><span class="n">oi</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;]&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="k">for</span> <span class="n">oi</span> <span class="ow">in</span> <span class="n">o</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">)]</span> <span class="k">for</span> <span class="n">o</span> <span class="ow">in</span> <span class="n">v</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;],&quot;</span><span class="p">)]</span>
+                <span class="n">v</span> <span class="o">=</span> <span class="p">[[</span><span class="nb">str</span><span class="p">(</span><span class="n">o</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="nb">int</span><span class="p">(</span><span class="n">o</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="nb">int</span><span class="p">(</span><span class="n">o</span><span class="p">[</span><span class="mi">2</span><span class="p">]),</span> <span class="nb">str</span><span class="p">(</span><span class="n">o</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot;,&quot;</span> <span class="o">+</span> <span class="n">o</span><span class="p">[</span><span class="mi">4</span><span class="p">])]</span> <span class="k">for</span> <span class="n">o</span> <span class="ow">in</span> <span class="n">v</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">v</span> <span class="o">=</span> <span class="p">[[</span><span class="n">oi</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;]&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="k">for</span> <span class="n">oi</span> <span class="ow">in</span> <span class="n">o</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">)]</span> <span class="k">for</span> <span class="n">o</span> <span class="ow">in</span> <span class="n">v</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;],&quot;</span><span class="p">)]</span>
+                <span class="n">v</span> <span class="o">=</span> <span class="p">[[</span><span class="nb">str</span><span class="p">(</span><span class="n">o</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="nb">int</span><span class="p">(</span><span class="n">o</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="nb">int</span><span class="p">(</span><span class="n">o</span><span class="p">[</span><span class="mi">2</span><span class="p">]),</span> <span class="nb">str</span><span class="p">(</span><span class="n">o</span><span class="p">[</span><span class="mi">3</span><span class="p">])]</span> <span class="k">for</span> <span class="n">o</span> <span class="ow">in</span> <span class="n">v</span><span class="p">]</span>
         <span class="k">elif</span> <span class="n">key</span> <span class="o">==</span> <span class="s2">&quot;optimize_params_fixed&quot;</span><span class="p">:</span>
             <span class="k">if</span> <span class="s2">&quot;[&quot;</span> <span class="ow">in</span> <span class="n">v</span> <span class="ow">or</span> <span class="s2">&quot;]&quot;</span> <span class="ow">in</span> <span class="n">v</span><span class="p">:</span>
                 <span class="n">v</span> <span class="o">=</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">o</span><span class="p">)</span> <span class="k">for</span> <span class="n">o</span> <span class="ow">in</span> <span class="n">v</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">)]</span>
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
                 <span class="k">for</span> <span class="n">vi</span> <span class="ow">in</span> <span class="n">v</span><span class="p">:</span>
-                    <span class="k">if</span> <span class="n">vi</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;dis_win_emin&quot;</span><span class="p">,</span> <span class="s2">&quot;dis_win_emax&quot;</span><span class="p">,</span> <span class="s2">&quot;smearing_temp_min&quot;</span><span class="p">,</span> <span class="s2">&quot;smearing_temp_max&quot;</span><span class="p">,</span> <span class="s2">&quot;delta&quot;</span><span class="p">):</span>
+                    <span class="k">if</span> <span class="n">vi</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;cwf_mu_min&quot;</span><span class="p">,</span> <span class="s2">&quot;cwf_mu_max&quot;</span><span class="p">,</span> <span class="s2">&quot;cwf_sigma_min&quot;</span><span class="p">,</span> <span class="s2">&quot;cwf_sigma_max&quot;</span><span class="p">,</span> <span class="s2">&quot;cwf_delta&quot;</span><span class="p">):</span>
                         <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span>
-                            <span class="sa">f</span><span class="s2">&quot;invalid optimize_params_fixed: </span><span class="si">{</span><span class="n">vi</span><span class="si">}</span><span class="s2"> was given. choose from &#39;dis_win_emin&#39;/&#39;dis_win_emax&#39;/&#39;smearing_temp_min&#39;/&#39;smearing_temp_max&#39;/&#39;delta&#39;.&quot;</span>
+                            <span class="sa">f</span><span class="s2">&quot;invalid optimize_params_fixed: </span><span class="si">{</span><span class="n">vi</span><span class="si">}</span><span class="s2"> was given. choose from &#39;cwf_mu_min&#39;/&#39;cwf_mu_max&#39;/&#39;cwf_sigma_min&#39;/&#39;cwf_sigma_max&#39;/&#39;cwf_delta&#39;.&quot;</span>
                         <span class="p">)</span>
 
         <span class="k">elif</span> <span class="n">key</span> <span class="o">==</span> <span class="s2">&quot;irreps&quot;</span><span class="p">:</span>
@@ -760,7 +797,7 @@ By Rikuto Oiwa
 
   <p class="copyright">
     
-      © Copyright 2021-2025.
+      © Copyright 2021-.
       <br/>
     
   </p>
@@ -784,8 +821,8 @@ By Rikuto Oiwa
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="../../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
-<script src="../../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+  <script defer src="../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
 
   <footer class="bd-footer">
   </footer>

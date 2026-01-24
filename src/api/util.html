@@ -16,53 +16,57 @@
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
     document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
   </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-
-  
-  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+  <link href="../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=eba8b062" />
-    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=9c3e77be" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css?v=6644e6bb" />
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=34ddd5e8" />
   
+  <!-- So that users can add custom icons -->
+  <script src="../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
-<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
-  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
     <script src="../../_static/documentation_options.js?v=8cf54648"></script>
-    <script src="../../_static/doctools.js?v=9a2dae69"></script>
-    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../../_static/copybutton.js?v=f281be69"></script>
     <script src="../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
-    <script src="../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script src="../../_static/togglebutton.js?v=1ae7504c"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script src="../../_static/design-tabs.js?v=f930bc37"></script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
     <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
-    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
-    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'src/api/util';</script>
+    <script src="../../_static/custom.js?v=9c3a2667"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="prev" title="Utility" href="analyzer.html" />
+    <link rel="prev" title="Analyzer" href="analyzer.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="jp"/>
+  <meta name="docsearch:version" content="" />
   </head>
   
   
@@ -78,19 +82,8 @@
     <i class="fa-solid fa-arrow-up"></i>Back to top</button>
 
   
-  <input type="checkbox"
-          class="sidebar-toggle"
-          id="pst-primary-sidebar-checkbox"/>
-  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
-  
-  <input type="checkbox"
-          class="sidebar-toggle"
-          id="pst-secondary-sidebar-checkbox"/>
-  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
-  
-  <div class="search-button__wrapper">
-    <div class="search-button__overlay"></div>
-    <div class="search-button__search-container">
+  <dialog id="pst-search-dialog">
+    
 <form class="bd-search d-flex align-items-center"
       action="../../search.html"
       method="get">
@@ -98,7 +91,6 @@
   <input type="search"
          class="form-control"
          name="q"
-         id="search-input"
          placeholder="Search this book..."
          aria-label="Search this book..."
          autocomplete="off"
@@ -106,8 +98,8 @@
          autocapitalize="off"
          spellcheck="false"/>
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
-</form></div>
-  </div>
+</form>
+  </dialog>
 
   <div class="pst-async-banner-revealer d-none">
   <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
@@ -123,7 +115,8 @@
       
       
       
-      <div class="bd-sidebar-primary bd-sidebar">
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
         
 
   
@@ -153,15 +146,11 @@
 </a></div>
         <div class="sidebar-primary-item">
 
- <script>
- document.write(`
-   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="fa-solid fa-magnifying-glass"></i>
-    <span class="search-button__default-text">Search</span>
-    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
-   </button>
- `);
- </script></div>
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
         <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
         <p aria-level="2" class="caption" role="heading"><span class="caption-text">MultiPie</span></p>
@@ -196,7 +185,7 @@
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">API</span></p>
 <ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="cw.html">Closest Wannier</a></li>
-<li class="toctree-l1"><a class="reference internal" href="analyzer.html">Utility</a></li>
+<li class="toctree-l1"><a class="reference internal" href="analyzer.html">Analyzer</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">Utility</a></li>
 </ul>
 
@@ -206,9 +195,14 @@
   
   
   <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
   </div>
-  
-  <div id="rtd-footer-container"></div>
 
 
       </div>
@@ -320,24 +314,16 @@
 
 
 
-<script>
-document.write(`
-  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
-    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
-    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
-  </button>
-`);
-</script>
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
 
 
-<script>
-document.write(`
-  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <i class="fa-solid fa-magnifying-glass fa-lg"></i>
-  </button>
-`);
-</script>
+</button>
 <button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <span class="fa-solid fa-list"></span>
 </button>
@@ -392,29 +378,35 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.lindhard.get_lindhard"><code class="docutils literal notranslate"><span class="pre">get_lindhard()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.lindhard.output_lindhard"><code class="docutils literal notranslate"><span class="pre">output_lindhard()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.lindhard.output_lindhard_surface"><code class="docutils literal notranslate"><span class="pre">output_lindhard_surface()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.tb_slater_koster.sk_parameter"><code class="docutils literal notranslate"><span class="pre">sk_parameter()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.utility.FortranFileR"><code class="docutils literal notranslate"><span class="pre">FortranFileR</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.utility.Kelvin_to_eV"><code class="docutils literal notranslate"><span class="pre">Kelvin_to_eV()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.utility.O_R_dependence"><code class="docutils literal notranslate"><span class="pre">O_R_dependence()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.utility.band_distance"><code class="docutils literal notranslate"><span class="pre">band_distance()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.utility.change_quantization_axis_operators"><code class="docutils literal notranslate"><span class="pre">change_quantization_axis_operators()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.utility.construct_Ok"><code class="docutils literal notranslate"><span class="pre">construct_Ok()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.utility.construct_Or"><code class="docutils literal notranslate"><span class="pre">construct_Or()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.utility.convert_w90_orbital"><code class="docutils literal notranslate"><span class="pre">convert_w90_orbital()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.utility.dict_to_matrix"><code class="docutils literal notranslate"><span class="pre">dict_to_matrix()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.utility.embed_spin_unitary"><code class="docutils literal notranslate"><span class="pre">embed_spin_unitary()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.utility.entropy"><code class="docutils literal notranslate"><span class="pre">entropy()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.utility.fourier_transform_k_to_r"><code class="docutils literal notranslate"><span class="pre">fourier_transform_k_to_r()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.utility.fourier_transform_r_to_k"><code class="docutils literal notranslate"><span class="pre">fourier_transform_r_to_k()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.utility.fourier_transform_r_to_k_new"><code class="docutils literal notranslate"><span class="pre">fourier_transform_r_to_k_new()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.utility.fourier_transform_r_to_k_vec"><code class="docutils literal notranslate"><span class="pre">fourier_transform_r_to_k_vec()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.utility.free_energy"><code class="docutils literal notranslate"><span class="pre">free_energy()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.utility.get_spreads"><code class="docutils literal notranslate"><span class="pre">get_spreads()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.utility.get_wannier_center_spread"><code class="docutils literal notranslate"><span class="pre">get_wannier_center_spread()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.utility.interpolate"><code class="docutils literal notranslate"><span class="pre">interpolate()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.utility.matrix_dict_k"><code class="docutils literal notranslate"><span class="pre">matrix_dict_k()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.utility.matrix_dict_r"><code class="docutils literal notranslate"><span class="pre">matrix_dict_r()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.utility.num_electron"><code class="docutils literal notranslate"><span class="pre">num_electron()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.utility.samb_decomp_operator"><code class="docutils literal notranslate"><span class="pre">samb_decomp_operator()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.utility.sigma_n_in_original_basis"><code class="docutils literal notranslate"><span class="pre">sigma_n_in_original_basis()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.utility.sort_ket_list"><code class="docutils literal notranslate"><span class="pre">sort_ket_list()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.utility.sort_ket_matrix"><code class="docutils literal notranslate"><span class="pre">sort_ket_matrix()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.utility.sort_ket_matrix_dict"><code class="docutils literal notranslate"><span class="pre">sort_ket_matrix_dict()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.utility.su2_rotation_right"><code class="docutils literal notranslate"><span class="pre">su2_rotation_right()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.utility.su2_that_maps_z_to_n"><code class="docutils literal notranslate"><span class="pre">su2_that_maps_z_to_n()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.utility.thermal_avg"><code class="docutils literal notranslate"><span class="pre">thermal_avg()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.utility.total_energy"><code class="docutils literal notranslate"><span class="pre">total_energy()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.utility.tune_fermi_level"><code class="docutils literal notranslate"><span class="pre">tune_fermi_level()</span></code></a></li>
@@ -550,7 +542,7 @@ document.write(`
 
 <dl class="py function">
 <dt class="sig sig-object py" id="symclosestwannier.util.dos.output_dos">
-<span class="sig-name descname"><span class="pre">output_dos</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">outdir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">e</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">u</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ef_shift</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dos_num_fermi</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">50</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dos_smr_en_width</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.001</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/util/dos.html#output_dos"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.util.dos.output_dos" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">output_dos</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">outdir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">e</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">u</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ef_shift</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dos_num_fermi</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">50</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dos_smr_en_width</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.001</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dos_emax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dos_emin</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/util/dos.html#output_dos"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.util.dos.output_dos" title="Link to this definition">#</a></dt>
 <dd><p>output density of states (DOS).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -562,6 +554,8 @@ document.write(`
 <li><p><strong>ef_shift</strong> (<em>float</em><em>, </em><em>optional</em>) -- fermi energy shift, [0.0].</p></li>
 <li><p><strong>dos_num_fermi</strong> (<em>int</em><em>, </em><em>optional</em>) -- number of fermi energies (int), [50].</p></li>
 <li><p><strong>dos_smr_en_width</strong> (<em>float</em>) -- Energy width for the smearing function for the DOS (The units are [eV]) (flaot), [0.001].</p></li>
+<li><p><strong>dos_emax</strong> (<em>float</em><em>, </em><em>optional</em>) -- maximun energy to be calculated.</p></li>
+<li><p><strong>dos_emin</strong> (<em>float</em><em>, </em><em>optional</em>) -- minimun energy to be calculated.</p></li>
 <li><p><strong>kwargs</strong> (<em>dict</em><em>, </em><em>optional</em>) -- key words for generate_dos_gnuplot.</p></li>
 </ul>
 </dd>
@@ -1010,29 +1004,10 @@ seedname_hr.dat file includes the wannier tight-binding Hamiltoinan's matrix ele
 </dl>
 </dd></dl>
 
-<p id="module-symclosestwannier.util.tb_slater_koster"><span id="module-symclosestwannier.util.message"></span>Slater-Koster parameters</p>
-<dl class="py function">
-<dt class="sig sig-object py" id="symclosestwannier.util.tb_slater_koster.sk_parameter">
-<span class="sig-name descname"><span class="pre">sk_parameter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">o1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">o2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">l</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/util/tb_slater_koster.html#sk_parameter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.util.tb_slater_koster.sk_parameter" title="Link to this definition">#</a></dt>
-<dd><p>Slater-Koster parameters list</p>
-<p>r/<a href="#id1"><span class="problematic" id="id2">|r|</span></a> = (l,m,n)</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>o1</strong> (<em>str</em>) -- &lt;o1|</p></li>
-<li><p><strong>o2</strong> (<em>str</em>) -- <a href="#id1"><span class="problematic" id="id2">|</span></a>o2&gt;</p></li>
-<li><p><strong>l</strong> (<em>sympy/float</em>)</p></li>
-<li><p><strong>m</strong> (<em>sympy/float</em>)</p></li>
-<li><p><strong>n</strong> (<em>sympy/float</em>)</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<p id="module-symclosestwannier.util.utility">utility codes.</p>
+<p id="module-symclosestwannier.util.utility"><span id="module-symclosestwannier.util.message"></span>utility codes.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="symclosestwannier.util.utility.FortranFileR">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">FortranFileR</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/util/utility.html#FortranFileR"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.util.utility.FortranFileR" title="Link to this definition">#</a></dt>
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">FortranFileR</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/util/utility.html#FortranFileR"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.util.utility.FortranFileR" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">FortranFile</span></code></p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -1076,7 +1051,7 @@ Rmin is the bond with minimum length.</p>
 </dd>
 </dl>
 <dl class="simple">
-<dt>Returns: (list, list, list, float, float, float)</dt><dd><p>[||R||], [||O(R)||], [max(<a href="#id3"><span class="problematic" id="id4">|O(R)|</span></a>)], ||O(Rmin)||, ||Rmin||, τ.</p>
+<dt>Returns: (list, list, list, float, float, float)</dt><dd><p>[||R||], [||O(R)||], [max(<a href="#id1"><span class="problematic" id="id2">|O(R)|</span></a>)], ||O(Rmin)||, ||Rmin||, τ.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1103,7 +1078,21 @@ Rmin is the bond with minimum length.</p>
 </ul>
 </dd>
 </dl>
-<p>Returns: eta_0, eta_0_max, eta_2, eta_2_max, eta_4, eta_4_max.</p>
+<p>Returns: eta_0, eta_0_max, eta_2, eta_2_max, eta_5, eta_5_max.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="symclosestwannier.util.utility.change_quantization_axis_operators">
+<span class="sig-name descname"><span class="pre">change_quantization_axis_operators</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dim</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/util/utility.html#change_quantization_axis_operators"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.util.utility.change_quantization_axis_operators" title="Link to this definition">#</a></dt>
+<dd><p>Return rotated spin operators (Sx', Sy', Sz') in the new basis
+where the quantization axis is n, i.e. Sz' corresponds to n·sigma
+in the original basis.</p>
+<dl class="simple">
+<dt>Convention:</dt><dd><p>U maps sigma_z -&gt; n·sigma via  U sigma_z U^dagger = n·sigma.
+Basis change (state transformation): <a href="#id3"><span class="problematic" id="id4">|psi&gt;' = U^dagger |psi|</span></a>
+Operator in new basis: O' = U^dagger O U</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py function">
@@ -1131,12 +1120,12 @@ Rmin is the bond with minimum length.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="symclosestwannier.util.utility.construct_Or">
-<span class="sig-name descname"><span class="pre">construct_Or</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">z</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_wann</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rpoints</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">matrix_dict</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/util/utility.html#construct_Or"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.util.utility.construct_Or" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">construct_Or</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">coeff</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_wann</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rpoints</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">matrix_dict</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/util/utility.html#construct_Or"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.util.utility.construct_Or" title="Link to this definition">#</a></dt>
 <dd><p>arbitrary operator constructed by linear combination of SAMBs in real-space representation.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>z</strong> (<em>list</em>) -- parameter set, [z_j].</p></li>
+<li><p><strong>coeff</strong> (<em>dict</em>) -- coefficients, {zj: coeff}.</p></li>
 <li><p><strong>num_wann</strong> (<em>int</em>) -- # of WFs.</p></li>
 <li><p><strong>rpoints</strong> (<em>ndarray</em><em>, </em><em>optional</em>) -- lattice points (crystal coordinate, [[n1,n2,n3]], nj: integer).</p></li>
 <li><p><strong>matrix_dict</strong> (<em>dict</em>) -- SAMBs.</p></li>
@@ -1175,17 +1164,30 @@ Rmin is the bond with minimum length.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="symclosestwannier.util.utility.dict_to_matrix">
-<span class="sig-name descname"><span class="pre">dict_to_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Or_dict</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/util/utility.html#dict_to_matrix"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.util.utility.dict_to_matrix" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">dict_to_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Or_dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dim</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/util/utility.html#dict_to_matrix"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.util.utility.dict_to_matrix" title="Link to this definition">#</a></dt>
 <dd><p>convert dictionary form to matrix form of an arbitrary operator matrix.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>Or_dict</strong> (<em>dict</em>) -- dictionary form of an arbitrary operator matrix in reak-space/k-space representation.</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>Or_dict</strong> (<em>dict</em>) -- dictionary form of an arbitrary operator matrix in reak-space/k-space representation.</p></li>
+<li><p><strong>dim</strong> (<em>int</em><em>, </em><em>optional</em>) -- Matrix dimension, [None].</p></li>
+</ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>matrix form of the given operator.</p>
+<dd class="field-even"><p>matrix form of the given operator.
+ndarray: lattice or k points.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="symclosestwannier.util.utility.embed_spin_unitary">
+<span class="sig-name descname"><span class="pre">embed_spin_unitary</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dim</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">U2</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/util/utility.html#embed_spin_unitary"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.util.utility.embed_spin_unitary" title="Link to this definition">#</a></dt>
+<dd><dl class="simple">
+<dt>Embed 2x2 spin unitary into full Hilbert space:</dt><dd><p>U_full = I_(dim/2) ⊗ U2</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1297,6 +1299,44 @@ Rmin is the bond with minimum length.</p>
 </dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="symclosestwannier.util.utility.get_spreads">
+<span class="sig-name descname"><span class="pre">get_spreads</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cwi</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/util/utility.html#get_spreads"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.util.utility.get_spreads" title="Link to this definition">#</a></dt>
+<dd><p>spreads (OmegaI, Omega_D, Omega_OD).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>cwi</strong> (<a class="reference internal" href="cw.html#symclosestwannier.cw.cw_info.CWInfo" title="symclosestwannier.cw.cw_info.CWInfo"><em>CWInfo</em></a>) -- CWInfo.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>lindhard function.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="symclosestwannier.util.utility.get_wannier_center_spread">
+<span class="sig-name descname"><span class="pre">get_wannier_center_spread</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cwi</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/util/utility.html#get_wannier_center_spread"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.util.utility.get_wannier_center_spread" title="Link to this definition">#</a></dt>
+<dd><p>Wannier center (r) and spread (Omega) for each atom.</p>
+<ul class="simple">
+<li><p>r     = &lt;r&gt;</p></li>
+<li><p>Omega = sum &lt;r^2&gt; - &lt;r&gt;^2</p></li>
+</ul>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>cwi</strong> (<a class="reference internal" href="cw.html#symclosestwannier.cw.cw_info.CWInfo" title="symclosestwannier.cw.cw_info.CWInfo"><em>CWInfo</em></a>) -- CWInfo.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>(r, Omega).</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="symclosestwannier.util.utility.interpolate">
 <span class="sig-name descname"><span class="pre">interpolate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Ok</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kpoints_0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kpoints</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">irvec</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ndegen</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">atoms_frac</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/util/utility.html#interpolate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.util.utility.interpolate" title="Link to this definition">#</a></dt>
 <dd><p>interpolate an arbitrary operator by implementing
@@ -1371,28 +1411,31 @@ fourier transformation from real-space representation into k-space representatio
 
 <dl class="py function">
 <dt class="sig sig-object py" id="symclosestwannier.util.utility.samb_decomp_operator">
-<span class="sig-name descname"><span class="pre">samb_decomp_operator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Or_dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Zr_dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">A</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">atoms_frac</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ket</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">A_samb</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">atoms_frac_samb</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ket_samb</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/util/utility.html#samb_decomp_operator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.util.utility.samb_decomp_operator" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">samb_decomp_operator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Or_dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Zr_dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ket</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ket_samb</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/util/utility.html#samb_decomp_operator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.util.utility.samb_decomp_operator" title="Link to this definition">#</a></dt>
 <dd><p>decompose arbitrary operator into linear combination of SAMBs.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>Or_dict</strong> (<em>dict</em>) -- dictionary form of an arbitrary operator matrix in real-space/k-space representation.</p></li>
 <li><p><strong>Zr_dict</strong> (<em>dict</em>) -- dictionary form of SAMBs.</p></li>
-<li><p><strong>A</strong> (<em>list/ndarray</em><em>, </em><em>optional</em>) -- real lattice vectors for the given operator, A = [a1,a2,a3] (list), [[[1,0,0], [0,1,0], [0,0,1]]].</p></li>
-<li><p><strong>atoms_frac</strong> (<em>ndarray</em><em>, </em><em>optional</em>) -- atom's position in fractional coordinates for the given operator.</p></li>
 <li><p><strong>ket</strong> (<em>list</em><em>, </em><em>optional</em>) -- ket basis list, <a class="reference external" href="mailto:orbital&#37;&#52;&#48;site">orbital<span>&#64;</span>site</a>.</p></li>
-<li><p><strong>A_samb</strong> (<em>list/ndarray</em><em>, </em><em>optional</em>) -- real lattice vectors for SAMBs, A = [a1,a2,a3] (list), [[[1,0,0], [0,1,0], [0,0,1]]].</p></li>
-<li><p><strong>atoms_frac_samb</strong> (<em>ndarray</em><em>, </em><em>optional</em>) -- atom's position in fractional coordinates for SAMBs.</p></li>
 <li><p><strong>ket_samb</strong> (<em>list</em><em>, </em><em>optional</em>) -- ket basis list for SAMBs, <a class="reference external" href="mailto:orbital&#37;&#52;&#48;site">orbital<span>&#64;</span>site</a>.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>parameter set, {tag: z_j}.</p>
+<dd class="field-even"><p>parameter set, {zj: coeff}.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>z (dict)</p>
 </dd>
 </dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="symclosestwannier.util.utility.sigma_n_in_original_basis">
+<span class="sig-name descname"><span class="pre">sigma_n_in_original_basis</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dim</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/util/utility.html#sigma_n_in_original_basis"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.util.utility.sigma_n_in_original_basis" title="Link to this definition">#</a></dt>
+<dd><p>Directly return n·sigma in the original basis (no basis change).
+Useful if you just want the spin projection along n.</p>
 </dd></dl>
 
 <dl class="py function">
@@ -1424,7 +1467,7 @@ fourier transformation from real-space representation into k-space representatio
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>Ok</strong> (<em>ndarray</em>) -- arbitrary operator in k-space representation, O_{ab}(k) = &lt;φ_{a}(k)|H|φ_{b}(k)&gt;.</p></li>
-<li><p><strong>ket1</strong> (<em>list</em>) -- ket basis list, <a class="reference external" href="mailto:orbital&#37;&#52;&#48;site">orbital<span>&#64;</span>site</a>.</p></li>
+<li><p><strong>ket1</strong> (<em>list</em>) -- ket basis list, [[atom name, sublattice, rank, orbital]]</p></li>
 <li><p><strong>ket2</strong> (<em>list</em>) -- ket basis list, <a class="reference external" href="mailto:orbital&#37;&#52;&#48;site">orbital<span>&#64;</span>site</a>.</p></li>
 </ul>
 </dd>
@@ -1456,6 +1499,25 @@ fourier transformation from real-space representation into k-space representatio
 <dd class="field-odd"><p>Or_dict (dict)</p>
 </dd>
 </dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="symclosestwannier.util.utility.su2_rotation_right">
+<span class="sig-name descname"><span class="pre">su2_rotation_right</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">theta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lam</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mu</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nu</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/util/utility.html#su2_rotation_right"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.util.utility.su2_rotation_right" title="Link to this definition">#</a></dt>
+<dd><p>Your formula:
+U = cos(theta/2) I - i sin(theta/2) (lam*sx + mu*sy + nu*sz)
+where (lam,mu,nu) is the axis direction cosine (unit vector).</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="symclosestwannier.util.utility.su2_that_maps_z_to_n">
+<span class="sig-name descname"><span class="pre">su2_that_maps_z_to_n</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/util/utility.html#su2_that_maps_z_to_n"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.util.utility.su2_that_maps_z_to_n" title="Link to this definition">#</a></dt>
+<dd><dl class="simple">
+<dt>Construct U such that:</dt><dd><p>U * sigma_z * U^dagger = n·sigma</p>
+</dd>
+</dl>
+<p>using the axis-angle rotation that rotates z-hat -&gt; n (right-handed).</p>
+<p>n : array-like (nx, ny, nz)  (not necessarily normalized)</p>
 </dd></dl>
 
 <dl class="py function">
@@ -1496,7 +1558,7 @@ fourier transformation from real-space representation into k-space representatio
 
 <dl class="py function">
 <dt class="sig sig-object py" id="symclosestwannier.util.utility.weight_proj">
-<span class="sig-name descname"><span class="pre">weight_proj</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">e</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dis_win_emin</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dis_win_emax</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">smearing_temp_min</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">smearing_temp_max</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delta</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-11</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/util/utility.html#weight_proj"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.util.utility.weight_proj" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">weight_proj</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">e</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cwf_mu_min</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cwf_mu_max</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cwf_sigma_min</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cwf_sigma_max</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cwf_delta</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-11</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/util/utility.html#weight_proj"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.util.utility.weight_proj" title="Link to this definition">#</a></dt>
 <dd><p>weight function for projection</p>
 </dd></dl>
 
@@ -1561,7 +1623,8 @@ return irreducible R vectors and number of degeneracy at each R.</p>
             
             
               
-                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
 
 
   <div class="sidebar-secondary-item">
@@ -1601,29 +1664,35 @@ return irreducible R vectors and number of degeneracy at each R.</p>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.lindhard.get_lindhard"><code class="docutils literal notranslate"><span class="pre">get_lindhard()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.lindhard.output_lindhard"><code class="docutils literal notranslate"><span class="pre">output_lindhard()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.lindhard.output_lindhard_surface"><code class="docutils literal notranslate"><span class="pre">output_lindhard_surface()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.tb_slater_koster.sk_parameter"><code class="docutils literal notranslate"><span class="pre">sk_parameter()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.utility.FortranFileR"><code class="docutils literal notranslate"><span class="pre">FortranFileR</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.utility.Kelvin_to_eV"><code class="docutils literal notranslate"><span class="pre">Kelvin_to_eV()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.utility.O_R_dependence"><code class="docutils literal notranslate"><span class="pre">O_R_dependence()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.utility.band_distance"><code class="docutils literal notranslate"><span class="pre">band_distance()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.utility.change_quantization_axis_operators"><code class="docutils literal notranslate"><span class="pre">change_quantization_axis_operators()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.utility.construct_Ok"><code class="docutils literal notranslate"><span class="pre">construct_Ok()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.utility.construct_Or"><code class="docutils literal notranslate"><span class="pre">construct_Or()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.utility.convert_w90_orbital"><code class="docutils literal notranslate"><span class="pre">convert_w90_orbital()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.utility.dict_to_matrix"><code class="docutils literal notranslate"><span class="pre">dict_to_matrix()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.utility.embed_spin_unitary"><code class="docutils literal notranslate"><span class="pre">embed_spin_unitary()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.utility.entropy"><code class="docutils literal notranslate"><span class="pre">entropy()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.utility.fourier_transform_k_to_r"><code class="docutils literal notranslate"><span class="pre">fourier_transform_k_to_r()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.utility.fourier_transform_r_to_k"><code class="docutils literal notranslate"><span class="pre">fourier_transform_r_to_k()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.utility.fourier_transform_r_to_k_new"><code class="docutils literal notranslate"><span class="pre">fourier_transform_r_to_k_new()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.utility.fourier_transform_r_to_k_vec"><code class="docutils literal notranslate"><span class="pre">fourier_transform_r_to_k_vec()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.utility.free_energy"><code class="docutils literal notranslate"><span class="pre">free_energy()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.utility.get_spreads"><code class="docutils literal notranslate"><span class="pre">get_spreads()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.utility.get_wannier_center_spread"><code class="docutils literal notranslate"><span class="pre">get_wannier_center_spread()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.utility.interpolate"><code class="docutils literal notranslate"><span class="pre">interpolate()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.utility.matrix_dict_k"><code class="docutils literal notranslate"><span class="pre">matrix_dict_k()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.utility.matrix_dict_r"><code class="docutils literal notranslate"><span class="pre">matrix_dict_r()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.utility.num_electron"><code class="docutils literal notranslate"><span class="pre">num_electron()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.utility.samb_decomp_operator"><code class="docutils literal notranslate"><span class="pre">samb_decomp_operator()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.utility.sigma_n_in_original_basis"><code class="docutils literal notranslate"><span class="pre">sigma_n_in_original_basis()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.utility.sort_ket_list"><code class="docutils literal notranslate"><span class="pre">sort_ket_list()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.utility.sort_ket_matrix"><code class="docutils literal notranslate"><span class="pre">sort_ket_matrix()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.utility.sort_ket_matrix_dict"><code class="docutils literal notranslate"><span class="pre">sort_ket_matrix_dict()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.utility.su2_rotation_right"><code class="docutils literal notranslate"><span class="pre">su2_rotation_right()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.utility.su2_that_maps_z_to_n"><code class="docutils literal notranslate"><span class="pre">su2_that_maps_z_to_n()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.utility.thermal_avg"><code class="docutils literal notranslate"><span class="pre">thermal_avg()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.utility.total_energy"><code class="docutils literal notranslate"><span class="pre">total_energy()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.util.utility.tune_fermi_level"><code class="docutils literal notranslate"><span class="pre">tune_fermi_level()</span></code></a></li>
@@ -1653,7 +1722,7 @@ By Rikuto Oiwa
 
   <p class="copyright">
     
-      © Copyright 2021-2025.
+      © Copyright 2021-.
       <br/>
     
   </p>
@@ -1677,8 +1746,8 @@ By Rikuto Oiwa
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
-<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+  <script defer src="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
 
   <footer class="bd-footer">
   </footer>
