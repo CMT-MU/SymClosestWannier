@@ -98,6 +98,9 @@ def cw_creator(seedname="cwannier"):
         filename = f"{cwi['seedname']}_sr.dat.cw"
         cw_model.write_or(cw_model["Sr"], filename)  # , header=CWModel._sr_header())
 
+        filename = f"{cwi['seedname']}_sr_R_dep.dat.cw"
+        cw_model.write_O_R_dependence(cw_model["sr"], filename, header=CWModel._O_R_dependence_header())
+
     if cwi["write_u_matrices"] and cwi["restart"] != "w90":
         file_names = (f"{cwi['seedname']}_u.mat.cw", f"{cwi['seedname']}_u_dis.mat.cw")
         cwi.umat.write(file_names)
@@ -106,6 +109,13 @@ def cw_creator(seedname="cwannier"):
         AA_R = get_oper_R("AA_R", cwi)
         filename = f"{cwi['seedname']}_r.dat.cw"
         cw_model.write_or(AA_R, filename, vec=True)
+
+        filename = f"{cwi['seedname']}_rx_R_dep.dat.cw"
+        cw_model.write_O_R_dependence(AA_R[0], filename, header=CWModel._O_R_dependence_header())
+        filename = f"{cwi['seedname']}_ry_R_dep.dat.cw"
+        cw_model.write_O_R_dependence(AA_R[1], filename, header=CWModel._O_R_dependence_header())
+        filename = f"{cwi['seedname']}_rz_R_dep.dat.cw"
+        cw_model.write_O_R_dependence(AA_R[2], filename, header=CWModel._O_R_dependence_header())
 
     if cwi["write_tb"]:
         AA_R = get_oper_R("AA_R", cwi)
@@ -116,7 +126,13 @@ def cw_creator(seedname="cwannier"):
         v_R = get_oper_R("v_R", cwi)
         filename = f"{cwi['seedname']}_v.dat.cw"
         cw_model.write_or(v_R, filename, vec=True)
-        pass
+
+        filename = f"{cwi['seedname']}_vx_R_dep.dat.cw"
+        cw_model.write_O_R_dependence(v_R[0], filename, header=CWModel._O_R_dependence_header())
+        filename = f"{cwi['seedname']}_vy_R_dep.dat.cw"
+        cw_model.write_O_R_dependence(v_R[1], filename, header=CWModel._O_R_dependence_header())
+        filename = f"{cwi['seedname']}_vz_R_dep.dat.cw"
+        cw_model.write_O_R_dependence(v_R[2], filename, header=CWModel._O_R_dependence_header())
 
     if cwi["write_eig"]:
         filename = f"{cwi['seedname']}.eig.cw"
@@ -226,53 +242,91 @@ def cw_creator(seedname="cwannier"):
             Sk = None
 
         ### orbital angular momentum ###
-        # Lx = np.array(
-        #    [
-        #        [0, 0, 0, 0],
-        #        [0, 0, 0, 1.0j],
-        #        [0, 0, 0, 0],
-        #        [0, -1.0j, 0, 0],
-        #    ]
-        # )
-        # Ly = np.array(
-        #    [
-        #        [0, 0, 0, 0],
-        #        [0, 0, -1.0j, 0],
-        #        [0, 1.0j, 0, 0],
-        #        [0, 0, 0, 0],
-        #    ]
-        # )
-        # Lz = np.array(
-        #    [
-        #        [0, 0, 0, 0],
-        #        [0, 0, 0, 0],
-        #        [0, 0, 0, -1.0j],
-        #        [0, 0, 1.0j, 0],
-        #    ]
-        # )
-        # from numpy import linalg as npl
-        # from scipy import linalg as spl
+        Lx = np.array(
+            [
+                [0, 0, 0, 0],
+                [0, 0, 0, 1.0j],
+                [0, 0, 0, 0],
+                [0, -1.0j, 0, 0],
+            ]
+        )
+        Ly = np.array(
+            [
+                [0, 0, 0, 0],
+                [0, 0, -1.0j, 0],
+                [0, 1.0j, 0, 0],
+                [0, 0, 0, 0],
+            ]
+        )
+        Lz = np.array(
+            [
+                [0, 0, 0, 0],
+                [0, 0, 0, 0],
+                [0, 0, 0, -1.0j],
+                [0, 0, 1.0j, 0],
+            ]
+        )
+        from numpy import linalg as npl
+        from scipy import linalg as spl
 
         # Sk_mat = cw_model.fourier_transform_r_to_k(
         #    cw_model["Sr"], cwi["kpoints_path"], cwi["irvec"], cwi["ndegen"], atoms_frac=atoms_frac
         # )
         # S2k_inv = np.array([npl.inv(spl.sqrtm(Sk_mat[k])) for k in range(len(cwi["kpoints_path"]))])
 
-        # identity_2 = np.eye(2)
-        # identity_3 = np.eye(3)
-        # Lx_ = np.kron(identity_3, np.kron(Lx, identity_2))
-        # Ly_ = np.kron(identity_3, np.kron(Ly, identity_2))
-        # Lz_ = np.kron(identity_3, np.kron(Lz, identity_2))
-        ## Lx_ = np.kron(identity_3, Lx)
-        ## Ly_ = np.kron(identity_3, Ly)
-        ## Lz_ = np.kron(identity_3, Lz)
-        # L = [Lx_, Ly_, Lz_]
-        # Lk = np.array([[L[a] for _ in cwi["kpoints_path"]] for a in range(3)])
-        ## Lk_H = np.array([Uk.transpose(0, 2, 1).conjugate() @ S2k_inv @ Lk[a] @ S2k_inv @ Uk for a in range(3)])
-        # Lk_H = np.array([Uk.transpose(0, 2, 1).conjugate() @ Lk[a] @ Uk for a in range(3)])
-        # Lk = np.real(np.diagonal(Lk_H, axis1=2, axis2=3))
-        # Lk = Lk.transpose(2, 1, 0)
+        identity_2 = np.eye(2)
+        identity_3 = np.eye(3)
+        Lx_ = np.kron(identity_3, np.kron(Lx, identity_2))
+        Ly_ = np.kron(identity_3, np.kron(Ly, identity_2))
+        Lz_ = np.kron(identity_3, np.kron(Lz, identity_2))
+        # Lx_ = np.kron(identity_3, Lx)
+        # Ly_ = np.kron(identity_3, Ly)
+        # Lz_ = np.kron(identity_3, Lz)
+        L = [Lx_, Ly_, Lz_]
+        Lk = np.array([[L[a] for _ in cwi["kpoints_path"]] for a in range(3)])
+        # Lk_H = np.array([Uk.transpose(0, 2, 1).conjugate() @ S2k_inv @ Lk[a] @ S2k_inv @ Uk for a in range(3)])
+        Lk_H = np.array([Uk.transpose(0, 2, 1).conjugate() @ Lk[a] @ Uk for a in range(3)])
+        Lk = np.real(np.diagonal(Lk_H, axis1=2, axis2=3))
+        Lk = Lk.transpose(2, 1, 0)
         #### orbital angular momentum ###
+
+        ### Px Py Pz ###
+        Px = np.array(
+            [
+                [0, 0, 0, 0],
+                [0, 0, 0, 0],
+                [0, 0, 1, 0],
+                [0, 0, 0, 0],
+            ]
+        )
+        Py = np.array(
+            [
+                [0, 0, 0, 0],
+                [0, 0, 0, 0],
+                [0, 0, 0, 0],
+                [0, 0, 0, 1],
+            ]
+        )
+        Pz = np.array(
+            [
+                [0, 0, 0, 0],
+                [0, 1, 0, 0],
+                [0, 0, 0, 0],
+                [0, 0, 0, 0],
+            ]
+        )
+
+        Px_ = np.kron(identity_3, np.kron(Px, identity_2))
+        Py_ = np.kron(identity_3, np.kron(Py, identity_2))
+        Pz_ = np.kron(identity_3, np.kron(Pz, identity_2))
+        P = [Px_, Py_, Pz_]
+        Pk = np.array([[P[a] for _ in cwi["kpoints_path"]] for a in range(3)])
+        # Lk_H = np.array([Uk.transpose(0, 2, 1).conjugate() @ S2k_inv @ Lk[a] @ S2k_inv @ Uk for a in range(3)])
+        Pk_H = np.array([Uk.transpose(0, 2, 1).conjugate() @ Pk[a] @ Uk for a in range(3)])
+        Pk = np.real(np.diagonal(Pk_H, axis1=2, axis2=3))
+        Pk = Pk.transpose(2, 1, 0)
+
+        ### Px Py Pz ###
 
         #### sublattice angular momentum ###
         # C3_site = np.array(
@@ -420,9 +474,6 @@ def cw_creator(seedname="cwannier"):
         # LszQua = LszQua.transpose(1, 0)
         #### Lzk_site_Qua ###
 
-        # S_L_k = np.array([Sk[:, :, a] for a in range(3)] + [Lk[:, :, a] for a in range(3)])
-        # S_L_k = S_L_k.transpose(1, 2, 0)
-
         # S_La_Ls_J_k = np.array([Sk[:, :, a] for a in range(3)] + [Lk[:, :, a] for a in range(3)] + [Lzk_site] + [Jzk_c])
         # S_La_Ls_J_k = S_La_Ls_J_k.transpose(1, 2, 0)
 
@@ -439,14 +490,17 @@ def cw_creator(seedname="cwannier"):
         # )
         # S_La_Ls_J_Gz_Jas_LazQ0u_LzsQua_k = S_La_Ls_J_Gz_Jas_LazQ0u_LzsQua_k.transpose(1, 2, 0)
 
+        S_L_P_k = np.array(
+            [Sk[:, :, a] for a in range(3)] + [Lk[:, :, a] for a in range(3)] + [Pk[:, :, a] for a in range(3)]
+        )
+        S_L_P_k = S_L_P_k.transpose(1, 2, 0)
+
         output_linear_dispersion_eig(
             ".",
             seedname + "_band.txt",
             k_linear,
             e=Ek,
-            # o=Lk,
-            # o=S_La_Ls_J_Gz_Jas_LazQ0u_LzsQua_k,
-            o=Sk,
+            o=S_L_P_k,
             ref_filename=ref_filename,
             a=a,
             ef=ef,

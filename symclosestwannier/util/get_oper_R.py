@@ -119,6 +119,8 @@ def get_AA_R(cwi):
     else:
         atoms_frac = None
 
+    atoms_frac = None
+
     AA_R = np.array([fourier_transform_k_to_r(AA_k[i], kpoints, irvec, atoms_frac) for i in range(3)])
 
     return AA_R

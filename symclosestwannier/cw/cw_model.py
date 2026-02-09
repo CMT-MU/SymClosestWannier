@@ -739,20 +739,27 @@ class CWModel(dict):
         combined_samb_matrix = self._cwi._mm.get_combined_samb_matrix(fmt="value", digit=15, **select)
 
         ### sign chagne for odd-parity site- and bond-cluster multipoles (L-handed CoSi) ###
-        # for _, zj, d in res:
-        #     tag = tag_dict[zj]
-        #     coeff, amp, sbmp = samb["data"]["Z"][zj][1][0]
-        #     if sbmp in samb["data"]["site_cluster"]:
-        #         s_tag = samb["data"]["site_cluster"][sbmp][0]
-        #         if TagMultipole(s_tag).rank % 2 == 1:
-        #             d = {k: -v for k, v in d.items()}
-        #     elif sbmp in samb["data"]["bond_cluster"]:
-        #         b_tag = samb["data"]["bond_cluster"][sbmp][0]
-        #         if TagMultipole(b_tag).rank % 2 == 1:
-        #             d = {k: -v for k, v in d.items()}
+        # combined_samb = self._cwi._mm["combined_samb"]
+        # combined_id = self._cwi._mm["combined_id"]
+        # common_id = self._cwi._mm["common_id"]
 
-        #     Zr_dict[(zj, tag)] = d
-        #     mat["matrix"][zj] = d
+        # combined_samb_matrix_ = {}
+        # for zj, d in combined_samb_matrix.items():
+        #    combined_samb[combined_id[zj][1].samb_type]
+
+        #    idx = [lst.index(zj) if zj in lst else None for lst in common_id[combined_id[zj][1].samb_type]]
+        #    idx = [i for i in idx if i is not None][0]
+        #    coeff, asamb, acomp, sbsamb, sbcomp = list(combined_samb[combined_id[zj][1].samb_type].values())[idx][0][0][
+        #        0
+        #    ]
+
+        #    if (sbsamb[0] in ("Q", "T") and sbsamb[1] % 2 == 1) or (sbsamb[0] in ("M", "G") and sbsamb[1] % 2 == 0):
+        #        print(zj, sbsamb)
+        #        d = {k: -v for k, v in d.items()}
+
+        #    combined_samb_matrix_[zj] = d
+
+        # combined_samb_matrix = combined_samb_matrix_
         ### sign chagne for odd-parity site- and bond-cluster multipoles (L-handed CoSi) ###
 
         ### change spin quantization axis

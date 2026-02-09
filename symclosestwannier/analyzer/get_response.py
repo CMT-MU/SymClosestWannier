@@ -775,8 +775,8 @@ def berry_get_imfgh_klist(cwi, operators, kpoints, imf=False, img=False, imh=Fal
         )
 
         CC = np.zeros((3, 3, len(kpoints), num_wann, num_wann), dtype=complex)
-        for j in range(3):
-            for i in range(1, i):
+        for i in range(3):
+            for j in range(i + 1, 3):
                 CC[i, j, :, :, :] = fourier_transform_r_to_k(
                     operators["CC_R"][i, j], kpoints, cwi["irvec"], cwi["ndegen"], atoms_frac
                 )
