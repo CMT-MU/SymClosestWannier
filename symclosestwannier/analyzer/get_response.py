@@ -656,13 +656,8 @@ def wham_get_occ_mat_list(cwi, U, E=None, occ=None):
     else:
         occ_list = np.array([fermi(E - ef, T=0.0, unit="eV") for ef in fermi_energy_list])
 
-    f_list = np.zeros((nfermi_loc, num_k, num_wann, num_wann), dtype=complex)
-    g_list = np.zeros((nfermi_loc, num_k, num_wann, num_wann), dtype=complex)
-
     f_list = np.einsum("kni,wki,kmi->wknm", U, occ_list, np.conjugate(U), optimize=True)
-
-    for n in range(num_wann):
-        g_list[:, :, n, n] += 1.0
+    g_list = np.eye(num_wann, dtype=complex)[None, None, :, :] - f_list
 
     return f_list, g_list
 
@@ -807,8 +802,8 @@ def berry_get_imfgh_klist(cwi, operators, kpoints, imf=False, img=False, imh=Fal
                 tmp[4] = tmp[3] @ AA[_beta_A[i]]
 
                 s = 2.0 * np.imag(np.trace(f_list[ife] @ tmp[4], axis1=1, axis2=2))
-                img_k_list[ife, :, 0, i] = np.imag(np.trace(f_list[ife] @ tmp[1], axis1=1, axis2=2)) - s
-                imh_k_list[ife, :, 0, i] = np.imag(np.trace(f_list[ife] @ tmp[2], axis1=1, axis2=2)) + s
+                img_k_list[ife, :, 0, i] = np.real(np.trace(f_list[ife] @ tmp[1], axis1=1, axis2=2)) - s
+                imh_k_list[ife, :, 0, i] = np.real(np.trace(f_list[ife] @ tmp[2], axis1=1, axis2=2)) + s
 
                 #
                 # J1 terms for -2Im[g] and -2Im[h]
@@ -842,6 +837,178 @@ def berry_get_imfgh_klist(cwi, operators, kpoints, imf=False, img=False, imh=Fal
                 )
 
     return imf_k_list, img_k_list, imh_k_list
+
+
+# ==================================================
+def berry_get_imfgh_matrix_klist(cwi, operators, kpoints, img=False, imh=False, occ=None, ladpt=None):
+    """
+    Calculates the three quantities needed for the orbital magnetization:
+        * -2Im[f(k)] [Eq.33 CTVR06, Eq.6 LVTS12]
+        * -2Im[g(k)] [Eq.34 CTVR06, Eq.7 LVTS12]
+        * -2Im[h(k)] [Eq.35 CTVR06, Eq.8 LVTS12]
+
+    They are calculated together (to reduce the number of Fourier calls)
+    for a list of Fermi energies, and stored in axial-vector form.
+
+    Args:
+        imf (bool, optional): calculate -2Im[f(k)] ?
+        img (bool, optional): calculate -2Im[g(k)] ?
+        imh (bool, optional): calculate -2Im[h(k)] ?
+        occ (ndarray, optional): occupancy.
+        ladpt (ndarray, optional): .
+    """
+    if cwi["tb_gauge"]:
+        atoms_list = list(cwi["atoms_frac"].values())
+        atoms_frac = np.array([atoms_list[i] for i in cwi["nw2n"]])
+    else:
+        atoms_frac = None
+
+    if kpoints.ndim == 1:
+        kpoints = np.array([kpoints])
+
+    if occ is not None:
+        num_fermi_loc = 1
+    else:
+        num_fermi_loc = cwi["num_fermi"]
+
+    if ladpt is not None:
+        todo = ladpt
+    else:
+        todo = [True] * num_fermi_loc
+
+    num_wann = cwi["num_wann"]
+
+    HH, delHH = fourier_transform_r_to_k_new(
+        operators["HH_R"], kpoints, cwi["unit_cell_cart"], cwi["irvec"], cwi["ndegen"], atoms_frac
+    )
+
+    if cwi["zeeman_interaction"]:
+        B = cwi["magnetic_field"]
+        theta = cwi["magnetic_field_theta"]
+        phi = cwi["magnetic_field_phi"]
+        g_factor = cwi["g_factor"]
+
+        pauli_spin = fourier_transform_r_to_k_vec(operators["SS_R"], kpoints, cwi["irvec"], cwi["ndegen"], atoms_frac)
+        H_zeeman = spin_zeeman_interaction(B, theta, phi, pauli_spin, g_factor, cwi["num_wann"])
+        HH += H_zeeman
+
+    E, U = np.linalg.eigh(HH)
+
+    #
+    # Gather W-gauge matrix objects
+    #
+    if occ is not None:
+        JJp_list, JJm_list = wham_get_eig_UU_HH_JJlist(cwi, delHH, E, U, occ=occ)
+        f_list, g_list = wham_get_occ_mat_list(cwi, U, occ=occ)
+    else:
+        JJp_list, JJm_list = wham_get_eig_UU_HH_JJlist(cwi, delHH, E, U)
+        f_list, g_list = wham_get_occ_mat_list(cwi, U, E=E)
+
+    del delHH
+    del E
+    del U
+    del occ
+
+    AA, OOmega = fourier_transform_r_to_k_vec(
+        operators["AA_R"], kpoints, cwi["irvec"], cwi["ndegen"], atoms_frac, cwi["unit_cell_cart"], pseudo=True
+    )
+
+    orb_k_list = np.zeros((num_fermi_loc, len(kpoints), num_wann, num_wann, 3))
+
+    print(f"img_k_list.shape = {orb_k_list.shape}")
+
+    if img and imh:
+
+        BB = fourier_transform_r_to_k_vec(
+            operators["BB_R"], kpoints, cwi["irvec"], cwi["ndegen"], atoms_frac, cwi["unit_cell_cart"]
+        )
+
+        CC = np.zeros((3, 3, len(kpoints), num_wann, num_wann), dtype=complex)
+        for i in range(3):
+            for j in range(i + 1, 3):
+                CC[i, j, :, :, :] = fourier_transform_r_to_k(
+                    operators["CC_R"][i, j], kpoints, cwi["irvec"], cwi["ndegen"], atoms_frac
+                )
+                CC[j, i, :, :, :] = CC[i, j, :, :, :].transpose(0, 2, 1).conjugate()
+
+        tmp = np.zeros((5, len(kpoints), num_wann, num_wann), dtype=complex)
+        # tmp[0:2,:,:,:] ... not dependent on inner loop variables
+        # tmp[0.:,:,:] ..... HH . AA(:,:,alpha_A(i))
+        # tmp[1,:,:,:] ..... LLambda_ij [Eq. (37) LVTS12] expressed as a pseudovector
+        # tmp[2,:,:,:] ..... HH . OOmega(:,:,i)
+        # tmp[3:4,:,:,:] ... working matrices for matrix products of inner loop
+
+        # Trace formula for -2Im[g], Eq.(66) LVTS12
+        # Trace formula for -2Im[h], Eq.(56) LVTS12
+
+        for i in range(3):
+            tmp[0] = HH @ AA[_alpha_A[i]]
+            tmp[2] = HH @ OOmega[i]
+            #
+            # LLambda_ij [Eq. (37) LVTS12] expressed as a pseudovector
+            tmp[1] = 1.0j * (CC[_alpha_A[i], _beta_A[i]] - CC[_alpha_A[i], _beta_A[i]].transpose(0, 2, 1).conjugate())
+
+            for ife in range(num_fermi_loc):
+                #
+                # J0 terms for -2Im[g] and -2Im[h]
+                #
+                tmp[3] = tmp[0] @ f_list[ife]
+                tmp[4] = tmp[3] @ AA[_beta_A[i]]
+
+                s = 2.0 * np.imag(f_list[ife] @ tmp[4])
+                s = 2.0 * np.imag(f_list[ife] @ HH @ AA[_alpha_A[i]] @ f_list[ife] @ AA[_beta_A[i]])
+                orb_k_list[ife, :, :, :, i] -= np.real(f_list[ife] @ tmp[1]) - s
+                orb_k_list[ife, :, :, :, i] += np.real(f_list[ife] @ tmp[2]) + s
+
+                #
+                # J1 terms for -2Im[g] and -2Im[h]
+                #
+                # tmp(:,:,1) = HH . AA(:,:,alpha_A(i))
+                # tmp(:,:,4) = HH . JJm_list(:,:,ife,alpha_A(i))
+                tmp[3] = HH @ JJm_list[_alpha_A[i], ife]
+
+                orb_k_list[ife, :, :, :, i] -= -2.0 * (
+                    np.imag(JJm_list[_alpha_A[i], ife] @ BB[_beta_A[i]])
+                    - np.imag(JJm_list[_beta_A[i], ife] @ BB[_alpha_A[i]])
+                )
+                orb_k_list[ife, :, :, :, i] += -2.0 * (
+                    np.imag(tmp[0] @ JJp_list[_beta_A[i], ife]) + np.imag(tmp[3] @ AA[_beta_A[i]])
+                )
+
+                #
+                # J2 terms for -2Im[g] and -2Im[h]
+                #
+                # tmp(:,:,4) = JJm_list(:,:,ife,alpha_A(i)) . HH
+                # tmp(:,:,5) = HH . JJm_list(:,:,ife,alpha_A(i))
+                tmp[3] = JJm_list[_alpha_A[i], ife] @ HH
+                tmp[4] = HH @ JJm_list[_alpha_A[i], ife]
+
+                orb_k_list[ife, :, :, :, i] -= -2.0 * np.imag(tmp[3] @ JJp_list[_beta_A[i], ife])
+                orb_k_list[ife, :, :, :, i] += -2.0 * np.imag(tmp[4] @ JJp_list[_beta_A[i], ife])
+
+    return orb_k_list
+
+
+# ==================================================
+def orb_matrix_klist(cwi, operators, kpoints):
+    """
+    Calculates the three quantities needed for the orbital magnetization:
+        * -2Im[f(k)] [Eq.33 CTVR06, Eq.6 LVTS12]
+        * -2Im[g(k)] [Eq.34 CTVR06, Eq.7 LVTS12]
+        * -2Im[h(k)] [Eq.35 CTVR06, Eq.8 LVTS12]
+
+    They are calculated together (to reduce the number of Fourier calls)
+    for a list of Fermi energies, and stored in axial-vector form.
+
+    Args:
+        imf (bool, optional): calculate -2Im[f(k)] ?
+        img (bool, optional): calculate -2Im[g(k)] ?
+        imh (bool, optional): calculate -2Im[h(k)] ?
+        occ (ndarray, optional): occupancy.
+        ladpt (ndarray, optional): .
+    """
+
+    return berry_get_imfgh_matrix_klist(cwi, operators, kpoints, img=True, imh=True, occ=None)
 
 
 # ==================================================
@@ -1903,7 +2070,7 @@ def gyrotropic_get_K(cwi, operators):
         gyrotropic_band_list = [n for n in range(1, cwi["num_wann"] + 1)]
         gyrotropic_num_bands = cwi["num_wann"]
     else:
-        gyrotropic_band_list = [int(n) for n in gyrotropic_band_list.split(",")]
+        gyrotropic_band_list = [int(n) for n in cwi["gyrotropic_band_list"].split(",")]
         gyrotropic_num_bands = len(gyrotropic_band_list)
 
     mum_fermi = cwi["num_fermi"]
@@ -2047,7 +2214,9 @@ def gyrotropic_get_K(cwi, operators):
                 #     * kweight
                 # )
                 delta_ = (
-                    utility_w0gauss(E[:, n] - fermi_energy_list[ifermi], gyrotropic_smr_type_idx) / eta_smr * kweight
+                    utility_w0gauss((E[:, n] - fermi_energy_list[ifermi]) / eta_smr, gyrotropic_smr_type_idx)
+                    / eta_smr
+                    * kweight
                 )
 
                 if cwi.win.eval_spn:
@@ -2130,14 +2299,6 @@ def gyrotropic_get_K(cwi, operators):
         gyro_K_spn *= fac
 
     return gyro_K_orb, gyro_K_spn
-
-
-# ==================================================
-def absorptive_dichroic_optical_cond_main():
-    """
-    Absorptive dichroic optical conductivity & JDOS on uniform mesh
-    """
-    pass
 
 
 # ==================================================

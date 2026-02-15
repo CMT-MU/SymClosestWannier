@@ -462,7 +462,7 @@ class Win(dict):
         fermi_energy = self._get_param_keyword(win_data, "fermi_energy", 0.0, dtype=float)
 
         if fermi_energy is not None:
-            # found_fermi_energy = True
+            found_fermi_energy = True
             num_fermi = 1
 
         fermi_energy_scan = False

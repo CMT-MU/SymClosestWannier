@@ -471,6 +471,9 @@ def fourier_transform_r_to_k_vec(
             "R,kR,km,aRmn,kn->akmn", weight, phase_R, eiktau, Or_vec, eiktau.conjugate(), optimize=True
         )
     else:
+        print(f"weight.shape = {weight.shape}")
+        print(f"phase_R.shape = {phase_R.shape}")
+        print(f"Or_vec.shape = {Or_vec.shape}")
         Ok_true_vec = np.einsum("R,kR,aRmn->akmn", weight, phase_R, Or_vec, optimize=True)
 
     if not pseudo:

@@ -71,10 +71,12 @@ def get_HH_R(cwi):
     irvec = np.array(cwi["irvec"])
 
     if cwi["tb_gauge"]:
-        atoms_list = list(cwi["atoms_frac"].values())
+        atoms_list = list(cwi["atoms_frac_shift"].values())
         atoms_frac = np.array([atoms_list[i] for i in cwi["nw2n"]])
     else:
         atoms_frac = None
+
+    print(f"atoms_frac = {atoms_frac}")
 
     HH_R = fourier_transform_k_to_r(HH_k, kpoints, irvec, atoms_frac)
 
@@ -114,7 +116,7 @@ def get_AA_R(cwi):
     AA_k = 0.5 * (AA_k + np.einsum("akmn->aknm", AA_k).conj())
 
     if cwi["tb_gauge"]:
-        atoms_list = list(cwi["atoms_frac"].values())
+        atoms_list = list(cwi["atoms_frac_shift"].values())
         atoms_frac = np.array([atoms_list[i] for i in cwi["nw2n"]])
     else:
         atoms_frac = None
@@ -163,7 +165,7 @@ def get_BB_R(cwi):
     BB_k = 1.0j * np.einsum("b,kbc,kbmn->ckmn", wb, bveck, H_k_kb, optimize=True)
 
     if cwi["tb_gauge"]:
-        atoms_list = list(cwi["atoms_frac"].values())
+        atoms_list = list(cwi["atoms_frac_shift"].values())
         atoms_frac = np.array([atoms_list[i] for i in cwi["nw2n"]])
     else:
         atoms_frac = None
@@ -202,6 +204,8 @@ def get_CC_R(cwi):
     Uk = np.array(cwi["Uk"])
     Hkb1b2 = np.array(cwi["Hkb1b2"])
 
+    print(f"Uk[kb2k[:, :], :, :].shape = {Uk[kb2k[:, :], :, :].shape}")
+    print(f"Hkb1b2.shape = {Hkb1b2.shape}")
     Hkb1b2 = np.einsum(
         "kblm, kbdlp, kdpn->kbdmn", np.conj(Uk[kb2k[:, :], :, :]), Hkb1b2, Uk[kb2k[:, :], :, :], optimize=True
     )
@@ -210,7 +214,7 @@ def get_CC_R(cwi):
     CC_k = 0.5 * (CC_k + np.einsum("ijkmn->ijknm", CC_k).conj())
 
     if cwi["tb_gauge"]:
-        atoms_list = list(cwi["atoms_frac"].values())
+        atoms_list = list(cwi["atoms_frac_shift"].values())
         atoms_frac = np.array([atoms_list[i] for i in cwi["nw2n"]])
     else:
         atoms_frac = None
@@ -244,7 +248,7 @@ def get_SS_R(cwi):
     irvec = np.array(cwi["irvec"])
 
     if cwi["tb_gauge"]:
-        atoms_list = list(cwi["atoms_frac"].values())
+        atoms_list = list(cwi["atoms_frac_shift"].values())
         atoms_frac = np.array([atoms_list[i] for i in cwi["nw2n"]])
     else:
         atoms_frac = None
@@ -273,7 +277,7 @@ def get_SHC_R(cwi):
     num_k = cwi["num_k"]
 
     if cwi["tb_gauge"]:
-        atoms_list = list(cwi["atoms_frac"].values())
+        atoms_list = list(cwi["atoms_frac_shift"].values())
         atoms_frac = np.array([atoms_list[i] for i in cwi["nw2n"]])
     else:
         atoms_frac = None
@@ -380,7 +384,7 @@ def get_berry_phase_R(cwi):
     irvec = np.array(cwi["irvec"])
 
     if cwi["tb_gauge"]:
-        atoms_list = list(cwi["atoms_frac"].values())
+        atoms_list = list(cwi["atoms_frac_shift"].values())
         atoms_frac = np.array([atoms_list[i] for i in cwi["nw2n"]])
     else:
         atoms_frac = None
@@ -412,7 +416,7 @@ def get_v_R(cwi, HH_R=None):
     irvec_cart = np.array([np.array(R) @ np.array(A) for R in irvec])
 
     if cwi["tb_gauge"]:
-        atoms_list = list(cwi["atoms_frac"].values())
+        atoms_list = list(cwi["atoms_frac_shift"].values())
         atoms_frac = np.array([atoms_list[i] for i in cwi["nw2n"]])
         atoms_cart = np.array([r @ A for r in atoms_frac])
         bond_cart = np.array([[[(R + rn) - rm for rn in atoms_cart] for rm in atoms_cart] for R in irvec_cart])

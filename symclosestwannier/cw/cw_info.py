@@ -136,7 +136,8 @@ class CWInfo(dict):
                     continue
 
             if name == "uHu":
-                if not (self._postcw and d["gyrotropic"]):
+                # if not (self._postcw and d["gyrotropic"]):
+                if not d["gyrotropic"]:
                     continue
                 if not np.any(
                     [
