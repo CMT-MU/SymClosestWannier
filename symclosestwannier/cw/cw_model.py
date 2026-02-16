@@ -469,7 +469,7 @@ class CWModel(dict):
         nk = Uk.transpose(0, 2, 1).conjugate() @ fk @ Uk
         nr = CWModel.fourier_transform_k_to_r(nk, self._cwi["kpoints"], self._cwi["irvec"])
 
-        N1, N2, N3 = 16, 16, 16
+        N1, N2, N3 = 30, 30, 30
         kpoints = np.array(
             [[i / float(N1), j / float(N2), k / float(N3)] for i in range(N1) for j in range(N2) for k in range(N3)]
         )
@@ -479,7 +479,7 @@ class CWModel(dict):
         )
         E, U = np.linalg.eigh(HH)
 
-        dfk = np.array([np.diag(fermi_dt(eki - (ef - 0.25), T=0.5)) for eki in E], dtype=float)
+        dfk = np.array([np.diag(fermi_dt(eki - (ef - 0.05), T=300)) for eki in E], dtype=float)
         dnk = U @ dfk @ U.transpose(0, 2, 1).conjugate()
         dnr = CWModel.fourier_transform_k_to_r(dnk, kpoints, self._cwi["irvec"])
 
@@ -585,16 +585,20 @@ class CWModel(dict):
         print(f"orbk.shape = {orbk.shape}")
         print(f"vdfk.shape = {vdfk.shape}")
 
-        orbr = np.array(
+        orb_vdf_r = sum(
             [
                 CWModel.fourier_transform_k_to_r(orbk[:, :, :, a] @ vdfk[a, :, :, :], kpoints, self._cwi["irvec"])
                 for a in range(3)
             ]
         )
 
-        print("end!!!")
+        self.update(
+            {
+                "orb_vdf_r": orb_vdf_r.tolist(),
+            }
+        )
 
-        self.update({"orbk": orbk.tolist(), "orbr": orbr.tolist()})
+        print("end!!!")
 
         # band distance
         self._cwm.log("\n    * band distance between DFT and Wannier bands:", None, file=self._outfile, mode="a")
@@ -843,6 +847,7 @@ class CWModel(dict):
         nr_dict = CWModel.matrix_dict_r(self["nr"], self._cwi["irvec"])
         dnr_dict = CWModel.matrix_dict_r(self["dnr"], self._cwi["irvec"])
         vdnr_dict = [CWModel.matrix_dict_r(self["vdnr"][a], self._cwi["irvec"]) for a in range(3)]
+        orb_vdf_r_dict = CWModel.matrix_dict_r(self["orb_vdf_r"], self._cwi["irvec"])
         Hr_nonortho_dict = CWModel.matrix_dict_r(self["Hr_nonortho"], self._cwi["irvec"])
 
         if self._cwi["calc_spin_2d"] and self._cwi["pauli_spn"] is not None:
@@ -964,11 +969,19 @@ class CWModel(dict):
 
         #####
 
-        msg = "    - decomposing vdf as linear combination of SAMBs ... "
+        msg = "    - decomposing orb_vdf as linear combination of SAMBs ... "
         self._cwm.log(msg, None, end="", file=self._outfile, mode="a")
         self._cwm.set_stamp()
 
-        print(vdnr_dict[0])
+        orb_vdf = CWModel.samb_decomp_operator(orb_vdf_r_dict, combined_samb_matrix, ket=ket_amn, ket_samb=ket_samb)
+
+        self._cwm.log("done", file=self._outfile, mode="a")
+
+        #####
+
+        msg = "    - decomposing vdf as linear combination of SAMBs ... "
+        self._cwm.log(msg, None, end="", file=self._outfile, mode="a")
+        self._cwm.set_stamp()
 
         vdn = [
             CWModel.samb_decomp_operator(vdnr_dict[a], combined_samb_matrix, ket=ket_amn, ket_samb=ket_samb)
@@ -1250,6 +1263,7 @@ class CWModel(dict):
                 "n": n,
                 "dn": dn,
                 "vdn": vdn,
+                "orb_vdf": orb_vdf,
                 "z": z,
                 "z_nonortho": z_nonortho,
                 "ss": ss,
@@ -1804,6 +1818,7 @@ class CWModel(dict):
             "z_nonortho",
             "s",
             "n",
+            "orb_vdf",
             "sx",
             "sy",
             "sz",
@@ -1824,6 +1839,9 @@ class CWModel(dict):
         elif type == "n":
             header = n_header
             o = self["n"]
+        elif type == "orb_vdf":
+            header = n_header
+            o = self["orb_vdf"]
         elif type == "sx":
             header = sx_header
             o = self["ss"][0]

@@ -118,23 +118,11 @@ def cw_creator(seedname="cwannier"):
         filename = f"{cwi['seedname']}_vzdnr_R_dep.dat.cw"
         cw_model.write_O_R_dependence(cw_model["vdnr"][2], filename, header=CWModel._O_R_dependence_header())
 
-        filename = f"{cwi['seedname']}_orbxr.dat.cw"
-        cw_model.write_or(cw_model["orbr"][0], filename)  # , header=CWModel._hr_header())
+        filename = f"{cwi['seedname']}_orb_vdf_r.dat.cw"
+        cw_model.write_or(cw_model["orb_vdf_r"], filename)  # , header=CWModel._hr_header())
 
-        filename = f"{cwi['seedname']}_orbxr_R_dep.dat.cw"
-        cw_model.write_O_R_dependence(cw_model["orbr"][0], filename, header=CWModel._O_R_dependence_header())
-
-        filename = f"{cwi['seedname']}_orbyr.dat.cw"
-        cw_model.write_or(cw_model["orbr"][1], filename)  # , header=CWModel._hr_header())
-
-        filename = f"{cwi['seedname']}_orbyr_R_dep.dat.cw"
-        cw_model.write_O_R_dependence(cw_model["orbr"][1], filename, header=CWModel._O_R_dependence_header())
-
-        filename = f"{cwi['seedname']}_orbzr.dat.cw"
-        cw_model.write_or(cw_model["orbr"][2], filename)  # , header=CWModel._hr_header())
-
-        filename = f"{cwi['seedname']}_orbzr_R_dep.dat.cw"
-        cw_model.write_O_R_dependence(cw_model["orbr"][2], filename, header=CWModel._O_R_dependence_header())
+        filename = f"{cwi['seedname']}_orb_vdf_r_R_dep.dat.cw"
+        cw_model.write_O_R_dependence(cw_model["orb_vdf_r"], filename, header=CWModel._O_R_dependence_header())
 
     if cwi["write_sr"]:
         filename = f"{cwi['seedname']}_sr.dat.cw"
@@ -227,6 +215,9 @@ def cw_creator(seedname="cwannier"):
 
         filename = os.path.join(cwi["mp_outdir"], "{}".format(f"{cwi['mp_seedname']}_n.dat.cw"))
         cw_model.write_samb_coeffs(filename, type="n")
+
+        filename = os.path.join(cwi["mp_outdir"], "{}".format(f"{cwi['mp_seedname']}_orb_vdf.dat.cw"))
+        cw_model.write_samb_coeffs(filename, type="orb_vdf")
 
         if cwi["calc_spin_2d"] and cwi["pauli_spn"] is not None:
             filename = os.path.join(cwi["mp_outdir"], "{}".format(f"{cwi['mp_seedname']}_sx.dat.cw"))
