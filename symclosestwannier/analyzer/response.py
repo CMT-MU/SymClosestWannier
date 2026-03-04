@@ -96,9 +96,9 @@ class Response(dict):
 
         self.set_operators()
 
-        self.calc_response()
+        # self.calc_response()
 
-        self.calc_spin_moment()
+        # self.calc_spin_moment()
 
     # ==================================================
     @property

@@ -25,6 +25,7 @@ import datetime
 import itertools
 import textwrap
 
+from matplotlib.pylab import MT19937
 import numpy as np
 from numpy import linalg as npl
 from scipy import linalg as spl
@@ -53,6 +54,7 @@ from symclosestwannier.util.header import (
 )
 from symclosestwannier.util.utility import (
     fermi,
+    fermi_dt,
     weight_proj,
     band_distance,
     get_wannier_center_spread,
@@ -60,6 +62,7 @@ from symclosestwannier.util.utility import (
     fourier_transform_k_to_r,
     fourier_transform_r_to_k,
     fourier_transform_r_to_k_vec,
+    fourier_transform_r_to_k_new,
     interpolate,
     matrix_dict_r,
     matrix_dict_k,
@@ -592,6 +595,54 @@ class CWModel(dict):
 
             self._cwm.log("done", file=self._outfile, mode="a")
 
+        # occupancy
+        self._cwm.set_stamp()
+
+        self._cwm.log("\n    * Occupancy:", None, file=self._outfile, mode="a")
+
+        self._cwm.log("     idx        occupancy (1/unit-cell)", None, file=self._outfile, mode="a")
+
+        for m in range(self._cwi["num_wann"]):
+            occ_m = np.real(np.sum(nk[:, m, m])) / self._cwi["num_k"]
+            self._cwm.log("{0:6d}        {1:15.8f}".format(m + 1, occ_m), None, file=self._outfile, mode="a")
+
+        occ_all = np.sum(np.real(np.sum([nk[:, m, m] for m in range(self._cwi["num_wann"])]))) / self._cwi["num_k"]
+        print(f"occ_all = {occ_all}")
+        self._cwm.log(
+            "     Sum        {0:15.8f}".format(
+                occ_all,
+            ),
+            None,
+            file=self._outfile,
+            mode="a",
+        )
+
+        # ionic limit
+        # c_1 = 0.669
+        # c_2 = np.sqrt(1 - c_1**2)
+
+        # optimized values
+        # c_1 = 0.85
+        # c_2 = np.sqrt(1 - c_1**2)
+
+        #
+        # eg1 = {7: c_1, 6: c_2}
+        # eg2 = {5: c_2, 8: c_1}
+        # eg3 = {7: c_2, 6: -c_1}
+        # eg4 = {5: -c_1, 8: c_2}
+
+        # eg_dict = {"eg1": eg1, "eg2": eg2, "eg3": eg3, "eg4": eg4}
+
+        # for orb, d in eg_dict.items():
+        #    occ = 0.0
+        #    for m1, coeff1 in d.items():
+        #        for m2, coeff2 in d.items():
+        #            occ += coeff1 * coeff2 * np.real(np.sum(nk[:, m1, m2])) / self._cwi["num_k"]
+
+        #    self._cwm.log("  {0:6s}        {1:15.8f}".format(orb, occ), None, file=self._outfile, mode="a")
+
+        self._cwm.log("done", file=self._outfile, mode="a")
+
         # symmetrization
         if self._cwi["symmetrization"]:
             msg = "   - symmetrization ... "
@@ -736,7 +787,7 @@ class CWModel(dict):
         else:
             select = {"Gamma": self._cwi["irreps"]}
 
-        combined_samb_matrix = self._cwi._mm.get_combined_samb_matrix(fmt="value", digit=15, **select)
+        combined_samb_matrix = self._cwi._mm.get_combined_samb_matrix(fmt="value", digit=15, select=select)
 
         ### sign chagne for odd-parity site- and bond-cluster multipoles (L-handed CoSi) ###
         # combined_samb = self._cwi._mm["combined_samb"]
@@ -826,6 +877,7 @@ class CWModel(dict):
         n = CWModel.samb_decomp_operator(nr_dict, combined_samb_matrix, ket=ket_amn, ket_samb=ket_samb)
 
         self._cwm.log("done", file=self._outfile, mode="a")
+
         ###
 
         ###
@@ -1643,6 +1695,7 @@ class CWModel(dict):
             "z_nonortho",
             "s",
             "n",
+            "orb_vdf",
             "sx",
             "sy",
             "sz",
@@ -1663,6 +1716,9 @@ class CWModel(dict):
         elif type == "n":
             header = n_header
             o = self["n"]
+        elif type == "orb_vdf":
+            header = n_header
+            o = self["orb_vdf"]
         elif type == "sx":
             header = sx_header
             o = self["ss"][0]
