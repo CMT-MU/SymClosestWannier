@@ -469,28 +469,6 @@ class CWModel(dict):
         nk = Uk.transpose(0, 2, 1).conjugate() @ fk @ Uk
         nr = CWModel.fourier_transform_k_to_r(nk, self._cwi["kpoints"], self._cwi["irvec"])
 
-        N1, N2, N3 = 30, 30, 30
-        kpoints = np.array(
-            [[i / float(N1), j / float(N2), k / float(N3)] for i in range(N1) for j in range(N2) for k in range(N3)]
-        )
-        # kpoints = self._cwi["kpoints"]
-        HH, delHH = fourier_transform_r_to_k_new(
-            Hr, kpoints, self._cwi["unit_cell_cart"], self._cwi["irvec"], self._cwi["ndegen"]
-        )
-        E, U = np.linalg.eigh(HH)
-
-        dfk = np.array([np.diag(fermi_dt(eki - (ef - 0.05), T=300)) for eki in E], dtype=float)
-        dnk = U @ dfk @ U.transpose(0, 2, 1).conjugate()
-        dnr = CWModel.fourier_transform_k_to_r(dnk, kpoints, self._cwi["irvec"])
-
-        from symclosestwannier.analyzer.get_response import wham_get_deleig
-
-        delE = wham_get_deleig(delHH, E, U)
-        vdfk = np.array([[np.diag(delE[a, k]) for k in range(len(kpoints))] @ dfk for a in range(3)])
-        print(f"vdfk.shape = {vdfk.shape}")
-        vdnk = np.array([U @ vdfk[a] @ U.transpose(0, 2, 1).conjugate() for a in range(3)])
-        vdnr = np.array([CWModel.fourier_transform_k_to_r(vdnk[a], kpoints, self._cwi["irvec"]) for a in range(3)])
-
         if self._cwi["calc_spin_2d"] and self._cwi["pauli_spn"] is not None:
             SSk = np.array(self._cwi["pauli_spn"])
             SSk = np.array([(fk @ SSk[a] + SSk[a] @ fk) / 2 for a in range(3)])
@@ -536,69 +514,17 @@ class CWModel(dict):
             {
                 "Sk": Sk.tolist(),
                 "nk": nk.tolist(),
-                "dnk": dnk.tolist(),
-                "vdnk": vdnk.tolist(),
                 "Hk": Hk.tolist(),
                 "Hk_nonortho": Hk_nonortho.tolist(),
                 "SSk": SSk.tolist() if SSk is not None else SSk,
                 #
                 "Sr": Sr.tolist(),
                 "nr": nr.tolist(),
-                "dnr": dnr.tolist(),
-                "vdnr": vdnr.tolist(),
                 "Hr": Hr.tolist(),
                 "Hr_nonortho": Hr_nonortho.tolist(),
                 "SSr": SSr.tolist() if SSk is not None else SSk,
             }
         )
-
-        # orbital
-
-        from symclosestwannier.analyzer.response import Response
-        from symclosestwannier.analyzer.get_response import orb_matrix_klist
-
-        res = Response(self._cwi, self._cwm, HH_R=Hr)
-
-        print("start!!!")
-
-        orbk = []
-        for ik, k in enumerate(kpoints):
-            print(f"{ik}/{len(kpoints)}")
-            orbk.append(orb_matrix_klist(self._cwi, res.operators, np.array([k]))[0])
-
-        orbk = np.array(orbk)[:, 0, :, :, :]
-
-        from symclosestwannier.util.constants import (
-            elec_mass_SI,
-            elem_charge_SI,
-            hbar_SI,
-            bohr,
-            bohr_magn_SI,
-            joul_to_eV,
-        )
-
-        cell_volume = self._cwi["unit_cell_volume"]
-        fac = elem_charge_SI**2 / (2.0 * hbar_SI * cell_volume)
-
-        orbk *= fac
-
-        print(f"orbk.shape = {orbk.shape}")
-        print(f"vdfk.shape = {vdfk.shape}")
-
-        orb_vdf_r = sum(
-            [
-                CWModel.fourier_transform_k_to_r(orbk[:, :, :, a] @ vdfk[a, :, :, :], kpoints, self._cwi["irvec"])
-                for a in range(3)
-            ]
-        )
-
-        self.update(
-            {
-                "orb_vdf_r": orb_vdf_r.tolist(),
-            }
-        )
-
-        print("end!!!")
 
         # band distance
         self._cwm.log("\n    * band distance between DFT and Wannier bands:", None, file=self._outfile, mode="a")
@@ -845,9 +771,6 @@ class CWModel(dict):
         Hr_dict = CWModel.matrix_dict_r(self["Hr"], self._cwi["irvec"])
         Sr_dict = CWModel.matrix_dict_r(self["Sr"], self._cwi["irvec"])
         nr_dict = CWModel.matrix_dict_r(self["nr"], self._cwi["irvec"])
-        dnr_dict = CWModel.matrix_dict_r(self["dnr"], self._cwi["irvec"])
-        vdnr_dict = [CWModel.matrix_dict_r(self["vdnr"][a], self._cwi["irvec"]) for a in range(3)]
-        orb_vdf_r_dict = CWModel.matrix_dict_r(self["orb_vdf_r"], self._cwi["irvec"])
         Hr_nonortho_dict = CWModel.matrix_dict_r(self["Hr_nonortho"], self._cwi["irvec"])
 
         if self._cwi["calc_spin_2d"] and self._cwi["pauli_spn"] is not None:
@@ -859,14 +782,12 @@ class CWModel(dict):
         self._cwm.log(msg, None, end="\n", file=self._outfile, mode="a")
         self._cwm.set_stamp()
 
-        # if self._cwi["irreps"] == "all":
-        #    select = {}
-        # else:
-        #   select = {"Gamma": self._cwi["irreps"]}
+        if self._cwi["irreps"] == "all":
+            select = {}
+        else:
+            select = {"Gamma": self._cwi["irreps"]}
 
-        select = {}
-
-        combined_samb_matrix = self._cwi._mm.get_combined_samb_matrix(fmt="value", digit=15, **select)
+        combined_samb_matrix = self._cwi._mm.get_combined_samb_matrix(fmt="value", digit=15, select=select)
 
         ### sign chagne for odd-parity site- and bond-cluster multipoles (L-handed CoSi) ###
         # combined_samb = self._cwi._mm["combined_samb"]
@@ -957,38 +878,6 @@ class CWModel(dict):
 
         self._cwm.log("done", file=self._outfile, mode="a")
 
-        #####
-
-        msg = "    - decomposing df as linear combination of SAMBs ... "
-        self._cwm.log(msg, None, end="", file=self._outfile, mode="a")
-        self._cwm.set_stamp()
-
-        dn = CWModel.samb_decomp_operator(dnr_dict, combined_samb_matrix, ket=ket_amn, ket_samb=ket_samb)
-
-        self._cwm.log("done", file=self._outfile, mode="a")
-
-        #####
-
-        msg = "    - decomposing orb_vdf as linear combination of SAMBs ... "
-        self._cwm.log(msg, None, end="", file=self._outfile, mode="a")
-        self._cwm.set_stamp()
-
-        orb_vdf = CWModel.samb_decomp_operator(orb_vdf_r_dict, combined_samb_matrix, ket=ket_amn, ket_samb=ket_samb)
-
-        self._cwm.log("done", file=self._outfile, mode="a")
-
-        #####
-
-        msg = "    - decomposing vdf as linear combination of SAMBs ... "
-        self._cwm.log(msg, None, end="", file=self._outfile, mode="a")
-        self._cwm.set_stamp()
-
-        vdn = [
-            CWModel.samb_decomp_operator(vdnr_dict[a], combined_samb_matrix, ket=ket_amn, ket_samb=ket_samb)
-            for a in range(3)
-        ]
-
-        self._cwm.log("done", file=self._outfile, mode="a")
         ###
 
         ###
@@ -1122,8 +1011,6 @@ class CWModel(dict):
         )
         nr_sym = CWModel.construct_Or(n, self._cwi["num_wann"], self._cwi["irvec"], combined_samb_matrix)
 
-        dnr_sym = CWModel.construct_Or(dn, self._cwi["num_wann"], self._cwi["irvec"], combined_samb_matrix)
-
         if self._cwi["tb_gauge"]:
             Sk_sym = CWModel.fourier_transform_r_to_k(
                 Sr_sym, self._cwi["kpoints"], self._cwi["irvec"], self._cwi["ndegen"], atoms_frac=atoms_frac_samb
@@ -1141,9 +1028,6 @@ class CWModel(dict):
             nk_sym = CWModel.fourier_transform_r_to_k(
                 nr_sym, self._cwi["kpoints"], self._cwi["irvec"], self._cwi["ndegen"], atoms_frac=atoms_frac_samb
             )
-            dnk_sym = CWModel.fourier_transform_r_to_k(
-                dnr_sym, self._cwi["kpoints"], self._cwi["irvec"], self._cwi["ndegen"], atoms_frac=atoms_frac_samb
-            )
         else:
             Sk_sym = CWModel.fourier_transform_r_to_k(
                 Sr_sym, self._cwi["kpoints"], self._cwi["irvec"], self._cwi["ndegen"]
@@ -1156,9 +1040,6 @@ class CWModel(dict):
             )
             nk_sym = CWModel.fourier_transform_r_to_k(
                 nr_sym, self._cwi["kpoints"], self._cwi["irvec"], self._cwi["ndegen"]
-            )
-            dnk_sym = CWModel.fourier_transform_r_to_k(
-                dnr_sym, self._cwi["kpoints"], self._cwi["irvec"], self._cwi["ndegen"]
             )
 
         self._cwm.log("done", file=self._outfile, mode="a")
@@ -1261,9 +1142,6 @@ class CWModel(dict):
             {
                 "s": s,
                 "n": n,
-                "dn": dn,
-                "vdn": vdn,
-                "orb_vdf": orb_vdf,
                 "z": z,
                 "z_nonortho": z_nonortho,
                 "ss": ss,
@@ -1274,7 +1152,6 @@ class CWModel(dict):
                 "Hk_nonortho_sym": Hk_nonortho_sym,
                 "Sr_sym": Sr_sym,
                 "nr_sym": nr_sym,
-                "dnr_sym": dnr_sym,
                 "Hr_sym": Hr_sym,
                 "Hr_nonortho_sym": Hr_nonortho_sym,
                 #
