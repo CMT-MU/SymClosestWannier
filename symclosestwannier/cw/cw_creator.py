@@ -525,7 +525,7 @@ def cw_creator(seedname="cwannier"):
             if cwi["tb_gauge"]:
                 site_dict = {
                     k + "_" + str(vi.sublattice): vi.position_primitive.tolist()
-                    for k, v in self._cwi._mm["site"]["cell"].items()
+                    for k, v in cwi._mm["site"]["cell"].items()
                     for vi in v
                     if vi.plus_set == 1
                 }
@@ -762,7 +762,7 @@ def cw_creator(seedname="cwannier"):
             if cwi["tb_gauge"]:
                 site_dict = {
                     k + "_" + str(vi.sublattice): vi.position_primitive.tolist()
-                    for k, v in self._cwi._mm["site"]["cell"].items()
+                    for k, v in cwi._mm["site"]["cell"].items()
                     for vi in v
                     if vi.plus_set == 1
                 }
@@ -808,7 +808,7 @@ def cw_creator(seedname="cwannier"):
             if cwi["tb_gauge"]:
                 site_dict = {
                     k + "_" + str(vi.sublattice): vi.position_primitive.tolist()
-                    for k, v in self._cwi._mm["site"]["cell"].items()
+                    for k, v in cwi._mm["site"]["cell"].items()
                     for vi in v
                     if vi.plus_set == 1
                 }
