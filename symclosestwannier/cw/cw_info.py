@@ -310,7 +310,7 @@ class CWInfo(dict):
                     name = ""
                     sl = 0
                     for (name_, sl_), pos_ in site_dict.items():
-                        if np.allclose(np.array(pos), np.array(pos_), rtol=1e-04, atol=1e-04):
+                        if np.allclose(np.array(pos, dtype=float), np.array(pos_, dtype=float), rtol=1e-04, atol=1e-04):
                             name = name_
                             sl = sl_
                     if name == "":
