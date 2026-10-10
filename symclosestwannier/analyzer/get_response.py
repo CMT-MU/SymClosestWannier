@@ -1094,6 +1094,9 @@ def kubo_frequencies(cwi):
         ndarray: frequencies (eV).
     """
     fmin, fmax, fstep = cwi["kubo_freq_min"], cwi["kubo_freq_max"], cwi["kubo_freq_step"]
+    if not (np.isfinite(fstep) and fstep > 0):
+        # wannier90 rejects a negative step (and divides by a zero one)
+        raise SymCWInputError(f"kubo_freq_step must be positive in seedname.win, not {fstep}.")
     x = (fmax - fmin) / fstep
     nfreq = max(int(np.sign(x) * np.floor(abs(x) + 0.5)) + 1, 2)  # nint rounds half away from zero
     return fmin + (fmax - fmin) * np.arange(nfreq) / (nfreq - 1)

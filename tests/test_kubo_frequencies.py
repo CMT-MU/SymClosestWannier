@@ -7,6 +7,7 @@ import numpy as np
 import pytest
 
 from symclosestwannier.analyzer import get_response as gr
+from symclosestwannier.util.exceptions import SymCWInputError
 
 from test_tb_gauge import KPOINTS, Model, make_cwi
 
@@ -27,6 +28,12 @@ from test_tb_gauge import KPOINTS, Model, make_cwi
 def test_kubo_frequencies(fmin, fmax, fstep, expected):
     freq = gr.kubo_frequencies({"kubo_freq_min": fmin, "kubo_freq_max": fmax, "kubo_freq_step": fstep})
     np.testing.assert_allclose(freq, expected, rtol=0, atol=1e-12)
+
+
+@pytest.mark.parametrize("fstep", [0.0, -0.5, np.nan, np.inf])
+def test_kubo_frequencies_invalid_step(fstep):
+    with pytest.raises(SymCWInputError, match="kubo_freq_step must be positive"):
+        gr.kubo_frequencies({"kubo_freq_min": 0.0, "kubo_freq_max": 1.0, "kubo_freq_step": fstep})
 
 
 # ==================================================
