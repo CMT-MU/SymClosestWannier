@@ -36,6 +36,8 @@ def kubo_cwi(model, **kwargs):
     return {
         **make_cwi(model, False),
         "fermi_energy": 0.3,
+        "fermi_energy_list": [0.3],
+        "num_fermi": 1,
         "berry_kmesh": [N, N, N],
         "unit_cell_volume": abs(np.linalg.det(A)),
         "spin_decomp": False,
