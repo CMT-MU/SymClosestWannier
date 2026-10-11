@@ -77,8 +77,14 @@ def test_tolerance_boundary(eps, tie):
 def test_legacy_prec():
     """prec of earlier versions (a tolerance of the squared distances), given by position or by name."""
     A, mp_grid, irvec_ref, _ = read_reference()
-    for irvec, _ in (wigner_seitz(A, mp_grid, 1e-4), wigner_seitz(A, mp_grid, prec=1e-4)):
-        assert len(irvec) == 657
+    by_position, by_name = wigner_seitz(A, mp_grid, 1e-4), wigner_seitz(A, mp_grid, prec=1e-4)
+    for a, b in zip(by_position, by_name):
+        np.testing.assert_array_equal(a, b)
+    irvec, ndegen = by_position
+    assert len(irvec) == 657 and np.sum(1.0 / ndegen) == pytest.approx(np.prod(mp_grid))
+    # the R vectors of wannier90 are among them, with the same order
+    keep = [i for i, r in enumerate(map(tuple, irvec)) if r in set(map(tuple, irvec_ref))]
+    np.testing.assert_array_equal(irvec[keep], irvec_ref)
     assert len(wigner_seitz(A, mp_grid)[0]) == len(irvec_ref) == 621
 
 
@@ -132,7 +138,16 @@ def test_win_keywords(tmp_path, text, tol, size):
 
 
 @pytest.mark.parametrize(
-    "text", ["ws_search_size = 1 2\n", "ws_search_size = 0\n", "ws_search_size = 1.5\n", "ws_distance_tol = 0.0\n"]
+    "text",
+    [
+        "ws_search_size = 1 2\n",
+        "ws_search_size = 0\n",
+        "ws_search_size = 1.5\n",
+        "ws_distance_tol = 0.0\n",
+        "ws_distance_tol = nan\n",
+        "ws_distance_tol = inf\n",
+        "ws_distance_tol = -inf\n",
+    ],
 )
 def test_win_keywords_invalid(tmp_path, text):
     with pytest.raises(SymCWInputError):
