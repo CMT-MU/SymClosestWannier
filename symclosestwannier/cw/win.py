@@ -72,7 +72,7 @@ _default = {
     "kubo_freq_max": None,
     "kubo_freq_min": 0.0,
     "kubo_freq_step": 0.01,
-    "kubo_eigval_max": +100000,
+    "kubo_eigval_max": None,
     "kubo_adpt_smr": False,
     "kubo_adpt_smr_fac": np.sqrt(2),
     "kubo_adpt_smr_max": 1.0,
@@ -90,7 +90,7 @@ _default = {
     "gyrotropic_freq_max": None,
     "gyrotropic_freq_min": 0.0,
     "gyrotropic_freq_step": 0.01,
-    "gyrotropic_eigval_max": +100000,
+    "gyrotropic_eigval_max": None,
     "gyrotropic_degen_thresh": 0.0,
     "gyrotropic_smr_fixed_en_width": 0.0,
     "gyrotropic_smr_type": "gauss",
@@ -103,6 +103,50 @@ _default = {
     # boltzwann
     "boltzwann": False,
 }
+
+
+# ==================================================
+def energy_range_defaults(d):
+    """
+    set the defaults of kubo_freq_max, kubo_eigval_max, gyrotropic_freq_max and gyrotropic_eigval_max that are not
+    given in seedname.win (None), as wannier90 (w90_wannier90_readwrite_read_energy_range in postw90_readwrite.F90):
+
+    - with an inner (frozen) window (dis_froz_max given): dis_froz_max - E_F + 0.6667 for the frequencies and
+      dis_froz_max + 0.6667 for the eigenvalues, with E_F the first Fermi energy;
+    - otherwise, with the energies of seedname.eig (Ek): max(Ek) - min(Ek) + 0.6667 and max(Ek) + 0.6667;
+    - otherwise: dis_win_max - dis_win_min + 0.6667 and dis_win_max + 0.6667.
+
+    As in wannier90, the gyrotropic defaults are these values, not kubo_freq_max and kubo_eigval_max given in
+    seedname.win.
+
+    Args:
+        d (dict): information of seedname.win, with Ek (and the Fermi energies) if available; updated in place.
+
+    Returns:
+        dict: d.
+    """
+    if d.get("dis_froz_max") is not None and d["dis_froz_max"] < _default["dis_froz_max"]:
+        fermi_energy_list = d.get("fermi_energy_list") or [d.get("fermi_energy", 0.0)]
+        freq_max = d["dis_froz_max"] - fermi_energy_list[0] + 0.6667
+        eigval_max = d["dis_froz_max"] + 0.6667
+    elif d.get("Ek") is not None:
+        Ek = np.asarray(d["Ek"], dtype=float)
+        freq_max = Ek.max() - Ek.min() + 0.6667
+        eigval_max = Ek.max() + 0.6667
+    else:
+        freq_max = d["dis_win_max"] - d["dis_win_min"] + 0.6667
+        eigval_max = d["dis_win_max"] + 0.6667
+
+    for key, value in (
+        ("kubo_freq_max", freq_max),
+        ("kubo_eigval_max", eigval_max),
+        ("gyrotropic_freq_max", freq_max),
+        ("gyrotropic_eigval_max", eigval_max),
+    ):
+        if d.get(key) is None:
+            d[key] = float(value)
+
+    return d
 
 
 # ==================================================
@@ -418,10 +462,12 @@ class Win(dict):
             win_data, "berry_curv_adpt_kmesh_thresh", 100, dtype=float
         )
 
-        d["kubo_freq_max"] = self._get_param_keyword(win_data, "kubo_freq_max", 1.0, dtype=float)
+        # kubo_freq_max, kubo_eigval_max, gyrotropic_freq_max and gyrotropic_eigval_max default to None here; their
+        # defaults depend on the energies and are set by energy_range_defaults.
+        d["kubo_freq_max"] = self._get_param_keyword(win_data, "kubo_freq_max", None, dtype=float)
         d["kubo_freq_min"] = self._get_param_keyword(win_data, "kubo_freq_min", 0.0, dtype=float)
         d["kubo_freq_step"] = self._get_param_keyword(win_data, "kubo_freq_step", 0.01, dtype=float)
-        d["kubo_eigval_max"] = self._get_param_keyword(win_data, "kubo_eigval_max", +100000, dtype=float)
+        d["kubo_eigval_max"] = self._get_param_keyword(win_data, "kubo_eigval_max", None, dtype=float)
         d["kubo_adpt_smr"] = self._get_param_keyword(win_data, "kubo_adpt_smr", d["adpt_smr"], dtype=bool)
         d["kubo_adpt_smr_fac"] = self._get_param_keyword(win_data, "kubo_adpt_smr_fac", d["adpt_smr_fac"], dtype=float)
         d["kubo_adpt_smr_max"] = self._get_param_keyword(win_data, "kubo_adpt_smr_max", d["adpt_smr_max"], dtype=float)
@@ -446,10 +492,10 @@ class Win(dict):
         gyrotropic_kmesh_spacing = self._get_param_keyword(win_data, "gyrotropic_kmesh_spacing", "1  1  1", dtype=str)
         d["gyrotropic_kmesh_spacing"] = [int(x) for x in gyrotropic_kmesh_spacing.split()]
 
-        d["gyrotropic_freq_max"] = self._get_param_keyword(win_data, "gyrotropic_freq_max", 1.0, dtype=float)
+        d["gyrotropic_freq_max"] = self._get_param_keyword(win_data, "gyrotropic_freq_max", None, dtype=float)
         d["gyrotropic_freq_min"] = self._get_param_keyword(win_data, "gyrotropic_freq_min", 0.0, dtype=float)
         d["gyrotropic_freq_step"] = self._get_param_keyword(win_data, "gyrotropic_freq_step", 0.01, dtype=float)
-        d["gyrotropic_eigval_max"] = self._get_param_keyword(win_data, "gyrotropic_eigval_max", +100000, dtype=float)
+        d["gyrotropic_eigval_max"] = self._get_param_keyword(win_data, "gyrotropic_eigval_max", None, dtype=float)
         d["gyrotropic_smr_type"] = self._get_param_keyword(win_data, "smr_type", d["smr_type"], dtype=str).replace(
             " ", ""
         )
