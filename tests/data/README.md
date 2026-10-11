@@ -14,3 +14,8 @@ directory changes, so the tests check that the tight-binding Hamiltonian is unch
 
 The tests compare matrix elements with an absolute tolerance of 1e-7, as the files are written
 with 8 significant digits.
+
+`wigner_seitz_w90.dat` holds the R vectors and degeneracies of a `seedname_hr.dat` written by
+wannier90 (QE + wannier90 workflow on Materials Project structures; this one is mp-79, a hexagonal
+cell whose lattice vectors are rounded to 7 digits in `seedname.win`), with the default
+`ws_distance_tol` and `ws_search_size`. The lattice and `mp_grid` are in its header.

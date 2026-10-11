@@ -28,6 +28,8 @@ _default = {
     "exclude_bands": None,
     #
     "mp_grid": [1, 1, 1],
+    "ws_distance_tol": 1.0e-5,
+    "ws_search_size": [2, 2, 2],
     "kpoints": [[0, 0, 0]],
     "kpoint": None,
     "kpoint_path": None,
@@ -166,6 +168,8 @@ class Win(dict):
                 - dis_win_min     : bottom of the outer energy window (float), [-100000].
                 - dis_mix_ratio   : mixing ratio during the disentanglement (float), [0.5].
                 - mp_grid         : dimensions of the Monkhorst-Pack grid of k-points (list), [[1, 1, 1]],
+                - ws_distance_tol : tolerance of the distances in the Wigner-Seitz supercell of the R vectors (float, Angstrom), [1.0e-5].
+                - ws_search_size  : number of supercells searched for the Wigner-Seitz supercell along each direction (one or three integers), [2].
                 - kpoints         : k-points used in DFT calculation, [[k1, k2, k3]] (crystal coordinate).
                 - kpoint          : representative k points (dict), [None].
                 - kpoint_path     : k-points along high symmetry line in Brillouin zone, [[k1, k2, k3]] (crystal coordinate) (str), [None].
@@ -262,6 +266,13 @@ class Win(dict):
         mp_grid = self._get_param_keyword(win_data, "mp_grid", "1  1  1", dtype=str)
         d["mp_grid"] = [int(x) for x in mp_grid.split()]
         d["num_k"] = np.prod(d["mp_grid"])
+        d["ws_distance_tol"] = self._get_param_keyword(win_data, "ws_distance_tol", 1.0e-5, dtype=float)
+        if not d["ws_distance_tol"] > 0:
+            raise SymCWInputError("ws_distance_tol must be positive in seedname.win.")
+        ws_search_size = [int(x) for x in str(self._get_param_keyword(win_data, "ws_search_size", "2", dtype=str)).split()]
+        if len(ws_search_size) not in (1, 3) or min(ws_search_size) < 1:
+            raise SymCWInputError(f"ws_search_size = {ws_search_size}: give one or three positive integers.")
+        d["ws_search_size"] = ws_search_size * 3 if len(ws_search_size) == 1 else ws_search_size
 
         if d["num_bands"] > d["num_wann"]:
             d["dis_num_iter"] = self._get_param_keyword(win_data, "dis_num_iter", 200, dtype=int)

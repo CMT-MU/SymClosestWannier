@@ -69,6 +69,8 @@
 - dis_win_min       : bottom of the outer energy window (float), [-100000].
 - dis_mix_ratio     : mixing ratio during the disentanglement (float), [0.5].
 - mp_grid           : dimensions of the Monkhorst-Pack grid of k-points (list), [0, 0, 0].
+- ws_distance_tol   : tolerance of the distances in the Wigner-Seitz supercell of the R vectors, as wannier90 (float, Angstrom), [1.0e-5].
+- ws_search_size    : number of supercells searched for the Wigner-Seitz supercell along each direction, as wannier90 (list), [[2, 2, 2]].
 - kpoints           : k-points, [[k1, k2, k3]] (crystal coordinate) (list), [[[0, 0, 0]]].
 - kpoint            : representative k points (dict), [None].
 - kpoint_path       : k-points along high symmetry line in Brillouin zone, [[k1, k2, k3]] (crystal coordinate) (str), [None].

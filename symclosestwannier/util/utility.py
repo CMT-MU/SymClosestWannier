@@ -342,39 +342,56 @@ def iterate3dpm(size):
 
 
 # ==================================================
-def wigner_seitz(A, mp_grid, prec=1.0e-4):
+def wigner_seitz(A, mp_grid, ws_distance_tol=1.0e-5, ws_search_size=2):
     """
     wigner seitz cell.
     return irreducible R vectors and number of degeneracy at each R.
 
+    The R vectors and degeneracies are those of wannier90 (hamiltonian_wigner_seitz): R is kept when it is among the
+    nearest of R - T to the origin, with T on the supercell lattice of mp_grid, and ndegen is the number of these nearest
+    R - T. Two squared distances |R - T|^2 are equal when they differ by less than ws_distance_tol^2 (Angstrom^2).
+
     Args:
         A (list/ndarray): real lattice vectors, A = [a1,a2,a3] (list), [[[1,0,0], [0,1,0], [0,0,1]]].
         mp_grid (list/ndarray): dimensions of the Monkhorst-Pack grid of k-points (list), [0, 0, 0].,
+        ws_distance_tol (float, optional): tolerance of the distances (Angstrom), as ws_distance_tol of wannier90.
+        ws_search_size (int or list, optional): R is searched in the supercells within ws_search_size of the home
+            supercell along each direction, as ws_search_size of wannier90.
 
     Returns:
         tuple: (irvec, ndegen)
             - irvec (ndarray): irreducible R vectors (crystal coordinate, [[n1,n2,n3]], nj: integer).
             - ndegen (ndarray): number of degeneracy at each R.
     """
-    ws_search_size = np.array([1] * 3)
-    dist_dim = np.prod((ws_search_size + 1) * 2 + 1)
-    origin = divmod((dist_dim + 1), 2)[0] - 1
-    real_metric = A.dot(A.T)
-    mp_grid = np.array(mp_grid)
+    real_metric = np.array(A, dtype=float) @ np.array(A, dtype=float).T
+    mp_grid = np.array(mp_grid, dtype="int64")
+    ws_search_size = np.broadcast_to(np.array(ws_search_size, dtype="int64"), (3,))
+    tol = ws_distance_tol**2
+
+    # supercell lattice vectors T = i * mp_grid, |i_j| <= ws_search_size_j + 1; i = 0 is the home supercell
+    T = iterate3dpm(ws_search_size + 1) * mp_grid
+    origin = np.flatnonzero(np.all(T == 0, axis=1))[0]
+    n2n3 = iterate_nd(mp_grid[1:] * ws_search_size[1:], pm=True)
+
     irvec = []
     ndegen = []
-    for n in iterate3dpm(mp_grid * ws_search_size):
-        dist = []
-        for i in iterate3dpm((1, 1, 1) + ws_search_size):
-            ndiff = n - i * mp_grid
-            dist.append(ndiff.dot(real_metric.dot(ndiff)))
-        dist_min = np.min(dist)
-        if abs(dist[origin] - dist_min) < prec:
-            irvec.append(n)
-            ndegen.append(np.sum(abs(dist - dist_min) < prec))
+    for n1 in range(-mp_grid[0] * ws_search_size[0], mp_grid[0] * ws_search_size[0] + 1):
+        n = np.column_stack([np.full(len(n2n3), n1), n2n3])
+        ndiff = n[:, None, :] - T[None, :, :]
+        dist = np.einsum("rti,ij,rtj->rt", ndiff, real_metric, ndiff)
+        dist_min = dist.min(axis=1)
+        keep = np.abs(dist[:, origin] - dist_min) < tol
+        irvec.append(n[keep])
+        ndegen.append(np.sum(np.abs(dist[keep] - dist_min[keep, None]) < tol, axis=1))
 
-    ndegen = np.array(ndegen, dtype="int64")
-    irvec = np.array(irvec, dtype="int64")
+    irvec = np.concatenate(irvec).astype("int64")
+    ndegen = np.concatenate(ndegen).astype("int64")
+
+    # every point of the supercell is counted once (wannier90 stops otherwise)
+    if abs(np.sum(1.0 / ndegen) - np.prod(mp_grid)) > 1e-8:
+        raise SymCWInputError(
+            f"the Wigner-Seitz supercell is not found with ws_search_size = {ws_search_size.tolist()}; increase ws_search_size."
+        )
 
     return irvec, ndegen
 
