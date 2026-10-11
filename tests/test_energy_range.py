@@ -159,3 +159,29 @@ def test_response_sets_the_defaults(monkeypatch):
     response.Response(cwi, None)
     assert cwi["kubo_eigval_max"] == pytest.approx(2.6667)
     assert cwi["kubo_freq_max"] == pytest.approx(2.6667)
+
+
+# ==================================================
+@pytest.mark.parametrize("Ek", [[], np.zeros((0, 4))])
+def test_empty_eigenvalues(Ek):
+    """empty eigenvalues are not used: the outer window if given, otherwise nothing."""
+    d = {"Ek": Ek, "dis_win_min": -5.0, "dis_win_max": 3.0, **{k: None for k in KEYS}}
+    energy_range_defaults(d)
+    assert d["kubo_freq_max"] == pytest.approx(8.6667)
+
+    d = {"Ek": Ek, **{k: None for k in KEYS}}
+    energy_range_defaults(d)
+    assert all(d[k] is None for k in KEYS)
+
+
+# ==================================================
+def test_response_frozen_window_and_given_values(monkeypatch):
+    """Response with an inner window, a Fermi energy without a list, and one value given."""
+    from symclosestwannier.analyzer import response
+
+    monkeypatch.setattr(response.Response, "set_operators", lambda self: None)
+    cwi = {"seedname": "model", "dis_froz_max": 2.0, "fermi_energy": -1.0, **{k: None for k in KEYS}, "kubo_freq_max": 5.0}
+    response.Response(cwi, None)
+    assert cwi["kubo_freq_max"] == 5.0
+    assert cwi["gyrotropic_freq_max"] == pytest.approx(2.0 + 1.0 + 0.6667)
+    assert cwi["kubo_eigval_max"] == pytest.approx(2.6667)

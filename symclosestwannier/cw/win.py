@@ -141,7 +141,7 @@ def energy_range_defaults(d):
             fermi_energy = 0.0  # the default Fermi energy of wannier90
         freq_max = d["dis_froz_max"] - float(fermi_energy) + 0.6667
         eigval_max = d["dis_froz_max"] + 0.6667
-    elif d.get("Ek") is not None:
+    elif d.get("Ek") is not None and np.size(d["Ek"]) > 0:
         Ek = np.asarray(d["Ek"], dtype=float)
         freq_max = Ek.max() - Ek.min() + 0.6667
         eigval_max = Ek.max() + 0.6667
