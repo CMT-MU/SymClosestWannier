@@ -120,29 +120,38 @@ def energy_range_defaults(d):
     seedname.win.
 
     Args:
-        d (dict): information of seedname.win, with Ek (and the Fermi energies) if available; updated in place.
+        d (dict): information of seedname.win, with Ek (and the Fermi energies) if available; updated in place. Nothing
+            is set if neither an inner window, Ek nor an outer window is available.
 
     Returns:
         dict: d.
     """
-    if d.get("dis_froz_max") is not None and d["dis_froz_max"] < _default["dis_froz_max"]:
-        fermi_energy_list = d.get("fermi_energy_list") or [d.get("fermi_energy", 0.0)]
-        freq_max = d["dis_froz_max"] - fermi_energy_list[0] + 0.6667
+    keys = ("kubo_freq_max", "kubo_eigval_max", "gyrotropic_freq_max", "gyrotropic_eigval_max")
+    if all(d.get(key) is not None for key in keys):
+        return d
+
+    # the inner window is given when dis_froz_max differs from the value of Win when it is absent (+100000).
+    if d.get("dis_froz_max") is not None and d["dis_froz_max"] != _default["dis_froz_max"]:
+        fermi_energy_list = d.get("fermi_energy_list")
+        if fermi_energy_list is not None and len(fermi_energy_list) > 0:
+            fermi_energy = fermi_energy_list[0]
+        elif d.get("fermi_energy") is not None:
+            fermi_energy = d["fermi_energy"]
+        else:
+            fermi_energy = 0.0  # the default Fermi energy of wannier90
+        freq_max = d["dis_froz_max"] - float(fermi_energy) + 0.6667
         eigval_max = d["dis_froz_max"] + 0.6667
     elif d.get("Ek") is not None:
         Ek = np.asarray(d["Ek"], dtype=float)
         freq_max = Ek.max() - Ek.min() + 0.6667
         eigval_max = Ek.max() + 0.6667
-    else:
+    elif d.get("dis_win_max") is not None and d.get("dis_win_min") is not None:
         freq_max = d["dis_win_max"] - d["dis_win_min"] + 0.6667
         eigval_max = d["dis_win_max"] + 0.6667
+    else:
+        return d
 
-    for key, value in (
-        ("kubo_freq_max", freq_max),
-        ("kubo_eigval_max", eigval_max),
-        ("gyrotropic_freq_max", freq_max),
-        ("gyrotropic_eigval_max", eigval_max),
-    ):
+    for key, value in zip(keys, (freq_max, eigval_max, freq_max, eigval_max)):
         if d.get(key) is None:
             d[key] = float(value)
 

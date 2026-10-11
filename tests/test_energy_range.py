@@ -111,3 +111,51 @@ def test_postcw_default_frequencies(make_case):
     freq_max = 2.3 + 0.1863 + 0.6667
     # the last frequency is kubo_freq_max, or the last one below it with frequency lists that leave it out
     assert freq_max - 0.5 - 1e-9 < freq.max() <= freq_max + 1e-9
+
+
+# ==================================================
+@pytest.mark.parametrize("value, frozen", [(150000.0, True), (100000.0, False)])
+def test_inner_window_given(value, frozen):
+    """the inner window is given unless dis_froz_max is the value of Win for an absent keyword (+100000)."""
+    d = {"dis_froz_max": value, "fermi_energy_list": [0.0], "Ek": [[0.0, 2.0]], **{k: None for k in KEYS}}
+    energy_range_defaults(d)
+    assert d["kubo_eigval_max"] == pytest.approx(value + 0.6667 if frozen else 2.6667)
+
+
+# ==================================================
+@pytest.mark.parametrize(
+    "fermi, expected",
+    [
+        ({"fermi_energy_list": np.array([-1.0, 0.0]), "fermi_energy": None}, -1.0),
+        ({"fermi_energy_list": [], "fermi_energy": -0.5}, -0.5),
+        ({"fermi_energy_list": None, "fermi_energy": None}, 0.0),
+        ({}, 0.0),
+    ],
+)
+def test_fermi_energy_of_the_inner_window(fermi, expected):
+    d = {"dis_froz_max": 2.0, **fermi, **{k: None for k in KEYS}}
+    energy_range_defaults(d)
+    assert d["kubo_freq_max"] == pytest.approx(2.0 - expected + 0.6667)
+
+
+# ==================================================
+def test_all_four_and_nothing_to_use():
+    d = {"Ek": [[-1.0, 3.0]], **{k: None for k in KEYS}}
+    energy_range_defaults(d)
+    assert [d[k] for k in KEYS] == pytest.approx([4.6667, 3.6667, 4.6667, 3.6667])
+
+    d = {k: None for k in KEYS}
+    energy_range_defaults(d)
+    assert all(d[k] is None for k in KEYS)
+
+
+# ==================================================
+def test_response_sets_the_defaults(monkeypatch):
+    """Response used without the analyzer of postcw (for example from a script) also sets them."""
+    from symclosestwannier.analyzer import response
+
+    monkeypatch.setattr(response.Response, "set_operators", lambda self: None)
+    cwi = {"seedname": "model", "dis_froz_max": 100000, "Ek": [[0.0, 2.0]], **{k: None for k in KEYS}}
+    response.Response(cwi, None)
+    assert cwi["kubo_eigval_max"] == pytest.approx(2.6667)
+    assert cwi["kubo_freq_max"] == pytest.approx(2.6667)
