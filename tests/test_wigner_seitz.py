@@ -59,6 +59,30 @@ def test_tolerance():
 
 
 # ==================================================
+@pytest.mark.parametrize("eps, tie", [(0.2e-10, True), (0.5e-10, False)])
+def test_tolerance_boundary(eps, tie):
+    """
+    a sheared square cell: |R|^2 - |R - T|^2 = 4 eps for R = (1, 1, 0) and T = (2, 0, 0) on a 2x2x1 mesh, against
+    ws_distance_tol^2 = 1e-10 Angstrom^2.
+    """
+    A = np.array([[1.0, 0.0, 0.0], [eps, 1.0, 0.0], [0.0, 0.0, 1.0]])
+    irvec, ndegen = wigner_seitz(A, [2, 2, 1])
+    degen = {tuple(r): n for r, n in zip(irvec, ndegen)}
+    assert ((1, 1, 0) in degen) == tie
+    assert degen[(-1, 1, 0)] == (4 if tie else 2)
+    assert np.sum(1.0 / ndegen) == pytest.approx(4)
+
+
+# ==================================================
+def test_legacy_prec():
+    """prec of earlier versions (a tolerance of the squared distances), given by position or by name."""
+    A, mp_grid, irvec_ref, _ = read_reference()
+    for irvec, _ in (wigner_seitz(A, mp_grid, 1e-4), wigner_seitz(A, mp_grid, prec=1e-4)):
+        assert len(irvec) == 657
+    assert len(wigner_seitz(A, mp_grid)[0]) == len(irvec_ref) == 621
+
+
+# ==================================================
 def test_search_size():
     """a strongly sheared cell needs more than the neighbouring supercells; too small a search is an error."""
     A = np.array([[1.0, 0.0, 0.0], [3.7, 1.0, 0.0], [0.0, 0.0, 1.0]])
@@ -107,7 +131,9 @@ def test_win_keywords(tmp_path, text, tol, size):
     assert win["ws_search_size"] == size
 
 
-@pytest.mark.parametrize("text", ["ws_search_size = 1 2\n", "ws_search_size = 0\n", "ws_distance_tol = 0.0\n"])
+@pytest.mark.parametrize(
+    "text", ["ws_search_size = 1 2\n", "ws_search_size = 0\n", "ws_search_size = 1.5\n", "ws_distance_tol = 0.0\n"]
+)
 def test_win_keywords_invalid(tmp_path, text):
     with pytest.raises(SymCWInputError):
         write_win(tmp_path, text)
@@ -135,3 +161,22 @@ def test_model_from_hdf5_keeps_its_r_vectors(make_case):
     cwi = CWInfo(str(workdir), seedname, dic=info, postcw=True)
     np.testing.assert_array_equal(cwi["irvec"], irvec)
     np.testing.assert_array_equal(cwi["ndegen"], ndegen)
+
+
+# ==================================================
+def test_new_model_recomputes_its_r_vectors(make_case):
+    """outside postcw, a dictionary with R vectors (for example to build a model again) gets them from wigner_seitz."""
+    from symclosestwannier.cw.cw_creator import cw_creator
+    from symclosestwannier.cw.cw_info import CWInfo
+    from symclosestwannier.cw.cw_model import CWModel
+
+    seedname = "graphene_pz"
+    workdir = make_case(seedname, extra="write_info_data = true\nverbose = false")
+    cw_creator(seedname)
+
+    info, _, _ = CWModel.read_info_data(str(workdir / f"{seedname}.hdf5"))
+    irvec = np.array(info["irvec"])
+    info["irvec"], info["ndegen"] = irvec[::-1].tolist(), np.array(info["ndegen"])[::-1].tolist()
+
+    cwi = CWInfo(str(workdir), seedname, dic=info)
+    np.testing.assert_array_equal(cwi["irvec"], irvec)

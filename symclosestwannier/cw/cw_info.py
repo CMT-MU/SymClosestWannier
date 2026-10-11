@@ -200,11 +200,13 @@ class CWInfo(dict):
         d["B"] = 2 * np.pi * np.linalg.inv(d["A"]).T
         A, B = d["A"], d["B"]
 
-        if dic is not None and "irvec" in dic and "ndegen" in dic:
+        if self._postcw and dic is not None and "irvec" in dic and "ndegen" in dic:
             # a model read back from seedname.hdf5: keep the R vectors its operators are given on
             irvec, ndegen = np.array(dic["irvec"]), np.array(dic["ndegen"])
         else:
-            irvec, ndegen = wigner_seitz(A, d["mp_grid"], d["ws_distance_tol"], d["ws_search_size"])
+            irvec, ndegen = wigner_seitz(
+                A, d["mp_grid"], ws_distance_tol=d["ws_distance_tol"], ws_search_size=d["ws_search_size"]
+            )
 
         if d["kpoint"] is not None and d["kpoint_path"] is not None:
             kpoint = {i: NSArray(j, "vector", fmt="value") for i, j in d["kpoint"].items()}

@@ -342,7 +342,7 @@ def iterate3dpm(size):
 
 
 # ==================================================
-def wigner_seitz(A, mp_grid, ws_distance_tol=1.0e-5, ws_search_size=2):
+def wigner_seitz(A, mp_grid, prec=None, *, ws_distance_tol=1.0e-5, ws_search_size=2):
     """
     wigner seitz cell.
     return irreducible R vectors and number of degeneracy at each R.
@@ -354,6 +354,8 @@ def wigner_seitz(A, mp_grid, ws_distance_tol=1.0e-5, ws_search_size=2):
     Args:
         A (list/ndarray): real lattice vectors, A = [a1,a2,a3] (list), [[[1,0,0], [0,1,0], [0,0,1]]].
         mp_grid (list/ndarray): dimensions of the Monkhorst-Pack grid of k-points (list), [0, 0, 0].,
+        prec (float, optional): tolerance of the squared distances (Angstrom^2) of earlier versions (1e-4 by default
+            there); if given, it replaces ws_distance_tol^2. Kept for existing calls only.
         ws_distance_tol (float, optional): tolerance of the distances (Angstrom), as ws_distance_tol of wannier90.
         ws_search_size (int or list, optional): R is searched in the supercells within ws_search_size of the home
             supercell along each direction, as ws_search_size of wannier90.
@@ -366,7 +368,7 @@ def wigner_seitz(A, mp_grid, ws_distance_tol=1.0e-5, ws_search_size=2):
     real_metric = np.array(A, dtype=float) @ np.array(A, dtype=float).T
     mp_grid = np.array(mp_grid, dtype="int64")
     ws_search_size = np.broadcast_to(np.array(ws_search_size, dtype="int64"), (3,))
-    tol = ws_distance_tol**2
+    tol = ws_distance_tol**2 if prec is None else prec
 
     # supercell lattice vectors T = i * mp_grid, |i_j| <= ws_search_size_j + 1; i = 0 is the home supercell
     T = iterate3dpm(ws_search_size + 1) * mp_grid

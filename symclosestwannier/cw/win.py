@@ -267,11 +267,15 @@ class Win(dict):
         d["mp_grid"] = [int(x) for x in mp_grid.split()]
         d["num_k"] = np.prod(d["mp_grid"])
         d["ws_distance_tol"] = self._get_param_keyword(win_data, "ws_distance_tol", 1.0e-5, dtype=float)
-        if not d["ws_distance_tol"] > 0:
-            raise SymCWInputError("ws_distance_tol must be positive in seedname.win.")
-        ws_search_size = [int(x) for x in str(self._get_param_keyword(win_data, "ws_search_size", "2", dtype=str)).split()]
+        if not (np.isfinite(d["ws_distance_tol"]) and d["ws_distance_tol"] > 0):
+            raise SymCWInputError("ws_distance_tol must be a positive number in seedname.win.")
+        ws_search_size = str(self._get_param_keyword(win_data, "ws_search_size", "2", dtype=str)).split()
+        try:
+            ws_search_size = [int(x) for x in ws_search_size]
+        except ValueError:
+            ws_search_size = []
         if len(ws_search_size) not in (1, 3) or min(ws_search_size) < 1:
-            raise SymCWInputError(f"ws_search_size = {ws_search_size}: give one or three positive integers.")
+            raise SymCWInputError("ws_search_size must be one or three positive integers in seedname.win.")
         d["ws_search_size"] = ws_search_size * 3 if len(ws_search_size) == 1 else ws_search_size
 
         if d["num_bands"] > d["num_wann"]:
