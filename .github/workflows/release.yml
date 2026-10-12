@@ -1,0 +1,85 @@
+name: release
+
+# Build the sdist and the wheel when a GitHub release is published, and upload them to TestPyPI and then to PyPI.
+# Uploads use PyPI trusted publishing (no API token), which must be set up once on PyPI and TestPyPI
+# for this repository, this workflow (release.yml), and the environments "testpypi" and "pypi".
+# "Run workflow" (workflow_dispatch) and GitHub prereleases build and upload to TestPyPI only.
+# Files of a version already on (Test)PyPI are skipped, so that a failed upload can be retried with "Re-run failed jobs";
+# a version on PyPI cannot be replaced, so a new version is needed for changed files.
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Build
+        run: |
+          python -m pip install --upgrade pip build twine
+          python -m build
+          python -m twine check --strict dist/*
+      # the release tag must be "v." or "v" + the package version (symclosestwannier.__version__), e.g., v.2.0.8.
+      - name: Check version
+        if: github.event_name == 'release'
+        env:
+          TAG: ${{ github.event.release.tag_name }}
+        run: |
+          ls dist
+          case "$TAG" in
+            v.[0-9]*) VERSION="${TAG#v.}" ;;
+            v[0-9]*) VERSION="${TAG#v}" ;;
+            *) echo "the tag must be v. + version, e.g., v.2.0.8: '$TAG'"; exit 1 ;;
+          esac
+          test -f "dist/symclosestwannier-$VERSION.tar.gz" && test -f "dist/symclosestwannier-$VERSION-py3-none-any.whl"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: dist/
+
+  testpypi:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: testpypi
+      url: https://test.pypi.org/project/symclosestwannier/
+    permissions:
+      id-token: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist/
+      - uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          repository-url: https://test.pypi.org/legacy/
+          skip-existing: true
+
+  pypi:
+    if: github.event_name == 'release' && !github.event.release.prerelease
+    needs: testpypi
+    runs-on: ubuntu-latest
+    environment:
+      name: pypi
+      url: https://pypi.org/project/symclosestwannier/
+    permissions:
+      id-token: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist/
+      - uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          skip-existing: true
