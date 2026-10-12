@@ -191,8 +191,8 @@ class Win(dict):
                 - berry_curv_unit              : Unit of Berry curvature, ang2/bohr2, ['ang2'].
                 - berry_curv_adpt_kmesh        : Linear dimension of the adaptively refined k-mesh used to compute the anomalous/spin Hall conductivity, [1, 1, 1].
                 - berry_curv_adpt_kmesh_thresh : Threshold magnitude of the Berry curvature for adaptive refinement, [100].
-                - fermi_energy                 : fermi energy (float), [0.0].
-                - fermi_energy_max             : Upper limit of the Fermi energy range (float), [None].
+                - fermi_energy                 : fermi energy, not with fermi_energy_min (float), [0.0].
+                - fermi_energy_max             : Upper limit of the Fermi energy range (float), [fermi_energy_min + 1].
                 - fermi_energy_min             : Lower limit of the Fermi energy range (float), [None].
                 - fermi_energy_step            : Step for increasing the Fermi energy in the specified range. (The units are [eV]) (float), [0.01].
                 - fermi_energy_list            : list of fermi energy (list), [None].
@@ -479,11 +479,14 @@ class Win(dict):
         fermi_energy_step = 0.0
         fermi_energy_list = []
 
-        fermi_energy = self._get_param_keyword(win_data, "fermi_energy", 0.0, dtype=float)
+        # as wannier90: fermi_energy_min (a scan) excludes fermi_energy; without either, the Fermi energy is 0
+        fermi_energy = self._get_param_keyword(win_data, "fermi_energy", None, dtype=float)
 
         if fermi_energy is not None:
             found_fermi_energy = True
             num_fermi = 1
+        else:
+            fermi_energy = 0.0
 
         fermi_energy_scan = False
         fermi_energy_min = self._get_param_keyword(win_data, "fermi_energy_min", None, dtype=float)
@@ -492,19 +495,18 @@ class Win(dict):
                 raise SymCWInputError("cannot specify both fermi_energy and fermi_energy_min in seedname.win.")
 
             fermi_energy_scan = True
-            fermi_energy_max = fermi_energy_min + 1.0
-            fermi_energy_max = self._get_param_keyword(win_data, "fermi_energy_max", None, dtype=float)
+            fermi_energy_max = self._get_param_keyword(win_data, "fermi_energy_max", fermi_energy_min + 1.0, dtype=float)
 
-            if fermi_energy_max is not None and fermi_energy_max <= fermi_energy_min:
+            if fermi_energy_max <= fermi_energy_min:
                 raise SymCWInputError("fermi_energy_max must be larger than fermi_energy_min in seedname.win.")
 
-            fermi_energy_step = 0.01
-            fermi_energy_step = self._get_param_keyword(win_data, "fermi_energy_step", None, dtype=float)
+            fermi_energy_step = self._get_param_keyword(win_data, "fermi_energy_step", 0.01, dtype=float)
 
-            if fermi_energy_step is not None and fermi_energy_step <= 0.0:
+            if fermi_energy_step <= 0.0:
                 raise SymCWInputError("fermi_energy_step must be positive in seedname.win.")
 
-            num_fermi = int(abs((fermi_energy_max - fermi_energy_min) / fermi_energy_step)) + 1
+            # nint of wannier90 (rounds half away from zero)
+            num_fermi = int(np.floor((fermi_energy_max - fermi_energy_min) / fermi_energy_step + 0.5)) + 1
 
         if found_fermi_energy:
             fermi_energy_list = [fermi_energy]
@@ -517,6 +519,7 @@ class Win(dict):
             fermi_energy_list = [fermi_energy_min + i * fermi_energy_step for i in range(num_fermi)]
         else:
             fermi_energy_list = [0.0]
+            num_fermi = 1
 
         d["fermi_energy"] = fermi_energy
         d["fermi_energy_max"] = fermi_energy_max
