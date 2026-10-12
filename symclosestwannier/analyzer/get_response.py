@@ -60,6 +60,7 @@ from symclosestwannier.util.constants import (
     eV_seconds,
 )
 from symclosestwannier.util.exceptions import SymCWInputError
+from symclosestwannier.util.get_oper_R import shc_bandshift
 
 _num_proc = multiprocessing.cpu_count()
 
@@ -2074,12 +2075,7 @@ def berry_get_shc_klist(cwi, operators, kpoints, band=False):
     shc_alpha = cwi["shc_alpha"]
     shc_beta = cwi["shc_beta"]
 
-    shc_bandshift = cwi["shc_bandshift"]
-    shc_bandshift_firstband = cwi["shc_bandshift_firstband"]
-    shc_bandshift_energyshift = cwi["shc_bandshift_energyshift"]
-
-    if shc_bandshift:
-        E[:, shc_bandshift_firstband:] += shc_bandshift_energyshift
+    E = shc_bandshift(E, cwi)
 
     del_alpha_E = delE[shc_alpha - 1]
     D_alpha_h = D_h[shc_alpha - 1]

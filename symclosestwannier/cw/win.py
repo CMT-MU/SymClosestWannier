@@ -201,8 +201,8 @@ class Win(dict):
                 - shc_alpha                    : The α index of spin Hall conductivity σ^{spin γ}_{αβ}, i.e. the direction of spin current. Possible values are 1, 2 and 3, representing the x, y and z directions respectively. (int), [1].
                 - shc_beta                     : The β index of spin Hall conductivity σ^{spin γ}_{αβ}, i.e. the direction of applied electric field. Possible values are 1, 2 and 3, representing the x, y and z directions respectively. (int), [2].
                 - shc_gamma                    : The γ index of spin Hall conductivity σ^{spin γ}_{αβ}, i.e. the spin direction of spin current. Possible values are 1, 2 and 3, representing the x, y and z directions respectively. (int), [3].
-                - shc_bandshift                : Shift all conduction bands by a given amount (float), [False].
-                - shc_bandshift_firstband      : Index of the first band to shift (int), [None].
+                - shc_bandshift                : Shift all conduction bands by a given amount (bool), [False].
+                - shc_bandshift_firstband      : Index of the first band to shift, 1-based (int), [None].
                 - shc_bandshift_energyshift    : Energy shift of the conduction bands (eV) (float), [0.0].
 
             # kubo
@@ -531,10 +531,16 @@ class Win(dict):
         d["shc_beta"] = self._get_param_keyword(win_data, "shc_beta", 2, dtype=int)
         d["shc_gamma"] = self._get_param_keyword(win_data, "shc_gamma", 3, dtype=int)
         d["shc_bandshift"] = self._get_param_keyword(win_data, "shc_bandshift", False, dtype=bool)
-        d["shc_bandshift_firstband"] = self._get_param_keyword(win_data, "shc_bandshift_firstband", None, dtype=float)
+        d["shc_bandshift_firstband"] = self._get_param_keyword(win_data, "shc_bandshift_firstband", None, dtype=int)
         d["shc_bandshift_energyshift"] = self._get_param_keyword(
             win_data, "shc_bandshift_energyshift", 0.0, dtype=float
         )
+        # as in wannier90: the shift applies only to the spin Hall conductivity
+        d["shc_bandshift"] = d["shc_bandshift"] and d["berry"] and "shc" in (d["berry_task"] or "")
+        if d["shc_bandshift"] and d["shc_bandshift_firstband"] is None:
+            raise SymCWInputError("shc_bandshift = true requires shc_bandshift_firstband.")
+        if d["shc_bandshift_firstband"] is not None and d["shc_bandshift_firstband"] < 1:
+            raise SymCWInputError("shc_bandshift_firstband must be >= 1 (1-based band index).")
 
         return d
 
