@@ -763,6 +763,18 @@ def sort_ket_matrix(Ok, ket1, ket2):
 
 
 # ==================================================
+def ket_samb_list(mm):
+    """
+    ket basis list of a MultiPie model as [atom, sublattice, rank, orbital].
+
+    MultiPie >= 2.3 (2026-07, "complete local operator") stores the kets as
+    [atom, sublattice, rank, idx, orbital]; earlier versions as [atom, sublattice, rank, orbital].
+    Both are reduced to the four-field form used throughout SymClosestWannier.
+    """
+    return [[k[0], k[1], k[2], k[-1]] for k in mm["full_matrix"]["ket"]]
+
+
+# ==================================================
 def sort_ket_matrix_dict(Or_dict, ket, ket_samb):
     """
     sort ket to align with the SAMB definition (ket_samb).
