@@ -114,6 +114,8 @@ def _analyzer(seedname, indir):
     # ******************** #
 
     res = Response(cwi, cwm, HH_R=Hr)
+    res.calc_response()
+    res.calc_spin_moment()
 
     # ******************** #
     #         Band         #
@@ -132,8 +134,14 @@ def _analyzer(seedname, indir):
         if cwi["berry_task"] == "ahc":
             res.write_ahc()
 
+        if cwi["berry_task"] == "morb":
+            res.write_morb()
+
         if cwi["berry_task"] == "kubo":
             res.write_kubo()
+
+        if cwi["berry_task"] == "sc":
+            res.write_sc()
 
         if cwi["berry_task"] == "shc":
             res.write_shc()

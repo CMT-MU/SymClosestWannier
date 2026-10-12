@@ -49,13 +49,26 @@ from symclosestwannier.util.utility import (
     thermal_avg,
 )
 
-from symclosestwannier.util.constants import elec_mass_SI, elem_charge_SI, hbar_SI, bohr, bohr_magn_SI, joul_to_eV
+from symclosestwannier.util.constants import (
+    elec_mass_SI,
+    elem_charge_SI,
+    hbar_SI,
+    bohr,
+    bohr_magn_SI,
+    joul_to_eV,
+    eV_au,
+    eV_seconds,
+)
 from symclosestwannier.util.exceptions import SymCWInputError
 
 _num_proc = multiprocessing.cpu_count()
 
 _alpha_A = [1, 2, 0]
 _beta_A = [2, 0, 1]
+
+# symmetric pairs (b, c) of the shift current: xx, yy, zz, xy, xz, yz.
+_alpha_S = [0, 1, 2, 0, 0, 1]
+_beta_S = [0, 1, 2, 1, 2, 2]
 
 
 # ==================================================
@@ -214,10 +227,11 @@ def berry_main(cwi, operators):
         d["kubo_H_spn"] = kubo_H_spn
         d["kubo_AH_spn"] = kubo_AH_spn
 
+    if cwi["berry_task"] == "morb":
+        d.update(berry_get_morb(cwi, operators))
+
     if cwi["berry_task"] == "sc":
-        kubo_nfreq = round((cwi["kubo_freq_max"] - cwi["kubo_freq_min"]) / cwi["kubo_freq_step"]) + 1
-        sc_k_list = np.zeros((3, 6, kubo_nfreq))
-        sc_list = np.zeros((3, 6, kubo_nfreq))
+        d["sc_freq"], d["sc"] = berry_get_sc(cwi, operators)
 
     if cwi["berry_task"] == "shc":
         if cwi["shc_freq_scan"]:
@@ -449,10 +463,8 @@ def utility_w0gauss(x, n):
         w0gauss = sqrtpm1 * np.exp(-arg) * (2.0 - np.sqrt(2.0) * x)
     # Fermi-Dirac smearing
     elif n == -99:
-        if np.abs(x) <= 36.0:
-            w0gauss = 1.0 / (2.0 + np.exp(-x) + np.exp(+x))
-        else:
-            w0gauss = 0.0
+        xc = np.clip(x, -36.0, 36.0)
+        w0gauss = np.where(np.abs(x) <= 36.0, 1.0 / (2.0 + np.exp(-xc) + np.exp(+xc)), 0.0)
     # Gaussian
     elif n == 0:
         arg = x**2
@@ -905,8 +917,6 @@ def berry_get_imfgh_matrix_klist(cwi, operators, kpoints, img=False, imh=False, 
 
     orb_k_list = np.zeros((num_fermi_loc, len(kpoints), num_wann, num_wann, 3))
 
-    print(f"img_k_list.shape = {orb_k_list.shape}")
-
     if img and imh:
 
         BB = fourier_transform_r_to_k_vec(
@@ -1020,6 +1030,298 @@ def berry_get_imf_klist(cwi, operators, kpoints, occ=None, ladpt=None):
 
 
 # ==================================================
+def _split_kpoints(kpoints):
+    """
+    split k points into chunks for parallel evaluation (at most one chunk per process, none empty).
+    """
+    return np.array_split(kpoints, max(1, min(_num_proc, len(kpoints))))
+
+
+# ==================================================
+def _berry_kmesh(cwi):
+    N1, N2, N3 = cwi["berry_kmesh"]
+    return np.array([[i / float(N1), j / float(N2), k / float(N3)] for i in range(N1) for j in range(N2) for k in range(N3)])
+
+
+# ==================================================
+def berry_get_morb(cwi, operators):
+    """
+    Orbital magnetization, in Bohr magnetons per cell [Eq. (1) LVTS12], as wannier90 berry_main:
+        LC = (img - E_F imf) fac,  IC = (imh - E_F imf) fac,  M = LC + IC,  fac = -eV_au/bohr^2,
+    with -2Im[f], -2Im[g], -2Im[h] of berry_get_imfgh_klist averaged over berry_kmesh.
+
+    Args:
+        cwi (CWInfo): CWInfo.
+        operators (dict): operators (HH_R, AA_R, BB_R, CC_R).
+
+    Returns:
+        dict: morb_LC, morb_IC, morb, each (num_fermi, 3, 3) = (Fermi energy, J0/J1/J2 term, x/y/z).
+            The total moment is the sum over the term index.
+    """
+    kpoints = _berry_kmesh(cwi)
+
+    @wrap_non_picklable_objects
+    def berry_get_morb_k(kpts):
+        imf, img, imh = berry_get_imfgh_klist(cwi, operators, kpts, imf=True, img=True, imh=True)
+        return imf.sum(axis=1), img.sum(axis=1), imh.sum(axis=1)
+
+    res = Parallel(n_jobs=_num_proc, verbose=10)(delayed(berry_get_morb_k)(kpts) for kpts in _split_kpoints(kpoints))
+
+    imf = sum(r[0] for r in res) / len(kpoints)
+    img = sum(r[1] for r in res) / len(kpoints)
+    imh = sum(r[2] for r in res) / len(kpoints)
+
+    fac = -eV_au / bohr**2
+    ef = np.array(cwi["fermi_energy_list"], dtype=float)[:, None, None]
+
+    LC = (img - ef * imf) * fac
+    IC = (imh - ef * imf) * fac
+
+    return {"morb_LC": LC, "morb_IC": IC, "morb": LC + IC}
+
+
+# ==================================================
+def _smearing_index(smr_type):
+    """
+    index of utility_w0gauss for a smearing type of seedname.win.
+    """
+    if smr_type == "gauss":
+        return 0
+    if smr_type.startswith("m-p"):
+        return int(smr_type[3:]) if len(smr_type) > 3 else 1
+    if smr_type in ("m-v", "cold"):
+        return -1
+    if smr_type == "f-d":
+        return -99
+
+    raise SymCWInputError(f"unknown smearing type, smr_type = {smr_type}.")
+
+
+# ==================================================
+def _fourier_derivatives(O_R, kpoints, cwi, atoms_frac, order):
+    """
+    O(k), dO/dk_a and d^2O/dk_a dk_b (Cartesian) of a scalar operator, with the phase given by atoms_frac
+    (bond vectors R + tau_n - tau_m), as fourier_transform_r_to_k_new.
+
+    Returns:
+        tuple: O (k,m,n), dO (a,k,m,n), and if order = 2 d2O (a,b,k,m,n).
+    """
+    A = np.array(cwi["unit_cell_cart"], dtype=float)
+    irvec = np.array(cwi["irvec"], dtype=float)
+    weight = 1.0 / np.array(cwi["ndegen"], dtype=float)
+    num_wann = O_R.shape[-1]
+
+    bond = (irvec @ A)[:, None, None, :] * np.ones((1, num_wann, num_wann, 1))
+    phase = np.exp(2j * np.pi * kpoints @ irvec.T)[:, :, None, None] * np.ones((1, 1, num_wann, num_wann))
+    if atoms_frac is not None:
+        tau = np.array(atoms_frac, dtype=float)
+        tau_cart = tau @ A
+        bond = bond + tau_cart[None, None, :, :] - tau_cart[None, :, None, :]
+        eiktau = np.exp(2j * np.pi * kpoints @ tau.T)
+        phase = phase * eiktau.conj()[:, None, :, None] * eiktau[:, None, None, :]
+
+    PO = phase * (weight[:, None, None] * O_R)[None]
+    O = PO.sum(axis=1)
+    dO = 1.0j * np.einsum("kRmn,Rmna->akmn", PO, bond, optimize=True)
+    if order == 1:
+        return O, dO
+
+    d2O = -np.einsum("kRmn,Rmna,Rmnb->abkmn", PO, bond, bond, optimize=True)
+    return O, dO, d2O
+
+
+# ==================================================
+def berry_get_sc_klist(cwi, operators, kpoints, freq):
+    """
+    Contribution of a list of k points to the nonlinear shift current [integrand of Eq. (8) IATS18],
+    summed over the k points, as wannier90 berry_get_sc_klist.
+
+    Args:
+        cwi (CWInfo): CWInfo.
+        operators (dict): operators (HH_R, AA_R) in the gauge given by tb_gauge.
+        kpoints (ndarray): k points (fractional).
+        freq (ndarray): frequencies (eV).
+
+    Returns:
+        ndarray: sum_k sigma(k), (3, 6, len(freq)), (a, bc, omega) with bc in the order of _alpha_S/_beta_S.
+    """
+    atoms_frac = tb_gauge_positions(cwi)
+    num_wann = cwi["num_wann"]
+    ef = cwi["fermi_energy_list"][0]
+    sc_eta = cwi["sc_eta"]
+    sc_w_thr = cwi["sc_w_thr"]
+    # the correction vanishes for sc_eta = 0, where its energy denominators may also vanish.
+    use_eta_corr = cwi["sc_use_eta_corr"] and sc_eta != 0
+    if sc_eta < 0:
+        raise SymCWInputError(f"sc_eta = {sc_eta} must not be negative.")
+
+    smr_idx = _smearing_index(cwi["kubo_smr_type"])
+    adpt = cwi["kubo_adpt_smr"]
+    if not adpt and cwi["kubo_smr_fixed_en_width"] <= 0:
+        raise SymCWInputError(
+            "the shift current needs a positive smearing width (kubo_smr_fixed_en_width or smr_fixed_en_width)."
+        )
+    if adpt:
+        Delta_k = kmesh_spacing_mesh(cwi["berry_kmesh"], cwi["B"])
+
+    if cwi["kubo_eigval_max"] < +100000:
+        eigval_max = cwi["kubo_eigval_max"]
+    elif cwi.get("dis_froz_max", 100000) < +100000:
+        eigval_max = cwi["dis_froz_max"] + 0.6667
+    else:
+        eigval_max = 100000
+
+    HH, dHH, d2HH = _fourier_derivatives(operators["HH_R"], kpoints, cwi, atoms_frac, order=2)
+    AA, dAA = zip(*[_fourier_derivatives(operators["AA_R"][c], kpoints, cwi, atoms_frac, order=1) for c in range(3)])
+    AA, dAA = np.array(AA), np.array(dAA)  # AA[c], dAA[c, a] = d A_c / dk_a
+
+    sc = np.zeros((3, 6, len(freq)))
+
+    for ik in range(len(kpoints)):
+        E, U = np.linalg.eigh(HH[ik])
+        Ud = U.conj().T
+
+        def rot(X):
+            return Ud @ X @ U
+
+        A_bar = np.array([rot(AA[c, ik]) for c in range(3)])  # (c, n, m)
+        dA_bar = np.array([[rot(dAA[c, a, ik]) for a in range(3)] for c in range(3)])  # (c, a, n, m)
+        V_bar = np.array([rot(dHH[a, ik]) for a in range(3)])  # (a, n, m)
+        W_bar = np.array([[rot(d2HH[c, a, ik]) for a in range(3)] for c in range(3)])  # (c, a, n, m)
+
+        dE = E[None, :] - E[:, None]  # dE[n, m] = E_m - E_n
+        offdiag = ~np.eye(num_wann, dtype=bool)
+        inv_dE = np.where(offdiag & (np.abs(dE) > 1e-7), 1.0 / np.where(dE == 0, 1, dE), 0.0)
+        D0 = V_bar * inv_dE[None]  # D_h without eta
+        # principal value; for sc_eta = 0 the same as D0
+        D = V_bar * (inv_dE if sc_eta == 0 else dE / (dE**2 + sc_eta**2) * offdiag)[None]
+
+        # band velocities dE_n/dk_a, (n, a)
+        v = wham_get_deleig(dHH[:, ik : ik + 1], E[None], U[None], cwi["use_degen_pert"], cwi["degen_thr"])[:, 0].T
+
+        A_diag = np.diagonal(A_bar, axis1=1, axis2=2)  # (c, n)
+        V_diag = np.diagonal(V_bar, axis1=1, axis2=2)
+
+        # sums over intermediate states, Eqs. (30), (32) IATS18: sum_X[c, a, n, m]
+        def sum_D(X, X_diag):
+            return (
+                np.einsum("cnl,alm->canm", X, D)
+                - X_diag[:, None, :, None] * D[None]
+                - np.einsum("anl,clm->canm", D, X)
+                + D[None] * X_diag[:, None, None, :]
+            )
+
+        sum_AD = sum_D(A_bar, A_diag)
+        sum_HD = sum_D(V_bar, V_diag)
+
+        occ = fermi(E - ef, T=0.0, unit="eV")
+
+        for n in range(num_wann):
+            for m in range(num_wann):
+                if n == m or E[m] > eigval_max or E[n] > eigval_max or abs(E[n] - E[m]) < 1e-7:
+                    continue
+                occ_fac = occ[n] - occ[m]
+                if abs(occ_fac) < 1e-10:
+                    continue
+
+                if adpt:
+                    eta_smr = min(np.linalg.norm(v[m] - v[n]) * Delta_k * cwi["kubo_adpt_smr_fac"], cwi["kubo_adpt_smr_max"])
+                    eta_smr = max(eta_smr, 1e-6)  # as berry_get_kubo
+                else:
+                    eta_smr = cwi["kubo_smr_fixed_en_width"]
+
+                dnm = E[n] - E[m]
+                win = (np.abs(dnm - freq) <= sc_w_thr * eta_smr) | (np.abs(-dnm - freq) <= sc_w_thr * eta_smr)
+                if not np.any(win):
+                    continue
+
+                # dipole matrix element r_mn
+                r_mn = A_bar[:, m, n] + 1.0j * D0[:, m, n]
+
+                # generalized derivative r_nm;a, gen[c, a], Eq. (34) with (30), (32) IATS18
+                dA_nm = A_diag[:, n] - A_diag[:, m]  # (c)
+                gen = (
+                    dA_bar[:, :, n, m]
+                    + dA_nm[:, None] * D0[None, :, n, m]
+                    + dA_nm[None, :] * D0[:, None, n, m]
+                    - 1.0j * A_bar[:, None, n, m] * dA_nm[None, :]
+                    + sum_AD[:, :, n, m]
+                    + 1.0j
+                    * (
+                        W_bar[:, :, n, m]
+                        + sum_HD[:, :, n, m]
+                        + D0[:, None, n, m] * (v[n] - v[m])[None, :]
+                        + D0[None, :, n, m] * (v[n] - v[m])[:, None]
+                    )
+                    / (E[m] - E[n])
+                )
+
+                # correction for finite sc_eta, Eq. (19) of PRB 103, 247101 (2021)
+                if use_eta_corr:
+                    for p in range(num_wann):
+                        if p == n or p == m:
+                            continue
+                        gen = gen - sc_eta**2 / ((E[p] - E[m]) ** 2 + sc_eta**2) / (E[n] - E[m]) * (
+                            A_bar[:, None, n, p] * V_bar[None, :, p, m]
+                            - (V_bar[:, None, n, p] + 1.0j * (E[n] - E[p]) * A_bar[:, None, n, p]) * A_bar[None, :, p, m]
+                        )
+                        gen = gen + sc_eta**2 / ((E[n] - E[p]) ** 2 + sc_eta**2) / (E[n] - E[m]) * (
+                            V_bar[None, :, n, p] * A_bar[:, None, p, m]
+                            - A_bar[None, :, n, p] * (V_bar[:, None, p, m] + 1.0j * (E[p] - E[m]) * A_bar[:, None, p, m])
+                        )
+
+                # I_nm[a, bc] = Im(r_mn^b r_nm;a^c + r_mn^c r_nm;a^b)
+                I_nm = np.array(
+                    [[np.imag(r_mn[b] * gen[c, a] + r_mn[c] * gen[b, a]) for b, c in zip(_alpha_S, _beta_S)] for a in range(3)]
+                )
+
+                delta = np.where(
+                    np.abs(dnm - freq) <= sc_w_thr * eta_smr, utility_w0gauss((-dnm + freq) / eta_smr, smr_idx), 0.0
+                ) + np.where(np.abs(-dnm - freq) <= sc_w_thr * eta_smr, utility_w0gauss((dnm + freq) / eta_smr, smr_idx), 0.0)
+
+                sc += occ_fac * I_nm[:, :, None] * (delta / eta_smr)[None, None, :]
+
+    return sc
+
+
+# ==================================================
+def berry_get_sc(cwi, operators):
+    """
+    Nonlinear shift current sigma_{abc}(omega), in A/V^2, on the frequencies kubo_freq_min ... kubo_freq_max
+    (kubo_freq_step), as wannier90 berry_main.
+
+    Args:
+        cwi (CWInfo): CWInfo.
+        operators (dict): operators (HH_R, AA_R).
+
+    Returns:
+        tuple: frequencies (eV), sigma (3, 6, nfreq) with the pairs bc = xx, yy, zz, xy, xz, yz.
+    """
+    if cwi["num_fermi"] != 1:
+        raise SymCWInputError("the shift current needs a single Fermi energy (fermi_energy in seedname.win).")
+    if cwi.get("zeeman_interaction"):
+        raise SymCWInputError("zeeman_interaction = true is not implemented for the shift current.")
+
+    fmin, fmax, fstep = cwi["kubo_freq_min"], cwi["kubo_freq_max"], cwi["kubo_freq_step"]
+    nfreq = int(round((fmax - fmin) / fstep)) + 1
+    freq = fmin + fstep * np.arange(nfreq)
+
+    kpoints = _berry_kmesh(cwi)
+
+    @wrap_non_picklable_objects
+    def berry_get_sc_k(kpts):
+        return berry_get_sc_klist(cwi, operators, kpts, freq)
+
+    res = Parallel(n_jobs=_num_proc, verbose=10)(delayed(berry_get_sc_k)(kpts) for kpts in _split_kpoints(kpoints))
+    sc = sum(res) / len(kpoints)
+
+    # fac = eV_seconds * pi * e^3 / (4 hbar^2 V_c), V_c in Angstrom^3 (wannier90 berry_main).
+    fac = eV_seconds * np.pi * elem_charge_SI**3 / (4 * hbar_SI**2 * cwi["unit_cell_volume"])
+
+    return freq, sc * fac
+
+
+# ==================================================
 def berry_get_ahc(cwi, operators):
     """
     Anomalous Hall conductivity, in S/cm.
@@ -1112,9 +1414,7 @@ def berry_get_ahc(cwi, operators):
 
     num_k = np.prod(cwi["berry_kmesh"])
 
-    kpoints_chunks = np.split(
-        kpoints, [j for j in range(len(kpoints) // _num_proc, len(kpoints), len(kpoints) // _num_proc)]
-    )
+    kpoints_chunks = _split_kpoints(kpoints)
 
     res = Parallel(n_jobs=_num_proc, verbose=10)(delayed(berry_get_ahc_k)(kpt) for kpt in kpoints_chunks)
 
@@ -1175,6 +1475,10 @@ def berry_get_kubo(cwi, operators):
     Returns:
         tuple: Kubo_H, Kubo_AH, Kubo_H_spn, Kubo_AH_spn.
     """
+    if cwi["spin_decomp"]:
+        # the spin of the bands (spn_nk) that selects the channel is not computed.
+        raise SymCWInputError("spin_decomp = true is not implemented for the optical conductivity.")
+
     atoms_frac = tb_gauge_positions(cwi)
 
     ef = cwi["fermi_energy"]
@@ -1341,9 +1645,7 @@ def berry_get_kubo(cwi, operators):
 
     num_k = np.prod(cwi["berry_kmesh"])
 
-    kpoints_chunks = np.split(
-        kpoints, [j for j in range(len(kpoints) // _num_proc, len(kpoints), len(kpoints) // _num_proc)]
-    )
+    kpoints_chunks = _split_kpoints(kpoints)
 
     res = Parallel(n_jobs=_num_proc, verbose=10)(delayed(berry_get_kubo_k)(kpt) for kpt in kpoints_chunks)
 
@@ -1401,6 +1703,10 @@ def berry_get_kubo_tb(cwi, operators):
     Returns:
         tuple: Kubo_H, Kubo_AH, Kubo_H_spn, Kubo_AH_spn.
     """
+    if cwi["spin_decomp"]:
+        # the spin of the bands (spn_nk) that selects the channel is not computed.
+        raise SymCWInputError("spin_decomp = true is not implemented for the optical conductivity.")
+
     atoms_frac = tb_gauge_positions(cwi)
 
     ef = cwi["fermi_energy"]
@@ -1563,9 +1869,7 @@ def berry_get_kubo_tb(cwi, operators):
 
     num_k = np.prod(cwi["berry_kmesh"])
 
-    kpoints_chunks = np.split(
-        kpoints, [j for j in range(len(kpoints) // _num_proc, len(kpoints), len(kpoints) // _num_proc)]
-    )
+    kpoints_chunks = _split_kpoints(kpoints)
 
     res = Parallel(n_jobs=_num_proc, verbose=10)(delayed(berry_get_kubo_k)(kpt) for kpt in kpoints_chunks)
 
@@ -1957,9 +2261,7 @@ def berry_get_shc(cwi, operators):
 
     num_k = np.prod(cwi["berry_kmesh"])
 
-    kpoints_chunks = np.split(
-        kpoints, [j for j in range(len(kpoints) // _num_proc, len(kpoints), len(kpoints) // _num_proc)]
-    )
+    kpoints_chunks = _split_kpoints(kpoints)
 
     res = Parallel(n_jobs=_num_proc, verbose=10)(delayed(berry_get_shc_k)(kpoints) for kpoints in kpoints_chunks)
 

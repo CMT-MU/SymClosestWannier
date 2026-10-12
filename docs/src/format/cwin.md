@@ -24,12 +24,13 @@
   - use_degen_pert    : use degenerate perturbation theory when bands are degenerate and band derivatives are needed? (bool), [False].
   - degen_thr         : threshold to exclude degenerate bands from the calculation, [0.0001].
   - tb_gauge          : use tb gauge? (bool), [False].
+  - tb_position       : approximate the position operator of seedname_r.dat and seedname_tb.dat by the projection centres, r_ab(R) = tau_a delta_ab delta_R0 (seedname.mmn is then not needed) ? (bool), [False].
   - write_hr          : write seedname_hr.py ? (bool), [False].
   - write_sr          : write seedname_sr.py ? (bool), [False].
   - write_u_matrices  : write seedname_u.dat and seedname_u_dis.dat ? (bool), [False].
-  - write_rmn         : write seedname_r.dat ? (bool), [False].
+  - write_rmn         : write seedname_r.dat (needs seedname.mmn unless tb_position = true) ? (bool), [False].
   - write_vmn         : write seedname_v.dat ? (bool), [False].
-  - write_tb          : write seedname_tb.dat (wannier90 format, needs seedname.mmn, not with tb_gauge = true) ? (bool), [False].
+  - write_tb          : write seedname_tb.dat (wannier90 format, needs seedname.mmn unless tb_position = true, not with tb_gauge = true) ? (bool), [False].
   - write_eig         : write seedname.eig.cw ? (bool), [False].
   - write_amn         : write seedname.amn.cw ? (bool), [False].
   - write_mmn         : write seedname.mmn.cw ? (bool), [False].

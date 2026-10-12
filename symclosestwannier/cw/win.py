@@ -3,6 +3,8 @@ Win manages input file for wannier90.x, seedname.win file.
 """
 
 import os
+import re
+
 import numpy as np
 
 from gcoreutils.nsarray import NSArray
@@ -34,6 +36,7 @@ _default = {
     "atoms_cart": None,
     "spinors": False,
     "spin_moment": False,
+    "spn_formatted": False,
     #
     "kmesh": [1, 1, 1],
     "kmesh_spacing": [1, 1, 1],
@@ -75,6 +78,10 @@ _default = {
     "kubo_adpt_smr_max": 1.0,
     "kubo_smr_fixed_en_width": 0.0,
     "kubo_smr_type": "gauss",
+    # shift current
+    "sc_eta": 0.04,
+    "sc_w_thr": 5.0,
+    "sc_use_eta_corr": True,
     # gyrotropic
     "gyrotropic": False,
     "gyrotropic_task": "",
@@ -150,6 +157,7 @@ class Win(dict):
                 - atoms_cart*     : atomic positions in cartesian coordinates, {atom: [rx,ry,rz]} [None].
                 - spinors         : WFs are spinors? (bool) [False].
                 - spin_moment     : Determines whether to evaluate the spin moment (bool), [False].
+                - spn_formatted   : Read a formatted seedname.spn file (bool), [False].
                 - dis_num_iter*   : # of iterations for disentanglement (int), [0].
                 - num_iter*       : # of iterations for maximal localization (int), [200].
                 - dis_froz_max    : top of the inner (frozen) energy window (float), [+100000].
@@ -208,6 +216,11 @@ class Win(dict):
                 - kubo_smr_fixed_en_width : Overrides the smr_fixed_en_width global variable (float), [0.0].
                 - kubo_smr_type           : Overrides the smr_type global variable (str), [gauss].
 
+            # shift current (berry_task = sc; also uses the kubo_* parameters)
+                - sc_eta                  : Broadening of the energy denominators of the generalized derivative (The units are [eV]) (float), [0.04].
+                - sc_w_thr                : Frequency window of the delta functions, in units of the smearing width (float), [5.0].
+                - sc_use_eta_corr         : Correct the finite sc_eta, Eq. (19) of PRB 103, 247101 (2021) (bool), [True].
+
             # morb
 
             # gyrotropic
@@ -264,6 +277,7 @@ class Win(dict):
 
         d["spinors"] = self._get_param_keyword(win_data, "spinors", False, dtype=bool)
         d["spin_moment"] = self._get_param_keyword(win_data, "spin_moment", False, dtype=bool)
+        d["spn_formatted"] = self._get_param_keyword(win_data, "spn_formatted", False, dtype=bool)
 
         for i, line in enumerate(win_data_lower):
             if "begin kpoints" in line:
@@ -416,6 +430,10 @@ class Win(dict):
             win_data, "kubo_smr_fixed_en_width", d["smr_fixed_en_width"], dtype=float
         )
 
+        d["sc_eta"] = self._get_param_keyword(win_data, "sc_eta", 0.04, dtype=float)
+        d["sc_w_thr"] = self._get_param_keyword(win_data, "sc_w_thr", 5.0, dtype=float)
+        d["sc_use_eta_corr"] = self._get_param_keyword(win_data, "sc_use_eta_corr", True, dtype=bool)
+
         d["gyrotropic"] = self._get_param_keyword(win_data, "gyrotropic", False, dtype=bool)
         gyrotropic_task = self._get_param_keyword(win_data, "gyrotropic_task", None, dtype=str)
         if gyrotropic_task is not None:
@@ -553,6 +571,10 @@ class Win(dict):
 
         if data is None:
             return None
+
+        if dtype is float and isinstance(data, str):
+            # Fortran double precision exponent, e.g. 30.0d0
+            data = re.sub(r"(?<=[0-9.])[dD](?=[+-]?[0-9])", "e", data.strip())
 
         return dtype(data)
 

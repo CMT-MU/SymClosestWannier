@@ -240,8 +240,11 @@ def test_derivatives_with_orbital_positions():
 def make_cwi(model, tb_gauge):
     return {
         "tb_gauge": tb_gauge,
-        "atoms_frac": {("X", i + 1): list(t) for i, t in enumerate(TAU)},
-        "nw2n": list(range(NUM_WANN)),
+        # an atom without projection comes first, and the projection centres are listed in another order than the
+        # orbitals: the orbital positions must come from atom_pos_r[nw2n], not from atoms_frac.
+        "atoms_frac": {("O", 1): [0.5, 0.5, 0.5], **{("X", i + 1): list(t) for i, t in enumerate(TAU)}},
+        "atom_pos_r": [list(TAU[2]), list(TAU[0]), list(TAU[1])],
+        "nw2n": [1, 2, 0],
         "num_wann": NUM_WANN,
         "num_fermi": 1,
         "fermi_energy_list": [0.0],
@@ -259,6 +262,13 @@ def operators_for(model, tb_gauge):
     if tb_gauge:
         ops = to_tb_gauge(ops, model.irvec, A, TAU)
     return ops
+
+
+# ==================================================
+def test_tb_gauge_positions_are_projection_centres():
+    model = Model()
+    np.testing.assert_array_equal(tb_gauge_positions(make_cwi(model, True)), TAU)
+    assert tb_gauge_positions(make_cwi(model, False)) is None
 
 
 # ==================================================

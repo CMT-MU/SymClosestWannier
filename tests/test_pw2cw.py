@@ -87,3 +87,59 @@ def test_stdout_follows_verbose(make_case, capsys, verbose):
     assert ("Occupancy" in out) == verbose
     if not verbose:
         assert out.strip() == ""
+
+
+# ==================================================
+def test_write_tb_with_tb_position(make_case):
+    """
+    with tb_position = true, seedname_tb.dat is written without seedname.mmn: the position operator is diagonal at
+    R = 0 and equal to the projection centres (here the C atoms of graphene), and H is that of seedname_hr.dat.
+    """
+    from test_write_tb import read_tb_dat
+
+    seedname = "graphene_pz"
+    workdir = make_case(seedname, extra="write_hr = true\nwrite_tb = true\ntb_position = true")
+    assert not (workdir / f"{seedname}.mmn").exists()
+
+    cw_creator(seedname)
+
+    lattice, ndegen, irvec, Hr, Ar = read_tb_dat(workdir / f"{seedname}_tb.dat.cw")
+    ndegen_hr, irvec_hr, Hr_hr = read_hr_dat(workdir / f"{seedname}_hr.dat.cw")
+
+    np.testing.assert_array_equal(irvec, irvec_hr)
+    np.testing.assert_array_equal(ndegen, ndegen_hr)
+    np.testing.assert_allclose(Hr, Hr_hr, rtol=0, atol=1e-7)
+
+    bohr = 0.529177249  # the lattice of graphene_pz.win is given in bohr.
+    a1, a2 = np.array([4.6014827822, 0, 0]) * bohr, np.array([-2.3007413911, 3.9850009844618968, 0]) * bohr
+    tau = np.array([2 / 3 * a1 + 1 / 3 * a2, 1 / 3 * a1 + 2 / 3 * a2])
+    np.testing.assert_allclose(lattice[:2], [a1, a2], rtol=0, atol=1e-4)
+
+    R0 = np.where(np.all(irvec == 0, axis=1))[0][0]
+    np.testing.assert_allclose(np.diagonal(Ar[:, R0], axis1=1, axis2=2).T, tau, rtol=0, atol=1e-4)
+    Ar_rest = Ar.copy()
+    Ar_rest[:, R0, [0, 1], [0, 1]] = 0
+    assert np.all(Ar_rest == 0)
+
+    # wannier-berri (optional) takes the Wannier centres from this position operator.
+    try:
+        from wannierberri.system.system_tb import get_system_tb
+    except ImportError:
+        return
+    system = get_system_tb(tb_file=str(workdir / f"{seedname}_tb.dat.cw"), berry=True, silent=True)
+    np.testing.assert_allclose(system.wannier_centers_cart, tau, rtol=0, atol=1e-4)
+
+
+# ==================================================
+def test_write_rmn_with_tb_position(make_case):
+    """
+    the position operator from the projection centres is on-site: seedname_r.dat.cw is written, the R-dependence files
+    (which would be NaN) are not.
+    """
+    seedname = "graphene_pz"
+    workdir = make_case(seedname, extra="write_rmn = true\ntb_position = true")
+
+    cw_creator(seedname)
+
+    assert (workdir / f"{seedname}_r.dat.cw").stat().st_size > 0
+    assert not list(workdir.glob(f"{seedname}_r*_R_dep.dat.cw"))

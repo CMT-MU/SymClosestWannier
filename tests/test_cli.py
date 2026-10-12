@@ -108,14 +108,22 @@ def test_proj_min_too_large(make_case):
 
 # ==================================================
 def test_postcw_without_mmn(make_case, monkeypatch):
+    """
+    seedname.mmn is needed only for calculations with the position operator: postcw without such a task runs, and a
+    berry task reports the missing file.
+    """
     workdir = make_case("ch4_sl", extra="write_info_data = true")
     assert CliRunner().invoke(pw2cw, ["ch4_sl"]).exit_code == 0
 
     monkeypatch.chdir(workdir)
+    assert CliRunner().invoke(postcw, ["ch4_sl"]).exit_code == 0
+
+    with open(workdir / "ch4_sl.win", "a") as fp:
+        fp.write("\nberry = true\nberry_task = ahc\n")
     result = CliRunner().invoke(postcw, ["ch4_sl"])
 
     assert result.exit_code == 1
-    assert "requires ch4_sl.mmn" in result.output
+    assert "ch4_sl.mmn" in result.output
 
 
 # ==================================================

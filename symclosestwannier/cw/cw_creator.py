@@ -140,20 +140,24 @@ def _cw_creator(seedname, indir):
         file_names = (f"{cwi['seedname']}_u.mat.cw", f"{cwi['seedname']}_u_dis.mat.cw")
         cwi.umat.write(file_names)
 
+    position = "AA_R_tb" if cwi["tb_position"] else "AA_R"
+
     if cwi["write_rmn"]:
-        AA_R = get_oper_R("AA_R", cwi)
+        AA_R = get_oper_R(position, cwi)
         filename = f"{cwi['seedname']}_r.dat.cw"
         cw_model.write_or(AA_R, filename, vec=True)
 
-        filename = f"{cwi['seedname']}_rx_R_dep.dat.cw"
-        cw_model.write_O_R_dependence(AA_R[0], filename, header=CWModel._O_R_dependence_header())
-        filename = f"{cwi['seedname']}_ry_R_dep.dat.cw"
-        cw_model.write_O_R_dependence(AA_R[1], filename, header=CWModel._O_R_dependence_header())
-        filename = f"{cwi['seedname']}_rz_R_dep.dat.cw"
-        cw_model.write_O_R_dependence(AA_R[2], filename, header=CWModel._O_R_dependence_header())
+        # with tb_position the position operator is on-site and diagonal: no dependence on R to show.
+        if not cwi["tb_position"]:
+            filename = f"{cwi['seedname']}_rx_R_dep.dat.cw"
+            cw_model.write_O_R_dependence(AA_R[0], filename, header=CWModel._O_R_dependence_header())
+            filename = f"{cwi['seedname']}_ry_R_dep.dat.cw"
+            cw_model.write_O_R_dependence(AA_R[1], filename, header=CWModel._O_R_dependence_header())
+            filename = f"{cwi['seedname']}_rz_R_dep.dat.cw"
+            cw_model.write_O_R_dependence(AA_R[2], filename, header=CWModel._O_R_dependence_header())
 
     if cwi["write_tb"]:
-        AA_R = get_oper_R("AA_R", cwi)
+        AA_R = get_oper_R(position, cwi)
         filename = f"{cwi['seedname']}_tb.dat.cw"
         cw_model.write_tb(cw_model["Hr"], AA_R, filename)
 
@@ -202,7 +206,11 @@ def _cw_creator(seedname, indir):
             cw_model.write_or(cw_model["Sr_sym"], filename, header=CWModel._sr_header())
 
         if cwi["write_tb"]:
-            AA_R = get_oper_R("AA_R", cwi)
+            # Hr_sym is in the ket order of the SAMBs, AA_R in that of ket_amn.
+            ket_samb = cwi._mm["full_matrix"]["ket"]
+            ket_amn = cwi.get("ket_amn", ket_samb)
+            AA_R = get_oper_R(position, cwi)
+            AA_R = np.array([sort_ket_matrix(AA_R[a], ket_amn, ket_samb) for a in range(3)])
             filename = os.path.join(cwi["mp_outdir"], "{}".format(f"{cwi['mp_seedname']}_tb_sym.dat.cw"))
             cw_model.write_tb(cw_model["Hr_sym"], AA_R, filename)
 

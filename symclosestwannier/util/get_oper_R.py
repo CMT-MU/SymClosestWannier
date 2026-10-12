@@ -21,7 +21,7 @@
 import numpy as np
 
 from symclosestwannier.util.constants import elem_charge_SI, hbar_SI
-from symclosestwannier.util.utility import fourier_transform_r_to_k, fourier_transform_k_to_r
+from symclosestwannier.util.utility import fourier_transform_r_to_k, fourier_transform_k_to_r, orbital_positions
 from symclosestwannier.util.exceptions import SymCWInputError
 
 
@@ -54,6 +54,7 @@ def get_oper_R(name, cwi, *args):
     d = {
         "HH_R": get_HH_R,  # <0n|H|Rm>
         "AA_R": get_AA_R,  # <0n|r|Rm>
+        "AA_R_tb": get_AA_R_tb,  # <0n|r|Rm> ≈ τ_n δ_nm δ_R0
         "BB_R": get_BB_R,  # <0|H(r-R)|R>
         "CC_R": get_CC_R,  # <0|r_alpha.H(r-R)_beta|R>
         "SS_R": get_SS_R,  # <0n|sigma_x,y,z|Rm>
@@ -125,6 +126,32 @@ def get_AA_R(cwi):
     AA_k = 0.5 * (AA_k + np.einsum("akmn->aknm", AA_k).conj())
 
     AA_R = np.array([fourier_transform_k_to_r(AA_k[i], kpoints, irvec) for i in range(3)])
+
+    return AA_R
+
+
+# ==================================================
+def get_AA_R_tb(cwi):
+    """
+    position operator in the tight-binding approximation, <0n|r|Rm> = τ_n δ_nm δ_R0,
+    with the projection centres τ_n (wannier90 convention). seedname.mmn is not needed.
+
+    Args:
+        cwi (CWInfo): CWInfo.
+
+    Returns:
+        ndarray: position operator, AA_R(3, len(irvec), num_wann, num_wann).
+    """
+    irvec = np.array(cwi["irvec"])
+    num_wann = cwi["num_wann"]
+    tau = orbital_positions(cwi) @ np.array(cwi["unit_cell_cart"], dtype=float)
+
+    R0 = np.where(np.all(irvec == 0, axis=1))[0]
+    if len(R0) != 1:
+        raise ValueError("R = 0 is not in irvec.")
+
+    AA_R = np.zeros((3, len(irvec), num_wann, num_wann), dtype=complex)
+    AA_R[:, R0[0], np.arange(num_wann), np.arange(num_wann)] = tau.T
 
     return AA_R
 

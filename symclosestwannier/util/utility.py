@@ -380,6 +380,23 @@ def wigner_seitz(A, mp_grid, prec=1.0e-4):
 
 
 # ==================================================
+def orbital_positions(cwi):
+    """
+    positions of the orbitals: the projection centres of the Wannier functions in seedname.nnkp.
+
+    nw2n indexes the projection centres (atom_pos_r), not the atoms of seedname.win; the two lists differ when
+    not every atom is projected or when a projection is centred off an atom.
+
+    Args:
+        cwi (CWInfo): CWInfo.
+
+    Returns:
+        ndarray: positions in fractional coordinates, (num_wann, 3) (ket_amn order).
+    """
+    return np.array([cwi["atom_pos_r"][i] for i in cwi["nw2n"]], dtype=float)
+
+
+# ==================================================
 def tb_gauge_positions(cwi):
     """
     orbital positions entering the phase of the Fourier transform from real space to k space.
@@ -388,15 +405,13 @@ def tb_gauge_positions(cwi):
         cwi (CWInfo): CWInfo.
 
     Returns:
-        ndarray or None: positions of the atoms of the orbitals in fractional coordinates, (num_wann, 3) (ket_amn order),
+        ndarray or None: orbital positions in fractional coordinates, (num_wann, 3) (ket_amn order),
             or None if tb_gauge = false.
     """
     if not cwi["tb_gauge"]:
         return None
 
-    atoms_list = list(cwi["atoms_frac"].values())
-
-    return np.array([atoms_list[i] for i in cwi["nw2n"]], dtype=float)
+    return orbital_positions(cwi)
 
 
 # ==================================================

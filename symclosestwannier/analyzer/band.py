@@ -60,7 +60,8 @@ class Band(dict):
         self.HH_R = get_HH_R(self._cwi)
 
         # <0n|r|Rm>
-        self.AA_R = get_AA_R(self._cwi)
+        # needs seedname.mmn, which is read only when a calculation needs the position operator.
+        self.AA_R = get_AA_R(self._cwi) if self._cwi.get("Mkb") is not None else None
 
         # <0|H(r-R)|R>
         self.BB_R = None

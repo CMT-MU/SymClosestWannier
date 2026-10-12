@@ -50,6 +50,34 @@ _class_map = {
 
 
 # ==================================================
+def _needs_mmn(d):
+    """
+    seedname.mmn is needed for the position operator and the operators built from it (AA_R, BB_R, SR_R, ...).
+    The velocity (write_vmn) and the tight-binding approximation of postcw (use_tb_approximation) use H only, and
+    tb_position takes the position operator from the projection centres.
+    """
+    return bool(
+        d["calc_spreads"]
+        or d["write_mmn"]
+        or (d["write_rmn"] and not d["tb_position"])
+        or (d["write_tb"] and not d["tb_position"])
+        or (d["berry"] and not d["use_tb_approximation"])
+        or d["gyrotropic"]
+    )
+
+
+# ==================================================
+def _needs_uHu(d, win):
+    """
+    seedname.uHu is needed for CC_R: the orbital magnetization (berry_task = morb) and the gyrotropic tasks.
+    """
+    if d["berry"] and d["berry_task"] == "morb":
+        return True
+
+    return bool(d["gyrotropic"] and np.any([win.eval_K, win.eval_C, win.eval_D, win.eval_Dw, win.eval_NOA]))
+
+
+# ==================================================
 class CWInfo(dict):
     """
     CWInfo manages information for CWModel, CWin, Win, Nnkp, Eig, Amn, Mmn, Umat, Spn, UHu.
@@ -111,17 +139,7 @@ class CWInfo(dict):
             if name == "umat" and (d["restart"] != "w90"):
                 continue
             if name == "mmn":
-                if not np.any(
-                    [
-                        d["calc_spreads"],
-                        d["write_mmn"],
-                        d["write_rmn"],
-                        d["write_vmn"],
-                        d["write_tb"],
-                        d["berry"],
-                        d["gyrotropic"],
-                    ]
-                ):
+                if not _needs_mmn(d):
                     continue
             if name == "spn":
                 if not np.any(
@@ -138,21 +156,12 @@ class CWInfo(dict):
                     continue
 
             if name == "uHu":
-                # if not (self._postcw and d["gyrotropic"]):
-                if not d["gyrotropic"]:
-                    continue
-                if not np.any(
-                    [
-                        info_dict["win"].eval_K,
-                        info_dict["win"].eval_C,
-                        info_dict["win"].eval_D,
-                        info_dict["win"].eval_Dw,
-                        info_dict["win"].eval_NOA,
-                    ]
-                ):
+                if not _needs_uHu(d, info_dict["win"]):
                     continue
 
                 info = C(topdir, seedname, formatted=d["uHu_formatted"])
+            elif name == "spn":
+                info = C(topdir, seedname, formatted=d["spn_formatted"])
             else:
                 info = C(topdir, seedname)
 

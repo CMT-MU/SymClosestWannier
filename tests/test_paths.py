@@ -112,6 +112,12 @@ class ResponseStub:
     def __init__(self, cwi, cwm, HH_R=None):
         ResponseStub.created.append((cwi, HH_R))
 
+    def calc_response(self):
+        pass
+
+    def calc_spin_moment(self):
+        pass
+
 
 class BandStub:
     def __init__(self, cwi, cwm):

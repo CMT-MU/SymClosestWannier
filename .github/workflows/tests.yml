@@ -28,3 +28,28 @@ jobs:
 
       - name: Run tests
         run: pytest -q
+
+  # tests that compare with wannier-berri (skipped in the job above, which does not install it); wannier-berri is
+  # used only by the tests, SymClosestWannier does not import it.
+  pytest-wannierberri:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+
+      - name: Install
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -e . pytest "wannierberri>=26.7" "numba>=0.60"
+          python -m pip check
+
+      - name: Run tests
+        run: |
+          set -o pipefail
+          pytest -q -rs | tee pytest.log
+          # every test must run here, none may be skipped for a missing wannier-berri
+          ! grep -q "SKIPPED" pytest.log
