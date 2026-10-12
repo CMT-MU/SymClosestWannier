@@ -7,9 +7,9 @@ import re
 
 import numpy as np
 
-from gcoreutils.nsarray import NSArray
 
 from symclosestwannier.util.exceptions import SymCWFileNotFoundError, SymCWInputError
+from symclosestwannier.util.utility import shift_into_cell
 
 
 _default = {
@@ -454,8 +454,7 @@ class Win(dict):
                 d["atoms_cart"] = {k: (np.array(v) @ np.array(A)).tolist() for k, v in d["atoms_frac"].items()}
 
         # shift
-        dic = {k: NSArray(str(v), style="vector", fmt="sympy", real=True).shift() for k, v in d["atoms_frac"].items()}
-        d["atoms_frac_shift"] = {k: [float(v[0]), float(v[1]), float(v[2])] for k, v in dic.items()}
+        d["atoms_frac_shift"] = {k: shift_into_cell(v).tolist() for k, v in d["atoms_frac"].items()}
 
         # postcw
         kmesh = self._get_param_keyword(win_data, "kmesh", "1  1  1", dtype=str)

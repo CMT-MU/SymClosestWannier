@@ -10,7 +10,6 @@ dependencies = [
     "sympy",
     "joblib",
     "click",
-    "gcoreutils",
     "multipie",
     "xmltodict",
     "fortio",

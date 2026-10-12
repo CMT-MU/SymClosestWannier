@@ -21,7 +21,6 @@
 import os
 import numpy as np
 
-from gcoreutils.nsarray import NSArray
 
 from symclosestwannier.cw.win import Win
 from symclosestwannier.cw.cwin import CWin
@@ -250,15 +249,15 @@ def _cw_creator(seedname, indir):
     if cwi["kpoint"] is not None and cwi["kpoint_path"] is not None:
         cwm.log("\n  * calculating band dispersion ... ", None, end="", file=outfile, mode="a")
 
-        k_linear = NSArray(cwi["k_linear"], "vector", fmt="value")
+        k_linear = np.array(cwi["k_linear"], dtype=float)
         k_dis_pos = cwi["k_dis_pos"]
 
         ref_filename = _ref_band_filename(indir, seedname, os.getcwd())
 
         a = cwi["a"]
         if a is None:
-            A = NSArray(cwi["unit_cell_cart"], "matrix", fmt="value")
-            a = A[0].norm()
+            A = np.array(cwi["unit_cell_cart"], dtype=float)
+            a = np.linalg.norm(A[0])
 
         Hk_path = cw_model.fourier_transform_r_to_k(
             cw_model["Hr"], cwi["kpoints_path"], cwi["irvec"], cwi["ndegen"], atoms_frac=atoms_frac
@@ -463,7 +462,7 @@ def _cw_creator(seedname, indir):
             [[i / float(N1), j / float(N2), k / float(N3)] for i in range(N1) for j in range(N2) for k in range(N3)]
         )
 
-        A = NSArray(cwi["unit_cell_cart"], "matrix", fmt="value")
+        A = np.array(cwi["unit_cell_cart"], dtype=float)
 
         ef_shift = cwi["fermi_energy"]
         cohp_bond_length_max = cwi["cohp_bond_length_max"]

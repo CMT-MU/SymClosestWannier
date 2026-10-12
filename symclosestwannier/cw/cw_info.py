@@ -21,7 +21,6 @@
 import os
 import numpy as np
 from multipie import MaterialModel
-from gcoreutils.nsarray import NSArray
 
 from symclosestwannier.cw.cwin import CWin
 from symclosestwannier.cw.win import Win
@@ -33,7 +32,7 @@ from symclosestwannier.cw.umat import Umat
 from symclosestwannier.cw.spn import Spn
 from symclosestwannier.cw.uHu import UHu
 
-from symclosestwannier.util.utility import wigner_seitz, convert_w90_orbital
+from symclosestwannier.util.utility import wigner_seitz, convert_w90_orbital, grid_path
 from symclosestwannier.util.exceptions import SymCWInputError
 
 _class_map = {
@@ -209,11 +208,11 @@ class CWInfo(dict):
             )
 
         if d["kpoint"] is not None and d["kpoint_path"] is not None:
-            kpoint = {i: NSArray(j, "vector", fmt="value") for i, j in d["kpoint"].items()}
+            kpoint = d["kpoint"]
             kpoint_path = d["kpoint_path"]
             N1 = d["N1"]
-            B = NSArray(d["unit_cell_cart"], "matrix", fmt="value").inverse()
-            kpoints_path, k_linear, k_dis_pos = NSArray.grid_path(kpoint, kpoint_path, N1, B)
+            B = np.linalg.inv(np.array(d["unit_cell_cart"], dtype=float))
+            kpoints_path, k_linear, k_dis_pos = grid_path(kpoint, kpoint_path, N1, B)
             kpoints_path = kpoints_path.tolist()
             k_linear = k_linear.tolist()
         else:
@@ -235,7 +234,7 @@ class CWInfo(dict):
 
             A = np.array(d["unit_cell_cart"])
             V = d["unit_cell_volume"]
-            B = NSArray(A, "matrix", fmt="value").inverse().T
+            B = np.linalg.inv(A).T
 
             d["fermi_surface_grid_2d"] = np.array(
                 [
@@ -255,16 +254,16 @@ class CWInfo(dict):
             )
 
             d["fermi_surface_grid"] = np.array(
-                [d["fermi_surface_grid_2d"][i, j] @ B.inverse() for i in range(N1) for j in range(N2)],
+                [d["fermi_surface_grid_2d"][i, j] @ np.linalg.inv(B) for i in range(N1) for j in range(N2)],
                 dtype=np.float64,
             )
 
         if d["qpoint"] is not None and d["qpoint_path"] is not None:
-            qpoint = {i: NSArray(j, "vector", fmt="value") for i, j in d["qpoint"].items()}
+            qpoint = d["qpoint"]
             qpoint_path = d["qpoint_path"]
             Nq1 = d["Nq1"]
-            B = NSArray(d["unit_cell_cart"], "matrix", fmt="value").inverse()
-            qpoints_path, q_linear, q_dis_pos = NSArray.grid_path(qpoint, qpoint_path, Nq1, B)
+            B = np.linalg.inv(np.array(d["unit_cell_cart"], dtype=float))
+            qpoints_path, q_linear, q_dis_pos = grid_path(qpoint, qpoint_path, Nq1, B)
             qpoints_path = qpoints_path.tolist()
             q_linear = q_linear.tolist()
         else:
@@ -283,7 +282,7 @@ class CWInfo(dict):
 
             A = np.array(d["unit_cell_cart"])
             V = d["unit_cell_volume"]
-            B = NSArray(A, "matrix", fmt="value").inverse().T
+            B = np.linalg.inv(A).T
 
             d["qpoints_surface_grid_2d"] = np.array(
                 [
@@ -303,7 +302,7 @@ class CWInfo(dict):
             )
 
             d["qpoints_surface_grid"] = np.array(
-                [d["qpoints_surface_grid_2d"][i, j] @ B.inverse() for i in range(N1) for j in range(N2)],
+                [d["qpoints_surface_grid_2d"][i, j] @ np.linalg.inv(B) for i in range(N1) for j in range(N2)],
                 dtype=np.float64,
             )
 

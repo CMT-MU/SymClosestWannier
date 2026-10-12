@@ -6,11 +6,48 @@ import os
 import sys
 import codecs
 import time
+import ast
 import pickle
 import subprocess
-from gcoreutils.io_util import read_dict, write_dict
 
 from symclosestwannier.util.exceptions import SymCWFileNotFoundError
+
+
+# ==================================================
+def read_dict(filename):
+    """
+    read a dict from a text file written by write_dict (an optional docstring header and "var =" prefix).
+
+    Args:
+        filename (str): file name.
+
+    Returns:
+        dict: dictionary.
+    """
+    with open(filename, mode="r", encoding="utf-8") as f:
+        node = ast.parse(f.read()).body[-1]  # the dict: "var = {...}" or "{...}", after an optional docstring
+
+    return ast.literal_eval(node.value)
+
+
+# ==================================================
+def write_dict(filename, dic, header=None, var=None):
+    """
+    write a dict to a text file.
+
+    Args:
+        filename (str): file name.
+        dic (dict): dictionary to write.
+        header (str, optional): header comment (docstring) at the top of the file.
+        var (str, optional): variable name of the dict.
+    """
+    with open(filename, mode="w", encoding="utf-8") as f:
+        if header is not None:
+            print('"""' + header + '"""', file=f)
+        if var is None:
+            print(dic, file=f)
+        else:
+            print(f"{var} =", dic, file=f)
 
 
 # ==================================================

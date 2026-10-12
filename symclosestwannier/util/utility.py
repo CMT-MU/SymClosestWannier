@@ -15,8 +15,6 @@ from heapq import nlargest
 import multiprocessing
 from joblib import Parallel, delayed, wrap_non_picklable_objects
 
-from gcoreutils.nsarray import NSArray
-
 from symclosestwannier.util.constants import k_B_SI, elem_charge_SI, bohr_magn_SI, joul_to_eV
 from symclosestwannier.util.exceptions import SymCWInputError
 
@@ -33,6 +31,62 @@ class FortranFileR(fortio.FortranFile):
         except ValueError:
             print("File '{}' contains subrecords - using header_dtype='int32'".format(filename))
             super().__init__(filename, mode="r", header_dtype="int32", auto_endian=True, check_file=True)
+
+
+# ==================================================
+def grid_path(pts, gpath, N1=100, B=None):
+    """
+    grid points along a path of high-symmetry points.
+
+    Args:
+        pts (dict): points in fractional coordinates, e.g., {"G": [0,0,0], "X": [1/2,0,0]}.
+        gpath (str): path, e.g., "G-X-M|R-G"; "|" separates disconnected parts.
+        N1 (int, optional): number of divisions of each segment.
+        B (array_like, optional): matrix converting fractional to Cartesian coordinates (rows: basis vectors);
+            the linear positions are the Cartesian lengths. Identity if None.
+
+    Returns:
+        - ndarray: grid points (fractional), each segment with both end points.
+        - ndarray: linear positions of the grid points.
+        - dict: {linear position of each segment end: label}.
+    """
+    pts = {k: np.array(v, dtype=float) for k, v in pts.items()}
+    B = np.eye(len(next(iter(pts.values())))) if B is None else np.array(B, dtype=float)
+
+    gpath = "".join(gpath.split())
+    glabel = gpath.split("-")
+    segments = sum([[(i1, i2) for i1, i2 in zip(i[:-1], i[1:])] for i in (p.split("-") for p in gpath.split("|"))], [])
+
+    grid, glin, gdis = [], [], [0]
+    x = 0
+    for s, e in segments:
+        s, e = pts[s], pts[e]
+        dv = (e - s) / N1
+        d = np.linalg.norm(dv @ B.T)
+        for j in range(N1):
+            glin.append(x)
+            grid.append(s + j * dv)
+            x += d
+        grid.append(s + N1 * dv)
+        glin.append(x)
+        gdis.append(x)
+
+    return np.array(grid), np.array(glin), dict(zip(gdis, glabel))
+
+
+# ==================================================
+def shift_into_cell(r):
+    """
+    shift fractional coordinates into [0,1) by lattice vectors.
+
+    Args:
+        r (array_like): fractional coordinates.
+
+    Returns:
+        ndarray: shifted coordinates, r - floor(r).
+    """
+    r = np.array(r, dtype=float)
+    return r - np.floor(r)
 
 
 # ==================================================
