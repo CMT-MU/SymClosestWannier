@@ -6,11 +6,61 @@ import os
 import sys
 import codecs
 import time
+import ast
 import pickle
 import subprocess
-from gcoreutils.io_util import read_dict, write_dict
 
 from symclosestwannier.util.exceptions import SymCWFileNotFoundError
+
+
+# ==================================================
+def read_dict(filename):
+    """
+    read a dict from a text file written by write_dict (an optional docstring header and "var =" prefix).
+
+    Args:
+        filename (str): file name.
+
+    Returns:
+        dict: dictionary.
+    """
+    with open(filename, mode="r", encoding="utf-8") as f:
+        body = ast.parse(f.read()).body
+
+    # an optional docstring, then the dict as "var = {...}" or "{...}"
+    if len(body) == 2 and isinstance(body[0], ast.Expr) and isinstance(getattr(body[0].value, "value", None), str):
+        body = body[1:]
+    if len(body) != 1 or not (
+        (isinstance(body[0], ast.Assign) and len(body[0].targets) == 1 and isinstance(body[0].targets[0], ast.Name))
+        or isinstance(body[0], ast.Expr)
+    ):
+        raise ValueError(f"{filename} is not a dict file (an optional docstring and one dict).")
+
+    dic = ast.literal_eval(body[0].value)
+    if not isinstance(dic, dict):
+        raise ValueError(f"{filename} is not a dict file (an optional docstring and one dict).")
+
+    return dic
+
+
+# ==================================================
+def write_dict(filename, dic, header=None, var=None):
+    """
+    write a dict to a text file.
+
+    Args:
+        filename (str): file name.
+        dic (dict): dictionary to write.
+        header (str, optional): header comment (docstring) at the top of the file.
+        var (str, optional): variable name of the dict.
+    """
+    with open(filename, mode="w", encoding="utf-8") as f:
+        if header is not None:
+            print('"""' + header + '"""', file=f)
+        if var is None:
+            print(dic, file=f)
+        else:
+            print(f"{var} =", dic, file=f)
 
 
 # ==================================================
