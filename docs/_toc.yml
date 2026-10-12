@@ -23,6 +23,7 @@ parts:
     - file: src/format/z
     - file: src/format/s
     - file: src/format/n
+    - file: src/format/convention
 - caption: Tutorials
   chapters:
     - file: src/tutorials/tutorial01

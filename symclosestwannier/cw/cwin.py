@@ -190,7 +190,7 @@ class CWin(dict):
                 - write_u_matrices  : write seedname_u.dat and seedname_u_dis.dat ? (bool), [False].
                 - write_rmn         : write seedname_r.dat ? (bool), [False].
                 - write_vmn         : write seedname_v.dat ? (bool), [False].
-                - write_tb          : write seedname_tb.dat ? (bool), [False].
+                - write_tb          : write seedname_tb.dat (wannier90 format, needs seedname.mmn, not with tb_gauge = true) ? (bool), [False].
                 - write_eig         : write seedname.eig.cw ? (bool), [False].
                 - write_amn         : write seedname.amn.cw ? (bool), [False].
                 - write_mmn         : write seedname.mmn.cw ? (bool), [False].
@@ -362,6 +362,9 @@ class CWin(dict):
                 raise SymCWInputError(
                     f"{file_name}: check disentanglement windows, cwf_mu_max = {d['cwf_mu_max']} < cwf_mu_min = {d['cwf_mu_min']}."
                 )
+
+        if d["write_tb"] and d["tb_gauge"]:
+            raise SymCWInputError(f"{file_name}: write_tb = true cannot be used with tb_gauge = true.")
 
         return d
 

@@ -380,6 +380,26 @@ def wigner_seitz(A, mp_grid, prec=1.0e-4):
 
 
 # ==================================================
+def tb_gauge_positions(cwi):
+    """
+    orbital positions entering the phase of the Fourier transform from real space to k space.
+
+    Args:
+        cwi (CWInfo): CWInfo.
+
+    Returns:
+        ndarray or None: positions of the atoms of the orbitals in fractional coordinates, (num_wann, 3) (ket_amn order),
+            or None if tb_gauge = false.
+    """
+    if not cwi["tb_gauge"]:
+        return None
+
+    atoms_list = list(cwi["atoms_frac"].values())
+
+    return np.array([atoms_list[i] for i in cwi["nw2n"]], dtype=float)
+
+
+# ==================================================
 def fourier_transform_k_to_r(Ok, kpoints, irvec, atoms_frac=None):
     """
     inverse fourier transformation of an arbitrary operator from k-space representation into real-space representation.
@@ -493,9 +513,6 @@ def fourier_transform_r_to_k_vec(
             "R,kR,km,aRmn,kn->akmn", weight, phase_R, eiktau, Or_vec, eiktau.conjugate(), optimize=True
         )
     else:
-        print(f"weight.shape = {weight.shape}")
-        print(f"phase_R.shape = {phase_R.shape}")
-        print(f"Or_vec.shape = {Or_vec.shape}")
         Ok_true_vec = np.einsum("R,kR,aRmn->akmn", weight, phase_R, Or_vec, optimize=True)
 
     if not pseudo:
@@ -519,8 +536,7 @@ def fourier_transform_r_to_k_vec(
                     Or_vec[b],
                     eiktau.conjugate(),
                     optimize=True,
-                )
-                -1.0j * np.einsum(
+                ) - 1.0j * np.einsum(
                     "R,kR,Rmn,km,Rmn,kn->kmn",
                     weight,
                     phase_R,

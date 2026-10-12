@@ -45,6 +45,7 @@ from symclosestwannier.util.utility import (
     fourier_transform_r_to_k_vec,
     spin_zeeman_interaction,
     spn_operator,
+    tb_gauge_positions,
     thermal_avg,
 )
 
@@ -74,11 +75,7 @@ def spin_moment_main(cwi, operators):
     if not cwi["spinors"]:
         return d
     else:
-        if cwi["tb_gauge"]:
-            atoms_list = list(cwi["atoms_frac"].values())
-            atoms_frac = np.array([atoms_list[i] for i in cwi["nw2n"]])
-        else:
-            atoms_frac = None
+        atoms_frac = tb_gauge_positions(cwi)
 
         B = cwi["magnetic_field"]
         theta = cwi["magnetic_field_theta"]
@@ -681,11 +678,7 @@ def berry_get_imfgh_klist(cwi, operators, kpoints, imf=False, img=False, imh=Fal
         occ (ndarray, optional): occupancy.
         ladpt (ndarray, optional): .
     """
-    if cwi["tb_gauge"]:
-        atoms_list = list(cwi["atoms_frac"].values())
-        atoms_frac = np.array([atoms_list[i] for i in cwi["nw2n"]])
-    else:
-        atoms_frac = None
+    atoms_frac = tb_gauge_positions(cwi)
 
     if kpoints.ndim == 1:
         kpoints = np.array([kpoints])
@@ -858,11 +851,7 @@ def berry_get_imfgh_matrix_klist(cwi, operators, kpoints, img=False, imh=False, 
         occ (ndarray, optional): occupancy.
         ladpt (ndarray, optional): .
     """
-    if cwi["tb_gauge"]:
-        atoms_list = list(cwi["atoms_frac"].values())
-        atoms_frac = np.array([atoms_list[i] for i in cwi["nw2n"]])
-    else:
-        atoms_frac = None
+    atoms_frac = tb_gauge_positions(cwi)
 
     if kpoints.ndim == 1:
         kpoints = np.array([kpoints])
@@ -1186,11 +1175,7 @@ def berry_get_kubo(cwi, operators):
     Returns:
         tuple: Kubo_H, Kubo_AH, Kubo_H_spn, Kubo_AH_spn.
     """
-    if cwi["tb_gauge"]:
-        atoms_list = list(cwi["atoms_frac"].values())
-        atoms_frac = np.array([atoms_list[i] for i in cwi["nw2n"]])
-    else:
-        atoms_frac = None
+    atoms_frac = tb_gauge_positions(cwi)
 
     ef = cwi["fermi_energy"]
     berry_kmesh = cwi["berry_kmesh"]
@@ -1416,11 +1401,7 @@ def berry_get_kubo_tb(cwi, operators):
     Returns:
         tuple: Kubo_H, Kubo_AH, Kubo_H_spn, Kubo_AH_spn.
     """
-    if cwi["tb_gauge"]:
-        atoms_list = list(cwi["atoms_frac"].values())
-        atoms_frac = np.array([atoms_list[i] for i in cwi["nw2n"]])
-    else:
-        atoms_frac = None
+    atoms_frac = tb_gauge_positions(cwi)
 
     ef = cwi["fermi_energy"]
     berry_kmesh = cwi["berry_kmesh"]
@@ -1639,11 +1620,7 @@ def berry_get_js_k(cwi, operators, kpoints, E, del_alpha_E, D_alpha_h, U):
 
     Junfeng Qiao (8/7/2018)
     """
-    if cwi["tb_gauge"]:
-        atoms_list = list(cwi["atoms_frac"].values())
-        atoms_frac = np.array([atoms_list[i] for i in cwi["nw2n"]])
-    else:
-        atoms_frac = None
+    atoms_frac = tb_gauge_positions(cwi)
 
     shc_alpha = cwi["shc_alpha"]
     shc_gamma = cwi["shc_gamma"]
@@ -1726,11 +1703,7 @@ def berry_get_shc_klist(cwi, operators, kpoints, band=False):
     if kpoints.ndim == 1:
         kpoints = np.array([kpoints])
 
-    if cwi["tb_gauge"]:
-        atoms_list = list(cwi["atoms_frac"].values())
-        atoms_frac = np.array([atoms_list[i] for i in cwi["nw2n"]])
-    else:
-        atoms_frac = None
+    atoms_frac = tb_gauge_positions(cwi)
 
     kubo_adpt_smr = cwi["kubo_adpt_smr"]
     kubo_adpt_smr_fac = cwi["kubo_adpt_smr_fac"]
@@ -2042,11 +2015,7 @@ def gyrotropic_get_K(cwi, operators):
     Returns:
         ndarray: Spin Hall conductivity.
     """
-    if cwi["tb_gauge"]:
-        atoms_list = list(cwi["atoms_frac"].values())
-        atoms_frac = np.array([atoms_list[i] for i in cwi["nw2n"]])
-    else:
-        atoms_frac = None
+    atoms_frac = tb_gauge_positions(cwi)
 
     gyrotropic_kmesh = cwi["gyrotropic_kmesh"]
     gyrotropic_box = cwi.win.gyrotropic_box

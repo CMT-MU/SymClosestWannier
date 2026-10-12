@@ -1463,32 +1463,32 @@ class CWModel(dict):
         self._cwm.write(filename, O_R_dep_str, header, None)
 
     # ==================================================
-    def write_tb(self, Hr, Ar, filename, rpoints=None):
+    def write_tb(self, Hr, Ar, filename):
         """
-        write seedname_or.dat.
+        write seedname_tb.dat in the wannier90 format (lattice vectors, H(R) and r(R)).
+
+        The phase of the Fourier transform must contain only the lattice vector R (wannier90 convention),
+        so tb_gauge = true is not supported.
 
         Args:
             Hr (ndarray): real-space representation of the Hamiltonian, H_{ab}(R) = <φ_{a}(0)|H|φ_{b}(R)>.
             Ar (ndarray): real-space representation of the Hamiltonian, A_{ab}(R) = <φ_{a}(0)|r|φ_{b}(R)>.
             filename (str): file name.
-            rpoints (ndarray): rpoints.
         """
+        if self._cwi["tb_gauge"]:
+            raise SymCWInputError("write_tb = true cannot be used with tb_gauge = true (wannier90 _tb.dat uses tb_gauge = false).")
+
         num_wann = self._cwi["num_wann"]
         unit_cell_cart = np.array(self._cwi["unit_cell_cart"])
         Hr = np.array(Hr)
         tb_str = "# written {}  (created by pw2cw)\n".format(datetime.datetime.now().strftime("on %d%b%Y at %H:%M:%S"))
+        tb_str += "".join(["{:25.17f}{:25.17f}{:25.17f}\n".format(*v) for v in unit_cell_cart])
 
-        if rpoints is None:
-            rpoints = np.array(self._cwi["irvec"])
-            ndegen = np.array(self._cwi["ndegen"])
-            tb_str += "{:12d}\n{:12d}\n".format(num_wann, len(ndegen))
-            tb_str += textwrap.fill("".join(["{:5d}".format(x) for x in ndegen]), 75, drop_whitespace=False)
-            tb_str += "\n\n"
-
-        else:
-            rpoints = np.array(rpoints)
-            ndegen = None
-            tb_str += "{:12d}\n".format(num_wann)
+        rpoints = np.array(self._cwi["irvec"])
+        ndegen = np.array(self._cwi["ndegen"])
+        tb_str += "{:12d}\n{:12d}\n".format(num_wann, len(ndegen))
+        tb_str += textwrap.fill("".join(["{:5d}".format(x) for x in ndegen]), 75, drop_whitespace=False)
+        tb_str += "\n\n"
 
         # _hr
         for irpts in range(len(rpoints)):
