@@ -1089,7 +1089,11 @@ def _smearing_index(smr_type):
     if smr_type == "gauss":
         return 0
     if smr_type.startswith("m-p"):
-        return int(smr_type[3:]) if len(smr_type) > 3 else 1
+        order = smr_type[3:]
+        if order == "":
+            return 1
+        if order.isascii() and order.isdigit():
+            return int(order)
     if smr_type in ("m-v", "cold"):
         return -1
     if smr_type == "f-d":
@@ -1494,15 +1498,12 @@ def berry_get_kubo(cwi, operators):
     kubo_adpt_smr_max = cwi["kubo_adpt_smr_max"]
     kubo_smr_fixed_en_width = cwi["kubo_smr_fixed_en_width"]
 
-    if cwi["kubo_smr_type"] == "gauss":
-        kubo_smr_type_idx = 0
-    elif "m-p" in cwi["kubo_smr_type"]:
-        m_pN = cwi["kubo_smr_type"]
-        kubo_smr_type_idx = m_pN[2:]
-    elif cwi["kubo_smr_type"] == "m-v" or cwi["kubo_smr_type"] == "cold":
-        kubo_smr_type_idx = -1
-    elif cwi["kubo_smr_type"] == "f-d":
-        kubo_smr_type_idx = -99
+    kubo_smr_type_idx = _smearing_index(cwi["kubo_smr_type"])
+    if not kubo_adpt_smr and kubo_smr_fixed_en_width <= 0:
+        raise SymCWInputError(
+            "the optical conductivity needs a positive smearing width (kubo_smr_fixed_en_width or smr_fixed_en_width) "
+            "when kubo_adpt_smr = false."
+        )
 
     if cwi["kubo_eigval_max"] < +100000:
         kubo_eigval_max = cwi["kubo_eigval_max"]
@@ -1722,15 +1723,12 @@ def berry_get_kubo_tb(cwi, operators):
     kubo_adpt_smr_max = cwi["kubo_adpt_smr_max"]
     kubo_smr_fixed_en_width = cwi["kubo_smr_fixed_en_width"]
 
-    if cwi["kubo_smr_type"] == "gauss":
-        kubo_smr_type_idx = 0
-    elif "m-p" in cwi["kubo_smr_type"]:
-        m_pN = cwi["kubo_smr_type"]
-        kubo_smr_type_idx = m_pN[2:]
-    elif cwi["kubo_smr_type"] == "m-v" or cwi["kubo_smr_type"] == "cold":
-        kubo_smr_type_idx = -1
-    elif cwi["kubo_smr_type"] == "f-d":
-        kubo_smr_type_idx = -99
+    kubo_smr_type_idx = _smearing_index(cwi["kubo_smr_type"])
+    if not kubo_adpt_smr and kubo_smr_fixed_en_width <= 0:
+        raise SymCWInputError(
+            "the optical conductivity needs a positive smearing width (kubo_smr_fixed_en_width or smr_fixed_en_width) "
+            "when kubo_adpt_smr = false."
+        )
 
     if cwi["kubo_eigval_max"] < +100000:
         kubo_eigval_max = cwi["kubo_eigval_max"]
@@ -2014,16 +2012,6 @@ def berry_get_shc_klist(cwi, operators, kpoints, band=False):
     kubo_adpt_smr_fac = cwi["kubo_adpt_smr_fac"]
     kubo_adpt_smr_max = cwi["kubo_adpt_smr_max"]
     kubo_smr_fixed_en_width = cwi["kubo_smr_fixed_en_width"]
-
-    if cwi["kubo_smr_type"] == "gauss":
-        kubo_smr_type_idx = 0
-    elif "m-p" in cwi["kubo_smr_type"]:
-        m_pN = cwi["kubo_smr_type"]
-        kubo_smr_type_idx = m_pN[2:]
-    elif cwi["kubo_smr_type"] == "m-v" or cwi["kubo_smr_type"] == "cold":
-        kubo_smr_type_idx = -1
-    elif cwi["kubo_smr_type"] == "f-d":
-        kubo_smr_type_idx = -99
 
     if cwi["kubo_eigval_max"] < +100000:
         kubo_eigval_max = cwi["kubo_eigval_max"]
@@ -2330,6 +2318,10 @@ def gyrotropic_get_K(cwi, operators):
     gyrotropic_degen_thresh = cwi["gyrotropic_degen_thresh"]
     gyrotropic_smr_max_arg = cwi["gyrotropic_smr_max_arg"]
     eta_smr = cwi["gyrotropic_smr_fixed_en_width"]
+    if eta_smr <= 0:
+        raise SymCWInputError(
+            "the gyrotropic K tensor needs a positive smearing width (gyrotropic_smr_fixed_en_width or smr_fixed_en_width)."
+        )
     use_degen_pert = cwi["use_degen_pert"]
     degen_thr = cwi["degen_thr"]
     num_wann = cwi["num_wann"]
@@ -2344,15 +2336,7 @@ def gyrotropic_get_K(cwi, operators):
     mum_fermi = cwi["num_fermi"]
     fermi_energy_list = cwi["fermi_energy_list"]
 
-    if cwi["gyrotropic_smr_type"] == "gauss":
-        gyrotropic_smr_type_idx = 0
-    elif "m-p" in cwi["gyrotropic_smr_type"]:
-        m_pN = cwi["gyrotropic_smr_type"]
-        gyrotropic_smr_type_idx = m_pN[2:]
-    elif cwi["gyrotropic_smr_type"] == "m-v" or cwi["gyrotropic_smr_type"] == "cold":
-        gyrotropic_smr_type_idx = -1
-    elif cwi["gyrotropic_smr_type"] == "f-d":
-        gyrotropic_smr_type_idx = -99
+    gyrotropic_smr_type_idx = _smearing_index(cwi["gyrotropic_smr_type"])
 
     # ==================================================
     @wrap_non_picklable_objects
