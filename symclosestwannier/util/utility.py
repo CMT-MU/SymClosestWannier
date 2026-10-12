@@ -75,6 +75,35 @@ def grid_path(pts, gpath, N1=100, B=None):
 
 
 # ==================================================
+def surface_grid(A, V, x1, x2, x3):
+    """
+    k (or q) points of a plane for Fermi-surface (or Lindhard-surface) plots.
+
+    Args:
+        A (array_like): lattice vectors (rows).
+        V (float): unit-cell volume.
+        x1 (array_like): coordinates along the first axis, (N1,).
+        x2 (array_like): coordinates along the second axis, (N2,).
+        x3 (float): coordinate along the third axis (constant).
+
+    Returns:
+        - ndarray: points (x1_i |a2 x a3| / V, x2_j |a3 x a1| / V, x3 |a1 x a2| / V), (N1, N2, 3).
+        - ndarray: the same points in fractional coordinates of the reciprocal lattice, (N1 * N2, 3) with j fastest.
+    """
+    A = np.array(A, dtype=float)
+    B = np.linalg.inv(A).T
+    c1, c2, c3 = (np.linalg.norm(np.cross(A[i], A[j])) for i, j in ((1, 2), (2, 0), (0, 1)))
+    x1, x2 = np.asarray(x1, dtype=float), np.asarray(x2, dtype=float)
+
+    grid_2d = np.empty((len(x1), len(x2), 3))
+    grid_2d[:, :, 0] = (x1 / V * c1)[:, None]
+    grid_2d[:, :, 1] = (x2 / V * c2)[None, :]
+    grid_2d[:, :, 2] = x3 / V * c3
+
+    return grid_2d, grid_2d.reshape(-1, 3) @ np.linalg.inv(B)
+
+
+# ==================================================
 def shift_into_cell(r):
     """
     shift fractional coordinates into [0,1) by lattice vectors.
@@ -83,10 +112,11 @@ def shift_into_cell(r):
         r (array_like): fractional coordinates.
 
     Returns:
-        ndarray: shifted coordinates, r - floor(r).
+        ndarray: shifted coordinates, r - floor(r); a result rounded up to 1 (r slightly below an integer) is set to 0.
     """
     r = np.array(r, dtype=float)
-    return r - np.floor(r)
+    s = r - np.floor(r)
+    return np.where(s >= 1.0, 0.0, s)
 
 
 # ==================================================

@@ -32,7 +32,7 @@ from symclosestwannier.cw.umat import Umat
 from symclosestwannier.cw.spn import Spn
 from symclosestwannier.cw.uHu import UHu
 
-from symclosestwannier.util.utility import wigner_seitz, convert_w90_orbital, grid_path
+from symclosestwannier.util.utility import wigner_seitz, convert_w90_orbital, grid_path, surface_grid
 from symclosestwannier.util.exceptions import SymCWInputError
 
 _class_map = {
@@ -232,30 +232,8 @@ class CWInfo(dict):
             k1 = np.linspace(kmin_1, kmax_1, N1, endpoint=True)
             k2 = np.linspace(kmin_2, kmax_2, N2, endpoint=True)
 
-            A = np.array(d["unit_cell_cart"])
-            V = d["unit_cell_volume"]
-            B = np.linalg.inv(A).T
-
-            d["fermi_surface_grid_2d"] = np.array(
-                [
-                    [
-                        np.array(
-                            [
-                                k1[i] / V * np.linalg.norm(np.cross(A[1], A[2])),
-                                k2[j] / V * np.linalg.norm(np.cross(A[2], A[0])),
-                                k3 / V * np.linalg.norm(np.cross(A[0], A[1])),
-                            ]
-                        )
-                        for j in range(N2)
-                    ]
-                    for i in range(N1)
-                ],
-                dtype=np.float64,
-            )
-
-            d["fermi_surface_grid"] = np.array(
-                [d["fermi_surface_grid_2d"][i, j] @ np.linalg.inv(B) for i in range(N1) for j in range(N2)],
-                dtype=np.float64,
+            d["fermi_surface_grid_2d"], d["fermi_surface_grid"] = surface_grid(
+                d["unit_cell_cart"], d["unit_cell_volume"], k1, k2, k3
             )
 
         if d["qpoint"] is not None and d["qpoint_path"] is not None:
@@ -280,30 +258,8 @@ class CWInfo(dict):
             q1 = np.linspace(qmin_1, qmax_1, N1, endpoint=True)
             q2 = np.linspace(qmin_2, qmax_2, N2, endpoint=True)
 
-            A = np.array(d["unit_cell_cart"])
-            V = d["unit_cell_volume"]
-            B = np.linalg.inv(A).T
-
-            d["qpoints_surface_grid_2d"] = np.array(
-                [
-                    [
-                        np.array(
-                            [
-                                q1[i] / V * np.linalg.norm(np.cross(A[1], A[2])),
-                                q2[j] / V * np.linalg.norm(np.cross(A[2], A[0])),
-                                q3 / V * np.linalg.norm(np.cross(A[0], A[1])),
-                            ]
-                        )
-                        for j in range(N2)
-                    ]
-                    for i in range(N1)
-                ],
-                dtype=np.float64,
-            )
-
-            d["qpoints_surface_grid"] = np.array(
-                [d["qpoints_surface_grid_2d"][i, j] @ np.linalg.inv(B) for i in range(N1) for j in range(N2)],
-                dtype=np.float64,
+            d["qpoints_surface_grid_2d"], d["qpoints_surface_grid"] = surface_grid(
+                d["unit_cell_cart"], d["unit_cell_volume"], q1, q2, q3
             )
 
         if d["symmetrization"]:

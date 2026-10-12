@@ -25,9 +25,22 @@ def read_dict(filename):
         dict: dictionary.
     """
     with open(filename, mode="r", encoding="utf-8") as f:
-        node = ast.parse(f.read()).body[-1]  # the dict: "var = {...}" or "{...}", after an optional docstring
+        body = ast.parse(f.read()).body
 
-    return ast.literal_eval(node.value)
+    # an optional docstring, then the dict as "var = {...}" or "{...}"
+    if len(body) == 2 and isinstance(body[0], ast.Expr) and isinstance(getattr(body[0].value, "value", None), str):
+        body = body[1:]
+    if len(body) != 1 or not (
+        (isinstance(body[0], ast.Assign) and len(body[0].targets) == 1 and isinstance(body[0].targets[0], ast.Name))
+        or isinstance(body[0], ast.Expr)
+    ):
+        raise ValueError(f"{filename} is not a dict file (an optional docstring and one dict).")
+
+    dic = ast.literal_eval(body[0].value)
+    if not isinstance(dic, dict):
+        raise ValueError(f"{filename} is not a dict file (an optional docstring and one dict).")
+
+    return dic
 
 
 # ==================================================

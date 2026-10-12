@@ -1,6 +1,7 @@
 """
 helpers that replace gcoreutils: grid points along a k path (grid_path), fractional coordinates shifted into the unit
-cell (shift_into_cell, atoms_frac_shift of seedname.win), and the dict text files of CWManager (read_dict, write_dict).
+cell (shift_into_cell, atoms_frac_shift of seedname.win), and the dict text files of CWManager (read_dict, write_dict);
+and the k points of a plane for Fermi-surface plots (surface_grid).
 """
 
 import numpy as np
@@ -8,7 +9,7 @@ import pytest
 
 from symclosestwannier.cw.cw_manager import read_dict, write_dict
 from symclosestwannier.cw.win import Win
-from symclosestwannier.util.utility import grid_path, shift_into_cell
+from symclosestwannier.util.utility import grid_path, shift_into_cell, surface_grid
 
 
 # ==================================================
@@ -60,6 +61,27 @@ def test_shift_into_cell(r, expected):
 
 
 # ==================================================
+def test_shift_into_cell_boundaries():
+    below_0, below_1, above_1 = np.nextafter(0.0, -1.0), np.nextafter(1.0, 0.0), np.nextafter(1.0, 2.0)
+    r = [-1e-17, below_0, below_1, above_1, np.nextafter(-1.0, 0.0), -1.0, 2.0 - 1e-16]
+
+    s = shift_into_cell(r)
+
+    assert np.all((0 <= s) & (s < 1))
+    # within one rounding of r modulo 1, counting 1 as 0
+    d = np.abs(s - np.mod(r, 1.0))
+    np.testing.assert_allclose(np.minimum(d, 1 - d), 0, rtol=0, atol=2.3e-16)
+    assert s[0] == 0.0 and s[1] == 0.0 and s[2] == below_1
+
+
+# ==================================================
+@pytest.mark.parametrize("r, expected", [(0.5, 0.5), (-0.25, 0.75), (-1e-17, 0.0), (np.float64(3.0), 0.0)])
+def test_shift_into_cell_scalar(r, expected):
+    s = shift_into_cell(r)
+    assert s.shape == () and s == expected
+
+
+# ==================================================
 def test_atoms_frac_shift(tmp_path):
     (tmp_path / "seed.win").write_text(
         "num_bands = 2\nnum_wann = 2\n"
@@ -85,3 +107,60 @@ def test_dict_file(tmp_path, header, var):
 
     assert text.startswith('"""' + header + '"""\n' if header is not None else (f"{var} =" if var else "{"))
     assert read_dict(filename) == d
+
+
+# ==================================================
+@pytest.mark.parametrize(
+    "text",
+    [
+        '{"a": 1}\n{"b": 2}\n',
+        'x = 1\ny = {"a": 1}\n',
+        "import os\n",
+        'a = b = {"a": 1}\n',
+        '"""header only"""\n',
+        "x = [1, 2]\n",
+        "3\n",
+        '"""header"""\nx = [1, 2]\n',
+    ],
+)
+def test_read_dict_malformed(tmp_path, text):
+    (tmp_path / "d.py").write_text(text)
+    with pytest.raises(ValueError, match="not a dict file"):
+        read_dict(str(tmp_path / "d.py"))
+
+
+# ==================================================
+@pytest.mark.parametrize("N1, N2", [(4, 3), (1, 1), (1, 3), (4, 1)])
+def test_surface_grid(N1, N2):
+    A = np.array([[2.0, 0.0, 0.0], [-1.0, 1.5, 0.0], [0.3, 0.2, 5.0]])
+    V = np.dot(A[0], np.cross(A[1], A[2]))
+    x1, x2, x3 = np.linspace(-1, 1, N1), np.linspace(-0.5, 0.5, N2), 0.25
+
+    grid_2d, grid = surface_grid(A, V, x1, x2, x3)
+
+    # the loops that surface_grid replaces (same arithmetic)
+    B = np.linalg.inv(A).T
+    ref_2d = np.array(
+        [
+            [
+                np.array(
+                    [
+                        x1[i] / V * np.linalg.norm(np.cross(A[1], A[2])),
+                        x2[j] / V * np.linalg.norm(np.cross(A[2], A[0])),
+                        x3 / V * np.linalg.norm(np.cross(A[0], A[1])),
+                    ]
+                )
+                for j in range(N2)
+            ]
+            for i in range(N1)
+        ],
+        dtype=np.float64,
+    )
+    ref = np.array([ref_2d[i, j] @ np.linalg.inv(B) for i in range(N1) for j in range(N2)], dtype=np.float64)
+
+    assert grid_2d.shape == (N1, N2, 3) and grid.shape == (N1 * N2, 3)
+    assert grid_2d.dtype == np.float64 and grid.dtype == np.float64
+    np.testing.assert_array_equal(grid_2d, ref_2d)
+    np.testing.assert_allclose(grid, ref, rtol=0, atol=1e-15)
+    # fractional coordinates of the reciprocal lattice B = (A^-1)^T: k_frac = k B^-1 = k A^T
+    np.testing.assert_allclose(grid, ref_2d.reshape(-1, 3) @ A.T, rtol=0, atol=1e-14)
