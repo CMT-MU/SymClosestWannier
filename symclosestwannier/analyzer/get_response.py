@@ -60,6 +60,7 @@ from symclosestwannier.util.constants import (
     eV_seconds,
 )
 from symclosestwannier.util.exceptions import SymCWInputError
+from symclosestwannier.util.get_oper_R import shc_bandshift
 
 _num_proc = multiprocessing.cpu_count()
 
@@ -69,6 +70,24 @@ _beta_A = [2, 0, 1]
 # symmetric pairs (b, c) of the shift current: xx, yy, zz, xy, xz, yz.
 _alpha_S = [0, 1, 2, 0, 0, 1]
 _beta_S = [0, 1, 2, 1, 2, 2]
+
+
+# ==================================================
+def _single_fermi_energy(cwi, what):
+    """
+    the Fermi energy of the calculations at a single Fermi energy, fermi_energy_list[0] as in wannier90; a Fermi energy
+    scan is rejected.
+
+    Args:
+        cwi (CWInfo): CWInfo.
+        what (str): the calculation, for the error message.
+
+    Returns:
+        float: Fermi energy (eV).
+    """
+    if cwi["num_fermi"] != 1:
+        raise SymCWInputError(f"{what} needs a single Fermi energy (fermi_energy in seedname.win), not a scan.")
+    return cwi["fermi_energy_list"][0]
 
 
 # ==================================================
@@ -83,6 +102,8 @@ def spin_moment_main(cwi, operators):
     Returns:
         dict: Ms_x, Ms_y, Ms_z.
     """
+    ef = _single_fermi_energy(cwi, "the spin moment")
+
     d = {"Ms_x": 0.0, "Ms_y": 0.0, "Ms_z": 0.0}
 
     if not cwi["spinors"]:
@@ -121,7 +142,7 @@ def spin_moment_main(cwi, operators):
 
             spn_x, spn_y, spn_z = spn_operator(pauli_spn, g_factor, dim) / mu_B
 
-            return thermal_avg([spn_x, spn_y, spn_z], E, U, cwi["fermi_energy"], T_Kelvin=0.0, num_k=num_k)
+            return thermal_avg([spn_x, spn_y, spn_z], E, U, ef, T_Kelvin=0.0, num_k=num_k)
 
         # ==================================================
         kpoints_chunks = np.split(kpoints, [j for j in range(1000, len(kpoints), 1000)])
@@ -1081,6 +1102,28 @@ def berry_get_morb(cwi, operators):
 
 
 # ==================================================
+def kubo_frequencies(cwi):
+    """
+    frequencies of the optical conductivity, the shift current and the ac spin Hall conductivity, as kubo_freq_list
+    of wannier90: nint((kubo_freq_max - kubo_freq_min) / kubo_freq_step) + 1 frequencies (at least 2), evenly spaced
+    from kubo_freq_min to kubo_freq_max (both included).
+
+    Args:
+        cwi (CWInfo): CWInfo.
+
+    Returns:
+        ndarray: frequencies (eV).
+    """
+    fmin, fmax, fstep = cwi["kubo_freq_min"], cwi["kubo_freq_max"], cwi["kubo_freq_step"]
+    if not (np.isfinite(fstep) and fstep > 0):
+        # wannier90 rejects a negative step (and divides by a zero one)
+        raise SymCWInputError(f"kubo_freq_step must be positive in seedname.win, not {fstep}.")
+    x = (fmax - fmin) / fstep
+    nfreq = max(int(np.sign(x) * np.floor(abs(x) + 0.5)) + 1, 2)  # nint rounds half away from zero
+    return fmin + (fmax - fmin) * np.arange(nfreq) / (nfreq - 1)
+
+
+# ==================================================
 def _smearing_index(smr_type):
     """
     index of utility_w0gauss for a smearing type of seedname.win.
@@ -1088,7 +1131,11 @@ def _smearing_index(smr_type):
     if smr_type == "gauss":
         return 0
     if smr_type.startswith("m-p"):
-        return int(smr_type[3:]) if len(smr_type) > 3 else 1
+        order = smr_type[3:]
+        if order == "":
+            return 1
+        if order.isascii() and order.isdigit():
+            return int(order)
     if smr_type in ("m-v", "cold"):
         return -1
     if smr_type == "f-d":
@@ -1302,9 +1349,7 @@ def berry_get_sc(cwi, operators):
     if cwi.get("zeeman_interaction"):
         raise SymCWInputError("zeeman_interaction = true is not implemented for the shift current.")
 
-    fmin, fmax, fstep = cwi["kubo_freq_min"], cwi["kubo_freq_max"], cwi["kubo_freq_step"]
-    nfreq = int(round((fmax - fmin) / fstep)) + 1
-    freq = fmin + fstep * np.arange(nfreq)
+    freq = kubo_frequencies(cwi)
 
     kpoints = _berry_kmesh(cwi)
 
@@ -1478,10 +1523,10 @@ def berry_get_kubo(cwi, operators):
     if cwi["spin_decomp"]:
         # the spin of the bands (spn_nk) that selects the channel is not computed.
         raise SymCWInputError("spin_decomp = true is not implemented for the optical conductivity.")
+    ef = _single_fermi_energy(cwi, "the optical conductivity")
 
     atoms_frac = tb_gauge_positions(cwi)
 
-    ef = cwi["fermi_energy"]
     berry_kmesh = cwi["berry_kmesh"]
     num_wann = cwi["num_wann"]
 
@@ -1493,15 +1538,12 @@ def berry_get_kubo(cwi, operators):
     kubo_adpt_smr_max = cwi["kubo_adpt_smr_max"]
     kubo_smr_fixed_en_width = cwi["kubo_smr_fixed_en_width"]
 
-    if cwi["kubo_smr_type"] == "gauss":
-        kubo_smr_type_idx = 0
-    elif "m-p" in cwi["kubo_smr_type"]:
-        m_pN = cwi["kubo_smr_type"]
-        kubo_smr_type_idx = m_pN[2:]
-    elif cwi["kubo_smr_type"] == "m-v" or cwi["kubo_smr_type"] == "cold":
-        kubo_smr_type_idx = -1
-    elif cwi["kubo_smr_type"] == "f-d":
-        kubo_smr_type_idx = -99
+    kubo_smr_type_idx = _smearing_index(cwi["kubo_smr_type"])
+    if not kubo_adpt_smr and kubo_smr_fixed_en_width <= 0:
+        raise SymCWInputError(
+            "the optical conductivity needs a positive smearing width (kubo_smr_fixed_en_width or smr_fixed_en_width) "
+            "when kubo_adpt_smr = false."
+        )
 
     if cwi["kubo_eigval_max"] < +100000:
         kubo_eigval_max = cwi["kubo_eigval_max"]
@@ -1513,7 +1555,7 @@ def berry_get_kubo(cwi, operators):
     use_degen_pert = cwi["use_degen_pert"]
     degen_thr = cwi["degen_thr"]
 
-    kubo_freq_list = np.arange(cwi["kubo_freq_min"], cwi["kubo_freq_max"], cwi["kubo_freq_step"])
+    kubo_freq_list = kubo_frequencies(cwi)
     # Replace imaginary part of frequency with a fixed value
     if not kubo_adpt_smr and kubo_smr_fixed_en_width != 0.0:
         kubo_freq_list = np.real(kubo_freq_list) + 1.0j * kubo_smr_fixed_en_width
@@ -1706,10 +1748,10 @@ def berry_get_kubo_tb(cwi, operators):
     if cwi["spin_decomp"]:
         # the spin of the bands (spn_nk) that selects the channel is not computed.
         raise SymCWInputError("spin_decomp = true is not implemented for the optical conductivity.")
+    ef = _single_fermi_energy(cwi, "the optical conductivity")
 
     atoms_frac = tb_gauge_positions(cwi)
 
-    ef = cwi["fermi_energy"]
     berry_kmesh = cwi["berry_kmesh"]
     num_wann = cwi["num_wann"]
 
@@ -1721,15 +1763,12 @@ def berry_get_kubo_tb(cwi, operators):
     kubo_adpt_smr_max = cwi["kubo_adpt_smr_max"]
     kubo_smr_fixed_en_width = cwi["kubo_smr_fixed_en_width"]
 
-    if cwi["kubo_smr_type"] == "gauss":
-        kubo_smr_type_idx = 0
-    elif "m-p" in cwi["kubo_smr_type"]:
-        m_pN = cwi["kubo_smr_type"]
-        kubo_smr_type_idx = m_pN[2:]
-    elif cwi["kubo_smr_type"] == "m-v" or cwi["kubo_smr_type"] == "cold":
-        kubo_smr_type_idx = -1
-    elif cwi["kubo_smr_type"] == "f-d":
-        kubo_smr_type_idx = -99
+    kubo_smr_type_idx = _smearing_index(cwi["kubo_smr_type"])
+    if not kubo_adpt_smr and kubo_smr_fixed_en_width <= 0:
+        raise SymCWInputError(
+            "the optical conductivity needs a positive smearing width (kubo_smr_fixed_en_width or smr_fixed_en_width) "
+            "when kubo_adpt_smr = false."
+        )
 
     if cwi["kubo_eigval_max"] < +100000:
         kubo_eigval_max = cwi["kubo_eigval_max"]
@@ -1741,7 +1780,7 @@ def berry_get_kubo_tb(cwi, operators):
     use_degen_pert = cwi["use_degen_pert"]
     degen_thr = cwi["degen_thr"]
 
-    kubo_freq_list = np.arange(cwi["kubo_freq_min"], cwi["kubo_freq_max"], cwi["kubo_freq_step"])
+    kubo_freq_list = kubo_frequencies(cwi)
     # Replace imaginary part of frequency with a fixed value
     if not kubo_adpt_smr and kubo_smr_fixed_en_width != 0.0:
         kubo_freq_list = np.real(kubo_freq_list) + 1.0j * kubo_smr_fixed_en_width
@@ -2014,16 +2053,6 @@ def berry_get_shc_klist(cwi, operators, kpoints, band=False):
     kubo_adpt_smr_max = cwi["kubo_adpt_smr_max"]
     kubo_smr_fixed_en_width = cwi["kubo_smr_fixed_en_width"]
 
-    if cwi["kubo_smr_type"] == "gauss":
-        kubo_smr_type_idx = 0
-    elif "m-p" in cwi["kubo_smr_type"]:
-        m_pN = cwi["kubo_smr_type"]
-        kubo_smr_type_idx = m_pN[2:]
-    elif cwi["kubo_smr_type"] == "m-v" or cwi["kubo_smr_type"] == "cold":
-        kubo_smr_type_idx = -1
-    elif cwi["kubo_smr_type"] == "f-d":
-        kubo_smr_type_idx = -99
-
     if cwi["kubo_eigval_max"] < +100000:
         kubo_eigval_max = cwi["kubo_eigval_max"]
     elif cwi["dis_froz_max"] < +100000:
@@ -2031,7 +2060,7 @@ def berry_get_shc_klist(cwi, operators, kpoints, band=False):
     else:
         kubo_eigval_max = 100000
 
-    kubo_freq_list = np.arange(cwi["kubo_freq_min"], cwi["kubo_freq_max"], cwi["kubo_freq_step"])
+    kubo_freq_list = kubo_frequencies(cwi)
     # Replace imaginary part of frequency with a fixed value
     if not kubo_adpt_smr and kubo_smr_fixed_en_width != 0.0:
         kubo_freq_list = np.real(kubo_freq_list) + 1.0j * kubo_smr_fixed_en_width
@@ -2074,12 +2103,7 @@ def berry_get_shc_klist(cwi, operators, kpoints, band=False):
     shc_alpha = cwi["shc_alpha"]
     shc_beta = cwi["shc_beta"]
 
-    shc_bandshift = cwi["shc_bandshift"]
-    shc_bandshift_firstband = cwi["shc_bandshift_firstband"]
-    shc_bandshift_energyshift = cwi["shc_bandshift_energyshift"]
-
-    if shc_bandshift:
-        E[:, shc_bandshift_firstband:] += shc_bandshift_energyshift
+    E = shc_bandshift(E, cwi)
 
     del_alpha_E = delE[shc_alpha - 1]
     D_alpha_h = D_h[shc_alpha - 1]
@@ -2093,7 +2117,7 @@ def berry_get_shc_klist(cwi, operators, kpoints, band=False):
     lfreq = False
     lfermi = False
     if cwi["shc_freq_scan"]:
-        shc_k_freq = np.zeros((kubo_nfreq, len(kpoints)))
+        shc_k_freq = np.zeros((kubo_nfreq, len(kpoints)), dtype=complex)
         lfreq = True
     else:
         shc_k_fermi = np.zeros((cwi["num_fermi"], len(kpoints)))
@@ -2108,7 +2132,7 @@ def berry_get_shc_klist(cwi, operators, kpoints, band=False):
         lfermi = False
 
     if lfreq:
-        ef = cwi["fermi_energy"]
+        ef = _single_fermi_energy(cwi, "the ac spin Hall conductivity (shc_freq_scan = true)")
         occ_freq = fermi(E - ef, T=0.0, unit="eV")
     elif lfermi:
         fermi_energy_list = cwi["fermi_energy_list"]
@@ -2121,7 +2145,7 @@ def berry_get_shc_klist(cwi, operators, kpoints, band=False):
             omega = 0.0
             # get Omega_{n,alpha beta}^{gamma}
             if lfreq:
-                omega_list = np.zeros(kubo_nfreq)
+                omega_list = np.zeros(kubo_nfreq, dtype=complex)
 
             for m in range(num_wann):
                 if m == n:
@@ -2179,6 +2203,9 @@ def berry_get_shc(cwi, operators):
     Returns:
         ndarray: Spin Hall conductivity.
     """
+    if cwi["shc_freq_scan"]:
+        _single_fermi_energy(cwi, "the ac spin Hall conductivity (shc_freq_scan = true)")
+
     num_fermi = cwi["num_fermi"]
 
     berry_kmesh = cwi["berry_kmesh"]
@@ -2334,6 +2361,10 @@ def gyrotropic_get_K(cwi, operators):
     gyrotropic_degen_thresh = cwi["gyrotropic_degen_thresh"]
     gyrotropic_smr_max_arg = cwi["gyrotropic_smr_max_arg"]
     eta_smr = cwi["gyrotropic_smr_fixed_en_width"]
+    if eta_smr <= 0:
+        raise SymCWInputError(
+            "the gyrotropic K tensor needs a positive smearing width (gyrotropic_smr_fixed_en_width or smr_fixed_en_width)."
+        )
     use_degen_pert = cwi["use_degen_pert"]
     degen_thr = cwi["degen_thr"]
     num_wann = cwi["num_wann"]
@@ -2348,15 +2379,7 @@ def gyrotropic_get_K(cwi, operators):
     mum_fermi = cwi["num_fermi"]
     fermi_energy_list = cwi["fermi_energy_list"]
 
-    if cwi["gyrotropic_smr_type"] == "gauss":
-        gyrotropic_smr_type_idx = 0
-    elif "m-p" in cwi["gyrotropic_smr_type"]:
-        m_pN = cwi["gyrotropic_smr_type"]
-        gyrotropic_smr_type_idx = m_pN[2:]
-    elif cwi["gyrotropic_smr_type"] == "m-v" or cwi["gyrotropic_smr_type"] == "cold":
-        gyrotropic_smr_type_idx = -1
-    elif cwi["gyrotropic_smr_type"] == "f-d":
-        gyrotropic_smr_type_idx = -99
+    gyrotropic_smr_type_idx = _smearing_index(cwi["gyrotropic_smr_type"])
 
     # ==================================================
     @wrap_non_picklable_objects
@@ -2475,18 +2498,9 @@ def gyrotropic_get_K(cwi, operators):
 
                 delE_ = np.array([delE[:, k, n] for k in k_list_])
                 orb_nk_ = np.array([orb_nk[k_list.index(k), :] for k in k_list_])
-                # delta_ = (
-                #     np.array(
-                #         [
-                #             utility_w0gauss((E[k, n] - fermi_energy_list[ifermi]) / eta_smr, gyrotropic_smr_type_idx)
-                #             for k in k_list_
-                #         ]
-                #     )
-                #     / eta_smr
-                #     * kweight
-                # )
+                # broadened delta(E_nk - E_f) at the same k points
                 delta_ = (
-                    utility_w0gauss((E[:, n] - fermi_energy_list[ifermi]) / eta_smr, gyrotropic_smr_type_idx)
+                    utility_w0gauss((E[k_list_, n] - fermi_energy_list[ifermi]) / eta_smr, gyrotropic_smr_type_idx)
                     / eta_smr
                     * kweight
                 )

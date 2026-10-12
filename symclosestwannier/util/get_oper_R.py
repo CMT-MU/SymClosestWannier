@@ -274,6 +274,27 @@ def get_SS_R(cwi):
 
 
 # ==================================================
+def shc_bandshift(E, cwi):
+    """
+    Shift the bands shc_bandshift_firstband, ..., num_bands (1-based, as in wannier90) by shc_bandshift_energyshift.
+
+    Args:
+        E (ndarray): eigenvalues, (num_k, num_bands).
+        cwi (CWInfo): CWInfo.
+
+    Returns:
+        ndarray: shifted copy of E, or E itself if shc_bandshift = false.
+    """
+    if not cwi["shc_bandshift"]:
+        return E
+
+    E = np.array(E)
+    E[:, cwi["shc_bandshift_firstband"] - 1 :] += cwi["shc_bandshift_energyshift"]
+
+    return E
+
+
+# ==================================================
 def get_SHC_R(cwi):
     """
     Compute several matrices for spin Hall conductivity
@@ -299,12 +320,7 @@ def get_SHC_R(cwi):
     SS_k = np.einsum("klm,aklp,kpn->akmn", np.conj(Uk), spn_o, Uk, optimize=True)
 
     # get_HH_R
-    shc_bandshift = cwi["shc_bandshift"]
-    shc_bandshift_firstband = cwi["shc_bandshift_firstband"]
-    shc_bandshift_energyshift = cwi["shc_bandshift_energyshift"]
-
-    if shc_bandshift:
-        Ek[:, shc_bandshift_firstband:] += shc_bandshift_energyshift
+    Ek = shc_bandshift(Ek, cwi)
 
     H_o = np.array([np.diag(Ek[k]) for k in range(num_k)])
 

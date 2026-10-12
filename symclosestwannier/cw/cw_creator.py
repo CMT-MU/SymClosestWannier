@@ -46,7 +46,7 @@ from symclosestwannier.util.message import (
 
 from symclosestwannier.util.get_oper_R import get_oper_R
 
-from symclosestwannier.util.utility import sort_ket_matrix, tune_fermi_level
+from symclosestwannier.util.utility import ket_samb_list, sort_ket_matrix, tune_fermi_level
 
 
 # ==================================================
@@ -303,7 +303,7 @@ def _cw_creator(seedname, indir):
         )
 
         if cwi["symmetrization"]:
-            ket_samb = cwi._mm["full_matrix"]["ket"]
+            ket_samb = ket_samb_list(cwi._mm)
 
             if cwi["tb_gauge"]:
                 site_dict = {
@@ -375,7 +375,7 @@ def _cw_creator(seedname, indir):
         output_fermi_surface_eig(".", seedname, kpoints_2d, e=Ek, ef=ef)
 
         if cwi["symmetrization"]:
-            ket_samb = cwi._mm["full_matrix"]["ket"]
+            ket_samb = ket_samb_list(cwi._mm)
 
             if cwi["tb_gauge"]:
                 site_dict = {
@@ -421,7 +421,7 @@ def _cw_creator(seedname, indir):
         output_dos(".", seedname + "_dos.txt", Ek, Uk, ef_shift, dos_num_fermi, dos_smr_en_width, dos_emax, dos_emin)
 
         if cwi["symmetrization"]:
-            ket_samb = cwi._mm["full_matrix"]["ket"]
+            ket_samb = ket_samb_list(cwi._mm)
 
             if cwi["tb_gauge"]:
                 site_dict = {

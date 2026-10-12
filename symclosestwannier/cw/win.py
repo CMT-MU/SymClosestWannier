@@ -28,6 +28,8 @@ _default = {
     "exclude_bands": None,
     #
     "mp_grid": [1, 1, 1],
+    "ws_distance_tol": 1.0e-5,
+    "ws_search_size": [2, 2, 2],
     "kpoints": [[0, 0, 0]],
     "kpoint": None,
     "kpoint_path": None,
@@ -219,6 +221,8 @@ class Win(dict):
                 - dis_win_min     : bottom of the outer energy window (float), [-100000].
                 - dis_mix_ratio   : mixing ratio during the disentanglement (float), [0.5].
                 - mp_grid         : dimensions of the Monkhorst-Pack grid of k-points (list), [[1, 1, 1]],
+                - ws_distance_tol : tolerance of the distances in the Wigner-Seitz supercell of the R vectors (float, Angstrom), [1.0e-5].
+                - ws_search_size  : number of supercells searched for the Wigner-Seitz supercell along each direction (one or three integers), [2].
                 - kpoints         : k-points used in DFT calculation, [[k1, k2, k3]] (crystal coordinate).
                 - kpoint          : representative k points (dict), [None].
                 - kpoint_path     : k-points along high symmetry line in Brillouin zone, [[k1, k2, k3]] (crystal coordinate) (str), [None].
@@ -244,8 +248,8 @@ class Win(dict):
                 - berry_curv_unit              : Unit of Berry curvature, ang2/bohr2, ['ang2'].
                 - berry_curv_adpt_kmesh        : Linear dimension of the adaptively refined k-mesh used to compute the anomalous/spin Hall conductivity, [1, 1, 1].
                 - berry_curv_adpt_kmesh_thresh : Threshold magnitude of the Berry curvature for adaptive refinement, [100].
-                - fermi_energy                 : fermi energy (float), [0.0].
-                - fermi_energy_max             : Upper limit of the Fermi energy range (float), [None].
+                - fermi_energy                 : fermi energy, not with fermi_energy_min (float), [0.0].
+                - fermi_energy_max             : Upper limit of the Fermi energy range (float), [fermi_energy_min + 1].
                 - fermi_energy_min             : Lower limit of the Fermi energy range (float), [None].
                 - fermi_energy_step            : Step for increasing the Fermi energy in the specified range. (The units are [eV]) (float), [0.01].
                 - fermi_energy_list            : list of fermi energy (list), [None].
@@ -254,8 +258,8 @@ class Win(dict):
                 - shc_alpha                    : The α index of spin Hall conductivity σ^{spin γ}_{αβ}, i.e. the direction of spin current. Possible values are 1, 2 and 3, representing the x, y and z directions respectively. (int), [1].
                 - shc_beta                     : The β index of spin Hall conductivity σ^{spin γ}_{αβ}, i.e. the direction of applied electric field. Possible values are 1, 2 and 3, representing the x, y and z directions respectively. (int), [2].
                 - shc_gamma                    : The γ index of spin Hall conductivity σ^{spin γ}_{αβ}, i.e. the spin direction of spin current. Possible values are 1, 2 and 3, representing the x, y and z directions respectively. (int), [3].
-                - shc_bandshift                : Shift all conduction bands by a given amount (float), [False].
-                - shc_bandshift_firstband      : Index of the first band to shift (int), [None].
+                - shc_bandshift                : Shift all conduction bands by a given amount (bool), [False].
+                - shc_bandshift_firstband      : Index of the first band to shift, 1-based (int), [None].
                 - shc_bandshift_energyshift    : Energy shift of the conduction bands (eV) (float), [0.0].
 
             # kubo
@@ -315,6 +319,17 @@ class Win(dict):
         mp_grid = self._get_param_keyword(win_data, "mp_grid", "1  1  1", dtype=str)
         d["mp_grid"] = [int(x) for x in mp_grid.split()]
         d["num_k"] = np.prod(d["mp_grid"])
+        d["ws_distance_tol"] = self._get_param_keyword(win_data, "ws_distance_tol", 1.0e-5, dtype=float)
+        if not (np.isfinite(d["ws_distance_tol"]) and d["ws_distance_tol"] > 0):
+            raise SymCWInputError("ws_distance_tol must be a positive number in seedname.win.")
+        ws_search_size = str(self._get_param_keyword(win_data, "ws_search_size", "2", dtype=str)).split()
+        try:
+            ws_search_size = [int(x) for x in ws_search_size]
+        except ValueError:
+            ws_search_size = []
+        if len(ws_search_size) not in (1, 3) or min(ws_search_size) < 1:
+            raise SymCWInputError("ws_search_size must be one or three positive integers in seedname.win.")
+        d["ws_search_size"] = ws_search_size * 3 if len(ws_search_size) == 1 else ws_search_size
 
         if d["num_bands"] > d["num_wann"]:
             d["dis_num_iter"] = self._get_param_keyword(win_data, "dis_num_iter", 200, dtype=int)
@@ -480,7 +495,7 @@ class Win(dict):
         d["kubo_adpt_smr"] = self._get_param_keyword(win_data, "kubo_adpt_smr", d["adpt_smr"], dtype=bool)
         d["kubo_adpt_smr_fac"] = self._get_param_keyword(win_data, "kubo_adpt_smr_fac", d["adpt_smr_fac"], dtype=float)
         d["kubo_adpt_smr_max"] = self._get_param_keyword(win_data, "kubo_adpt_smr_max", d["adpt_smr_max"], dtype=float)
-        d["kubo_smr_type"] = self._get_param_keyword(win_data, "smr_type", d["smr_type"], dtype=str).replace(" ", "")
+        d["kubo_smr_type"] = self._get_param_keyword(win_data, "kubo_smr_type", d["smr_type"], dtype=str).replace(" ", "")
         d["kubo_smr_fixed_en_width"] = self._get_param_keyword(
             win_data, "kubo_smr_fixed_en_width", d["smr_fixed_en_width"], dtype=float
         )
@@ -505,7 +520,7 @@ class Win(dict):
         d["gyrotropic_freq_min"] = self._get_param_keyword(win_data, "gyrotropic_freq_min", 0.0, dtype=float)
         d["gyrotropic_freq_step"] = self._get_param_keyword(win_data, "gyrotropic_freq_step", 0.01, dtype=float)
         d["gyrotropic_eigval_max"] = self._get_param_keyword(win_data, "gyrotropic_eigval_max", None, dtype=float)
-        d["gyrotropic_smr_type"] = self._get_param_keyword(win_data, "smr_type", d["smr_type"], dtype=str).replace(
+        d["gyrotropic_smr_type"] = self._get_param_keyword(win_data, "gyrotropic_smr_type", d["smr_type"], dtype=str).replace(
             " ", ""
         )
         d["gyrotropic_smr_fixed_en_width"] = self._get_param_keyword(
@@ -534,11 +549,14 @@ class Win(dict):
         fermi_energy_step = 0.0
         fermi_energy_list = []
 
-        fermi_energy = self._get_param_keyword(win_data, "fermi_energy", 0.0, dtype=float)
+        # as wannier90: fermi_energy_min (a scan) excludes fermi_energy; without either, the Fermi energy is 0
+        fermi_energy = self._get_param_keyword(win_data, "fermi_energy", None, dtype=float)
 
         if fermi_energy is not None:
             found_fermi_energy = True
             num_fermi = 1
+        else:
+            fermi_energy = 0.0
 
         fermi_energy_scan = False
         fermi_energy_min = self._get_param_keyword(win_data, "fermi_energy_min", None, dtype=float)
@@ -547,19 +565,18 @@ class Win(dict):
                 raise SymCWInputError("cannot specify both fermi_energy and fermi_energy_min in seedname.win.")
 
             fermi_energy_scan = True
-            fermi_energy_max = fermi_energy_min + 1.0
-            fermi_energy_max = self._get_param_keyword(win_data, "fermi_energy_max", None, dtype=float)
+            fermi_energy_max = self._get_param_keyword(win_data, "fermi_energy_max", fermi_energy_min + 1.0, dtype=float)
 
-            if fermi_energy_max is not None and fermi_energy_max <= fermi_energy_min:
+            if fermi_energy_max <= fermi_energy_min:
                 raise SymCWInputError("fermi_energy_max must be larger than fermi_energy_min in seedname.win.")
 
-            fermi_energy_step = 0.01
-            fermi_energy_step = self._get_param_keyword(win_data, "fermi_energy_step", None, dtype=float)
+            fermi_energy_step = self._get_param_keyword(win_data, "fermi_energy_step", 0.01, dtype=float)
 
-            if fermi_energy_step is not None and fermi_energy_step <= 0.0:
+            if fermi_energy_step <= 0.0:
                 raise SymCWInputError("fermi_energy_step must be positive in seedname.win.")
 
-            num_fermi = int(abs((fermi_energy_max - fermi_energy_min) / fermi_energy_step)) + 1
+            # nint of wannier90 (rounds half away from zero)
+            num_fermi = int(np.floor((fermi_energy_max - fermi_energy_min) / fermi_energy_step + 0.5)) + 1
 
         if found_fermi_energy:
             fermi_energy_list = [fermi_energy]
@@ -572,6 +589,7 @@ class Win(dict):
             fermi_energy_list = [fermi_energy_min + i * fermi_energy_step for i in range(num_fermi)]
         else:
             fermi_energy_list = [0.0]
+            num_fermi = 1
 
         d["fermi_energy"] = fermi_energy
         d["fermi_energy_max"] = fermi_energy_max
@@ -586,10 +604,16 @@ class Win(dict):
         d["shc_beta"] = self._get_param_keyword(win_data, "shc_beta", 2, dtype=int)
         d["shc_gamma"] = self._get_param_keyword(win_data, "shc_gamma", 3, dtype=int)
         d["shc_bandshift"] = self._get_param_keyword(win_data, "shc_bandshift", False, dtype=bool)
-        d["shc_bandshift_firstband"] = self._get_param_keyword(win_data, "shc_bandshift_firstband", None, dtype=float)
+        d["shc_bandshift_firstband"] = self._get_param_keyword(win_data, "shc_bandshift_firstband", None, dtype=int)
         d["shc_bandshift_energyshift"] = self._get_param_keyword(
             win_data, "shc_bandshift_energyshift", 0.0, dtype=float
         )
+        # as in wannier90: the shift applies only to the spin Hall conductivity
+        d["shc_bandshift"] = d["shc_bandshift"] and d["berry"] and "shc" in (d["berry_task"] or "")
+        if d["shc_bandshift"] and d["shc_bandshift_firstband"] is None:
+            raise SymCWInputError("shc_bandshift = true requires shc_bandshift_firstband.")
+        if d["shc_bandshift_firstband"] is not None and d["shc_bandshift_firstband"] < 1:
+            raise SymCWInputError("shc_bandshift_firstband must be >= 1 (1-based band index).")
 
         return d
 
