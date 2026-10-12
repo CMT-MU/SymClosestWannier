@@ -83,7 +83,7 @@ sphinx:
     html_copy_source : false
     bibtex_reference_style: label
     bibtex_default_style: "unsrt"
-    language: jp
+    language: en
     mathjax_path: "https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"
     mathjax3_config:
       loader:
