@@ -7,6 +7,8 @@ import numpy as np
 
 from gcoreutils.nsarray import NSArray
 
+from symclosestwannier.util.exceptions import SymCWFileNotFoundError, SymCWInputError
+
 
 _default = {
     "seedname": "cwannier",
@@ -235,7 +237,7 @@ class Win(dict):
             with open(file_name) as fp:
                 win_data = fp.readlines()
         else:
-            raise Exception("failed to read win file: " + file_name)
+            raise SymCWFileNotFoundError("win", file_name)
 
         d = Win._default().copy()
 
@@ -469,20 +471,20 @@ class Win(dict):
         fermi_energy_min = self._get_param_keyword(win_data, "fermi_energy_min", None, dtype=float)
         if fermi_energy_min is not None:
             if found_fermi_energy:
-                raise Exception("Error: Cannot specify both fermi_energy and fermi_energy_min")
+                raise SymCWInputError("cannot specify both fermi_energy and fermi_energy_min in seedname.win.")
 
             fermi_energy_scan = True
             fermi_energy_max = fermi_energy_min + 1.0
             fermi_energy_max = self._get_param_keyword(win_data, "fermi_energy_max", None, dtype=float)
 
             if fermi_energy_max is not None and fermi_energy_max <= fermi_energy_min:
-                raise Exception("Error: fermi_energy_max must be larger than fermi_energy_min")
+                raise SymCWInputError("fermi_energy_max must be larger than fermi_energy_min in seedname.win.")
 
             fermi_energy_step = 0.01
             fermi_energy_step = self._get_param_keyword(win_data, "fermi_energy_step", None, dtype=float)
 
             if fermi_energy_step is not None and fermi_energy_step <= 0.0:
-                raise Exception("Error: fermi_energy_step must be positive")
+                raise SymCWInputError("fermi_energy_step must be positive in seedname.win.")
 
             num_fermi = int(abs((fermi_energy_max - fermi_energy_min) / fermi_energy_step)) + 1
 

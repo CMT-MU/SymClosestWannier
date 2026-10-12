@@ -3,6 +3,21 @@ CWin manages input file for pw2cw, seedname.cwin file.
 """
 
 import os
+import difflib
+
+from symclosestwannier.util.exceptions import SymCWFileNotFoundError, SymCWInputError
+
+
+# keywords given by space-separated integers, "list" or "range" ([[min_1, max_1, N1], [min_2, max_2, N2]]).
+_mesh_keys = {
+    "dos_kmesh": "list",
+    "cohp_kmesh": "list",
+    "lindhard_kmesh": "list",
+    "fermi_surface_kmesh": "range",
+    "fermi_surface_view": "list",
+    "lindhard_surface_qmesh": "range",
+    "lindhard_surface_view": "list",
+}
 
 
 _default = {
@@ -151,7 +166,7 @@ class CWin(dict):
         Returns:
             dict: dictionary form of seedname.cwin.
                 - seedname          : seedname (str), ["cwannier"].
-                - outdir            : output files are found in this directory (str), ["./"].
+                - outdir            : output files are written to this directory, relative to the directory of seedname.cwin (str), ["./"].
                 - restart           : the restart position 'cw'/'w90' (str), ["cw"].
                 - disentangle       : disentagle bands ? (bool), [False].
                 - proj_min          : minimum value of projectability: [0.0].
@@ -164,10 +179,10 @@ class CWin(dict):
                 - verbose           : verbose calculation info (bool, optional), [False].
                 - parallel          : use parallel code? (bool), [False].
                 - formatter         : format by using black? (bool), [False].
-                - calc_spreads      : calculate spreads? (bool), [True].
+                - calc_spreads      : calculate spreads? (bool), [False].
                 - transl_inv        : use Eq.(31) of Marzari&Vanderbilt PRB 56, 12847 (1997) for band-diagonal position matrix elements? (bool), [False].
                 - use_degen_pert    : use degenerate perturbation theory when bands are degenerate and band derivatives are needed? (bool), [False].
-                - degen_thr         : threshold to exclude degenerate bands from the calculation, [0.0].
+                - degen_thr         : threshold to exclude degenerate bands from the calculation, [0.0001].
                 - tb_gauge          : use tb gauge? (bool), [False].
                 - write_info_data   : write info and data to seedname.hdf5 (hdf5 format) ? (bool), [False].
                 - write_hr          : write seedname_hr.py ? (bool), [False].
@@ -183,7 +198,7 @@ class CWin(dict):
 
             # only used for symmetrization.
                 - symmetrization    : symmetrize ? (bool), [False].
-                - mp_outdir         : output files for multipie are found in this directory (str). ["./"].
+                - mp_outdir         : output files for multipie are written to this directory, relative to the directory of seedname.cwin (str). ["./"].
                 - mp_seedname       : seedname for seedname_model.py, seedname_samb.py and seedname_matrix.py files (str), ["default"].
                 - ket_amn           : ket basis list in the seedname.amn file. If ket_amn == auto, the list of orbitals are set automatically, or it can be set manually. The format of each ket must be same as the "ket" in sambname_model.py file. See sambname["info"]["ket"] in sambname_model.py file for the format (list), [None].
                 - irreps            : list of irreps to be considered (str/list), ["all"].
@@ -234,6 +249,10 @@ class CWin(dict):
                 - lindhard_freq               : frequency for computing the lindhard function. (The units are [eV]) (float), [0.0].
                 - lindhard_smr_fixed_en_width : Overrides the smr_fixed_en_width global variable (float), [0.01].
                 - lindhard_kmesh              : dimensions of the Monkhorst-Pack grid of k-points for lindhard function (list), [[1, 1, 1]].
+                - lindhard_surface            : calculate lindhard function on a 2d q-plane? (bool), [False].
+                - lindhard_surface_qmesh      : 2d qmesh given by [[q1_min, q1_max, N1], [q2_min, q2_max, N2] ] (crystal coordinate), (list), [ [[-1, 1, 10], [-1, 1, 10]] ].
+                - lindhard_surface_view       : q3 direction (list), [ [0, 0, 1] ].
+                - lindhard_surface_const      : constant value for q3 axis [0.0].
                 - qpoint                      : representative q points (dict), [None].
                 - qpoint_path                 : q-points along high symmetry line in Brillouin zone, [[k1, k2, k3]] (crystal coordinate) (str), [None].
                 - Nq1                         : number of divisions for high symmetry lines (int, optional), [30].
@@ -249,7 +268,7 @@ class CWin(dict):
             with open(file_name) as fp:
                 cwin_data = fp.readlines()
         else:
-            raise Exception("failed to read cwin file: " + file_name)
+            raise SymCWFileNotFoundError("cwin", file_name)
 
         cwin_data = [v.replace("\n", "") for v in cwin_data]
         cwin_data_lower = [v.lower().replace("\n", "") for v in cwin_data]
@@ -265,30 +284,33 @@ class CWin(dict):
                 continue
 
             if "begin qpoint_path" in line:
-                q_data = cwin_data[
-                    cwin_data_lower.index("begin qpoint_path") + 1 : cwin_data_lower.index("end qpoint_path")
-                ]
-                q_data = [[vi for vi in v.split()] for v in q_data]
-                qpoint = {}
-                qpoint_path = ""
-                cnt = 1
-                for X, qi1, qi2, qi3, Y, qf1, qf2, qf3 in q_data:
-                    if cnt == 1:
-                        qpoint_path += f"{X}-{Y}-"
-                    else:
-                        if qpoint_path.split("-")[-2] == X:
-                            qpoint_path += f"{Y}-"
+                try:
+                    q_data = cwin_data[
+                        cwin_data_lower.index("begin qpoint_path") + 1 : cwin_data_lower.index("end qpoint_path")
+                    ]
+                    q_data = [[vi for vi in v.split()] for v in q_data]
+                    qpoint = {}
+                    qpoint_path = ""
+                    cnt = 1
+                    for X, qi1, qi2, qi3, Y, qf1, qf2, qf3 in q_data:
+                        if cnt == 1:
+                            qpoint_path += f"{X}-{Y}-"
                         else:
-                            qpoint_path = qpoint_path[:-1]
-                            qpoint_path += f"|{X}-{Y}-"
-                    if X not in qpoint:
-                        qpoint[X] = [float(qi1), float(qi2), float(qi3)]
-                    if Y not in qpoint:
-                        qpoint[Y] = [float(qf1), float(qf2), float(qf3)]
+                            if qpoint_path.split("-")[-2] == X:
+                                qpoint_path += f"{Y}-"
+                            else:
+                                qpoint_path = qpoint_path[:-1]
+                                qpoint_path += f"|{X}-{Y}-"
+                        if X not in qpoint:
+                            qpoint[X] = [float(qi1), float(qi2), float(qi3)]
+                        if Y not in qpoint:
+                            qpoint[Y] = [float(qf1), float(qf2), float(qf3)]
 
-                    cnt += 1
+                        cnt += 1
 
-                qpoint_path = qpoint_path[:-1]
+                    qpoint_path = qpoint_path[:-1]
+                except (ValueError, IndexError) as e:
+                    raise SymCWInputError(f"{file_name}: invalid qpoint_path block ({e}).") from e
 
                 d["qpoint"] = qpoint
                 d["qpoint_path"] = qpoint_path
@@ -311,70 +333,81 @@ class CWin(dict):
             elif ":" in line:
                 v = line.split(":")[1].split("!")[0]
 
-            if key == "dos_kmesh":
-                d["dos_kmesh"] = [int(x) for x in v.split() if x != ""]
-                continue
+            try:
+                if key in _mesh_keys:
+                    d[key] = CWin._str_to_mesh(key, v)
+                    continue
 
-            if key == "cohp_kmesh":
-                d["cohp_kmesh"] = [int(x) for x in v.split() if x != ""]
-                continue
+                v = v.replace(" ", "")
 
-            if key == "fermi_surface_kmesh":
-                kmin_1, kmax_1, N1, kmin_2, kmax_2, N2 = [int(x) for x in v.split() if x != ""]
-                d["fermi_surface_kmesh"] = [[kmin_1, kmax_1, N1], [kmin_2, kmax_2, N2]]
-                continue
-            if key == "fermi_surface_view":
-                d["fermi_surface_view"] = [int(x) for x in v.split() if x != ""]
-                continue
+                if key == "ket_amn":
+                    if "[" in v or "]" in v:
+                        v = "".join(v)
 
-            if key == "lindhard_kmesh":
-                d["lindhard_kmesh"] = [int(x) for x in v.split() if x != ""]
-                continue
-            if key == "lindhard_surface_qmesh":
-                qmin_1, qmax_1, N1, qmin_2, qmax_2, N2 = [int(x) for x in v.split() if x != ""]
-                d["lindhard_surface_qmesh"] = [[qmin_1, qmax_1, N1], [qmin_2, qmax_2, N2]]
-                continue
-            if key == "lindhard_surface_view":
-                d["lindhard_surface_view"] = [int(x) for x in v.split() if x != ""]
-                continue
+                if key == "optimize_params_fixed":
+                    if "[" in v or "]" in v:
+                        v = "".join(v)
 
-            v = v.replace(" ", "")
+                d[key] = self._str_to(key, v)
+            except SymCWInputError as e:
+                raise SymCWInputError(f"{file_name}: {e}") from e
+            except (ValueError, IndexError) as e:
+                raise SymCWInputError(f"{file_name}: invalid value {key} = {v.strip()} ({e}).") from e
 
-            if key == "ket_amn":
-                if "[" in v or "]" in v:
-                    v = "".join(v)
-
-            if key == "optimize_params_fixed":
-                if "[" in v or "]" in v:
-                    v = "".join(v)
-
-            d[key] = self._str_to(key, v)
-        # assert not (
-        #    d["restart"] == "w90" and d["symmetrization"]
-        # ), "Symmetrization cannot be performed when restart == w90."
-
-        assert not (
-            d["disentangle"] and (d["cwf_mu_max"] is None or d["cwf_mu_min"] is None)
-        ), "cwf_mu_max and cwf_mu_min must be specified when disentangle == true."
+        if d["disentangle"] and (d["cwf_mu_max"] is None or d["cwf_mu_min"] is None):
+            raise SymCWInputError(f"{file_name}: cwf_mu_max and cwf_mu_min must be specified when disentangle = true.")
 
         if d["cwf_mu_max"] is not None and d["cwf_mu_min"] is not None:
-            assert not (d["cwf_mu_max"] < d["cwf_mu_min"]), "check disentanglement windows (cwf_mu_max < cwf_mu_min !)"
+            if d["cwf_mu_max"] < d["cwf_mu_min"]:
+                raise SymCWInputError(
+                    f"{file_name}: check disentanglement windows, cwf_mu_max = {d['cwf_mu_max']} < cwf_mu_min = {d['cwf_mu_min']}."
+                )
 
         return d
+
+    # ==================================================
+    @classmethod
+    def _str_to_mesh(cls, key, v):
+        """
+        convert space-separated integers of mesh/view keywords.
+
+        Args:
+            key (str): keyword in _mesh_keys.
+            v (str): value, e.g. "1 1 1" or "-1 1 10 -1 1 10".
+
+        Returns:
+            list: [n1, n2, ...] or [[min_1, max_1, N1], [min_2, max_2, N2]].
+        """
+        v = [int(x) for x in v.split() if x != ""]
+        if _mesh_keys[key] == "range":
+            if len(v) != 6:
+                raise SymCWInputError(f"{key} needs 6 integers, min_1 max_1 N1 min_2 max_2 N2.")
+            v = [v[:3], v[3:]]
+
+        return v
 
     # ==================================================
     def _str_to(self, key, v):
         v = str(v).replace("'", "").replace('"', "")
 
         if key not in CWin._default().keys():
-            raise Exception(f"invalid keyword = {key} was given.")
+            from symclosestwannier.cw.win import Win
+
+            msg = f"invalid keyword = {key} was given."
+            close = difflib.get_close_matches(key, CWin._default().keys(), n=3)
+            if key in Win._default().keys():
+                msg += f" {key} must be given in seedname.win."
+            elif close:
+                msg += " did you mean " + "/".join(f"'{k}'" for k in close) + "?"
+            msg += " run 'pw2cw -i' to list the keywords."
+            raise SymCWInputError(msg)
         elif key in ("seedname", "mp_seedname", "hr_input", "lindhard_smr_type", "cohp_head_atom", "cohp_tail_atom"):
             pass
         elif key in ("outdir", "mp_outdir"):
             v = v[:-1] if v[-1] == "/" else v
         elif key == "restart":
             if v not in ("cw", "w90"):
-                raise Exception(f"invalid restart = {v} was given. choose from 'cw'/'w90'.")
+                raise SymCWInputError(f"invalid restart = {v} was given. choose from 'cw'/'w90'.")
         elif key in (
             "proj_min",
             "cwf_mu_max",
@@ -406,36 +439,44 @@ class CWin(dict):
             v = float(v)
             if key == "cwf_delta":
                 if v > 1e-5:
-                    raise Exception(f"cwf_delta is too large. cwf_delta must be less than 1e-5.")
+                    raise SymCWInputError(f"cwf_delta is too large. cwf_delta must be less than 1e-5.")
             elif key == "lindhard_smr_fixed_en_width":
                 pass
                 # if v == 0.0:
                 #     raise Exception(f"lindhard_smr_fixed_en_width must be > 0.0.")
             elif key == "temperature":
                 if v < 0.0:
-                    raise Exception(f"temperature must be positive value.")
+                    raise SymCWInputError(f"temperature must be positive value.")
             elif key == "filling":
                 if v < 0.0:
-                    raise Exception(f"filling must be positive value.")
+                    raise SymCWInputError(f"filling must be positive value.")
         elif key in ("N1", "Nq1", "dos_num_fermi", "cohp_head_atom_idx", "cohp_tail_atom_idx", "cohp_num_fermi"):
             v = int(v)
         elif key == "ket_amn":
             v = v.replace(" ", "")
             if v == "auto":
                 pass
-            elif "(" in v or ")" in v:
-                v = [[oi.replace("]", "") for oi in o[1:].split(",")] for o in v[1:-1].split("],")]
-                v = [[str(o[0]), int(o[1]), int(o[2]), str(o[3] + "," + o[4])] for o in v]
             else:
-                v = [[oi.replace("]", "") for oi in o[1:].split(",")] for o in v[1:-1].split("],")]
-                v = [[str(o[0]), int(o[1]), int(o[2]), str(o[3])] for o in v]
+                raw = v
+                try:
+                    if "(" in v or ")" in v:
+                        v = [[oi.replace("]", "") for oi in o[1:].split(",")] for o in v[1:-1].split("],")]
+                        v = [[str(o[0]), int(o[1]), int(o[2]), str(o[3] + "," + o[4])] for o in v]
+                    else:
+                        v = [[oi.replace("]", "") for oi in o[1:].split(",")] for o in v[1:-1].split("],")]
+                        v = [[str(o[0]), int(o[1]), int(o[2]), str(o[3])] for o in v]
+                except (ValueError, IndexError):
+                    raise SymCWInputError(
+                        f"invalid ket_amn = {raw} was given. each ket must be [atom, sublattice, rank, orbital], "
+                        "e.g. [[C,1,1,pz],[C,2,1,pz]] or [[C,1,1,(pz,U)],[C,1,1,(pz,D)]] for spinful case, or use ket_amn = auto."
+                    ) from None
         elif key == "optimize_params_fixed":
             if "[" in v or "]" in v:
                 v = [str(o) for o in v[1:-1].split(",")]
             if len(v) > 0:
                 for vi in v:
                     if vi not in ("cwf_mu_min", "cwf_mu_max", "cwf_sigma_min", "cwf_sigma_max", "cwf_delta"):
-                        raise Exception(
+                        raise SymCWInputError(
                             f"invalid optimize_params_fixed: {vi} was given. choose from 'cwf_mu_min'/'cwf_mu_max'/'cwf_sigma_min'/'cwf_sigma_max'/'cwf_delta'."
                         )
 
@@ -444,14 +485,14 @@ class CWin(dict):
                 v = [str(o) for o in v[1:-1].split(",")]
             else:
                 if v not in ("all", "full"):
-                    raise Exception(f"invalid irreps = {v} was given. choose from 'all'/'full'.")
+                    raise SymCWInputError(f"invalid irreps = {v} was given. choose from 'all'/'full'.")
         else:
             if v.lower() in ("true", ".true."):
                 v = True
             elif v.lower() in ("false", ".false."):
                 v = False
             else:
-                raise Exception(f"invalid {key} = {v} was given. choose from 'true'/'.true.'/'false'/'.false.'.")
+                raise SymCWInputError(f"invalid {key} = {v} was given. choose from 'true'/'.true.'/'false'/'.false.'.")
 
         return v
 

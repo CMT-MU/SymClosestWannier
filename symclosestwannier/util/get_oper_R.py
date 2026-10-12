@@ -22,6 +22,22 @@ import numpy as np
 
 from symclosestwannier.util.constants import elem_charge_SI, hbar_SI
 from symclosestwannier.util.utility import fourier_transform_r_to_k, fourier_transform_k_to_r
+from symclosestwannier.util.exceptions import SymCWInputError
+
+
+# ==================================================
+def _require(cwi, key, ext, name):
+    """
+    check that the data read from seedname.ext is available.
+
+    Args:
+        cwi (CWInfo): CWInfo.
+        key (str): key of the data.
+        ext (str): extension of the file.
+        name (str): name of the operator to be calculated.
+    """
+    if cwi.get(key) is None:
+        raise SymCWInputError(f"{name} requires {cwi['seedname']}.{ext}, which is not found or not read.")
 
 
 # ==================================================
@@ -94,6 +110,7 @@ def get_AA_R(cwi):
     Returns:
         ndarray: position operator, AA_R(3, len(irvec), num_wann, num_wann).
     """
+    _require(cwi, "Mkb", "mmn", "position operator (AA_R)")
     Mkb = np.array(cwi["Mkb"])
     Uk = np.array(cwi["Uk"])
 
@@ -144,7 +161,7 @@ def get_BB_R(cwi):
         ndarray: position operator, BB_R(3, len(irvec), num_wann, num_wann).
     """
     if abs(cwi.get("scissors_shift", 0.0)) > 1.0e-7:
-        raise Exception("Error: scissors correction not yet implemented for BB_R")
+        raise NotImplementedError("scissors correction not yet implemented for BB_R")
 
     num_k = cwi["num_k"]
     kpoints = np.array(cwi["kpoints"])
@@ -156,6 +173,7 @@ def get_BB_R(cwi):
 
     Ek = np.array(cwi["Ek"])
     Uk = np.array(cwi["Uk"])
+    _require(cwi, "Mkb", "mmn", "BB_R")
     Mkb = np.array(cwi["Mkb"])
 
     H_o = np.array([np.diag(Ek[k]) for k in range(num_k)])
@@ -192,7 +210,7 @@ def get_CC_R(cwi):
 
     """
     if abs(cwi.get("scissors_shift", 0.0)) > 1.0e-7:
-        raise Exception("Error: scissors correction not yet implemented for CC_R")
+        raise NotImplementedError("scissors correction not yet implemented for CC_R")
 
     kpoints = np.array(cwi["kpoints"])
     irvec = np.array(cwi["irvec"])
@@ -202,6 +220,7 @@ def get_CC_R(cwi):
     wb = cwi["wb"]
 
     Uk = np.array(cwi["Uk"])
+    _require(cwi, "Hkb1b2", "uHu", "CC_R")
     Hkb1b2 = np.array(cwi["Hkb1b2"])
 
     print(f"Uk[kb2k[:, :], :, :].shape = {Uk[kb2k[:, :], :, :].shape}")
@@ -237,6 +256,7 @@ def get_SS_R(cwi):
     Returns:
         ndarray: spin operator, SS_R(3, len(irvec), num_wann, num_wann).
     """
+    _require(cwi, "pauli_spn", "spn", "spin operator (SS_R)")
     pauli_spn = np.array(cwi["pauli_spn"])
     Uk = np.array(cwi["Uk"])
 
@@ -300,6 +320,7 @@ def get_SHC_R(cwi):
     H_o = np.array([np.diag(Ek[k]) for k in range(num_k)])
 
     # get_AA_R
+    _require(cwi, "Mkb", "mmn", "spin Hall conductivity")
     Mkb = np.array(cwi["Mkb"])
     kb2k = cwi.nnkp.kb2k()
     bveck = cwi.nnkp.bveck()
@@ -365,6 +386,7 @@ def get_berry_phase_R(cwi):
     Returns:
         ndarray: spin operator, SS_R(3, len(irvec), num_wann, num_wann).
     """
+    _require(cwi, "Mkb", "mmn", "berry phase")
     Mkb = np.array(cwi["Mkb"])
     Uk = np.array(cwi["Uk"])
     num_wann = cwi["num_wann"]

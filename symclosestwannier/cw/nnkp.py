@@ -3,12 +3,13 @@ Nnkp manages information needed to determine the required overlap elements Mmn(k
 """
 
 import os
-import gzip
-import tarfile
 import itertools
 
 import numpy as np
 import scipy.linalg
+
+from symclosestwannier.util.exceptions import SymCWInputError
+from symclosestwannier.util.input_file import open_input
 
 
 _default = {
@@ -99,17 +100,8 @@ class Nnkp(dict):
                 - bvec_crys        : b-vectors (crystal coordinate) (list), [None].
                 - wb               : weight for each k-points and nearest-neighbour k-points (list), [None].
         """
-        if os.path.exists(file_name):
-            with open(file_name) as fp:
-                nnkp_data = fp.readlines()
-        elif os.path.exists(file_name + ".gz"):
-            with gzip.open(file_name + ".gz", "rt") as fp:
-                nnkp_data = fp.readlines()
-        elif os.path.exists(file_name + ".tar.gz"):
-            with tarfile.open(file_name + "tar.gz", "rt") as fp:
-                nnkp_data = fp.readlines()
-        else:
-            raise Exception("failed to read nnkp file: " + file_name)
+        with open_input(file_name, "nnkp") as fp:
+            nnkp_data = fp.readlines()
 
         d = Nnkp._default().copy()
 
@@ -205,8 +197,8 @@ class Nnkp(dict):
             bbmat = np.zeros([d["num_b"], 9])
             try:
                 Gp_idx = d["kpoints_wo_shift"].index([0.0, 0.0, 0.0])
-            except:
-                raise Exception("Gamma point must be included.")
+            except ValueError:
+                raise SymCWInputError(f"Gamma point must be included in the k points of {file_name}.") from None
 
             for i in range(d["num_b"]):
                 kv = d["nnkpts"][Gp_idx][i]

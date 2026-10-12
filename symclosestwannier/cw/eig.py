@@ -3,12 +3,12 @@ Eig manages Kohn-Sham energies in seedname.eig file, E_{m}(k).
 """
 
 import os
-import gzip
-import tarfile
 import itertools
 import datetime
 
 import numpy as np
+
+from symclosestwannier.util.input_file import open_input
 
 
 _default = {"num_k": 1, "num_bands": 1, "Ek": None}
@@ -59,17 +59,8 @@ class Eig(dict):
                 - num_bands : # of bands passed to the code (int), [1].
                 - Ek        : Kohn-Sham energies, E_{m}(k) (list), [None].
         """
-        if os.path.exists(file_name):
-            with open(file_name) as fp:
-                eig_data = fp.readlines()
-        elif os.path.exists(file_name + ".gz"):
-            with gzip.open(file_name + ".gz", "rt") as fp:
-                eig_data = fp.readlines()
-        elif os.path.exists(file_name + ".tar.gz"):
-            with tarfile.open(file_name + "tar.gz", "rt") as fp:
-                eig_data = fp.readlines()
-        else:
-            raise Exception("failed to read eig file: " + file_name)
+        with open_input(file_name, "eig") as fp:
+            eig_data = fp.readlines()
 
         eig_data = [[v for v in lst.rstrip("\n").split(" ") if v != ""] for lst in eig_data]
         eig_data = [[float(v) if "." in v else int(v) for v in lst] for lst in eig_data]

@@ -69,3 +69,21 @@ def test_write_sr(make_case):
     assert np.all(np.diag(S0).real > 0)
 
     assert (workdir / f"{seedname}_sr_R_dep.dat.cw").stat().st_size > 0
+
+
+# ==================================================
+@pytest.mark.parametrize("verbose", [False, True])
+def test_stdout_follows_verbose(make_case, capsys, verbose):
+    workdir = make_case("ch4_sl", extra=f"verbose = {str(verbose).lower()}")
+
+    cw_creator("ch4_sl")
+
+    cwout = (workdir / "ch4_sl.cwout").read_text()
+    assert "Occupancy" in cwout
+    assert "     Sum " in cwout
+
+    out = capsys.readouterr().out
+    assert "occ_all" not in out
+    assert ("Occupancy" in out) == verbose
+    if not verbose:
+        assert out.strip() == ""

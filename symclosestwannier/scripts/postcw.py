@@ -21,38 +21,22 @@
 import click
 
 from symclosestwannier.analyzer.analyzer import analyzer
-from symclosestwannier.util.header import cwin_header
-
-from symclosestwannier.__init__ import __version__
+from symclosestwannier.scripts.common import run_command
 
 
 # ================================================== postcw
 @click.command()
 @click.option("-i", "--input", is_flag=True, help="Show input format, and exit.")
 @click.option("-v", "--version", is_flag=True, help="Show version, and exit.")
-@click.argument("seedname", nargs=-1)
-def cmd(seedname, input, version):
+@click.argument("seedname", required=False)
+@click.pass_context
+def cmd(ctx, seedname, input, version):
     """
     run postcw.
 
         seedname : seedname for seedname.cwin file (w or w/o `.cwin`).
     """
-    if input:
-        click.echo(cwin_header)
-        exit()
-
-    if version:
-        click.echo(f"SymClosestWannier: {__version__}")
-
-    if len(seedname) < 1:
-        exit()
-    else:
-        seedname = seedname[0]
-
-    seedname = seedname.replace(" ", "")
-    seedname = seedname[:-5] if seedname[-5:] == ".cwin" else seedname
-
-    _, _ = analyzer(seedname)
+    run_command(ctx, analyzer, seedname, input, version)
 
 
 # ================================================== main

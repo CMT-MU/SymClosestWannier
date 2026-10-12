@@ -4,6 +4,8 @@ tool codes for seedname_hr.dat.
 
 import numpy as np
 
+from symclosestwannier.util.exceptions import SymCWInputError
+
 
 # ==================================================
 def read_hr(filename, orb_dict=None, encoding="UTF-8"):
@@ -69,7 +71,7 @@ def read_hr(filename, orb_dict=None, encoding="UTF-8"):
 
     for v in HH_R_dict.keys():
         if (-v[0], -v[1], -v[2]) not in HH_R_dict:
-            raise Exception("invalid")
+            raise SymCWInputError(f"invalid hr.dat file: R = {v} is included but -R is not.")
 
     HH_R = np.array([HH_R_dict[(n1, n2, n3)] for n1, n2, n3 in irvec], dtype=complex)
 

@@ -4,8 +4,6 @@ uHu manages the matrix elements in seedname.uHu file, H_{mn}(k,b1,b2) = <u^{KS}_
 """
 
 import os
-import gzip
-import tarfile
 import itertools
 import datetime
 from itertools import islice
@@ -13,6 +11,7 @@ from itertools import islice
 import numpy as np
 
 from symclosestwannier.util.utility import FortranFileR
+from symclosestwannier.util.input_file import input_path
 
 
 _default = {"num_k": 1, "num_bands": 1, "num_b": 1, "Hkb1b2": None}
@@ -63,15 +62,20 @@ class UHu(dict):
                 - nnkpts    : nearest-neighbor k-points (list), [None].
                 - Hkb1b2    : Overlap matrix elements, H_{mn}(k,b1,b2) = <u^{KS}_{m}(k+b1)|H(k)|u^{KS}_{n}(k+b2)>.
         """
-        if os.path.exists(file_name):
-            pass
-        elif os.path.exists(file_name + ".gz"):
-            pass
-        elif os.path.exists(file_name + ".tar.gz"):
-            pass
-        else:
-            raise Exception("failed to read uHu file: " + file_name)
+        with input_path(file_name, "uHu") as path:
+            return self._read(path)
 
+    # ==================================================
+    def _read(self, file_name):
+        """
+        read uncompressed seedname.uHu file.
+
+        Args:
+            file_name (str): file name.
+
+        Returns:
+            dict: see read().
+        """
         if self._formatted:
             f_uHu_in = open(file_name, "r")
             header = f_uHu_in.readline().strip()

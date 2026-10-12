@@ -49,6 +49,7 @@ from symclosestwannier.util.utility import (
 )
 
 from symclosestwannier.util.constants import elec_mass_SI, elem_charge_SI, hbar_SI, bohr, bohr_magn_SI, joul_to_eV
+from symclosestwannier.util.exceptions import SymCWInputError
 
 _num_proc = multiprocessing.cpu_count()
 
@@ -143,7 +144,7 @@ def berry_main(cwi, operators):
         dict: dictionary of results.
     """
     if cwi["num_fermi"] == 0:
-        raise Exception("Must specify one or more Fermi levels when berry=true")
+        raise SymCWInputError("must specify one or more Fermi levels (fermi_energy in seedname.win) when berry = true.")
 
     print("Properties calculated in berry_main \n ------------------------------------------")
 
@@ -167,7 +168,7 @@ def berry_main(cwi, operators):
     # (morb) Orbital magnetization
     if cwi["berry_task"] == "morb":
         if cwi["transl_inv"]:
-            raise Exception("transl_inv=T disabled for morb")
+            raise SymCWInputError("transl_inv = true is not supported for morb.")
 
         print("* Orbital magnetization")
 
@@ -251,7 +252,7 @@ def gyrotropic_main(cwi, operators):
         dict: dictionary of results.
     """
     if cwi["num_fermi"] == 0:
-        raise Exception("Must specify one or more Fermi levels when gyrotropic=true")
+        raise SymCWInputError("must specify one or more Fermi levels (fermi_energy in seedname.win) when gyrotropic = true.")
 
     print("Properties calculated in gyrotropic_main \n ------------------------------------------")
 
@@ -272,7 +273,7 @@ def gyrotropic_main(cwi, operators):
     # (K tensor)  orbital component of the kinetic magnetoelectric effect (kME)
     if win.eval_K or win.eval_spn:
         if cwi["transl_inv"]:
-            raise Exception("transl_inv=T disabled for K-tensor")
+            raise SymCWInputError("transl_inv = true is not supported for the K-tensor.")
 
         print("* K-tensor  --- Eq.3 of TAS17 ")
         if win.eval_spn:
@@ -461,7 +462,7 @@ def utility_w0gauss(x, n):
         arg = np.where(np.abs(arg) < 200, arg, np.sign(arg) * 200)
         w0gauss = np.exp(-arg) * sqrtpm1
     elif n > 10 or n < 0:
-        raise Exception("utility_w0gauss higher order (n>10) smearing is untested and unstable")
+        raise NotImplementedError("utility_w0gauss higher order (n>10) smearing is untested and unstable")
     # Methfessel-Paxton
     else:
         arg = x**2
@@ -647,9 +648,9 @@ def wham_get_occ_mat_list(cwi, U, E=None, occ=None):
     num_wann = cwi["num_wann"]
 
     if occ is not None and E is not None:
-        raise Exception("occ_list and eig cannot be both arguments in get_occ_mat_list")
+        raise ValueError("occ_list and eig cannot be both arguments in get_occ_mat_list")
     elif occ is None and E is None:
-        raise Exception("either occ_list or eig must be passed as arguments to get_occ_mat_list")
+        raise ValueError("either occ_list or eig must be passed as arguments to get_occ_mat_list")
 
     if occ is not None:
         occ_list = [occ]
@@ -2278,7 +2279,7 @@ def gyrotropic_get_K(cwi, operators):
 
     gyro_K_orb *= fac
 
-    """
+    r"""
     --------------------------------------------------------------------
     At this point gyro_K_spn contains
 

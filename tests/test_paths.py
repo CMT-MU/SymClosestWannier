@@ -170,4 +170,53 @@ def test_postcw_after_moving_directory(make_case, monkeypatch, postcw_stubbed):
     cwi, _ = postcw_stubbed[0]
     assert cwi["outdir"] == str(moved / "out")
     assert cwi["mp_outdir"] == str(moved)
-    assert os.getcwd() == str(moved / "out")
+    assert os.getcwd() == str(moved)
+
+
+# ==================================================
+def test_working_directory_is_restored(make_case):
+    workdir = make_case("ch4_sl", outdir="./out")
+
+    cw_creator("ch4_sl")
+
+    assert os.getcwd() == str(workdir)
+
+
+# ==================================================
+class Injected(Exception):
+    pass
+
+
+# ==================================================
+def raise_injected(*args, **kwargs):
+    raise Injected(os.getcwd())
+
+
+# ==================================================
+class CWModelStub:
+    read_info_data = staticmethod(raise_injected)
+
+
+# ==================================================
+@pytest.mark.parametrize(
+    "module, name, stub, entry",
+    [
+        ("symclosestwannier.cw.cw_creator", "CWInfo", raise_injected, "cw_creator"),
+        ("symclosestwannier.analyzer.analyzer", "CWModel", CWModelStub, "analyzer"),
+    ],
+)
+def test_working_directory_is_restored_on_failure(make_case, monkeypatch, module, name, stub, entry):
+    """
+    a failure after moving to outdir propagates, and the working directory is restored.
+    """
+    import importlib
+
+    workdir = make_case("ch4_sl", outdir="./out")
+    mod = importlib.import_module(module)
+    monkeypatch.setattr(mod, name, stub)
+
+    with pytest.raises(Injected) as e:
+        getattr(mod, entry)("ch4_sl")
+
+    assert e.value.args[0] == str(workdir / "out")
+    assert os.getcwd() == str(workdir)

@@ -107,7 +107,7 @@ def assert_hr_equal(filename, ref_filename, atol=1e-7):
 def make_case(tmp_path, monkeypatch):
     """
     create a working directory with DFT inputs and seedname.cwin, and chdir into it.
-    pw2cw changes the working directory to outdir, monkeypatch restores it after the test.
+    the working directory is restored by monkeypatch after the test.
     """
 
     def _make(seedname, outdir="./", extra="", dirname="work", band=False):

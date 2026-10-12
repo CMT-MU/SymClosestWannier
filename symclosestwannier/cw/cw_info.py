@@ -34,6 +34,7 @@ from symclosestwannier.cw.spn import Spn
 from symclosestwannier.cw.uHu import UHu
 
 from symclosestwannier.util.utility import wigner_seitz, convert_w90_orbital
+from symclosestwannier.util.exceptions import SymCWInputError
 
 _class_map = {
     "cwin": CWin,
@@ -160,7 +161,7 @@ class CWInfo(dict):
                     if k in info_:
                         v_ = info_[k]
 
-                        if type(v) == list:
+                        if isinstance(v, list):
                             if not np.allclose(v, v_, 1e-6):
                                 if k == "nnkpts":
                                     info = _sort_Mkb_nnkpts(info, info_dict["nnkp"])
@@ -170,18 +171,18 @@ class CWInfo(dict):
                                         continue
 
                                 msg = str(f"The values of {k} in {name} and {name_} files are inconsistent.")
-                                raise Exception(msg)
+                                raise SymCWInputError(msg)
                         else:
                             if v != v_:
                                 msg = str(f"The values of {k} in {name} and {name_} files are inconsistent.")
-                                raise Exception(msg)
+                                raise SymCWInputError(msg)
 
             info_dict.update({name: info})
             d.update(info)
 
         if d["zeeman_interaction"]:
             if not d["spinors"]:
-                raise Exception("WFs are not spinors.")
+                raise SymCWInputError("zeeman_interaction = true requires spinor WFs (spinors = true in seedname.win).")
 
         #
         # additional information
@@ -315,7 +316,9 @@ class CWInfo(dict):
                             name = name_
                             sl = sl_
                     if name == "":
-                        raise Exception("The atomic positions in MultiPie are incorrect.")
+                        raise SymCWInputError(
+                            f"the atomic position {pos} in seedname.nnkp is not found in the MultiPie model {d['mp_seedname']}."
+                        )
 
                     orbital = convert_w90_orbital(l, m, r, s)
                     ket_amn.append([name, sl, l, orbital])
