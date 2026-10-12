@@ -1102,6 +1102,28 @@ def berry_get_morb(cwi, operators):
 
 
 # ==================================================
+def kubo_frequencies(cwi):
+    """
+    frequencies of the optical conductivity, the shift current and the ac spin Hall conductivity, as kubo_freq_list
+    of wannier90: nint((kubo_freq_max - kubo_freq_min) / kubo_freq_step) + 1 frequencies (at least 2), evenly spaced
+    from kubo_freq_min to kubo_freq_max (both included).
+
+    Args:
+        cwi (CWInfo): CWInfo.
+
+    Returns:
+        ndarray: frequencies (eV).
+    """
+    fmin, fmax, fstep = cwi["kubo_freq_min"], cwi["kubo_freq_max"], cwi["kubo_freq_step"]
+    if not (np.isfinite(fstep) and fstep > 0):
+        # wannier90 rejects a negative step (and divides by a zero one)
+        raise SymCWInputError(f"kubo_freq_step must be positive in seedname.win, not {fstep}.")
+    x = (fmax - fmin) / fstep
+    nfreq = max(int(np.sign(x) * np.floor(abs(x) + 0.5)) + 1, 2)  # nint rounds half away from zero
+    return fmin + (fmax - fmin) * np.arange(nfreq) / (nfreq - 1)
+
+
+# ==================================================
 def _smearing_index(smr_type):
     """
     index of utility_w0gauss for a smearing type of seedname.win.
@@ -1327,9 +1349,7 @@ def berry_get_sc(cwi, operators):
     if cwi.get("zeeman_interaction"):
         raise SymCWInputError("zeeman_interaction = true is not implemented for the shift current.")
 
-    fmin, fmax, fstep = cwi["kubo_freq_min"], cwi["kubo_freq_max"], cwi["kubo_freq_step"]
-    nfreq = int(round((fmax - fmin) / fstep)) + 1
-    freq = fmin + fstep * np.arange(nfreq)
+    freq = kubo_frequencies(cwi)
 
     kpoints = _berry_kmesh(cwi)
 
@@ -1535,7 +1555,7 @@ def berry_get_kubo(cwi, operators):
     use_degen_pert = cwi["use_degen_pert"]
     degen_thr = cwi["degen_thr"]
 
-    kubo_freq_list = np.arange(cwi["kubo_freq_min"], cwi["kubo_freq_max"], cwi["kubo_freq_step"])
+    kubo_freq_list = kubo_frequencies(cwi)
     # Replace imaginary part of frequency with a fixed value
     if not kubo_adpt_smr and kubo_smr_fixed_en_width != 0.0:
         kubo_freq_list = np.real(kubo_freq_list) + 1.0j * kubo_smr_fixed_en_width
@@ -1760,7 +1780,7 @@ def berry_get_kubo_tb(cwi, operators):
     use_degen_pert = cwi["use_degen_pert"]
     degen_thr = cwi["degen_thr"]
 
-    kubo_freq_list = np.arange(cwi["kubo_freq_min"], cwi["kubo_freq_max"], cwi["kubo_freq_step"])
+    kubo_freq_list = kubo_frequencies(cwi)
     # Replace imaginary part of frequency with a fixed value
     if not kubo_adpt_smr and kubo_smr_fixed_en_width != 0.0:
         kubo_freq_list = np.real(kubo_freq_list) + 1.0j * kubo_smr_fixed_en_width
@@ -2040,7 +2060,7 @@ def berry_get_shc_klist(cwi, operators, kpoints, band=False):
     else:
         kubo_eigval_max = 100000
 
-    kubo_freq_list = np.arange(cwi["kubo_freq_min"], cwi["kubo_freq_max"], cwi["kubo_freq_step"])
+    kubo_freq_list = kubo_frequencies(cwi)
     # Replace imaginary part of frequency with a fixed value
     if not kubo_adpt_smr and kubo_smr_fixed_en_width != 0.0:
         kubo_freq_list = np.real(kubo_freq_list) + 1.0j * kubo_smr_fixed_en_width
@@ -2097,7 +2117,7 @@ def berry_get_shc_klist(cwi, operators, kpoints, band=False):
     lfreq = False
     lfermi = False
     if cwi["shc_freq_scan"]:
-        shc_k_freq = np.zeros((kubo_nfreq, len(kpoints)))
+        shc_k_freq = np.zeros((kubo_nfreq, len(kpoints)), dtype=complex)
         lfreq = True
     else:
         shc_k_fermi = np.zeros((cwi["num_fermi"], len(kpoints)))
@@ -2125,7 +2145,7 @@ def berry_get_shc_klist(cwi, operators, kpoints, band=False):
             omega = 0.0
             # get Omega_{n,alpha beta}^{gamma}
             if lfreq:
-                omega_list = np.zeros(kubo_nfreq)
+                omega_list = np.zeros(kubo_nfreq, dtype=complex)
 
             for m in range(num_wann):
                 if m == n:

@@ -23,7 +23,13 @@ import numpy as np
 from symclosestwannier.util.get_oper_R import get_oper_R, to_tb_gauge
 from symclosestwannier.util.utility import tb_gauge_positions
 from symclosestwannier.util.exceptions import SymCWInputError
-from symclosestwannier.analyzer.get_response import berry_main, boltzwann_main, gyrotropic_main, spin_moment_main
+from symclosestwannier.analyzer.get_response import (
+    berry_main,
+    boltzwann_main,
+    gyrotropic_main,
+    kubo_frequencies,
+    spin_moment_main,
+)
 
 from symclosestwannier.util.message import (
     cw_start_set_operators_msg,
@@ -348,7 +354,7 @@ class Response(dict):
         write seedname-kubo_H_*.dat, seedname-kubo_A_*.dat.
 
         """
-        kubo_freq_list = np.arange(self._cwi["kubo_freq_min"], self._cwi["kubo_freq_max"], self._cwi["kubo_freq_step"])
+        kubo_freq_list = kubo_frequencies(self._cwi)
 
         d = {"xx": (0, 0), "yy": (1, 1), "zz": (2, 2), "xy": (0, 1), "xz": (0, 2), "yz": (1, 2)}
 
@@ -397,9 +403,7 @@ class Response(dict):
         """
         if self._cwi["shc_freq_scan"]:
             shc_freq = self["shc_freq"]
-            kubo_freq_list = np.arange(
-                self._cwi["kubo_freq_min"], self._cwi["kubo_freq_max"], self._cwi["kubo_freq_step"]
-            )
+            kubo_freq_list = kubo_frequencies(self._cwi)
             kubo_nfreq = len(kubo_freq_list)
 
             shc_str = "#No.   Frequency(eV)   Re(sigma)((hbar/e)*S/cm)   Im(sigma)((hbar/e)*S/cm) \n"

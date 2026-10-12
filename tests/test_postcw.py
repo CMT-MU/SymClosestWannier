@@ -26,7 +26,9 @@ def test_postcw_computes_and_writes_the_response(make_case):
     analyzer(seedname)
 
     data = np.loadtxt(workdir / f"{seedname}-kubo_S_xx.dat")
-    assert data.shape == (12, 3)
+    # frequencies 0, 0.5, ..., 6.0: kubo_freq_max is included, as in wannier90
+    assert data.shape == (13, 3)
+    np.testing.assert_allclose(data[:, 0], np.linspace(0.0, 6.0, 13))
     assert np.all(np.isfinite(data))
     assert np.abs(data[:, 2]).max() > 1.0
 
