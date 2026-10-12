@@ -23,6 +23,7 @@ import numpy as np
 from symclosestwannier.util.get_oper_R import get_oper_R, to_tb_gauge
 from symclosestwannier.util.utility import tb_gauge_positions
 from symclosestwannier.util.exceptions import SymCWInputError
+from symclosestwannier.cw.win import energy_range_defaults
 from symclosestwannier.analyzer.get_response import (
     berry_main,
     boltzwann_main,
@@ -65,6 +66,8 @@ class Response(dict):
         super().__init__()
 
         self._cwi = cwi
+        # the frequency and eigenvalue ranges left unset in seedname.win (see Win.read).
+        energy_range_defaults(self._cwi)
         self._cwm = cwm
         self._outfile = f"{self._cwi['seedname']}.cwpout"
         # a given HH_R (Hr_sym, hr_input, ...) may differ from the Hamiltonian from which BB_R and CC_R are built.

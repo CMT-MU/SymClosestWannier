@@ -21,7 +21,7 @@
 import os
 import numpy as np
 
-from symclosestwannier.cw.win import Win
+from symclosestwannier.cw.win import Win, energy_range_defaults
 from symclosestwannier.cw.cwin import CWin
 from symclosestwannier.cw.cw_info import CWInfo
 from symclosestwannier.cw.cw_manager import CWManager
@@ -79,6 +79,7 @@ def _analyzer(seedname, indir):
 
     cwi = CWInfo(indir, seedname, dic=info, postcw=True)
     cwi |= cwin | Win(indir, seedname)
+    energy_range_defaults(cwi)
 
     cw_model = CWModel(cwi, cwm, samb_info, dic=data)
     cwi = cw_model._cwi
