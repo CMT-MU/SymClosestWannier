@@ -2471,18 +2471,9 @@ def gyrotropic_get_K(cwi, operators):
 
                 delE_ = np.array([delE[:, k, n] for k in k_list_])
                 orb_nk_ = np.array([orb_nk[k_list.index(k), :] for k in k_list_])
-                # delta_ = (
-                #     np.array(
-                #         [
-                #             utility_w0gauss((E[k, n] - fermi_energy_list[ifermi]) / eta_smr, gyrotropic_smr_type_idx)
-                #             for k in k_list_
-                #         ]
-                #     )
-                #     / eta_smr
-                #     * kweight
-                # )
+                # broadened delta(E_nk - E_f) at the same k points
                 delta_ = (
-                    utility_w0gauss((E[:, n] - fermi_energy_list[ifermi]) / eta_smr, gyrotropic_smr_type_idx)
+                    utility_w0gauss((E[k_list_, n] - fermi_energy_list[ifermi]) / eta_smr, gyrotropic_smr_type_idx)
                     / eta_smr
                     * kweight
                 )
