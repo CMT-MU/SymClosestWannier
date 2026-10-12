@@ -133,6 +133,10 @@ class CWin(dict):
             file_name = os.path.join(topdir, "{}.{}".format(seedname, "cwin"))
             self.update(self.read(file_name))
             self["seedname"] = seedname
+
+            # output directories are relative to the directory of seedname.cwin.
+            for key in ("outdir", "mp_outdir"):
+                self[key] = os.path.normpath(os.path.join(os.path.abspath(topdir), self[key]))
         else:
             self.update(dic)
 

@@ -176,7 +176,10 @@ class CWManager:
         os.makedirs(self._dirname, exist_ok=True)
 
     # ==================================================
-    def formatter(self):
+    def format_files(self):
+        """
+        format files in current output directory by using black, if formatter is True.
+        """
         if self._formatter:
             cmd = "black --line-length=130 ."
             try:

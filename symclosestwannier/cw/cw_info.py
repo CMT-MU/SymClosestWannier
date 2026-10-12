@@ -18,6 +18,7 @@
 #                                                                    #
 # ****************************************************************** #
 
+import os
 import numpy as np
 from multipie import MaterialModel
 from gcoreutils.nsarray import NSArray
@@ -291,7 +292,7 @@ class CWInfo(dict):
             )
 
         if d["symmetrization"]:
-            self._mm = MaterialModel(topdir="./", verbose=True)
+            self._mm = MaterialModel(topdir=os.path.abspath(topdir), verbose=True)
             self._mm.load(d["mp_seedname"])
 
             # ket

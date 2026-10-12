@@ -2,8 +2,11 @@
 utility codes.
 """
 
+import os
 import datetime
 import itertools
+import subprocess
+import sys
 import textwrap
 import fortio
 import numpy as np
@@ -29,6 +32,24 @@ class FortranFileR(fortio.FortranFile):
         except ValueError:
             print("File '{}' contains subrecords - using header_dtype='int32'".format(filename))
             super().__init__(filename, mode="r", header_dtype="int32", auto_endian=True, check_file=True)
+
+
+# ==================================================
+def run_gnuplot(outdir, script):
+    """
+    run gnuplot script in outdir (warn and continue if gnuplot is not installed).
+
+    Args:
+        outdir (str): directory where the script is placed and run.
+        script (str): file name of gnuplot script.
+    """
+    if not os.path.isdir(outdir):
+        raise FileNotFoundError(f"directory for gnuplot script is not found: {outdir}")
+
+    try:
+        subprocess.run(["gnuplot", script], cwd=outdir)
+    except FileNotFoundError:
+        print(f"warning: gnuplot is not found, {script} is not executed.", file=sys.stderr)
 
 
 # ==================================================

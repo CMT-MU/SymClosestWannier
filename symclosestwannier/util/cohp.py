@@ -3,10 +3,9 @@ utility codes for CW.
 """
 
 import os
-import subprocess
 import numpy as np
 
-from symclosestwannier.util.utility import fermi, fourier_transform_r_to_k, convert_w90_orbital
+from symclosestwannier.util.utility import fermi, fourier_transform_r_to_k, convert_w90_orbital, run_gnuplot
 
 
 # ==================================================
@@ -278,4 +277,4 @@ def generate_cohp_gnuplot(
 
     fs.close()
 
-    subprocess.run(f"cd {outdir} ; gnuplot plot_cohp.gnu", shell=True)
+    run_gnuplot(outdir, "plot_cohp.gnu")

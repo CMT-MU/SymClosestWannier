@@ -14,7 +14,7 @@
 
 - **Authors**: Rikuto Oiwa
 
-- **Installation**: SymClosestWannier can be installed from PyPI using pip on Python >= 3.9:
+- **Installation**: SymClosestWannier can be installed from PyPI using pip on Python >= 3.12:
     ```
     pip install symclosestwannier
     ```

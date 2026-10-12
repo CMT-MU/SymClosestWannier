@@ -5,6 +5,11 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "symclosestwannier"
 dependencies = [
+    "numpy",
+    "scipy",
+    "sympy",
+    "joblib",
+    "click",
     "gcoreutils",
     "multipie",
     "xmltodict",
@@ -13,22 +18,21 @@ dependencies = [
     "tqdm",
 ]
 dynamic = ["version"]
-requires-python = ">=3.9"
+requires-python = ">=3.12"
 authors = [
   { name="Rikuto Oiwa", email="ro.qp.07@gmail.com" },
 ]
 description = "A Python library for Symmetry-Adapted Closest Wannier (SymCW) Tight-Binding model based on Plane-Wave DFT calculation."
 readme = {file = "docs/README.md", content-type = "text/markdown"}
-license = {file = "GPL"}
+license = {file = "LICENSE"}
 keywords = ["dft", "wannier function", "tight-binding model", "symmetry", "materials science"]
 classifiers = [
     "Intended Audience :: Science/Research",
     "Topic :: Scientific/Engineering :: Information Analysis",
-    "License :: OSI Approved :: GPL License",
+    "License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)",
     "Operating System :: Microsoft :: Windows",
     "Operating System :: POSIX",
     "Operating System :: MacOS",
-    "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
 ]
@@ -43,6 +47,8 @@ Issues = "https://github.com/CMT-MU/SymClosestWannier/issues"
 
 [project.optional-dependencies]
 dev = [
+    "pytest",
+    "black",
     "jupyter-book",
     "ghp-import",
     "multipie",
@@ -55,6 +61,9 @@ version = {attr = "symclosestwannier.__version__"}
 [tool.setuptools.packages.find]
 include = ["symclosestwannier", "symclosestwannier.*"]
 exclude = ["build", "tests"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
 
 [tool.black]
 line-length = 130

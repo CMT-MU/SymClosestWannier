@@ -50,6 +50,27 @@ from symclosestwannier.util.utility import sort_ket_matrix, tune_fermi_level
 
 
 # ==================================================
+def _ref_band_filename(indir, seedname, plotdir):
+    """
+    reference DFT band file (seedname.band.gnu(.dat) in indir) relative to the directory of the gnuplot script.
+
+    Args:
+        indir (str): directory of input files.
+        seedname (str): seedname.
+        plotdir (str): directory where the gnuplot script is written.
+
+    Returns:
+        str or None: relative file name, or None if not found.
+    """
+    for ext in ("band.gnu", "band.gnu.dat"):
+        full = os.path.join(indir, f"{seedname}.{ext}")
+        if os.path.isfile(full):
+            return os.path.relpath(full, os.path.abspath(plotdir))
+
+    return None
+
+
+# ==================================================
 def cw_creator(seedname="cwannier"):
     """
     Closest Wannier (CW) tight-binding (TB) model based on Plane-Wave (PW) DFT calculation.
@@ -58,14 +79,16 @@ def cw_creator(seedname="cwannier"):
     Args:
         seedname (str, optional): seedname.
     """
-    cwin = CWin("./", seedname)
+    # input files are read from the current directory, CWManager moves to outdir.
+    indir = os.getcwd()
+    cwin = CWin(indir, seedname)
     cwm = CWManager(
         topdir=cwin["outdir"], verbose=cwin["verbose"], parallel=cwin["parallel"], formatter=cwin["formatter"]
     )
 
     outfile = f"{seedname}.cwout"
 
-    cwi = CWInfo("./", seedname)
+    cwi = CWInfo(indir, seedname)
 
     cwm.log(cw_open_msg(), stamp=None, end="\n", file=outfile, mode="w")
     cwm.log(system_msg(cwi), stamp=None, end="\n", file=outfile, mode="a")
@@ -99,7 +122,7 @@ def cw_creator(seedname="cwannier"):
         cw_model.write_or(cw_model["Sr"], filename)  # , header=CWModel._sr_header())
 
         filename = f"{cwi['seedname']}_sr_R_dep.dat.cw"
-        cw_model.write_O_R_dependence(cw_model["sr"], filename, header=CWModel._O_R_dependence_header())
+        cw_model.write_O_R_dependence(cw_model["Sr"], filename, header=CWModel._O_R_dependence_header())
 
     if cwi["write_u_matrices"] and cwi["restart"] != "w90":
         file_names = (f"{cwi['seedname']}_u.mat.cw", f"{cwi['seedname']}_u_dis.mat.cw")
@@ -210,12 +233,7 @@ def cw_creator(seedname="cwannier"):
         k_linear = NSArray(cwi["k_linear"], "vector", fmt="value")
         k_dis_pos = cwi["k_dis_pos"]
 
-        if os.path.isfile(f"{seedname}.band.gnu"):
-            ref_filename = f"{seedname}.band.gnu"
-        elif os.path.isfile(f"{seedname}.band.gnu.dat"):
-            ref_filename = f"{seedname}.band.gnu.dat"
-        else:
-            ref_filename = None
+        ref_filename = _ref_band_filename(indir, seedname, os.getcwd())
 
         a = cwi["a"]
         if a is None:
@@ -533,14 +551,7 @@ def cw_creator(seedname="cwannier"):
             else:
                 atoms_frac = None
 
-            rel = os.path.relpath(cwi["outdir"], cwi["mp_outdir"])
-
-            if os.path.isfile(f"{seedname}.band.gnu"):
-                ref_filename = f"{rel}/{seedname}.band.gnu"
-            elif os.path.isfile(f"{seedname}.band.gnu.dat"):
-                ref_filename = f"{rel}/{seedname}.band.gnu.dat"
-            else:
-                ref_filename = None
+            ref_filename = _ref_band_filename(indir, seedname, cwi["mp_outdir"])
 
             Hk_sym_path = cw_model.fourier_transform_r_to_k(
                 cw_model["Hr_sym"], cwi["kpoints_path"], cwi["irvec"], cwi["ndegen"], atoms_frac=atoms_frac

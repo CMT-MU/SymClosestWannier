@@ -49,7 +49,9 @@ def analyzer(seedname="cwannier"):
     Args:
         seedname (str, optional): seedname.
     """
-    cwin = CWin(".", seedname)
+    # input files are read from the current directory, CWManager moves to outdir.
+    indir = os.getcwd()
+    cwin = CWin(indir, seedname)
     cwm = CWManager(
         topdir=cwin["outdir"], verbose=cwin["verbose"], parallel=cwin["parallel"], formatter=cwin["formatter"]
     )
@@ -57,8 +59,8 @@ def analyzer(seedname="cwannier"):
     filename = os.path.join(cwin["outdir"], "{}".format(f"{seedname}.hdf5"))
     info, data, samb_info = CWModel.read_info_data(filename)
 
-    cwi = CWInfo("./", seedname, dic=info, postcw=True)
-    cwi |= cwin | Win(".", seedname)
+    cwi = CWInfo(indir, seedname, dic=info, postcw=True)
+    cwi |= cwin | Win(indir, seedname)
 
     cw_model = CWModel(cwi, cwm, samb_info, dic=data)
     cwi = cw_model._cwi
@@ -85,7 +87,7 @@ def analyzer(seedname="cwannier"):
             Hr = sort_ket_matrix(Hr, ket_samb, ket_amn)
 
     if cwi["hr_input"] != "":
-        Hr, irvec, ndegen = read_hr(cwi["hr_input"], orb_dict=None, encoding="UTF-8")
+        Hr, irvec, ndegen = read_hr(os.path.join(indir, cwi["hr_input"]), orb_dict=None, encoding="UTF-8")
         if not np.array_equal(irvec, cwi["irvec"]) or not np.array_equal(ndegen, cwi["ndegen"]):
             raise Exception("invalid HH_R. The number of R vectors are inconsistent.")
 

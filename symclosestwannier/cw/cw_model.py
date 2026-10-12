@@ -25,7 +25,6 @@ import datetime
 import itertools
 import textwrap
 
-from matplotlib.pylab import MT19937
 import numpy as np
 from numpy import linalg as npl
 from scipy import linalg as spl
