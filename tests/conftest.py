@@ -15,7 +15,7 @@ TOPDIR = os.path.normpath(os.path.join(os.path.dirname(__file__), ".."))
 EXAMPLES_DIR = os.path.join(TOPDIR, "others", "examples")
 DATA_DIR = os.path.join(os.path.dirname(__file__), "data")
 
-# non-symmetrized settings (SAMB data in others/examples/*/sym require MultiPie v1).
+# non-symmetrized settings (symmetrization is tested in test_symmetrization.py).
 CWIN = {
     "ch4_sl": """
 restart     = cw

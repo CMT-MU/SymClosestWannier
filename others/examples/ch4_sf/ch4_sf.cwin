@@ -11,7 +11,7 @@ write_sr = .true.
 
 # symmetrization
 symmetrization = true
-mp_outdir      = './sym'
+mp_outdir      = './ch4_sf'
 mp_seedname    = ch4_sf
-ket_amn        = [(s,U)@C_1,(s,D)@C_1,(pz,U)@C_1,(pz,D)@C_1,(px,U)@C_1,(px,D)@C_1,(py,U)@C_1,(py,D)@C_1,(s,U)@H_1,(s,D)@H_1,(s,U)@H_2,(s,D)@H_2,(s,U)@H_3,(s,D)@H_3,(s,U)@H_4,(s,D)@H_4]
+ket_amn        = [[C,1,0,(s,u)],[C,1,0,(s,d)],[C,1,1,(pz,u)],[C,1,1,(pz,d)],[C,1,1,(px,u)],[C,1,1,(px,d)],[C,1,1,(py,u)],[C,1,1,(py,d)],[H,1,0,(s,u)],[H,1,0,(s,d)],[H,2,0,(s,u)],[H,2,0,(s,d)],[H,4,0,(s,u)],[H,4,0,(s,d)],[H,3,0,(s,u)],[H,3,0,(s,d)]]
 irreps         = full
