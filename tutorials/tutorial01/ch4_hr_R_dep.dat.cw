@@ -10,7 +10,7 @@
     - τ           : The decay length [Ang].
 """
 # created by pw2cw 
-# written on 12Aug2025 at 16:56:48
+# written on 13Oct2026 at 10:31:26
 # ||Rmin||    = 0.00000000   [eV] 
 # ||O(Rmin)|| = 9.95393230   [eV] 
 # τ           = 0.00000000   [Ang] 
