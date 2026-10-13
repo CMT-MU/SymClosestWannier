@@ -1,4 +1,5 @@
 import datetime
+import os
 
 from symclosestwannier.util.header import cwin_info
 
@@ -197,6 +198,27 @@ def system_msg(cwi):
     return msg
 
 
+def relative_outdir(cwi, key):
+    """
+    outdir or mp_outdir relative to the directory of seedname.cwin, as written to seedname.cwout and seedname.hdf5,
+    so that the outputs do not contain the absolute path of the directory where they were created.
+
+    Args:
+        cwi (dict): input parameters with the absolute outdir/mp_outdir and cwin_dir.
+        key (str): "outdir" or "mp_outdir".
+
+    Returns:
+        str: relative path (unchanged if cwin_dir is not known).
+    """
+    v = cwi[key]
+    cwin_dir = cwi.get("cwin_dir")
+    if cwin_dir is None or not os.path.isabs(v):
+        return v
+
+    return os.path.relpath(v, cwin_dir)
+
+
+# ==================================================
 def cwin_msg(cwi):
 
     label_width = 35
@@ -217,6 +239,8 @@ def cwin_msg(cwi):
             msg += f"| {k:<{label_width}} : {"":>{value_width}} |\n"
             for ket in cwi[k]:
                 msg += f"| {"":<{label_width}}   {str(ket):>{value_width}} |\n"
+        elif k in ("outdir", "mp_outdir"):
+            msg += f"| {k:<{label_width}} : {relative_outdir(cwi, k):>{value_width}} |\n"
         else:
             msg += f"| {k:<{label_width}} : {str(cwi[k]):>{value_width}} |\n"
 

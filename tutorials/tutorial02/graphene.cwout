@@ -65,7 +65,7 @@
              | 675 Mass Ave, Cambridge, MA 02139, USA.           |
              |                                                   |
              +---------------------------------------------------+
-             |    Execution started on 2026/10/13 14:30:23       |
+             |    Execution started on 2026/10/13 19:10:06       |
              +---------------------------------------------------+
     
 
@@ -112,7 +112,7 @@
 *----------------------------------------------------------------------------*
 | seedname                            :                             graphene |
 | restart                             :                                   cw |
-| outdir                              : /private/tmp/claude-501/-Users-k-yoshimi-Dropbox-claude-SymClosestWannier/7f1254b5-69f1-4d08-8378-6f08aeeb2f79/scratchpad/t02 |
+| outdir                              :                                    . |
 | disentangle                         :                                 True |
 | proj_min                            :                                  0.1 |
 | cwf_mu_max                          :                                 10.0 |
@@ -143,7 +143,7 @@
 | write_mmn                           :                                False |
 | write_spn                           :                                False |
 | symmetrization                      :                                 True |
-| mp_outdir                           : /private/tmp/claude-501/-Users-k-yoshimi-Dropbox-claude-SymClosestWannier/7f1254b5-69f1-4d08-8378-6f08aeeb2f79/scratchpad/t02/graphene |
+| mp_outdir                           :                             graphene |
 | mp_seedname                         :                             graphene |
 | ket_amn                             :                                      |
 |                                                          ['C', 2, 1, 'pz'] |
@@ -191,9 +191,9 @@
 *----------------------------------------------------------------------------*
 
 
-   - excluding bands with low projectability (proj_min = 0.1) ... done ( 0.009 [sec] ).
+   - excluding bands with low projectability (proj_min = 0.1) ... done ( 0.01 [sec] ).
    - disentanglement ... done ( 0.0 [sec] ).
-   - constructing TB Hamiltonian ... done ( 0.03 [sec] ).
+   - constructing TB Hamiltonian ... done ( 0.067 [sec] ).
 
     * band distance between DFT and Wannier bands:
      - eta_0     = 1.761368254533177e-12 [meV]
@@ -209,16 +209,16 @@ done ( 0.008 [sec] ).
      1             0.50000000
      2             0.50000000
      Sum             1.00000000
-done ( 0.0 [sec] ).
+done ( 0.007 [sec] ).
    - symmetrization ... 
     - creating combined samb matrix ... 
-done ( 0.43 [sec] ).
+done ( 0.543 [sec] ).
     - decomposing Hamiltonian as linear combination of SAMBs ... done ( 0.0 [sec] ).
-    - decomposing overlap as linear combination of SAMBs ... done ( 0.0 [sec] ).
+    - decomposing overlap as linear combination of SAMBs ... done ( 0.001 [sec] ).
     - decomposing non-orthogonal Hamiltonian as linear combination of SAMBs ... done ( 0.0 [sec] ).
     - decomposing electronic density as linear combination of SAMBs ... done ( 0.0 [sec] ).
-done ( 0.0 [sec] ).
-    - constructing symmetrized TB Hamiltonian ... done ( 0.032 [sec] ).
+done ( 0.001 [sec] ).
+    - constructing symmetrized TB Hamiltonian ... done ( 0.031 [sec] ).
     - evaluating fitting accuracy ... 
      * MAE of eigen values between CW and Symmetry-Adapted CW models (grid) = 47.7270 [meV] 
      * MAE of eigen values between DFT and Symmetry-Adapted CW models (grid) = 47.7270 [meV] 
@@ -237,10 +237,10 @@ done ( 0.0 [sec] ).
 
 
 
-  * calculating band dispersion ... done ( 0.247 [sec] ).
+  * calculating band dispersion ... done ( 0.202 [sec] ).
 
 
-  * total elapsed_time: ( 0.247 [sec] ).
+  * total elapsed_time: ( 0.203 [sec] ).
 
 
 *----------------------------------------------------------------------------*
@@ -248,7 +248,7 @@ done ( 0.0 [sec] ).
 *----------------------------------------------------------------------------*
 
 
-  * total elapsed_time: ( 1.646 [sec] ).
+  * total elapsed_time: ( 2.209 [sec] ).
 
 
 *----------------------------------------------------------------------------*

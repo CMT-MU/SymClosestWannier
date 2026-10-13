@@ -29,7 +29,7 @@ import numpy as np
 from numpy import linalg as npl
 from scipy import linalg as spl
 
-from symclosestwannier.util.message import cw_start_msg, cw_start_msg_w90
+from symclosestwannier.util.message import cw_start_msg, cw_start_msg_w90, relative_outdir
 from symclosestwannier.util.header import (
     cw_info_header,
     cw_data_header,
@@ -1307,7 +1307,11 @@ class CWModel(dict):
             for group in ("info", "data", "samb_info"):
 
                 if group == "info":
-                    data = self._cwi
+                    # output directories relative to seedname.cwin, without the absolute path of the run.
+                    data = {k: v for k, v in self._cwi.items() if k != "cwin_dir"}
+                    for k in ("outdir", "mp_outdir"):
+                        if k in data:
+                            data[k] = relative_outdir(self._cwi, k)
                 elif group == "data":
                     data = self
                 else:

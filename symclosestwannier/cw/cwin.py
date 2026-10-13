@@ -152,8 +152,9 @@ class CWin(dict):
             self["seedname"] = seedname
 
             # output directories are relative to the directory of seedname.cwin.
+            self["cwin_dir"] = os.path.abspath(topdir)
             for key in ("outdir", "mp_outdir"):
-                self[key] = os.path.normpath(os.path.join(os.path.abspath(topdir), self[key]))
+                self[key] = os.path.normpath(os.path.join(self["cwin_dir"], self[key]))
         else:
             self.update(dic)
 

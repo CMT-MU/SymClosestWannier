@@ -65,7 +65,7 @@
              | 675 Mass Ave, Cambridge, MA 02139, USA.           |
              |                                                   |
              +---------------------------------------------------+
-             |    Execution started on 2026/10/13 10:31:26       |
+             |    Execution started on 2026/10/13 19:10:02       |
              +---------------------------------------------------+
     
 
@@ -118,7 +118,7 @@
 *----------------------------------------------------------------------------*
 | seedname                            :                                  ch4 |
 | restart                             :                                   cw |
-| outdir                              : /private/tmp/claude-501/-Users-k-yoshimi-Dropbox-claude-QtDraw/5476826a-5d4f-487a-a061-6b991e45040f/scratchpad/tut_try/tutorial01 |
+| outdir                              :                                    . |
 | disentangle                         :                                False |
 | proj_min                            :                                  0.5 |
 | cwf_sigma_max                       :                                  1.0 |
@@ -143,10 +143,11 @@
 | write_tb                            :                                False |
 | write_eig                           :                                False |
 | write_amn                           :                                False |
+| write_windowed_amn                  :                                False |
 | write_mmn                           :                                False |
 | write_spn                           :                                False |
 | symmetrization                      :                                 True |
-| mp_outdir                           : /private/tmp/claude-501/-Users-k-yoshimi-Dropbox-claude-QtDraw/5476826a-5d4f-487a-a061-6b991e45040f/scratchpad/tut_try/tutorial01/ch4 |
+| mp_outdir                           :                                  ch4 |
 | mp_seedname                         :                                  ch4 |
 | ket_amn                             :                                      |
 |                                                       ['C', 1, 0, '(s,u)'] |
@@ -218,7 +219,7 @@
      - eta_2_max = 3.019806626980426e-11 [meV]
      - eta_5     = 1.5377515718990442e-11 [meV]
      - eta_5_max = 3.019806626980426e-11 [meV]
-done ( 0.0 [sec] ).
+done ( 0.002 [sec] ).
 
     * Occupancy:
      idx        occupancy (1/unit-cell)
@@ -239,10 +240,10 @@ done ( 0.0 [sec] ).
     15             0.99996902
     16             0.99996902
      Sum            10.00000000
-done ( 0.001 [sec] ).
+done ( 0.004 [sec] ).
    - symmetrization ... 
     - creating combined samb matrix ... 
-done ( 0.029 [sec] ).
+done ( 0.035 [sec] ).
     - decomposing Hamiltonian as linear combination of SAMBs ... done ( 0.0 [sec] ).
     - decomposing overlap as linear combination of SAMBs ... done ( 0.0 [sec] ).
     - decomposing non-orthogonal Hamiltonian as linear combination of SAMBs ... done ( 0.0 [sec] ).
@@ -267,7 +268,7 @@ done ( 0.0 [sec] ).
 
 
 
-  * total elapsed_time: ( 0.023 [sec] ).
+  * total elapsed_time: ( 0.034 [sec] ).
 
 
 *----------------------------------------------------------------------------*
@@ -275,7 +276,7 @@ done ( 0.0 [sec] ).
 *----------------------------------------------------------------------------*
 
 
-  * total elapsed_time: ( 0.664 [sec] ).
+  * total elapsed_time: ( 0.723 [sec] ).
 
 
 *----------------------------------------------------------------------------*
