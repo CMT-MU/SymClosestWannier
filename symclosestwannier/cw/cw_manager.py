@@ -174,6 +174,8 @@ class CWManager:
             str: full file name (with full path).
         """
         if full:
+            if os.path.isabs(filename):  # e.g. in mp_outdir, which is an absolute path.
+                return filename
             return self.dirname + "/" + filename
         else:
             return os.path.split(filename)[1]

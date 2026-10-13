@@ -164,3 +164,18 @@ def test_surface_grid(N1, N2):
     np.testing.assert_allclose(grid, ref, rtol=0, atol=1e-15)
     # fractional coordinates of the reciprocal lattice B = (A^-1)^T: k_frac = k B^-1 = k A^T
     np.testing.assert_allclose(grid, ref_2d.reshape(-1, 3) @ A.T, rtol=0, atol=1e-14)
+
+
+# ==================================================
+def test_band_distance_windows():
+    # bands below Ef, Ef + 2 eV, Ef + 5 eV and above, with errors of 10, 20, 40 and 80 meV.
+    from symclosestwannier.util.utility import band_distance
+
+    Ak = np.eye(4, dtype=complex)[np.newaxis]
+    Ek = np.array([[-1.0, 1.0, 3.0, 7.0]])
+    Hk = np.diag([-0.99, 1.02, 3.04, 7.08]).astype(complex)[np.newaxis]
+    eta_0, eta_0_max, eta_2, eta_2_max, eta_5, eta_5_max = band_distance(Ak, Ek, Hk, ef=0.0)
+    assert eta_0 == pytest.approx(10.0) and eta_0_max == pytest.approx(10.0)
+    assert eta_2 == pytest.approx(np.sqrt((10**2 + 20**2) / 2)) and eta_2_max == pytest.approx(20.0)
+    # not up to Ef + 10 eV.
+    assert eta_5 == pytest.approx(np.sqrt((10**2 + 20**2 + 40**2) / 3)) and eta_5_max == pytest.approx(40.0)

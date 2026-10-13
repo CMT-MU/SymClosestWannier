@@ -657,11 +657,7 @@ class CWModel(dict):
         self._cwm.log(msg, None, end="\n", file=self._outfile, mode="a")
         self._cwm.set_stamp()
 
-        if self._cwi["irreps"] == "all":
-            select = {}
-        else:
-            select = {"Gamma": self._cwi["irreps"]}
-
+        select = CWModel.samb_select(self._cwi["irreps"])
         combined_samb_matrix = self._cwi._mm.get_combined_samb_matrix(fmt="value", digit=15, select=select, bond=False)
 
 
@@ -1136,6 +1132,25 @@ class CWModel(dict):
             ndarray: lattice or k points.
         """
         return dict_to_matrix(Or_dict, dim)
+
+    # ==================================================
+    @staticmethod
+    def samb_select(irreps):
+        """
+        select condition of SAMBs by irreps in seedname.cwin.
+
+        Args:
+            irreps (str/list): "all" (all irreps), "full" (only the identity irrep) or list of irreps.
+
+        Returns:
+            dict: select condition of MaterialModel.get_combined_samb_matrix.
+        """
+        if irreps == "all":
+            return {}
+        elif irreps == "full":
+            return {"Gamma": "IR"}
+        else:
+            return {"Gamma": irreps}
 
     # ==================================================
     @classmethod
