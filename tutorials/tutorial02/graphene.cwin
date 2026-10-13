@@ -14,7 +14,7 @@ verbose           = true
 
 write_hr          = true
 write_info_data   = true
-write_amn         = true
+write_windowed_amn = true
 
 N1 = 50
 
