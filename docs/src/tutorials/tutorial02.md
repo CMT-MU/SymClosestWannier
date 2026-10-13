@@ -108,7 +108,7 @@ The following files are used for the next step.
     Inspect the output file `graphene.cwout`.
     The CWFs are obtained without any iterative calculations,
     significantly reducing the computational costs.
-    eta\_ $\nu$ and eta\_ $\nu$ \_max ($\nu = 0, 2, 4$) are the band distance between the DFT bands and the Closest Wannier bands, defined by
+    eta\_ $\nu$ and eta\_ $\nu$ \_max ($\nu = 0, 2, 5$) are the band distance between the DFT bands and the Closest Wannier bands, defined by
 
     $$
     \eta_{\nu} = \sqrt{\frac{\sum_{n\bf{k}}(\epsilon_{n\bf{k}}^{\rm DFT} - \epsilon_{n\bf{k}}^{\rm CW})^{2} \tilde{f}_{n\bf{k}} }{\sum_{n\bf{k}}\tilde{f}_{n\bf{k}}}}
@@ -122,7 +122,7 @@ The following files are used for the next step.
     $$
     (\nu = 0)\, \epsilon_{\rm F} + 0.0\, [{\rm eV}] \\
     (\nu = 2)\, \epsilon_{\rm F} + 2.0\, [{\rm eV}] \\
-    (\nu = 4)\, \epsilon_{\rm F} + 4.0\, [{\rm eV}]
+    (\nu = 5)\, \epsilon_{\rm F} + 5.0\, [{\rm eV}]
     $$
 
     and effective temperature $\tau = 0.0$.
