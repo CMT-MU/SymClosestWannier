@@ -11,7 +11,7 @@ def cw_open_msg():
     msg = f"""
              +---------------------------------------------------+
              |                                                   |
-             |                SymClosestWwannier                 |
+             |                SymClosestWannier                  |
              |                                                   |
              +---------------------------------------------------+
              |                                                   |
@@ -20,7 +20,7 @@ def cw_open_msg():
              |    https://github.com/CMT-MU/SymClosestWannier    |
              |                                                   |
              |                                                   |
-             |        SymClosestWwannier Developer Group:        |
+             |        SymClosestWannier Developer Group:         |
              |          Rikuto Oiwa      (RIKEN)                 |
              |          Hiroaki Kusunose (Meiji Univ.)           |
              |                                                   |

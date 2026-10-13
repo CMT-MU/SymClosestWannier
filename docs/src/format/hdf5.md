@@ -37,8 +37,8 @@
     - symmetrization    : symmetrize ? (bool), [False].
     - mp_outdir         : output files for multipie are written to this directory, relative to the directory of seedname.cwin (str). ["./"].
     - mp_seedname       : name of the MultiPie model (the directory and .pkl file created by mp_create) (str), ["default"].
-    - ket_amn           : ket basis list in the seedname.amn file (list), [None]. Each ket is given as [atom, sublattice, rank, orbital], e.g. `[[C,1,1,pz],[C,2,1,pz]]`, or `[[C,1,1,(pz,U)],[C,1,1,(pz,D)]]` for the spinful case. If ket_amn = auto, the list of orbitals is set automatically.
-    - irreps            : list of irreps to be considered (str/list), ["all"].
+    - ket_amn           : ket basis list in the seedname.amn file (list), [None]. Each ket is given as [atom, sublattice, rank, orbital], e.g. `[[C,1,1,pz],[C,2,1,pz]]`, or `[[C,1,1,(pz,u)],[C,1,1,(pz,d)]]` for the spinful case. If ket_amn = auto, the list of orbitals is set automatically.
+    - irreps            : irreps of the SAMBs to be considered: "all" (all irreps), "full" (only the identity irrep) or a list of irreps (str/list), ["all"].
     - a                 : lattice parameter (in Ang) used to correct units of k points in reference band data (float, optional), [None] (|a1| is used when None).
     - N1                : number of divisions for high symmetry lines (int, optional), [50].
     - calc_spin_2d      : add expectation value of spin operator given by *.spn in output file ? (bool). [False].

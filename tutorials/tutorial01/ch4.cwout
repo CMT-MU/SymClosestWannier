@@ -1,7 +1,7 @@
 
              +---------------------------------------------------+
              |                                                   |
-             |                SymClosestWwannier                 |
+             |                SymClosestWannier                  |
              |                                                   |
              +---------------------------------------------------+
              |                                                   |
@@ -10,7 +10,7 @@
              |    https://github.com/CMT-MU/SymClosestWannier    |
              |                                                   |
              |                                                   |
-             |        SymClosestWwannier Developer Group:        |
+             |        SymClosestWannier Developer Group:         |
              |          Rikuto Oiwa      (RIKEN)                 |
              |          Hiroaki Kusunose (Meiji Univ.)           |
              |                                                   |
@@ -45,7 +45,7 @@
              |     The SymClosestWannier Developer Group and     |
              |        individual contributors                    |
              |                                                   |
-             |        Release: 1.10.13      5th Aug  2025         |
+             |         Release: 2.0.7     15th April  2026       |
              |                                                   |
              | This program is free software; you can            |
              | redistribute it and/or modify it under the terms  |
@@ -65,9 +65,9 @@
              | 675 Mass Ave, Cambridge, MA 02139, USA.           |
              |                                                   |
              +---------------------------------------------------+
-             |    Execution started on 2025/08/12 16:56:47       |
+             |    Execution started on 2026/10/13 10:31:26       |
              +---------------------------------------------------+
-
+    
 
 
                                    ------
@@ -86,21 +86,21 @@
                 b_2    0.000000   0.628319   0.000000
                 b_3    0.000000   0.000000   0.628319
 
-
+    
 *----------------------------------------------------------------------------*
 |   Site       Fractional Coordinate          Cartesian Coordinate (Ang)     |
 +----------------------------------------------------------------------------+
-
+    
   C   1   0.00000   0.00000   0.00000    |    0.00000   0.00000   0.00000
-
+    
   H1   1   0.06276   0.06276   0.06276    |    0.62758   0.62758   0.62758
-
+    
   H2   1   -0.06276   -0.06276   0.06276    |    -0.62758   -0.62758   0.62758
-
+    
   H3   1   0.06276   -0.06276   -0.06276    |    0.62758   -0.62758   -0.62758
-
+    
   H4   1   -0.06276   0.06276   -0.06276    |    -0.62758   0.62758   -0.62758
-
+    
 *----------------------------------------------------------------------------*
 
 
@@ -111,6 +111,97 @@
               Grid size =  1 x 1 x 1      Total points = 1
 
 
+                               --------------
+                               CLOSESTWANNIER
+                               --------------
+    
+*----------------------------------------------------------------------------*
+| seedname                            :                                  ch4 |
+| restart                             :                                   cw |
+| outdir                              : /private/tmp/claude-501/-Users-k-yoshimi-Dropbox-claude-QtDraw/5476826a-5d4f-487a-a061-6b991e45040f/scratchpad/tut_try/tutorial01 |
+| disentangle                         :                                False |
+| proj_min                            :                                  0.5 |
+| cwf_sigma_max                       :                                  1.0 |
+| cwf_sigma_min                       :                                  0.0 |
+| cwf_delta                           :                                  0.0 |
+| svd                                 :                                False |
+| verbose                             :                                 True |
+| parallel                            :                                False |
+| formatter                           :                                False |
+| calc_spreads                        :                                False |
+| transl_inv                          :                                False |
+| use_degen_pert                      :                                False |
+| degen_thr                           :                               0.0001 |
+| tb_gauge                            :                                False |
+| tb_position                         :                                False |
+| write_info_data                     :                                 True |
+| write_hr                            :                                 True |
+| write_sr                            :                                False |
+| write_u_matrices                    :                                False |
+| write_rmn                           :                                False |
+| write_vmn                           :                                False |
+| write_tb                            :                                False |
+| write_eig                           :                                False |
+| write_amn                           :                                False |
+| write_mmn                           :                                False |
+| write_spn                           :                                False |
+| symmetrization                      :                                 True |
+| mp_outdir                           : /private/tmp/claude-501/-Users-k-yoshimi-Dropbox-claude-QtDraw/5476826a-5d4f-487a-a061-6b991e45040f/scratchpad/tut_try/tutorial01/ch4 |
+| mp_seedname                         :                                  ch4 |
+| ket_amn                             :                                      |
+|                                                       ['C', 1, 0, '(s,u)'] |
+|                                                       ['C', 1, 0, '(s,d)'] |
+|                                                      ['C', 1, 1, '(pz,u)'] |
+|                                                      ['C', 1, 1, '(pz,d)'] |
+|                                                      ['C', 1, 1, '(px,u)'] |
+|                                                      ['C', 1, 1, '(px,d)'] |
+|                                                      ['C', 1, 1, '(py,u)'] |
+|                                                      ['C', 1, 1, '(py,d)'] |
+|                                                       ['H', 1, 0, '(s,u)'] |
+|                                                       ['H', 1, 0, '(s,d)'] |
+|                                                       ['H', 2, 0, '(s,u)'] |
+|                                                       ['H', 2, 0, '(s,d)'] |
+|                                                       ['H', 4, 0, '(s,u)'] |
+|                                                       ['H', 4, 0, '(s,d)'] |
+|                                                       ['H', 3, 0, '(s,u)'] |
+|                                                       ['H', 3, 0, '(s,d)'] |
+| irreps                              :                                 full |
+| N1                                  :                                   50 |
+| calc_dos                            :                                False |
+| dos_kmesh                           :                            [1, 1, 1] |
+| dos_num_fermi                       :                                   50 |
+| dos_smr_en_width                    :                                0.001 |
+| calc_cohp                           :                                False |
+| calc_cohp_samb_decomp               :                                False |
+| cohp_bond_length_max                :                                    6 |
+| cohp_bond_length_min                :                                    0 |
+| cohp_kmesh                          :                            [1, 1, 1] |
+| cohp_num_fermi                      :                                   50 |
+| cohp_smr_en_width                   :                                0.001 |
+| calc_spin_2d                        :                                False |
+| zeeman_interaction                  :                                False |
+| magnetic_field                      :                                  0.0 |
+| magnetic_field_theta                :                                  0.0 |
+| magnetic_field_phi                  :                                  0.0 |
+| g_factor                            :                                  2.0 |
+| fermi_surface                       :                                False |
+| fermi_surface_kmesh                 :           [[-1, 1, 10], [-1, 1, 10]] |
+| fermi_surface_view                  :                            [0, 0, 1] |
+| fermi_surface_const                 :                                  0.0 |
+| lindhard                            :                                False |
+| lindhard_freq                       :                                  0.0 |
+| lindhard_smr_fixed_en_width         :                                 0.01 |
+| lindhard_kmesh                      :                            [1, 1, 1] |
+| lindhard_surface                    :                                False |
+| lindhard_surface_qmesh              :           [[-1, 1, 10], [-1, 1, 10]] |
+| lindhard_surface_view               :                            [0, 0, 1] |
+| lindhard_surface_const              :                                  0.0 |
+| Nq1                                 :                                   30 |
+| temperature                         :                                  0.0 |
+| hr_input                            :                                      |
+| use_tb_approximation                :                                False |
+*----------------------------------------------------------------------------*
+
 
 *----------------------------------------------------------------------------*
        Starting a new SymClosestWannier calculation of ''ch4''
@@ -118,25 +209,55 @@
 
 
    - excluding bands with low projectability (proj_min = 0.5) ... done ( 0.0 [sec] ).
-   - constructing TB Hamiltonian ...
+   - constructing TB Hamiltonian ... done ( 0.001 [sec] ).
+
     * band distance between DFT and Wannier bands:
-     - eta_0     = 3.355242826244576e-11 [meV]
-     - eta_0_max = 8.881784197001252e-11 [meV]
-     - eta_2     = 2.6645833943394857e-11 [meV]
-     - eta_2_max = 8.881784197001252e-11 [meV]
-     - eta_5     = 2.664567062174306e-11 [meV]
-     - eta_5_max = 8.881784197001252e-11 [meV]
+     - eta_0     = 1.9306551755628192e-11 [meV]
+     - eta_0_max = 3.019806626980426e-11 [meV]
+     - eta_2     = 1.5377515718990442e-11 [meV]
+     - eta_2_max = 3.019806626980426e-11 [meV]
+     - eta_5     = 1.5377515718990442e-11 [meV]
+     - eta_5_max = 3.019806626980426e-11 [meV]
+done ( 0.0 [sec] ).
+
+    * Occupancy:
+     idx        occupancy (1/unit-cell)
+     1             1.00000000
+     2             1.00000000
+     3             0.00004130
+     4             0.00004130
+     5             0.00004130
+     6             0.00004130
+     7             0.00004130
+     8             0.00004130
+     9             0.99996902
+    10             0.99996902
+    11             0.99996902
+    12             0.99996902
+    13             0.99996902
+    14             0.99996902
+    15             0.99996902
+    16             0.99996902
+     Sum            10.00000000
 done ( 0.001 [sec] ).
-   - symmetrization ...
-    - reading output of multipie ...
+   - symmetrization ... 
+    - creating combined samb matrix ... 
+done ( 0.029 [sec] ).
     - decomposing Hamiltonian as linear combination of SAMBs ... done ( 0.0 [sec] ).
-    - decomposing overlap as linear combination of SAMBs ... done ( 0.001 [sec] ).
+    - decomposing overlap as linear combination of SAMBs ... done ( 0.0 [sec] ).
     - decomposing non-orthogonal Hamiltonian as linear combination of SAMBs ... done ( 0.0 [sec] ).
     - decomposing electronic density as linear combination of SAMBs ... done ( 0.0 [sec] ).
-    - constructing symmetrized TB Hamiltonian ... done ( 0.003 [sec] ).
-    - evaluating fitting accuracy ...
-     * MAE of eigen values between DFT and Symmetry-Adapted CW models (grid) = 0.0000 [meV]
-done
+done ( 0.0 [sec] ).
+    - constructing symmetrized TB Hamiltonian ... done ( 0.002 [sec] ).
+    - evaluating fitting accuracy ... 
+     * MAE of eigen values between CW and Symmetry-Adapted CW models (grid) = 0.0000 [meV] 
+     * MAE of eigen values between DFT and Symmetry-Adapted CW models (grid) = 0.0000 [meV] 
+
+    - band energy 
+     * CW: -92.05921137725394 
+     * SCW: -92.05921137725403 
+     * SCW2: -92.059211377254 
+
 
 
 *----------------------------------------------------------------------------*
@@ -146,7 +267,7 @@ done
 
 
 
-  * total elapsed_time: ( 0.018 [sec] ).
+  * total elapsed_time: ( 0.023 [sec] ).
 
 
 *----------------------------------------------------------------------------*
@@ -154,7 +275,7 @@ done
 *----------------------------------------------------------------------------*
 
 
-  * total elapsed_time: ( 0.535 [sec] ).
+  * total elapsed_time: ( 0.664 [sec] ).
 
 
 *----------------------------------------------------------------------------*

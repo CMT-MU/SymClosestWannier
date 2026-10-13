@@ -6,13 +6,13 @@ cwin_info = {
     "seedname": "seedname (str), [cwannier].",
     "restart": "the restart position 'cw'/'w90' (str), ['cw'].",
     "outdir": "output files are written to this directory, relative to the directory of seedname.cwin (str), ['./'].",
-    "disentangle": "disentagle bands ? (bool), [False].",
+    "disentangle": "disentangle bands ? (bool), [False].",
     "proj_min": "minimum value of projectability (float), [0.0].",
     "cwf_mu_max": "top of the energy window (float), [None].",
     "cwf_mu_min": "bottom of the energy window (float), [None].",
     "cwf_sigma_max": "smearing temperature for the top of the energy window (float), [1.0].",
     "cwf_sigma_min": "smearing temperature for the bottom of the energy window (float), [0.0].",
-    "cwf_delta": "small constant to avoid ill-conditioning of overlap matrices (< 1e-6) (float), [0.0].",
+    "cwf_delta": "small constant to avoid ill-conditioning of overlap matrices (< 1e-5) (float), [0.0].",
     "svd": "implement singular value decomposition ? otherwise adopt Lowdin's orthogonalization method (bool), [False].",
     "verbose": "verbose calculation info (bool, optional), [False].",
     "parallel": "use parallel code? (bool), [False].",
@@ -22,23 +22,23 @@ cwin_info = {
     "use_degen_pert": "use degenerate perturbation theory when bands are degenerate and band derivatives are needed? (bool), [False].",
     "degen_thr": "threshold to exclude degenerate bands from the calculation, [0.0001].",
     "tb_gauge": "use tb gauge? (bool), [False].",
-    "tb_position": "approximate the position operator of seedname_r.dat and seedname_tb.dat by the projection centres, r_ab(R) = tau_a delta_ab delta_R0 (seedname.mmn is then not needed) ? (bool), [False].",
+    "tb_position": "approximate the position operator of seedname_r.dat.cw and seedname_tb.dat.cw by the projection centres, r_ab(R) = tau_a delta_ab delta_R0 (seedname.mmn is then not needed) ? (bool), [False].",
     "write_info_data": "write info and data to seedname.hdf5 (hdf5 format) ? (bool), [False]",
-    "write_hr": "write seedname_hr.dat ? (bool), [False].",
-    "write_sr": "write seedname_sr.dat ? (bool), [False].",
-    "write_u_matrices": "write seedname_u.dat and seedname_u_dis.dat ? (bool), [False].",
-    "write_rmn": "write seedname_r.dat (needs seedname.mmn unless tb_position = true) ? (bool), [False].",
-    "write_vmn": "write seedname_v.dat ? (bool), [False].",
-    "write_tb": "write seedname_tb.dat (wannier90 format, needs seedname.mmn unless tb_position = true, not with tb_gauge = true) ? (bool), [False].",
+    "write_hr": "write seedname_hr.dat.cw, seedname_hr_R_dep.dat.cw, seedname_nr.dat.cw and seedname_nr_R_dep.dat.cw ? (bool), [False].",
+    "write_sr": "write seedname_sr.dat.cw and seedname_sr_R_dep.dat.cw ? (bool), [False].",
+    "write_u_matrices": "write seedname_u.mat.cw and seedname_u_dis.mat.cw (not written with restart = w90) ? (bool), [False].",
+    "write_rmn": "write seedname_r.dat.cw (needs seedname.mmn unless tb_position = true) ? (bool), [False].",
+    "write_vmn": "write seedname_v.dat.cw ? (bool), [False].",
+    "write_tb": "write seedname_tb.dat.cw (wannier90 format, needs seedname.mmn unless tb_position = true, not with tb_gauge = true) ? (bool), [False].",
     "write_eig": "write seedname.eig.cw ? (bool), [False].",
     "write_amn": "write seedname.amn.cw ? (bool), [False].",
     "write_mmn": "write seedname.mmn.cw ? (bool), [False].",
-    "write_spn": "write seedname.spn.cw ? (bool), [False].",
+    "write_spn": "write the spin operator to seedname.s.cw ? (bool), [False].",
     "symmetrization": "symmetrize ? (bool), [False].",
     "mp_outdir": "output files for multipie are written to this directory, relative to the directory of seedname.cwin (str). ['./'].",
-    "mp_seedname": "seedname for seedname_model.py, seedname_samb.py and seedname_matrix.py files (str), ['default'].",
-    "ket_amn": "ket basis list in the seedname.amn file. If ket_amn == auto, the list of orbitals are set automatically, or it can be set manually. The format of each ket must be same as the 'ket' in sambname_model.py file. See sambname['info']['ket'] in sambname_model.py file for the format (list), [None].",
-    "irreps": "list of irreps to be considered (str/list), ['all'].",
+    "mp_seedname": "name of the MultiPie model (the directory and .pkl file created by mp_create) (str), ['default'].",
+    "ket_amn": "ket basis list in the seedname.amn file (list), [None]. Each ket is given as [atom, sublattice, rank, orbital], e.g. [[C,1,1,pz],[C,2,1,pz]], or [[C,1,1,(pz,u)],[C,1,1,(pz,d)]] for the spinful case. If ket_amn = auto, the list of orbitals is set automatically.",
+    "irreps": "irreps of the SAMBs to be considered: 'all' (all irreps), 'full' (only the identity irrep) or a list of irreps (str/list), ['all'].",
     "a": "lattice parameter (in Ang) used to correct units of k points in reference band data (float, optional), [None].",
     "N1": "number of divisions for high symmetry lines (int, optional), [50].",
     "calc_dos": "calculate dos? (bool), [False].",
@@ -102,7 +102,7 @@ win_info = {
     "dis_mix_ratio": "mixing ratio during the disentanglement (float), [0.5].",
     "fermi_energy": "fermi energy (float), [0.0].",
     #
-    "mp_grid": "dimensions of the Monkhorst-Pack grid of k-points (list), [[0, 0, 0]].",
+    "mp_grid": "dimensions of the Monkhorst-Pack grid of k-points (list), [1, 1, 1].",
     "ws_distance_tol": "tolerance of the distances in the Wigner-Seitz supercell of the R vectors, as wannier90 (float, Angstrom), [1.0e-5].",
     "ws_search_size": "number of supercells searched for the Wigner-Seitz supercell along each direction, as wannier90 (list), [[2, 2, 2]].",
     "kpoints": "k-points, [[k1, k2, k3]] (crystal coordinate) (list), [[[0, 0, 0]]].",
@@ -227,7 +227,7 @@ cw_info = cwin_info | win_info | nnkp_info | eig_info | amn_info | mmn_info | um
 cwin_header = """
 === input parameters in the *.cwin file [default] === \n
 * For execution use: pw2cw [seedname]
-    - If a seedname string is given the code will read its input from a file seedname.cwin. The default value is cwannier.
+    - SEEDNAME is required: the code reads its input from seedname.cwin.
       One can also equivalently provide the string seedname.cwin instead of seedname.
 
 * input parameters in seedname.cwin (same format as seedname.win) [default] \n
@@ -298,8 +298,8 @@ cw_data = {
     "Hr_sym": "Symmetrized Hamiltonian matrix elements in real-space (orthogonal) (ndarray).",
     "Hr_nonortho_sym": "Symmetrized Hamiltonian matrix elements in real-space (non-orthogonal) (ndarray).",
     #
-    "Ek_MAE_grid": "mean squared error of eigen energies between symmetrized and non-symmetrized closed wannier TB model (grid) (float).",
-    "Ek_MAE_path": "mean squared error of eigen energies between symmetrized and non-symmetrized closed wannier TB model (path) (float).",
+    "Ek_MAE_grid": "mean absolute error of eigen energies between the closest Wannier TB model and the symmetry-adapted closest Wannier TB model on the k-point grid [meV] (float).",
+    "Ek_MAE_path": "mean absolute error of eigen energies between the closest Wannier TB model and the symmetry-adapted closest Wannier TB model along the high-symmetry k-path [meV] (float).",
 }
 
 cw_data_header = """
