@@ -1,123 +1,159 @@
 # seedname.hdf5 [default]
-- seedname          : seedname (str), [cwannier].
-- restart           : the restart position 'cw'/'w90' (str), ['cw'].
-- outdir            : input and output files are found in this directory (str), ['./'].
-- disentangle       : disentagle bands ? (bool), [False].
-- proj_min          : minimum value of projectability (float), [0.0].
-- cwf_mu_max      : upper energy window (float), [None].
-- cwf_mu_min      : lower energy window (float), [None].
-- cwf_sigma_max : smearing temperature for upper window (float), [5.0].
-- cwf_sigma_min : smearing temperature for lower window (float), [0.01].
-- cwf_delta             : small constant to avoid ill-conditioning of overlap matrices (< 1e-5) (float), [0.0].
-- svd               : implement singular value decomposition ? otherwise adopt Lowdin's orthogonalization method (bool), [False].
-- verbose           : verbose calculation info (bool, optional), [False].
-- parallel          : use parallel code? (bool), [False].
-- formatter         : format by using black? (bool), [False].
-- transl_inv        : use Eq.(31) of Marzari&Vanderbilt PRB 56, 12847 (1997) for band-diagonal position matrix elements? (bool), [True].
-- tb_gauge          : use tb gauge? (bool), [False].
-- tb_position       : approximate the position operator of seedname_r.dat and seedname_tb.dat by the projection centres, r_ab(R) = tau_a delta_ab delta_R0 (seedname.mmn is then not needed) ? (bool), [False].
-- write_hr          : write seedname_hr.dat ? (bool), [False].
-- write_sr          : write seedname_sr.dat ? (bool), [False].
-- write_u_matrices  : write seedname_u.dat and seedname_u_dis.dat ? (bool), [False].
-- write_rmn         : write seedname_r.dat (needs seedname.mmn unless tb_position = true) ? (bool), [False].
-- write_vmn         : write seedname_v.dat ? (bool), [False].
-- write_tb          : write seedname_tb.dat (wannier90 format, needs seedname.mmn unless tb_position = true, not with tb_gauge = true) ? (bool), [False].
-- write_eig         : write seedname.eig.cw ? (bool), [False].
-- write_amn         : write seedname.amn.cw ? (bool), [False].
-- write_mmn         : write seedname.mmn.cw ? (bool), [False].
-- write_spn         : write seedname.spn.cw ? (bool), [False].
-- symmetrization    : symmetrize ? (bool), [False].
-- mp_outdir         : output files for multipie are found in this directory (str). ['./'].
-- mp_seedname       : seedname for seedname_model.py, seedname_samb.py and seedname_matrix.py files (str), ['default'].
-- ket_amn           : ket basis list in the seedname.amn file. If ket_amn == auto, the list of orbitals are set automatically, or it can be set manually. The format of each ket must be same as the "ket" in sambname_model.py file. See sambname["info"]["ket"] in sambname_model.py file for the format (list), [None].
-- irreps            : list of irreps to be considered (str/list), [None].
-- a                 : lattice parameter (in Ang) used to correct units of k points in reference band data (float, optional), [1.0].
-- N1                : number of divisions for high symmetry lines (int, optional), [50].
-- calc_spin_2d      : add expectation value of spin operator given by *.spn in output file ? (bool). [False].
-- calc_dos          : calculate dos? (bool), [False].
-- dos_kmesh         : dimensions of the Monkhorst-Pack grid of k-points for dos calculation (list), [[1, 1, 1]].
-- dos_num_fermi     : number of fermi energies (int), [50].
-- dos_smr_en_width  : Energy width for the smearing function for the DOS (The units are [eV]) (flaot), [0.001].
-- zeeman_interaction   : consider zeeman interaction ? (bool), [False].
-- magnetic_field       : strength of the magnetic field (float), [0.0].
-- magnetic_field_theta : angle from the z-axis of the magnetic field (float), [0.0].
-- magnetic_field_phi   : angle from the x-axis of the magnetic field (float), [0.0].
-- g_factor             : spin g factor (float), [2.0].
-- fermi_surface        : calculate fermi surface? (bool), [False].
-- fermi_surface_kmesh  : 2d kmesh given by [[k1_min, k1_max, N1], [k2_min, k2_max, N2] ] (crystal coordinate), (list), [ [[-1, 1, 10], [-1, 1, 10]] ].
-- fermi_surface_view   : k3 direction (list), [ [0, 0, 1] ].
-- fermi_surface_const  : constant value for k3 axis [0.0].
-- lindhard                    : calculate lindhard function? (bool), [False].
-- lindhard_freq               : frequency for computing the lindhard function. (The units are [eV]) (float), [0.0].
-- lindhard_smr_fixed_en_width : Overrides the smr_fixed_en_width global variable (float), [0.01].
-- lindhard_kmesh              : dimensions of the Monkhorst-Pack grid of k-points for lindhard function (list), [[1, 1, 1]].
-- qpoint                      : representative q points (dict), [None].
-- qpoint_path                 : q-points along high symmetry line in Brillouin zone, [[k1, k2, k3]] (crystal coordinate) (str), [None].
-- Nq1                         : number of divisions for high symmetry lines (int, optional), [30].
-- filling                     : number of electrons per unit-cell, [None].
-- temperature                 : temperature for caluclating lindhard function (float), [0.0].
-- hr_input             : full filename of hr.dat file (str), [""].
-- use_tb_approximation : use tight-binding approximation? (bool), [False].
-- num_k             : # of k points (int), [1].
-- num_bands         : # of bands passed to the code (int), [1].
-- num_wann          : # of WFs (int), [1].
-- dis_num_iter      : # of iterations for disentanglement (int), [0].
-- num_iter          : # of iterations for maximal localization (int), [200].
-- dis_froz_max      : top of the inner (frozen) energy window (float), [+100000].
-- dis_froz_min      : bottom of the inner (frozen) energy window (float), [-100000].
-- dis_win_max       : top of the outer energy window (float), [+100000].
-- dis_win_min       : bottom of the outer energy window (float), [-100000].
-- dis_mix_ratio     : mixing ratio during the disentanglement (float), [0.5].
-- mp_grid           : dimensions of the Monkhorst-Pack grid of k-points (list), [0, 0, 0].
-- ws_distance_tol   : tolerance of the distances in the Wigner-Seitz supercell of the R vectors, as wannier90 (float, Angstrom), [1.0e-5].
-- ws_search_size    : number of supercells searched for the Wigner-Seitz supercell along each direction, as wannier90 (list), [[2, 2, 2]].
-- kpoints           : k-points, [[k1, k2, k3]] (crystal coordinate) (list), [[[0, 0, 0]]].
-- kpoint            : representative k points (dict), [None].
-- kpoint_path       : k-points along high symmetry line in Brillouin zone, [[k1, k2, k3]] (crystal coordinate) (str), [None].
-- unit_cell_cart    : transform matrix, [a1,a2,a3], [None].
-- atoms_frac        : atomic positions in fractional coordinates with respect to the lattice vectors, {atom: [r1,r2,r3]} [None].
-- atoms_cart        : atomic positions in cartesian coordinates, {atom: [rx,ry,rz]} [None].
-- A                 : real lattice vectors, A = [a1,a2,a3] (list), [[[1,0,0], [0,1,0], [0,0,1]]].
-- B                 : reciprocal lattice vectors, B = [b1,b2,b3] (list), [[[2pi,0,0], [0,2pi,0], [0,0,2pi]]].
-- num_atom          : # of atoms (int), [1].
-- num_b             : # of b-vectors (int), [1].
-- nnkpts            : nearest-neighbour k-points (list), [None].
-- nw2n              : atom position index of each WFs (list), [None].
-- nw2l              : $l$ specifies the angular part $\Theta_{lm}(\theta,\phi)$ (list), [None].
-- nw2m              : $m$ specifies the angular part $\Theta_{lm}(\theta,\phi)$ (list), [None].
-- nw2r              : $r$ specifies the radial part $R_r(r)$ (list), [None].
-- nw2s              : $s$ specifies the spin, 1(up)/-1(dn) (list), [None].
-- atom_orb          : WFs indexes of each atom (list), [None].
-- atom_pos          : atom position index of each atom (list), [None].
-- atom_pos_r        : atom position of each atom in fractional coordinates with respect to the lattice vectors (list), [None].
-- bvec_cart         : b-vectors (cartesian coordinate) (list), [None].
-- bvec_crys         : b-vectors (crystal coordinate) (list), [None].
-- wb                :  weight for each k-points and nearest-neighbour k-points (list), [None].
-- Ek                : Kohn-Sham energies, $ E_{m}(k) $ (list), [None].
-- Ak                : Overlap matrix elements, $ A_{mn}(k) = \langle \psi^{\rm KS}_{m}(k)|\psi_{n}(k)\rangle $ (list), [None].
-- Mkb               : Overlap matrix elements, $ M_{mn}(k,b) = \langle u^{\rm KS}_{m}(k)|u^{\rm KS}_{n}(k+b)\rangle $ (list), [None].
-- Uoptk             : num_wann×num_wann full unitary matrix (ndarray), [None].
-- Udisk             : num_wann×num_bands partial unitary matrix (ndarray), [None].
-- Uk                : num_wann×num_bands full unitary matrix (ndarray), [None].
+- seedname.hdf5 is written when `write_info_data = true`. It has three groups: info, data and samb_info.
+
+# info [default]
+- keywords of seedname.cwin:
+    - restart           : the restart position 'cw'/'w90' (str), ["cw"].
+    - seedname          : seedname (str), ["cwannier"].
+    - outdir            : output files are written to this directory, relative to the directory of seedname.cwin (str), ["./"].
+    - disentangle       : disentangle bands ? (bool), [False].
+    - proj_min          : minimum value of projectability: [0.0].
+    - cwf_mu_max      : top of the energy window (float), [None].
+    - cwf_mu_min      : bottom of the energy window (float), [None].
+    - cwf_sigma_max : smearing temperature for the top of the energy window (float), [1.0].
+    - cwf_sigma_min : smearing temperature for the bottom of the energy window (float), [0.0].
+    - cwf_delta             : small constant to avoid ill-conditioning of overlap matrices (< 1e-5) (float), [0.0].
+    - svd               : implement singular value decomposition ? otherwise adopt Lowdin's orthogonalization method (bool), [False].
+    - verbose           : verbose calculation info (bool, optional), [False].
+    - parallel          : use parallel code? (bool), [False].
+    - formatter         : format by using black? (bool), [False].
+    - calc_spreads      : calculate spreads? (bool), [False].
+    - write_info_data   : write info and data to seedname.hdf5 (hdf5 format) ? (bool), [False].
+    - transl_inv        : use Eq.(31) of Marzari&Vanderbilt PRB 56, 12847 (1997) for band-diagonal position matrix elements? (bool), [False].
+    - use_degen_pert    : use degenerate perturbation theory when bands are degenerate and band derivatives are needed? (bool), [False].
+    - degen_thr         : threshold to exclude degenerate bands from the calculation, [0.0001].
+    - tb_gauge          : use tb gauge? (bool), [False].
+    - tb_position       : approximate the position operator of seedname_r.dat.cw and seedname_tb.dat.cw by the projection centres, r_ab(R) = tau_a delta_ab delta_R0 (seedname.mmn is then not needed) ? (bool), [False].
+    - write_hr          : write seedname_hr.dat.cw, seedname_hr_R_dep.dat.cw, seedname_nr.dat.cw and seedname_nr_R_dep.dat.cw ? (bool), [False].
+    - write_sr          : write seedname_sr.dat.cw and seedname_sr_R_dep.dat.cw ? (bool), [False].
+    - write_u_matrices  : write seedname_u.mat.cw and seedname_u_dis.mat.cw (not written with restart = w90) ? (bool), [False].
+    - write_rmn         : write seedname_r.dat.cw (needs seedname.mmn unless tb_position = true) ? (bool), [False].
+    - write_vmn         : write seedname_v.dat.cw ? (bool), [False].
+    - write_tb          : write seedname_tb.dat.cw (wannier90 format, needs seedname.mmn unless tb_position = true, not with tb_gauge = true) ? (bool), [False].
+    - write_eig         : write seedname.eig.cw ? (bool), [False].
+    - write_amn         : write seedname.amn.cw ? (bool), [False].
+    - write_mmn         : write seedname.mmn.cw ? (bool), [False].
+    - write_spn         : write the spin operator to seedname.s.cw ? (bool), [False].
+    - symmetrization    : symmetrize ? (bool), [False].
+    - mp_outdir         : output files for multipie are written to this directory, relative to the directory of seedname.cwin (str). ["./"].
+    - mp_seedname       : name of the MultiPie model (the directory and .pkl file created by mp_create) (str), ["default"].
+    - ket_amn           : ket basis list in the seedname.amn file (list), [None]. Each ket is given as [atom, sublattice, rank, orbital], e.g. `[[C,1,1,pz],[C,2,1,pz]]`, or `[[C,1,1,(pz,U)],[C,1,1,(pz,D)]]` for the spinful case. If ket_amn = auto, the list of orbitals is set automatically.
+    - irreps            : list of irreps to be considered (str/list), ["all"].
+    - a                 : lattice parameter (in Ang) used to correct units of k points in reference band data (float, optional), [None] (|a1| is used when None).
+    - N1                : number of divisions for high symmetry lines (int, optional), [50].
+    - calc_spin_2d      : add expectation value of spin operator given by *.spn in output file ? (bool). [False].
+    - calc_dos          : calculate dos? (bool), [False].
+    - dos_kmesh         : dimensions of the Monkhorst-Pack grid of k-points for dos calculation, given as space-separated integers, e.g. `dos_kmesh = 10 10 10` (list), [[1, 1, 1]].
+    - dos_num_fermi     : number of fermi energies (int), [50].
+    - dos_smr_en_width  : Energy width for the smearing function for the DOS (The units are [eV]) (float), [0.001].
+    - dos_emax          : maximum energy to be calculated (float), [None].
+    - dos_emin          : minimum energy to be calculated (float), [None].
+    - calc_cohp             : calculate cohp? (bool), [False].
+    - calc_cohp_samb_decomp : decompose cohp by SAMBs? (bool), [False].
+    - cohp_bond_length_max  : maximum bond length (ang) to be calculated (float), [6.0].
+    - cohp_bond_length_min  : minimum bond length (ang) to be calculated (float), [0.0].
+    - cohp_head_atom        : head atom to be calculated (str), [None].
+    - cohp_head_atom_idx    : head atom index to be calculated (int), [None].
+    - cohp_tail_atom        : tail atom to be calculated (str), [None].
+    - cohp_tail_atom_idx    : tail atom index to be calculated (int), [None].
+    - cohp_kmesh            : dimensions of the Monkhorst-Pack grid of k-points for cohp calculation, given as space-separated integers, e.g. `cohp_kmesh = 10 10 10` (list), [[1, 1, 1]].
+    - cohp_num_fermi        : number of fermi energies (int), [50].
+    - cohp_smr_en_width     : Energy width for the smearing function for the COHP (The units are [eV]) (float), [0.001].
+    - cohp_emax             : maximum energy to be calculated (float), [None].
+    - cohp_emin             : minimum energy to be calculated (float), [None].
+    - zeeman_interaction   : consider zeeman interaction ? (bool), [False].
+    - magnetic_field       : strength of the magnetic field (float), [0.0].
+    - magnetic_field_theta : angle from the z-axis of the magnetic field (float), [0.0].
+    - magnetic_field_phi   : angle from the x-axis of the magnetic field (float), [0.0].
+    - g_factor             : spin g factor (float), [2.0].
+    - fermi_surface        : calculate fermi surface? (bool), [False].
+    - fermi_surface_kmesh  : 2d kmesh [[k1_min, k1_max, N1], [k2_min, k2_max, N2]] (crystal coordinate), given as six space-separated integers k1_min k1_max N1 k2_min k2_max N2, e.g. `fermi_surface_kmesh = -1 1 10 -1 1 10` (list), [ [[-1, 1, 10], [-1, 1, 10]] ].
+    - fermi_surface_view   : k3 direction, given as space-separated integers, e.g. `fermi_surface_view = 0 0 1` (list), [ [0, 0, 1] ].
+    - fermi_surface_const  : constant value for k3 axis [0.0].
+    - lindhard                    : calculate lindhard function? (bool), [False].
+    - lindhard_freq               : frequency for computing the lindhard function. (The units are [eV]) (float), [0.0].
+    - lindhard_smr_fixed_en_width : Overrides the smr_fixed_en_width global variable (float), [0.01].
+    - lindhard_kmesh              : dimensions of the Monkhorst-Pack grid of k-points for lindhard function, given as space-separated integers, e.g. `lindhard_kmesh = 10 10 10` (list), [[1, 1, 1]].
+    - lindhard_surface            : calculate lindhard function on a 2d q-plane? (bool), [False].
+    - lindhard_surface_qmesh      : 2d qmesh [[q1_min, q1_max, N1], [q2_min, q2_max, N2]] (crystal coordinate), given as six space-separated integers q1_min q1_max N1 q2_min q2_max N2, e.g. `lindhard_surface_qmesh = -1 1 10 -1 1 10` (list), [ [[-1, 1, 10], [-1, 1, 10]] ].
+    - lindhard_surface_view       : q3 direction, given as space-separated integers, e.g. `lindhard_surface_view = 0 0 1` (list), [ [0, 0, 1] ].
+    - lindhard_surface_const      : constant value for q3 axis [0.0].
+    - qpoint                      : representative q points (dict), [None].
+    - qpoint_path                 : q-points along high symmetry line in Brillouin zone, [[k1, k2, k3]] (crystal coordinate) (str), [None].
+    - Nq1                         : number of divisions for high symmetry lines (int, optional), [30].
+    - filling                     : number of electrons per unit-cell, [None].
+    - temperature                 : temperature for calculating lindhard function (float), [0.0].
+    - hr_input             : full filename of hr.dat file (str), [""].
+    - use_tb_approximation : use tight-binding approximation? (bool), [False].
+- keywords of seedname.win and quantities read from seedname.nnkp, seedname.eig, seedname.amn, ...:
+    - num_k             : # of k points (int), [1].
+    - num_bands         : # of bands passed to the code (int), [1].
+    - num_wann          : # of WFs (int), [1].
+    - dis_num_iter      : # of iterations for disentanglement (int), [0].
+    - num_iter          : # of iterations for maximal localization (int), [200].
+    - dis_froz_max      : top of the inner (frozen) energy window (float), [+100000].
+    - dis_froz_min      : bottom of the inner (frozen) energy window (float), [-100000].
+    - dis_win_max       : top of the outer energy window (float), [+100000].
+    - dis_win_min       : bottom of the outer energy window (float), [-100000].
+    - dis_mix_ratio     : mixing ratio during the disentanglement (float), [0.5].
+    - mp_grid           : dimensions of the Monkhorst-Pack grid of k-points (list), [[1, 1, 1]].
+    - ws_distance_tol   : tolerance of the distances in the Wigner-Seitz supercell of the R vectors, as wannier90 (float, Angstrom), [1.0e-5].
+    - ws_search_size    : number of supercells searched for the Wigner-Seitz supercell along each direction, as wannier90 (list), [[2, 2, 2]].
+    - kpoints           : k-points, [[k1, k2, k3]] (crystal coordinate) (list), [[[0, 0, 0]]].
+    - kpoint            : representative k points (dict), [None].
+    - kpoint_path       : k-points along high symmetry line in Brillouin zone, [[k1, k2, k3]] (crystal coordinate) (str), [None].
+    - unit_cell_cart    : transform matrix, [a1,a2,a3], [None].
+    - atoms_frac        : atomic positions in fractional coordinates with respect to the lattice vectors, {atom: [r1,r2,r3]} [None].
+    - atoms_cart        : atomic positions in cartesian coordinates, {atom: [rx,ry,rz]} [None].
+    - A                 : real lattice vectors, A = [a1,a2,a3] (list), [[[1,0,0], [0,1,0], [0,0,1]]].
+    - B                 : reciprocal lattice vectors, B = [b1,b2,b3] (list), [[[2pi,0,0], [0,2pi,0], [0,0,2pi]]].
+    - num_atom          : # of atoms (int), [1].
+    - num_b             : # of b-vectors (int), [1].
+    - nnkpts            : nearest-neighbour k-points (list), [None].
+    - nw2n              : atom position index of each WFs (list), [None].
+    - nw2l              : $l$ specifies the angular part $\Theta_{lm}(\theta,\phi)$ (list), [None].
+    - nw2m              : $m$ specifies the angular part $\Theta_{lm}(\theta,\phi)$ (list), [None].
+    - nw2r              : $r$ specifies the radial part $R_r(r)$ (list), [None].
+    - nw2s              : $s$ specifies the spin, 1(up)/-1(dn) (list), [None].
+    - atom_orb          : WFs indexes of each atom (list), [None].
+    - atom_pos          : atom position index of each atom (list), [None].
+    - atom_pos_r        : atom position of each atom in fractional coordinates with respect to the lattice vectors (list), [None].
+    - bvec_cart         : b-vectors (cartesian coordinate) (list), [None].
+    - bvec_crys         : b-vectors (crystal coordinate) (list), [None].
+    - wb                :  weight for each k-points and nearest-neighbour k-points (list), [None].
+    - Ek                : Kohn-Sham energies, $ E_{m}(k) $ (list), [None].
+    - Ak                : Overlap matrix elements, $ A_{mn}(k) = \langle \psi^{\rm KS}_{m}(k)|\psi_{n}(k)\rangle $ (list), [None].
+    - Mkb               : Overlap matrix elements, $ M_{mn}(k,b) = \langle u^{\rm KS}_{m}(k)|u^{\rm KS}_{n}(k+b)\rangle $ (list), [None].
+    - Uoptk             : num_wann×num_wann full unitary matrix (ndarray), [None].
+    - Udisk             : num_wann×num_bands partial unitary matrix (ndarray), [None].
+    - Uk                : num_wann×num_bands full unitary matrix (ndarray), [None].
+    - other keywords of seedname.win follow the [Wannier90](https://wannier.org/) user guide.
 
 
 # data [default]
-- Sk              : Overlap matrix elements in k-space (ndarray).,
-- nk              : Electronic density matrix elements in k-space (ndarray).,
-- Hk              : Hamiltonian matrix elements in k-space (orthogonal) (ndarray).,
-- Hk_nonortho     : Hamiltonian matrix elements in k-space (non-orthogonal) (ndarray).,
-- Sr              : Overlap matrix elements in real-space (ndarray).,
-- nr              : Electronic density matrix elements in real-space (ndarray).,
-- Hr              : Hamiltonian matrix elements in real-space (orthogonal) (ndarray).,
-- Hr_nonortho     : Hamiltonian matrix elements in real-space (non-orthogonal) (ndarray).,
-- s               : The expansion coefficients of Sk expressed by a linear combination of SAMBs (ndarray).,
-- z               : The expansion coefficients of Hk expressed by a linear combination of SAMBs (ndarray).,
-- z_nonortho      : The expansion coefficients of Hk_nonortho expressed by a linear combination of SAMBs (ndarray).,
-- Sk_sym          : Symmetrized overlap matrix elements in k-space (ndarray).,
-- Hk_sym          : Symmetrized Hamiltonian matrix elements in k-space (orthogonal) (ndarray).,
-- Hk_nonortho_sym : Symmetrized Hamiltonian matrix elements in k-space (non-orthogonal) (ndarray).,
-- Sr_sym          : Symmetrized overlap matrix elements in real-space (ndarray).,
-- Hr_sym          : Symmetrized Hamiltonian matrix elements in real-space (orthogonal) (ndarray).,
-- Hr_nonortho_sym : Symmetrized Hamiltonian matrix elements in real-space (non-orthogonal) (ndarray).,
-- Ek_MAE_grid    : mean squared error of eigen energies between symmetrized and non-symmetrized closed wannier TB model (grid) (float).,
-- Ek_MAE_path    : mean squared error of eigen energies between symmetrized and non-symmetrized closed wannier TB model (path) (float).,
+- Sk              : Overlap matrix elements in k-space (ndarray).
+- nk              : Electronic density matrix elements in k-space (ndarray).
+- Hk              : Hamiltonian matrix elements in k-space (orthogonal) (ndarray).
+- Hk_nonortho     : Hamiltonian matrix elements in k-space (non-orthogonal) (ndarray).
+- Sr              : Overlap matrix elements in real-space (ndarray).
+- nr              : Electronic density matrix elements in real-space (ndarray).
+- Hr              : Hamiltonian matrix elements in real-space (orthogonal) (ndarray).
+- Hr_nonortho     : Hamiltonian matrix elements in real-space (non-orthogonal) (ndarray).
+- s               : The expansion coefficients of Sk expressed by a linear combination of SAMBs (dict of SAMB tag and coefficient, stored as str).
+- n               : The expansion coefficients of nk expressed by a linear combination of SAMBs (dict of SAMB tag and coefficient, stored as str).
+- z               : The expansion coefficients of Hk expressed by a linear combination of SAMBs (dict of SAMB tag and coefficient, stored as str).
+- z_nonortho      : The expansion coefficients of Hk_nonortho expressed by a linear combination of SAMBs (dict of SAMB tag and coefficient, stored as str).
+- Sk_sym          : Symmetrized overlap matrix elements in k-space (ndarray).
+- nk_sym          : Symmetrized electronic density matrix elements in k-space (ndarray).
+- Hk_sym          : Symmetrized Hamiltonian matrix elements in k-space (orthogonal) (ndarray).
+- Hk_nonortho_sym : Symmetrized Hamiltonian matrix elements in k-space (non-orthogonal) (ndarray).
+- Sr_sym          : Symmetrized overlap matrix elements in real-space (ndarray).
+- nr_sym          : Symmetrized electronic density matrix elements in real-space (ndarray).
+- Hr_sym          : Symmetrized Hamiltonian matrix elements in real-space (orthogonal) (ndarray).
+- Hr_nonortho_sym : Symmetrized Hamiltonian matrix elements in real-space (non-orthogonal) (ndarray).
+- Ek_MAE_grid     : mean absolute error of eigen energies between the closest Wannier TB model and the symmetry-adapted closest Wannier TB model on the k-point grid [meV] (float, stored as str).
+- Ek_MAE_path     : mean absolute error of eigen energies between the closest Wannier TB model and the symmetry-adapted closest Wannier TB model along the high-symmetry k-path [meV] (None for molecules) (float, stored as str).
+
+
+# samb_info
+- group for the SAMB information used by the analysis code (such as `ket`, the ket basis of the SAMBs).

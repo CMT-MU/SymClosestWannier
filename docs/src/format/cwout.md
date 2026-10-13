@@ -1,10 +1,10 @@
 # seedname.cwout
-Example standard output for [graphene](../../example/graphene/graphene.cwin) is given here.
+Example standard output for [graphene](https://github.com/CMT-MU/SymClosestWannier/blob/main/tutorials/tutorial02/graphene.cwin) is given here.
 ```
 
              +---------------------------------------------------+
              |                                                   |
-             |                SymClosestWwannier                 |
+             |                SymClosestWannier                  |
              |                                                   |
              +---------------------------------------------------+
              |                                                   |
@@ -13,7 +13,7 @@ Example standard output for [graphene](../../example/graphene/graphene.cwin) is 
              |    https://github.com/CMT-MU/SymClosestWannier    |
              |                                                   |
              |                                                   |
-             |        SymClosestWwannier Developer Group:        |
+             |        SymClosestWannier Developer Group:         |
              |          Rikuto Oiwa      (RIKEN)                 |
              |          Hiroaki Kusunose (Meiji Univ.)           |
              |                                                   |
