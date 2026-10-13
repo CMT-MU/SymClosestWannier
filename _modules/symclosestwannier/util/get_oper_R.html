@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 
 
-<html lang="jp" data-content_root="../../../" >
+<html lang="en" data-content_root="../../../" >
 
   <head>
     <meta charset="utf-8" />
@@ -30,7 +30,7 @@
 <link href="../../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 
     <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/sphinx-book-theme.css?v=4418a689" />
     <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css?v=9c3e77be" />
     <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
@@ -44,9 +44,9 @@
   <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../../../_static/documentation_options.js?v=8cf54648"></script>
-    <script src="../../../_static/doctools.js?v=9a2dae69"></script>
-    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/documentation_options.js?v=a8e58a58"></script>
+    <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../../../_static/copybutton.js?v=f281be69"></script>
     <script src="../../../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
@@ -58,14 +58,12 @@
     <script src="../../../_static/design-tabs.js?v=f930bc37"></script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
     <script async="async" src="../../../_static/sphinx-thebe.js?v=c100c467"></script>
-    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
-    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_modules/symclosestwannier/util/get_oper_R';</script>
     <script src="../../../_static/custom.js?v=9c3a2667"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <meta name="docsearch:language" content="jp"/>
+  <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="" />
   </head>
   
@@ -173,11 +171,14 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../src/format/cwout.html">seedname.cwout</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../src/format/hdf5.html">seedname.hdf5 [default]</a></li>
 
+
+
 <li class="toctree-l1"><a class="reference internal" href="../../../src/format/hr.html">seedname_hr.dat.cw</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../src/format/sr.html">seedname_sr.dat.cw</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../src/format/z.html">seedname_z.dat.cw</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../src/format/s.html">seedname_s.dat.cw</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../src/format/n.html">seedname_n.dat.cw</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/format/convention.html">Phase conventions of real-space operators</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
 <ul class="nav bd-sidenav">
@@ -334,7 +335,7 @@
 <div class="viewcode-block" id="get_oper_R">
 <a class="viewcode-back" href="../../../src/api/util.html#symclosestwannier.util.get_oper_R.get_oper_R">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">get_oper_R</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">cwi</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    wrapper for getting matrix elements of the operator.</span>
 
 <span class="sd">    Args:</span>
@@ -342,17 +343,17 @@
 
 <span class="sd">    Returns:</span>
 <span class="sd">        ndarray: matrix elements of the operator.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">d</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="s2">&quot;HH_R&quot;</span><span class="p">:</span> <span class="n">get_HH_R</span><span class="p">,</span>  <span class="c1"># &lt;0n|H|Rm&gt;</span>
-        <span class="s2">&quot;AA_R&quot;</span><span class="p">:</span> <span class="n">get_AA_R</span><span class="p">,</span>  <span class="c1"># &lt;0n|r|Rm&gt;</span>
-        <span class="s2">&quot;BB_R&quot;</span><span class="p">:</span> <span class="n">get_BB_R</span><span class="p">,</span>  <span class="c1"># &lt;0|H(r-R)|R&gt;</span>
-        <span class="s2">&quot;CC_R&quot;</span><span class="p">:</span> <span class="n">get_CC_R</span><span class="p">,</span>  <span class="c1"># &lt;0|r_alpha.H(r-R)_beta|R&gt;</span>
-        <span class="s2">&quot;SS_R&quot;</span><span class="p">:</span> <span class="n">get_SS_R</span><span class="p">,</span>  <span class="c1"># &lt;0n|sigma_x,y,z|Rm&gt;</span>
-        <span class="s2">&quot;SHC_R&quot;</span><span class="p">:</span> <span class="n">get_SHC_R</span><span class="p">,</span>  <span class="c1"># &lt;0n|sigma_x,y,z.(r-R)_alpha|Rm&gt;, &lt;0n|sigma_x,y,z.H.(r-R)_alpha|Rm&gt;, &lt;0n|sigma_x,y,z.H|Rm&gt;</span>
-        <span class="s2">&quot;SAA_R&quot;</span><span class="p">:</span> <span class="n">get_SAA_R</span><span class="p">,</span>  <span class="c1"># &lt;0n|sigma_x,y,z.(r-R)_alpha|Rm&gt;</span>
-        <span class="s2">&quot;SBB_R&quot;</span><span class="p">:</span> <span class="n">get_SBB_R</span><span class="p">,</span>  <span class="c1"># &lt;0n|sigma_x,y,z.H.(r-R)_alpha|Rm&gt;</span>
-        <span class="s2">&quot;v_R&quot;</span><span class="p">:</span> <span class="n">get_v_R</span><span class="p">,</span>
+        <span class="s2">"HH_R"</span><span class="p">:</span> <span class="n">get_HH_R</span><span class="p">,</span>  <span class="c1"># &lt;0n|H|Rm&gt;</span>
+        <span class="s2">"AA_R"</span><span class="p">:</span> <span class="n">get_AA_R</span><span class="p">,</span>  <span class="c1"># &lt;0n|r|Rm&gt;</span>
+        <span class="s2">"BB_R"</span><span class="p">:</span> <span class="n">get_BB_R</span><span class="p">,</span>  <span class="c1"># &lt;0|H(r-R)|R&gt;</span>
+        <span class="s2">"CC_R"</span><span class="p">:</span> <span class="n">get_CC_R</span><span class="p">,</span>  <span class="c1"># &lt;0|r_alpha.H(r-R)_beta|R&gt;</span>
+        <span class="s2">"SS_R"</span><span class="p">:</span> <span class="n">get_SS_R</span><span class="p">,</span>  <span class="c1"># &lt;0n|sigma_x,y,z|Rm&gt;</span>
+        <span class="s2">"SHC_R"</span><span class="p">:</span> <span class="n">get_SHC_R</span><span class="p">,</span>  <span class="c1"># &lt;0n|sigma_x,y,z.(r-R)_alpha|Rm&gt;, &lt;0n|sigma_x,y,z.H.(r-R)_alpha|Rm&gt;, &lt;0n|sigma_x,y,z.H|Rm&gt;</span>
+        <span class="s2">"SAA_R"</span><span class="p">:</span> <span class="n">get_SAA_R</span><span class="p">,</span>  <span class="c1"># &lt;0n|sigma_x,y,z.(r-R)_alpha|Rm&gt;</span>
+        <span class="s2">"SBB_R"</span><span class="p">:</span> <span class="n">get_SBB_R</span><span class="p">,</span>  <span class="c1"># &lt;0n|sigma_x,y,z.H.(r-R)_alpha|Rm&gt;</span>
+        <span class="s2">"v_R"</span><span class="p">:</span> <span class="n">get_v_R</span><span class="p">,</span>
     <span class="p">}</span>
 
     <span class="k">return</span> <span class="n">d</span><span class="p">[</span><span class="n">name</span><span class="p">](</span><span class="n">cwi</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">)</span></div>
@@ -363,7 +364,7 @@
 <div class="viewcode-block" id="get_HH_R">
 <a class="viewcode-back" href="../../../src/api/util.html#symclosestwannier.util.get_oper_R.get_HH_R">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">get_HH_R</span><span class="p">(</span><span class="n">cwi</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    matrix elements of real-space Hamiltonian, &lt;0n|H|Rm&gt;.</span>
 
 <span class="sd">    Args:</span>
@@ -371,23 +372,23 @@
 
 <span class="sd">    Returns:</span>
 <span class="sd">        ndarray: Hamiltonian, HH_R(len(irvec), num_wann, num_wann).</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">Ek</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;Ek&quot;</span><span class="p">])</span>
-    <span class="n">Uk</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;Uk&quot;</span><span class="p">])</span>
+<span class="sd">    """</span>
+    <span class="n">Ek</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">cwi</span><span class="p">[</span><span class="s2">"Ek"</span><span class="p">])</span>
+    <span class="n">Uk</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">cwi</span><span class="p">[</span><span class="s2">"Uk"</span><span class="p">])</span>
 
-    <span class="n">HH_k</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">&quot;klm,kl,kln-&gt;kmn&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">conj</span><span class="p">(</span><span class="n">Uk</span><span class="p">),</span> <span class="n">Ek</span><span class="p">,</span> <span class="n">Uk</span><span class="p">,</span> <span class="n">optimize</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-    <span class="n">HH_k</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">HH_k</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">&quot;kmn-&gt;knm&quot;</span><span class="p">,</span> <span class="n">HH_k</span><span class="p">)</span><span class="o">.</span><span class="n">conj</span><span class="p">())</span>
+    <span class="n">HH_k</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">"klm,kl,kln-&gt;kmn"</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">conj</span><span class="p">(</span><span class="n">Uk</span><span class="p">),</span> <span class="n">Ek</span><span class="p">,</span> <span class="n">Uk</span><span class="p">,</span> <span class="n">optimize</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">HH_k</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">HH_k</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">"kmn-&gt;knm"</span><span class="p">,</span> <span class="n">HH_k</span><span class="p">)</span><span class="o">.</span><span class="n">conj</span><span class="p">())</span>
 
-    <span class="n">kpoints</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;kpoints&quot;</span><span class="p">])</span>
-    <span class="n">irvec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;irvec&quot;</span><span class="p">])</span>
+    <span class="n">kpoints</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">cwi</span><span class="p">[</span><span class="s2">"kpoints"</span><span class="p">])</span>
+    <span class="n">irvec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">cwi</span><span class="p">[</span><span class="s2">"irvec"</span><span class="p">])</span>
 
-    <span class="k">if</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;tb_gauge&quot;</span><span class="p">]:</span>
-        <span class="n">atoms_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;atoms_frac_shift&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
-        <span class="n">atoms_frac</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">atoms_list</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;nw2n&quot;</span><span class="p">]])</span>
+    <span class="k">if</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">"tb_gauge"</span><span class="p">]:</span>
+        <span class="n">atoms_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">cwi</span><span class="p">[</span><span class="s2">"atoms_frac_shift"</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+        <span class="n">atoms_frac</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">atoms_list</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">"nw2n"</span><span class="p">]])</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">atoms_frac</span> <span class="o">=</span> <span class="kc">None</span>
 
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;atoms_frac = </span><span class="si">{</span><span class="n">atoms_frac</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"atoms_frac = </span><span class="si">{</span><span class="n">atoms_frac</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 
     <span class="n">HH_R</span> <span class="o">=</span> <span class="n">fourier_transform_k_to_r</span><span class="p">(</span><span class="n">HH_k</span><span class="p">,</span> <span class="n">kpoints</span><span class="p">,</span> <span class="n">irvec</span><span class="p">,</span> <span class="n">atoms_frac</span><span class="p">)</span>
 
@@ -399,7 +400,7 @@
 <div class="viewcode-block" id="get_AA_R">
 <a class="viewcode-back" href="../../../src/api/util.html#symclosestwannier.util.get_oper_R.get_AA_R">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">get_AA_R</span><span class="p">(</span><span class="n">cwi</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    matrix elements of real-space position operator, &lt;0n|r|Rm&gt;.</span>
 
 <span class="sd">    Args:</span>
@@ -407,31 +408,31 @@
 
 <span class="sd">    Returns:</span>
 <span class="sd">        ndarray: position operator, AA_R(3, len(irvec), num_wann, num_wann).</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">Mkb</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;Mkb&quot;</span><span class="p">])</span>
-    <span class="n">Uk</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;Uk&quot;</span><span class="p">])</span>
+<span class="sd">    """</span>
+    <span class="n">Mkb</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">cwi</span><span class="p">[</span><span class="s2">"Mkb"</span><span class="p">])</span>
+    <span class="n">Uk</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">cwi</span><span class="p">[</span><span class="s2">"Uk"</span><span class="p">])</span>
 
     <span class="n">kb2k</span> <span class="o">=</span> <span class="n">cwi</span><span class="o">.</span><span class="n">nnkp</span><span class="o">.</span><span class="n">kb2k</span><span class="p">()</span>
     <span class="n">bveck</span> <span class="o">=</span> <span class="n">cwi</span><span class="o">.</span><span class="n">nnkp</span><span class="o">.</span><span class="n">bveck</span><span class="p">()</span>
-    <span class="n">wb</span> <span class="o">=</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;wb&quot;</span><span class="p">]</span>
+    <span class="n">wb</span> <span class="o">=</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">"wb"</span><span class="p">]</span>
 
-    <span class="n">kpoints</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;kpoints&quot;</span><span class="p">])</span>
-    <span class="n">irvec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;irvec&quot;</span><span class="p">])</span>
+    <span class="n">kpoints</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">cwi</span><span class="p">[</span><span class="s2">"kpoints"</span><span class="p">])</span>
+    <span class="n">irvec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">cwi</span><span class="p">[</span><span class="s2">"irvec"</span><span class="p">])</span>
 
     <span class="c1">### Unitary transform Mkb ###</span>
-    <span class="n">Mkb_w</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">&quot;klm, kblp, kbpn-&gt;kbmn&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">conj</span><span class="p">(</span><span class="n">Uk</span><span class="p">),</span> <span class="n">Mkb</span><span class="p">,</span> <span class="n">Uk</span><span class="p">[</span><span class="n">kb2k</span><span class="p">[:,</span> <span class="p">:],</span> <span class="p">:,</span> <span class="p">:],</span> <span class="n">optimize</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>  <span class="c1"># Eq. (61)</span>
-    <span class="n">AA_k</span> <span class="o">=</span> <span class="mf">1.0</span><span class="n">j</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">&quot;b,kba,kbmn-&gt;akmn&quot;</span><span class="p">,</span> <span class="n">wb</span><span class="p">,</span> <span class="n">bveck</span><span class="p">,</span> <span class="n">Mkb_w</span><span class="p">,</span> <span class="n">optimize</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">Mkb_w</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">"klm, kblp, kbpn-&gt;kbmn"</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">conj</span><span class="p">(</span><span class="n">Uk</span><span class="p">),</span> <span class="n">Mkb</span><span class="p">,</span> <span class="n">Uk</span><span class="p">[</span><span class="n">kb2k</span><span class="p">[:,</span> <span class="p">:],</span> <span class="p">:,</span> <span class="p">:],</span> <span class="n">optimize</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>  <span class="c1"># Eq. (61)</span>
+    <span class="n">AA_k</span> <span class="o">=</span> <span class="mf">1.0</span><span class="n">j</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">"b,kba,kbmn-&gt;akmn"</span><span class="p">,</span> <span class="n">wb</span><span class="p">,</span> <span class="n">bveck</span><span class="p">,</span> <span class="n">Mkb_w</span><span class="p">,</span> <span class="n">optimize</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
     <span class="c1"># Use Eq.(31) of Marzari&amp;Vanderbilt PRB 56, 12847 (1997) for band-diagonal position matrix.</span>
-    <span class="k">if</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;transl_inv&quot;</span><span class="p">]:</span>
-        <span class="n">AA_k_diag</span> <span class="o">=</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">&quot;b,kba,kbnn-&gt;akn&quot;</span><span class="p">,</span> <span class="n">wb</span><span class="p">,</span> <span class="n">bveck</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">imag</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">Mkb_w</span><span class="p">)),</span> <span class="n">optimize</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-        <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">&quot;aknn-&gt;akn&quot;</span><span class="p">,</span> <span class="n">AA_k</span><span class="p">)[:]</span> <span class="o">=</span> <span class="n">AA_k_diag</span>
+    <span class="k">if</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">"transl_inv"</span><span class="p">]:</span>
+        <span class="n">AA_k_diag</span> <span class="o">=</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">"b,kba,kbnn-&gt;akn"</span><span class="p">,</span> <span class="n">wb</span><span class="p">,</span> <span class="n">bveck</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">imag</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">Mkb_w</span><span class="p">)),</span> <span class="n">optimize</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">"aknn-&gt;akn"</span><span class="p">,</span> <span class="n">AA_k</span><span class="p">)[:]</span> <span class="o">=</span> <span class="n">AA_k_diag</span>
 
-    <span class="n">AA_k</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">AA_k</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">&quot;akmn-&gt;aknm&quot;</span><span class="p">,</span> <span class="n">AA_k</span><span class="p">)</span><span class="o">.</span><span class="n">conj</span><span class="p">())</span>
+    <span class="n">AA_k</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">AA_k</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">"akmn-&gt;aknm"</span><span class="p">,</span> <span class="n">AA_k</span><span class="p">)</span><span class="o">.</span><span class="n">conj</span><span class="p">())</span>
 
-    <span class="k">if</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;tb_gauge&quot;</span><span class="p">]:</span>
-        <span class="n">atoms_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;atoms_frac_shift&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
-        <span class="n">atoms_frac</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">atoms_list</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;nw2n&quot;</span><span class="p">]])</span>
+    <span class="k">if</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">"tb_gauge"</span><span class="p">]:</span>
+        <span class="n">atoms_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">cwi</span><span class="p">[</span><span class="s2">"atoms_frac_shift"</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+        <span class="n">atoms_frac</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">atoms_list</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">"nw2n"</span><span class="p">]])</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">atoms_frac</span> <span class="o">=</span> <span class="kc">None</span>
 
@@ -447,7 +448,7 @@
 <div class="viewcode-block" id="get_BB_R">
 <a class="viewcode-back" href="../../../src/api/util.html#symclosestwannier.util.get_oper_R.get_BB_R">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">get_BB_R</span><span class="p">(</span><span class="n">cwi</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    matrix elements of real-space BB operator,</span>
 <span class="sd">        BB_a(R)=&lt;0n|H(r-R)_a|Rm&gt;</span>
 
@@ -459,31 +460,31 @@
 
 <span class="sd">    Returns:</span>
 <span class="sd">        ndarray: position operator, BB_R(3, len(irvec), num_wann, num_wann).</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">cwi</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;scissors_shift&quot;</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">))</span> <span class="o">&gt;</span> <span class="mf">1.0e-7</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Error: scissors correction not yet implemented for BB_R&quot;</span><span class="p">)</span>
+<span class="sd">    """</span>
+    <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">cwi</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"scissors_shift"</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">))</span> <span class="o">&gt;</span> <span class="mf">1.0e-7</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">"Error: scissors correction not yet implemented for BB_R"</span><span class="p">)</span>
 
-    <span class="n">num_k</span> <span class="o">=</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;num_k&quot;</span><span class="p">]</span>
-    <span class="n">kpoints</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;kpoints&quot;</span><span class="p">])</span>
-    <span class="n">irvec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;irvec&quot;</span><span class="p">])</span>
+    <span class="n">num_k</span> <span class="o">=</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">"num_k"</span><span class="p">]</span>
+    <span class="n">kpoints</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">cwi</span><span class="p">[</span><span class="s2">"kpoints"</span><span class="p">])</span>
+    <span class="n">irvec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">cwi</span><span class="p">[</span><span class="s2">"irvec"</span><span class="p">])</span>
 
     <span class="n">kb2k</span> <span class="o">=</span> <span class="n">cwi</span><span class="o">.</span><span class="n">nnkp</span><span class="o">.</span><span class="n">kb2k</span><span class="p">()</span>
     <span class="n">bveck</span> <span class="o">=</span> <span class="n">cwi</span><span class="o">.</span><span class="n">nnkp</span><span class="o">.</span><span class="n">bveck</span><span class="p">()</span>
-    <span class="n">wb</span> <span class="o">=</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;wb&quot;</span><span class="p">]</span>
+    <span class="n">wb</span> <span class="o">=</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">"wb"</span><span class="p">]</span>
 
-    <span class="n">Ek</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;Ek&quot;</span><span class="p">])</span>
-    <span class="n">Uk</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;Uk&quot;</span><span class="p">])</span>
-    <span class="n">Mkb</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;Mkb&quot;</span><span class="p">])</span>
+    <span class="n">Ek</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">cwi</span><span class="p">[</span><span class="s2">"Ek"</span><span class="p">])</span>
+    <span class="n">Uk</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">cwi</span><span class="p">[</span><span class="s2">"Uk"</span><span class="p">])</span>
+    <span class="n">Mkb</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">cwi</span><span class="p">[</span><span class="s2">"Mkb"</span><span class="p">])</span>
 
     <span class="n">H_o</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">Ek</span><span class="p">[</span><span class="n">k</span><span class="p">])</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_k</span><span class="p">)])</span>
 
-    <span class="n">HM_o</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">&quot;kml, kbln-&gt;kbmn&quot;</span><span class="p">,</span> <span class="n">H_o</span><span class="p">,</span> <span class="n">Mkb</span><span class="p">,</span> <span class="n">optimize</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-    <span class="n">H_k_kb</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">&quot;klm, kblp, kbpn-&gt;kbmn&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">conj</span><span class="p">(</span><span class="n">Uk</span><span class="p">),</span> <span class="n">HM_o</span><span class="p">,</span> <span class="n">Uk</span><span class="p">[</span><span class="n">kb2k</span><span class="p">[:,</span> <span class="p">:],</span> <span class="p">:,</span> <span class="p">:],</span> <span class="n">optimize</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-    <span class="n">BB_k</span> <span class="o">=</span> <span class="mf">1.0</span><span class="n">j</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">&quot;b,kbc,kbmn-&gt;ckmn&quot;</span><span class="p">,</span> <span class="n">wb</span><span class="p">,</span> <span class="n">bveck</span><span class="p">,</span> <span class="n">H_k_kb</span><span class="p">,</span> <span class="n">optimize</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">HM_o</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">"kml, kbln-&gt;kbmn"</span><span class="p">,</span> <span class="n">H_o</span><span class="p">,</span> <span class="n">Mkb</span><span class="p">,</span> <span class="n">optimize</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">H_k_kb</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">"klm, kblp, kbpn-&gt;kbmn"</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">conj</span><span class="p">(</span><span class="n">Uk</span><span class="p">),</span> <span class="n">HM_o</span><span class="p">,</span> <span class="n">Uk</span><span class="p">[</span><span class="n">kb2k</span><span class="p">[:,</span> <span class="p">:],</span> <span class="p">:,</span> <span class="p">:],</span> <span class="n">optimize</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">BB_k</span> <span class="o">=</span> <span class="mf">1.0</span><span class="n">j</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">"b,kbc,kbmn-&gt;ckmn"</span><span class="p">,</span> <span class="n">wb</span><span class="p">,</span> <span class="n">bveck</span><span class="p">,</span> <span class="n">H_k_kb</span><span class="p">,</span> <span class="n">optimize</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
-    <span class="k">if</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;tb_gauge&quot;</span><span class="p">]:</span>
-        <span class="n">atoms_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;atoms_frac_shift&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
-        <span class="n">atoms_frac</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">atoms_list</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;nw2n&quot;</span><span class="p">]])</span>
+    <span class="k">if</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">"tb_gauge"</span><span class="p">]:</span>
+        <span class="n">atoms_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">cwi</span><span class="p">[</span><span class="s2">"atoms_frac_shift"</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+        <span class="n">atoms_frac</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">atoms_list</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">"nw2n"</span><span class="p">]])</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">atoms_frac</span> <span class="o">=</span> <span class="kc">None</span>
 
@@ -497,7 +498,7 @@
 <div class="viewcode-block" id="get_CC_R">
 <a class="viewcode-back" href="../../../src/api/util.html#symclosestwannier.util.get_oper_R.get_CC_R">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">get_CC_R</span><span class="p">(</span><span class="n">cwi</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    matrix elements of real-space CC operator,</span>
 <span class="sd">        CC_ab(R)=&lt;0n|r_a.H.(r-R)_b|Rm&gt;</span>
 
@@ -510,32 +511,32 @@
 <span class="sd">    Returns:</span>
 <span class="sd">        ndarray: position operator, CC_R(3, 3, len(irvec), num_wann, num_wann).</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">cwi</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;scissors_shift&quot;</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">))</span> <span class="o">&gt;</span> <span class="mf">1.0e-7</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Error: scissors correction not yet implemented for CC_R&quot;</span><span class="p">)</span>
+<span class="sd">    """</span>
+    <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">cwi</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"scissors_shift"</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">))</span> <span class="o">&gt;</span> <span class="mf">1.0e-7</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">"Error: scissors correction not yet implemented for CC_R"</span><span class="p">)</span>
 
-    <span class="n">kpoints</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;kpoints&quot;</span><span class="p">])</span>
-    <span class="n">irvec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;irvec&quot;</span><span class="p">])</span>
+    <span class="n">kpoints</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">cwi</span><span class="p">[</span><span class="s2">"kpoints"</span><span class="p">])</span>
+    <span class="n">irvec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">cwi</span><span class="p">[</span><span class="s2">"irvec"</span><span class="p">])</span>
 
     <span class="n">kb2k</span> <span class="o">=</span> <span class="n">cwi</span><span class="o">.</span><span class="n">nnkp</span><span class="o">.</span><span class="n">kb2k</span><span class="p">()</span>
     <span class="n">bveck</span> <span class="o">=</span> <span class="n">cwi</span><span class="o">.</span><span class="n">nnkp</span><span class="o">.</span><span class="n">bveck</span><span class="p">()</span>
-    <span class="n">wb</span> <span class="o">=</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;wb&quot;</span><span class="p">]</span>
+    <span class="n">wb</span> <span class="o">=</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">"wb"</span><span class="p">]</span>
 
-    <span class="n">Uk</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;Uk&quot;</span><span class="p">])</span>
-    <span class="n">Hkb1b2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;Hkb1b2&quot;</span><span class="p">])</span>
+    <span class="n">Uk</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">cwi</span><span class="p">[</span><span class="s2">"Uk"</span><span class="p">])</span>
+    <span class="n">Hkb1b2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">cwi</span><span class="p">[</span><span class="s2">"Hkb1b2"</span><span class="p">])</span>
 
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Uk[kb2k[:, :], :, :].shape = </span><span class="si">{</span><span class="n">Uk</span><span class="p">[</span><span class="n">kb2k</span><span class="p">[:,</span><span class="w"> </span><span class="p">:],</span><span class="w"> </span><span class="p">:,</span><span class="w"> </span><span class="p">:]</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Hkb1b2.shape = </span><span class="si">{</span><span class="n">Hkb1b2</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Uk[kb2k[:, :], :, :].shape = </span><span class="si">{</span><span class="n">Uk</span><span class="p">[</span><span class="n">kb2k</span><span class="p">[:,</span><span class="w"> </span><span class="p">:],</span><span class="w"> </span><span class="p">:,</span><span class="w"> </span><span class="p">:]</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Hkb1b2.shape = </span><span class="si">{</span><span class="n">Hkb1b2</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
     <span class="n">Hkb1b2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span>
-        <span class="s2">&quot;kblm, kbdlp, kdpn-&gt;kbdmn&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">conj</span><span class="p">(</span><span class="n">Uk</span><span class="p">[</span><span class="n">kb2k</span><span class="p">[:,</span> <span class="p">:],</span> <span class="p">:,</span> <span class="p">:]),</span> <span class="n">Hkb1b2</span><span class="p">,</span> <span class="n">Uk</span><span class="p">[</span><span class="n">kb2k</span><span class="p">[:,</span> <span class="p">:],</span> <span class="p">:,</span> <span class="p">:],</span> <span class="n">optimize</span><span class="o">=</span><span class="kc">True</span>
+        <span class="s2">"kblm, kbdlp, kdpn-&gt;kbdmn"</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">conj</span><span class="p">(</span><span class="n">Uk</span><span class="p">[</span><span class="n">kb2k</span><span class="p">[:,</span> <span class="p">:],</span> <span class="p">:,</span> <span class="p">:]),</span> <span class="n">Hkb1b2</span><span class="p">,</span> <span class="n">Uk</span><span class="p">[</span><span class="n">kb2k</span><span class="p">[:,</span> <span class="p">:],</span> <span class="p">:,</span> <span class="p">:],</span> <span class="n">optimize</span><span class="o">=</span><span class="kc">True</span>
     <span class="p">)</span>
-    <span class="n">CC_k</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">&quot;b,kbi,d,kdj,kbdmn-&gt;ijkmn&quot;</span><span class="p">,</span> <span class="n">wb</span><span class="p">,</span> <span class="n">bveck</span><span class="p">,</span> <span class="n">wb</span><span class="p">,</span> <span class="n">bveck</span><span class="p">,</span> <span class="n">Hkb1b2</span><span class="p">,</span> <span class="n">optimize</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">CC_k</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">"b,kbi,d,kdj,kbdmn-&gt;ijkmn"</span><span class="p">,</span> <span class="n">wb</span><span class="p">,</span> <span class="n">bveck</span><span class="p">,</span> <span class="n">wb</span><span class="p">,</span> <span class="n">bveck</span><span class="p">,</span> <span class="n">Hkb1b2</span><span class="p">,</span> <span class="n">optimize</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
-    <span class="n">CC_k</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">CC_k</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">&quot;ijkmn-&gt;ijknm&quot;</span><span class="p">,</span> <span class="n">CC_k</span><span class="p">)</span><span class="o">.</span><span class="n">conj</span><span class="p">())</span>
+    <span class="n">CC_k</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">CC_k</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">"ijkmn-&gt;ijknm"</span><span class="p">,</span> <span class="n">CC_k</span><span class="p">)</span><span class="o">.</span><span class="n">conj</span><span class="p">())</span>
 
-    <span class="k">if</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;tb_gauge&quot;</span><span class="p">]:</span>
-        <span class="n">atoms_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;atoms_frac_shift&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
-        <span class="n">atoms_frac</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">atoms_list</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;nw2n&quot;</span><span class="p">]])</span>
+    <span class="k">if</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">"tb_gauge"</span><span class="p">]:</span>
+        <span class="n">atoms_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">cwi</span><span class="p">[</span><span class="s2">"atoms_frac_shift"</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+        <span class="n">atoms_frac</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">atoms_list</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">"nw2n"</span><span class="p">]])</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">atoms_frac</span> <span class="o">=</span> <span class="kc">None</span>
 
@@ -551,7 +552,7 @@
 <div class="viewcode-block" id="get_SS_R">
 <a class="viewcode-back" href="../../../src/api/util.html#symclosestwannier.util.get_oper_R.get_SS_R">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">get_SS_R</span><span class="p">(</span><span class="n">cwi</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    matrix elements of real-space spin operator, &lt;0n|sigma_x,y,z|Rm&gt;.</span>
 
 <span class="sd">    Args:</span>
@@ -559,20 +560,20 @@
 
 <span class="sd">    Returns:</span>
 <span class="sd">        ndarray: spin operator, SS_R(3, len(irvec), num_wann, num_wann).</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">pauli_spn</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;pauli_spn&quot;</span><span class="p">])</span>
-    <span class="n">Uk</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;Uk&quot;</span><span class="p">])</span>
+<span class="sd">    """</span>
+    <span class="n">pauli_spn</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">cwi</span><span class="p">[</span><span class="s2">"pauli_spn"</span><span class="p">])</span>
+    <span class="n">Uk</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">cwi</span><span class="p">[</span><span class="s2">"Uk"</span><span class="p">])</span>
 
-    <span class="n">SS_k</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">&quot;klm,aklp,kpn-&gt;akmn&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">conj</span><span class="p">(</span><span class="n">Uk</span><span class="p">),</span> <span class="n">pauli_spn</span><span class="p">,</span> <span class="n">Uk</span><span class="p">,</span> <span class="n">optimize</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">SS_k</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">"klm,aklp,kpn-&gt;akmn"</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">conj</span><span class="p">(</span><span class="n">Uk</span><span class="p">),</span> <span class="n">pauli_spn</span><span class="p">,</span> <span class="n">Uk</span><span class="p">,</span> <span class="n">optimize</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
-    <span class="n">SS_k</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">SS_k</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">&quot;akmn-&gt;aknm&quot;</span><span class="p">,</span> <span class="n">SS_k</span><span class="p">)</span><span class="o">.</span><span class="n">conj</span><span class="p">())</span>
+    <span class="n">SS_k</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">SS_k</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">"akmn-&gt;aknm"</span><span class="p">,</span> <span class="n">SS_k</span><span class="p">)</span><span class="o">.</span><span class="n">conj</span><span class="p">())</span>
 
-    <span class="n">kpoints</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;kpoints&quot;</span><span class="p">])</span>
-    <span class="n">irvec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;irvec&quot;</span><span class="p">])</span>
+    <span class="n">kpoints</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">cwi</span><span class="p">[</span><span class="s2">"kpoints"</span><span class="p">])</span>
+    <span class="n">irvec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">cwi</span><span class="p">[</span><span class="s2">"irvec"</span><span class="p">])</span>
 
-    <span class="k">if</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;tb_gauge&quot;</span><span class="p">]:</span>
-        <span class="n">atoms_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;atoms_frac_shift&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
-        <span class="n">atoms_frac</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">atoms_list</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;nw2n&quot;</span><span class="p">]])</span>
+    <span class="k">if</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">"tb_gauge"</span><span class="p">]:</span>
+        <span class="n">atoms_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">cwi</span><span class="p">[</span><span class="s2">"atoms_frac_shift"</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+        <span class="n">atoms_frac</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">atoms_list</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">"nw2n"</span><span class="p">]])</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">atoms_frac</span> <span class="o">=</span> <span class="kc">None</span>
 
@@ -586,7 +587,7 @@
 <div class="viewcode-block" id="get_SHC_R">
 <a class="viewcode-back" href="../../../src/api/util.html#symclosestwannier.util.get_oper_R.get_SHC_R">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">get_SHC_R</span><span class="p">(</span><span class="n">cwi</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Compute several matrices for spin Hall conductivity</span>
 <span class="sd">        - SR_R  = &lt;0n|sigma_{x,y,z}.(r-R)_alpha|Rm&gt;</span>
 <span class="sd">        - SHR_R = &lt;0n|sigma_{x,y,z}.H.(r-R)_alpha|Rm&gt;</span>
@@ -597,28 +598,28 @@
 
 <span class="sd">    Returns:</span>
 <span class="sd">        tuple: SR_R(3, 3, len(irvec), num_wann, num_wann), SHR_R(3, 3, len(irvec), num_wann, num_wann), SH_R(3, len(irvec), num_wann, num_wann).</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">kpoints</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;kpoints&quot;</span><span class="p">])</span>
-    <span class="n">irvec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;irvec&quot;</span><span class="p">])</span>
-    <span class="n">num_k</span> <span class="o">=</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;num_k&quot;</span><span class="p">]</span>
+<span class="sd">    """</span>
+    <span class="n">kpoints</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">cwi</span><span class="p">[</span><span class="s2">"kpoints"</span><span class="p">])</span>
+    <span class="n">irvec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">cwi</span><span class="p">[</span><span class="s2">"irvec"</span><span class="p">])</span>
+    <span class="n">num_k</span> <span class="o">=</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">"num_k"</span><span class="p">]</span>
 
-    <span class="k">if</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;tb_gauge&quot;</span><span class="p">]:</span>
-        <span class="n">atoms_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;atoms_frac_shift&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
-        <span class="n">atoms_frac</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">atoms_list</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;nw2n&quot;</span><span class="p">]])</span>
+    <span class="k">if</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">"tb_gauge"</span><span class="p">]:</span>
+        <span class="n">atoms_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">cwi</span><span class="p">[</span><span class="s2">"atoms_frac_shift"</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+        <span class="n">atoms_frac</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">atoms_list</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">"nw2n"</span><span class="p">]])</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">atoms_frac</span> <span class="o">=</span> <span class="kc">None</span>
 
-    <span class="n">Ek</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;Ek&quot;</span><span class="p">])</span>
-    <span class="n">Uk</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;Uk&quot;</span><span class="p">])</span>
+    <span class="n">Ek</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">cwi</span><span class="p">[</span><span class="s2">"Ek"</span><span class="p">])</span>
+    <span class="n">Uk</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">cwi</span><span class="p">[</span><span class="s2">"Uk"</span><span class="p">])</span>
 
     <span class="c1"># spin operator</span>
-    <span class="n">spn_o</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;pauli_spn&quot;</span><span class="p">])</span>
-    <span class="n">SS_k</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">&quot;klm,aklp,kpn-&gt;akmn&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">conj</span><span class="p">(</span><span class="n">Uk</span><span class="p">),</span> <span class="n">spn_o</span><span class="p">,</span> <span class="n">Uk</span><span class="p">,</span> <span class="n">optimize</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">spn_o</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">cwi</span><span class="p">[</span><span class="s2">"pauli_spn"</span><span class="p">])</span>
+    <span class="n">SS_k</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">"klm,aklp,kpn-&gt;akmn"</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">conj</span><span class="p">(</span><span class="n">Uk</span><span class="p">),</span> <span class="n">spn_o</span><span class="p">,</span> <span class="n">Uk</span><span class="p">,</span> <span class="n">optimize</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
     <span class="c1"># get_HH_R</span>
-    <span class="n">shc_bandshift</span> <span class="o">=</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;shc_bandshift&quot;</span><span class="p">]</span>
-    <span class="n">shc_bandshift_firstband</span> <span class="o">=</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;shc_bandshift_firstband&quot;</span><span class="p">]</span>
-    <span class="n">shc_bandshift_energyshift</span> <span class="o">=</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;shc_bandshift_energyshift&quot;</span><span class="p">]</span>
+    <span class="n">shc_bandshift</span> <span class="o">=</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">"shc_bandshift"</span><span class="p">]</span>
+    <span class="n">shc_bandshift_firstband</span> <span class="o">=</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">"shc_bandshift_firstband"</span><span class="p">]</span>
+    <span class="n">shc_bandshift_energyshift</span> <span class="o">=</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">"shc_bandshift_energyshift"</span><span class="p">]</span>
 
     <span class="k">if</span> <span class="n">shc_bandshift</span><span class="p">:</span>
         <span class="n">Ek</span><span class="p">[:,</span> <span class="n">shc_bandshift_firstband</span><span class="p">:]</span> <span class="o">+=</span> <span class="n">shc_bandshift_energyshift</span>
@@ -626,27 +627,27 @@
     <span class="n">H_o</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">Ek</span><span class="p">[</span><span class="n">k</span><span class="p">])</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_k</span><span class="p">)])</span>
 
     <span class="c1"># get_AA_R</span>
-    <span class="n">Mkb</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;Mkb&quot;</span><span class="p">])</span>
+    <span class="n">Mkb</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">cwi</span><span class="p">[</span><span class="s2">"Mkb"</span><span class="p">])</span>
     <span class="n">kb2k</span> <span class="o">=</span> <span class="n">cwi</span><span class="o">.</span><span class="n">nnkp</span><span class="o">.</span><span class="n">kb2k</span><span class="p">()</span>
     <span class="n">bveck</span> <span class="o">=</span> <span class="n">cwi</span><span class="o">.</span><span class="n">nnkp</span><span class="o">.</span><span class="n">bveck</span><span class="p">()</span>
-    <span class="n">wb</span> <span class="o">=</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;wb&quot;</span><span class="p">]</span>
+    <span class="n">wb</span> <span class="o">=</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">"wb"</span><span class="p">]</span>
 
     <span class="c1">#! QZYZ18 Eq.(48)</span>
     <span class="n">SH_o</span> <span class="o">=</span> <span class="n">spn_o</span> <span class="o">@</span> <span class="n">H_o</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:,</span> <span class="p">:]</span>
-    <span class="n">SH_k</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">&quot;klm, aklp, kpn-&gt;akmn&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">conj</span><span class="p">(</span><span class="n">Uk</span><span class="p">),</span> <span class="n">SH_o</span><span class="p">,</span> <span class="n">Uk</span><span class="p">,</span> <span class="n">optimize</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">SH_k</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">"klm, aklp, kpn-&gt;akmn"</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">conj</span><span class="p">(</span><span class="n">Uk</span><span class="p">),</span> <span class="n">SH_o</span><span class="p">,</span> <span class="n">Uk</span><span class="p">,</span> <span class="n">optimize</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
     <span class="c1">#! QZYZ18 Eq.(50)</span>
-    <span class="n">SM_o</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">&quot;akml, kbln-&gt;akbmn&quot;</span><span class="p">,</span> <span class="n">spn_o</span><span class="p">,</span> <span class="n">Mkb</span><span class="p">,</span> <span class="n">optimize</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-    <span class="n">SM_k</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">&quot;klm, akblp, kbpn-&gt;akbmn&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">conj</span><span class="p">(</span><span class="n">Uk</span><span class="p">),</span> <span class="n">SM_o</span><span class="p">,</span> <span class="n">Uk</span><span class="p">[</span><span class="n">kb2k</span><span class="p">[:,</span> <span class="p">:],</span> <span class="p">:,</span> <span class="p">:],</span> <span class="n">optimize</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-    <span class="n">SR_k</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">&quot;b,kbc,akbmn-&gt;ackmn&quot;</span><span class="p">,</span> <span class="n">wb</span><span class="p">,</span> <span class="n">bveck</span><span class="p">,</span> <span class="n">SM_k</span><span class="p">,</span> <span class="n">optimize</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span>
-        <span class="s2">&quot;b,kbc,akmn-&gt;ackmn&quot;</span><span class="p">,</span> <span class="n">wb</span><span class="p">,</span> <span class="n">bveck</span><span class="p">,</span> <span class="n">SS_k</span><span class="p">,</span> <span class="n">optimize</span><span class="o">=</span><span class="kc">True</span>
+    <span class="n">SM_o</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">"akml, kbln-&gt;akbmn"</span><span class="p">,</span> <span class="n">spn_o</span><span class="p">,</span> <span class="n">Mkb</span><span class="p">,</span> <span class="n">optimize</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">SM_k</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">"klm, akblp, kbpn-&gt;akbmn"</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">conj</span><span class="p">(</span><span class="n">Uk</span><span class="p">),</span> <span class="n">SM_o</span><span class="p">,</span> <span class="n">Uk</span><span class="p">[</span><span class="n">kb2k</span><span class="p">[:,</span> <span class="p">:],</span> <span class="p">:,</span> <span class="p">:],</span> <span class="n">optimize</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">SR_k</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">"b,kbc,akbmn-&gt;ackmn"</span><span class="p">,</span> <span class="n">wb</span><span class="p">,</span> <span class="n">bveck</span><span class="p">,</span> <span class="n">SM_k</span><span class="p">,</span> <span class="n">optimize</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span>
+        <span class="s2">"b,kbc,akmn-&gt;ackmn"</span><span class="p">,</span> <span class="n">wb</span><span class="p">,</span> <span class="n">bveck</span><span class="p">,</span> <span class="n">SS_k</span><span class="p">,</span> <span class="n">optimize</span><span class="o">=</span><span class="kc">True</span>
     <span class="p">)</span>
 
     <span class="c1">#! QZYZ18 Eq.(51)</span>
-    <span class="n">SHM_o</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">&quot;akml, kbln-&gt;akbmn&quot;</span><span class="p">,</span> <span class="n">SH_o</span><span class="p">,</span> <span class="n">Mkb</span><span class="p">,</span> <span class="n">optimize</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-    <span class="n">SHM_k</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">&quot;klm, akblp, kbpn-&gt;akbmn&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">conj</span><span class="p">(</span><span class="n">Uk</span><span class="p">),</span> <span class="n">SHM_o</span><span class="p">,</span> <span class="n">Uk</span><span class="p">[</span><span class="n">kb2k</span><span class="p">[:,</span> <span class="p">:],</span> <span class="p">:,</span> <span class="p">:],</span> <span class="n">optimize</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-    <span class="n">SHR_k</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">&quot;b,kbc,akbmn-&gt;ackmn&quot;</span><span class="p">,</span> <span class="n">wb</span><span class="p">,</span> <span class="n">bveck</span><span class="p">,</span> <span class="n">SHM_k</span><span class="p">,</span> <span class="n">optimize</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span>
-        <span class="s2">&quot;b,kbc,akmn-&gt;ackmn&quot;</span><span class="p">,</span> <span class="n">wb</span><span class="p">,</span> <span class="n">bveck</span><span class="p">,</span> <span class="n">SH_k</span><span class="p">,</span> <span class="n">optimize</span><span class="o">=</span><span class="kc">True</span>
+    <span class="n">SHM_o</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">"akml, kbln-&gt;akbmn"</span><span class="p">,</span> <span class="n">SH_o</span><span class="p">,</span> <span class="n">Mkb</span><span class="p">,</span> <span class="n">optimize</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">SHM_k</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">"klm, akblp, kbpn-&gt;akbmn"</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">conj</span><span class="p">(</span><span class="n">Uk</span><span class="p">),</span> <span class="n">SHM_o</span><span class="p">,</span> <span class="n">Uk</span><span class="p">[</span><span class="n">kb2k</span><span class="p">[:,</span> <span class="p">:],</span> <span class="p">:,</span> <span class="p">:],</span> <span class="n">optimize</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">SHR_k</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">"b,kbc,akbmn-&gt;ackmn"</span><span class="p">,</span> <span class="n">wb</span><span class="p">,</span> <span class="n">bveck</span><span class="p">,</span> <span class="n">SHM_k</span><span class="p">,</span> <span class="n">optimize</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span>
+        <span class="s2">"b,kbc,akmn-&gt;ackmn"</span><span class="p">,</span> <span class="n">wb</span><span class="p">,</span> <span class="n">bveck</span><span class="p">,</span> <span class="n">SH_k</span><span class="p">,</span> <span class="n">optimize</span><span class="o">=</span><span class="kc">True</span>
     <span class="p">)</span>
 
     <span class="n">SH_R</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">fourier_transform_k_to_r</span><span class="p">(</span><span class="n">SH_k</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">kpoints</span><span class="p">,</span> <span class="n">irvec</span><span class="p">,</span> <span class="n">atoms_frac</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">)])</span>
@@ -668,7 +669,7 @@
 <div class="viewcode-block" id="get_SAA_R">
 <a class="viewcode-back" href="../../../src/api/util.html#symclosestwannier.util.get_oper_R.get_SAA_R">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">get_SAA_R</span><span class="p">(</span><span class="n">cwi</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;&lt;0n|sigma_x,y,z.(r-R)_alpha|Rm&gt;&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""&lt;0n|sigma_x,y,z.(r-R)_alpha|Rm&gt;"""</span>
     <span class="k">pass</span></div>
 
 
@@ -677,7 +678,7 @@
 <div class="viewcode-block" id="get_SBB_R">
 <a class="viewcode-back" href="../../../src/api/util.html#symclosestwannier.util.get_oper_R.get_SBB_R">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">get_SBB_R</span><span class="p">(</span><span class="n">cwi</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;&lt;0n|sigma_x,y,z.H.(r-R)_alpha|Rm&gt;&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""&lt;0n|sigma_x,y,z.H.(r-R)_alpha|Rm&gt;"""</span>
     <span class="k">pass</span></div>
 
 
@@ -691,7 +692,7 @@
 <div class="viewcode-block" id="get_berry_phase_R">
 <a class="viewcode-back" href="../../../src/api/util.html#symclosestwannier.util.get_oper_R.get_berry_phase_R">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">get_berry_phase_R</span><span class="p">(</span><span class="n">cwi</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    matrix elements of berry phase, &lt;0n|A_x,y,z|Rm&gt;.</span>
 
 <span class="sd">    Args:</span>
@@ -699,28 +700,28 @@
 
 <span class="sd">    Returns:</span>
 <span class="sd">        ndarray: spin operator, SS_R(3, len(irvec), num_wann, num_wann).</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">Mkb</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;Mkb&quot;</span><span class="p">])</span>
-    <span class="n">Uk</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;Uk&quot;</span><span class="p">])</span>
-    <span class="n">num_wann</span> <span class="o">=</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;num_wann&quot;</span><span class="p">]</span>
+<span class="sd">    """</span>
+    <span class="n">Mkb</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">cwi</span><span class="p">[</span><span class="s2">"Mkb"</span><span class="p">])</span>
+    <span class="n">Uk</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">cwi</span><span class="p">[</span><span class="s2">"Uk"</span><span class="p">])</span>
+    <span class="n">num_wann</span> <span class="o">=</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">"num_wann"</span><span class="p">]</span>
 
     <span class="c1">### Unitary transform Mkb ###</span>
     <span class="n">kb2k</span> <span class="o">=</span> <span class="n">cwi</span><span class="o">.</span><span class="n">nnkp</span><span class="o">.</span><span class="n">kb2k</span><span class="p">()</span>
-    <span class="n">Mkb_w</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">&quot;klm, kblp, kbpn-&gt;kbmn&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">conj</span><span class="p">(</span><span class="n">Uk</span><span class="p">),</span> <span class="n">Mkb</span><span class="p">,</span> <span class="n">Uk</span><span class="p">[</span><span class="n">kb2k</span><span class="p">[:,</span> <span class="p">:],</span> <span class="p">:,</span> <span class="p">:],</span> <span class="n">optimize</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>  <span class="c1"># Eq. (61)</span>
+    <span class="n">Mkb_w</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">"klm, kblp, kbpn-&gt;kbmn"</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">conj</span><span class="p">(</span><span class="n">Uk</span><span class="p">),</span> <span class="n">Mkb</span><span class="p">,</span> <span class="n">Uk</span><span class="p">[</span><span class="n">kb2k</span><span class="p">[:,</span> <span class="p">:],</span> <span class="p">:,</span> <span class="p">:],</span> <span class="n">optimize</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>  <span class="c1"># Eq. (61)</span>
 
     <span class="n">bveck</span> <span class="o">=</span> <span class="n">cwi</span><span class="o">.</span><span class="n">nnkp</span><span class="o">.</span><span class="n">bveck</span><span class="p">()</span>
     <span class="n">wk</span> <span class="o">=</span> <span class="n">cwi</span><span class="o">.</span><span class="n">nnkp</span><span class="o">.</span><span class="n">wk</span><span class="p">()</span>
 
     <span class="c1"># i&lt;wik|∇wjk&gt;</span>
-    <span class="n">a_k</span> <span class="o">=</span> <span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">&quot;kb,kba,kbmn-&gt;akmn&quot;</span><span class="p">,</span> <span class="n">wk</span><span class="p">,</span> <span class="n">bveck</span><span class="p">,</span> <span class="p">(</span><span class="n">Mkb_w</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">num_wann</span><span class="p">)),</span> <span class="n">optimize</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-    <span class="n">a_k</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">a_k</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">&quot;akmn-&gt;aknm&quot;</span><span class="p">,</span> <span class="n">a_k</span><span class="o">.</span><span class="n">conj</span><span class="p">()))</span>
+    <span class="n">a_k</span> <span class="o">=</span> <span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">"kb,kba,kbmn-&gt;akmn"</span><span class="p">,</span> <span class="n">wk</span><span class="p">,</span> <span class="n">bveck</span><span class="p">,</span> <span class="p">(</span><span class="n">Mkb_w</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">num_wann</span><span class="p">)),</span> <span class="n">optimize</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">a_k</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">a_k</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">"akmn-&gt;aknm"</span><span class="p">,</span> <span class="n">a_k</span><span class="o">.</span><span class="n">conj</span><span class="p">()))</span>
 
-    <span class="n">kpoints</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;kpoints&quot;</span><span class="p">])</span>
-    <span class="n">irvec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;irvec&quot;</span><span class="p">])</span>
+    <span class="n">kpoints</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">cwi</span><span class="p">[</span><span class="s2">"kpoints"</span><span class="p">])</span>
+    <span class="n">irvec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">cwi</span><span class="p">[</span><span class="s2">"irvec"</span><span class="p">])</span>
 
-    <span class="k">if</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;tb_gauge&quot;</span><span class="p">]:</span>
-        <span class="n">atoms_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;atoms_frac_shift&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
-        <span class="n">atoms_frac</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">atoms_list</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;nw2n&quot;</span><span class="p">]])</span>
+    <span class="k">if</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">"tb_gauge"</span><span class="p">]:</span>
+        <span class="n">atoms_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">cwi</span><span class="p">[</span><span class="s2">"atoms_frac_shift"</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+        <span class="n">atoms_frac</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">atoms_list</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">"nw2n"</span><span class="p">]])</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">atoms_frac</span> <span class="o">=</span> <span class="kc">None</span>
 
@@ -734,7 +735,7 @@
 <div class="viewcode-block" id="get_v_R">
 <a class="viewcode-back" href="../../../src/api/util.html#symclosestwannier.util.get_oper_R.get_v_R">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">get_v_R</span><span class="p">(</span><span class="n">cwi</span><span class="p">,</span> <span class="n">HH_R</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    matrix elements of real-space velocity operator in TB approximation, &lt;0n|v|Rm&gt;.</span>
 <span class="sd">    v_k^a = 1 / (h/2π) ∇_k^a H_k [Angstrom / s]</span>
 
@@ -743,36 +744,36 @@
 
 <span class="sd">    Returns:</span>
 <span class="sd">        ndarray: position operator, v_R(3, len(irvec), num_wann, num_wann).</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="k">if</span> <span class="n">HH_R</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">HH_R</span> <span class="o">=</span> <span class="n">get_HH_R</span><span class="p">(</span><span class="n">cwi</span><span class="p">)</span>
 
-    <span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;unit_cell_cart&quot;</span><span class="p">])</span>
-    <span class="n">irvec</span> <span class="o">=</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;irvec&quot;</span><span class="p">]</span>
-    <span class="n">ndegen</span> <span class="o">=</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;ndegen&quot;</span><span class="p">]</span>
+    <span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">cwi</span><span class="p">[</span><span class="s2">"unit_cell_cart"</span><span class="p">])</span>
+    <span class="n">irvec</span> <span class="o">=</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">"irvec"</span><span class="p">]</span>
+    <span class="n">ndegen</span> <span class="o">=</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">"ndegen"</span><span class="p">]</span>
 
     <span class="n">irvec_cart</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">R</span><span class="p">)</span> <span class="o">@</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">A</span><span class="p">)</span> <span class="k">for</span> <span class="n">R</span> <span class="ow">in</span> <span class="n">irvec</span><span class="p">])</span>
 
-    <span class="k">if</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;tb_gauge&quot;</span><span class="p">]:</span>
-        <span class="n">atoms_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;atoms_frac_shift&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
-        <span class="n">atoms_frac</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">atoms_list</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;nw2n&quot;</span><span class="p">]])</span>
+    <span class="k">if</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">"tb_gauge"</span><span class="p">]:</span>
+        <span class="n">atoms_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">cwi</span><span class="p">[</span><span class="s2">"atoms_frac_shift"</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+        <span class="n">atoms_frac</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">atoms_list</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">"nw2n"</span><span class="p">]])</span>
         <span class="n">atoms_cart</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">r</span> <span class="o">@</span> <span class="n">A</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">atoms_frac</span><span class="p">])</span>
         <span class="n">bond_cart</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[[(</span><span class="n">R</span> <span class="o">+</span> <span class="n">rn</span><span class="p">)</span> <span class="o">-</span> <span class="n">rm</span> <span class="k">for</span> <span class="n">rn</span> <span class="ow">in</span> <span class="n">atoms_cart</span><span class="p">]</span> <span class="k">for</span> <span class="n">rm</span> <span class="ow">in</span> <span class="n">atoms_cart</span><span class="p">]</span> <span class="k">for</span> <span class="n">R</span> <span class="ow">in</span> <span class="n">irvec_cart</span><span class="p">])</span>
-        <span class="n">v_R_x</span><span class="p">,</span> <span class="n">v_R_y</span><span class="p">,</span> <span class="n">v_R_z</span> <span class="o">=</span> <span class="mf">1.0</span><span class="n">j</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">&quot;Rmna,Rmn-&gt;aRmn&quot;</span><span class="p">,</span> <span class="n">bond_cart</span><span class="p">,</span> <span class="n">HH_R</span><span class="p">,</span> <span class="n">optimize</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">v_R_x</span><span class="p">,</span> <span class="n">v_R_y</span><span class="p">,</span> <span class="n">v_R_z</span> <span class="o">=</span> <span class="mf">1.0</span><span class="n">j</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">"Rmna,Rmn-&gt;aRmn"</span><span class="p">,</span> <span class="n">bond_cart</span><span class="p">,</span> <span class="n">HH_R</span><span class="p">,</span> <span class="n">optimize</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="n">v_R_x</span><span class="p">,</span> <span class="n">v_R_y</span><span class="p">,</span> <span class="n">v_R_z</span> <span class="o">=</span> <span class="mf">1.0</span><span class="n">j</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">&quot;Ra,Rmn-&gt;aRmn&quot;</span><span class="p">,</span> <span class="n">irvec_cart</span><span class="p">,</span> <span class="n">HH_R</span><span class="p">,</span> <span class="n">optimize</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">v_R_x</span><span class="p">,</span> <span class="n">v_R_y</span><span class="p">,</span> <span class="n">v_R_z</span> <span class="o">=</span> <span class="mf">1.0</span><span class="n">j</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">"Ra,Rmn-&gt;aRmn"</span><span class="p">,</span> <span class="n">irvec_cart</span><span class="p">,</span> <span class="n">HH_R</span><span class="p">,</span> <span class="n">optimize</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
     <span class="n">v_R</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">v_R_x</span><span class="p">,</span> <span class="n">v_R_y</span><span class="p">,</span> <span class="n">v_R_z</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">complex</span><span class="p">)</span>
 
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    --------------------------------------------------------------------</span>
 <span class="sd">    Convert to Angstrom eV / (J s)</span>
 
 <span class="sd">    fac = 1.0 / hbar [1 / (J s)]</span>
 
-<span class="sd">    &#39;hbar&#39; in SI units</span>
+<span class="sd">    'hbar' in SI units</span>
 <span class="sd">    --------------------------------------------------------------------</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="n">fac</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="n">hbar_SI</span>
 
@@ -786,7 +787,7 @@
 <div class="viewcode-block" id="get_berry_Curvature_R">
 <a class="viewcode-back" href="../../../src/api/util.html#symclosestwannier.util.get_oper_R.get_berry_Curvature_R">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">get_berry_Curvature_R</span><span class="p">(</span><span class="n">cwi</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;&lt;0n|Ω|Rm&gt;&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""&lt;0n|Ω|Rm&gt;"""</span>
     <span class="k">pass</span></div>
 
 
@@ -795,7 +796,7 @@
 <div class="viewcode-block" id="get_der_berry_Curvature_Rcwi">
 <a class="viewcode-back" href="../../../src/api/util.html#symclosestwannier.util.get_oper_R.get_der_berry_Curvature_Rcwi">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">get_der_berry_Curvature_Rcwi</span><span class="p">():</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;&lt;0n|∇Ω|Rm&gt;&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""&lt;0n|∇Ω|Rm&gt;"""</span>
 
     <span class="k">pass</span></div>
 
@@ -805,7 +806,7 @@
 <div class="viewcode-block" id="get_orbital_moment_R">
 <a class="viewcode-back" href="../../../src/api/util.html#symclosestwannier.util.get_oper_R.get_orbital_moment_R">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">get_orbital_moment_R</span><span class="p">(</span><span class="n">cwi</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;&lt;0n|Morb|Rm&gt;&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""&lt;0n|Morb|Rm&gt;"""</span>
 
     <span class="k">pass</span></div>
 
@@ -815,7 +816,7 @@
 <div class="viewcode-block" id="get_der_orbital_moment_R">
 <a class="viewcode-back" href="../../../src/api/util.html#symclosestwannier.util.get_oper_R.get_der_orbital_moment_R">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">get_der_orbital_moment_R</span><span class="p">(</span><span class="n">cwi</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;&lt;0n|∇Morb|Rm&gt;&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""&lt;0n|∇Morb|Rm&gt;"""</span>
 
     <span class="k">pass</span></div>
 

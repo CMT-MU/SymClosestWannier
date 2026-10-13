@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 
 
-<html lang="jp" data-content_root="../../../" >
+<html lang="en" data-content_root="../../../" >
 
   <head>
     <meta charset="utf-8" />
@@ -30,7 +30,7 @@
 <link href="../../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 
     <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/sphinx-book-theme.css?v=4418a689" />
     <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css?v=9c3e77be" />
     <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
@@ -44,9 +44,9 @@
   <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../../../_static/documentation_options.js?v=8cf54648"></script>
-    <script src="../../../_static/doctools.js?v=9a2dae69"></script>
-    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/documentation_options.js?v=a8e58a58"></script>
+    <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../../../_static/copybutton.js?v=f281be69"></script>
     <script src="../../../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
@@ -58,14 +58,12 @@
     <script src="../../../_static/design-tabs.js?v=f930bc37"></script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
     <script async="async" src="../../../_static/sphinx-thebe.js?v=c100c467"></script>
-    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
-    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_modules/symclosestwannier/util/fermi_surface';</script>
     <script src="../../../_static/custom.js?v=9c3a2667"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <meta name="docsearch:language" content="jp"/>
+  <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="" />
   </head>
   
@@ -173,11 +171,14 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../src/format/cwout.html">seedname.cwout</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../src/format/hdf5.html">seedname.hdf5 [default]</a></li>
 
+
+
 <li class="toctree-l1"><a class="reference internal" href="../../../src/format/hr.html">seedname_hr.dat.cw</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../src/format/sr.html">seedname_sr.dat.cw</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../src/format/z.html">seedname_z.dat.cw</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../src/format/s.html">seedname_s.dat.cw</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../src/format/n.html">seedname_n.dat.cw</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/format/convention.html">Phase conventions of real-space operators</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
 <ul class="nav bd-sidenav">
@@ -304,9 +305,9 @@
                 <article class="bd-article">
                   
   <h1>Source code for symclosestwannier.util.fermi_surface</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span></span><span class="sd">"""</span>
 <span class="sd">utility codes for lindhard function.</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">"""</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">subprocess</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
@@ -330,7 +331,7 @@
 <div class="viewcode-block" id="output_fermi_surface_eig">
 <a class="viewcode-back" href="../../../src/api/util.html#symclosestwannier.util.fermi_surface.output_fermi_surface_eig">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">output_fermi_surface_eig</span><span class="p">(</span><span class="n">outdir</span><span class="p">,</span> <span class="n">seedname</span><span class="p">,</span> <span class="n">kpoints_2d</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    output fermi surface.</span>
 <span class="sd">    (only eigen values)</span>
 
@@ -340,7 +341,7 @@
 <span class="sd">        k (str): k points.</span>
 <span class="sd">        e (ndarray): eigen values.</span>
 <span class="sd">        kwargs (dict, optional): key words for generate_band_gnuplot.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">kmax_1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">kpoints_2d</span><span class="p">[:,</span> <span class="p">:,</span> <span class="mi">0</span><span class="p">])</span>
     <span class="n">kmin_1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">kpoints_2d</span><span class="p">[:,</span> <span class="p">:,</span> <span class="mi">0</span><span class="p">])</span>
     <span class="n">kmax_2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">kpoints_2d</span><span class="p">[:,</span> <span class="p">:,</span> <span class="mi">1</span><span class="p">])</span>
@@ -352,34 +353,34 @@
     <span class="n">emin</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
     <span class="n">num_wann</span> <span class="o">=</span> <span class="n">e</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
 
-    <span class="n">fs</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">outdir</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span> <span class="o">+</span> <span class="n">seedname</span> <span class="o">+</span> <span class="s2">&quot;_band_contour.txt&quot;</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span>
-    <span class="n">fs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;# k1 k2 E1 E2 ... E_num_wann [eV] </span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
-    <span class="n">fs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;# Emax = </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">emax</span><span class="p">)</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
-    <span class="n">fs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;# Emin = </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">emin</span><span class="p">)</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
-    <span class="n">fs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;# num_wann = </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">num_wann</span><span class="p">)</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
-    <span class="n">fs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;# (num_k_1, num_k_2) = </span><span class="si">{</span><span class="nb">str</span><span class="p">((</span><span class="n">num_k_1</span><span class="p">,</span><span class="w"> </span><span class="n">num_k_2</span><span class="p">))</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">fs</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">outdir</span> <span class="o">+</span> <span class="s2">"/"</span> <span class="o">+</span> <span class="n">seedname</span> <span class="o">+</span> <span class="s2">"_band_contour.txt"</span><span class="p">,</span> <span class="s2">"w"</span><span class="p">)</span>
+    <span class="n">fs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">"# k1 k2 E1 E2 ... E_num_wann [eV] </span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>
+    <span class="n">fs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">"# Emax = </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">emax</span><span class="p">)</span><span class="si">}</span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>
+    <span class="n">fs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">"# Emin = </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">emin</span><span class="p">)</span><span class="si">}</span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>
+    <span class="n">fs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">"# num_wann = </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">num_wann</span><span class="p">)</span><span class="si">}</span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>
+    <span class="n">fs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">"# (num_k_1, num_k_2) = </span><span class="si">{</span><span class="nb">str</span><span class="p">((</span><span class="n">num_k_1</span><span class="p">,</span><span class="w"> </span><span class="n">num_k_2</span><span class="p">))</span><span class="si">}</span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>
 
-    <span class="n">ef</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;ef&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+    <span class="n">ef</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"ef"</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">ef</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">ef</span> <span class="o">=</span> <span class="mf">0.0</span>
-        <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;ef&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span>
-        <span class="n">fs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;# ef = ? (no shift) </span><span class="se">\n\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">kwargs</span><span class="p">[</span><span class="s2">"ef"</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span>
+        <span class="n">fs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">"# ef = ? (no shift) </span><span class="se">\n\n</span><span class="s2">"</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="n">fs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;# shifted by fermi energy = </span><span class="si">{</span><span class="n">ef</span><span class="si">}</span><span class="s2"> [eV] </span><span class="se">\n\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">fs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">"# shifted by fermi energy = </span><span class="si">{</span><span class="n">ef</span><span class="si">}</span><span class="s2"> [eV] </span><span class="se">\n\n</span><span class="s2">"</span><span class="p">)</span>
 
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_k_1</span><span class="p">):</span>
         <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_k_2</span><span class="p">):</span>
             <span class="n">k</span> <span class="o">=</span> <span class="n">num_k_2</span> <span class="o">*</span> <span class="n">i</span> <span class="o">+</span> <span class="n">j</span>
-            <span class="n">s</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{k1:0&lt;20}</span><span class="s2">   </span><span class="si">{k2:0&lt;20}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">k1</span><span class="o">=</span><span class="n">kpoints_2d</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">k2</span><span class="o">=</span><span class="n">kpoints_2d</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+            <span class="n">s</span> <span class="o">=</span> <span class="s2">"</span><span class="si">{k1:0&lt;20}</span><span class="s2">   </span><span class="si">{k2:0&lt;20}</span><span class="s2">"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">k1</span><span class="o">=</span><span class="n">kpoints_2d</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">k2</span><span class="o">=</span><span class="n">kpoints_2d</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
 
             <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_wann</span><span class="p">):</span>
-                <span class="n">s</span> <span class="o">+=</span> <span class="s2">&quot;   </span><span class="si">{e:&lt;20}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">e</span><span class="o">=</span><span class="n">e</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="n">n</span><span class="p">]</span> <span class="o">-</span> <span class="n">ef</span><span class="p">)</span>
+                <span class="n">s</span> <span class="o">+=</span> <span class="s2">"   </span><span class="si">{e:&lt;20}</span><span class="s2">"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">e</span><span class="o">=</span><span class="n">e</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="n">n</span><span class="p">]</span> <span class="o">-</span> <span class="n">ef</span><span class="p">)</span>
 
-            <span class="n">s</span> <span class="o">+=</span> <span class="s2">&quot; </span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="n">s</span> <span class="o">+=</span> <span class="s2">" </span><span class="se">\n</span><span class="s2">"</span>
             <span class="n">fs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
 
-        <span class="n">s</span> <span class="o">+=</span> <span class="s2">&quot; </span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="n">s</span> <span class="o">+=</span> <span class="s2">" </span><span class="se">\n</span><span class="s2">"</span>
         <span class="n">fs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
 
     <span class="n">fs</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
@@ -395,7 +396,7 @@
 <span class="k">def</span><span class="w"> </span><span class="nf">generate_fermi_surface_gnuplot_eig</span><span class="p">(</span>
     <span class="n">outdir</span><span class="p">,</span> <span class="n">seedname</span><span class="p">,</span> <span class="n">kmax_1</span><span class="p">,</span> <span class="n">kmin_1</span><span class="p">,</span> <span class="n">kmax_2</span><span class="p">,</span> <span class="n">kmin_2</span><span class="p">,</span> <span class="n">emax</span><span class="p">,</span> <span class="n">emin</span><span class="p">,</span> <span class="n">num_wann</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
 <span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    generate gnuplot file to plot band dispersion.</span>
 <span class="sd">    (only eigen values)</span>
 
@@ -413,65 +414,65 @@
 <span class="sd">            - lwidth (float): line width.</span>
 <span class="sd">            - lc (str): line color.</span>
 <span class="sd">            - ref_filename (str): file name of reference band data.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">ef</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;ef&quot;</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span>
+<span class="sd">    """</span>
+    <span class="n">ef</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"ef"</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span>
 
-    <span class="n">fs</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">outdir</span><span class="si">}</span><span class="s2">/plot_fermi_surface.gnu&quot;</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span>
-    <span class="n">fs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;set pm3d map </span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
-    <span class="n">fs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;unset key </span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
-    <span class="n">fs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;unset grid </span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
-    <span class="n">fs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;unset surface </span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
-    <span class="n">fs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;set size square  </span><span class="se">\n\n</span><span class="s2">&quot;</span><span class="p">)</span>
-    <span class="n">fs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;kmax_1 = </span><span class="si">{</span><span class="n">kmax_1</span><span class="si">}</span><span class="s2"> </span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
-    <span class="n">fs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;kmin_1 = </span><span class="si">{</span><span class="n">kmin_1</span><span class="si">}</span><span class="s2"> </span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
-    <span class="n">fs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;kmax_2 = </span><span class="si">{</span><span class="n">kmax_2</span><span class="si">}</span><span class="s2"> </span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
-    <span class="n">fs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;kmin_2 = </span><span class="si">{</span><span class="n">kmin_2</span><span class="si">}</span><span class="s2"> </span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
-    <span class="n">fs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;set xrange [kmin_1:kmax_1] </span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
-    <span class="n">fs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;set yrange [kmin_2:kmax_2] </span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
-    <span class="n">fs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;# ef = </span><span class="si">{</span><span class="n">ef</span><span class="si">}</span><span class="s2"> is set as zero.</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
-    <span class="n">fs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;set tics font &#39;Times New Roman, 20&#39; </span><span class="se">\n\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">fs</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">outdir</span><span class="si">}</span><span class="s2">/plot_fermi_surface.gnu"</span><span class="p">,</span> <span class="s2">"w"</span><span class="p">)</span>
+    <span class="n">fs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">"set pm3d map </span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>
+    <span class="n">fs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">"unset key </span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>
+    <span class="n">fs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">"unset grid </span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>
+    <span class="n">fs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">"unset surface </span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>
+    <span class="n">fs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">"set size square  </span><span class="se">\n\n</span><span class="s2">"</span><span class="p">)</span>
+    <span class="n">fs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">"kmax_1 = </span><span class="si">{</span><span class="n">kmax_1</span><span class="si">}</span><span class="s2"> </span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>
+    <span class="n">fs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">"kmin_1 = </span><span class="si">{</span><span class="n">kmin_1</span><span class="si">}</span><span class="s2"> </span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>
+    <span class="n">fs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">"kmax_2 = </span><span class="si">{</span><span class="n">kmax_2</span><span class="si">}</span><span class="s2"> </span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>
+    <span class="n">fs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">"kmin_2 = </span><span class="si">{</span><span class="n">kmin_2</span><span class="si">}</span><span class="s2"> </span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>
+    <span class="n">fs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">"set xrange [kmin_1:kmax_1] </span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>
+    <span class="n">fs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">"set yrange [kmin_2:kmax_2] </span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>
+    <span class="n">fs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">"# ef = </span><span class="si">{</span><span class="n">ef</span><span class="si">}</span><span class="s2"> is set as zero.</span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>
+    <span class="n">fs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">"set tics font 'Times New Roman, 20' </span><span class="se">\n\n</span><span class="s2">"</span><span class="p">)</span>
 
-    <span class="n">fs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;emax = </span><span class="si">{</span><span class="n">emax</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">ef</span><span class="si">}</span><span class="s2"> </span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
-    <span class="n">fs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;emin = </span><span class="si">{</span><span class="n">emin</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">ef</span><span class="si">}</span><span class="s2"> </span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
-    <span class="n">fs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;emid = </span><span class="si">{</span><span class="p">((</span><span class="n">emax</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">ef</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="p">(</span><span class="n">emin</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">ef</span><span class="p">))</span><span class="o">/</span><span class="mi">2</span><span class="si">}</span><span class="s2"> </span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
-    <span class="n">fs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;set palette defined (emin &#39;royalblue&#39;, emid &#39;sea-green&#39;, emax &#39;salmon&#39;) </span><span class="se">\n\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">fs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">"emax = </span><span class="si">{</span><span class="n">emax</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">ef</span><span class="si">}</span><span class="s2"> </span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>
+    <span class="n">fs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">"emin = </span><span class="si">{</span><span class="n">emin</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">ef</span><span class="si">}</span><span class="s2"> </span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>
+    <span class="n">fs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">"emid = </span><span class="si">{</span><span class="p">((</span><span class="n">emax</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">ef</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="p">(</span><span class="n">emin</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">ef</span><span class="p">))</span><span class="o">/</span><span class="mi">2</span><span class="si">}</span><span class="s2"> </span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>
+    <span class="n">fs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">"set palette defined (emin 'royalblue', emid 'sea-green', emax 'salmon') </span><span class="se">\n\n</span><span class="s2">"</span><span class="p">)</span>
 
-    <span class="n">fs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;set terminal postscript eps color enhanced </span><span class="se">\n\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">fs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">"set terminal postscript eps color enhanced </span><span class="se">\n\n</span><span class="s2">"</span><span class="p">)</span>
 
-    <span class="n">fs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;do for[i=3:</span><span class="si">{</span><span class="n">num_wann</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">2</span><span class="si">}</span><span class="s2">]&quot;</span> <span class="o">+</span> <span class="s2">&quot;{ </span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
-    <span class="n">fs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;set output sprintf(&#39;%s_%d.eps&#39;,&#39;</span><span class="si">{</span><span class="n">seedname</span><span class="si">}</span><span class="s2">_band_contour&#39;, i) </span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
-    <span class="n">fs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;splot &#39;</span><span class="si">{</span><span class="n">seedname</span><span class="si">}</span><span class="s2">_band_contour.txt&#39; u 1:2:i </span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
-    <span class="n">fs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;}&quot;</span><span class="p">)</span>
+    <span class="n">fs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">"do for[i=3:</span><span class="si">{</span><span class="n">num_wann</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">2</span><span class="si">}</span><span class="s2">]"</span> <span class="o">+</span> <span class="s2">"{ </span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>
+    <span class="n">fs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">"set output sprintf('%s_%d.eps','</span><span class="si">{</span><span class="n">seedname</span><span class="si">}</span><span class="s2">_band_contour', i) </span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>
+    <span class="n">fs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">"splot '</span><span class="si">{</span><span class="n">seedname</span><span class="si">}</span><span class="s2">_band_contour.txt' u 1:2:i </span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>
+    <span class="n">fs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">"}"</span><span class="p">)</span>
 
-    <span class="n">fs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot; </span><span class="se">\n\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">fs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">" </span><span class="se">\n\n</span><span class="s2">"</span><span class="p">)</span>
 
-    <span class="n">fs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;set terminal pdf </span><span class="se">\n\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">fs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">"set terminal pdf </span><span class="se">\n\n</span><span class="s2">"</span><span class="p">)</span>
 
-    <span class="n">fs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;do for[i=3:</span><span class="si">{</span><span class="n">num_wann</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">2</span><span class="si">}</span><span class="s2">]&quot;</span> <span class="o">+</span> <span class="s2">&quot;{ </span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
-    <span class="n">fs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;set output sprintf(&#39;%s_%d.pdf&#39;,&#39;</span><span class="si">{</span><span class="n">seedname</span><span class="si">}</span><span class="s2">_band_contour&#39;, i) </span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
-    <span class="n">fs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;splot &#39;</span><span class="si">{</span><span class="n">seedname</span><span class="si">}</span><span class="s2">_band_contour.txt&#39; u 1:2:i </span><span class="se">\n</span><span class="s2"> &quot;</span><span class="p">)</span>
-    <span class="n">fs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;}&quot;</span><span class="p">)</span>
+    <span class="n">fs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">"do for[i=3:</span><span class="si">{</span><span class="n">num_wann</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">2</span><span class="si">}</span><span class="s2">]"</span> <span class="o">+</span> <span class="s2">"{ </span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>
+    <span class="n">fs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">"set output sprintf('%s_%d.pdf','</span><span class="si">{</span><span class="n">seedname</span><span class="si">}</span><span class="s2">_band_contour', i) </span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>
+    <span class="n">fs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">"splot '</span><span class="si">{</span><span class="n">seedname</span><span class="si">}</span><span class="s2">_band_contour.txt' u 1:2:i </span><span class="se">\n</span><span class="s2"> "</span><span class="p">)</span>
+    <span class="n">fs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">"}"</span><span class="p">)</span>
 
-    <span class="n">fs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot; </span><span class="se">\n\n\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">fs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">" </span><span class="se">\n\n\n</span><span class="s2">"</span><span class="p">)</span>
 
     <span class="c1"># fermi surface</span>
-    <span class="n">fs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;# output fermi surface  </span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
-    <span class="n">fs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;set contour  </span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
-    <span class="n">fs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;set cntrparam level discrete 0.0  </span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">fs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">"# output fermi surface  </span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>
+    <span class="n">fs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">"set contour  </span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>
+    <span class="n">fs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">"set cntrparam level discrete 0.0  </span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>
 
-    <span class="n">fs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;set terminal postscript eps color enhanced </span><span class="se">\n\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">fs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">"set terminal postscript eps color enhanced </span><span class="se">\n\n</span><span class="s2">"</span><span class="p">)</span>
 
-    <span class="n">fs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;set output &#39;</span><span class="si">{</span><span class="n">seedname</span><span class="si">}</span><span class="s2">_fermi_surface.eps&#39; </span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
-    <span class="n">fs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;splot for [i=3:</span><span class="si">{</span><span class="n">num_wann</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">2</span><span class="si">}</span><span class="s2">] &#39;</span><span class="si">{</span><span class="n">seedname</span><span class="si">}</span><span class="s2">_band_contour.txt&#39; u 1:2:i w l lw 1 lt 1 </span><span class="se">\n\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">fs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">"set output '</span><span class="si">{</span><span class="n">seedname</span><span class="si">}</span><span class="s2">_fermi_surface.eps' </span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>
+    <span class="n">fs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">"splot for [i=3:</span><span class="si">{</span><span class="n">num_wann</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">2</span><span class="si">}</span><span class="s2">] '</span><span class="si">{</span><span class="n">seedname</span><span class="si">}</span><span class="s2">_band_contour.txt' u 1:2:i w l lw 1 lt 1 </span><span class="se">\n\n</span><span class="s2">"</span><span class="p">)</span>
 
-    <span class="n">fs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;set terminal pdf </span><span class="se">\n\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">fs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">"set terminal pdf </span><span class="se">\n\n</span><span class="s2">"</span><span class="p">)</span>
 
-    <span class="n">fs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;set output &#39;</span><span class="si">{</span><span class="n">seedname</span><span class="si">}</span><span class="s2">_fermi_surface.pdf&#39; </span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
-    <span class="n">fs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;splot for [i=3:</span><span class="si">{</span><span class="n">num_wann</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">2</span><span class="si">}</span><span class="s2">] &#39;</span><span class="si">{</span><span class="n">seedname</span><span class="si">}</span><span class="s2">_band_contour.txt&#39; u 1:2:i w l lw 1 lt 1</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">fs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">"set output '</span><span class="si">{</span><span class="n">seedname</span><span class="si">}</span><span class="s2">_fermi_surface.pdf' </span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>
+    <span class="n">fs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">"splot for [i=3:</span><span class="si">{</span><span class="n">num_wann</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">2</span><span class="si">}</span><span class="s2">] '</span><span class="si">{</span><span class="n">seedname</span><span class="si">}</span><span class="s2">_band_contour.txt' u 1:2:i w l lw 1 lt 1</span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>
 
     <span class="n">fs</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 
-    <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;cd </span><span class="si">{</span><span class="n">outdir</span><span class="si">}</span><span class="s2"> ; gnuplot plot_fermi_surface.gnu&quot;</span><span class="p">,</span> <span class="n">shell</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+    <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="sa">f</span><span class="s2">"cd </span><span class="si">{</span><span class="n">outdir</span><span class="si">}</span><span class="s2"> ; gnuplot plot_fermi_surface.gnu"</span><span class="p">,</span> <span class="n">shell</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
 
 </pre></div>
 

@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 
 
-<html lang="jp" data-content_root="../../" >
+<html lang="en" data-content_root="../../" >
 
   <head>
     <meta charset="utf-8" />
@@ -31,10 +31,10 @@
 <link href="../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
-    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=4418a689" />
     <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=9c3e77be" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css?v=8cd3d715" />
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
     <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=34ddd5e8" />
@@ -45,9 +45,9 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../../_static/documentation_options.js?v=8cf54648"></script>
-    <script src="../../_static/doctools.js?v=9a2dae69"></script>
-    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/documentation_options.js?v=a8e58a58"></script>
+    <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../../_static/copybutton.js?v=f281be69"></script>
     <script src="../../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
@@ -59,8 +59,6 @@
     <script src="../../_static/design-tabs.js?v=f930bc37"></script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
     <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
-    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
-    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'src/format/cwin';</script>
     <script src="../../_static/custom.js?v=9c3a2667"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
@@ -68,7 +66,7 @@
     <link rel="next" title="seedname.cwout" href="cwout.html" />
     <link rel="prev" title="Symmetry-adapted Closest Wannier model" href="../scw.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <meta name="docsearch:language" content="jp"/>
+  <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="" />
   </head>
   
@@ -174,11 +172,14 @@
 <li class="toctree-l1"><a class="reference internal" href="cwout.html">seedname.cwout</a></li>
 <li class="toctree-l1"><a class="reference internal" href="hdf5.html">seedname.hdf5 [default]</a></li>
 
+
+
 <li class="toctree-l1"><a class="reference internal" href="hr.html">seedname_hr.dat.cw</a></li>
 <li class="toctree-l1"><a class="reference internal" href="sr.html">seedname_sr.dat.cw</a></li>
 <li class="toctree-l1"><a class="reference internal" href="z.html">seedname_z.dat.cw</a></li>
 <li class="toctree-l1"><a class="reference internal" href="s.html">seedname_s.dat.cw</a></li>
 <li class="toctree-l1"><a class="reference internal" href="n.html">seedname_n.dat.cw</a></li>
+<li class="toctree-l1"><a class="reference internal" href="convention.html">Phase conventions of real-space operators</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
 <ul class="nav bd-sidenav">
@@ -355,55 +356,60 @@
   <section class="tex2jax_ignore mathjax_ignore" id="seedname-cwin-default">
 <h1>seedname.cwin [default]<a class="headerlink" href="#seedname-cwin-default" title="Link to this heading">#</a></h1>
 <ul class="simple">
-<li><p>For execution use: pw2cw [seedname]</p>
+<li><p>For execution use: pw2cw seedname</p>
 <ul>
-<li><p>If a seedname string is given the code will read its input from a file seedname.cwin. The default value is cwannier.
+<li><p>SEEDNAME is required: the code reads its input from seedname.cwin.
 One can also equivalently provide the string seedname.cwin instead of seedname.</p></li>
 </ul>
 </li>
 <li><p>input parameters in seedname.cwin (same format as seedname.win) [default]</p>
 <ul>
 <li><p>restart           : the restart position ‘cw’/‘w90’ (str), [“cw”].</p></li>
-<li><p>outdir            : input and output files are found in this directory (str), [“./”].</p></li>
-<li><p>disentangle       : disentagle bands ? (bool), [False].</p></li>
+<li><p>seedname          : seedname (str), [“cwannier”].</p></li>
+<li><p>outdir            : output files are written to this directory, relative to the directory of seedname.cwin (str), [“./”].</p></li>
+<li><p>disentangle       : disentangle bands ? (bool), [False].</p></li>
 <li><p>proj_min          : minimum value of projectability: [0.0].</p></li>
 <li><p>cwf_mu_max      : top of the energy window (float), [None].</p></li>
 <li><p>cwf_mu_min      : bottom of the energy window (float), [None].</p></li>
-<li><p>cwf_sigma_max : smearing temperature for the top of the energy window (float), [5.0].</p></li>
-<li><p>cwf_sigma_min : smearing temperature for the bottom of the energy window (float), [0.01].</p></li>
+<li><p>cwf_sigma_max : smearing temperature for the top of the energy window (float), [1.0].</p></li>
+<li><p>cwf_sigma_min : smearing temperature for the bottom of the energy window (float), [0.0].</p></li>
 <li><p>cwf_delta             : small constant to avoid ill-conditioning of overlap matrices (&lt; 1e-5) (float), [0.0].</p></li>
 <li><p>svd               : implement singular value decomposition ? otherwise adopt Lowdin’s orthogonalization method (bool), [False].</p></li>
 <li><p>verbose           : verbose calculation info (bool, optional), [False].</p></li>
 <li><p>parallel          : use parallel code? (bool), [False].</p></li>
 <li><p>formatter         : format by using black? (bool), [False].</p></li>
-<li><p>transl_inv        : use Eq.(31) of Marzari&amp;Vanderbilt PRB 56, 12847 (1997) for band-diagonal position matrix elements? (bool), [True].</p></li>
+<li><p>calc_spreads      : calculate spreads? (bool), [False].</p></li>
+<li><p>write_info_data   : write info and data to seedname.hdf5 (hdf5 format) ? (bool), [False].</p></li>
+<li><p>transl_inv        : use Eq.(31) of Marzari&amp;Vanderbilt PRB 56, 12847 (1997) for band-diagonal position matrix elements? (bool), [False].</p></li>
 <li><p>use_degen_pert    : use degenerate perturbation theory when bands are degenerate and band derivatives are needed? (bool), [False].</p></li>
-<li><p>degen_thr         : threshold to exclude degenerate bands from the calculation, [0.0].</p></li>
+<li><p>degen_thr         : threshold to exclude degenerate bands from the calculation, [0.0001].</p></li>
 <li><p>tb_gauge          : use tb gauge? (bool), [False].</p></li>
-<li><p>write_hr          : write seedname_hr.py ? (bool), [False].</p></li>
-<li><p>write_sr          : write seedname_sr.py ? (bool), [False].</p></li>
-<li><p>write_u_matrices  : write seedname_u.dat and seedname_u_dis.dat ? (bool), [False].</p></li>
-<li><p>write_rmn         : write seedname_r.dat ? (bool), [False].</p></li>
-<li><p>write_vmn         : write seedname_v.dat ? (bool), [False].</p></li>
-<li><p>write_tb          : write seedname_tb.dat ? (bool), [False].</p></li>
+<li><p>tb_position       : approximate the position operator of seedname_r.dat.cw and seedname_tb.dat.cw by the projection centres, r_ab® = tau_a delta_ab delta_R0 (seedname.mmn is then not needed) ? (bool), [False].</p></li>
+<li><p>write_hr          : write seedname_hr.dat.cw, seedname_hr_R_dep.dat.cw, seedname_nr.dat.cw and seedname_nr_R_dep.dat.cw ? (bool), [False].</p></li>
+<li><p>write_sr          : write seedname_sr.dat.cw and seedname_sr_R_dep.dat.cw ? (bool), [False].</p></li>
+<li><p>write_u_matrices  : write seedname_u.mat.cw and seedname_u_dis.mat.cw (not written with restart = w90) ? (bool), [False].</p></li>
+<li><p>write_rmn         : write seedname_r.dat.cw (needs seedname.mmn unless tb_position = true) ? (bool), [False].</p></li>
+<li><p>write_vmn         : write seedname_v.dat.cw ? (bool), [False].</p></li>
+<li><p>write_tb          : write seedname_tb.dat.cw (wannier90 format, needs seedname.mmn unless tb_position = true, not with tb_gauge = true) ? (bool), [False].</p></li>
 <li><p>write_eig         : write <a class="reference external" href="http://seedname.eig.cw">seedname.eig.cw</a> ? (bool), [False].</p></li>
-<li><p>write_amn         : write <a class="reference external" href="http://seedname.amn.cw">seedname.amn.cw</a> ? (bool), [False].</p></li>
+<li><p>write_amn         : same as write_windowed_amn, kept for compatibility ? (bool), [False].</p></li>
+<li><p>write_windowed_amn : write <a class="reference external" href="http://seedname.amn.cw">seedname.amn.cw</a>, the projections w(e_mk) &lt;psi_mk|g_n&gt; with the window function w (w = 1 without disentangle) and proj_min applied, not orthogonalized (with restart = w90, the input projections) ? (bool), [False].</p></li>
 <li><p>write_mmn         : write <a class="reference external" href="http://seedname.mmn.cw">seedname.mmn.cw</a> ? (bool), [False].</p></li>
-<li><p>write_spn         : write <a class="reference external" href="http://seedname.spn.cw">seedname.spn.cw</a> ? (bool), [False].</p></li>
+<li><p>write_spn         : write the spin operator to <a class="reference external" href="http://seedname.s.cw">seedname.s.cw</a> ? (bool), [False].</p></li>
 </ul>
 </li>
 <li><p>only used for symmetrization.</p>
 <ul>
 <li><p>symmetrization    : symmetrize ? (bool), [False].</p></li>
-<li><p>mp_outdir         : output files for multipie are found in this directory (str). [“./”].</p></li>
-<li><p>mp_seedname       : seedname for seedname_model.py, seedname_samb.py and seedname_matrix.py files (str).</p></li>
-<li><p>ket_amn           : ket basis list in the seedname.amn file. If ket_amn == auto, the list of orbitals are set automatically, or it can be set manually. The format of each ket must be same as the “ket” in sambname_model.py file. See sambname[“info”][“ket”] in sambname_model.py file for the format (list), [None].</p></li>
-<li><p>irreps            : list of irreps to be considered (str/list), [None].</p></li>
+<li><p>mp_outdir         : output files for multipie are written to this directory, relative to the directory of seedname.cwin (str). [“./”].</p></li>
+<li><p>mp_seedname       : name of the MultiPie model (the directory and .pkl file created by mp_create) (str), [“default”].</p></li>
+<li><p>ket_amn           : ket basis list in the seedname.amn file (list), [None]. Each ket is given as [atom, sublattice, rank, orbital], e.g. <code class="docutils literal notranslate"><span class="pre">[[C,1,1,pz],[C,2,1,pz]]</span></code>, or <code class="docutils literal notranslate"><span class="pre">[[C,1,1,(pz,u)],[C,1,1,(pz,d)]]</span></code> for the spinful case. If ket_amn = auto, the list of orbitals is set automatically.</p></li>
+<li><p>irreps            : irreps of the SAMBs to be considered: “all” (all irreps), “full” (only the identity irrep) or a list of irreps (str/list), [“all”].</p></li>
 </ul>
 </li>
 <li><p>only used for band dispersion calculation.</p>
 <ul>
-<li><p>a                 : lattice parameter (in Ang) used to correct units of k points in reference band data, [1.0].</p></li>
+<li><p>a                 : lattice parameter (in Ang) used to correct units of k points in reference band data (float, optional), [None] (|a1| is used when None).</p></li>
 <li><p>N1                : number of divisions for high symmetry lines (int, optional), [50].</p></li>
 <li><p>calc_spin_2d      : add expectation value of spin operator given by *.spn in output file ? (bool). [False].</p></li>
 </ul>
@@ -411,9 +417,28 @@ One can also equivalently provide the string seedname.cwin instead of seedname.<
 <li><p>only used for dos calculation.</p>
 <ul>
 <li><p>calc_dos          : calculate dos? (bool), [False].</p></li>
-<li><p>dos_kmesh         : dimensions of the Monkhorst-Pack grid of k-points for dos calculation (list), [[1, 1, 1]].</p></li>
+<li><p>dos_kmesh         : dimensions of the Monkhorst-Pack grid of k-points for dos calculation, given as space-separated integers, e.g. <code class="docutils literal notranslate"><span class="pre">dos_kmesh</span> <span class="pre">=</span> <span class="pre">10</span> <span class="pre">10</span> <span class="pre">10</span></code> (list), [[1, 1, 1]].</p></li>
 <li><p>dos_num_fermi     : number of fermi energies (int), [50].</p></li>
-<li><p>dos_smr_en_width  : Energy width for the smearing function for the DOS (The units are [eV]) (flaot), [0.001].</p></li>
+<li><p>dos_smr_en_width  : Energy width for the smearing function for the DOS (The units are [eV]) (float), [0.001].</p></li>
+<li><p>dos_emax          : maximum energy to be calculated (float), [None].</p></li>
+<li><p>dos_emin          : minimum energy to be calculated (float), [None].</p></li>
+</ul>
+</li>
+<li><p>only used for cohp calculation.</p>
+<ul>
+<li><p>calc_cohp             : calculate cohp? (bool), [False].</p></li>
+<li><p>calc_cohp_samb_decomp : decompose cohp by SAMBs? (bool), [False].</p></li>
+<li><p>cohp_bond_length_max  : maximum bond length (ang) to be calculated (float), [6.0].</p></li>
+<li><p>cohp_bond_length_min  : minimum bond length (ang) to be calculated (float), [0.0].</p></li>
+<li><p>cohp_head_atom        : head atom to be calculated (str), [None].</p></li>
+<li><p>cohp_head_atom_idx    : head atom index to be calculated (int), [None].</p></li>
+<li><p>cohp_tail_atom        : tail atom to be calculated (str), [None].</p></li>
+<li><p>cohp_tail_atom_idx    : tail atom index to be calculated (int), [None].</p></li>
+<li><p>cohp_kmesh            : dimensions of the Monkhorst-Pack grid of k-points for cohp calculation, given as space-separated integers, e.g. <code class="docutils literal notranslate"><span class="pre">cohp_kmesh</span> <span class="pre">=</span> <span class="pre">10</span> <span class="pre">10</span> <span class="pre">10</span></code> (list), [[1, 1, 1]].</p></li>
+<li><p>cohp_num_fermi        : number of fermi energies (int), [50].</p></li>
+<li><p>cohp_smr_en_width     : Energy width for the smearing function for the COHP (The units are [eV]) (float), [0.001].</p></li>
+<li><p>cohp_emax             : maximum energy to be calculated (float), [None].</p></li>
+<li><p>cohp_emin             : minimum energy to be calculated (float), [None].</p></li>
 </ul>
 </li>
 <li><p>only used for when zeeman interaction is considered.</p>
@@ -428,8 +453,8 @@ One can also equivalently provide the string seedname.cwin instead of seedname.<
 <li><p>only used for fermi surface calculation.</p>
 <ul>
 <li><p>fermi_surface        : calculate fermi surface? (bool), [False].</p></li>
-<li><p>fermi_surface_kmesh  : 2d kmesh given by [[k1_min, k1_max, N1], [k2_min, k2_max, N2] ] (crystal coordinate), (list), [ [[-1, 1, 10], [-1, 1, 10]] ].</p></li>
-<li><p>fermi_surface_view   : k3 direction (list), [ [0, 0, 1] ].</p></li>
+<li><p>fermi_surface_kmesh  : 2d kmesh [[k1_min, k1_max, N1], [k2_min, k2_max, N2]] (crystal coordinate), given as six space-separated integers k1_min k1_max N1 k2_min k2_max N2, e.g. <code class="docutils literal notranslate"><span class="pre">fermi_surface_kmesh</span> <span class="pre">=</span> <span class="pre">-1</span> <span class="pre">1</span> <span class="pre">10</span> <span class="pre">-1</span> <span class="pre">1</span> <span class="pre">10</span></code> (list), [ [[-1, 1, 10], [-1, 1, 10]] ].</p></li>
+<li><p>fermi_surface_view   : k3 direction, given as space-separated integers, e.g. <code class="docutils literal notranslate"><span class="pre">fermi_surface_view</span> <span class="pre">=</span> <span class="pre">0</span> <span class="pre">0</span> <span class="pre">1</span></code> (list), [ [0, 0, 1] ].</p></li>
 <li><p>fermi_surface_const  : constant value for k3 axis [0.0].</p></li>
 </ul>
 </li>
@@ -438,12 +463,16 @@ One can also equivalently provide the string seedname.cwin instead of seedname.<
 <li><p>lindhard                    : calculate lindhard function? (bool), [False].</p></li>
 <li><p>lindhard_freq               : frequency for computing the lindhard function. (The units are [eV]) (float), [0.0].</p></li>
 <li><p>lindhard_smr_fixed_en_width : Overrides the smr_fixed_en_width global variable (float), [0.01].</p></li>
-<li><p>lindhard_kmesh              : dimensions of the Monkhorst-Pack grid of k-points for lindhard function (list), [[1, 1, 1]].</p></li>
+<li><p>lindhard_kmesh              : dimensions of the Monkhorst-Pack grid of k-points for lindhard function, given as space-separated integers, e.g. <code class="docutils literal notranslate"><span class="pre">lindhard_kmesh</span> <span class="pre">=</span> <span class="pre">10</span> <span class="pre">10</span> <span class="pre">10</span></code> (list), [[1, 1, 1]].</p></li>
+<li><p>lindhard_surface            : calculate lindhard function on a 2d q-plane? (bool), [False].</p></li>
+<li><p>lindhard_surface_qmesh      : 2d qmesh [[q1_min, q1_max, N1], [q2_min, q2_max, N2]] (crystal coordinate), given as six space-separated integers q1_min q1_max N1 q2_min q2_max N2, e.g. <code class="docutils literal notranslate"><span class="pre">lindhard_surface_qmesh</span> <span class="pre">=</span> <span class="pre">-1</span> <span class="pre">1</span> <span class="pre">10</span> <span class="pre">-1</span> <span class="pre">1</span> <span class="pre">10</span></code> (list), [ [[-1, 1, 10], [-1, 1, 10]] ].</p></li>
+<li><p>lindhard_surface_view       : q3 direction, given as space-separated integers, e.g. <code class="docutils literal notranslate"><span class="pre">lindhard_surface_view</span> <span class="pre">=</span> <span class="pre">0</span> <span class="pre">0</span> <span class="pre">1</span></code> (list), [ [0, 0, 1] ].</p></li>
+<li><p>lindhard_surface_const      : constant value for q3 axis [0.0].</p></li>
 <li><p>qpoint                      : representative q points (dict), [None].</p></li>
 <li><p>qpoint_path                 : q-points along high symmetry line in Brillouin zone, [[k1, k2, k3]] (crystal coordinate) (str), [None].</p></li>
 <li><p>Nq1                         : number of divisions for high symmetry lines (int, optional), [30].</p></li>
 <li><p>filling                     : number of electrons per unit-cell, [None].</p></li>
-<li><p>temperature                 : temperature for caluclating lindhard function (float), [0.0].</p></li>
+<li><p>temperature                 : temperature for calculating lindhard function (float), [0.0].</p></li>
 </ul>
 </li>
 <li><p>only used for postcw calculation.</p>

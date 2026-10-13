@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 
 
-<html lang="jp" data-content_root="../../../" >
+<html lang="en" data-content_root="../../../" >
 
   <head>
     <meta charset="utf-8" />
@@ -30,7 +30,7 @@
 <link href="../../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 
     <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/sphinx-book-theme.css?v=4418a689" />
     <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css?v=9c3e77be" />
     <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
@@ -44,9 +44,9 @@
   <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../../../_static/documentation_options.js?v=8cf54648"></script>
-    <script src="../../../_static/doctools.js?v=9a2dae69"></script>
-    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/documentation_options.js?v=a8e58a58"></script>
+    <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../../../_static/copybutton.js?v=f281be69"></script>
     <script src="../../../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
@@ -58,14 +58,12 @@
     <script src="../../../_static/design-tabs.js?v=f930bc37"></script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
     <script async="async" src="../../../_static/sphinx-thebe.js?v=c100c467"></script>
-    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
-    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_modules/symclosestwannier/util/utility';</script>
     <script src="../../../_static/custom.js?v=9c3a2667"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <meta name="docsearch:language" content="jp"/>
+  <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="" />
   </head>
   
@@ -173,11 +171,14 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../src/format/cwout.html">seedname.cwout</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../src/format/hdf5.html">seedname.hdf5 [default]</a></li>
 
+
+
 <li class="toctree-l1"><a class="reference internal" href="../../../src/format/hr.html">seedname_hr.dat.cw</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../src/format/sr.html">seedname_sr.dat.cw</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../src/format/z.html">seedname_z.dat.cw</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../src/format/s.html">seedname_s.dat.cw</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../src/format/n.html">seedname_n.dat.cw</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/format/convention.html">Phase conventions of real-space operators</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
 <ul class="nav bd-sidenav">
@@ -304,9 +305,9 @@
                 <article class="bd-article">
                   
   <h1>Source code for symclosestwannier.util.utility</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span></span><span class="sd">"""</span>
 <span class="sd">utility codes.</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">"""</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">datetime</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">itertools</span>
@@ -333,57 +334,69 @@
 <span class="k">class</span><span class="w"> </span><span class="nc">FortranFileR</span><span class="p">(</span><span class="n">fortio</span><span class="o">.</span><span class="n">FortranFile</span><span class="p">):</span>
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="n">header_dtype</span><span class="o">=</span><span class="s2">&quot;uint32&quot;</span><span class="p">,</span> <span class="n">auto_endian</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">check_file</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">"r"</span><span class="p">,</span> <span class="n">header_dtype</span><span class="o">=</span><span class="s2">"uint32"</span><span class="p">,</span> <span class="n">auto_endian</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">check_file</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;File &#39;</span><span class="si">{}</span><span class="s2">&#39; contains subrecords - using header_dtype=&#39;int32&#39;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">filename</span><span class="p">))</span>
-            <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="n">header_dtype</span><span class="o">=</span><span class="s2">&quot;int32&quot;</span><span class="p">,</span> <span class="n">auto_endian</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">check_file</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">"File '</span><span class="si">{}</span><span class="s2">' contains subrecords - using header_dtype='int32'"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">filename</span><span class="p">))</span>
+            <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">"r"</span><span class="p">,</span> <span class="n">header_dtype</span><span class="o">=</span><span class="s2">"int32"</span><span class="p">,</span> <span class="n">auto_endian</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">check_file</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
 
 
 
 <span class="c1"># ==================================================</span>
+<div class="viewcode-block" id="is_zero">
+<a class="viewcode-back" href="../../../src/api/util.html#symclosestwannier.util.utility.is_zero">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">is_zero</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">M_ZERO</span> <span class="o">*</span> <span class="mi">100</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">M_ZERO</span> <span class="o">*</span> <span class="mi">100</span></div>
+
 
 
 <span class="c1"># ==================================================</span>
 <div class="viewcode-block" id="Kelvin_to_eV">
 <a class="viewcode-back" href="../../../src/api/util.html#symclosestwannier.util.utility.Kelvin_to_eV">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">Kelvin_to_eV</span><span class="p">(</span><span class="n">T_Kelvin</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;convert K to eV&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""convert K to eV"""</span>
     <span class="k">return</span> <span class="n">T_Kelvin</span> <span class="o">*</span> <span class="n">k_B_SI</span> <span class="o">/</span> <span class="n">elem_charge_SI</span></div>
 
 
 
 <span class="c1"># ==================================================</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">fermi</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">T</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s2">&quot;Kelvin&quot;</span><span class="p">):</span>
-    <span class="n">T_eV</span> <span class="o">=</span> <span class="n">Kelvin_to_eV</span><span class="p">(</span><span class="n">T</span><span class="p">)</span> <span class="k">if</span> <span class="n">unit</span> <span class="o">==</span> <span class="s2">&quot;Kelvin&quot;</span> <span class="k">else</span> <span class="n">T</span>
+<div class="viewcode-block" id="fermi">
+<a class="viewcode-back" href="../../../src/api/util.html#symclosestwannier.util.utility.fermi">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">fermi</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">T</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s2">"Kelvin"</span><span class="p">):</span>
+    <span class="n">T_eV</span> <span class="o">=</span> <span class="n">Kelvin_to_eV</span><span class="p">(</span><span class="n">T</span><span class="p">)</span> <span class="k">if</span> <span class="n">unit</span> <span class="o">==</span> <span class="s2">"Kelvin"</span> <span class="k">else</span> <span class="n">T</span>
 
     <span class="k">if</span> <span class="n">T</span> <span class="o">==</span> <span class="mf">0.0</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">x</span> <span class="o">&lt;</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span>
 
-    <span class="k">return</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">tanh</span><span class="p">(</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">x</span> <span class="o">/</span> <span class="n">T_eV</span><span class="p">))</span>
+    <span class="k">return</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">tanh</span><span class="p">(</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">x</span> <span class="o">/</span> <span class="n">T_eV</span><span class="p">))</span></div>
 
-
-<span class="c1"># ==================================================</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">fermi_dt</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">T</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s2">&quot;Kelvin&quot;</span><span class="p">):</span>
-    <span class="n">T_eV</span> <span class="o">=</span> <span class="n">Kelvin_to_eV</span><span class="p">(</span><span class="n">T</span><span class="p">)</span> <span class="k">if</span> <span class="n">unit</span> <span class="o">==</span> <span class="s2">&quot;Kelvin&quot;</span> <span class="k">else</span> <span class="n">T</span>
-    <span class="k">return</span> <span class="n">fermi</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">unit</span><span class="p">)</span> <span class="o">*</span> <span class="n">fermi</span><span class="p">(</span><span class="o">-</span><span class="n">x</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">unit</span><span class="p">)</span> <span class="o">/</span> <span class="n">T_eV</span>
 
 
 <span class="c1"># ==================================================</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">fermi_ddt</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">T</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s2">&quot;Kelvin&quot;</span><span class="p">):</span>
-    <span class="n">T_eV</span> <span class="o">=</span> <span class="n">Kelvin_to_eV</span><span class="p">(</span><span class="n">T</span><span class="p">)</span> <span class="k">if</span> <span class="n">unit</span> <span class="o">==</span> <span class="s2">&quot;Kelvin&quot;</span> <span class="k">else</span> <span class="n">T</span>
-    <span class="k">return</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">fermi</span><span class="p">(</span><span class="o">-</span><span class="n">x</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">unit</span><span class="p">))</span> <span class="o">*</span> <span class="n">fermi</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">unit</span><span class="p">)</span> <span class="o">*</span> <span class="n">fermi</span><span class="p">(</span><span class="o">-</span><span class="n">x</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">unit</span><span class="p">)</span> <span class="o">/</span> <span class="n">T_eV</span> <span class="o">/</span> <span class="n">T_eV</span>
+<div class="viewcode-block" id="fermi_dt">
+<a class="viewcode-back" href="../../../src/api/util.html#symclosestwannier.util.utility.fermi_dt">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">fermi_dt</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">T</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s2">"Kelvin"</span><span class="p">):</span>
+    <span class="n">T_eV</span> <span class="o">=</span> <span class="n">Kelvin_to_eV</span><span class="p">(</span><span class="n">T</span><span class="p">)</span> <span class="k">if</span> <span class="n">unit</span> <span class="o">==</span> <span class="s2">"Kelvin"</span> <span class="k">else</span> <span class="n">T</span>
+    <span class="k">return</span> <span class="n">fermi</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">unit</span><span class="p">)</span> <span class="o">*</span> <span class="n">fermi</span><span class="p">(</span><span class="o">-</span><span class="n">x</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">unit</span><span class="p">)</span> <span class="o">/</span> <span class="n">T_eV</span></div>
+
+
+
+<span class="c1"># ==================================================</span>
+<div class="viewcode-block" id="fermi_ddt">
+<a class="viewcode-back" href="../../../src/api/util.html#symclosestwannier.util.utility.fermi_ddt">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">fermi_ddt</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">T</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s2">"Kelvin"</span><span class="p">):</span>
+    <span class="n">T_eV</span> <span class="o">=</span> <span class="n">Kelvin_to_eV</span><span class="p">(</span><span class="n">T</span><span class="p">)</span> <span class="k">if</span> <span class="n">unit</span> <span class="o">==</span> <span class="s2">"Kelvin"</span> <span class="k">else</span> <span class="n">T</span>
+    <span class="k">return</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">fermi</span><span class="p">(</span><span class="o">-</span><span class="n">x</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">unit</span><span class="p">))</span> <span class="o">*</span> <span class="n">fermi</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">unit</span><span class="p">)</span> <span class="o">*</span> <span class="n">fermi</span><span class="p">(</span><span class="o">-</span><span class="n">x</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">unit</span><span class="p">)</span> <span class="o">/</span> <span class="n">T_eV</span> <span class="o">/</span> <span class="n">T_eV</span></div>
+
 
 
 <span class="c1"># ==================================================</span>
 <div class="viewcode-block" id="weight_proj">
 <a class="viewcode-back" href="../../../src/api/util.html#symclosestwannier.util.utility.weight_proj">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">weight_proj</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">cwf_mu_min</span><span class="p">,</span> <span class="n">cwf_mu_max</span><span class="p">,</span> <span class="n">cwf_sigma_min</span><span class="p">,</span> <span class="n">cwf_sigma_max</span><span class="p">,</span> <span class="n">cwf_delta</span><span class="o">=</span><span class="mf">10e-12</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;weight function for projection&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""weight function for projection"""</span>
     <span class="k">return</span> <span class="p">(</span>
-        <span class="n">fermi</span><span class="p">(</span><span class="n">cwf_mu_min</span> <span class="o">-</span> <span class="n">e</span><span class="p">,</span> <span class="n">cwf_sigma_min</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s2">&quot;eV&quot;</span><span class="p">)</span>
-        <span class="o">+</span> <span class="n">fermi</span><span class="p">(</span><span class="n">e</span> <span class="o">-</span> <span class="n">cwf_mu_max</span><span class="p">,</span> <span class="n">cwf_sigma_max</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s2">&quot;eV&quot;</span><span class="p">)</span>
+        <span class="n">fermi</span><span class="p">(</span><span class="n">cwf_mu_min</span> <span class="o">-</span> <span class="n">e</span><span class="p">,</span> <span class="n">cwf_sigma_min</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s2">"eV"</span><span class="p">)</span>
+        <span class="o">+</span> <span class="n">fermi</span><span class="p">(</span><span class="n">e</span> <span class="o">-</span> <span class="n">cwf_mu_max</span><span class="p">,</span> <span class="n">cwf_sigma_max</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s2">"eV"</span><span class="p">)</span>
         <span class="o">-</span> <span class="mf">1.0</span>
         <span class="o">+</span> <span class="n">cwf_delta</span>
     <span class="p">)</span></div>
@@ -394,9 +407,9 @@
 <div class="viewcode-block" id="num_electron">
 <a class="viewcode-back" href="../../../src/api/util.html#symclosestwannier.util.utility.num_electron">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">num_electron</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">ef</span><span class="p">,</span> <span class="n">T</span><span class="o">=</span><span class="mf">0.0</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;number of electrons per unit-cell&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""number of electrons per unit-cell"""</span>
     <span class="n">num_k</span> <span class="o">=</span> <span class="n">e</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">fermi</span><span class="p">(</span><span class="n">e</span> <span class="o">-</span> <span class="n">ef</span><span class="p">,</span> <span class="n">T</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s2">&quot;eV&quot;</span><span class="p">))</span> <span class="o">/</span> <span class="n">num_k</span></div>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">fermi</span><span class="p">(</span><span class="n">e</span> <span class="o">-</span> <span class="n">ef</span><span class="p">,</span> <span class="n">T</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s2">"eV"</span><span class="p">))</span> <span class="o">/</span> <span class="n">num_k</span></div>
 
 
 
@@ -404,7 +417,7 @@
 <div class="viewcode-block" id="tune_fermi_level">
 <a class="viewcode-back" href="../../../src/api/util.html#symclosestwannier.util.utility.tune_fermi_level">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">tune_fermi_level</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">filling</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">threshold</span><span class="o">=</span><span class="mf">1e-8</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;number of electrons per unit-cell&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""number of electrons per unit-cell"""</span>
     <span class="n">emax</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
     <span class="n">emin</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
     <span class="n">elim</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">emax</span><span class="p">),</span> <span class="nb">abs</span><span class="p">(</span><span class="n">emin</span><span class="p">))</span>
@@ -430,7 +443,7 @@
 <div class="viewcode-block" id="band_distance">
 <a class="viewcode-back" href="../../../src/api/util.html#symclosestwannier.util.utility.band_distance">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">band_distance</span><span class="p">(</span><span class="n">Ak</span><span class="p">,</span> <span class="n">Ek</span><span class="p">,</span> <span class="n">Hk</span><span class="p">,</span> <span class="n">ef</span><span class="o">=</span><span class="mf">0.0</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    band distance defined in [npj Computational Materials, 208 (2023)]:</span>
 <span class="sd">        - eta_x = sqrt{ sum w_{nk}(x) (e_{nk}^{DFT} - e_{nk}^{Wan})**2 / sum w_{nk} }.</span>
 <span class="sd">        - eta_x_max = max{ w_{nk}(x) \abs{e_{nk}^{DFT} - e_{nk}^{Wan}} }.</span>
@@ -444,7 +457,7 @@
 <span class="sd">        ef (float, optional): fermi energy.</span>
 
 <span class="sd">    Returns: eta_0, eta_0_max, eta_2, eta_2_max, eta_5, eta_5_max.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">num_k</span><span class="p">,</span> <span class="n">num_wann</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">Hk</span><span class="o">.</span><span class="n">shape</span>
 
     <span class="n">Ek_wan</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">eigh</span><span class="p">(</span><span class="n">Hk</span><span class="p">)</span>
@@ -459,26 +472,26 @@
         <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">Pk_max_idx_list</span><span class="p">):</span>
             <span class="n">Ek_ref</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">Ek</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="n">n</span><span class="p">]</span>
 
-    <span class="n">fermi_ref</span> <span class="o">=</span> <span class="n">fermi</span><span class="p">(</span><span class="n">Ek_ref</span> <span class="o">-</span> <span class="p">(</span><span class="n">ef</span> <span class="o">+</span> <span class="mf">0.0</span><span class="p">),</span> <span class="n">T</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s2">&quot;eV&quot;</span><span class="p">)</span>
-    <span class="n">fermi_wan</span> <span class="o">=</span> <span class="n">fermi</span><span class="p">(</span><span class="n">Ek_wan</span> <span class="o">-</span> <span class="p">(</span><span class="n">ef</span> <span class="o">+</span> <span class="mf">0.0</span><span class="p">),</span> <span class="n">T</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s2">&quot;eV&quot;</span><span class="p">)</span>
+    <span class="n">fermi_ref</span> <span class="o">=</span> <span class="n">fermi</span><span class="p">(</span><span class="n">Ek_ref</span> <span class="o">-</span> <span class="p">(</span><span class="n">ef</span> <span class="o">+</span> <span class="mf">0.0</span><span class="p">),</span> <span class="n">T</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s2">"eV"</span><span class="p">)</span>
+    <span class="n">fermi_wan</span> <span class="o">=</span> <span class="n">fermi</span><span class="p">(</span><span class="n">Ek_wan</span> <span class="o">-</span> <span class="p">(</span><span class="n">ef</span> <span class="o">+</span> <span class="mf">0.0</span><span class="p">),</span> <span class="n">T</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s2">"eV"</span><span class="p">)</span>
     <span class="n">w</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">fermi_ref</span> <span class="o">*</span> <span class="n">fermi_wan</span><span class="p">)</span>
     <span class="n">eta_0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">w</span> <span class="o">*</span> <span class="p">(</span><span class="n">Ek_ref</span> <span class="o">-</span> <span class="n">Ek_wan</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">w</span><span class="p">))</span> <span class="o">*</span> <span class="mi">1000</span>
     <span class="n">eta_0_max</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">w</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">Ek_ref</span> <span class="o">-</span> <span class="n">Ek_wan</span><span class="p">))</span> <span class="o">*</span> <span class="mi">1000</span>
 
-    <span class="n">fermi_ref</span> <span class="o">=</span> <span class="n">fermi</span><span class="p">(</span><span class="n">Ek_ref</span> <span class="o">-</span> <span class="p">(</span><span class="n">ef</span> <span class="o">+</span> <span class="mf">2.0</span><span class="p">),</span> <span class="n">T</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s2">&quot;eV&quot;</span><span class="p">)</span>
-    <span class="n">fermi_wan</span> <span class="o">=</span> <span class="n">fermi</span><span class="p">(</span><span class="n">Ek_wan</span> <span class="o">-</span> <span class="p">(</span><span class="n">ef</span> <span class="o">+</span> <span class="mf">2.0</span><span class="p">),</span> <span class="n">T</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s2">&quot;eV&quot;</span><span class="p">)</span>
+    <span class="n">fermi_ref</span> <span class="o">=</span> <span class="n">fermi</span><span class="p">(</span><span class="n">Ek_ref</span> <span class="o">-</span> <span class="p">(</span><span class="n">ef</span> <span class="o">+</span> <span class="mf">2.0</span><span class="p">),</span> <span class="n">T</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s2">"eV"</span><span class="p">)</span>
+    <span class="n">fermi_wan</span> <span class="o">=</span> <span class="n">fermi</span><span class="p">(</span><span class="n">Ek_wan</span> <span class="o">-</span> <span class="p">(</span><span class="n">ef</span> <span class="o">+</span> <span class="mf">2.0</span><span class="p">),</span> <span class="n">T</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s2">"eV"</span><span class="p">)</span>
     <span class="n">w</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">fermi_ref</span> <span class="o">*</span> <span class="n">fermi_wan</span><span class="p">)</span>
     <span class="n">eta_2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">w</span> <span class="o">*</span> <span class="p">(</span><span class="n">Ek_ref</span> <span class="o">-</span> <span class="n">Ek_wan</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">w</span><span class="p">))</span> <span class="o">*</span> <span class="mi">1000</span>
     <span class="n">eta_2_max</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">w</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">Ek_ref</span> <span class="o">-</span> <span class="n">Ek_wan</span><span class="p">))</span> <span class="o">*</span> <span class="mi">1000</span>
 
-    <span class="n">fermi_ref</span> <span class="o">=</span> <span class="n">fermi</span><span class="p">(</span><span class="n">Ek_ref</span> <span class="o">-</span> <span class="p">(</span><span class="n">ef</span> <span class="o">+</span> <span class="mf">5.0</span><span class="p">),</span> <span class="n">T</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s2">&quot;eV&quot;</span><span class="p">)</span>
-    <span class="n">fermi_wan</span> <span class="o">=</span> <span class="n">fermi</span><span class="p">(</span><span class="n">Ek_wan</span> <span class="o">-</span> <span class="p">(</span><span class="n">ef</span> <span class="o">+</span> <span class="mf">5.0</span><span class="p">),</span> <span class="n">T</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s2">&quot;eV&quot;</span><span class="p">)</span>
+    <span class="n">fermi_ref</span> <span class="o">=</span> <span class="n">fermi</span><span class="p">(</span><span class="n">Ek_ref</span> <span class="o">-</span> <span class="p">(</span><span class="n">ef</span> <span class="o">+</span> <span class="mf">5.0</span><span class="p">),</span> <span class="n">T</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s2">"eV"</span><span class="p">)</span>
+    <span class="n">fermi_wan</span> <span class="o">=</span> <span class="n">fermi</span><span class="p">(</span><span class="n">Ek_wan</span> <span class="o">-</span> <span class="p">(</span><span class="n">ef</span> <span class="o">+</span> <span class="mf">5.0</span><span class="p">),</span> <span class="n">T</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s2">"eV"</span><span class="p">)</span>
     <span class="n">w</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">fermi_ref</span> <span class="o">*</span> <span class="n">fermi_wan</span><span class="p">)</span>
     <span class="n">eta_5</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">w</span> <span class="o">*</span> <span class="p">(</span><span class="n">Ek_ref</span> <span class="o">-</span> <span class="n">Ek_wan</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">w</span><span class="p">))</span> <span class="o">*</span> <span class="mi">1000</span>
     <span class="n">eta_5_max</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">w</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">Ek_ref</span> <span class="o">-</span> <span class="n">Ek_wan</span><span class="p">))</span> <span class="o">*</span> <span class="mi">1000</span>
 
-    <span class="n">fermi_ref</span> <span class="o">=</span> <span class="n">fermi</span><span class="p">(</span><span class="n">Ek_ref</span> <span class="o">-</span> <span class="p">(</span><span class="n">ef</span> <span class="o">+</span> <span class="mf">10.0</span><span class="p">),</span> <span class="n">T</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s2">&quot;eV&quot;</span><span class="p">)</span>
-    <span class="n">fermi_wan</span> <span class="o">=</span> <span class="n">fermi</span><span class="p">(</span><span class="n">Ek_wan</span> <span class="o">-</span> <span class="p">(</span><span class="n">ef</span> <span class="o">+</span> <span class="mf">10.0</span><span class="p">),</span> <span class="n">T</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s2">&quot;eV&quot;</span><span class="p">)</span>
+    <span class="n">fermi_ref</span> <span class="o">=</span> <span class="n">fermi</span><span class="p">(</span><span class="n">Ek_ref</span> <span class="o">-</span> <span class="p">(</span><span class="n">ef</span> <span class="o">+</span> <span class="mf">10.0</span><span class="p">),</span> <span class="n">T</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s2">"eV"</span><span class="p">)</span>
+    <span class="n">fermi_wan</span> <span class="o">=</span> <span class="n">fermi</span><span class="p">(</span><span class="n">Ek_wan</span> <span class="o">-</span> <span class="p">(</span><span class="n">ef</span> <span class="o">+</span> <span class="mf">10.0</span><span class="p">),</span> <span class="n">T</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s2">"eV"</span><span class="p">)</span>
     <span class="n">w</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">fermi_ref</span> <span class="o">*</span> <span class="n">fermi_wan</span><span class="p">)</span>
     <span class="n">eta_5</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">w</span> <span class="o">*</span> <span class="p">(</span><span class="n">Ek_ref</span> <span class="o">-</span> <span class="n">Ek_wan</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">w</span><span class="p">))</span> <span class="o">*</span> <span class="mi">1000</span>
     <span class="n">eta_5_max</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">w</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">Ek_ref</span> <span class="o">-</span> <span class="n">Ek_wan</span><span class="p">))</span> <span class="o">*</span> <span class="mi">1000</span>
@@ -491,7 +504,7 @@
 <div class="viewcode-block" id="get_wannier_center_spread">
 <a class="viewcode-back" href="../../../src/api/util.html#symclosestwannier.util.utility.get_wannier_center_spread">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">get_wannier_center_spread</span><span class="p">(</span><span class="n">cwi</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Wannier center (r) and spread (Omega) for each atom.</span>
 
 <span class="sd">    - r     = &lt;r&gt;</span>
@@ -502,23 +515,23 @@
 
 <span class="sd">    Returns:</span>
 <span class="sd">        tuple: (r, Omega).</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">num_k</span> <span class="o">=</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;num_k&quot;</span><span class="p">]</span>
+<span class="sd">    """</span>
+    <span class="n">num_k</span> <span class="o">=</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">"num_k"</span><span class="p">]</span>
 
     <span class="n">kb2k</span> <span class="o">=</span> <span class="n">cwi</span><span class="o">.</span><span class="n">nnkp</span><span class="o">.</span><span class="n">kb2k</span><span class="p">()</span>
     <span class="n">bveck</span> <span class="o">=</span> <span class="n">cwi</span><span class="o">.</span><span class="n">nnkp</span><span class="o">.</span><span class="n">bveck</span><span class="p">()</span>
-    <span class="n">wb</span> <span class="o">=</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;wb&quot;</span><span class="p">]</span>
+    <span class="n">wb</span> <span class="o">=</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">"wb"</span><span class="p">]</span>
 
-    <span class="n">Mkb</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;Mkb&quot;</span><span class="p">])</span>
-    <span class="n">Uk</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;Uk&quot;</span><span class="p">])</span>
-    <span class="n">Mkb_w</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">&quot;klm, kblp, kbpn-&gt;kbmn&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">conj</span><span class="p">(</span><span class="n">Uk</span><span class="p">),</span> <span class="n">Mkb</span><span class="p">,</span> <span class="n">Uk</span><span class="p">[</span><span class="n">kb2k</span><span class="p">[:,</span> <span class="p">:],</span> <span class="p">:,</span> <span class="p">:],</span> <span class="n">optimize</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">Mkb</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">cwi</span><span class="p">[</span><span class="s2">"Mkb"</span><span class="p">])</span>
+    <span class="n">Uk</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">cwi</span><span class="p">[</span><span class="s2">"Uk"</span><span class="p">])</span>
+    <span class="n">Mkb_w</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">"klm, kblp, kbpn-&gt;kbmn"</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">conj</span><span class="p">(</span><span class="n">Uk</span><span class="p">),</span> <span class="n">Mkb</span><span class="p">,</span> <span class="n">Uk</span><span class="p">[</span><span class="n">kb2k</span><span class="p">[:,</span> <span class="p">:],</span> <span class="p">:,</span> <span class="p">:],</span> <span class="n">optimize</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
-    <span class="n">Mkb_w_diag</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">&quot;kbnn-&gt;kbn&quot;</span><span class="p">,</span> <span class="n">Mkb_w</span><span class="p">,</span> <span class="n">optimize</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">Mkb_w_diag</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">"kbnn-&gt;kbn"</span><span class="p">,</span> <span class="n">Mkb_w</span><span class="p">,</span> <span class="n">optimize</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="n">imln_Mkb_w_diag</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">Mkb_w_diag</span><span class="p">)</span><span class="o">.</span><span class="n">imag</span>
-    <span class="n">r</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span> <span class="o">/</span> <span class="n">num_k</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">&quot;b,kba,kbn-&gt;na&quot;</span><span class="p">,</span> <span class="n">wb</span><span class="p">,</span> <span class="n">bveck</span><span class="p">,</span> <span class="n">imln_Mkb_w_diag</span><span class="p">,</span> <span class="n">optimize</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span> <span class="o">/</span> <span class="n">num_k</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">"b,kba,kbn-&gt;na"</span><span class="p">,</span> <span class="n">wb</span><span class="p">,</span> <span class="n">bveck</span><span class="p">,</span> <span class="n">imln_Mkb_w_diag</span><span class="p">,</span> <span class="n">optimize</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
-    <span class="n">r2a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">wb</span><span class="p">)</span> <span class="o">*</span> <span class="n">num_k</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">&quot;b,kbn,kbn-&gt;n&quot;</span><span class="p">,</span> <span class="n">wb</span><span class="p">,</span> <span class="n">Mkb_w_diag</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">conj</span><span class="p">(</span><span class="n">Mkb_w_diag</span><span class="p">),</span> <span class="n">optimize</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-    <span class="n">r2b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">&quot;b,kbn-&gt;n&quot;</span><span class="p">,</span> <span class="n">wb</span><span class="p">,</span> <span class="n">imln_Mkb_w_diag</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">r2a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">wb</span><span class="p">)</span> <span class="o">*</span> <span class="n">num_k</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">"b,kbn,kbn-&gt;n"</span><span class="p">,</span> <span class="n">wb</span><span class="p">,</span> <span class="n">Mkb_w_diag</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">conj</span><span class="p">(</span><span class="n">Mkb_w_diag</span><span class="p">),</span> <span class="n">optimize</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">r2b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">"b,kbn-&gt;n"</span><span class="p">,</span> <span class="n">wb</span><span class="p">,</span> <span class="n">imln_Mkb_w_diag</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
     <span class="n">r2</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">num_k</span> <span class="o">*</span> <span class="p">(</span><span class="n">r2a</span> <span class="o">+</span> <span class="n">r2b</span><span class="p">)</span><span class="o">.</span><span class="n">real</span>
 
     <span class="n">omega</span> <span class="o">=</span> <span class="n">r2</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">r</span><span class="p">[:,</span> <span class="p">:]</span><span class="o">.</span><span class="n">real</span> <span class="o">**</span> <span class="mi">2</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
@@ -531,7 +544,7 @@
 <div class="viewcode-block" id="get_spreads">
 <a class="viewcode-back" href="../../../src/api/util.html#symclosestwannier.util.utility.get_spreads">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">get_spreads</span><span class="p">(</span><span class="n">cwi</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    spreads (OmegaI, Omega_D, Omega_OD).</span>
 
 <span class="sd">    Args:</span>
@@ -539,32 +552,32 @@
 
 <span class="sd">    Returns:</span>
 <span class="sd">        ndarray: lindhard function.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">num_wann</span> <span class="o">=</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;num_wann&quot;</span><span class="p">]</span>
-    <span class="n">num_k</span> <span class="o">=</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;num_k&quot;</span><span class="p">]</span>
+<span class="sd">    """</span>
+    <span class="n">num_wann</span> <span class="o">=</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">"num_wann"</span><span class="p">]</span>
+    <span class="n">num_k</span> <span class="o">=</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">"num_k"</span><span class="p">]</span>
 
     <span class="n">kb2k</span> <span class="o">=</span> <span class="n">cwi</span><span class="o">.</span><span class="n">nnkp</span><span class="o">.</span><span class="n">kb2k</span><span class="p">()</span>
     <span class="n">bveck</span> <span class="o">=</span> <span class="n">cwi</span><span class="o">.</span><span class="n">nnkp</span><span class="o">.</span><span class="n">bveck</span><span class="p">()</span>
-    <span class="n">wb</span> <span class="o">=</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;wb&quot;</span><span class="p">]</span>
+    <span class="n">wb</span> <span class="o">=</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">"wb"</span><span class="p">]</span>
 
-    <span class="n">Mkb</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;Mkb&quot;</span><span class="p">])</span>
-    <span class="n">Uk</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">cwi</span><span class="p">[</span><span class="s2">&quot;Uk&quot;</span><span class="p">])</span>
-    <span class="n">Mkb_w</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">&quot;klm, kblp, kbpn-&gt;kbmn&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">conj</span><span class="p">(</span><span class="n">Uk</span><span class="p">),</span> <span class="n">Mkb</span><span class="p">,</span> <span class="n">Uk</span><span class="p">[</span><span class="n">kb2k</span><span class="p">[:,</span> <span class="p">:],</span> <span class="p">:,</span> <span class="p">:],</span> <span class="n">optimize</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">Mkb</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">cwi</span><span class="p">[</span><span class="s2">"Mkb"</span><span class="p">])</span>
+    <span class="n">Uk</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">cwi</span><span class="p">[</span><span class="s2">"Uk"</span><span class="p">])</span>
+    <span class="n">Mkb_w</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">"klm, kblp, kbpn-&gt;kbmn"</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">conj</span><span class="p">(</span><span class="n">Uk</span><span class="p">),</span> <span class="n">Mkb</span><span class="p">,</span> <span class="n">Uk</span><span class="p">[</span><span class="n">kb2k</span><span class="p">[:,</span> <span class="p">:],</span> <span class="p">:,</span> <span class="p">:],</span> <span class="n">optimize</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
     <span class="c1"># OmegaI</span>
-    <span class="n">Mkb_w2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">&quot;kbmn,kbmn-&gt;kb&quot;</span><span class="p">,</span> <span class="n">Mkb_w</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">conj</span><span class="p">(</span><span class="n">Mkb_w</span><span class="p">),</span> <span class="n">optimize</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">real</span>
-    <span class="n">OmegaI</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">&quot;b, kb-&gt;&quot;</span><span class="p">,</span> <span class="n">wb</span><span class="p">,</span> <span class="n">num_wann</span> <span class="o">-</span> <span class="n">Mkb_w2</span><span class="p">,</span> <span class="n">optimize</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="o">/</span> <span class="n">num_k</span>
+    <span class="n">Mkb_w2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">"kbmn,kbmn-&gt;kb"</span><span class="p">,</span> <span class="n">Mkb_w</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">conj</span><span class="p">(</span><span class="n">Mkb_w</span><span class="p">),</span> <span class="n">optimize</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">real</span>
+    <span class="n">OmegaI</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">"b, kb-&gt;"</span><span class="p">,</span> <span class="n">wb</span><span class="p">,</span> <span class="n">num_wann</span> <span class="o">-</span> <span class="n">Mkb_w2</span><span class="p">,</span> <span class="n">optimize</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="o">/</span> <span class="n">num_k</span>
 
     <span class="c1"># OmegaD</span>
-    <span class="n">Mkb_w_diag</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">&quot;kbnn-&gt;kbn&quot;</span><span class="p">,</span> <span class="n">Mkb_w</span><span class="p">,</span> <span class="n">optimize</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">Mkb_w_diag</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">"kbnn-&gt;kbn"</span><span class="p">,</span> <span class="n">Mkb_w</span><span class="p">,</span> <span class="n">optimize</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="n">imln_Mkb_w_diag</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">Mkb_w_diag</span><span class="p">)</span><span class="o">.</span><span class="n">imag</span>
-    <span class="n">r</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.0</span> <span class="o">/</span> <span class="n">num_k</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">&quot;b,kba,kbn-&gt;na&quot;</span><span class="p">,</span> <span class="n">wb</span><span class="p">,</span> <span class="n">bveck</span><span class="p">,</span> <span class="n">imln_Mkb_w_diag</span><span class="p">,</span> <span class="n">optimize</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-    <span class="n">qn</span> <span class="o">=</span> <span class="n">imln_Mkb_w_diag</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">&quot;kba, na-&gt;kbn&quot;</span><span class="p">,</span> <span class="n">bveck</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">optimize</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>  <span class="c1"># [np.newaxis, :, :]</span>
-    <span class="n">OmegaD</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">&quot;b, kbn-&gt;&quot;</span><span class="p">,</span> <span class="n">wb</span><span class="p">,</span> <span class="n">qn</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="n">optimize</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="o">/</span> <span class="n">num_k</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.0</span> <span class="o">/</span> <span class="n">num_k</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">"b,kba,kbn-&gt;na"</span><span class="p">,</span> <span class="n">wb</span><span class="p">,</span> <span class="n">bveck</span><span class="p">,</span> <span class="n">imln_Mkb_w_diag</span><span class="p">,</span> <span class="n">optimize</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">qn</span> <span class="o">=</span> <span class="n">imln_Mkb_w_diag</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">"kba, na-&gt;kbn"</span><span class="p">,</span> <span class="n">bveck</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">optimize</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>  <span class="c1"># [np.newaxis, :, :]</span>
+    <span class="n">OmegaD</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">"b, kbn-&gt;"</span><span class="p">,</span> <span class="n">wb</span><span class="p">,</span> <span class="n">qn</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="n">optimize</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="o">/</span> <span class="n">num_k</span>
 
     <span class="c1"># OmegaOD</span>
-    <span class="n">Mkb_w2_diag</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">&quot;kbnn,kbnn-&gt;kb&quot;</span><span class="p">,</span> <span class="n">Mkb_w</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">conj</span><span class="p">(</span><span class="n">Mkb_w</span><span class="p">),</span> <span class="n">optimize</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">real</span>
-    <span class="n">OmegaOD</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">&quot;b, kb-&gt;&quot;</span><span class="p">,</span> <span class="n">wb</span><span class="p">,</span> <span class="n">Mkb_w2</span> <span class="o">-</span> <span class="n">Mkb_w2_diag</span><span class="p">,</span> <span class="n">optimize</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="o">/</span> <span class="n">num_k</span>
+    <span class="n">Mkb_w2_diag</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">"kbnn,kbnn-&gt;kb"</span><span class="p">,</span> <span class="n">Mkb_w</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">conj</span><span class="p">(</span><span class="n">Mkb_w</span><span class="p">),</span> <span class="n">optimize</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">real</span>
+    <span class="n">OmegaOD</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">"b, kb-&gt;"</span><span class="p">,</span> <span class="n">wb</span><span class="p">,</span> <span class="n">Mkb_w2</span> <span class="o">-</span> <span class="n">Mkb_w2_diag</span><span class="p">,</span> <span class="n">optimize</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="o">/</span> <span class="n">num_k</span>
 
     <span class="k">return</span> <span class="n">OmegaI</span><span class="p">,</span> <span class="n">OmegaD</span><span class="p">,</span> <span class="n">OmegaOD</span></div>
 
@@ -574,7 +587,7 @@
 <div class="viewcode-block" id="convert_w90_orbital">
 <a class="viewcode-back" href="../../../src/api/util.html#symclosestwannier.util.utility.convert_w90_orbital">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">convert_w90_orbital</span><span class="p">(</span><span class="n">l</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">s</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    convert orbital in the Wannier90 format into the MultiPie format.</span>
 
 <span class="sd">    Args:</span>
@@ -585,78 +598,84 @@
 
 <span class="sd">    Returns:</span>
 <span class="sd">        str: converted orbital.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">orbital</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+<span class="sd">    """</span>
+    <span class="n">orbital</span> <span class="o">=</span> <span class="s2">""</span>
 
     <span class="k">if</span> <span class="n">l</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">m</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-        <span class="n">orbital</span> <span class="o">=</span> <span class="s2">&quot;s&quot;</span>
+        <span class="n">orbital</span> <span class="o">=</span> <span class="s2">"s"</span>
     <span class="k">elif</span> <span class="n">l</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">m</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="n">orbital</span> <span class="o">=</span> <span class="s2">&quot;pz&quot;</span>
+            <span class="n">orbital</span> <span class="o">=</span> <span class="s2">"pz"</span>
         <span class="k">elif</span> <span class="n">m</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
-            <span class="n">orbital</span> <span class="o">=</span> <span class="s2">&quot;px&quot;</span>
+            <span class="n">orbital</span> <span class="o">=</span> <span class="s2">"px"</span>
         <span class="k">elif</span> <span class="n">m</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
-            <span class="n">orbital</span> <span class="o">=</span> <span class="s2">&quot;py&quot;</span>
+            <span class="n">orbital</span> <span class="o">=</span> <span class="s2">"py"</span>
     <span class="k">elif</span> <span class="n">l</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">m</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="n">orbital</span> <span class="o">=</span> <span class="s2">&quot;du&quot;</span>  <span class="c1"># dz2</span>
+            <span class="n">orbital</span> <span class="o">=</span> <span class="s2">"du"</span>  <span class="c1"># dz2</span>
         <span class="k">elif</span> <span class="n">m</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
-            <span class="n">orbital</span> <span class="o">=</span> <span class="s2">&quot;dxz&quot;</span>
+            <span class="n">orbital</span> <span class="o">=</span> <span class="s2">"dxz"</span>
         <span class="k">elif</span> <span class="n">m</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
-            <span class="n">orbital</span> <span class="o">=</span> <span class="s2">&quot;dyz&quot;</span>
+            <span class="n">orbital</span> <span class="o">=</span> <span class="s2">"dyz"</span>
         <span class="k">elif</span> <span class="n">m</span> <span class="o">==</span> <span class="mi">4</span><span class="p">:</span>
-            <span class="n">orbital</span> <span class="o">=</span> <span class="s2">&quot;dv&quot;</span>  <span class="c1"># dx2-y2</span>
+            <span class="n">orbital</span> <span class="o">=</span> <span class="s2">"dv"</span>  <span class="c1"># dx2-y2</span>
         <span class="k">elif</span> <span class="n">m</span> <span class="o">==</span> <span class="mi">5</span><span class="p">:</span>
-            <span class="n">orbital</span> <span class="o">=</span> <span class="s2">&quot;dxy&quot;</span>
+            <span class="n">orbital</span> <span class="o">=</span> <span class="s2">"dxy"</span>
     <span class="k">elif</span> <span class="n">l</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">m</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="n">orbital</span> <span class="o">=</span> <span class="s2">&quot;faz&quot;</span>  <span class="c1"># fz3</span>
+            <span class="n">orbital</span> <span class="o">=</span> <span class="s2">"faz"</span>  <span class="c1"># fz3</span>
         <span class="k">elif</span> <span class="n">m</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
-            <span class="n">orbital</span> <span class="o">=</span> <span class="s2">&quot;fx&quot;</span>  <span class="c1"># fxz2</span>
+            <span class="n">orbital</span> <span class="o">=</span> <span class="s2">"fx"</span>  <span class="c1"># fxz2</span>
         <span class="k">elif</span> <span class="n">m</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
-            <span class="n">orbital</span> <span class="o">=</span> <span class="s2">&quot;fy&quot;</span>  <span class="c1"># fyz2</span>
+            <span class="n">orbital</span> <span class="o">=</span> <span class="s2">"fy"</span>  <span class="c1"># fyz2</span>
         <span class="k">elif</span> <span class="n">m</span> <span class="o">==</span> <span class="mi">4</span><span class="p">:</span>
-            <span class="n">orbital</span> <span class="o">=</span> <span class="s2">&quot;fbz&quot;</span>  <span class="c1"># fz(x2-y2)</span>
+            <span class="n">orbital</span> <span class="o">=</span> <span class="s2">"fbz"</span>  <span class="c1"># fz(x2-y2)</span>
         <span class="k">elif</span> <span class="n">m</span> <span class="o">==</span> <span class="mi">5</span><span class="p">:</span>
-            <span class="n">orbital</span> <span class="o">=</span> <span class="s2">&quot;fxyz&quot;</span>
+            <span class="n">orbital</span> <span class="o">=</span> <span class="s2">"fxyz"</span>
         <span class="k">elif</span> <span class="n">m</span> <span class="o">==</span> <span class="mi">6</span><span class="p">:</span>
-            <span class="n">orbital</span> <span class="o">=</span> <span class="s2">&quot;f2&quot;</span>  <span class="c1"># fx(x2-3y2)</span>
+            <span class="n">orbital</span> <span class="o">=</span> <span class="s2">"f2"</span>  <span class="c1"># fx(x2-3y2)</span>
         <span class="k">elif</span> <span class="n">m</span> <span class="o">==</span> <span class="mi">7</span><span class="p">:</span>
-            <span class="n">orbital</span> <span class="o">=</span> <span class="s2">&quot;f1&quot;</span>  <span class="c1"># fy(3x2-y2)</span>
+            <span class="n">orbital</span> <span class="o">=</span> <span class="s2">"f1"</span>  <span class="c1"># fy(3x2-y2)</span>
 
-    <span class="k">if</span> <span class="n">orbital</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;invalid orbital projection was given, (l=</span><span class="si">{</span><span class="n">l</span><span class="si">}</span><span class="s2">,m=</span><span class="si">{</span><span class="n">m</span><span class="si">}</span><span class="s2">,r=</span><span class="si">{</span><span class="n">r</span><span class="si">}</span><span class="s2">,s=</span><span class="si">{</span><span class="n">s</span><span class="si">}</span><span class="s2">).&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">orbital</span> <span class="o">==</span> <span class="s2">""</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="sa">f</span><span class="s2">"invalid orbital projection was given, (l=</span><span class="si">{</span><span class="n">l</span><span class="si">}</span><span class="s2">,m=</span><span class="si">{</span><span class="n">m</span><span class="si">}</span><span class="s2">,r=</span><span class="si">{</span><span class="n">r</span><span class="si">}</span><span class="s2">,s=</span><span class="si">{</span><span class="n">s</span><span class="si">}</span><span class="s2">)."</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">s</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-        <span class="n">orbital</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;(</span><span class="si">{</span><span class="n">orbital</span><span class="si">}</span><span class="s2">,u)&quot;</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;&#39;&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+        <span class="n">orbital</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"(</span><span class="si">{</span><span class="n">orbital</span><span class="si">}</span><span class="s2">,u)"</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">"'"</span><span class="p">,</span> <span class="s2">""</span><span class="p">)</span>
     <span class="k">elif</span> <span class="n">s</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
-        <span class="n">orbital</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;(</span><span class="si">{</span><span class="n">orbital</span><span class="si">}</span><span class="s2">,d)&quot;</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;&#39;&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+        <span class="n">orbital</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"(</span><span class="si">{</span><span class="n">orbital</span><span class="si">}</span><span class="s2">,d)"</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">"'"</span><span class="p">,</span> <span class="s2">""</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">orbital</span></div>
 
 
 
 <span class="c1"># ==================================================</span>
+<div class="viewcode-block" id="iterate_nd">
+<a class="viewcode-back" href="../../../src/api/util.html#symclosestwannier.util.utility.iterate_nd">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">iterate_nd</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">pm</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
     <span class="n">a</span> <span class="o">=</span> <span class="o">-</span><span class="n">size</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">if</span> <span class="n">pm</span> <span class="k">else</span> <span class="mi">0</span>
     <span class="n">b</span> <span class="o">=</span> <span class="n">size</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span> <span class="k">if</span> <span class="n">pm</span> <span class="k">else</span> <span class="n">size</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">size</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([(</span><span class="n">i</span><span class="p">,)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)])</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([(</span><span class="n">i</span><span class="p">,)</span> <span class="o">+</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">j</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">iterate_nd</span><span class="p">(</span><span class="n">size</span><span class="p">[</span><span class="mi">1</span><span class="p">:],</span> <span class="n">pm</span><span class="o">=</span><span class="n">pm</span><span class="p">)])</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([(</span><span class="n">i</span><span class="p">,)</span> <span class="o">+</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">j</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">iterate_nd</span><span class="p">(</span><span class="n">size</span><span class="p">[</span><span class="mi">1</span><span class="p">:],</span> <span class="n">pm</span><span class="o">=</span><span class="n">pm</span><span class="p">)])</span></div>
+
 
 
 <span class="c1"># ==================================================</span>
+<div class="viewcode-block" id="iterate3dpm">
+<a class="viewcode-back" href="../../../src/api/util.html#symclosestwannier.util.utility.iterate3dpm">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">iterate3dpm</span><span class="p">(</span><span class="n">size</span><span class="p">):</span>
     <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">size</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span>
-    <span class="k">return</span> <span class="n">iterate_nd</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">pm</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">iterate_nd</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">pm</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+
 
 
 <span class="c1"># ==================================================</span>
 <div class="viewcode-block" id="wigner_seitz">
 <a class="viewcode-back" href="../../../src/api/util.html#symclosestwannier.util.utility.wigner_seitz">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">wigner_seitz</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">mp_grid</span><span class="p">,</span> <span class="n">prec</span><span class="o">=</span><span class="mf">1.0e-4</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    wigner seitz cell.</span>
 <span class="sd">    return irreducible R vectors and number of degeneracy at each R.</span>
 
@@ -668,7 +687,7 @@
 <span class="sd">        tuple: (irvec, ndegen)</span>
 <span class="sd">            - irvec (ndarray): irreducible R vectors (crystal coordinate, [[n1,n2,n3]], nj: integer).</span>
 <span class="sd">            - ndegen (ndarray): number of degeneracy at each R.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">ws_search_size</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="mi">3</span><span class="p">)</span>
     <span class="n">dist_dim</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">prod</span><span class="p">((</span><span class="n">ws_search_size</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
     <span class="n">origin</span> <span class="o">=</span> <span class="nb">divmod</span><span class="p">((</span><span class="n">dist_dim</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span> <span class="mi">2</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span>
@@ -686,8 +705,8 @@
             <span class="n">irvec</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
             <span class="n">ndegen</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">dist</span> <span class="o">-</span> <span class="n">dist_min</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">prec</span><span class="p">))</span>
 
-    <span class="n">ndegen</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">ndegen</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s2">&quot;int64&quot;</span><span class="p">)</span>
-    <span class="n">irvec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">irvec</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s2">&quot;int64&quot;</span><span class="p">)</span>
+    <span class="n">ndegen</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">ndegen</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s2">"int64"</span><span class="p">)</span>
+    <span class="n">irvec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">irvec</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s2">"int64"</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">irvec</span><span class="p">,</span> <span class="n">ndegen</span></div>
 
@@ -697,35 +716,35 @@
 <div class="viewcode-block" id="fourier_transform_k_to_r">
 <a class="viewcode-back" href="../../../src/api/util.html#symclosestwannier.util.utility.fourier_transform_k_to_r">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">fourier_transform_k_to_r</span><span class="p">(</span><span class="n">Ok</span><span class="p">,</span> <span class="n">kpoints</span><span class="p">,</span> <span class="n">irvec</span><span class="p">,</span> <span class="n">atoms_frac</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    inverse fourier transformation of an arbitrary operator from k-space representation into real-space representation.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        Ok (ndarray): arbitrary operator in k-space representation, O_{ab}(k) = &lt;φ_{a}(k)|O|φ_{b}(k)&gt;.</span>
 <span class="sd">        kpoints (ndarray): k-points used in DFT calculation, [[k1, k2, k3]] (crystal coordinate).</span>
 <span class="sd">        irvec (ndarray, optional): irreducible R vectors (crystal coordinate, [[n1,n2,n3]], nj: integer).</span>
-<span class="sd">        atoms_frac (ndarray, optional): atom&#39;s position in fractional coordinates.</span>
+<span class="sd">        atoms_frac (ndarray, optional): atom's position in fractional coordinates.</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        (ndarray, ndarray): real-space representation of the given operator, O_{ab}(R) = &lt;φ_{a}(0)|O|φ_{b}(R)&gt;, lattice points.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">Ok</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">Ok</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">complex</span><span class="p">)</span>
     <span class="n">kpoints</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">kpoints</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
     <span class="n">irvec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">irvec</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
 
     <span class="n">num_k</span> <span class="o">=</span> <span class="n">kpoints</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 
-    <span class="n">kR</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">&quot;ka,Ra-&gt;kR&quot;</span><span class="p">,</span> <span class="n">kpoints</span><span class="p">,</span> <span class="n">irvec</span><span class="p">,</span> <span class="n">optimize</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">kR</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">"ka,Ra-&gt;kR"</span><span class="p">,</span> <span class="n">kpoints</span><span class="p">,</span> <span class="n">irvec</span><span class="p">,</span> <span class="n">optimize</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="n">phase_R</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="n">kR</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">atoms_frac</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">tau</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">atoms_frac</span><span class="p">)</span>
-        <span class="n">ktau</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">&quot;ka,ma-&gt;km&quot;</span><span class="p">,</span> <span class="n">kpoints</span><span class="p">,</span> <span class="n">tau</span><span class="p">,</span> <span class="n">optimize</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">ktau</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">"ka,ma-&gt;km"</span><span class="p">,</span> <span class="n">kpoints</span><span class="p">,</span> <span class="n">tau</span><span class="p">,</span> <span class="n">optimize</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="n">eiktau</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">+</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="n">ktau</span><span class="p">)</span>
 
-        <span class="n">Or</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">&quot;kR,km,kmn,kn-&gt;Rmn&quot;</span><span class="p">,</span> <span class="n">phase_R</span><span class="p">,</span> <span class="n">eiktau</span><span class="p">,</span> <span class="n">Ok</span><span class="p">,</span> <span class="n">eiktau</span><span class="o">.</span><span class="n">conjugate</span><span class="p">(),</span> <span class="n">optimize</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="o">/</span> <span class="n">num_k</span>
+        <span class="n">Or</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">"kR,km,kmn,kn-&gt;Rmn"</span><span class="p">,</span> <span class="n">phase_R</span><span class="p">,</span> <span class="n">eiktau</span><span class="p">,</span> <span class="n">Ok</span><span class="p">,</span> <span class="n">eiktau</span><span class="o">.</span><span class="n">conjugate</span><span class="p">(),</span> <span class="n">optimize</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="o">/</span> <span class="n">num_k</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="n">Or</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">&quot;kR,kmn-&gt;Rmn&quot;</span><span class="p">,</span> <span class="n">phase_R</span><span class="p">,</span> <span class="n">Ok</span><span class="p">,</span> <span class="n">optimize</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="o">/</span> <span class="n">num_k</span>
+        <span class="n">Or</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">"kR,kmn-&gt;Rmn"</span><span class="p">,</span> <span class="n">phase_R</span><span class="p">,</span> <span class="n">Ok</span><span class="p">,</span> <span class="n">optimize</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="o">/</span> <span class="n">num_k</span>
 
     <span class="k">return</span> <span class="n">Or</span></div>
 
@@ -735,7 +754,7 @@
 <div class="viewcode-block" id="fourier_transform_r_to_k">
 <a class="viewcode-back" href="../../../src/api/util.html#symclosestwannier.util.utility.fourier_transform_r_to_k">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">fourier_transform_r_to_k</span><span class="p">(</span><span class="n">Or</span><span class="p">,</span> <span class="n">kpoints</span><span class="p">,</span> <span class="n">irvec</span><span class="p">,</span> <span class="n">ndegen</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">atoms_frac</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    fourier transformation of an arbitrary operator from real-space representation into k-space representation.</span>
 
 <span class="sd">    Args:</span>
@@ -743,11 +762,11 @@
 <span class="sd">        kpoints (ndarray): k-points used in DFT calculation, [[k1, k2, k3]] (crystal coordinate).</span>
 <span class="sd">        irvec (ndarray): irreducible R vectors (crystal coordinate, [[n1,n2,n3]], nj: integer).</span>
 <span class="sd">        ndegen (ndarray, optional): number of degeneracy at each R.</span>
-<span class="sd">        atoms_frac (ndarray, optional): atom&#39;s position in fractional coordinates.</span>
+<span class="sd">        atoms_frac (ndarray, optional): atom's position in fractional coordinates.</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        ndarray: k-space representation of the given operator, O_{ab}(k) = &lt;φ_{a}(k)|O|φ_{b}(k)&gt;.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">irvec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">irvec</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
 
     <span class="n">Nr</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">irvec</span><span class="p">)</span>
@@ -762,11 +781,11 @@
 
     <span class="k">if</span> <span class="n">atoms_frac</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">tau</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">atoms_frac</span><span class="p">)</span>
-        <span class="n">ktau</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">&quot;ka,ma-&gt;km&quot;</span><span class="p">,</span> <span class="n">kpoints</span><span class="p">,</span> <span class="n">tau</span><span class="p">,</span> <span class="n">optimize</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">ktau</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">"ka,ma-&gt;km"</span><span class="p">,</span> <span class="n">kpoints</span><span class="p">,</span> <span class="n">tau</span><span class="p">,</span> <span class="n">optimize</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="n">eiktau</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="n">ktau</span><span class="p">)</span>
-        <span class="n">Ok</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">&quot;R,kR,km,Rmn,kn-&gt;kmn&quot;</span><span class="p">,</span> <span class="n">weight</span><span class="p">,</span> <span class="n">phase_R</span><span class="p">,</span> <span class="n">eiktau</span><span class="p">,</span> <span class="n">Or</span><span class="p">,</span> <span class="n">eiktau</span><span class="o">.</span><span class="n">conjugate</span><span class="p">(),</span> <span class="n">optimize</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">Ok</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">"R,kR,km,Rmn,kn-&gt;kmn"</span><span class="p">,</span> <span class="n">weight</span><span class="p">,</span> <span class="n">phase_R</span><span class="p">,</span> <span class="n">eiktau</span><span class="p">,</span> <span class="n">Or</span><span class="p">,</span> <span class="n">eiktau</span><span class="o">.</span><span class="n">conjugate</span><span class="p">(),</span> <span class="n">optimize</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="n">Ok</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">&quot;R,kR,Rmn-&gt;kmn&quot;</span><span class="p">,</span> <span class="n">weight</span><span class="p">,</span> <span class="n">phase_R</span><span class="p">,</span> <span class="n">Or</span><span class="p">,</span> <span class="n">optimize</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">Ok</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">"R,kR,Rmn-&gt;kmn"</span><span class="p">,</span> <span class="n">weight</span><span class="p">,</span> <span class="n">phase_R</span><span class="p">,</span> <span class="n">Or</span><span class="p">,</span> <span class="n">optimize</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">Ok</span></div>
 
@@ -778,7 +797,7 @@
 <span class="k">def</span><span class="w"> </span><span class="nf">fourier_transform_r_to_k_vec</span><span class="p">(</span>
     <span class="n">Or_vec</span><span class="p">,</span> <span class="n">kpoints</span><span class="p">,</span> <span class="n">irvec</span><span class="p">,</span> <span class="n">ndegen</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">atoms_frac</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">unit_cell_cart</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">pseudo</span><span class="o">=</span><span class="kc">False</span>
 <span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    fourier transformation of an arbitrary operator from real-space representation into k-space representation.</span>
 
 <span class="sd">    Args:</span>
@@ -786,13 +805,13 @@
 <span class="sd">        kpoints (ndarray): k-points used in DFT calculation, [[k1, k2, k3]] (crystal coordinate).</span>
 <span class="sd">        irvec (ndarray): irreducible R vectors (crystal coordinate, [[n1,n2,n3]], nj: integer).</span>
 <span class="sd">        ndegen (ndarray, optional): number of degeneracy at each R.</span>
-<span class="sd">        atoms_frac (ndarray, optional): atom&#39;s position in fractional coordinates.</span>
+<span class="sd">        atoms_frac (ndarray, optional): atom's position in fractional coordinates.</span>
 <span class="sd">        unit_cell_cart (ndarray): transform matrix, [a1,a2,a3], [None].</span>
 <span class="sd">        pseudo (bool, optional): calculate pseudo vector?</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        ndarray: k-space representation of the given operator, O_{ab}(k) = &lt;φ_{a}(k)|O|φ_{b}(k)&gt;.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">Or_vec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">Or_vec</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">complex</span><span class="p">)</span>
     <span class="n">irvec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">irvec</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
     <span class="n">Nr</span> <span class="o">=</span> <span class="n">irvec</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
@@ -803,22 +822,22 @@
         <span class="n">weight</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">1.0</span> <span class="o">/</span> <span class="n">ndegen</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">Nr</span><span class="p">)])</span>
     <span class="n">kpoints</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">kpoints</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
 
-    <span class="n">kR</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">&quot;ka,Ra-&gt;kR&quot;</span><span class="p">,</span> <span class="n">kpoints</span><span class="p">,</span> <span class="n">irvec</span><span class="p">,</span> <span class="n">optimize</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">kR</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">"ka,Ra-&gt;kR"</span><span class="p">,</span> <span class="n">kpoints</span><span class="p">,</span> <span class="n">irvec</span><span class="p">,</span> <span class="n">optimize</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="n">phase_R</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">+</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="n">kR</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">atoms_frac</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">tau</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">atoms_frac</span><span class="p">)</span>
-        <span class="n">ktau</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">&quot;ka,ma-&gt;km&quot;</span><span class="p">,</span> <span class="n">kpoints</span><span class="p">,</span> <span class="n">tau</span><span class="p">,</span> <span class="n">optimize</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">ktau</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">"ka,ma-&gt;km"</span><span class="p">,</span> <span class="n">kpoints</span><span class="p">,</span> <span class="n">tau</span><span class="p">,</span> <span class="n">optimize</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="n">eiktau</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="n">ktau</span><span class="p">)</span>
 
         <span class="n">Ok_true_vec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span>
-            <span class="s2">&quot;R,kR,km,aRmn,kn-&gt;akmn&quot;</span><span class="p">,</span> <span class="n">weight</span><span class="p">,</span> <span class="n">phase_R</span><span class="p">,</span> <span class="n">eiktau</span><span class="p">,</span> <span class="n">Or_vec</span><span class="p">,</span> <span class="n">eiktau</span><span class="o">.</span><span class="n">conjugate</span><span class="p">(),</span> <span class="n">optimize</span><span class="o">=</span><span class="kc">True</span>
+            <span class="s2">"R,kR,km,aRmn,kn-&gt;akmn"</span><span class="p">,</span> <span class="n">weight</span><span class="p">,</span> <span class="n">phase_R</span><span class="p">,</span> <span class="n">eiktau</span><span class="p">,</span> <span class="n">Or_vec</span><span class="p">,</span> <span class="n">eiktau</span><span class="o">.</span><span class="n">conjugate</span><span class="p">(),</span> <span class="n">optimize</span><span class="o">=</span><span class="kc">True</span>
         <span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;weight.shape = </span><span class="si">{</span><span class="n">weight</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;phase_R.shape = </span><span class="si">{</span><span class="n">phase_R</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Or_vec.shape = </span><span class="si">{</span><span class="n">Or_vec</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-        <span class="n">Ok_true_vec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">&quot;R,kR,aRmn-&gt;akmn&quot;</span><span class="p">,</span> <span class="n">weight</span><span class="p">,</span> <span class="n">phase_R</span><span class="p">,</span> <span class="n">Or_vec</span><span class="p">,</span> <span class="n">optimize</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"weight.shape = </span><span class="si">{</span><span class="n">weight</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"phase_R.shape = </span><span class="si">{</span><span class="n">phase_R</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Or_vec.shape = </span><span class="si">{</span><span class="n">Or_vec</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+        <span class="n">Ok_true_vec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">"R,kR,aRmn-&gt;akmn"</span><span class="p">,</span> <span class="n">weight</span><span class="p">,</span> <span class="n">phase_R</span><span class="p">,</span> <span class="n">Or_vec</span><span class="p">,</span> <span class="n">optimize</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="ow">not</span> <span class="n">pseudo</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">Ok_true_vec</span>
@@ -833,7 +852,7 @@
             <span class="n">bond_cart</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[[(</span><span class="n">R</span> <span class="o">+</span> <span class="n">rn</span><span class="p">)</span> <span class="o">-</span> <span class="n">rm</span> <span class="k">for</span> <span class="n">rn</span> <span class="ow">in</span> <span class="n">atoms_cart</span><span class="p">]</span> <span class="k">for</span> <span class="n">rm</span> <span class="ow">in</span> <span class="n">atoms_cart</span><span class="p">]</span> <span class="k">for</span> <span class="n">R</span> <span class="ow">in</span> <span class="n">irvec_cart</span><span class="p">])</span>
             <span class="k">for</span> <span class="n">c</span><span class="p">,</span> <span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">ab_list</span><span class="p">):</span>
                 <span class="n">Ok_pseudo_vec</span><span class="p">[</span><span class="n">c</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.0</span><span class="n">j</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span>
-                    <span class="s2">&quot;R,kR,Rmn,km,Rmn,kn-&gt;kmn&quot;</span><span class="p">,</span>
+                    <span class="s2">"R,kR,Rmn,km,Rmn,kn-&gt;kmn"</span><span class="p">,</span>
                     <span class="n">weight</span><span class="p">,</span>
                     <span class="n">phase_R</span><span class="p">,</span>
                     <span class="n">bond_cart</span><span class="p">[:,</span> <span class="p">:,</span> <span class="p">:,</span> <span class="n">a</span><span class="p">],</span>
@@ -843,7 +862,7 @@
                     <span class="n">optimize</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
                 <span class="p">)</span>
                 <span class="o">-</span><span class="mf">1.0</span><span class="n">j</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span>
-                    <span class="s2">&quot;R,kR,Rmn,km,Rmn,kn-&gt;kmn&quot;</span><span class="p">,</span>
+                    <span class="s2">"R,kR,Rmn,km,Rmn,kn-&gt;kmn"</span><span class="p">,</span>
                     <span class="n">weight</span><span class="p">,</span>
                     <span class="n">phase_R</span><span class="p">,</span>
                     <span class="n">bond_cart</span><span class="p">[:,</span> <span class="p">:,</span> <span class="p">:,</span> <span class="n">b</span><span class="p">],</span>
@@ -855,8 +874,8 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">c</span><span class="p">,</span> <span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">ab_list</span><span class="p">):</span>
                 <span class="n">Ok_pseudo_vec</span><span class="p">[</span><span class="n">c</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.0</span><span class="n">j</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span>
-                    <span class="s2">&quot;R,kR,R,Rmn-&gt;kmn&quot;</span><span class="p">,</span> <span class="n">weight</span><span class="p">,</span> <span class="n">phase_R</span><span class="p">,</span> <span class="n">irvec_cart</span><span class="p">[:,</span> <span class="n">a</span><span class="p">],</span> <span class="n">Or_vec</span><span class="p">[</span><span class="n">b</span><span class="p">],</span> <span class="n">optimize</span><span class="o">=</span><span class="kc">True</span>
-                <span class="p">)</span> <span class="o">-</span> <span class="mf">1.0</span><span class="n">j</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">&quot;R,kR,R,Rmn-&gt;kmn&quot;</span><span class="p">,</span> <span class="n">weight</span><span class="p">,</span> <span class="n">phase_R</span><span class="p">,</span> <span class="n">irvec_cart</span><span class="p">[:,</span> <span class="n">b</span><span class="p">],</span> <span class="n">Or_vec</span><span class="p">[</span><span class="n">a</span><span class="p">],</span> <span class="n">optimize</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                    <span class="s2">"R,kR,R,Rmn-&gt;kmn"</span><span class="p">,</span> <span class="n">weight</span><span class="p">,</span> <span class="n">phase_R</span><span class="p">,</span> <span class="n">irvec_cart</span><span class="p">[:,</span> <span class="n">a</span><span class="p">],</span> <span class="n">Or_vec</span><span class="p">[</span><span class="n">b</span><span class="p">],</span> <span class="n">optimize</span><span class="o">=</span><span class="kc">True</span>
+                <span class="p">)</span> <span class="o">-</span> <span class="mf">1.0</span><span class="n">j</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">"R,kR,R,Rmn-&gt;kmn"</span><span class="p">,</span> <span class="n">weight</span><span class="p">,</span> <span class="n">phase_R</span><span class="p">,</span> <span class="n">irvec_cart</span><span class="p">[:,</span> <span class="n">b</span><span class="p">],</span> <span class="n">Or_vec</span><span class="p">[</span><span class="n">a</span><span class="p">],</span> <span class="n">optimize</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">Ok_true_vec</span><span class="p">,</span> <span class="n">Ok_pseudo_vec</span></div>
 
@@ -866,7 +885,7 @@
 <div class="viewcode-block" id="fourier_transform_r_to_k_new">
 <a class="viewcode-back" href="../../../src/api/util.html#symclosestwannier.util.utility.fourier_transform_r_to_k_new">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">fourier_transform_r_to_k_new</span><span class="p">(</span><span class="n">Or</span><span class="p">,</span> <span class="n">kpoints</span><span class="p">,</span> <span class="n">unit_cell_cart</span><span class="p">,</span> <span class="n">irvec</span><span class="p">,</span> <span class="n">ndegen</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">atoms_frac</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    fourier transformation of an arbitrary operator from real-space representation into k-space representation.</span>
 
 <span class="sd">    Args:</span>
@@ -875,11 +894,11 @@
 <span class="sd">        unit_cell_cart (ndarray): transform matrix, [a1,a2,a3], [None].</span>
 <span class="sd">        irvec (ndarray): irreducible R vectors (crystal coordinate, [[n1,n2,n3]], nj: integer).</span>
 <span class="sd">        ndegen (ndarray, optional): number of degeneracy at each R.</span>
-<span class="sd">        atoms_frac (ndarray, optional): atom&#39;s position in fractional coordinates.</span>
+<span class="sd">        atoms_frac (ndarray, optional): atom's position in fractional coordinates.</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        ndarray: k-space representation of the given operator, O_{ab}(k) = &lt;φ_{a}(k)|O|φ_{b}(k)&gt;.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">Or</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">Or</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">complex</span><span class="p">)</span>
     <span class="n">irvec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">irvec</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
     <span class="n">Nr</span> <span class="o">=</span> <span class="n">irvec</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
@@ -890,7 +909,7 @@
         <span class="n">weight</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">1.0</span> <span class="o">/</span> <span class="n">ndegen</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">Nr</span><span class="p">)])</span>
     <span class="n">kpoints</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">kpoints</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
 
-    <span class="n">kR</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">&quot;ka,Ra-&gt;kR&quot;</span><span class="p">,</span> <span class="n">kpoints</span><span class="p">,</span> <span class="n">irvec</span><span class="p">,</span> <span class="n">optimize</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">kR</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">"ka,Ra-&gt;kR"</span><span class="p">,</span> <span class="n">kpoints</span><span class="p">,</span> <span class="n">irvec</span><span class="p">,</span> <span class="n">optimize</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="n">phase_R</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">+</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="n">kR</span><span class="p">)</span>
 
     <span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">unit_cell_cart</span><span class="p">)</span>
@@ -898,20 +917,20 @@
 
     <span class="k">if</span> <span class="n">atoms_frac</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">tau</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">atoms_frac</span><span class="p">)</span>
-        <span class="n">ktau</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">&quot;ka,ma-&gt;km&quot;</span><span class="p">,</span> <span class="n">kpoints</span><span class="p">,</span> <span class="n">tau</span><span class="p">,</span> <span class="n">optimize</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">ktau</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">"ka,ma-&gt;km"</span><span class="p">,</span> <span class="n">kpoints</span><span class="p">,</span> <span class="n">tau</span><span class="p">,</span> <span class="n">optimize</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="n">eiktau</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="n">ktau</span><span class="p">)</span>
 
         <span class="n">atoms_cart</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">r</span><span class="p">)</span> <span class="o">@</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">A</span><span class="p">)</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">atoms_frac</span><span class="p">])</span>
 
         <span class="n">bond_cart</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[[(</span><span class="n">R</span> <span class="o">+</span> <span class="n">rn</span><span class="p">)</span> <span class="o">-</span> <span class="n">rm</span> <span class="k">for</span> <span class="n">rn</span> <span class="ow">in</span> <span class="n">atoms_cart</span><span class="p">]</span> <span class="k">for</span> <span class="n">rm</span> <span class="ow">in</span> <span class="n">atoms_cart</span><span class="p">]</span> <span class="k">for</span> <span class="n">R</span> <span class="ow">in</span> <span class="n">irvec_cart</span><span class="p">])</span>
 
-        <span class="n">Ok</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">&quot;R,kR,km,Rmn,kn-&gt;kmn&quot;</span><span class="p">,</span> <span class="n">weight</span><span class="p">,</span> <span class="n">phase_R</span><span class="p">,</span> <span class="n">eiktau</span><span class="p">,</span> <span class="n">Or</span><span class="p">,</span> <span class="n">eiktau</span><span class="o">.</span><span class="n">conjugate</span><span class="p">(),</span> <span class="n">optimize</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">Ok</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">"R,kR,km,Rmn,kn-&gt;kmn"</span><span class="p">,</span> <span class="n">weight</span><span class="p">,</span> <span class="n">phase_R</span><span class="p">,</span> <span class="n">eiktau</span><span class="p">,</span> <span class="n">Or</span><span class="p">,</span> <span class="n">eiktau</span><span class="o">.</span><span class="n">conjugate</span><span class="p">(),</span> <span class="n">optimize</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="n">Ok_dx</span><span class="p">,</span> <span class="n">Ok_dy</span><span class="p">,</span> <span class="n">Ok_dz</span> <span class="o">=</span> <span class="mf">1.0</span><span class="n">j</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span>
-            <span class="s2">&quot;R,kR,Rmna,km,Rmn,kn-&gt;akmn&quot;</span><span class="p">,</span> <span class="n">weight</span><span class="p">,</span> <span class="n">phase_R</span><span class="p">,</span> <span class="n">bond_cart</span><span class="p">,</span> <span class="n">eiktau</span><span class="p">,</span> <span class="n">Or</span><span class="p">,</span> <span class="n">eiktau</span><span class="o">.</span><span class="n">conjugate</span><span class="p">(),</span> <span class="n">optimize</span><span class="o">=</span><span class="kc">True</span>
+            <span class="s2">"R,kR,Rmna,km,Rmn,kn-&gt;akmn"</span><span class="p">,</span> <span class="n">weight</span><span class="p">,</span> <span class="n">phase_R</span><span class="p">,</span> <span class="n">bond_cart</span><span class="p">,</span> <span class="n">eiktau</span><span class="p">,</span> <span class="n">Or</span><span class="p">,</span> <span class="n">eiktau</span><span class="o">.</span><span class="n">conjugate</span><span class="p">(),</span> <span class="n">optimize</span><span class="o">=</span><span class="kc">True</span>
         <span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="n">Ok</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">&quot;R,kR,Rmn-&gt;kmn&quot;</span><span class="p">,</span> <span class="n">weight</span><span class="p">,</span> <span class="n">phase_R</span><span class="p">,</span> <span class="n">Or</span><span class="p">,</span> <span class="n">optimize</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-        <span class="n">Ok_dx</span><span class="p">,</span> <span class="n">Ok_dy</span><span class="p">,</span> <span class="n">Ok_dz</span> <span class="o">=</span> <span class="mf">1.0</span><span class="n">j</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">&quot;R,kR,Ra,Rmn-&gt;akmn&quot;</span><span class="p">,</span> <span class="n">weight</span><span class="p">,</span> <span class="n">phase_R</span><span class="p">,</span> <span class="n">irvec_cart</span><span class="p">,</span> <span class="n">Or</span><span class="p">,</span> <span class="n">optimize</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">Ok</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">"R,kR,Rmn-&gt;kmn"</span><span class="p">,</span> <span class="n">weight</span><span class="p">,</span> <span class="n">phase_R</span><span class="p">,</span> <span class="n">Or</span><span class="p">,</span> <span class="n">optimize</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">Ok_dx</span><span class="p">,</span> <span class="n">Ok_dy</span><span class="p">,</span> <span class="n">Ok_dz</span> <span class="o">=</span> <span class="mf">1.0</span><span class="n">j</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">"R,kR,Ra,Rmn-&gt;akmn"</span><span class="p">,</span> <span class="n">weight</span><span class="p">,</span> <span class="n">phase_R</span><span class="p">,</span> <span class="n">irvec_cart</span><span class="p">,</span> <span class="n">Or</span><span class="p">,</span> <span class="n">optimize</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
     <span class="n">delOk</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">Ok_dx</span><span class="p">,</span> <span class="n">Ok_dy</span><span class="p">,</span> <span class="n">Ok_dz</span><span class="p">])</span>
 
@@ -923,7 +942,7 @@
 <div class="viewcode-block" id="interpolate">
 <a class="viewcode-back" href="../../../src/api/util.html#symclosestwannier.util.utility.interpolate">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">interpolate</span><span class="p">(</span><span class="n">Ok</span><span class="p">,</span> <span class="n">kpoints_0</span><span class="p">,</span> <span class="n">kpoints</span><span class="p">,</span> <span class="n">irvec</span><span class="p">,</span> <span class="n">ndegen</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">atoms_frac</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    interpolate an arbitrary operator by implementing</span>
 <span class="sd">    fourier transformation from real-space representation into k-space representation.</span>
 
@@ -933,11 +952,11 @@
 <span class="sd">        kpoints (ndarray): k points after interpolated (crystal coordinate, [[k1,k2,k3]]).</span>
 <span class="sd">        irvec (ndarray): irreducible R vectors (crystal coordinate, [[n1,n2,n3]], nj: integer).</span>
 <span class="sd">        ndegen (ndarray, optional): number of degeneracy at each R.</span>
-<span class="sd">        atoms_frac (ndarray, optional): atom&#39;s position in fractional coordinates.</span>
+<span class="sd">        atoms_frac (ndarray, optional): atom's position in fractional coordinates.</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        ndarray: matrix elements at each k point, O_{ab}(k) = &lt;φ_{a}(k)|O|φ_{b}(k)&gt;.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">Or</span> <span class="o">=</span> <span class="n">fourier_transform_k_to_r</span><span class="p">(</span><span class="n">Ok</span><span class="p">,</span> <span class="n">kpoints_0</span><span class="p">,</span> <span class="n">irvec</span><span class="p">,</span> <span class="n">atoms_frac</span><span class="p">)</span>
     <span class="n">Ok_interpolated</span> <span class="o">=</span> <span class="n">fourier_transform_r_to_k</span><span class="p">(</span><span class="n">Or</span><span class="p">,</span> <span class="n">kpoints</span><span class="p">,</span> <span class="n">irvec</span><span class="p">,</span> <span class="n">ndegen</span><span class="p">,</span> <span class="n">atoms_frac</span><span class="p">)</span>
 
@@ -949,7 +968,7 @@
 <div class="viewcode-block" id="matrix_dict_r">
 <a class="viewcode-back" href="../../../src/api/util.html#symclosestwannier.util.utility.matrix_dict_r">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">matrix_dict_r</span><span class="p">(</span><span class="n">Or</span><span class="p">,</span> <span class="n">rpoints</span><span class="p">,</span> <span class="n">diagonal</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    dictionary form of an arbitrary operator matrix in real-space representation.</span>
 
 <span class="sd">    Args:</span>
@@ -959,7 +978,7 @@
 
 <span class="sd">    Returns:</span>
 <span class="sd">        dict: real-space representation of the given operator, {(n2,n2,n3,a,b) = O_{ab}(R)}.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="c1"># number of pseudo atomic orbitals</span>
     <span class="n">dim_r</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">Or</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">diagonal</span><span class="p">:</span>
@@ -984,7 +1003,7 @@
 <div class="viewcode-block" id="matrix_dict_k">
 <a class="viewcode-back" href="../../../src/api/util.html#symclosestwannier.util.utility.matrix_dict_k">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">matrix_dict_k</span><span class="p">(</span><span class="n">Ok</span><span class="p">,</span> <span class="n">kpoints</span><span class="p">,</span> <span class="n">diagonal</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    dictionary form of an arbitrary operator matrix in k-space representation.</span>
 
 <span class="sd">    Args:</span>
@@ -994,7 +1013,7 @@
 
 <span class="sd">    Returns:</span>
 <span class="sd">        dict: k-space representation of the given operator, {(k2,k2,k3,a,b) = O_{ab}(k)}.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="c1"># number of pseudo atomic orbitals</span>
     <span class="n">dim_r</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">Ok</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">diagonal</span><span class="p">:</span>
@@ -1017,7 +1036,7 @@
 <div class="viewcode-block" id="dict_to_matrix">
 <a class="viewcode-back" href="../../../src/api/util.html#symclosestwannier.util.utility.dict_to_matrix">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">dict_to_matrix</span><span class="p">(</span><span class="n">Or_dict</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    convert dictionary form to matrix form of an arbitrary operator matrix.</span>
 
 <span class="sd">    Args:</span>
@@ -1027,7 +1046,7 @@
 <span class="sd">    Returns:</span>
 <span class="sd">        ndarray: matrix form of the given operator.</span>
 <span class="sd">        ndarray: lattice or k points.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="k">if</span> <span class="n">dim</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">dim</span> <span class="o">=</span> <span class="nb">max</span><span class="p">([</span><span class="n">a</span> <span class="k">for</span> <span class="p">(</span><span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">_</span><span class="p">)</span> <span class="ow">in</span> <span class="n">Or_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">()])</span> <span class="o">+</span> <span class="mi">1</span>
 
@@ -1053,7 +1072,7 @@
 <div class="viewcode-block" id="sort_ket_matrix">
 <a class="viewcode-back" href="../../../src/api/util.html#symclosestwannier.util.utility.sort_ket_matrix">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">sort_ket_matrix</span><span class="p">(</span><span class="n">Ok</span><span class="p">,</span> <span class="n">ket1</span><span class="p">,</span> <span class="n">ket2</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    sort ket1 to align with the order of ket2.</span>
 
 <span class="sd">    Args:</span>
@@ -1063,7 +1082,7 @@
 
 <span class="sd">    Returns:</span>
 <span class="sd">        Ok (ndarray): operator.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">idx_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">ket1</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">o</span><span class="p">)</span> <span class="k">for</span> <span class="n">o</span> <span class="ow">in</span> <span class="n">ket2</span><span class="p">]</span>
     <span class="n">Ok</span> <span class="o">=</span> <span class="n">Ok</span><span class="p">[:,</span> <span class="n">idx_list</span><span class="p">,</span> <span class="p">:]</span>
     <span class="n">Ok</span> <span class="o">=</span> <span class="n">Ok</span><span class="p">[:,</span> <span class="p">:,</span> <span class="n">idx_list</span><span class="p">]</span>
@@ -1076,7 +1095,7 @@
 <div class="viewcode-block" id="sort_ket_matrix_dict">
 <a class="viewcode-back" href="../../../src/api/util.html#symclosestwannier.util.utility.sort_ket_matrix_dict">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">sort_ket_matrix_dict</span><span class="p">(</span><span class="n">Or_dict</span><span class="p">,</span> <span class="n">ket</span><span class="p">,</span> <span class="n">ket_samb</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    sort ket to align with the SAMB definition (ket_samb).</span>
 
 <span class="sd">    Args:</span>
@@ -1086,7 +1105,7 @@
 
 <span class="sd">    Returns:</span>
 <span class="sd">        Or_dict (dict):  dictionary form of an arbitrary operator matrix.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">idx_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">ket_samb</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">o</span><span class="p">)</span> <span class="k">for</span> <span class="n">o</span> <span class="ow">in</span> <span class="n">ket</span><span class="p">]</span>
     <span class="n">Or_dict</span> <span class="o">=</span> <span class="p">{(</span><span class="n">n1</span><span class="p">,</span> <span class="n">n2</span><span class="p">,</span> <span class="n">n3</span><span class="p">,</span> <span class="n">idx_list</span><span class="p">[</span><span class="n">a</span><span class="p">],</span> <span class="n">idx_list</span><span class="p">[</span><span class="n">b</span><span class="p">]):</span> <span class="n">v</span> <span class="k">for</span> <span class="p">(</span><span class="n">n1</span><span class="p">,</span> <span class="n">n2</span><span class="p">,</span> <span class="n">n3</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">),</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">Or_dict</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
 
@@ -1098,7 +1117,7 @@
 <div class="viewcode-block" id="sort_ket_list">
 <a class="viewcode-back" href="../../../src/api/util.html#symclosestwannier.util.utility.sort_ket_list">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">sort_ket_list</span><span class="p">(</span><span class="n">lst</span><span class="p">,</span> <span class="n">ket</span><span class="p">,</span> <span class="n">ket_samb</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    sort ket to align with the SAMB definition (ket_samb).</span>
 
 <span class="sd">    Args:</span>
@@ -1108,7 +1127,7 @@
 
 <span class="sd">    Returns:</span>
 <span class="sd">        lst (list): arbitrary list that has the same dimensions as the ket.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">idx_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">ket</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">o</span><span class="p">)</span> <span class="k">for</span> <span class="n">o</span> <span class="ow">in</span> <span class="n">ket_samb</span><span class="p">]</span>
 
     <span class="n">lst</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">lst</span><span class="p">)</span>
@@ -1120,7 +1139,7 @@
     <span class="k">elif</span> <span class="n">lst</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
         <span class="n">lst</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">lst</span><span class="p">)[</span><span class="n">idx_list</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:])</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;invalid dimension of lst = </span><span class="si">{</span><span class="n">lst</span><span class="o">.</span><span class="n">ndim</span><span class="si">}</span><span class="s2"> was given.&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="sa">f</span><span class="s2">"invalid dimension of lst = </span><span class="si">{</span><span class="n">lst</span><span class="o">.</span><span class="n">ndim</span><span class="si">}</span><span class="s2"> was given."</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">lst</span><span class="p">)</span></div>
 
@@ -1130,7 +1149,7 @@
 <div class="viewcode-block" id="samb_decomp_operator">
 <a class="viewcode-back" href="../../../src/api/util.html#symclosestwannier.util.utility.samb_decomp_operator">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">samb_decomp_operator</span><span class="p">(</span><span class="n">Or_dict</span><span class="p">,</span> <span class="n">Zr_dict</span><span class="p">,</span> <span class="n">ket</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ket_samb</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    decompose arbitrary operator into linear combination of SAMBs.</span>
 
 <span class="sd">    Args:</span>
@@ -1141,7 +1160,7 @@
 
 <span class="sd">    Returns:</span>
 <span class="sd">        z (dict): parameter set, {zj: coeff}.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">Or_dict</span> <span class="o">=</span> <span class="n">sort_ket_matrix_dict</span><span class="p">(</span><span class="n">Or_dict</span><span class="p">,</span> <span class="n">ket</span><span class="p">,</span> <span class="n">ket_samb</span><span class="p">)</span>
 
     <span class="n">z</span> <span class="o">=</span> <span class="p">{</span>
@@ -1157,7 +1176,7 @@
 <div class="viewcode-block" id="O_R_dependence">
 <a class="viewcode-back" href="../../../src/api/util.html#symclosestwannier.util.utility.O_R_dependence">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">O_R_dependence</span><span class="p">(</span><span class="n">Or</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">irvec</span><span class="p">,</span> <span class="n">ndegen</span><span class="p">,</span> <span class="n">ef</span><span class="o">=</span><span class="mf">0.0</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Bond length ||R|| (the 2-norm of lattice vector) dependence of the Frobenius norm of the operator ||O(R)||.</span>
 <span class="sd">    The decay length τ [Ang] defined by Exponential-form fitting ||O(R)|| = ||O(Rmin)|| exp(-||R||/τ) is also returned.</span>
 <span class="sd">    Rmin is the bond with minimum length.</span>
@@ -1171,7 +1190,7 @@
 
 <span class="sd">    Returns: (list, list, list, float, float, float)</span>
 <span class="sd">            [||R||], [||O(R)||], [max(|O(R)|)], ||O(Rmin)||, ||Rmin||, τ.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">R_2_norm_lst</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">OR_F_norm_lst</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">OR_abs_max_lst</span> <span class="o">=</span> <span class="p">[]</span>
@@ -1189,11 +1208,11 @@
         <span class="k">if</span> <span class="p">(</span><span class="n">n1</span><span class="p">,</span> <span class="n">n2</span><span class="p">,</span> <span class="n">n3</span><span class="p">)</span> <span class="o">==</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">):</span>
             <span class="n">OR</span> <span class="o">=</span> <span class="n">OR</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">OR</span><span class="o">.</span><span class="n">diagonal</span><span class="p">())</span>
 
-            <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">OR</span><span class="p">,</span> <span class="nb">ord</span><span class="o">=</span><span class="s2">&quot;fro&quot;</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mf">1e-8</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">OR</span><span class="p">,</span> <span class="nb">ord</span><span class="o">=</span><span class="s2">"fro"</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mf">1e-8</span><span class="p">:</span>
                 <span class="k">continue</span>
 
         <span class="n">R_2_norm</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">R</span><span class="p">)</span>
-        <span class="n">OR_F_norm</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">OR</span><span class="p">,</span> <span class="nb">ord</span><span class="o">=</span><span class="s2">&quot;fro&quot;</span><span class="p">)</span>
+        <span class="n">OR_F_norm</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">OR</span><span class="p">,</span> <span class="nb">ord</span><span class="o">=</span><span class="s2">"fro"</span><span class="p">)</span>
         <span class="n">OR_abs_max</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">OR</span><span class="p">))</span>
 
         <span class="n">R_2_norm_lst</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">R_2_norm</span><span class="p">)</span>
@@ -1222,7 +1241,7 @@
 <div class="viewcode-block" id="construct_Or">
 <a class="viewcode-back" href="../../../src/api/util.html#symclosestwannier.util.utility.construct_Or">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">construct_Or</span><span class="p">(</span><span class="n">coeff</span><span class="p">,</span> <span class="n">num_wann</span><span class="p">,</span> <span class="n">rpoints</span><span class="p">,</span> <span class="n">matrix_dict</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    arbitrary operator constructed by linear combination of SAMBs in real-space representation.</span>
 
 <span class="sd">    Args:</span>
@@ -1233,7 +1252,7 @@
 
 <span class="sd">    Returns:</span>
 <span class="sd">        ndarray: matrix, [#r, dim, dim].</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">Or_dict</span> <span class="o">=</span> <span class="p">{(</span><span class="n">n1</span><span class="p">,</span> <span class="n">n2</span><span class="p">,</span> <span class="n">n3</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span> <span class="mf">0.0</span> <span class="k">for</span> <span class="p">(</span><span class="n">n1</span><span class="p">,</span> <span class="n">n2</span><span class="p">,</span> <span class="n">n3</span><span class="p">)</span> <span class="ow">in</span> <span class="n">rpoints</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_wann</span><span class="p">)</span> <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_wann</span><span class="p">)}</span>
     <span class="k">for</span> <span class="n">zj</span><span class="p">,</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">matrix_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
         <span class="k">for</span> <span class="p">(</span><span class="n">n1</span><span class="p">,</span> <span class="n">n2</span><span class="p">,</span> <span class="n">n3</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">),</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">d</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
@@ -1255,7 +1274,7 @@
 <div class="viewcode-block" id="construct_Ok">
 <a class="viewcode-back" href="../../../src/api/util.html#symclosestwannier.util.utility.construct_Ok">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">construct_Ok</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">num_wann</span><span class="p">,</span> <span class="n">kpoints</span><span class="p">,</span> <span class="n">rpoints</span><span class="p">,</span> <span class="n">matrix_dict</span><span class="p">,</span> <span class="n">atoms_frac</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    arbitrary operator constructed by linear combination of SAMBs in k-space representation.</span>
 
 <span class="sd">    Args:</span>
@@ -1267,7 +1286,7 @@
 
 <span class="sd">    Returns:</span>
 <span class="sd">        ndarray: matrix, [#k, dim, dim].</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">kpoints</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">kpoints</span><span class="p">)</span>
     <span class="n">rpoints</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">rpoints</span><span class="p">)</span>
 
@@ -1282,7 +1301,7 @@
 <div class="viewcode-block" id="thermal_avg">
 <a class="viewcode-back" href="../../../src/api/util.html#symclosestwannier.util.utility.thermal_avg">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">thermal_avg</span><span class="p">(</span><span class="n">O</span><span class="p">,</span> <span class="n">E</span><span class="p">,</span> <span class="n">U</span><span class="p">,</span> <span class="n">ef</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">T_Kelvin</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">num_k</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    thermal average of the given operator,</span>
 <span class="sd">    &lt;O&gt; = 1 / Nk * sum_{n,k} fermi_dirac[E_{n}(k)] O_{nn}(k)</span>
 
@@ -1295,7 +1314,7 @@
 
 <span class="sd">    Returns:</span>
 <span class="sd">        ndarray: thermal average of the given operator.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">O</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">list</span><span class="p">:</span>
         <span class="n">single_operator</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="n">O</span> <span class="o">=</span> <span class="p">[</span><span class="n">O</span><span class="p">]</span>
@@ -1322,7 +1341,7 @@
         <span class="n">O_exp</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">real</span><span class="p">(</span><span class="n">Oi_exp</span><span class="p">))</span>
 
         <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">imag</span><span class="p">(</span><span class="n">Oi_exp</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mf">1e-7</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;expectation value of </span><span class="si">{</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2">th operator is wrong : </span><span class="si">{</span><span class="n">Oi_exp</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="sa">f</span><span class="s2">"expectation value of </span><span class="si">{</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2">th operator is wrong : </span><span class="si">{</span><span class="n">Oi_exp</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">single_operator</span><span class="p">:</span>
         <span class="n">O_exp</span> <span class="o">=</span> <span class="n">O_exp</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
@@ -1337,9 +1356,9 @@
 <div class="viewcode-block" id="total_energy">
 <a class="viewcode-back" href="../../../src/api/util.html#symclosestwannier.util.utility.total_energy">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">total_energy</span><span class="p">(</span><span class="n">E</span><span class="p">,</span> <span class="n">ef</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">T_Kelvin</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">num_k</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    total energy (E).</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="k">if</span> <span class="n">ef</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">ef</span> <span class="o">=</span> <span class="mf">0.0</span>
 
@@ -1359,9 +1378,9 @@
 <div class="viewcode-block" id="free_energy">
 <a class="viewcode-back" href="../../../src/api/util.html#symclosestwannier.util.utility.free_energy">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">free_energy</span><span class="p">(</span><span class="n">E</span><span class="p">,</span> <span class="n">ef</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">T_Kelvin</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">num_k</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    free energy (F = E - TS)</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="k">if</span> <span class="n">ef</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">ef</span> <span class="o">=</span> <span class="mf">0.0</span>
 
@@ -1382,9 +1401,9 @@
 <div class="viewcode-block" id="entropy">
 <a class="viewcode-back" href="../../../src/api/util.html#symclosestwannier.util.utility.entropy">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">entropy</span><span class="p">(</span><span class="n">E</span><span class="p">,</span> <span class="n">ef</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">T_Kelvin</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">num_k</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    total energy (S).</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="k">if</span> <span class="n">ef</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">ef</span> <span class="o">=</span> <span class="mf">0.0</span>
 
@@ -1403,6 +1422,8 @@
 
 
 <span class="c1"># ==================================================</span>
+<div class="viewcode-block" id="Rx">
+<a class="viewcode-back" href="../../../src/api/util.html#symclosestwannier.util.utility.Rx">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">Rx</span><span class="p">(</span><span class="n">theta</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
         <span class="p">[</span>
@@ -1410,9 +1431,12 @@
             <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">theta</span><span class="p">),</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">theta</span><span class="p">)],</span>
             <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">theta</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">theta</span><span class="p">)],</span>
         <span class="p">]</span>
-    <span class="p">)</span>
+    <span class="p">)</span></div>
 
 
+
+<div class="viewcode-block" id="Ry">
+<a class="viewcode-back" href="../../../src/api/util.html#symclosestwannier.util.utility.Ry">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">Ry</span><span class="p">(</span><span class="n">theta</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
         <span class="p">[</span>
@@ -1420,9 +1444,12 @@
             <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
             <span class="p">[</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">theta</span><span class="p">),</span> <span class="mi">0</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">theta</span><span class="p">)],</span>
         <span class="p">]</span>
-    <span class="p">)</span>
+    <span class="p">)</span></div>
 
 
+
+<div class="viewcode-block" id="Rz">
+<a class="viewcode-back" href="../../../src/api/util.html#symclosestwannier.util.utility.Rz">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">Rz</span><span class="p">(</span><span class="n">theta</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
         <span class="p">[</span>
@@ -1430,47 +1457,63 @@
             <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">theta</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">theta</span><span class="p">),</span> <span class="mi">0</span><span class="p">],</span>
             <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
         <span class="p">]</span>
-    <span class="p">)</span>
+    <span class="p">)</span></div>
+
 
 
 <span class="c1"># ==================================================</span>
+<div class="viewcode-block" id="pauli_spn_x">
+<a class="viewcode-back" href="../../../src/api/util.html#symclosestwannier.util.utility.pauli_spn_x">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">pauli_spn_x</span><span class="p">(</span><span class="n">dim</span><span class="p">):</span>
     <span class="n">Identity</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">dim</span> <span class="o">/</span> <span class="mi">2</span><span class="p">))</span>
     <span class="n">sig_x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">]])</span>
-    <span class="k">return</span> <span class="n">TensorProduct</span><span class="p">(</span><span class="n">Identity</span><span class="p">,</span> <span class="n">sig_x</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">TensorProduct</span><span class="p">(</span><span class="n">Identity</span><span class="p">,</span> <span class="n">sig_x</span><span class="p">)</span></div>
+
 
 
 <span class="c1"># ==================================================</span>
+<div class="viewcode-block" id="pauli_spn_y">
+<a class="viewcode-back" href="../../../src/api/util.html#symclosestwannier.util.utility.pauli_spn_y">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">pauli_spn_y</span><span class="p">(</span><span class="n">dim</span><span class="p">):</span>
     <span class="n">Identity</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">dim</span> <span class="o">/</span> <span class="mi">2</span><span class="p">))</span>
     <span class="n">sig_y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">0.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="n">j</span><span class="p">],</span> <span class="p">[</span><span class="mf">1.0</span><span class="n">j</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">]])</span>
-    <span class="k">return</span> <span class="n">TensorProduct</span><span class="p">(</span><span class="n">Identity</span><span class="p">,</span> <span class="n">sig_y</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">TensorProduct</span><span class="p">(</span><span class="n">Identity</span><span class="p">,</span> <span class="n">sig_y</span><span class="p">)</span></div>
+
 
 
 <span class="c1"># ==================================================</span>
+<div class="viewcode-block" id="pauli_spn_z">
+<a class="viewcode-back" href="../../../src/api/util.html#symclosestwannier.util.utility.pauli_spn_z">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">pauli_spn_z</span><span class="p">(</span><span class="n">dim</span><span class="p">):</span>
     <span class="n">Identity</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">dim</span> <span class="o">/</span> <span class="mi">2</span><span class="p">))</span>
     <span class="n">sig_z</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">]])</span>
-    <span class="k">return</span> <span class="n">TensorProduct</span><span class="p">(</span><span class="n">Identity</span><span class="p">,</span> <span class="n">sig_z</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">TensorProduct</span><span class="p">(</span><span class="n">Identity</span><span class="p">,</span> <span class="n">sig_z</span><span class="p">)</span></div>
+
 
 
 <span class="c1"># ==================================================</span>
+<div class="viewcode-block" id="spn_operator">
+<a class="viewcode-back" href="../../../src/api/util.html#symclosestwannier.util.utility.spn_operator">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">spn_operator</span><span class="p">(</span><span class="n">pauli_spn</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">g_factor</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">2</span><span class="p">):</span>
     <span class="k">if</span> <span class="n">pauli_spn</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">pauli_spn</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">pauli_spn_x</span><span class="p">(</span><span class="n">dim</span><span class="p">),</span> <span class="n">pauli_spn_y</span><span class="p">(</span><span class="n">dim</span><span class="p">),</span> <span class="n">pauli_spn_z</span><span class="p">(</span><span class="n">dim</span><span class="p">)])</span>
 
     <span class="n">mu_B</span> <span class="o">=</span> <span class="n">bohr_magn_SI</span> <span class="o">*</span> <span class="n">joul_to_eV</span>
-    <span class="k">return</span> <span class="o">-</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">g_factor</span> <span class="o">*</span> <span class="n">mu_B</span> <span class="o">*</span> <span class="n">pauli_spn</span>
+    <span class="k">return</span> <span class="o">-</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">g_factor</span> <span class="o">*</span> <span class="n">mu_B</span> <span class="o">*</span> <span class="n">pauli_spn</span></div>
+
 
 
 <span class="c1"># ==================================================</span>
+<div class="viewcode-block" id="spin_zeeman_interaction">
+<a class="viewcode-back" href="../../../src/api/util.html#symclosestwannier.util.utility.spin_zeeman_interaction">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">spin_zeeman_interaction</span><span class="p">(</span><span class="n">B</span><span class="p">,</span> <span class="n">theta</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">phi</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">pauli_spn</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">g_factor</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">2</span><span class="p">):</span>
     <span class="n">spin_oper</span> <span class="o">=</span> <span class="n">spn_operator</span><span class="p">(</span><span class="n">pauli_spn</span><span class="p">,</span> <span class="n">g_factor</span><span class="p">,</span> <span class="n">dim</span><span class="p">)</span>
     <span class="n">B_vec</span> <span class="o">=</span> <span class="n">B</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">phi</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">phi</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">theta</span><span class="p">)])</span>
 
     <span class="n">H_zeeman</span> <span class="o">=</span> <span class="o">-</span><span class="nb">sum</span><span class="p">([</span><span class="n">spin_oper</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="n">B_vec</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">)])</span>
 
-    <span class="k">return</span> <span class="n">H_zeeman</span>
+    <span class="k">return</span> <span class="n">H_zeeman</span></div>
+
 
 
 <span class="c1"># ==================================================</span>
@@ -1478,7 +1521,7 @@
     <span class="n">v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
     <span class="n">n</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">n</span> <span class="o">&lt;</span> <span class="n">eps</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Direction vector is (almost) zero.&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"Direction vector is (almost) zero."</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">v</span> <span class="o">/</span> <span class="n">n</span>
 
 
@@ -1486,11 +1529,11 @@
 <div class="viewcode-block" id="su2_rotation_right">
 <a class="viewcode-back" href="../../../src/api/util.html#symclosestwannier.util.utility.su2_rotation_right">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">su2_rotation_right</span><span class="p">(</span><span class="n">theta</span><span class="p">,</span> <span class="n">lam</span><span class="p">,</span> <span class="n">mu</span><span class="p">,</span> <span class="n">nu</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Your formula:</span>
 <span class="sd">    U = cos(theta/2) I - i sin(theta/2) (lam*sx + mu*sy + nu*sz)</span>
 <span class="sd">    where (lam,mu,nu) is the axis direction cosine (unit vector).</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">axis</span> <span class="o">=</span> <span class="n">_normalize</span><span class="p">([</span><span class="n">lam</span><span class="p">,</span> <span class="n">mu</span><span class="p">,</span> <span class="n">nu</span><span class="p">])</span>
     <span class="n">lam</span><span class="p">,</span> <span class="n">mu</span><span class="p">,</span> <span class="n">nu</span> <span class="o">=</span> <span class="n">axis</span>
 
@@ -1508,13 +1551,13 @@
 <div class="viewcode-block" id="su2_that_maps_z_to_n">
 <a class="viewcode-back" href="../../../src/api/util.html#symclosestwannier.util.utility.su2_that_maps_z_to_n">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">su2_that_maps_z_to_n</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Construct U such that:</span>
 <span class="sd">        U * sigma_z * U^dagger = n·sigma</span>
 <span class="sd">    using the axis-angle rotation that rotates z-hat -&gt; n (right-handed).</span>
 
 <span class="sd">    n : array-like (nx, ny, nz)  (not necessarily normalized)</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">n</span> <span class="o">=</span> <span class="n">_normalize</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
     <span class="n">z</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">])</span>
 
@@ -1540,10 +1583,10 @@
 <div class="viewcode-block" id="embed_spin_unitary">
 <a class="viewcode-back" href="../../../src/api/util.html#symclosestwannier.util.utility.embed_spin_unitary">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">embed_spin_unitary</span><span class="p">(</span><span class="n">dim</span><span class="p">,</span> <span class="n">U2</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Embed 2x2 spin unitary into full Hilbert space:</span>
 <span class="sd">        U_full = I_(dim/2) ⊗ U2</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">I_orb</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">dim</span> <span class="o">/</span> <span class="mi">2</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">complex</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">TensorProduct</span><span class="p">(</span><span class="n">I_orb</span><span class="p">,</span> <span class="n">U2</span><span class="p">)</span></div>
 
@@ -1553,16 +1596,16 @@
 <div class="viewcode-block" id="change_quantization_axis_operators">
 <a class="viewcode-back" href="../../../src/api/util.html#symclosestwannier.util.utility.change_quantization_axis_operators">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">change_quantization_axis_operators</span><span class="p">(</span><span class="n">dim</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Return rotated spin operators (Sx&#39;, Sy&#39;, Sz&#39;) in the new basis</span>
-<span class="sd">    where the quantization axis is n, i.e. Sz&#39; corresponds to n·sigma</span>
+<span class="w">    </span><span class="sd">"""</span>
+<span class="sd">    Return rotated spin operators (Sx', Sy', Sz') in the new basis</span>
+<span class="sd">    where the quantization axis is n, i.e. Sz' corresponds to n·sigma</span>
 <span class="sd">    in the original basis.</span>
 
 <span class="sd">    Convention:</span>
 <span class="sd">      U maps sigma_z -&gt; n·sigma via  U sigma_z U^dagger = n·sigma.</span>
-<span class="sd">      Basis change (state transformation): |psi&gt;&#39; = U^dagger |psi|</span>
-<span class="sd">      Operator in new basis: O&#39; = U^dagger O U</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">      Basis change (state transformation): |psi&gt;' = U^dagger |psi|</span>
+<span class="sd">      Operator in new basis: O' = U^dagger O U</span>
+<span class="sd">    """</span>
     <span class="n">U2</span> <span class="o">=</span> <span class="n">su2_that_maps_z_to_n</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
     <span class="n">U</span> <span class="o">=</span> <span class="n">embed_spin_unitary</span><span class="p">(</span><span class="n">dim</span><span class="p">,</span> <span class="n">U2</span><span class="p">)</span>
 
@@ -1583,10 +1626,10 @@
 <div class="viewcode-block" id="sigma_n_in_original_basis">
 <a class="viewcode-back" href="../../../src/api/util.html#symclosestwannier.util.utility.sigma_n_in_original_basis">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">sigma_n_in_original_basis</span><span class="p">(</span><span class="n">dim</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Directly return n·sigma in the original basis (no basis change).</span>
 <span class="sd">    Useful if you just want the spin projection along n.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">n</span> <span class="o">=</span> <span class="n">_normalize</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">n</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">pauli_spn_x</span><span class="p">(</span><span class="n">dim</span><span class="p">)</span> <span class="o">+</span> <span class="n">n</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">pauli_spn_y</span><span class="p">(</span><span class="n">dim</span><span class="p">)</span> <span class="o">+</span> <span class="n">n</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="n">pauli_spn_z</span><span class="p">(</span><span class="n">dim</span><span class="p">)</span></div>
 

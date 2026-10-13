@@ -1,0 +1,533 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Phase conventions of real-space operators &#8212; SymClosestWannier</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=4418a689" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=9c3e77be" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css?v=8cd3d715" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=34ddd5e8" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="../../_static/documentation_options.js?v=a8e58a58"></script>
+    <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js?v=b8b12719"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>window.MathJax = {"loader": {"load": ["[tex]/physics"]}, "tex": {"packages": {"[+]": ["physics"]}, "macros": {"bm": ["\\boldsymbol{#1}", 1]}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'src/format/convention';</script>
+    <script src="../../_static/custom.js?v=9c3a2667"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="CH4: Closest Wannier tight-binding model" href="../tutorials/tutorial01.html" />
+    <link rel="prev" title="seedname_n.dat.cw" href="n.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../README.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">SymClosestWannier</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">MultiPie</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../multipie.html">Construction of SAMBs by using MultiPie</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Closest Wannier method</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../cw.html">Closest Wannier method</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Construction of symmetry-adapted Closest Wannier model</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../scw.html">Symmetry-adapted Closest Wannier model</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">File Format</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="cwin.html">seedname.cwin [default]</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cwout.html">seedname.cwout</a></li>
+<li class="toctree-l1"><a class="reference internal" href="hdf5.html">seedname.hdf5 [default]</a></li>
+
+
+
+<li class="toctree-l1"><a class="reference internal" href="hr.html">seedname_hr.dat.cw</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sr.html">seedname_sr.dat.cw</a></li>
+<li class="toctree-l1"><a class="reference internal" href="z.html">seedname_z.dat.cw</a></li>
+<li class="toctree-l1"><a class="reference internal" href="s.html">seedname_s.dat.cw</a></li>
+<li class="toctree-l1"><a class="reference internal" href="n.html">seedname_n.dat.cw</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Phase conventions of real-space operators</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/tutorial01.html">CH4: Closest Wannier tight-binding model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/tutorial02.html">Graphene: Closest Wannier tight-binding model</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">API</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../api/cw.html">Closest Wannier</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/analyzer.html">Analyzer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/util.html">Utility</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+<a href="https://github.com/CMT-MU/SymClosestWannier.git" target="_blank"
+   class="btn btn-sm btn-source-repository-button"
+   title="Source repository"
+   data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+
+</a>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Phase conventions of real-space operators</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#real-space-matrices">Real-space matrices</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#fourier-transform">Fourier transform</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tb-gauge">tb_gauge</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="phase-conventions-of-real-space-operators">
+<h1>Phase conventions of real-space operators<a class="headerlink" href="#phase-conventions-of-real-space-operators" title="Link to this heading">#</a></h1>
+<p>This page fixes the conventions used for the real-space matrices written by <code class="docutils literal notranslate"><span class="pre">pw2cw</span></code> (<code class="docutils literal notranslate"><span class="pre">seedname_hr.dat.cw</span></code>, <code class="docutils literal notranslate"><span class="pre">seedname_tb.dat.cw</span></code>, …) and stored in <code class="docutils literal notranslate"><span class="pre">seedname.hdf5</span></code>, and states what <code class="docutils literal notranslate"><span class="pre">tb_gauge</span></code> changes.</p>
+<section id="real-space-matrices">
+<h2>Real-space matrices<a class="headerlink" href="#real-space-matrices" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(O_{ab}(\boldsymbol{R}) = \langle \phi_{a}(\boldsymbol{0})|O|\phi_{b}(\boldsymbol{R})\rangle\)</span>, where <span class="math notranslate nohighlight">\(\phi_{b}(\boldsymbol{R})\)</span> is orbital <span class="math notranslate nohighlight">\(b\)</span> in the cell at the lattice vector <span class="math notranslate nohighlight">\(\boldsymbol{R}\)</span>.</p></li>
+<li><p><span class="math notranslate nohighlight">\(\boldsymbol{R} = n_1\boldsymbol{a}_1 + n_2\boldsymbol{a}_2 + n_3\boldsymbol{a}_3\)</span> is given by the integers <code class="docutils literal notranslate"><span class="pre">irvec</span></code> = (n1, n2, n3) of the Wigner–Seitz supercell (<code class="docutils literal notranslate"><span class="pre">util/utility.py:wigner_seitz</span></code>); <code class="docutils literal notranslate"><span class="pre">ndegen</span></code> is the degeneracy of each <span class="math notranslate nohighlight">\(\boldsymbol{R}\)</span>.</p></li>
+<li><p>Arrays are indexed as <code class="docutils literal notranslate"><span class="pre">O[iR,</span> <span class="pre">a,</span> <span class="pre">b]</span></code> (vector operators: <code class="docutils literal notranslate"><span class="pre">O[i,</span> <span class="pre">iR,</span> <span class="pre">a,</span> <span class="pre">b]</span></code>, i = x, y, z), and the stored values are <strong>not</strong> divided by <code class="docutils literal notranslate"><span class="pre">ndegen</span></code>, as in wannier90.</p></li>
+<li><p>Lattice vectors <code class="docutils literal notranslate"><span class="pre">unit_cell_cart</span></code> are rows <span class="math notranslate nohighlight">\(\boldsymbol{a}_1, \boldsymbol{a}_2, \boldsymbol{a}_3\)</span> in Å.</p></li>
+<li><p>The orbital order is the order of <code class="docutils literal notranslate"><span class="pre">ket_amn</span></code> (the projections in <code class="docutils literal notranslate"><span class="pre">seedname.win</span></code>). Symmetrized matrices (<code class="docutils literal notranslate"><span class="pre">*_sym</span></code>) use the SAMB ket order of MultiPie; <code class="docutils literal notranslate"><span class="pre">sort_ket_matrix</span></code> converts between the two.</p></li>
+</ul>
+</section>
+<section id="fourier-transform">
+<h2>Fourier transform<a class="headerlink" href="#fourier-transform" title="Link to this heading">#</a></h2>
+<p>The Bloch basis is <span class="math notranslate nohighlight">\(|\phi_{b}(\boldsymbol{k})\rangle = \sum_{\boldsymbol{R}} e^{i\boldsymbol{k}\cdot\boldsymbol{R}}|\phi_{b}(\boldsymbol{R})\rangle\)</span>, with no orbital position in the phase. This is the basis in which the closest Wannier construction gives <span class="math notranslate nohighlight">\(H(\boldsymbol{k})\)</span>, <span class="math notranslate nohighlight">\(S(\boldsymbol{k})\)</span>, … from <code class="docutils literal notranslate"><span class="pre">seedname.amn</span></code> and <code class="docutils literal notranslate"><span class="pre">seedname.eig</span></code>, and it is the convention of wannier90 (<code class="docutils literal notranslate"><span class="pre">_hr.dat</span></code>, <code class="docutils literal notranslate"><span class="pre">_tb.dat</span></code>). Then</p>
+<div class="math notranslate nohighlight">
+\[
+O_{ab}(\boldsymbol{k}) = \sum_{\boldsymbol{R}} \frac{1}{N_{\boldsymbol{R}}} e^{i\boldsymbol{k}\cdot\boldsymbol{R}} O_{ab}(\boldsymbol{R}), \qquad
+O_{ab}(\boldsymbol{R}) = \frac{1}{N_k}\sum_{\boldsymbol{k}} e^{-i\boldsymbol{k}\cdot\boldsymbol{R}} O_{ab}(\boldsymbol{k}),
+\]</div>
+<p>with <span class="math notranslate nohighlight">\(N_{\boldsymbol{R}}\)</span> = <code class="docutils literal notranslate"><span class="pre">ndegen</span></code> and the sum over the DFT k mesh (<code class="docutils literal notranslate"><span class="pre">fourier_transform_r_to_k</span></code> / <code class="docutils literal notranslate"><span class="pre">fourier_transform_k_to_r</span></code> without <code class="docutils literal notranslate"><span class="pre">atoms_frac</span></code>).</p>
+</section>
+<section id="tb-gauge">
+<h2>tb_gauge<a class="headerlink" href="#tb-gauge" title="Link to this heading">#</a></h2>
+<p>With <code class="docutils literal notranslate"><span class="pre">tb_gauge</span> <span class="pre">=</span> <span class="pre">true</span></code>, the Bloch basis contains the orbital positions <span class="math notranslate nohighlight">\(\boldsymbol{\tau}_b\)</span> (the projection centre of orbital <span class="math notranslate nohighlight">\(b\)</span> in <code class="docutils literal notranslate"><span class="pre">seedname.nnkp</span></code>, <code class="docutils literal notranslate"><span class="pre">util/utility.py:orbital_positions</span></code>; for projections on atoms this is the atom position), <span class="math notranslate nohighlight">\(|\phi^{\rm tb}_{b}(\boldsymbol{k})\rangle = e^{i\boldsymbol{k}\cdot\boldsymbol{\tau}_b}|\phi_{b}(\boldsymbol{k})\rangle\)</span>, and k-space matrices are
+$<span class="math notranslate nohighlight">\(
+O^{\rm tb}_{ab}(\boldsymbol{k}) = \sum_{\boldsymbol{R}} \frac{1}{N_{\boldsymbol{R}}} e^{i\boldsymbol{k}\cdot(\boldsymbol{R}+\boldsymbol{\tau}_b-\boldsymbol{\tau}_a)} O^{\rm tb}_{ab}(\boldsymbol{R})
+\)</span>$
+(<code class="docutils literal notranslate"><span class="pre">atoms_frac</span></code> argument of <code class="docutils literal notranslate"><span class="pre">fourier_transform_r_to_k</span></code>). The change of basis is a k-dependent unitary transformation, so eigenvalues do not change; eigenvectors and the Wannier-gauge matrices of the Berry connection and of k derivatives do.</p>
+<p>All real-space matrices computed and written by <code class="docutils literal notranslate"><span class="pre">pw2cw</span></code> (<code class="docutils literal notranslate"><span class="pre">Hr</span></code>, <code class="docutils literal notranslate"><span class="pre">Sr</span></code>, <code class="docutils literal notranslate"><span class="pre">*_sym</span></code>, <code class="docutils literal notranslate"><span class="pre">seedname_hr.dat.cw</span></code>, <code class="docutils literal notranslate"><span class="pre">seedname_r.dat.cw</span></code>, <code class="docutils literal notranslate"><span class="pre">seedname_v.dat.cw</span></code>, <code class="docutils literal notranslate"><span class="pre">seedname.s.cw</span></code>, …) are in the wannier90 convention, whatever <code class="docutils literal notranslate"><span class="pre">tb_gauge</span></code> is. <code class="docutils literal notranslate"><span class="pre">seedname_tb.dat.cw</span></code> is written only with <code class="docutils literal notranslate"><span class="pre">tb_gauge</span> <span class="pre">=</span> <span class="pre">false</span></code>.</p>
+<p>For <code class="docutils literal notranslate"><span class="pre">postcw</span></code> with <code class="docutils literal notranslate"><span class="pre">tb_gauge</span> <span class="pre">=</span> <span class="pre">true</span></code>, <code class="docutils literal notranslate"><span class="pre">Response</span></code> keeps the operators in the wannier90 convention and converts them when they are passed to the calculation (<code class="docutils literal notranslate"><span class="pre">util/get_oper_R.py:to_tb_gauge</span></code>, called from <code class="docutils literal notranslate"><span class="pre">Response.operators</span></code>), with <span class="math notranslate nohighlight">\(\boldsymbol{\tau}\)</span> in Cartesian coordinates and <span class="math notranslate nohighlight">\(m\)</span>, <span class="math notranslate nohighlight">\(n\)</span> the row and column orbitals:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>operator</p></th>
+<th class="head"><p>conversion</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">HH_R</span></code>, <code class="docutils literal notranslate"><span class="pre">SS_R</span></code>, <code class="docutils literal notranslate"><span class="pre">SH_R</span></code></p></td>
+<td><p>unchanged</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">AA_R</span></code> (<span class="math notranslate nohighlight">\(\boldsymbol{r}\)</span>)</p></td>
+<td><p><span class="math notranslate nohighlight">\(A^{\rm tb}_{a,mn}(\boldsymbol{R}) = A_{a,mn}(\boldsymbol{R}) - \tau_{n,a}\delta_{mn}\delta_{\boldsymbol{R}\boldsymbol{0}}\)</span></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">BB_R</span></code> (<span class="math notranslate nohighlight">\(H\boldsymbol{r}\)</span>)</p></td>
+<td><p><span class="math notranslate nohighlight">\(B^{\rm tb}_{a}(\boldsymbol{R}) = B_{a}(\boldsymbol{R}) - \tau_{n,a} H(\boldsymbol{R})\)</span></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">CC_R</span></code> (<span class="math notranslate nohighlight">\(\boldsymbol{r}H\boldsymbol{r}\)</span>)</p></td>
+<td><p><span class="math notranslate nohighlight">\(C^{\rm tb}_{ab} = C_{ab} - \tau_{m,a} B_{b} - \tau_{n,b} B^{\dagger}_{a} + \tau_{m,a}\tau_{n,b} H\)</span>, with <span class="math notranslate nohighlight">\(B^{\dagger}_{a,mn}(\boldsymbol{R}) = B_{a,nm}(-\boldsymbol{R})^{*}\)</span></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">SR_R</span></code> (<span class="math notranslate nohighlight">\(\sigma\boldsymbol{r}\)</span>), <code class="docutils literal notranslate"><span class="pre">SHR_R</span></code> (<span class="math notranslate nohighlight">\(\sigma H\boldsymbol{r}\)</span>)</p></td>
+<td><p><span class="math notranslate nohighlight">\(SR^{\rm tb}_{ab}(\boldsymbol{R}) = SR_{ab}(\boldsymbol{R}) - \tau_{n,b} SS_{a}(\boldsymbol{R})\)</span>, <span class="math notranslate nohighlight">\(SHR^{\rm tb}_{ab}(\boldsymbol{R}) = SHR_{ab}(\boldsymbol{R}) - \tau_{n,b} SH_{a}(\boldsymbol{R})\)</span> (<span class="math notranslate nohighlight">\(a\)</span>: spin component)</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>k derivatives are taken in the same basis, <span class="math notranslate nohighlight">\(\partial_{\boldsymbol{k}} O^{\rm tb}(\boldsymbol{k}) = \sum_{\boldsymbol{R}} i(\boldsymbol{R}+\boldsymbol{\tau}_b-\boldsymbol{\tau}_a)\,e^{i\boldsymbol{k}\cdot(\boldsymbol{R}+\boldsymbol{\tau}_b-\boldsymbol{\tau}_a)} O^{\rm tb}_{ab}(\boldsymbol{R})/N_{\boldsymbol{R}}\)</span> (<code class="docutils literal notranslate"><span class="pre">fourier_transform_r_to_k_new</span></code>, <code class="docutils literal notranslate"><span class="pre">fourier_transform_r_to_k_vec</span></code> with <code class="docutils literal notranslate"><span class="pre">pseudo=True</span></code>, <code class="docutils literal notranslate"><span class="pre">get_v_R</span></code> with <code class="docutils literal notranslate"><span class="pre">atoms_frac</span></code>).</p>
+<p><code class="docutils literal notranslate"><span class="pre">to_tb_gauge</span></code> assumes <code class="docutils literal notranslate"><span class="pre">ndegen(-R)</span> <span class="pre">=</span> <span class="pre">ndegen(R)</span></code>, which holds for the Wigner–Seitz supercell.</p>
+<p>With these conversions the operators in both gauges represent the same physical quantities, so the Wannier-interpolation formulas give the same Berry curvature, orbital magnetization (−2Im f, g, h) and spin current at each k point; only their split into the J0, J1 and J2 terms depends on the gauge (checked in <code class="docutils literal notranslate"><span class="pre">tests/test_tb_gauge.py</span></code>). This holds when <code class="docutils literal notranslate"><span class="pre">HH_R</span></code> is the Hamiltonian from which <code class="docutils literal notranslate"><span class="pre">BB_R</span></code> and <code class="docutils literal notranslate"><span class="pre">CC_R</span></code> are built. For the spin current of Qiao’s method the gauges also agree if <span class="math notranslate nohighlight">\(SH(\boldsymbol{k}) = SS(\boldsymbol{k})\,H(\boldsymbol{k})\)</span> (a product of k-space matrices, a convolution in <span class="math notranslate nohighlight">\(\boldsymbol{R}\)</span>), as in the model of the test. <code class="docutils literal notranslate"><span class="pre">SH_R</span></code> is built from all Bloch bands, <span class="math notranslate nohighlight">\(U^\dagger s H U\)</span>, which differs from <span class="math notranslate nohighlight">\(U^\dagger s U\,U^\dagger H U\)</span> by <span class="math notranslate nohighlight">\(U^\dagger s(1-UU^\dagger)HU\)</span>; this is in general nonzero for disentangled models, and the spin Hall conductivity of Qiao’s method can then depend on <code class="docutils literal notranslate"><span class="pre">tb_gauge</span></code>, as it does for the disentangled spinor model of the tests of <code class="docutils literal notranslate"><span class="pre">symcw-wberri</span></code>. wannier90 uses the convention of <code class="docutils literal notranslate"><span class="pre">tb_gauge</span> <span class="pre">=</span> <span class="pre">false</span></code>. <code class="docutils literal notranslate"><span class="pre">postcw</span></code> may use a different Hamiltonian (<code class="docutils literal notranslate"><span class="pre">Hr_sym</span></code> with symmetrization, <code class="docutils literal notranslate"><span class="pre">hr_input</span></code>); <code class="docutils literal notranslate"><span class="pre">BB_R</span></code> and <code class="docutils literal notranslate"><span class="pre">CC_R</span></code> are then still converted with their own Hamiltonian, but quantities combining them with the given Hamiltonian (orbital magnetization, gyrotropic K) are approximate in either gauge and differ between the gauges by terms of the order of the difference of the two Hamiltonians.</p>
+<p>Quantities that use only eigenvalues (band dispersion, density of states, Lindhard function) do not depend on <code class="docutils literal notranslate"><span class="pre">tb_gauge</span></code>. Results do depend on it where the position operator is neglected: the velocity <span class="math notranslate nohighlight">\(\partial_{\boldsymbol{k}} H/\hbar\)</span> used with <code class="docutils literal notranslate"><span class="pre">use_tb_approximation</span> <span class="pre">=</span> <span class="pre">true</span></code> (<code class="docutils literal notranslate"><span class="pre">get_v_R</span></code>) has interband matrix elements that depend on the orbital phases.</p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./src/format"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#real-space-matrices">Real-space matrices</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#fourier-transform">Fourier transform</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tb-gauge">tb_gauge</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Rikuto Oiwa
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2021-.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 
 
-<html lang="jp" data-content_root="./" >
+<html lang="en" data-content_root="./" >
 
   <head>
     <meta charset="utf-8" />
@@ -30,10 +30,10 @@
 <link href="_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
-    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=4418a689" />
     <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=9c3e77be" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css?v=8cd3d715" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
     <link rel="stylesheet" type="text/css" href="_static/custom.css?v=34ddd5e8" />
@@ -44,9 +44,9 @@
   <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="_static/documentation_options.js?v=8cf54648"></script>
-    <script src="_static/doctools.js?v=9a2dae69"></script>
-    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/documentation_options.js?v=a8e58a58"></script>
+    <script src="_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="_static/copybutton.js?v=f281be69"></script>
     <script src="_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
@@ -58,14 +58,12 @@
     <script src="_static/design-tabs.js?v=f930bc37"></script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
     <script async="async" src="_static/sphinx-thebe.js?v=c100c467"></script>
-    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
-    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'genindex';</script>
     <script src="_static/custom.js?v=9c3a2667"></script>
     <link rel="index" title="Index" href="#" />
     <link rel="search" title="Search" href="search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <meta name="docsearch:language" content="jp"/>
+  <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="" />
   </head>
   
@@ -173,11 +171,14 @@
 <li class="toctree-l1"><a class="reference internal" href="src/format/cwout.html">seedname.cwout</a></li>
 <li class="toctree-l1"><a class="reference internal" href="src/format/hdf5.html">seedname.hdf5 [default]</a></li>
 
+
+
 <li class="toctree-l1"><a class="reference internal" href="src/format/hr.html">seedname_hr.dat.cw</a></li>
 <li class="toctree-l1"><a class="reference internal" href="src/format/sr.html">seedname_sr.dat.cw</a></li>
 <li class="toctree-l1"><a class="reference internal" href="src/format/z.html">seedname_z.dat.cw</a></li>
 <li class="toctree-l1"><a class="reference internal" href="src/format/s.html">seedname_s.dat.cw</a></li>
 <li class="toctree-l1"><a class="reference internal" href="src/format/n.html">seedname_n.dat.cw</a></li>
+<li class="toctree-l1"><a class="reference internal" href="src/format/convention.html">Phase conventions of real-space operators</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
 <ul class="nav bd-sidenav">
@@ -321,10 +322,12 @@
  | <a href="#M"><strong>M</strong></a>
  | <a href="#N"><strong>N</strong></a>
  | <a href="#O"><strong>O</strong></a>
+ | <a href="#P"><strong>P</strong></a>
  | <a href="#R"><strong>R</strong></a>
  | <a href="#S"><strong>S</strong></a>
  | <a href="#T"><strong>T</strong></a>
  | <a href="#U"><strong>U</strong></a>
+ | <a href="#V"><strong>V</strong></a>
  | <a href="#W"><strong>W</strong></a>
  
 </div>
@@ -349,10 +352,16 @@
 </li>
       <li><a href="src/api/analyzer.html#symclosestwannier.analyzer.get_response.absorptive_dichroic_optical_cond_main">absorptive_dichroic_optical_cond_main() (in module symclosestwannier.analyzer.get_response)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="src/api/cw.html#symclosestwannier.cw.amn.Amn">Amn (class in symclosestwannier.cw.amn)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="src/api/cw.html#symclosestwannier.cw.cw_info.CWInfo.amn">amn (CWInfo property)</a>
+
+      <ul>
+        <li><a href="src/api/cw.html#symclosestwannier.cw.cw_model.CWModel.amn">(CWModel property)</a>
+</li>
+      </ul></li>
       <li><a href="src/api/analyzer.html#symclosestwannier.analyzer.analyzer.analyzer">analyzer() (in module symclosestwannier.analyzer.analyzer)</a>
 </li>
   </ul></td>
@@ -375,10 +384,10 @@
 </li>
       <li><a href="src/api/analyzer.html#symclosestwannier.analyzer.get_response.berry_get_js_k">berry_get_js_k() (in module symclosestwannier.analyzer.get_response)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="src/api/analyzer.html#symclosestwannier.analyzer.get_response.berry_get_kubo">berry_get_kubo() (in module symclosestwannier.analyzer.get_response)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="src/api/analyzer.html#symclosestwannier.analyzer.get_response.berry_get_kubo_tb">berry_get_kubo_tb() (in module symclosestwannier.analyzer.get_response)</a>
 </li>
       <li><a href="src/api/analyzer.html#symclosestwannier.analyzer.get_response.berry_get_shc">berry_get_shc() (in module symclosestwannier.analyzer.get_response)</a>
@@ -391,6 +400,10 @@
 </li>
       <li><a href="src/api/cw.html#symclosestwannier.cw.nnkp.Nnkp.bvec">bvec() (Nnkp method)</a>
 </li>
+      <li><a href="src/api/cw.html#symclosestwannier.cw.nnkp.Nnkp.bvec_idx">bvec_idx() (Nnkp method)</a>
+</li>
+      <li><a href="src/api/cw.html#symclosestwannier.cw.nnkp.Nnkp.bveck">bveck() (Nnkp method)</a>
+</li>
   </ul></td>
 </tr></table>
 
@@ -398,6 +411,10 @@
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="src/api/analyzer.html#symclosestwannier.analyzer.band.Band.calc_band">calc_band() (Band method)</a>
+</li>
+      <li><a href="src/api/analyzer.html#symclosestwannier.analyzer.response.Response.calc_response">calc_response() (Response method)</a>
+</li>
+      <li><a href="src/api/analyzer.html#symclosestwannier.analyzer.response.Response.calc_spin_moment">calc_spin_moment() (Response method)</a>
 </li>
       <li><a href="src/api/util.html#symclosestwannier.util.utility.change_quantization_axis_operators">change_quantization_axis_operators() (in module symclosestwannier.util.utility)</a>
 </li>
@@ -415,15 +432,51 @@
       </ul></li>
       <li><a href="src/api/util.html#symclosestwannier.util.hr_utility.convert_hr_to_hk">convert_hr_to_hk() (in module symclosestwannier.util.hr_utility)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="src/api/util.html#symclosestwannier.util.utility.convert_w90_orbital">convert_w90_orbital() (in module symclosestwannier.util.utility)</a>
 </li>
       <li><a href="src/api/cw.html#symclosestwannier.cw.cw_manager.CWManager.create_subdir">create_subdir() (CWManager method)</a>
 </li>
       <li><a href="src/api/cw.html#symclosestwannier.cw.cw_creator.cw_creator">cw_creator() (in module symclosestwannier.cw.cw_creator)</a>
 </li>
+      <li><a href="src/api/util.html#symclosestwannier.util.message.cw_end_band_msg">cw_end_band_msg() (in module symclosestwannier.util.message)</a>
+</li>
+      <li><a href="src/api/util.html#symclosestwannier.util.message.cw_end_expectation_msg">cw_end_expectation_msg() (in module symclosestwannier.util.message)</a>
+</li>
+      <li><a href="src/api/util.html#symclosestwannier.util.message.cw_end_msg">cw_end_msg() (in module symclosestwannier.util.message)</a>
+</li>
+      <li><a href="src/api/util.html#symclosestwannier.util.message.cw_end_output_msg">cw_end_output_msg() (in module symclosestwannier.util.message)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="src/api/util.html#symclosestwannier.util.message.cw_end_response_msg">cw_end_response_msg() (in module symclosestwannier.util.message)</a>
+</li>
+      <li><a href="src/api/util.html#symclosestwannier.util.message.cw_end_set_operators_msg">cw_end_set_operators_msg() (in module symclosestwannier.util.message)</a>
+</li>
+      <li><a href="src/api/util.html#symclosestwannier.util.message.cw_open_msg">cw_open_msg() (in module symclosestwannier.util.message)</a>
+</li>
+      <li><a href="src/api/util.html#symclosestwannier.util.message.cw_start_band_msg">cw_start_band_msg() (in module symclosestwannier.util.message)</a>
+</li>
+      <li><a href="src/api/util.html#symclosestwannier.util.message.cw_start_expectation_msg">cw_start_expectation_msg() (in module symclosestwannier.util.message)</a>
+</li>
+      <li><a href="src/api/util.html#symclosestwannier.util.message.cw_start_msg">cw_start_msg() (in module symclosestwannier.util.message)</a>
+</li>
+      <li><a href="src/api/util.html#symclosestwannier.util.message.cw_start_msg_w90">cw_start_msg_w90() (in module symclosestwannier.util.message)</a>
+</li>
+      <li><a href="src/api/util.html#symclosestwannier.util.message.cw_start_output_msg">cw_start_output_msg() (in module symclosestwannier.util.message)</a>
+</li>
+      <li><a href="src/api/util.html#symclosestwannier.util.message.cw_start_response_msg">cw_start_response_msg() (in module symclosestwannier.util.message)</a>
+</li>
+      <li><a href="src/api/util.html#symclosestwannier.util.message.cw_start_set_operators_msg">cw_start_set_operators_msg() (in module symclosestwannier.util.message)</a>
+</li>
       <li><a href="src/api/cw.html#symclosestwannier.cw.cwin.CWin">CWin (class in symclosestwannier.cw.cwin)</a>
+</li>
+      <li><a href="src/api/cw.html#symclosestwannier.cw.cw_info.CWInfo.cwin">cwin (CWInfo property)</a>
+
+      <ul>
+        <li><a href="src/api/cw.html#symclosestwannier.cw.cw_model.CWModel.cwin">(CWModel property)</a>
+</li>
+      </ul></li>
+      <li><a href="src/api/util.html#symclosestwannier.util.message.cwin_msg">cwin_msg() (in module symclosestwannier.util.message)</a>
 </li>
       <li><a href="src/api/cw.html#symclosestwannier.cw.cw_info.CWInfo">CWInfo (class in symclosestwannier.cw.cw_info)</a>
 </li>
@@ -444,6 +497,12 @@
 </li>
       </ul></li>
   </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="src/api/cw.html#symclosestwannier.cw.cw_manager.CWManager.dirname">dirname (CWManager property)</a>
+</li>
+      <li><a href="src/api/analyzer.html#symclosestwannier.analyzer.get_band.dos_main">dos_main() (in module symclosestwannier.analyzer.get_band)</a>
+</li>
+  </ul></td>
 </tr></table>
 
 <h2 id="E">E</h2>
@@ -451,13 +510,33 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="src/api/cw.html#symclosestwannier.cw.eig.Eig">Eig (class in symclosestwannier.cw.eig)</a>
 </li>
+      <li><a href="src/api/cw.html#symclosestwannier.cw.cw_info.CWInfo.eig">eig (CWInfo property)</a>
+
+      <ul>
+        <li><a href="src/api/cw.html#symclosestwannier.cw.cw_model.CWModel.eig">(CWModel property)</a>
+</li>
+      </ul></li>
       <li><a href="src/api/cw.html#symclosestwannier.cw.cw_manager.CWManager.elapsed">elapsed() (CWManager method)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="src/api/util.html#symclosestwannier.util.utility.embed_spin_unitary">embed_spin_unitary() (in module symclosestwannier.util.utility)</a>
 </li>
       <li><a href="src/api/util.html#symclosestwannier.util.utility.entropy">entropy() (in module symclosestwannier.util.utility)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="src/api/cw.html#symclosestwannier.cw.win.Win.eval_C">eval_C (Win property)</a>
+</li>
+      <li><a href="src/api/cw.html#symclosestwannier.cw.win.Win.eval_D">eval_D (Win property)</a>
+</li>
+      <li><a href="src/api/cw.html#symclosestwannier.cw.win.Win.eval_DOS">eval_DOS (Win property)</a>
+</li>
+      <li><a href="src/api/cw.html#symclosestwannier.cw.win.Win.eval_Dw">eval_Dw (Win property)</a>
+</li>
+      <li><a href="src/api/cw.html#symclosestwannier.cw.win.Win.eval_K">eval_K (Win property)</a>
+</li>
+      <li><a href="src/api/cw.html#symclosestwannier.cw.win.Win.eval_NOA">eval_NOA (Win property)</a>
+</li>
+      <li><a href="src/api/cw.html#symclosestwannier.cw.win.Win.eval_spn">eval_spn (Win property)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -465,7 +544,15 @@
 <h2 id="F">F</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="src/api/util.html#symclosestwannier.util.utility.fermi">fermi() (in module symclosestwannier.util.utility)</a>
+</li>
+      <li><a href="src/api/util.html#symclosestwannier.util.utility.fermi_ddt">fermi_ddt() (in module symclosestwannier.util.utility)</a>
+</li>
+      <li><a href="src/api/util.html#symclosestwannier.util.utility.fermi_dt">fermi_dt() (in module symclosestwannier.util.utility)</a>
+</li>
       <li><a href="src/api/cw.html#symclosestwannier.cw.cw_manager.CWManager.filename">filename() (CWManager method)</a>
+</li>
+      <li><a href="src/api/cw.html#symclosestwannier.cw.cw_manager.CWManager.formatter">formatter() (CWManager method)</a>
 </li>
       <li><a href="src/api/util.html#symclosestwannier.util.utility.FortranFileR">FortranFileR (class in symclosestwannier.util.utility)</a>
 </li>
@@ -475,14 +562,14 @@
         <li><a href="src/api/util.html#symclosestwannier.util.utility.fourier_transform_k_to_r">(in module symclosestwannier.util.utility)</a>
 </li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="src/api/cw.html#symclosestwannier.cw.cw_model.CWModel.fourier_transform_r_to_k">fourier_transform_r_to_k() (CWModel class method)</a>
 
       <ul>
         <li><a href="src/api/util.html#symclosestwannier.util.utility.fourier_transform_r_to_k">(in module symclosestwannier.util.utility)</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="src/api/util.html#symclosestwannier.util.utility.fourier_transform_r_to_k_new">fourier_transform_r_to_k_new() (in module symclosestwannier.util.utility)</a>
 </li>
       <li><a href="src/api/cw.html#symclosestwannier.cw.cw_model.CWModel.fourier_transform_r_to_k_vec">fourier_transform_r_to_k_vec() (CWModel class method)</a>
@@ -511,6 +598,8 @@
 </li>
       <li><a href="src/api/util.html#symclosestwannier.util.lindhard.generate_lindhard_surface_gnuplot">generate_lindhard_surface_gnuplot() (in module symclosestwannier.util.lindhard)</a>
 </li>
+      <li><a href="src/api/analyzer.html#symclosestwannier.analyzer.get_band.geninterp_main">geninterp_main() (in module symclosestwannier.analyzer.get_band)</a>
+</li>
       <li><a href="src/api/util.html#symclosestwannier.util.get_oper_R.get_AA_R">get_AA_R() (in module symclosestwannier.util.get_oper_R)</a>
 </li>
       <li><a href="src/api/util.html#symclosestwannier.util.get_oper_R.get_BB_R">get_BB_R() (in module symclosestwannier.util.get_oper_R)</a>
@@ -525,10 +614,10 @@
 </li>
       <li><a href="src/api/util.html#symclosestwannier.util.get_oper_R.get_der_orbital_moment_R">get_der_orbital_moment_R() (in module symclosestwannier.util.get_oper_R)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="src/api/util.html#symclosestwannier.util.get_oper_R.get_HH_R">get_HH_R() (in module symclosestwannier.util.get_oper_R)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="src/api/util.html#symclosestwannier.util.lindhard.get_lindhard">get_lindhard() (in module symclosestwannier.util.lindhard)</a>
 </li>
       <li><a href="src/api/util.html#symclosestwannier.util.get_oper_R.get_oper_R">get_oper_R() (in module symclosestwannier.util.get_oper_R)</a>
@@ -549,9 +638,17 @@
 </li>
       <li><a href="src/api/util.html#symclosestwannier.util.utility.get_wannier_center_spread">get_wannier_center_spread() (in module symclosestwannier.util.utility)</a>
 </li>
+      <li><a href="src/api/cw.html#symclosestwannier.cw.win.Win.gyrotropic_box">gyrotropic_box (Win property)</a>
+</li>
+      <li><a href="src/api/cw.html#symclosestwannier.cw.win.Win.gyrotropic_box_center">gyrotropic_box_center (Win property)</a>
+</li>
+      <li><a href="src/api/cw.html#symclosestwannier.cw.win.Win.gyrotropic_box_corner">gyrotropic_box_corner (Win property)</a>
+</li>
       <li><a href="src/api/analyzer.html#symclosestwannier.analyzer.get_response.gyrotropic_get_K">gyrotropic_get_K() (in module symclosestwannier.analyzer.get_response)</a>
 </li>
       <li><a href="src/api/analyzer.html#symclosestwannier.analyzer.get_response.gyrotropic_main">gyrotropic_main() (in module symclosestwannier.analyzer.get_response)</a>
+</li>
+      <li><a href="src/api/cw.html#symclosestwannier.cw.win.Win.gyrotropic_task_list">gyrotropic_task_list (Win property)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -566,15 +663,33 @@
 </li>
       </ul></li>
   </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="src/api/util.html#symclosestwannier.util.utility.is_zero">is_zero() (in module symclosestwannier.util.utility)</a>
+</li>
+      <li><a href="src/api/util.html#symclosestwannier.util.utility.iterate3dpm">iterate3dpm() (in module symclosestwannier.util.utility)</a>
+</li>
+      <li><a href="src/api/util.html#symclosestwannier.util.utility.iterate_nd">iterate_nd() (in module symclosestwannier.util.utility)</a>
+</li>
+  </ul></td>
 </tr></table>
 
 <h2 id="K">K</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="src/api/util.html#symclosestwannier.util.utility.Kelvin_to_eV">Kelvin_to_eV() (in module symclosestwannier.util.utility)</a>
+      <li><a href="src/api/cw.html#symclosestwannier.cw.nnkp.Nnkp.k_cart2crys">k_cart2crys() (Nnkp method)</a>
+</li>
+      <li><a href="src/api/cw.html#symclosestwannier.cw.nnkp.Nnkp.k_crys2cart">k_crys2cart() (Nnkp method)</a>
+</li>
+      <li><a href="src/api/analyzer.html#symclosestwannier.analyzer.get_band.k_path">k_path() (in module symclosestwannier.analyzer.get_band)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="src/api/analyzer.html#symclosestwannier.analyzer.get_band.k_slice">k_slice() (in module symclosestwannier.analyzer.get_band)</a>
+</li>
+      <li><a href="src/api/cw.html#symclosestwannier.cw.nnkp.Nnkp.kb2k">kb2k() (Nnkp method)</a>
+</li>
+      <li><a href="src/api/util.html#symclosestwannier.util.utility.Kelvin_to_eV">Kelvin_to_eV() (in module symclosestwannier.util.utility)</a>
+</li>
       <li><a href="src/api/analyzer.html#symclosestwannier.analyzer.get_response.kmesh_spacing_mesh">kmesh_spacing_mesh() (in module symclosestwannier.analyzer.get_response)</a>
 </li>
   </ul></td>
@@ -605,6 +720,12 @@
       </ul></li>
       <li><a href="src/api/cw.html#symclosestwannier.cw.mmn.Mmn">Mmn (class in symclosestwannier.cw.mmn)</a>
 </li>
+      <li><a href="src/api/cw.html#symclosestwannier.cw.cw_info.CWInfo.mmn">mmn (CWInfo property)</a>
+
+      <ul>
+        <li><a href="src/api/cw.html#symclosestwannier.cw.cw_model.CWModel.mmn">(CWModel property)</a>
+</li>
+      </ul></li>
       <li>
     module
 
@@ -674,6 +795,12 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="src/api/cw.html#symclosestwannier.cw.nnkp.Nnkp">Nnkp (class in symclosestwannier.cw.nnkp)</a>
 </li>
+      <li><a href="src/api/cw.html#symclosestwannier.cw.cw_info.CWInfo.nnkp">nnkp (CWInfo property)</a>
+
+      <ul>
+        <li><a href="src/api/cw.html#symclosestwannier.cw.cw_model.CWModel.nnkp">(CWModel property)</a>
+</li>
+      </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="src/api/util.html#symclosestwannier.util.utility.num_electron">num_electron() (in module symclosestwannier.util.utility)</a>
@@ -685,6 +812,8 @@
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="src/api/util.html#symclosestwannier.util.utility.O_R_dependence">O_R_dependence() (in module symclosestwannier.util.utility)</a>
+</li>
+      <li><a href="src/api/analyzer.html#symclosestwannier.analyzer.response.Response.operators">operators (Response property)</a>
 </li>
       <li><a href="src/api/analyzer.html#symclosestwannier.analyzer.get_response.orb_matrix_klist">orb_matrix_klist() (in module symclosestwannier.analyzer.get_response)</a>
 </li>
@@ -703,6 +832,24 @@
       <li><a href="src/api/util.html#symclosestwannier.util.band.output_linear_dispersion">output_linear_dispersion() (in module symclosestwannier.util.band)</a>
 </li>
       <li><a href="src/api/util.html#symclosestwannier.util.band.output_linear_dispersion_eig">output_linear_dispersion_eig() (in module symclosestwannier.util.band)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="P">P</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="src/api/cw.html#symclosestwannier.cw.cw_manager.CWManager.parallel">parallel (CWManager property)</a>
+</li>
+      <li><a href="src/api/util.html#symclosestwannier.util.utility.pauli_spn_x">pauli_spn_x() (in module symclosestwannier.util.utility)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="src/api/util.html#symclosestwannier.util.utility.pauli_spn_y">pauli_spn_y() (in module symclosestwannier.util.utility)</a>
+</li>
+      <li><a href="src/api/util.html#symclosestwannier.util.utility.pauli_spn_z">pauli_spn_z() (in module symclosestwannier.util.utility)</a>
+</li>
+      <li><a href="src/api/util.html#symclosestwannier.util.message.postcw_end_msg">postcw_end_msg() (in module symclosestwannier.util.message)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -744,6 +891,12 @@
 </li>
       <li><a href="src/api/analyzer.html#symclosestwannier.analyzer.response.Response">Response (class in symclosestwannier.analyzer.response)</a>
 </li>
+      <li><a href="src/api/util.html#symclosestwannier.util.utility.Rx">Rx() (in module symclosestwannier.util.utility)</a>
+</li>
+      <li><a href="src/api/util.html#symclosestwannier.util.utility.Ry">Ry() (in module symclosestwannier.util.utility)</a>
+</li>
+      <li><a href="src/api/util.html#symclosestwannier.util.utility.Rz">Rz() (in module symclosestwannier.util.utility)</a>
+</li>
   </ul></td>
 </tr></table>
 
@@ -756,8 +909,12 @@
         <li><a href="src/api/util.html#symclosestwannier.util.utility.samb_decomp_operator">(in module symclosestwannier.util.utility)</a>
 </li>
       </ul></li>
-      <li><a href="src/api/analyzer.html#symclosestwannier.analyzer.response.Response.set_operators">set_operators() (Response method)</a>
+      <li><a href="src/api/analyzer.html#symclosestwannier.analyzer.band.Band.set_operators">set_operators() (Band method)</a>
+
+      <ul>
+        <li><a href="src/api/analyzer.html#symclosestwannier.analyzer.response.Response.set_operators">(Response method)</a>
 </li>
+      </ul></li>
       <li><a href="src/api/cw.html#symclosestwannier.cw.cw_manager.CWManager.set_stamp">set_stamp() (CWManager method)</a>
 </li>
       <li><a href="src/api/util.html#symclosestwannier.util.utility.sigma_n_in_original_basis">sigma_n_in_original_basis() (in module symclosestwannier.util.utility)</a>
@@ -768,9 +925,21 @@
 </li>
       <li><a href="src/api/util.html#symclosestwannier.util.utility.sort_ket_matrix_dict">sort_ket_matrix_dict() (in module symclosestwannier.util.utility)</a>
 </li>
+      <li><a href="src/api/analyzer.html#symclosestwannier.analyzer.get_band.spin_get_moment">spin_get_moment() (in module symclosestwannier.analyzer.get_band)</a>
+</li>
       <li><a href="src/api/analyzer.html#symclosestwannier.analyzer.get_response.spin_moment_main">spin_moment_main() (in module symclosestwannier.analyzer.get_response)</a>
 </li>
+      <li><a href="src/api/util.html#symclosestwannier.util.utility.spin_zeeman_interaction">spin_zeeman_interaction() (in module symclosestwannier.util.utility)</a>
+</li>
       <li><a href="src/api/cw.html#symclosestwannier.cw.spn.Spn">Spn (class in symclosestwannier.cw.spn)</a>
+</li>
+      <li><a href="src/api/cw.html#symclosestwannier.cw.cw_info.CWInfo.spn">spn (CWInfo property)</a>
+
+      <ul>
+        <li><a href="src/api/cw.html#symclosestwannier.cw.cw_model.CWModel.spn">(CWModel property)</a>
+</li>
+      </ul></li>
+      <li><a href="src/api/util.html#symclosestwannier.util.utility.spn_operator">spn_operator() (in module symclosestwannier.util.utility)</a>
 </li>
       <li><a href="src/api/util.html#symclosestwannier.util.utility.su2_rotation_right">su2_rotation_right() (in module symclosestwannier.util.utility)</a>
 </li>
@@ -846,6 +1015,8 @@
         <li><a href="src/api/cw.html#module-symclosestwannier.cw.cw_model">module</a>
 </li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li>
     symclosestwannier.cw.cwin
 
@@ -853,8 +1024,6 @@
         <li><a href="src/api/cw.html#module-symclosestwannier.cw.cwin">module</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li>
     symclosestwannier.cw.eig
 
@@ -974,6 +1143,8 @@
         <li><a href="src/api/util.html#module-symclosestwannier.util.utility">module</a>
 </li>
       </ul></li>
+      <li><a href="src/api/util.html#symclosestwannier.util.message.system_msg">system_msg() (in module symclosestwannier.util.message)</a>
+</li>
   </ul></td>
 </tr></table>
 
@@ -996,11 +1167,25 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="src/api/cw.html#symclosestwannier.cw.uHu.UHu">UHu (class in symclosestwannier.cw.uHu)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="src/api/cw.html#symclosestwannier.cw.umat.Umat">Umat (class in symclosestwannier.cw.umat)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="src/api/cw.html#symclosestwannier.cw.cw_info.CWInfo.umat">umat (CWInfo property)</a>
+
+      <ul>
+        <li><a href="src/api/cw.html#symclosestwannier.cw.cw_model.CWModel.umat">(CWModel property)</a>
+</li>
+      </ul></li>
       <li><a href="src/api/analyzer.html#symclosestwannier.analyzer.get_response.utility_w0gauss">utility_w0gauss() (in module symclosestwannier.analyzer.get_response)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="V">V</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="src/api/cw.html#symclosestwannier.cw.cw_manager.CWManager.verbose">verbose (CWManager property)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -1025,6 +1210,14 @@
       <li><a href="src/api/util.html#symclosestwannier.util.utility.wigner_seitz">wigner_seitz() (in module symclosestwannier.util.utility)</a>
 </li>
       <li><a href="src/api/cw.html#symclosestwannier.cw.win.Win">Win (class in symclosestwannier.cw.win)</a>
+</li>
+      <li><a href="src/api/cw.html#symclosestwannier.cw.cw_info.CWInfo.win">win (CWInfo property)</a>
+
+      <ul>
+        <li><a href="src/api/cw.html#symclosestwannier.cw.cw_model.CWModel.win">(CWModel property)</a>
+</li>
+      </ul></li>
+      <li><a href="src/api/cw.html#symclosestwannier.cw.nnkp.Nnkp.wk">wk() (Nnkp method)</a>
 </li>
       <li><a href="src/api/cw.html#symclosestwannier.cw.amn.Amn.write">write() (Amn method)</a>
 
