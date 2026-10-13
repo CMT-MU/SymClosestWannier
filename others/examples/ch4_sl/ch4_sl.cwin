@@ -11,7 +11,7 @@ write_sr = .true.
 
 # symmetrization
 symmetrization = true
-mp_outdir      = './sym'
+mp_outdir      = './ch4_sl'
 mp_seedname    = ch4_sl
-ket_amn        = [s@C_1, pz@C_1, px@C_1, py@C_1, s@H_1, s@H_2, s@H_3, s@H_4]
+ket_amn        = [[C,1,0,s],[C,1,1,pz],[C,1,1,px],[C,1,1,py],[H,1,0,s],[H,2,0,s],[H,4,0,s],[H,3,0,s]]
 irreps         = full

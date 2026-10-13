@@ -11,11 +11,9 @@ write_sr = .true.
 
 N1 = 50
 
-fermi_energy = 12.5953
-
 # symmetrization
 symmetrization = true
-mp_outdir      = 'sym'
-mp_seedname    = srvo3_d_30
-ket_amn        = [dzx@V_1,dyz@V_1,dxy@V_1]
+mp_outdir      = './srvo3_d'
+mp_seedname    = srvo3_d
+ket_amn        = [[V,1,2,dxz],[V,1,2,dyz],[V,1,2,dxy]]
 irreps         = full ! full/all/list
