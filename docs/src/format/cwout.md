@@ -48,7 +48,7 @@ Example standard output for [graphene](https://github.com/CMT-MU/SymClosestWanni
              |     The SymClosestWannier Developer Group and     |
              |        individual contributors                    |
              |                                                   |
-             |        Release: 2.0.7      5th Aug  2025         |
+             |         Release: 2.0.7     15th April  2026       |
              |                                                   |
              | This program is free software; you can            |
              | redistribute it and/or modify it under the terms  |
@@ -68,9 +68,9 @@ Example standard output for [graphene](https://github.com/CMT-MU/SymClosestWanni
              | 675 Mass Ave, Cambridge, MA 02139, USA.           |
              |                                                   |
              +---------------------------------------------------+
-             |    Execution started on 2025/08/12 14:51:54       |
+             |    Execution started on 2026/10/13 19:10:06       |
              +---------------------------------------------------+
-
+    
 
 
                                    ------
@@ -89,15 +89,15 @@ Example standard output for [graphene](https://github.com/CMT-MU/SymClosestWanni
                 b_2    0.000000   2.979547   0.000000
                 b_3    0.000000   0.000000   0.645091
 
-
+    
 *----------------------------------------------------------------------------*
 |   Site       Fractional Coordinate          Cartesian Coordinate (Ang)     |
 +----------------------------------------------------------------------------+
-
+    
   C   1   0.66667   0.33333   0.00000    |    1.21750   0.70292   0.00000
-
+    
   C   2   0.33333   0.66667   0.00000    |    0.00000   1.40585   0.00000
-
+    
 *----------------------------------------------------------------------------*
 
 
@@ -108,34 +108,130 @@ Example standard output for [graphene](https://github.com/CMT-MU/SymClosestWanni
               Grid size =  19 x 19 x 1      Total points = 361
 
 
+                               --------------
+                               CLOSESTWANNIER
+                               --------------
+    
+*----------------------------------------------------------------------------*
+| seedname                            :                             graphene |
+| restart                             :                                   cw |
+| outdir                              :                                    . |
+| disentangle                         :                                 True |
+| proj_min                            :                                  0.1 |
+| cwf_mu_max                          :                                 10.0 |
+| cwf_mu_min                          :                                -30.0 |
+| cwf_sigma_max                       :                                  3.0 |
+| cwf_sigma_min                       :                                  0.0 |
+| cwf_delta                           :                                1e-12 |
+| svd                                 :                                 True |
+| verbose                             :                                 True |
+| parallel                            :                                False |
+| formatter                           :                                False |
+| calc_spreads                        :                                False |
+| transl_inv                          :                                False |
+| use_degen_pert                      :                                False |
+| degen_thr                           :                               0.0001 |
+| tb_gauge                            :                                False |
+| tb_position                         :                                False |
+| write_info_data                     :                                 True |
+| write_hr                            :                                 True |
+| write_sr                            :                                False |
+| write_u_matrices                    :                                False |
+| write_rmn                           :                                False |
+| write_vmn                           :                                False |
+| write_tb                            :                                False |
+| write_eig                           :                                False |
+| write_amn                           :                                False |
+| write_windowed_amn                  :                                 True |
+| write_mmn                           :                                False |
+| write_spn                           :                                False |
+| symmetrization                      :                                 True |
+| mp_outdir                           :                             graphene |
+| mp_seedname                         :                             graphene |
+| ket_amn                             :                                      |
+|                                                          ['C', 2, 1, 'pz'] |
+|                                                          ['C', 1, 1, 'pz'] |
+| irreps                              :                                  all |
+| N1                                  :                                   50 |
+| calc_dos                            :                                False |
+| dos_kmesh                           :                            [1, 1, 1] |
+| dos_num_fermi                       :                                   50 |
+| dos_smr_en_width                    :                                0.001 |
+| calc_cohp                           :                                False |
+| calc_cohp_samb_decomp               :                                False |
+| cohp_bond_length_max                :                                    6 |
+| cohp_bond_length_min                :                                    0 |
+| cohp_kmesh                          :                            [1, 1, 1] |
+| cohp_num_fermi                      :                                   50 |
+| cohp_smr_en_width                   :                                0.001 |
+| calc_spin_2d                        :                                False |
+| zeeman_interaction                  :                                False |
+| magnetic_field                      :                                  0.0 |
+| magnetic_field_theta                :                                  0.0 |
+| magnetic_field_phi                  :                                  0.0 |
+| g_factor                            :                                  2.0 |
+| fermi_surface                       :                                False |
+| fermi_surface_kmesh                 :           [[-1, 1, 10], [-1, 1, 10]] |
+| fermi_surface_view                  :                            [0, 0, 1] |
+| fermi_surface_const                 :                                  0.0 |
+| lindhard                            :                                False |
+| lindhard_freq                       :                                  0.0 |
+| lindhard_smr_fixed_en_width         :                                 0.01 |
+| lindhard_kmesh                      :                            [1, 1, 1] |
+| lindhard_surface                    :                                False |
+| lindhard_surface_qmesh              :           [[-1, 1, 10], [-1, 1, 10]] |
+| lindhard_surface_view               :                            [0, 0, 1] |
+| lindhard_surface_const              :                                  0.0 |
+| Nq1                                 :                                   30 |
+| temperature                         :                                  0.0 |
+| hr_input                            :                                      |
+| use_tb_approximation                :                                False |
+*----------------------------------------------------------------------------*
+
 
 *----------------------------------------------------------------------------*
        Starting a new SymClosestWannier calculation of ''graphene''
 *----------------------------------------------------------------------------*
 
 
-   - excluding bands with low projectability (proj_min = 0.2) ... done ( 0.007 [sec] ).
+   - excluding bands with low projectability (proj_min = 0.1) ... done ( 0.01 [sec] ).
    - disentanglement ... done ( 0.0 [sec] ).
-   - constructing TB Hamiltonian ...
+   - constructing TB Hamiltonian ... done ( 0.067 [sec] ).
+
     * band distance between DFT and Wannier bands:
-     - eta_0     = 1.9960019700989895e-12 [meV]
-     - eta_0_max = 7.993605777301127e-12 [meV]
-     - eta_2     = 1.8169064701622485e-12 [meV]
-     - eta_2_max = 7.993605777301127e-12 [meV]
-     - eta_5     = 1.7296105678905685e-12 [meV]
-     - eta_5_max = 7.993605777301127e-12 [meV]
-done ( 0.032 [sec] ).
-   - symmetrization ...
-    - reading output of multipie ...
-    - decomposing Hamiltonian as linear combination of SAMBs ... done ( 0.001 [sec] ).
-    - decomposing overlap as linear combination of SAMBs ... done ( 0.021 [sec] ).
+     - eta_0     = 1.761368254533177e-12 [meV]
+     - eta_0_max = 7.105427357601002e-12 [meV]
+     - eta_2     = 1.6349972540977294e-12 [meV]
+     - eta_2_max = 7.105427357601002e-12 [meV]
+     - eta_5     = 1.5502689802867415e-12 [meV]
+     - eta_5_max = 7.105427357601002e-12 [meV]
+done ( 0.008 [sec] ).
+
+    * Occupancy:
+     idx        occupancy (1/unit-cell)
+     1             0.50000000
+     2             0.50000000
+     Sum             1.00000000
+done ( 0.007 [sec] ).
+   - symmetrization ... 
+    - creating combined samb matrix ... 
+done ( 0.543 [sec] ).
+    - decomposing Hamiltonian as linear combination of SAMBs ... done ( 0.0 [sec] ).
+    - decomposing overlap as linear combination of SAMBs ... done ( 0.001 [sec] ).
     - decomposing non-orthogonal Hamiltonian as linear combination of SAMBs ... done ( 0.0 [sec] ).
     - decomposing electronic density as linear combination of SAMBs ... done ( 0.0 [sec] ).
-    - constructing symmetrized TB Hamiltonian ... done ( 0.019 [sec] ).
-    - evaluating fitting accuracy ...
-     * MAE of eigen values between DFT and Symmetry-Adapted CW models (grid) = 47.6916 [meV]
-     * MAE of eigen values between CW and Symmetry-Adapted CW models (path) = 51.5308 [meV]
-done
+done ( 0.001 [sec] ).
+    - constructing symmetrized TB Hamiltonian ... done ( 0.031 [sec] ).
+    - evaluating fitting accuracy ... 
+     * MAE of eigen values between CW and Symmetry-Adapted CW models (grid) = 47.7270 [meV] 
+     * MAE of eigen values between DFT and Symmetry-Adapted CW models (grid) = 47.7270 [meV] 
+     * MAE of eigen values between CW and Symmetry-Adapted CW models (path) = 51.2897 [meV]
+
+    - band energy 
+     * CW: -10.496512108654828 
+     * SCW: -10.478675214847124 
+     * SCW2: -4.441068212482784 
+
 
 
 *----------------------------------------------------------------------------*
@@ -144,10 +240,10 @@ done
 
 
 
-  * calculating band dispersion ... done ( 1.001 [sec] ).
+  * calculating band dispersion ... done ( 0.202 [sec] ).
 
 
-  * total elapsed_time: ( 1.001 [sec] ).
+  * total elapsed_time: ( 0.203 [sec] ).
 
 
 *----------------------------------------------------------------------------*
@@ -155,7 +251,7 @@ done
 *----------------------------------------------------------------------------*
 
 
-  * total elapsed_time: ( 3.74 [sec] ).
+  * total elapsed_time: ( 2.209 [sec] ).
 
 
 *----------------------------------------------------------------------------*
