@@ -32,7 +32,8 @@
   - write_vmn         : write seedname_v.dat.cw ? (bool), [False].
   - write_tb          : write seedname_tb.dat.cw (wannier90 format, needs seedname.mmn unless tb_position = true, not with tb_gauge = true) ? (bool), [False].
   - write_eig         : write seedname.eig.cw ? (bool), [False].
-  - write_amn         : write seedname.amn.cw ? (bool), [False].
+  - write_amn         : same as write_windowed_amn, kept for compatibility ? (bool), [False].
+  - write_windowed_amn : write seedname.amn.cw, the projections w(e_mk) <psi_mk|g_n> with the window function w (w = 1 without disentangle) and proj_min applied, not orthogonalized (with restart = w90, the input projections) ? (bool), [False].
   - write_mmn         : write seedname.mmn.cw ? (bool), [False].
   - write_spn         : write the spin operator to seedname.s.cw ? (bool), [False].
 

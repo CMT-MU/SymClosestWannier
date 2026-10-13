@@ -176,7 +176,7 @@ def _cw_creator(seedname, indir):
         filename = f"{cwi['seedname']}.eig.cw"
         cwi.eig.write(filename)
 
-    if cwi["write_amn"]:
+    if cwi["write_windowed_amn"] or cwi["write_amn"]:
         filename = f"{cwi['seedname']}.amn.cw"
         cwi.amn.write(filename)
 

@@ -93,11 +93,14 @@ The following files are used for the next step.
     one can obtain the Wannier functions *closest* to the initial guesses in
     a Hilbert space (see Eqs. (5)~(17) in Ref. [@ozaki-prb24]).
 
-    To write `graphene.amn.cw`, the unitary matrices $u^{(\bf{k})} v^{(\bf{k})\dagger}$ given by the singular value decomposition $u^{(\bf{k})} \Sigma^{(\bf{k})} v^{(\bf{k})\dagger}$ of the initial projections $\langle \psi_{m{\bf k}}|g_{n}\rangle$ (without the window function), `write_amn` can be specified in `graphene.cwin` as
+    To write `graphene.amn.cw`, the projections with the window function applied, $w(\varepsilon_{m{\bf k}}) \langle \psi_{m{\bf k}}|g_{n}\rangle$ (the bands removed by `proj_min` are set to zero; $w = 1$ without `disentangle`), `write_windowed_amn` can be specified in `graphene.cwin` as
 
     ```vi title="Input file"
-    write_amn = true
+    write_windowed_amn = true
     ```
+
+    It is written in the format of the Wannier90 `seedname.amn` file, without orthogonalization.
+    The unitary matrices after the orthogonalization are written by `write_u_matrices = true`.
 
     To get the Closest Wannier Hamiltonian matrix elements in real-space, `write_hr` can be specified in `graphene.cwin` as
 
@@ -134,7 +137,7 @@ The following files are used for the next step.
     - `graphene_hr.dat.cw`: *Closest Wannier Hamiltonian matrix elements in real-space $H(R)$*
     - `graphene_hr_R_dep.dat.cw`: *Bond length ||R|| (the 2-norm of lattice vector) dependence of the Frobenius norm of the Hamiltonian and the decay length $\tau$ [Ang] defined by Exponential-form fitting $||H(R)|| = ||H(0)|| \exp(-||R||/\tau)$.*
     - `graphene_nr.dat.cw`: *Closest Wannier electronic density matrix elements in real-space $n(R)$*
-    - `graphene.amn.cw`: *The projection of the Bloch states onto trial localised orbitals based on the Closest Wannier method*
+    - `graphene.amn.cw`: *The projections of the Bloch states onto the trial orbitals with the window function applied (with `write_windowed_amn = true`)*
     - `graphene_band.txt` : band dispersion data of the Closest Wannier tight-binding model.
     - `graphene_band_detail.txt` : band dispersion data of the Closest Wannier tight-binding model including orbital contributions.
     - `plot_band.gnu`: *The gnuplot script to compare DFT and Closest Wannier bands*

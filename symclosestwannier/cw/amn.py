@@ -88,21 +88,15 @@ class Amn(dict):
         return d
 
     # ==================================================
-    def write(self, file_name="cwannier.amn.cw"):
+    def write(self, file_name="cwannier.amn.cw", Ak=None):
         """
-        write amn data.
+        write amn data (seedname.amn format).
 
         Args:
             file_name (str, optional): file name.
+            Ak (ndarray, optional): matrix elements A_{mn}(k) written as they are, [self["Ak"]].
         """
-        Ak = np.array(self["Ak"])
-
-        def U_mat(k):
-            u, _, vd = np.linalg.svd(Ak[k], full_matrices=False)
-            return u @ vd
-
-        Uk = np.array([U_mat(k) for k in range(self["num_k"])])
-        Ak = Uk
+        Ak = np.array(self["Ak"] if Ak is None else Ak)
 
         with open(file_name, "w") as fp:
             fp.write("Created by amn.py {}\n".format(datetime.datetime.now().strftime("on %d%b%Y at %H:%M:%S")))
