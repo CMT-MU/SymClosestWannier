@@ -16,7 +16,7 @@ $$
 & A_{mn}^{(\bf{k})} = w(\varepsilon_{m\bf{k}}) \langle \psi_{m{\bf k}}|g_{n}\rangle,
 \\
 & w(\varepsilon) = \frac{1}{e^{(\varepsilon - \mu_{\rm max})/\sigma_{\rm max}} + 1}
-- \frac{1}{e^{(\mu_{\rm min} - \varepsilon)/\sigma_{\rm min}} + 1} - 1 + \cwf_delta.
++ \frac{1}{e^{(\mu_{\rm min} - \varepsilon)/\sigma_{\rm min}} + 1} - 1 + \delta.
 $$
 
 $\mu_{\rm min}$ and $\mu_{\rm max}$ ($\mu_{\rm min} < \mu_{\rm max}$)
@@ -28,7 +28,7 @@ the projection with specific weights, where the weight is
 particularly large inside the window
 ($\mu_{\rm min} < \varepsilon_{m\bf{k}} < \mu_{\rm max}$),
 whereas it is small outside of the window.
-$\cwf_delta$ is a small constant introduced to prevent the matrix
+$\delta$ is a small constant introduced to prevent the matrix
 consisting of $A_{mn}^{(\bf{k})}$ from becoming ill-conditioned.
 
 Note that the disentanglement of bands is naturally
@@ -36,10 +36,10 @@ taken into account by introducing a window function.
 The unitary matrix is then obtained by
 $\mathbf{U}^{(\mathbf{k})} = \mathbf{A}^{(\bf{k})}
 (\mathbf{A}^{(\bf{k}) \dagger} \mathbf{A}^{(\bf{k})})^{-1/2}$
-without iterative calculations for disentanglment of bands
+without iterative calculations for disentanglement of bands
 and wannierisation (`dis_num_iter = 0` and `num_iter = 0`).
 By properly choosing $\mu_{\rm min}$, $\mu_{\rm max}$,
-$\sigma_{\rm min}$, $\sigma_{\rm max}$, and $\cwf_delta$,
+$\sigma_{\rm min}$, $\sigma_{\rm max}$, and $\delta$,
 one can obtain the Wannier functions _closest_ to the initial guesses in
 a Hilbert space (see Eqs. (5)~(17) in Ref. [ozaki-prb24]).
 

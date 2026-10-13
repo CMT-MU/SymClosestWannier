@@ -1,13 +1,13 @@
 # seedname.cwin [default]
-- For execution use: pw2cw [seedname]
-  - If a seedname string is given the code will read its input from a file seedname.cwin. The default value is cwannier.
+- For execution use: pw2cw seedname
+  - SEEDNAME is required: the code reads its input from seedname.cwin.
       One can also equivalently provide the string seedname.cwin instead of seedname.
 
 - input parameters in seedname.cwin (same format as seedname.win) [default]
   - restart           : the restart position 'cw'/'w90' (str), ["cw"].
   - seedname          : seedname (str), ["cwannier"].
   - outdir            : output files are written to this directory, relative to the directory of seedname.cwin (str), ["./"].
-  - disentangle       : disentagle bands ? (bool), [False].
+  - disentangle       : disentangle bands ? (bool), [False].
   - proj_min          : minimum value of projectability: [0.0].
   - cwf_mu_max      : top of the energy window (float), [None].
   - cwf_mu_min      : bottom of the energy window (float), [None].
@@ -24,52 +24,52 @@
   - use_degen_pert    : use degenerate perturbation theory when bands are degenerate and band derivatives are needed? (bool), [False].
   - degen_thr         : threshold to exclude degenerate bands from the calculation, [0.0001].
   - tb_gauge          : use tb gauge? (bool), [False].
-  - tb_position       : approximate the position operator of seedname_r.dat and seedname_tb.dat by the projection centres, r_ab(R) = tau_a delta_ab delta_R0 (seedname.mmn is then not needed) ? (bool), [False].
-  - write_hr          : write seedname_hr.py ? (bool), [False].
-  - write_sr          : write seedname_sr.py ? (bool), [False].
-  - write_u_matrices  : write seedname_u.dat and seedname_u_dis.dat ? (bool), [False].
-  - write_rmn         : write seedname_r.dat (needs seedname.mmn unless tb_position = true) ? (bool), [False].
-  - write_vmn         : write seedname_v.dat ? (bool), [False].
-  - write_tb          : write seedname_tb.dat (wannier90 format, needs seedname.mmn unless tb_position = true, not with tb_gauge = true) ? (bool), [False].
+  - tb_position       : approximate the position operator of seedname_r.dat.cw and seedname_tb.dat.cw by the projection centres, r_ab(R) = tau_a delta_ab delta_R0 (seedname.mmn is then not needed) ? (bool), [False].
+  - write_hr          : write seedname_hr.dat.cw, seedname_hr_R_dep.dat.cw, seedname_nr.dat.cw and seedname_nr_R_dep.dat.cw ? (bool), [False].
+  - write_sr          : write seedname_sr.dat.cw and seedname_sr_R_dep.dat.cw ? (bool), [False].
+  - write_u_matrices  : write seedname_u.mat.cw and seedname_u_dis.mat.cw (not written with restart = w90) ? (bool), [False].
+  - write_rmn         : write seedname_r.dat.cw (needs seedname.mmn unless tb_position = true) ? (bool), [False].
+  - write_vmn         : write seedname_v.dat.cw ? (bool), [False].
+  - write_tb          : write seedname_tb.dat.cw (wannier90 format, needs seedname.mmn unless tb_position = true, not with tb_gauge = true) ? (bool), [False].
   - write_eig         : write seedname.eig.cw ? (bool), [False].
   - write_amn         : write seedname.amn.cw ? (bool), [False].
   - write_mmn         : write seedname.mmn.cw ? (bool), [False].
-  - write_spn         : write seedname.spn.cw ? (bool), [False].
+  - write_spn         : write the spin operator to seedname.s.cw ? (bool), [False].
 
 - only used for symmetrization.
   - symmetrization    : symmetrize ? (bool), [False].
   - mp_outdir         : output files for multipie are written to this directory, relative to the directory of seedname.cwin (str). ["./"].
-  - mp_seedname       : seedname for seedname_model.py, seedname_samb.py and seedname_matrix.py files (str).
-  - ket_amn           : ket basis list in the seedname.amn file. If ket_amn == auto, the list of orbitals are set automatically, or it can be set manually. The format of each ket must be same as the "ket" in sambname_model.py file. See sambname["info"]["ket"] in sambname_model.py file for the format (list), [None].
+  - mp_seedname       : name of the MultiPie model (the directory and .pkl file created by mp_create) (str), ["default"].
+  - ket_amn           : ket basis list in the seedname.amn file (list), [None]. Each ket is given as [atom, sublattice, rank, orbital], e.g. `[[C,1,1,pz],[C,2,1,pz]]`, or `[[C,1,1,(pz,U)],[C,1,1,(pz,D)]]` for the spinful case. If ket_amn = auto, the list of orbitals is set automatically.
   - irreps            : list of irreps to be considered (str/list), ["all"].
 
 - only used for band dispersion calculation.
-  - a                 : lattice parameter (in Ang) used to correct units of k points in reference band data, [None].
+  - a                 : lattice parameter (in Ang) used to correct units of k points in reference band data (float, optional), [None] (|a1| is used when None).
   - N1                : number of divisions for high symmetry lines (int, optional), [50].
   - calc_spin_2d      : add expectation value of spin operator given by *.spn in output file ? (bool). [False].
 
 - only used for dos calculation.
   - calc_dos          : calculate dos? (bool), [False].
-  - dos_kmesh         : dimensions of the Monkhorst-Pack grid of k-points for dos calculation (list), [[1, 1, 1]].
+  - dos_kmesh         : dimensions of the Monkhorst-Pack grid of k-points for dos calculation, given as space-separated integers, e.g. `dos_kmesh = 10 10 10` (list), [[1, 1, 1]].
   - dos_num_fermi     : number of fermi energies (int), [50].
-  - dos_smr_en_width  : Energy width for the smearing function for the DOS (The units are [eV]) (flaot), [0.001].
-  - dos_emax          : maximun energy to be calculated (flaot), [None].
-  - dos_emin          : minimum energy to be calculated (flaot), [None].
+  - dos_smr_en_width  : Energy width for the smearing function for the DOS (The units are [eV]) (float), [0.001].
+  - dos_emax          : maximum energy to be calculated (float), [None].
+  - dos_emin          : minimum energy to be calculated (float), [None].
 
 - only used for cohp calculation.
   - calc_cohp             : calculate cohp? (bool), [False].
   - calc_cohp_samb_decomp : decompose cohp by SAMBs? (bool), [False].
   - cohp_bond_length_max  : maximum bond length (ang) to be calculated (float), [6.0].
   - cohp_bond_length_min  : minimum bond length (ang) to be calculated (float), [0.0].
-  - cohp_head_atom        : head atom to be calculated (float), [None].
-  - cohp_head_atom_idx    : head atom index to be calculated (float), [None].
-  - cohp_tail_atom        : tail atom to be calculated (float), [None].
-  - cohp_tail_atom_idx    : tail atom index to be calculated (float), [None].
-  - cohp_kmesh            : dimensions of the Monkhorst-Pack grid of k-points for cohp calculation (list), [[1, 1, 1]].
+  - cohp_head_atom        : head atom to be calculated (str), [None].
+  - cohp_head_atom_idx    : head atom index to be calculated (int), [None].
+  - cohp_tail_atom        : tail atom to be calculated (str), [None].
+  - cohp_tail_atom_idx    : tail atom index to be calculated (int), [None].
+  - cohp_kmesh            : dimensions of the Monkhorst-Pack grid of k-points for cohp calculation, given as space-separated integers, e.g. `cohp_kmesh = 10 10 10` (list), [[1, 1, 1]].
   - cohp_num_fermi        : number of fermi energies (int), [50].
-  - cohp_smr_en_width     : Energy width for the smearing function for the COHP (The units are [eV]) (flaot), [0.001].
-  - cohp_emax             : maximun energy to be calculated (flaot), [None].
-  - cohp_emin             : minimum energy to be calculated (flaot), [None].
+  - cohp_smr_en_width     : Energy width for the smearing function for the COHP (The units are [eV]) (float), [0.001].
+  - cohp_emax             : maximum energy to be calculated (float), [None].
+  - cohp_emin             : minimum energy to be calculated (float), [None].
 
 
 - only used for when zeeman interaction is considered.
@@ -82,24 +82,24 @@
 
 - only used for fermi surface calculation.
   - fermi_surface        : calculate fermi surface? (bool), [False].
-  - fermi_surface_kmesh  : 2d kmesh given by [[k1_min, k1_max, N1], [k2_min, k2_max, N2] ] (crystal coordinate), (list), [ [[-1, 1, 10], [-1, 1, 10]] ].
-  - fermi_surface_view   : k3 direction (list), [ [0, 0, 1] ].
+  - fermi_surface_kmesh  : 2d kmesh [[k1_min, k1_max, N1], [k2_min, k2_max, N2]] (crystal coordinate), given as six space-separated integers k1_min k1_max N1 k2_min k2_max N2, e.g. `fermi_surface_kmesh = -1 1 10 -1 1 10` (list), [ [[-1, 1, 10], [-1, 1, 10]] ].
+  - fermi_surface_view   : k3 direction, given as space-separated integers, e.g. `fermi_surface_view = 0 0 1` (list), [ [0, 0, 1] ].
   - fermi_surface_const  : constant value for k3 axis [0.0].
 
 - only used for lindhard function.
   - lindhard                    : calculate lindhard function? (bool), [False].
   - lindhard_freq               : frequency for computing the lindhard function. (The units are [eV]) (float), [0.0].
   - lindhard_smr_fixed_en_width : Overrides the smr_fixed_en_width global variable (float), [0.01].
-  - lindhard_kmesh              : dimensions of the Monkhorst-Pack grid of k-points for lindhard function (list), [[1, 1, 1]].
+  - lindhard_kmesh              : dimensions of the Monkhorst-Pack grid of k-points for lindhard function, given as space-separated integers, e.g. `lindhard_kmesh = 10 10 10` (list), [[1, 1, 1]].
   - lindhard_surface            : calculate lindhard function on a 2d q-plane? (bool), [False].
-  - lindhard_surface_qmesh      : 2d qmesh given by [[q1_min, q1_max, N1], [q2_min, q2_max, N2] ] (crystal coordinate), (list), [ [[-1, 1, 10], [-1, 1, 10]] ].
-  - lindhard_surface_view       : q3 direction (list), [ [0, 0, 1] ].
+  - lindhard_surface_qmesh      : 2d qmesh [[q1_min, q1_max, N1], [q2_min, q2_max, N2]] (crystal coordinate), given as six space-separated integers q1_min q1_max N1 q2_min q2_max N2, e.g. `lindhard_surface_qmesh = -1 1 10 -1 1 10` (list), [ [[-1, 1, 10], [-1, 1, 10]] ].
+  - lindhard_surface_view       : q3 direction, given as space-separated integers, e.g. `lindhard_surface_view = 0 0 1` (list), [ [0, 0, 1] ].
   - lindhard_surface_const      : constant value for q3 axis [0.0].
   - qpoint                      : representative q points (dict), [None].
   - qpoint_path                 : q-points along high symmetry line in Brillouin zone, [[k1, k2, k3]] (crystal coordinate) (str), [None].
   - Nq1                         : number of divisions for high symmetry lines (int, optional), [30].
   - filling                     : number of electrons per unit-cell, [None].
-  - temperature                 : temperature for caluclating lindhard function (float), [0.0].
+  - temperature                 : temperature for calculating lindhard function (float), [0.0].
 
 - only used for postcw calculation.
   - hr_input             : full filename of hr.dat file (str), [""].

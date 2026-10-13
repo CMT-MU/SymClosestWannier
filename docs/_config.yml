@@ -70,7 +70,7 @@ sphinx:
     autodoc_default_options:
       members: true
       member-order: "groupwise"
-      undoc-members": true
+      undoc-members: true
       show-inheritance: true
     html_theme: sphinx_book_theme
     html_static_path: ["_static"]
