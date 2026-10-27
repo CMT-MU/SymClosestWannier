@@ -1,0 +1,935 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>symclosestwannier.cw.cwin &#8212; SymClosestWannier</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../_static/styles/theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css?v=9c3e77be" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/custom.css?v=34ddd5e8" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="../../../_static/scripts/fontawesome.js?digest=55c26ed414f5f8a31ebb"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb" />
+
+    <script src="../../../_static/documentation_options.js?v=a8e58a58"></script>
+    <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../../_static/togglebutton.js?v=b8b12719"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/symclosestwannier/cw/cwin';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <script src="../../../_static/custom.js?v=9c3a2667"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  
+    
+    <script src="../../../_static/searchtools.js"></script>
+    <script src="../../../_static/language_data.js"></script>
+    <script src="../../../searchindex.js"></script>
+  
+  </head>
+  <body data-default-mode="">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../../README.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">SymClosestWannier</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">MultiPie</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../../src/multipie.html">Construction of SAMBs by using MultiPie</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Closest Wannier method</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../../src/cw.html">Closest Wannier method</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Construction of symmetry-adapted Closest Wannier model</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../../src/scw.html">Symmetry-adapted Closest Wannier model</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">File Format</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../../src/format/cwin.html">seedname.cwin [default]</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/format/cwout.html">seedname.cwout</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/format/hdf5.html">seedname.hdf5 [default]</a></li>
+
+
+
+<li class="toctree-l1"><a class="reference internal" href="../../../src/format/hr.html">seedname_hr.dat.cw</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/format/sr.html">seedname_sr.dat.cw</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/format/z.html">seedname_z.dat.cw</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/format/s.html">seedname_s.dat.cw</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/format/n.html">seedname_n.dat.cw</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/format/convention.html">Phase conventions of real-space operators</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../../src/tutorials/tutorial01.html">CH4: Closest Wannier tight-binding model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/tutorials/tutorial02.html">Graphene: Closest Wannier tight-binding model</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">API</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../../src/api/cw.html">Closest Wannier</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/api/analyzer.html">Analyzer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/api/util.html">Utility</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+<a href="https://github.com/CMT-MU/SymClosestWannier.git" target="_blank"
+   class="btn btn-sm btn-source-repository-button"
+   title="Source repository"
+   data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+
+</a>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1></h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <h1>Source code for symclosestwannier.cw.cwin</h1><div class="highlight"><pre>
+<span></span><span class="sd">"""</span>
+<span class="sd">CWin manages input file for pw2cw, seedname.cwin file.</span>
+<span class="sd">"""</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">difflib</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">symclosestwannier.util.exceptions</span><span class="w"> </span><span class="kn">import</span> <span class="n">SymCWFileNotFoundError</span><span class="p">,</span> <span class="n">SymCWInputError</span>
+
+
+<span class="c1"># keywords given by space-separated integers, "list" or "range" ([[min_1, max_1, N1], [min_2, max_2, N2]]).</span>
+<span class="n">_mesh_keys</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">"dos_kmesh"</span><span class="p">:</span> <span class="s2">"list"</span><span class="p">,</span>
+    <span class="s2">"cohp_kmesh"</span><span class="p">:</span> <span class="s2">"list"</span><span class="p">,</span>
+    <span class="s2">"lindhard_kmesh"</span><span class="p">:</span> <span class="s2">"list"</span><span class="p">,</span>
+    <span class="s2">"fermi_surface_kmesh"</span><span class="p">:</span> <span class="s2">"range"</span><span class="p">,</span>
+    <span class="s2">"fermi_surface_view"</span><span class="p">:</span> <span class="s2">"list"</span><span class="p">,</span>
+    <span class="s2">"lindhard_surface_qmesh"</span><span class="p">:</span> <span class="s2">"range"</span><span class="p">,</span>
+    <span class="s2">"lindhard_surface_view"</span><span class="p">:</span> <span class="s2">"list"</span><span class="p">,</span>
+<span class="p">}</span>
+
+
+<span class="n">_default</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">"seedname"</span><span class="p">:</span> <span class="s2">"cwannier"</span><span class="p">,</span>
+    <span class="s2">"outdir"</span><span class="p">:</span> <span class="s2">"./"</span><span class="p">,</span>
+    <span class="s2">"restart"</span><span class="p">:</span> <span class="s2">"cw"</span><span class="p">,</span>
+    <span class="c1">#</span>
+    <span class="s2">"disentangle"</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="s2">"proj_min"</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+    <span class="s2">"cwf_mu_max"</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="s2">"cwf_mu_min"</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="s2">"cwf_sigma_max"</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">,</span>
+    <span class="s2">"cwf_sigma_min"</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+    <span class="s2">"cwf_delta"</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+    <span class="s2">"svd"</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="c1">#</span>
+    <span class="s2">"verbose"</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="s2">"parallel"</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="s2">"formatter"</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="c1">#</span>
+    <span class="s2">"calc_spreads"</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="c1">#</span>
+    <span class="s2">"transl_inv"</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="s2">"use_degen_pert"</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="s2">"degen_thr"</span><span class="p">:</span> <span class="mf">1e-4</span><span class="p">,</span>
+    <span class="s2">"tb_gauge"</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="s2">"tb_position"</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="c1">#</span>
+    <span class="s2">"write_info_data"</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="s2">"write_hr"</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="s2">"write_sr"</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="s2">"write_u_matrices"</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="s2">"write_rmn"</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="s2">"write_vmn"</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="s2">"write_tb"</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="s2">"write_eig"</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="s2">"write_amn"</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="s2">"write_windowed_amn"</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="s2">"write_mmn"</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="s2">"write_spn"</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="c1"># symmetrization</span>
+    <span class="s2">"symmetrization"</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="s2">"mp_outdir"</span><span class="p">:</span> <span class="s2">"./"</span><span class="p">,</span>
+    <span class="s2">"mp_seedname"</span><span class="p">:</span> <span class="s2">"default"</span><span class="p">,</span>
+    <span class="s2">"ket_amn"</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="s2">"irreps"</span><span class="p">:</span> <span class="s2">"all"</span><span class="p">,</span>
+    <span class="c1"># band</span>
+    <span class="s2">"a"</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="s2">"N1"</span><span class="p">:</span> <span class="mi">50</span><span class="p">,</span>
+    <span class="s2">"calc_spin_2d"</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="c1"># dos</span>
+    <span class="s2">"calc_dos"</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="s2">"dos_kmesh"</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
+    <span class="s2">"dos_num_fermi"</span><span class="p">:</span> <span class="mi">50</span><span class="p">,</span>
+    <span class="s2">"dos_smr_en_width"</span><span class="p">:</span> <span class="mf">0.001</span><span class="p">,</span>
+    <span class="s2">"dos_emax"</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="s2">"dos_emin"</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="c1"># cohp</span>
+    <span class="s2">"calc_cohp"</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="s2">"cohp_kmesh"</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
+    <span class="s2">"cohp_bond_length_max"</span><span class="p">:</span> <span class="mi">6</span><span class="p">,</span>
+    <span class="s2">"cohp_bond_length_min"</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="s2">"cohp_head_atom"</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="s2">"cohp_tail_atom"</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="s2">"cohp_head_atom_idx"</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="s2">"cohp_tail_atom_idx"</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="s2">"cohp_num_fermi"</span><span class="p">:</span> <span class="mi">50</span><span class="p">,</span>
+    <span class="s2">"cohp_smr_en_width"</span><span class="p">:</span> <span class="mf">0.001</span><span class="p">,</span>
+    <span class="s2">"cohp_emax"</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="s2">"cohp_emin"</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="s2">"calc_cohp_samb_decomp"</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="c1"># zeeman interaction</span>
+    <span class="s2">"zeeman_interaction"</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="s2">"magnetic_field"</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+    <span class="s2">"magnetic_field_theta"</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+    <span class="s2">"magnetic_field_phi"</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+    <span class="s2">"g_factor"</span><span class="p">:</span> <span class="mf">2.0</span><span class="p">,</span>
+    <span class="c1"># fermi surface</span>
+    <span class="s2">"fermi_surface"</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="s2">"fermi_surface_kmesh"</span><span class="p">:</span> <span class="p">[[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">]],</span>
+    <span class="s2">"fermi_surface_view"</span><span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
+    <span class="s2">"fermi_surface_const"</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+    <span class="c1"># lindhard</span>
+    <span class="s2">"lindhard"</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="s2">"lindhard_freq"</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+    <span class="s2">"lindhard_smr_fixed_en_width"</span><span class="p">:</span> <span class="mf">0.01</span><span class="p">,</span>
+    <span class="s2">"lindhard_kmesh"</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
+    <span class="s2">"qpoint"</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="s2">"qpoint_path"</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="s2">"Nq1"</span><span class="p">:</span> <span class="mi">30</span><span class="p">,</span>
+    <span class="s2">"filling"</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="s2">"temperature"</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+    <span class="c1"># lindhard (surface)</span>
+    <span class="s2">"lindhard_surface"</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="s2">"lindhard_surface_qmesh"</span><span class="p">:</span> <span class="p">[[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">]],</span>
+    <span class="s2">"lindhard_surface_view"</span><span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
+    <span class="s2">"lindhard_surface_const"</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+    <span class="c1"># postcw</span>
+    <span class="s2">"hr_input"</span><span class="p">:</span> <span class="s2">""</span><span class="p">,</span>
+    <span class="s2">"use_tb_approximation"</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+<span class="p">}</span>
+
+
+<span class="c1"># ==================================================</span>
+<div class="viewcode-block" id="CWin">
+<a class="viewcode-back" href="../../../src/api/cw.html#symclosestwannier.cw.cwin.CWin">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">CWin</span><span class="p">(</span><span class="nb">dict</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""</span>
+<span class="sd">    CWin manages input file for pw2cw, seedname.cwin file.</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">        _topdir (str): top directory.</span>
+<span class="sd">        _seedname (str): seedname.</span>
+<span class="sd">    """</span>
+
+    <span class="c1"># ==================================================</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">topdir</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">seedname</span><span class="o">=</span><span class="s2">"cwannier"</span><span class="p">,</span> <span class="n">dic</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""</span>
+<span class="sd">        CWin manages input file for pw2cw, seedname.cwin file.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            topdir (str, optional): directory of seedname.cwin file.</span>
+<span class="sd">            seedname (str, optional): seedname.</span>
+<span class="sd">            dic (dict, optional): dictionary of CWin.</span>
+<span class="sd">        """</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_topdir</span> <span class="o">=</span> <span class="n">topdir</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_seedname</span> <span class="o">=</span> <span class="n">seedname</span>
+
+        <span class="k">if</span> <span class="n">dic</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">file_name</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">topdir</span><span class="p">,</span> <span class="s2">"</span><span class="si">{}</span><span class="s2">.</span><span class="si">{}</span><span class="s2">"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">seedname</span><span class="p">,</span> <span class="s2">"cwin"</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">file_name</span><span class="p">))</span>
+            <span class="bp">self</span><span class="p">[</span><span class="s2">"seedname"</span><span class="p">]</span> <span class="o">=</span> <span class="n">seedname</span>
+
+            <span class="c1"># output directories are relative to the directory of seedname.cwin.</span>
+            <span class="bp">self</span><span class="p">[</span><span class="s2">"cwin_dir"</span><span class="p">]</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">topdir</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">"outdir"</span><span class="p">,</span> <span class="s2">"mp_outdir"</span><span class="p">):</span>
+                <span class="bp">self</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">normpath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="p">[</span><span class="s2">"cwin_dir"</span><span class="p">],</span> <span class="bp">self</span><span class="p">[</span><span class="n">key</span><span class="p">]))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">dic</span><span class="p">)</span>
+
+    <span class="c1"># ==================================================</span>
+<div class="viewcode-block" id="CWin.read">
+<a class="viewcode-back" href="../../../src/api/cw.html#symclosestwannier.cw.cwin.CWin.read">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">read</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_name</span><span class="o">=</span><span class="s2">"cwannier.cwin"</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""</span>
+<span class="sd">        read seedname.cwin file.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            file_name (str, optional): file name.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            dict: dictionary form of seedname.cwin.</span>
+<span class="sd">                - seedname          : seedname (str), ["cwannier"].</span>
+<span class="sd">                - outdir            : output files are written to this directory, relative to the directory of seedname.cwin (str), ["./"].</span>
+<span class="sd">                - restart           : the restart position 'cw'/'w90' (str), ["cw"].</span>
+<span class="sd">                - disentangle       : disentagle bands ? (bool), [False].</span>
+<span class="sd">                - proj_min          : minimum value of projectability: [0.0].</span>
+<span class="sd">                - cwf_mu_max      : top of the energy window (float), [None].</span>
+<span class="sd">                - cwf_mu_min      : bottom of the energy window (float), [None].</span>
+<span class="sd">                - cwf_sigma_max : smearing temperature for the top of the energy window (float), [1.0].</span>
+<span class="sd">                - cwf_sigma_min : smearing temperature for the bottom of the energy window (float), [0.0].</span>
+<span class="sd">                - cwf_delta             : small constant to avoid ill-conditioning of overlap matrices (&lt; 1e-5) (float), [0.0].</span>
+<span class="sd">                - svd               : implement singular value decomposition ? otherwise adopt Lowdin's orthogonalization method (bool), [False].</span>
+<span class="sd">                - verbose           : verbose calculation info (bool, optional), [False].</span>
+<span class="sd">                - parallel          : use parallel code? (bool), [False].</span>
+<span class="sd">                - formatter         : format by using black? (bool), [False].</span>
+<span class="sd">                - calc_spreads      : calculate spreads? (bool), [False].</span>
+<span class="sd">                - transl_inv        : use Eq.(31) of Marzari&amp;Vanderbilt PRB 56, 12847 (1997) for band-diagonal position matrix elements? (bool), [False].</span>
+<span class="sd">                - use_degen_pert    : use degenerate perturbation theory when bands are degenerate and band derivatives are needed? (bool), [False].</span>
+<span class="sd">                - degen_thr         : threshold to exclude degenerate bands from the calculation, [0.0001].</span>
+<span class="sd">                - tb_gauge          : use tb gauge? (bool), [False].</span>
+<span class="sd">                - tb_position       : approximate the position operator of seedname_r.dat and seedname_tb.dat by the projection centres, r_ab(R) = tau_a delta_ab delta_R0 (seedname.mmn is then not needed) ? (bool), [False].</span>
+<span class="sd">                - write_info_data   : write info and data to seedname.hdf5 (hdf5 format) ? (bool), [False].</span>
+<span class="sd">                - write_hr          : write seedname_hr.py ? (bool), [False].</span>
+<span class="sd">                - write_sr          : write seedname_sr.py ? (bool), [False].</span>
+<span class="sd">                - write_u_matrices  : write seedname_u.dat and seedname_u_dis.dat ? (bool), [False].</span>
+<span class="sd">                - write_rmn         : write seedname_r.dat (needs seedname.mmn unless tb_position = true) ? (bool), [False].</span>
+<span class="sd">                - write_vmn         : write seedname_v.dat ? (bool), [False].</span>
+<span class="sd">                - write_tb          : write seedname_tb.dat (wannier90 format, needs seedname.mmn unless tb_position = true, not with tb_gauge = true) ? (bool), [False].</span>
+<span class="sd">                - write_eig         : write seedname.eig.cw ? (bool), [False].</span>
+<span class="sd">                - write_amn         : same as write_windowed_amn, kept for compatibility ? (bool), [False].</span>
+<span class="sd">                - write_windowed_amn : write seedname.amn.cw, the projections w(e_mk) &lt;psi_mk|g_n&gt; with the window function w (w = 1 without disentangle) and proj_min applied, not orthogonalized (with restart = w90, the input projections) ? (bool), [False].</span>
+<span class="sd">                - write_mmn         : write seedname.mmn.cw ? (bool), [False].</span>
+<span class="sd">                - write_spn         : write seedname.spn.cw ? (bool), [False].</span>
+
+<span class="sd">            # only used for symmetrization.</span>
+<span class="sd">                - symmetrization    : symmetrize ? (bool), [False].</span>
+<span class="sd">                - mp_outdir         : output files for multipie are written to this directory, relative to the directory of seedname.cwin (str). ["./"].</span>
+<span class="sd">                - mp_seedname       : seedname for seedname_model.py, seedname_samb.py and seedname_matrix.py files (str), ["default"].</span>
+<span class="sd">                - ket_amn           : ket basis list in the seedname.amn file. If ket_amn == auto, the list of orbitals are set automatically, or it can be set manually. The format of each ket must be same as the "ket" in sambname_model.py file. See sambname["info"]["ket"] in sambname_model.py file for the format (list), [None].</span>
+<span class="sd">                - irreps            : list of irreps to be considered (str/list), ["all"].</span>
+
+<span class="sd">            # only used for band dispersion calculation.</span>
+<span class="sd">                - a                 : lattice parameter (in Ang) used to correct units of k points in reference band data, [None].</span>
+<span class="sd">                - N1                : number of divisions for high symmetry lines (int, optional), [50].</span>
+<span class="sd">                - calc_spin_2d      : add expectation value of spin operator given by *.spn in output file ? (bool). [False].</span>
+
+<span class="sd">            # only used for dos calculation.</span>
+<span class="sd">                - calc_dos          : calculate dos? (bool), [False].</span>
+<span class="sd">                - dos_kmesh         : dimensions of the Monkhorst-Pack grid of k-points for dos calculation (list), [[1, 1, 1]].</span>
+<span class="sd">                - dos_num_fermi     : number of fermi energies (int), [50].</span>
+<span class="sd">                - dos_smr_en_width  : Energy width for the smearing function for the DOS (The units are [eV]) (flaot), [0.001].</span>
+<span class="sd">                - dos_emax          : maximun energy to be calculated (flaot), [None].</span>
+<span class="sd">                - dos_emin          : minimum energy to be calculated (flaot), [None].</span>
+
+<span class="sd">            # only used for cohp calculation.</span>
+<span class="sd">                - calc_cohp             : calculate cohp? (bool), [False].</span>
+<span class="sd">                - cohp_kmesh            : dimensions of the Monkhorst-Pack grid of k-points for cohp calculation (list), [[1, 1, 1]].</span>
+<span class="sd">                - cohp_bond_length_max  : maximum bond length (ang) to be calculated (float), [6.0].</span>
+<span class="sd">                - cohp_bond_length_min  : minimum bond length (ang) to be calculated (float), [0.0].</span>
+<span class="sd">                - cohp_head_atom        : head atom to be calculated (float), [None].</span>
+<span class="sd">                - cohp_tail_atom        : tail atom to be calculated (float), [None].</span>
+<span class="sd">                - cohp_head_atom_idx    : head atom index to be calculated (float), [None].</span>
+<span class="sd">                - cohp_tail_atom_idx    : tail atom index to be calculated (float), [None].</span>
+<span class="sd">                - cohp_num_fermi        : number of fermi energies (int), [50].</span>
+<span class="sd">                - cohp_smr_en_width     : Energy width for the smearing function for the COHP (The units are [eV]) (flaot), [0.001].</span>
+<span class="sd">                - cohp_emax             : maximun energy to be calculated (flaot), [None].</span>
+<span class="sd">                - cohp_emin             : minimum energy to be calculated (flaot), [None].</span>
+<span class="sd">                - calc_cohp_samb_decomp : decompose cohp by SAMBs? (bool), [False].</span>
+
+<span class="sd">            # only used for when zeeman interaction is considered.</span>
+<span class="sd">                - zeeman_interaction   : consider zeeman interaction ? (bool), [False].</span>
+<span class="sd">                - magnetic_field       : strength of the magnetic field (float), [0.0].</span>
+<span class="sd">                - magnetic_field_theta : angle from the z-axis of the magnetic field (float), [0.0].</span>
+<span class="sd">                - magnetic_field_phi   : angle from the x-axis of the magnetic field (float), [0.0].</span>
+<span class="sd">                - g_factor             : spin g factor (float), [2.0].</span>
+
+<span class="sd">            # only used for fermi surface calculation.</span>
+<span class="sd">                - fermi_surface        : calculate fermi surface? (bool), [False].</span>
+<span class="sd">                - fermi_surface_kmesh  : 2d kmesh given by [[k1_min, k1_max, N1], [k2_min, k2_max, N2] ] (crystal coordinate), (list), [ [[-1, 1, 10], [-1, 1, 10]] ].</span>
+<span class="sd">                - fermi_surface_view   : k3 direction (list), [ [0, 0, 1] ].</span>
+<span class="sd">                - fermi_surface_const  : constant value for k3 axis [0.0].</span>
+
+<span class="sd">            # only used for lindhard function.</span>
+<span class="sd">                - lindhard                    : calculate lindhard function? (bool), [False].</span>
+<span class="sd">                - lindhard_freq               : frequency for computing the lindhard function. (The units are [eV]) (float), [0.0].</span>
+<span class="sd">                - lindhard_smr_fixed_en_width : Overrides the smr_fixed_en_width global variable (float), [0.01].</span>
+<span class="sd">                - lindhard_kmesh              : dimensions of the Monkhorst-Pack grid of k-points for lindhard function (list), [[1, 1, 1]].</span>
+<span class="sd">                - lindhard_surface            : calculate lindhard function on a 2d q-plane? (bool), [False].</span>
+<span class="sd">                - lindhard_surface_qmesh      : 2d qmesh given by [[q1_min, q1_max, N1], [q2_min, q2_max, N2] ] (crystal coordinate), (list), [ [[-1, 1, 10], [-1, 1, 10]] ].</span>
+<span class="sd">                - lindhard_surface_view       : q3 direction (list), [ [0, 0, 1] ].</span>
+<span class="sd">                - lindhard_surface_const      : constant value for q3 axis [0.0].</span>
+<span class="sd">                - qpoint                      : representative q points (dict), [None].</span>
+<span class="sd">                - qpoint_path                 : q-points along high symmetry line in Brillouin zone, [[k1, k2, k3]] (crystal coordinate) (str), [None].</span>
+<span class="sd">                - Nq1                         : number of divisions for high symmetry lines (int, optional), [30].</span>
+<span class="sd">                - filling                     : number of electrons per unit-cell, [None].</span>
+<span class="sd">                - temperature                 : temperature for caluclating lindhard function (float), [0.0].</span>
+
+<span class="sd">            # only used for postcw calculation.</span>
+<span class="sd">                - hr_input             : full filename of hr.dat file (str), [""].</span>
+<span class="sd">                - use_tb_approximation : use tight-binding approximation? (bool), [False].</span>
+
+<span class="sd">        """</span>
+        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">file_name</span><span class="p">):</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">file_name</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
+                <span class="n">cwin_data</span> <span class="o">=</span> <span class="n">fp</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">SymCWFileNotFoundError</span><span class="p">(</span><span class="s2">"cwin"</span><span class="p">,</span> <span class="n">file_name</span><span class="p">)</span>
+
+        <span class="n">cwin_data</span> <span class="o">=</span> <span class="p">[</span><span class="n">v</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="p">,</span> <span class="s2">""</span><span class="p">)</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">cwin_data</span><span class="p">]</span>
+        <span class="n">cwin_data_lower</span> <span class="o">=</span> <span class="p">[</span><span class="n">v</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="p">,</span> <span class="s2">""</span><span class="p">)</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">cwin_data</span><span class="p">]</span>
+
+        <span class="c1"># default</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="n">CWin</span><span class="o">.</span><span class="n">_default</span><span class="p">()</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">cwin_data</span><span class="p">:</span>
+            <span class="n">line</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="p">,</span> <span class="s2">""</span><span class="p">)</span>
+            <span class="n">line</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">lstrip</span><span class="p">()</span>
+
+            <span class="k">if</span> <span class="nb">len</span><span class="p">([</span><span class="n">vi</span> <span class="k">for</span> <span class="n">vi</span> <span class="ow">in</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">" "</span><span class="p">)</span> <span class="k">if</span> <span class="n">vi</span> <span class="o">!=</span> <span class="s2">""</span><span class="p">])</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">continue</span>
+
+            <span class="k">if</span> <span class="s2">"begin qpoint_path"</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">q_data</span> <span class="o">=</span> <span class="n">cwin_data</span><span class="p">[</span>
+                        <span class="n">cwin_data_lower</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">"begin qpoint_path"</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span> <span class="p">:</span> <span class="n">cwin_data_lower</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">"end qpoint_path"</span><span class="p">)</span>
+                    <span class="p">]</span>
+                    <span class="n">q_data</span> <span class="o">=</span> <span class="p">[[</span><span class="n">vi</span> <span class="k">for</span> <span class="n">vi</span> <span class="ow">in</span> <span class="n">v</span><span class="o">.</span><span class="n">split</span><span class="p">()]</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">q_data</span><span class="p">]</span>
+                    <span class="n">qpoint</span> <span class="o">=</span> <span class="p">{}</span>
+                    <span class="n">qpoint_path</span> <span class="o">=</span> <span class="s2">""</span>
+                    <span class="n">cnt</span> <span class="o">=</span> <span class="mi">1</span>
+                    <span class="k">for</span> <span class="n">X</span><span class="p">,</span> <span class="n">qi1</span><span class="p">,</span> <span class="n">qi2</span><span class="p">,</span> <span class="n">qi3</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">qf1</span><span class="p">,</span> <span class="n">qf2</span><span class="p">,</span> <span class="n">qf3</span> <span class="ow">in</span> <span class="n">q_data</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="n">cnt</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                            <span class="n">qpoint_path</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">X</span><span class="si">}</span><span class="s2">-</span><span class="si">{</span><span class="n">Y</span><span class="si">}</span><span class="s2">-"</span>
+                        <span class="k">else</span><span class="p">:</span>
+                            <span class="k">if</span> <span class="n">qpoint_path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"-"</span><span class="p">)[</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="n">X</span><span class="p">:</span>
+                                <span class="n">qpoint_path</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">Y</span><span class="si">}</span><span class="s2">-"</span>
+                            <span class="k">else</span><span class="p">:</span>
+                                <span class="n">qpoint_path</span> <span class="o">=</span> <span class="n">qpoint_path</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+                                <span class="n">qpoint_path</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">"|</span><span class="si">{</span><span class="n">X</span><span class="si">}</span><span class="s2">-</span><span class="si">{</span><span class="n">Y</span><span class="si">}</span><span class="s2">-"</span>
+                        <span class="k">if</span> <span class="n">X</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">qpoint</span><span class="p">:</span>
+                            <span class="n">qpoint</span><span class="p">[</span><span class="n">X</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">qi1</span><span class="p">),</span> <span class="nb">float</span><span class="p">(</span><span class="n">qi2</span><span class="p">),</span> <span class="nb">float</span><span class="p">(</span><span class="n">qi3</span><span class="p">)]</span>
+                        <span class="k">if</span> <span class="n">Y</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">qpoint</span><span class="p">:</span>
+                            <span class="n">qpoint</span><span class="p">[</span><span class="n">Y</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">qf1</span><span class="p">),</span> <span class="nb">float</span><span class="p">(</span><span class="n">qf2</span><span class="p">),</span> <span class="nb">float</span><span class="p">(</span><span class="n">qf3</span><span class="p">)]</span>
+
+                        <span class="n">cnt</span> <span class="o">+=</span> <span class="mi">1</span>
+
+                    <span class="n">qpoint_path</span> <span class="o">=</span> <span class="n">qpoint_path</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+                <span class="k">except</span> <span class="p">(</span><span class="ne">ValueError</span><span class="p">,</span> <span class="ne">IndexError</span><span class="p">)</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="n">SymCWInputError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">file_name</span><span class="si">}</span><span class="s2">: invalid qpoint_path block (</span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">)."</span><span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">e</span>
+
+                <span class="n">d</span><span class="p">[</span><span class="s2">"qpoint"</span><span class="p">]</span> <span class="o">=</span> <span class="n">qpoint</span>
+                <span class="n">d</span><span class="p">[</span><span class="s2">"qpoint_path"</span><span class="p">]</span> <span class="o">=</span> <span class="n">qpoint_path</span>
+                <span class="k">continue</span>
+
+            <span class="k">if</span> <span class="s2">"="</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
+                <span class="n">key</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"="</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="k">elif</span> <span class="s2">":"</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
+                <span class="n">key</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">":"</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">continue</span>
+
+            <span class="n">key</span> <span class="o">=</span> <span class="n">key</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">" "</span><span class="p">,</span> <span class="s2">""</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="s2">"!"</span> <span class="ow">in</span> <span class="n">key</span> <span class="ow">or</span> <span class="s2">"#"</span> <span class="ow">in</span> <span class="n">key</span><span class="p">:</span>
+                <span class="k">continue</span>
+
+            <span class="k">if</span> <span class="s2">"="</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
+                <span class="n">v</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"="</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"!"</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="k">elif</span> <span class="s2">":"</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
+                <span class="n">v</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">":"</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"!"</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+
+            <span class="k">try</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">_mesh_keys</span><span class="p">:</span>
+                    <span class="n">d</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">CWin</span><span class="o">.</span><span class="n">_str_to_mesh</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
+                    <span class="k">continue</span>
+
+                <span class="n">v</span> <span class="o">=</span> <span class="n">v</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">" "</span><span class="p">,</span> <span class="s2">""</span><span class="p">)</span>
+
+                <span class="k">if</span> <span class="n">key</span> <span class="o">==</span> <span class="s2">"ket_amn"</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="s2">"["</span> <span class="ow">in</span> <span class="n">v</span> <span class="ow">or</span> <span class="s2">"]"</span> <span class="ow">in</span> <span class="n">v</span><span class="p">:</span>
+                        <span class="n">v</span> <span class="o">=</span> <span class="s2">""</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+
+                <span class="k">if</span> <span class="n">key</span> <span class="o">==</span> <span class="s2">"optimize_params_fixed"</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="s2">"["</span> <span class="ow">in</span> <span class="n">v</span> <span class="ow">or</span> <span class="s2">"]"</span> <span class="ow">in</span> <span class="n">v</span><span class="p">:</span>
+                        <span class="n">v</span> <span class="o">=</span> <span class="s2">""</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+
+                <span class="n">d</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_str_to</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
+            <span class="k">except</span> <span class="n">SymCWInputError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">SymCWInputError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">file_name</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">e</span>
+            <span class="k">except</span> <span class="p">(</span><span class="ne">ValueError</span><span class="p">,</span> <span class="ne">IndexError</span><span class="p">)</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">SymCWInputError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">file_name</span><span class="si">}</span><span class="s2">: invalid value </span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2"> = </span><span class="si">{</span><span class="n">v</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="si">}</span><span class="s2"> (</span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">)."</span><span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">e</span>
+
+        <span class="k">if</span> <span class="n">d</span><span class="p">[</span><span class="s2">"disentangle"</span><span class="p">]</span> <span class="ow">and</span> <span class="p">(</span><span class="n">d</span><span class="p">[</span><span class="s2">"cwf_mu_max"</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">d</span><span class="p">[</span><span class="s2">"cwf_mu_min"</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="n">SymCWInputError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">file_name</span><span class="si">}</span><span class="s2">: cwf_mu_max and cwf_mu_min must be specified when disentangle = true."</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">d</span><span class="p">[</span><span class="s2">"cwf_mu_max"</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">d</span><span class="p">[</span><span class="s2">"cwf_mu_min"</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">d</span><span class="p">[</span><span class="s2">"cwf_mu_max"</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">d</span><span class="p">[</span><span class="s2">"cwf_mu_min"</span><span class="p">]:</span>
+                <span class="k">raise</span> <span class="n">SymCWInputError</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">file_name</span><span class="si">}</span><span class="s2">: check disentanglement windows, cwf_mu_max = </span><span class="si">{</span><span class="n">d</span><span class="p">[</span><span class="s1">'cwf_mu_max'</span><span class="p">]</span><span class="si">}</span><span class="s2"> &lt; cwf_mu_min = </span><span class="si">{</span><span class="n">d</span><span class="p">[</span><span class="s1">'cwf_mu_min'</span><span class="p">]</span><span class="si">}</span><span class="s2">."</span>
+                <span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">d</span><span class="p">[</span><span class="s2">"write_tb"</span><span class="p">]</span> <span class="ow">and</span> <span class="n">d</span><span class="p">[</span><span class="s2">"tb_gauge"</span><span class="p">]:</span>
+            <span class="k">raise</span> <span class="n">SymCWInputError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">file_name</span><span class="si">}</span><span class="s2">: write_tb = true cannot be used with tb_gauge = true."</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">d</span></div>
+
+
+    <span class="c1"># ==================================================</span>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_str_to_mesh</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""</span>
+<span class="sd">        convert space-separated integers of mesh/view keywords.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            key (str): keyword in _mesh_keys.</span>
+<span class="sd">            v (str): value, e.g. "1 1 1" or "-1 1 10 -1 1 10".</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            list: [n1, n2, ...] or [[min_1, max_1, N1], [min_2, max_2, N2]].</span>
+<span class="sd">        """</span>
+        <span class="n">v</span> <span class="o">=</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">v</span><span class="o">.</span><span class="n">split</span><span class="p">()</span> <span class="k">if</span> <span class="n">x</span> <span class="o">!=</span> <span class="s2">""</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">_mesh_keys</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"range"</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">6</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">SymCWInputError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2"> needs 6 integers, min_1 max_1 N1 min_2 max_2 N2."</span><span class="p">)</span>
+            <span class="n">v</span> <span class="o">=</span> <span class="p">[</span><span class="n">v</span><span class="p">[:</span><span class="mi">3</span><span class="p">],</span> <span class="n">v</span><span class="p">[</span><span class="mi">3</span><span class="p">:]]</span>
+
+        <span class="k">return</span> <span class="n">v</span>
+
+    <span class="c1"># ==================================================</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_str_to</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
+        <span class="n">v</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">v</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">"'"</span><span class="p">,</span> <span class="s2">""</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">'"'</span><span class="p">,</span> <span class="s2">""</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">CWin</span><span class="o">.</span><span class="n">_default</span><span class="p">()</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="kn">from</span><span class="w"> </span><span class="nn">symclosestwannier.cw.win</span><span class="w"> </span><span class="kn">import</span> <span class="n">Win</span>
+
+            <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"invalid keyword = </span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2"> was given."</span>
+            <span class="n">close</span> <span class="o">=</span> <span class="n">difflib</span><span class="o">.</span><span class="n">get_close_matches</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">CWin</span><span class="o">.</span><span class="n">_default</span><span class="p">()</span><span class="o">.</span><span class="n">keys</span><span class="p">(),</span> <span class="n">n</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">Win</span><span class="o">.</span><span class="n">_default</span><span class="p">()</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                <span class="n">msg</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">" </span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2"> must be given in seedname.win."</span>
+            <span class="k">elif</span> <span class="n">close</span><span class="p">:</span>
+                <span class="n">msg</span> <span class="o">+=</span> <span class="s2">" did you mean "</span> <span class="o">+</span> <span class="s2">"/"</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="sa">f</span><span class="s2">"'</span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2">'"</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">close</span><span class="p">)</span> <span class="o">+</span> <span class="s2">"?"</span>
+            <span class="n">msg</span> <span class="o">+=</span> <span class="s2">" run 'pw2cw -i' to list the keywords."</span>
+            <span class="k">raise</span> <span class="n">SymCWInputError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">key</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">"seedname"</span><span class="p">,</span> <span class="s2">"mp_seedname"</span><span class="p">,</span> <span class="s2">"hr_input"</span><span class="p">,</span> <span class="s2">"lindhard_smr_type"</span><span class="p">,</span> <span class="s2">"cohp_head_atom"</span><span class="p">,</span> <span class="s2">"cohp_tail_atom"</span><span class="p">):</span>
+            <span class="k">pass</span>
+        <span class="k">elif</span> <span class="n">key</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">"outdir"</span><span class="p">,</span> <span class="s2">"mp_outdir"</span><span class="p">):</span>
+            <span class="n">v</span> <span class="o">=</span> <span class="n">v</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="k">if</span> <span class="n">v</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"/"</span> <span class="k">else</span> <span class="n">v</span>
+        <span class="k">elif</span> <span class="n">key</span> <span class="o">==</span> <span class="s2">"restart"</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">v</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">"cw"</span><span class="p">,</span> <span class="s2">"w90"</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="n">SymCWInputError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"invalid restart = </span><span class="si">{</span><span class="n">v</span><span class="si">}</span><span class="s2"> was given. choose from 'cw'/'w90'."</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">key</span> <span class="ow">in</span> <span class="p">(</span>
+            <span class="s2">"proj_min"</span><span class="p">,</span>
+            <span class="s2">"cwf_mu_max"</span><span class="p">,</span>
+            <span class="s2">"cwf_mu_min"</span><span class="p">,</span>
+            <span class="s2">"cwf_sigma_max"</span><span class="p">,</span>
+            <span class="s2">"cwf_sigma_min"</span><span class="p">,</span>
+            <span class="s2">"cwf_delta"</span><span class="p">,</span>
+            <span class="s2">"a"</span><span class="p">,</span>
+            <span class="s2">"dos_smr_en_width"</span><span class="p">,</span>
+            <span class="s2">"dos_emax"</span><span class="p">,</span>
+            <span class="s2">"dos_emin"</span><span class="p">,</span>
+            <span class="s2">"cohp_bond_length_max"</span><span class="p">,</span>
+            <span class="s2">"cohp_bond_length_min"</span><span class="p">,</span>
+            <span class="s2">"cohp_smr_en_width"</span><span class="p">,</span>
+            <span class="s2">"cohp_emax"</span><span class="p">,</span>
+            <span class="s2">"cohp_emin"</span><span class="p">,</span>
+            <span class="s2">"degen_thr"</span><span class="p">,</span>
+            <span class="s2">"fermi_surface_const"</span><span class="p">,</span>
+            <span class="s2">"magnetic_field"</span><span class="p">,</span>
+            <span class="s2">"magnetic_field_theta"</span><span class="p">,</span>
+            <span class="s2">"magnetic_field_phi"</span><span class="p">,</span>
+            <span class="s2">"g_factor"</span><span class="p">,</span>
+            <span class="s2">"lindhard_freq"</span><span class="p">,</span>
+            <span class="s2">"lindhard_smr_fixed_en_width"</span><span class="p">,</span>
+            <span class="s2">"filling"</span><span class="p">,</span>
+            <span class="s2">"temperature"</span><span class="p">,</span>
+            <span class="s2">"lindhard_surface_const"</span><span class="p">,</span>
+        <span class="p">):</span>
+            <span class="n">v</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">key</span> <span class="o">==</span> <span class="s2">"cwf_delta"</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">v</span> <span class="o">&gt;</span> <span class="mf">1e-5</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="n">SymCWInputError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"cwf_delta is too large. cwf_delta must be less than 1e-5."</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">key</span> <span class="o">==</span> <span class="s2">"lindhard_smr_fixed_en_width"</span><span class="p">:</span>
+                <span class="k">pass</span>
+                <span class="c1"># if v == 0.0:</span>
+                <span class="c1">#     raise Exception(f"lindhard_smr_fixed_en_width must be &gt; 0.0.")</span>
+            <span class="k">elif</span> <span class="n">key</span> <span class="o">==</span> <span class="s2">"temperature"</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">v</span> <span class="o">&lt;</span> <span class="mf">0.0</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="n">SymCWInputError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"temperature must be positive value."</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">key</span> <span class="o">==</span> <span class="s2">"filling"</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">v</span> <span class="o">&lt;</span> <span class="mf">0.0</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="n">SymCWInputError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"filling must be positive value."</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">key</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">"N1"</span><span class="p">,</span> <span class="s2">"Nq1"</span><span class="p">,</span> <span class="s2">"dos_num_fermi"</span><span class="p">,</span> <span class="s2">"cohp_head_atom_idx"</span><span class="p">,</span> <span class="s2">"cohp_tail_atom_idx"</span><span class="p">,</span> <span class="s2">"cohp_num_fermi"</span><span class="p">):</span>
+            <span class="n">v</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">key</span> <span class="o">==</span> <span class="s2">"ket_amn"</span><span class="p">:</span>
+            <span class="n">v</span> <span class="o">=</span> <span class="n">v</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">" "</span><span class="p">,</span> <span class="s2">""</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">v</span> <span class="o">==</span> <span class="s2">"auto"</span><span class="p">:</span>
+                <span class="k">pass</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">raw</span> <span class="o">=</span> <span class="n">v</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="s2">"("</span> <span class="ow">in</span> <span class="n">v</span> <span class="ow">or</span> <span class="s2">")"</span> <span class="ow">in</span> <span class="n">v</span><span class="p">:</span>
+                        <span class="n">v</span> <span class="o">=</span> <span class="p">[[</span><span class="n">oi</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">"]"</span><span class="p">,</span> <span class="s2">""</span><span class="p">)</span> <span class="k">for</span> <span class="n">oi</span> <span class="ow">in</span> <span class="n">o</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">","</span><span class="p">)]</span> <span class="k">for</span> <span class="n">o</span> <span class="ow">in</span> <span class="n">v</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"],"</span><span class="p">)]</span>
+                        <span class="n">v</span> <span class="o">=</span> <span class="p">[[</span><span class="nb">str</span><span class="p">(</span><span class="n">o</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="nb">int</span><span class="p">(</span><span class="n">o</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="nb">int</span><span class="p">(</span><span class="n">o</span><span class="p">[</span><span class="mi">2</span><span class="p">]),</span> <span class="nb">str</span><span class="p">(</span><span class="n">o</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">+</span> <span class="s2">","</span> <span class="o">+</span> <span class="n">o</span><span class="p">[</span><span class="mi">4</span><span class="p">])]</span> <span class="k">for</span> <span class="n">o</span> <span class="ow">in</span> <span class="n">v</span><span class="p">]</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">v</span> <span class="o">=</span> <span class="p">[[</span><span class="n">oi</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">"]"</span><span class="p">,</span> <span class="s2">""</span><span class="p">)</span> <span class="k">for</span> <span class="n">oi</span> <span class="ow">in</span> <span class="n">o</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">","</span><span class="p">)]</span> <span class="k">for</span> <span class="n">o</span> <span class="ow">in</span> <span class="n">v</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"],"</span><span class="p">)]</span>
+                        <span class="n">v</span> <span class="o">=</span> <span class="p">[[</span><span class="nb">str</span><span class="p">(</span><span class="n">o</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="nb">int</span><span class="p">(</span><span class="n">o</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="nb">int</span><span class="p">(</span><span class="n">o</span><span class="p">[</span><span class="mi">2</span><span class="p">]),</span> <span class="nb">str</span><span class="p">(</span><span class="n">o</span><span class="p">[</span><span class="mi">3</span><span class="p">])]</span> <span class="k">for</span> <span class="n">o</span> <span class="ow">in</span> <span class="n">v</span><span class="p">]</span>
+                <span class="k">except</span> <span class="p">(</span><span class="ne">ValueError</span><span class="p">,</span> <span class="ne">IndexError</span><span class="p">):</span>
+                    <span class="k">raise</span> <span class="n">SymCWInputError</span><span class="p">(</span>
+                        <span class="sa">f</span><span class="s2">"invalid ket_amn = </span><span class="si">{</span><span class="n">raw</span><span class="si">}</span><span class="s2"> was given. each ket must be [atom, sublattice, rank, orbital], "</span>
+                        <span class="s2">"e.g. [[C,1,1,pz],[C,2,1,pz]] or [[C,1,1,(pz,U)],[C,1,1,(pz,D)]] for spinful case, or use ket_amn = auto."</span>
+                    <span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="kc">None</span>
+        <span class="k">elif</span> <span class="n">key</span> <span class="o">==</span> <span class="s2">"optimize_params_fixed"</span><span class="p">:</span>
+            <span class="k">if</span> <span class="s2">"["</span> <span class="ow">in</span> <span class="n">v</span> <span class="ow">or</span> <span class="s2">"]"</span> <span class="ow">in</span> <span class="n">v</span><span class="p">:</span>
+                <span class="n">v</span> <span class="o">=</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">o</span><span class="p">)</span> <span class="k">for</span> <span class="n">o</span> <span class="ow">in</span> <span class="n">v</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">","</span><span class="p">)]</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">vi</span> <span class="ow">in</span> <span class="n">v</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">vi</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">"cwf_mu_min"</span><span class="p">,</span> <span class="s2">"cwf_mu_max"</span><span class="p">,</span> <span class="s2">"cwf_sigma_min"</span><span class="p">,</span> <span class="s2">"cwf_sigma_max"</span><span class="p">,</span> <span class="s2">"cwf_delta"</span><span class="p">):</span>
+                        <span class="k">raise</span> <span class="n">SymCWInputError</span><span class="p">(</span>
+                            <span class="sa">f</span><span class="s2">"invalid optimize_params_fixed: </span><span class="si">{</span><span class="n">vi</span><span class="si">}</span><span class="s2"> was given. choose from 'cwf_mu_min'/'cwf_mu_max'/'cwf_sigma_min'/'cwf_sigma_max'/'cwf_delta'."</span>
+                        <span class="p">)</span>
+
+        <span class="k">elif</span> <span class="n">key</span> <span class="o">==</span> <span class="s2">"irreps"</span><span class="p">:</span>
+            <span class="k">if</span> <span class="s2">"["</span> <span class="ow">in</span> <span class="n">v</span> <span class="ow">and</span> <span class="s2">"]"</span> <span class="ow">in</span> <span class="n">v</span><span class="p">:</span>
+                <span class="n">v</span> <span class="o">=</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">o</span><span class="p">)</span> <span class="k">for</span> <span class="n">o</span> <span class="ow">in</span> <span class="n">v</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">","</span><span class="p">)]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">v</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">"all"</span><span class="p">,</span> <span class="s2">"full"</span><span class="p">):</span>
+                    <span class="k">raise</span> <span class="n">SymCWInputError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"invalid irreps = </span><span class="si">{</span><span class="n">v</span><span class="si">}</span><span class="s2"> was given. choose from 'all'/'full'."</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">v</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">"true"</span><span class="p">,</span> <span class="s2">".true."</span><span class="p">):</span>
+                <span class="n">v</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="k">elif</span> <span class="n">v</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">"false"</span><span class="p">,</span> <span class="s2">".false."</span><span class="p">):</span>
+                <span class="n">v</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">SymCWInputError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"invalid </span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2"> = </span><span class="si">{</span><span class="n">v</span><span class="si">}</span><span class="s2"> was given. choose from 'true'/'.true.'/'false'/'.false.'."</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">v</span>
+
+    <span class="c1"># ==================================================</span>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_default</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">_default</span></div>
+
+</pre></div>
+
+                </article>
+              
+
+              
+              
+              
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Rikuto Oiwa
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2021-.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../../_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb"></script>
+<script defer src="../../../_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

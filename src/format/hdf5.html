@@ -1,0 +1,704 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>seedname.hdf5 [default] &#8212; SymClosestWannier</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=9c3e77be" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=34ddd5e8" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="../../_static/scripts/fontawesome.js?digest=55c26ed414f5f8a31ebb"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb" />
+
+    <script src="../../_static/documentation_options.js?v=a8e58a58"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js?v=b8b12719"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"loader": {"load": ["[tex]/physics"]}, "tex": {"packages": {"[+]": ["physics"]}, "macros": {"bm": ["\\boldsymbol{#1}", 1]}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'src/format/hdf5';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <script src="../../_static/custom.js?v=9c3a2667"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="seedname_hr.dat.cw" href="hr.html" />
+    <link rel="prev" title="seedname.cwout" href="cwout.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  
+    
+    <script src="../../_static/searchtools.js"></script>
+    <script src="../../_static/language_data.js"></script>
+    <script src="../../searchindex.js"></script>
+  
+  </head>
+  <body data-default-mode="">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../README.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">SymClosestWannier</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">MultiPie</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../multipie.html">Construction of SAMBs by using MultiPie</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Closest Wannier method</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../cw.html">Closest Wannier method</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Construction of symmetry-adapted Closest Wannier model</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../scw.html">Symmetry-adapted Closest Wannier model</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">File Format</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="cwin.html">seedname.cwin [default]</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cwout.html">seedname.cwout</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">seedname.hdf5 [default]</a></li>
+
+
+
+<li class="toctree-l1"><a class="reference internal" href="hr.html">seedname_hr.dat.cw</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sr.html">seedname_sr.dat.cw</a></li>
+<li class="toctree-l1"><a class="reference internal" href="z.html">seedname_z.dat.cw</a></li>
+<li class="toctree-l1"><a class="reference internal" href="s.html">seedname_s.dat.cw</a></li>
+<li class="toctree-l1"><a class="reference internal" href="n.html">seedname_n.dat.cw</a></li>
+<li class="toctree-l1"><a class="reference internal" href="convention.html">Phase conventions of real-space operators</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/tutorial01.html">CH4: Closest Wannier tight-binding model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/tutorial02.html">Graphene: Closest Wannier tight-binding model</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">API</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../api/cw.html">Closest Wannier</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/analyzer.html">Analyzer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/util.html">Utility</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+<a href="https://github.com/CMT-MU/SymClosestWannier.git" target="_blank"
+   class="btn btn-sm btn-source-repository-button"
+   title="Source repository"
+   data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+
+</a>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>seedname.hdf5 [default]</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">seedname.hdf5 [default]</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#info-default">info [default]</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#data-default">data [default]</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#samb-info">samb_info</a></li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="seedname-hdf5-default">
+<h1>seedname.hdf5 [default]<a class="headerlink" href="#seedname-hdf5-default" title="Link to this heading">#</a></h1>
+<ul class="simple">
+<li><p>seedname.hdf5 is written when <code class="docutils literal notranslate"><span class="pre">write_info_data</span> <span class="pre">=</span> <span class="pre">true</span></code>. It has three groups: info, data and samb_info.</p></li>
+</ul>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="info-default">
+<h1>info [default]<a class="headerlink" href="#info-default" title="Link to this heading">#</a></h1>
+<ul class="simple">
+<li><p>keywords of seedname.cwin:</p>
+<ul>
+<li><p>restart           : the restart position ‘cw’/‘w90’ (str), [“cw”].</p></li>
+<li><p>seedname          : seedname (str), [“cwannier”].</p></li>
+<li><p>outdir            : output files are written to this directory, relative to the directory of seedname.cwin (str), [“./”].</p></li>
+<li><p>disentangle       : disentangle bands ? (bool), [False].</p></li>
+<li><p>proj_min          : minimum value of projectability: [0.0].</p></li>
+<li><p>cwf_mu_max      : top of the energy window (float), [None].</p></li>
+<li><p>cwf_mu_min      : bottom of the energy window (float), [None].</p></li>
+<li><p>cwf_sigma_max : smearing temperature for the top of the energy window (float), [1.0].</p></li>
+<li><p>cwf_sigma_min : smearing temperature for the bottom of the energy window (float), [0.0].</p></li>
+<li><p>cwf_delta             : small constant to avoid ill-conditioning of overlap matrices (&lt; 1e-5) (float), [0.0].</p></li>
+<li><p>svd               : implement singular value decomposition ? otherwise adopt Lowdin’s orthogonalization method (bool), [False].</p></li>
+<li><p>verbose           : verbose calculation info (bool, optional), [False].</p></li>
+<li><p>parallel          : use parallel code? (bool), [False].</p></li>
+<li><p>formatter         : format by using black? (bool), [False].</p></li>
+<li><p>calc_spreads      : calculate spreads? (bool), [False].</p></li>
+<li><p>write_info_data   : write info and data to seedname.hdf5 (hdf5 format) ? (bool), [False].</p></li>
+<li><p>transl_inv        : use Eq.(31) of Marzari&amp;Vanderbilt PRB 56, 12847 (1997) for band-diagonal position matrix elements? (bool), [False].</p></li>
+<li><p>use_degen_pert    : use degenerate perturbation theory when bands are degenerate and band derivatives are needed? (bool), [False].</p></li>
+<li><p>degen_thr         : threshold to exclude degenerate bands from the calculation, [0.0001].</p></li>
+<li><p>tb_gauge          : use tb gauge? (bool), [False].</p></li>
+<li><p>tb_position       : approximate the position operator of seedname_r.dat.cw and seedname_tb.dat.cw by the projection centres, r_ab® = tau_a delta_ab delta_R0 (seedname.mmn is then not needed) ? (bool), [False].</p></li>
+<li><p>write_hr          : write seedname_hr.dat.cw, seedname_hr_R_dep.dat.cw, seedname_nr.dat.cw and seedname_nr_R_dep.dat.cw ? (bool), [False].</p></li>
+<li><p>write_sr          : write seedname_sr.dat.cw and seedname_sr_R_dep.dat.cw ? (bool), [False].</p></li>
+<li><p>write_u_matrices  : write seedname_u.mat.cw and seedname_u_dis.mat.cw (not written with restart = w90) ? (bool), [False].</p></li>
+<li><p>write_rmn         : write seedname_r.dat.cw (needs seedname.mmn unless tb_position = true) ? (bool), [False].</p></li>
+<li><p>write_vmn         : write seedname_v.dat.cw ? (bool), [False].</p></li>
+<li><p>write_tb          : write seedname_tb.dat.cw (wannier90 format, needs seedname.mmn unless tb_position = true, not with tb_gauge = true) ? (bool), [False].</p></li>
+<li><p>write_eig         : write <a class="reference external" href="http://seedname.eig.cw">seedname.eig.cw</a> ? (bool), [False].</p></li>
+<li><p>write_amn         : same as write_windowed_amn, kept for compatibility ? (bool), [False].</p></li>
+<li><p>write_windowed_amn : write <a class="reference external" href="http://seedname.amn.cw">seedname.amn.cw</a>, the projections w(e_mk) &lt;psi_mk|g_n&gt; with the window function w (w = 1 without disentangle) and proj_min applied, not orthogonalized (with restart = w90, the input projections) ? (bool), [False].</p></li>
+<li><p>write_mmn         : write <a class="reference external" href="http://seedname.mmn.cw">seedname.mmn.cw</a> ? (bool), [False].</p></li>
+<li><p>write_spn         : write the spin operator to <a class="reference external" href="http://seedname.s.cw">seedname.s.cw</a> ? (bool), [False].</p></li>
+<li><p>symmetrization    : symmetrize ? (bool), [False].</p></li>
+<li><p>mp_outdir         : output files for multipie are written to this directory, relative to the directory of seedname.cwin (str). [“./”].</p></li>
+<li><p>mp_seedname       : name of the MultiPie model (the directory and .pkl file created by mp_create) (str), [“default”].</p></li>
+<li><p>ket_amn           : ket basis list in the seedname.amn file (list), [None]. Each ket is given as [atom, sublattice, rank, orbital], e.g. <code class="docutils literal notranslate"><span class="pre">[[C,1,1,pz],[C,2,1,pz]]</span></code>, or <code class="docutils literal notranslate"><span class="pre">[[C,1,1,(pz,u)],[C,1,1,(pz,d)]]</span></code> for the spinful case. If ket_amn = auto, the list of orbitals is set automatically.</p></li>
+<li><p>irreps            : irreps of the SAMBs to be considered: “all” (all irreps), “full” (only the identity irrep) or a list of irreps (str/list), [“all”].</p></li>
+<li><p>a                 : lattice parameter (in Ang) used to correct units of k points in reference band data (float, optional), [None] (|a1| is used when None).</p></li>
+<li><p>N1                : number of divisions for high symmetry lines (int, optional), [50].</p></li>
+<li><p>calc_spin_2d      : add expectation value of spin operator given by *.spn in output file ? (bool). [False].</p></li>
+<li><p>calc_dos          : calculate dos? (bool), [False].</p></li>
+<li><p>dos_kmesh         : dimensions of the Monkhorst-Pack grid of k-points for dos calculation, given as space-separated integers, e.g. <code class="docutils literal notranslate"><span class="pre">dos_kmesh</span> <span class="pre">=</span> <span class="pre">10</span> <span class="pre">10</span> <span class="pre">10</span></code> (list), [[1, 1, 1]].</p></li>
+<li><p>dos_num_fermi     : number of fermi energies (int), [50].</p></li>
+<li><p>dos_smr_en_width  : Energy width for the smearing function for the DOS (The units are [eV]) (float), [0.001].</p></li>
+<li><p>dos_emax          : maximum energy to be calculated (float), [None].</p></li>
+<li><p>dos_emin          : minimum energy to be calculated (float), [None].</p></li>
+<li><p>calc_cohp             : calculate cohp? (bool), [False].</p></li>
+<li><p>calc_cohp_samb_decomp : decompose cohp by SAMBs? (bool), [False].</p></li>
+<li><p>cohp_bond_length_max  : maximum bond length (ang) to be calculated (float), [6.0].</p></li>
+<li><p>cohp_bond_length_min  : minimum bond length (ang) to be calculated (float), [0.0].</p></li>
+<li><p>cohp_head_atom        : head atom to be calculated (str), [None].</p></li>
+<li><p>cohp_head_atom_idx    : head atom index to be calculated (int), [None].</p></li>
+<li><p>cohp_tail_atom        : tail atom to be calculated (str), [None].</p></li>
+<li><p>cohp_tail_atom_idx    : tail atom index to be calculated (int), [None].</p></li>
+<li><p>cohp_kmesh            : dimensions of the Monkhorst-Pack grid of k-points for cohp calculation, given as space-separated integers, e.g. <code class="docutils literal notranslate"><span class="pre">cohp_kmesh</span> <span class="pre">=</span> <span class="pre">10</span> <span class="pre">10</span> <span class="pre">10</span></code> (list), [[1, 1, 1]].</p></li>
+<li><p>cohp_num_fermi        : number of fermi energies (int), [50].</p></li>
+<li><p>cohp_smr_en_width     : Energy width for the smearing function for the COHP (The units are [eV]) (float), [0.001].</p></li>
+<li><p>cohp_emax             : maximum energy to be calculated (float), [None].</p></li>
+<li><p>cohp_emin             : minimum energy to be calculated (float), [None].</p></li>
+<li><p>zeeman_interaction   : consider zeeman interaction ? (bool), [False].</p></li>
+<li><p>magnetic_field       : strength of the magnetic field (float), [0.0].</p></li>
+<li><p>magnetic_field_theta : angle from the z-axis of the magnetic field (float), [0.0].</p></li>
+<li><p>magnetic_field_phi   : angle from the x-axis of the magnetic field (float), [0.0].</p></li>
+<li><p>g_factor             : spin g factor (float), [2.0].</p></li>
+<li><p>fermi_surface        : calculate fermi surface? (bool), [False].</p></li>
+<li><p>fermi_surface_kmesh  : 2d kmesh [[k1_min, k1_max, N1], [k2_min, k2_max, N2]] (crystal coordinate), given as six space-separated integers k1_min k1_max N1 k2_min k2_max N2, e.g. <code class="docutils literal notranslate"><span class="pre">fermi_surface_kmesh</span> <span class="pre">=</span> <span class="pre">-1</span> <span class="pre">1</span> <span class="pre">10</span> <span class="pre">-1</span> <span class="pre">1</span> <span class="pre">10</span></code> (list), [ [[-1, 1, 10], [-1, 1, 10]] ].</p></li>
+<li><p>fermi_surface_view   : k3 direction, given as space-separated integers, e.g. <code class="docutils literal notranslate"><span class="pre">fermi_surface_view</span> <span class="pre">=</span> <span class="pre">0</span> <span class="pre">0</span> <span class="pre">1</span></code> (list), [ [0, 0, 1] ].</p></li>
+<li><p>fermi_surface_const  : constant value for k3 axis [0.0].</p></li>
+<li><p>lindhard                    : calculate lindhard function? (bool), [False].</p></li>
+<li><p>lindhard_freq               : frequency for computing the lindhard function. (The units are [eV]) (float), [0.0].</p></li>
+<li><p>lindhard_smr_fixed_en_width : Overrides the smr_fixed_en_width global variable (float), [0.01].</p></li>
+<li><p>lindhard_kmesh              : dimensions of the Monkhorst-Pack grid of k-points for lindhard function, given as space-separated integers, e.g. <code class="docutils literal notranslate"><span class="pre">lindhard_kmesh</span> <span class="pre">=</span> <span class="pre">10</span> <span class="pre">10</span> <span class="pre">10</span></code> (list), [[1, 1, 1]].</p></li>
+<li><p>lindhard_surface            : calculate lindhard function on a 2d q-plane? (bool), [False].</p></li>
+<li><p>lindhard_surface_qmesh      : 2d qmesh [[q1_min, q1_max, N1], [q2_min, q2_max, N2]] (crystal coordinate), given as six space-separated integers q1_min q1_max N1 q2_min q2_max N2, e.g. <code class="docutils literal notranslate"><span class="pre">lindhard_surface_qmesh</span> <span class="pre">=</span> <span class="pre">-1</span> <span class="pre">1</span> <span class="pre">10</span> <span class="pre">-1</span> <span class="pre">1</span> <span class="pre">10</span></code> (list), [ [[-1, 1, 10], [-1, 1, 10]] ].</p></li>
+<li><p>lindhard_surface_view       : q3 direction, given as space-separated integers, e.g. <code class="docutils literal notranslate"><span class="pre">lindhard_surface_view</span> <span class="pre">=</span> <span class="pre">0</span> <span class="pre">0</span> <span class="pre">1</span></code> (list), [ [0, 0, 1] ].</p></li>
+<li><p>lindhard_surface_const      : constant value for q3 axis [0.0].</p></li>
+<li><p>qpoint                      : representative q points (dict), [None].</p></li>
+<li><p>qpoint_path                 : q-points along high symmetry line in Brillouin zone, [[k1, k2, k3]] (crystal coordinate) (str), [None].</p></li>
+<li><p>Nq1                         : number of divisions for high symmetry lines (int, optional), [30].</p></li>
+<li><p>filling                     : number of electrons per unit-cell, [None].</p></li>
+<li><p>temperature                 : temperature for calculating lindhard function (float), [0.0].</p></li>
+<li><p>hr_input             : full filename of hr.dat file (str), [“”].</p></li>
+<li><p>use_tb_approximation : use tight-binding approximation? (bool), [False].</p></li>
+</ul>
+</li>
+<li><p>keywords of seedname.win and quantities read from seedname.nnkp, seedname.eig, seedname.amn, …:</p>
+<ul>
+<li><p>num_k             : # of k points (int), [1].</p></li>
+<li><p>num_bands         : # of bands passed to the code (int), [1].</p></li>
+<li><p>num_wann          : # of WFs (int), [1].</p></li>
+<li><p>dis_num_iter      : # of iterations for disentanglement (int), [0].</p></li>
+<li><p>num_iter          : # of iterations for maximal localization (int), [200].</p></li>
+<li><p>dis_froz_max      : top of the inner (frozen) energy window (float), [+100000].</p></li>
+<li><p>dis_froz_min      : bottom of the inner (frozen) energy window (float), [-100000].</p></li>
+<li><p>dis_win_max       : top of the outer energy window (float), [+100000].</p></li>
+<li><p>dis_win_min       : bottom of the outer energy window (float), [-100000].</p></li>
+<li><p>dis_mix_ratio     : mixing ratio during the disentanglement (float), [0.5].</p></li>
+<li><p>mp_grid           : dimensions of the Monkhorst-Pack grid of k-points (list), [[1, 1, 1]].</p></li>
+<li><p>ws_distance_tol   : tolerance of the distances in the Wigner-Seitz supercell of the R vectors, as wannier90 (float, Angstrom), [1.0e-5].</p></li>
+<li><p>ws_search_size    : number of supercells searched for the Wigner-Seitz supercell along each direction, as wannier90 (list), [[2, 2, 2]].</p></li>
+<li><p>kpoints           : k-points, [[k1, k2, k3]] (crystal coordinate) (list), [[[0, 0, 0]]].</p></li>
+<li><p>kpoint            : representative k points (dict), [None].</p></li>
+<li><p>kpoint_path       : k-points along high symmetry line in Brillouin zone, [[k1, k2, k3]] (crystal coordinate) (str), [None].</p></li>
+<li><p>unit_cell_cart    : transform matrix, [a1,a2,a3], [None].</p></li>
+<li><p>atoms_frac        : atomic positions in fractional coordinates with respect to the lattice vectors, {atom: [r1,r2,r3]} [None].</p></li>
+<li><p>atoms_cart        : atomic positions in cartesian coordinates, {atom: [rx,ry,rz]} [None].</p></li>
+<li><p>A                 : real lattice vectors, A = [a1,a2,a3] (list), [[[1,0,0], [0,1,0], [0,0,1]]].</p></li>
+<li><p>B                 : reciprocal lattice vectors, B = [b1,b2,b3] (list), [[[2pi,0,0], [0,2pi,0], [0,0,2pi]]].</p></li>
+<li><p>num_atom          : # of atoms (int), [1].</p></li>
+<li><p>num_b             : # of b-vectors (int), [1].</p></li>
+<li><p>nnkpts            : nearest-neighbour k-points (list), [None].</p></li>
+<li><p>nw2n              : atom position index of each WFs (list), [None].</p></li>
+<li><p>nw2l              : <span class="math notranslate nohighlight">\(l\)</span> specifies the angular part <span class="math notranslate nohighlight">\(\Theta_{lm}(\theta,\phi)\)</span> (list), [None].</p></li>
+<li><p>nw2m              : <span class="math notranslate nohighlight">\(m\)</span> specifies the angular part <span class="math notranslate nohighlight">\(\Theta_{lm}(\theta,\phi)\)</span> (list), [None].</p></li>
+<li><p>nw2r              : <span class="math notranslate nohighlight">\(r\)</span> specifies the radial part <span class="math notranslate nohighlight">\(R_r(r)\)</span> (list), [None].</p></li>
+<li><p>nw2s              : <span class="math notranslate nohighlight">\(s\)</span> specifies the spin, 1(up)/-1(dn) (list), [None].</p></li>
+<li><p>atom_orb          : WFs indexes of each atom (list), [None].</p></li>
+<li><p>atom_pos          : atom position index of each atom (list), [None].</p></li>
+<li><p>atom_pos_r        : atom position of each atom in fractional coordinates with respect to the lattice vectors (list), [None].</p></li>
+<li><p>bvec_cart         : b-vectors (cartesian coordinate) (list), [None].</p></li>
+<li><p>bvec_crys         : b-vectors (crystal coordinate) (list), [None].</p></li>
+<li><p>wb                :  weight for each k-points and nearest-neighbour k-points (list), [None].</p></li>
+<li><p>Ek                : Kohn-Sham energies, <span class="math notranslate nohighlight">\( E_{m}(k) \)</span> (list), [None].</p></li>
+<li><p>Ak                : Overlap matrix elements, <span class="math notranslate nohighlight">\( A_{mn}(k) = \langle \psi^{\rm KS}_{m}(k)|\psi_{n}(k)\rangle \)</span> (list), [None].</p></li>
+<li><p>Mkb               : Overlap matrix elements, <span class="math notranslate nohighlight">\( M_{mn}(k,b) = \langle u^{\rm KS}_{m}(k)|u^{\rm KS}_{n}(k+b)\rangle \)</span> (list), [None].</p></li>
+<li><p>Uoptk             : num_wann×num_wann full unitary matrix (ndarray), [None].</p></li>
+<li><p>Udisk             : num_wann×num_bands partial unitary matrix (ndarray), [None].</p></li>
+<li><p>Uk                : num_wann×num_bands full unitary matrix (ndarray), [None].</p></li>
+<li><p>other keywords of seedname.win follow the <a class="reference external" href="https://wannier.org/">Wannier90</a> user guide.</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="data-default">
+<h1>data [default]<a class="headerlink" href="#data-default" title="Link to this heading">#</a></h1>
+<ul class="simple">
+<li><p>Sk              : Overlap matrix elements in k-space (ndarray).</p></li>
+<li><p>nk              : Electronic density matrix elements in k-space (ndarray).</p></li>
+<li><p>Hk              : Hamiltonian matrix elements in k-space (orthogonal) (ndarray).</p></li>
+<li><p>Hk_nonortho     : Hamiltonian matrix elements in k-space (non-orthogonal) (ndarray).</p></li>
+<li><p>Sr              : Overlap matrix elements in real-space (ndarray).</p></li>
+<li><p>nr              : Electronic density matrix elements in real-space (ndarray).</p></li>
+<li><p>Hr              : Hamiltonian matrix elements in real-space (orthogonal) (ndarray).</p></li>
+<li><p>Hr_nonortho     : Hamiltonian matrix elements in real-space (non-orthogonal) (ndarray).</p></li>
+<li><p>s               : The expansion coefficients of Sk expressed by a linear combination of SAMBs (dict of SAMB tag and coefficient, stored as str).</p></li>
+<li><p>n               : The expansion coefficients of nk expressed by a linear combination of SAMBs (dict of SAMB tag and coefficient, stored as str).</p></li>
+<li><p>z               : The expansion coefficients of Hk expressed by a linear combination of SAMBs (dict of SAMB tag and coefficient, stored as str).</p></li>
+<li><p>z_nonortho      : The expansion coefficients of Hk_nonortho expressed by a linear combination of SAMBs (dict of SAMB tag and coefficient, stored as str).</p></li>
+<li><p>Sk_sym          : Symmetrized overlap matrix elements in k-space (ndarray).</p></li>
+<li><p>nk_sym          : Symmetrized electronic density matrix elements in k-space (ndarray).</p></li>
+<li><p>Hk_sym          : Symmetrized Hamiltonian matrix elements in k-space (orthogonal) (ndarray).</p></li>
+<li><p>Hk_nonortho_sym : Symmetrized Hamiltonian matrix elements in k-space (non-orthogonal) (ndarray).</p></li>
+<li><p>Sr_sym          : Symmetrized overlap matrix elements in real-space (ndarray).</p></li>
+<li><p>nr_sym          : Symmetrized electronic density matrix elements in real-space (ndarray).</p></li>
+<li><p>Hr_sym          : Symmetrized Hamiltonian matrix elements in real-space (orthogonal) (ndarray).</p></li>
+<li><p>Hr_nonortho_sym : Symmetrized Hamiltonian matrix elements in real-space (non-orthogonal) (ndarray).</p></li>
+<li><p>Ek_MAE_grid     : mean absolute error of eigen energies between the closest Wannier TB model and the symmetry-adapted closest Wannier TB model on the k-point grid [meV] (float, stored as str).</p></li>
+<li><p>Ek_MAE_path     : mean absolute error of eigen energies between the closest Wannier TB model and the symmetry-adapted closest Wannier TB model along the high-symmetry k-path [meV] (None for molecules) (float, stored as str).</p></li>
+</ul>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="samb-info">
+<h1>samb_info<a class="headerlink" href="#samb-info" title="Link to this heading">#</a></h1>
+<ul class="simple">
+<li><p>group for the SAMB information used by the analysis code (such as <code class="docutils literal notranslate"><span class="pre">ket</span></code>, the ket basis of the SAMBs).</p></li>
+</ul>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./src/format"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">seedname.hdf5 [default]</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#info-default">info [default]</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#data-default">data [default]</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#samb-info">samb_info</a></li>
+</ul>
+
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Rikuto Oiwa
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2021-.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

@@ -1,0 +1,1278 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Analyzer &#8212; SymClosestWannier</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=9c3e77be" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=34ddd5e8" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="../../_static/scripts/fontawesome.js?digest=55c26ed414f5f8a31ebb"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb" />
+
+    <script src="../../_static/documentation_options.js?v=a8e58a58"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js?v=b8b12719"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'src/api/analyzer';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <script src="../../_static/custom.js?v=9c3a2667"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Utility" href="util.html" />
+    <link rel="prev" title="Closest Wannier" href="cw.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  
+    
+    <script src="../../_static/searchtools.js"></script>
+    <script src="../../_static/language_data.js"></script>
+    <script src="../../searchindex.js"></script>
+  
+  </head>
+  <body data-default-mode="">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../README.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">SymClosestWannier</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">MultiPie</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../multipie.html">Construction of SAMBs by using MultiPie</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Closest Wannier method</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../cw.html">Closest Wannier method</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Construction of symmetry-adapted Closest Wannier model</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../scw.html">Symmetry-adapted Closest Wannier model</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">File Format</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../format/cwin.html">seedname.cwin [default]</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../format/cwout.html">seedname.cwout</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../format/hdf5.html">seedname.hdf5 [default]</a></li>
+
+
+
+<li class="toctree-l1"><a class="reference internal" href="../format/hr.html">seedname_hr.dat.cw</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../format/sr.html">seedname_sr.dat.cw</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../format/z.html">seedname_z.dat.cw</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../format/s.html">seedname_s.dat.cw</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../format/n.html">seedname_n.dat.cw</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../format/convention.html">Phase conventions of real-space operators</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/tutorial01.html">CH4: Closest Wannier tight-binding model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/tutorial02.html">Graphene: Closest Wannier tight-binding model</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">API</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="cw.html">Closest Wannier</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Analyzer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="util.html">Utility</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+<a href="https://github.com/CMT-MU/SymClosestWannier.git" target="_blank"
+   class="btn btn-sm btn-source-repository-button"
+   title="Source repository"
+   data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+
+</a>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Analyzer</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.analyzer.analyzer"><code class="docutils literal notranslate"><span class="pre">analyzer()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.band.Band"><code class="docutils literal notranslate"><span class="pre">Band</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.band.Band.calc_band"><code class="docutils literal notranslate"><span class="pre">Band.calc_band()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.band.Band.set_operators"><code class="docutils literal notranslate"><span class="pre">Band.set_operators()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.get_band.dos_main"><code class="docutils literal notranslate"><span class="pre">dos_main()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.get_band.geninterp_main"><code class="docutils literal notranslate"><span class="pre">geninterp_main()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.get_band.k_path"><code class="docutils literal notranslate"><span class="pre">k_path()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.get_band.k_slice"><code class="docutils literal notranslate"><span class="pre">k_slice()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.get_band.spin_get_moment"><code class="docutils literal notranslate"><span class="pre">spin_get_moment()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.get_response.abs_ordinary_optical_cond_main"><code class="docutils literal notranslate"><span class="pre">abs_ordinary_optical_cond_main()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.get_response.absorptive_dichroic_optical_cond_main"><code class="docutils literal notranslate"><span class="pre">absorptive_dichroic_optical_cond_main()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.get_response.berry_get_ahc"><code class="docutils literal notranslate"><span class="pre">berry_get_ahc()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.get_response.berry_get_imf_klist"><code class="docutils literal notranslate"><span class="pre">berry_get_imf_klist()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.get_response.berry_get_imfgh_klist"><code class="docutils literal notranslate"><span class="pre">berry_get_imfgh_klist()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.get_response.berry_get_imfgh_matrix_klist"><code class="docutils literal notranslate"><span class="pre">berry_get_imfgh_matrix_klist()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.get_response.berry_get_js_k"><code class="docutils literal notranslate"><span class="pre">berry_get_js_k()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.get_response.berry_get_kubo"><code class="docutils literal notranslate"><span class="pre">berry_get_kubo()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.get_response.berry_get_kubo_tb"><code class="docutils literal notranslate"><span class="pre">berry_get_kubo_tb()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.get_response.berry_get_morb"><code class="docutils literal notranslate"><span class="pre">berry_get_morb()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.get_response.berry_get_sc"><code class="docutils literal notranslate"><span class="pre">berry_get_sc()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.get_response.berry_get_sc_klist"><code class="docutils literal notranslate"><span class="pre">berry_get_sc_klist()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.get_response.berry_get_shc"><code class="docutils literal notranslate"><span class="pre">berry_get_shc()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.get_response.berry_get_shc_klist"><code class="docutils literal notranslate"><span class="pre">berry_get_shc_klist()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.get_response.berry_main"><code class="docutils literal notranslate"><span class="pre">berry_main()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.get_response.boltzwann_main"><code class="docutils literal notranslate"><span class="pre">boltzwann_main()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.get_response.gyrotropic_get_K"><code class="docutils literal notranslate"><span class="pre">gyrotropic_get_K()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.get_response.gyrotropic_main"><code class="docutils literal notranslate"><span class="pre">gyrotropic_main()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.get_response.kmesh_spacing_mesh"><code class="docutils literal notranslate"><span class="pre">kmesh_spacing_mesh()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.get_response.kubo_frequencies"><code class="docutils literal notranslate"><span class="pre">kubo_frequencies()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.get_response.orb_matrix_klist"><code class="docutils literal notranslate"><span class="pre">orb_matrix_klist()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.get_response.orbital_magnetization_main"><code class="docutils literal notranslate"><span class="pre">orbital_magnetization_main()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.get_response.spin_moment_main"><code class="docutils literal notranslate"><span class="pre">spin_moment_main()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.get_response.utility_w0gauss"><code class="docutils literal notranslate"><span class="pre">utility_w0gauss()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.get_response.wham_get_D_h"><code class="docutils literal notranslate"><span class="pre">wham_get_D_h()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.get_response.wham_get_JJp_JJm_list"><code class="docutils literal notranslate"><span class="pre">wham_get_JJp_JJm_list()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.get_response.wham_get_deleig"><code class="docutils literal notranslate"><span class="pre">wham_get_deleig()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.get_response.wham_get_deleig_a"><code class="docutils literal notranslate"><span class="pre">wham_get_deleig_a()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.get_response.wham_get_eig_UU_HH_JJlist"><code class="docutils literal notranslate"><span class="pre">wham_get_eig_UU_HH_JJlist()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.get_response.wham_get_occ_mat_list"><code class="docutils literal notranslate"><span class="pre">wham_get_occ_mat_list()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.response.Response"><code class="docutils literal notranslate"><span class="pre">Response</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.response.Response.calc_response"><code class="docutils literal notranslate"><span class="pre">Response.calc_response()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.response.Response.calc_spin_moment"><code class="docutils literal notranslate"><span class="pre">Response.calc_spin_moment()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.response.Response.set_operators"><code class="docutils literal notranslate"><span class="pre">Response.set_operators()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.response.Response.write_ahc"><code class="docutils literal notranslate"><span class="pre">Response.write_ahc()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.response.Response.write_gyro_K"><code class="docutils literal notranslate"><span class="pre">Response.write_gyro_K()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.response.Response.write_kubo"><code class="docutils literal notranslate"><span class="pre">Response.write_kubo()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.response.Response.write_morb"><code class="docutils literal notranslate"><span class="pre">Response.write_morb()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.response.Response.write_sc"><code class="docutils literal notranslate"><span class="pre">Response.write_sc()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.response.Response.write_shc"><code class="docutils literal notranslate"><span class="pre">Response.write_shc()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.response.Response.write_spin"><code class="docutils literal notranslate"><span class="pre">Response.write_spin()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.response.Response.operators"><code class="docutils literal notranslate"><span class="pre">Response.operators</span></code></a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="module-symclosestwannier.analyzer.analyzer">
+<span id="analyzer"></span><h1>Analyzer<a class="headerlink" href="#module-symclosestwannier.analyzer.analyzer" title="Link to this heading">#</a></h1>
+<dl class="py function">
+<dt class="sig sig-object py" id="symclosestwannier.analyzer.analyzer.analyzer">
+<span class="sig-name descname"><span class="pre">analyzer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">seedname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'cwannier'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/analyzer/analyzer.html#analyzer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.analyzer.analyzer.analyzer" title="Link to this definition">#</a></dt>
+<dd><p>Analyze Wannier TB model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>seedname</strong> (<em>str</em><em>, </em><em>optional</em>) – seedname.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Response, Band.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class" id="module-symclosestwannier.analyzer.band">
+<dt class="sig sig-object py" id="symclosestwannier.analyzer.band.Band">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Band</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cwi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cwm</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/analyzer/band.html#Band"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.analyzer.band.Band" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></p>
+<p>initialize the class.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>cwi</strong> (<a class="reference internal" href="cw.html#symclosestwannier.cw.cw_info.CWInfo" title="symclosestwannier.cw.cw_info.CWInfo"><em>CWInfo</em></a>) – CWInfo.</p></li>
+<li><p><strong>cwm</strong> (<a class="reference internal" href="cw.html#symclosestwannier.cw.cw_manager.CWManager" title="symclosestwannier.cw.cw_manager.CWManager"><em>CWManager</em></a>) – CWManager.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="symclosestwannier.analyzer.band.Band.calc_band">
+<span class="sig-name descname"><span class="pre">calc_band</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/analyzer/band.html#Band.calc_band"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.analyzer.band.Band.calc_band" title="Link to this definition">#</a></dt>
+<dd><p>Now perform one or more of the following tasks</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="symclosestwannier.analyzer.band.Band.set_operators">
+<span class="sig-name descname"><span class="pre">set_operators</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/analyzer/band.html#Band.set_operators"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.analyzer.band.Band.set_operators" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py function" id="module-symclosestwannier.analyzer.get_band">
+<dt class="sig sig-object py" id="symclosestwannier.analyzer.get_band.dos_main">
+<span class="sig-name descname"><span class="pre">dos_main</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/analyzer/get_band.html#dos_main"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.analyzer.get_band.dos_main" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="symclosestwannier.analyzer.get_band.geninterp_main">
+<span class="sig-name descname"><span class="pre">geninterp_main</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/analyzer/get_band.html#geninterp_main"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.analyzer.get_band.geninterp_main" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="symclosestwannier.analyzer.get_band.k_path">
+<span class="sig-name descname"><span class="pre">k_path</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/analyzer/get_band.html#k_path"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.analyzer.get_band.k_path" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="symclosestwannier.analyzer.get_band.k_slice">
+<span class="sig-name descname"><span class="pre">k_slice</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/analyzer/get_band.html#k_slice"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.analyzer.get_band.k_slice" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="symclosestwannier.analyzer.get_band.spin_get_moment">
+<span class="sig-name descname"><span class="pre">spin_get_moment</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/analyzer/get_band.html#spin_get_moment"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.analyzer.get_band.spin_get_moment" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py function" id="module-symclosestwannier.analyzer.get_response">
+<dt class="sig sig-object py" id="symclosestwannier.analyzer.get_response.abs_ordinary_optical_cond_main">
+<span class="sig-name descname"><span class="pre">abs_ordinary_optical_cond_main</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/analyzer/get_response.html#abs_ordinary_optical_cond_main"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.analyzer.get_response.abs_ordinary_optical_cond_main" title="Link to this definition">#</a></dt>
+<dd><p>Absorptive ordinary optical conductivity &amp; JDOS on a uniform mesh</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="symclosestwannier.analyzer.get_response.absorptive_dichroic_optical_cond_main">
+<span class="sig-name descname"><span class="pre">absorptive_dichroic_optical_cond_main</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/analyzer/get_response.html#absorptive_dichroic_optical_cond_main"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.analyzer.get_response.absorptive_dichroic_optical_cond_main" title="Link to this definition">#</a></dt>
+<dd><p>Absorptive dichroic optical conductivity &amp; JDOS on uniform mesh</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="symclosestwannier.analyzer.get_response.berry_get_ahc">
+<span class="sig-name descname"><span class="pre">berry_get_ahc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cwi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">operators</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/analyzer/get_response.html#berry_get_ahc"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.analyzer.get_response.berry_get_ahc" title="Link to this definition">#</a></dt>
+<dd><p>Anomalous Hall conductivity, in S/cm.
+The three independent components σx = σyz, σy = σzx, and σz = σxy are computed.
+The real part Re[σ^AH_αβ] describes the anomalous Hall conductivity (AHC), and remains finite in the static limit,
+while the imaginary part Im[σ^H_αβ] describes magnetic circular dichroism, and vanishes as ω → 0.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>cwi</strong> (<a class="reference internal" href="cw.html#symclosestwannier.cw.cw_info.CWInfo" title="symclosestwannier.cw.cw_info.CWInfo"><em>CWInfo</em></a>) – CWInfo.</p></li>
+<li><p><strong>operators</strong> (<em>dict</em>) – operators.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Anomalous Hall conductivity.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="symclosestwannier.analyzer.get_response.berry_get_imf_klist">
+<span class="sig-name descname"><span class="pre">berry_get_imf_klist</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cwi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">operators</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kpoints</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">occ</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ladpt</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/analyzer/get_response.html#berry_get_imf_klist"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.analyzer.get_response.berry_get_imf_klist" title="Link to this definition">#</a></dt>
+<dd><p>Calculates the Berry curvature traced over the occupied
+states, -2Im[f(k)] [Eq.33 CTVR06, Eq.6 LVTS12] for a list
+of Fermi energies, and stores it in axial-vector form</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="symclosestwannier.analyzer.get_response.berry_get_imfgh_klist">
+<span class="sig-name descname"><span class="pre">berry_get_imfgh_klist</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cwi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">operators</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kpoints</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">imf</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">img</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">imh</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">occ</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ladpt</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/analyzer/get_response.html#berry_get_imfgh_klist"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.analyzer.get_response.berry_get_imfgh_klist" title="Link to this definition">#</a></dt>
+<dd><dl class="simple">
+<dt>Calculates the three quantities needed for the orbital magnetization:</dt><dd><ul class="simple">
+<li><p>-2Im[f(k)] [Eq.33 CTVR06, Eq.6 LVTS12]</p></li>
+<li><p>-2Im[g(k)] [Eq.34 CTVR06, Eq.7 LVTS12]</p></li>
+<li><p>-2Im[h(k)] [Eq.35 CTVR06, Eq.8 LVTS12]</p></li>
+</ul>
+</dd>
+</dl>
+<p>They are calculated together (to reduce the number of Fourier calls)
+for a list of Fermi energies, and stored in axial-vector form.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>imf</strong> (<em>bool</em><em>, </em><em>optional</em>) – calculate -2Im[f(k)] ?</p></li>
+<li><p><strong>img</strong> (<em>bool</em><em>, </em><em>optional</em>) – calculate -2Im[g(k)] ?</p></li>
+<li><p><strong>imh</strong> (<em>bool</em><em>, </em><em>optional</em>) – calculate -2Im[h(k)] ?</p></li>
+<li><p><strong>occ</strong> (<em>ndarray</em><em>, </em><em>optional</em>) – occupancy.</p></li>
+<li><p><strong>ladpt</strong> (<em>ndarray</em><em>, </em><em>optional</em>) – <p>.</p>
+</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="symclosestwannier.analyzer.get_response.berry_get_imfgh_matrix_klist">
+<span class="sig-name descname"><span class="pre">berry_get_imfgh_matrix_klist</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cwi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">operators</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kpoints</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">img</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">imh</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">occ</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ladpt</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/analyzer/get_response.html#berry_get_imfgh_matrix_klist"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.analyzer.get_response.berry_get_imfgh_matrix_klist" title="Link to this definition">#</a></dt>
+<dd><dl class="simple">
+<dt>Calculates the three quantities needed for the orbital magnetization:</dt><dd><ul class="simple">
+<li><p>-2Im[f(k)] [Eq.33 CTVR06, Eq.6 LVTS12]</p></li>
+<li><p>-2Im[g(k)] [Eq.34 CTVR06, Eq.7 LVTS12]</p></li>
+<li><p>-2Im[h(k)] [Eq.35 CTVR06, Eq.8 LVTS12]</p></li>
+</ul>
+</dd>
+</dl>
+<p>They are calculated together (to reduce the number of Fourier calls)
+for a list of Fermi energies, and stored in axial-vector form.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>imf</strong> (<em>bool</em><em>, </em><em>optional</em>) – calculate -2Im[f(k)] ?</p></li>
+<li><p><strong>img</strong> (<em>bool</em><em>, </em><em>optional</em>) – calculate -2Im[g(k)] ?</p></li>
+<li><p><strong>imh</strong> (<em>bool</em><em>, </em><em>optional</em>) – calculate -2Im[h(k)] ?</p></li>
+<li><p><strong>occ</strong> (<em>ndarray</em><em>, </em><em>optional</em>) – occupancy.</p></li>
+<li><p><strong>ladpt</strong> (<em>ndarray</em><em>, </em><em>optional</em>) – <p>.</p>
+</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="symclosestwannier.analyzer.get_response.berry_get_js_k">
+<span class="sig-name descname"><span class="pre">berry_get_js_k</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cwi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">operators</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kpoints</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">E</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">del_alpha_E</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">D_alpha_h</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">U</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/analyzer/get_response.html#berry_get_js_k"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.analyzer.get_response.berry_get_js_k" title="Link to this definition">#</a></dt>
+<dd><p>ontribution from point k to the
+&lt;psi_k | 1/2*(sigma_gamma*v_alpha + v_alpha*sigma_gamma) | psi_k&gt;</p>
+<p>QZYZ18 Eq.(23) without hbar/2 (required by spin operator) and
+not divided by hbar (required by velocity operator)</p>
+<p>Junfeng Qiao (8/7/2018)</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="symclosestwannier.analyzer.get_response.berry_get_kubo">
+<span class="sig-name descname"><span class="pre">berry_get_kubo</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cwi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">operators</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/analyzer/get_response.html#berry_get_kubo"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.analyzer.get_response.berry_get_kubo" title="Link to this definition">#</a></dt>
+<dd><p>Complex interband optical conductivity, in S/cm,
+separated into Hermitian (Kubo_H) and anti-Hermitian (Kubo_AH) parts.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>cwi</strong> (<a class="reference internal" href="cw.html#symclosestwannier.cw.cw_info.CWInfo" title="symclosestwannier.cw.cw_info.CWInfo"><em>CWInfo</em></a>) – CWInfo.</p></li>
+<li><p><strong>operators</strong> (<em>dict</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Kubo_H, Kubo_AH, Kubo_H_spn, Kubo_AH_spn.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="symclosestwannier.analyzer.get_response.berry_get_kubo_tb">
+<span class="sig-name descname"><span class="pre">berry_get_kubo_tb</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cwi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">operators</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/analyzer/get_response.html#berry_get_kubo_tb"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.analyzer.get_response.berry_get_kubo_tb" title="Link to this definition">#</a></dt>
+<dd><p>Complex interband optical conductivity, in S/cm,
+separated into Hermitian (Kubo_H) and anti-Hermitian (Kubo_AH) parts.
+Use tight-binding approximation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>cwi</strong> (<a class="reference internal" href="cw.html#symclosestwannier.cw.cw_info.CWInfo" title="symclosestwannier.cw.cw_info.CWInfo"><em>CWInfo</em></a>) – CWInfo.</p></li>
+<li><p><strong>operators</strong> (<em>dict</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Kubo_H, Kubo_AH, Kubo_H_spn, Kubo_AH_spn.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="symclosestwannier.analyzer.get_response.berry_get_morb">
+<span class="sig-name descname"><span class="pre">berry_get_morb</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cwi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">operators</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/analyzer/get_response.html#berry_get_morb"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.analyzer.get_response.berry_get_morb" title="Link to this definition">#</a></dt>
+<dd><dl class="simple">
+<dt>Orbital magnetization, in Bohr magnetons per cell [Eq. (1) LVTS12], as wannier90 berry_main:</dt><dd><p>LC = (img - E_F imf) fac,  IC = (imh - E_F imf) fac,  M = LC + IC,  fac = -eV_au/bohr^2,</p>
+</dd>
+</dl>
+<p>with -2Im[f], -2Im[g], -2Im[h] of berry_get_imfgh_klist averaged over berry_kmesh.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>cwi</strong> (<a class="reference internal" href="cw.html#symclosestwannier.cw.cw_info.CWInfo" title="symclosestwannier.cw.cw_info.CWInfo"><em>CWInfo</em></a>) – CWInfo.</p></li>
+<li><p><strong>operators</strong> (<em>dict</em>) – operators (HH_R, AA_R, BB_R, CC_R).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>morb_LC, morb_IC, morb, each (num_fermi, 3, 3) = (Fermi energy, J0/J1/J2 term, x/y/z).</dt><dd><p>The total moment is the sum over the term index.</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="symclosestwannier.analyzer.get_response.berry_get_sc">
+<span class="sig-name descname"><span class="pre">berry_get_sc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cwi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">operators</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/analyzer/get_response.html#berry_get_sc"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.analyzer.get_response.berry_get_sc" title="Link to this definition">#</a></dt>
+<dd><p>Nonlinear shift current sigma_{abc}(omega), in A/V^2, on the frequencies kubo_freq_min … kubo_freq_max
+(kubo_freq_step), as wannier90 berry_main.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>cwi</strong> (<a class="reference internal" href="cw.html#symclosestwannier.cw.cw_info.CWInfo" title="symclosestwannier.cw.cw_info.CWInfo"><em>CWInfo</em></a>) – CWInfo.</p></li>
+<li><p><strong>operators</strong> (<em>dict</em>) – operators (HH_R, AA_R).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>frequencies (eV), sigma (3, 6, nfreq) with the pairs bc = xx, yy, zz, xy, xz, yz.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="symclosestwannier.analyzer.get_response.berry_get_sc_klist">
+<span class="sig-name descname"><span class="pre">berry_get_sc_klist</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cwi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">operators</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kpoints</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">freq</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/analyzer/get_response.html#berry_get_sc_klist"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.analyzer.get_response.berry_get_sc_klist" title="Link to this definition">#</a></dt>
+<dd><p>Contribution of a list of k points to the nonlinear shift current [integrand of Eq. (8) IATS18],
+summed over the k points, as wannier90 berry_get_sc_klist.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>cwi</strong> (<a class="reference internal" href="cw.html#symclosestwannier.cw.cw_info.CWInfo" title="symclosestwannier.cw.cw_info.CWInfo"><em>CWInfo</em></a>) – CWInfo.</p></li>
+<li><p><strong>operators</strong> (<em>dict</em>) – operators (HH_R, AA_R) in the gauge given by tb_gauge.</p></li>
+<li><p><strong>kpoints</strong> (<em>ndarray</em>) – k points (fractional).</p></li>
+<li><p><strong>freq</strong> (<em>ndarray</em>) – frequencies (eV).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>sum_k sigma(k), (3, 6, len(freq)), (a, bc, omega) with bc in the order of _alpha_S/_beta_S.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="symclosestwannier.analyzer.get_response.berry_get_shc">
+<span class="sig-name descname"><span class="pre">berry_get_shc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cwi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">operators</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/analyzer/get_response.html#berry_get_shc"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.analyzer.get_response.berry_get_shc" title="Link to this definition">#</a></dt>
+<dd><p>Spin Hall conductivity, in (hbar/e)*S/cm.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>cwi</strong> (<a class="reference internal" href="cw.html#symclosestwannier.cw.cw_info.CWInfo" title="symclosestwannier.cw.cw_info.CWInfo"><em>CWInfo</em></a>) – CWInfo.</p></li>
+<li><p><strong>operators</strong> (<em>dict</em>) – operators.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Spin Hall conductivity.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="symclosestwannier.analyzer.get_response.berry_get_shc_klist">
+<span class="sig-name descname"><span class="pre">berry_get_shc_klist</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cwi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">operators</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kpoints</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">band</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/analyzer/get_response.html#berry_get_shc_klist"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.analyzer.get_response.berry_get_shc_klist" title="Link to this definition">#</a></dt>
+<dd><p>Contribution from a k-point to the spin Hall conductivity on a list
+of Fermi energies or a list of frequencies or a list of energy bands</p>
+<blockquote>
+<div><dl class="simple">
+<dt>sigma_{alpha,beta}^{gamma}(k), alpha, beta, gamma = 1, 2, 3</dt><dd><p>(x, y, z, respectively)</p>
+</dd>
+</dl>
+</div></blockquote>
+<p>i.e. the Berry curvature-like term of QZYZ18 Eq.(3) &amp; (4).
+The unit is angstrom^2, similar to that of Berry curvature of AHC.</p>
+<p>Note the berry_get_js_k() has not been multiplied by hbar/2 (as
+required by spin operator) and not been divided by hbar (as required
+by the velocity operator). The second velocity operator has not been
+divided by hbar as well. But these two hbar required by velocity
+operators are canceled by the preceding hbar^2 of QZYZ18 Eq.(3).</p>
+<ul class="simple">
+<li><p>shc_k_fermi: return a list for different Fermi energies</p></li>
+<li><p>shc_k_freq:  return a list for different frequencies</p></li>
+<li><p>shc_k_band:  return a list for each energy band</p></li>
+</ul>
+<p>Junfeng Qiao (18/8/2018)</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="symclosestwannier.analyzer.get_response.berry_main">
+<span class="sig-name descname"><span class="pre">berry_main</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cwi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">operators</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/analyzer/get_response.html#berry_main"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.analyzer.get_response.berry_main" title="Link to this definition">#</a></dt>
+<dd><dl class="simple">
+<dt>Computes the following quantities:</dt><dd><p>(ahc)  Anomalous Hall conductivity (from Berry curvature)
+(kubo) Complex optical conductivity (Kubo-Greenwood) &amp; JDOS
+(morb) Orbital magnetization
+(sc)   Nonlinear shift current
+(shc)  Spin Hall conductivity</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>cwi</strong> (<a class="reference internal" href="cw.html#symclosestwannier.cw.cw_info.CWInfo" title="symclosestwannier.cw.cw_info.CWInfo"><em>CWInfo</em></a>) – CWInfo.</p></li>
+<li><p><strong>operators</strong> (<em>dict</em>) – operators.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>dictionary of results.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="symclosestwannier.analyzer.get_response.boltzwann_main">
+<span class="sig-name descname"><span class="pre">boltzwann_main</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/analyzer/get_response.html#boltzwann_main"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.analyzer.get_response.boltzwann_main" title="Link to this definition">#</a></dt>
+<dd><p>Boltzmann transport coefficients (BoltzWann module)</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="symclosestwannier.analyzer.get_response.gyrotropic_get_K">
+<span class="sig-name descname"><span class="pre">gyrotropic_get_K</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cwi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">operators</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/analyzer/get_response.html#gyrotropic_get_K"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.analyzer.get_response.gyrotropic_get_K" title="Link to this definition">#</a></dt>
+<dd><p>Computes the following quantities:</p>
+<ul class="simple">
+<li><p>gyro_K_orb = delta(E_kn-E_f).(d E_{kn}/d k_i).(2.hbar/e).m^orb_{kn,j}
+[units of (length^3)*energy]</p></li>
+<li><p>gyro_K_spn = delta(E_kn-E_f).(d E_{kn}/d k_i).sigma_{kn,j} (sigma = Pauli matrix)
+[units of length]</p></li>
+</ul>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>cwi</strong> (<a class="reference internal" href="cw.html#symclosestwannier.cw.cw_info.CWInfo" title="symclosestwannier.cw.cw_info.CWInfo"><em>CWInfo</em></a>) – CWInfo.</p></li>
+<li><p><strong>operators</strong> (<em>dict</em>) – operators.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Spin Hall conductivity.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="symclosestwannier.analyzer.get_response.gyrotropic_main">
+<span class="sig-name descname"><span class="pre">gyrotropic_main</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cwi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">operators</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/analyzer/get_response.html#gyrotropic_main"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.analyzer.get_response.gyrotropic_main" title="Link to this definition">#</a></dt>
+<dd><dl class="simple">
+<dt>Computes the following quantities:</dt><dd><p>(-d0)   D tensor (the Berry curvature dipole).
+(-dw)   D(w) tensor (the finite-frequency generalization of the Berry curvature dipole).
+(-k)    K tensor (orbital component of the kinetic magnetoelectric effect (kME)).
+(-spin) K tensor (spin component of the kinetic magnetoelectric effect (kME)).
+(-c)    C tensor (the ohmic conductivity).
+(-noa)  the interband contributionto the natural optical activity.
+(-dos)  the density of states.
+(-all)  computes all.</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>cwi</strong> (<a class="reference internal" href="cw.html#symclosestwannier.cw.cw_info.CWInfo" title="symclosestwannier.cw.cw_info.CWInfo"><em>CWInfo</em></a>) – CWInfo.</p></li>
+<li><p><strong>operators</strong> (<em>dict</em>) – operators.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>dictionary of results.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="symclosestwannier.analyzer.get_response.kmesh_spacing_mesh">
+<span class="sig-name descname"><span class="pre">kmesh_spacing_mesh</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mesh</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">B</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/analyzer/get_response.html#kmesh_spacing_mesh"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.analyzer.get_response.kmesh_spacing_mesh" title="Link to this definition">#</a></dt>
+<dd><p>Set up the value of the interpolation mesh spacing, needed for
+adaptive smearing [see Eqs. (34-35) YWVS07]. Choose it as the largest of
+the three Delta_k’s for each of the primitive translations b1, b2, and b3</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="symclosestwannier.analyzer.get_response.kubo_frequencies">
+<span class="sig-name descname"><span class="pre">kubo_frequencies</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cwi</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/analyzer/get_response.html#kubo_frequencies"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.analyzer.get_response.kubo_frequencies" title="Link to this definition">#</a></dt>
+<dd><p>frequencies of the optical conductivity, the shift current and the ac spin Hall conductivity, as kubo_freq_list
+of wannier90: nint((kubo_freq_max - kubo_freq_min) / kubo_freq_step) + 1 frequencies (at least 2), evenly spaced
+from kubo_freq_min to kubo_freq_max (both included).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>cwi</strong> (<a class="reference internal" href="cw.html#symclosestwannier.cw.cw_info.CWInfo" title="symclosestwannier.cw.cw_info.CWInfo"><em>CWInfo</em></a>) – CWInfo.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>frequencies (eV).</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="symclosestwannier.analyzer.get_response.orb_matrix_klist">
+<span class="sig-name descname"><span class="pre">orb_matrix_klist</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cwi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">operators</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kpoints</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/analyzer/get_response.html#orb_matrix_klist"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.analyzer.get_response.orb_matrix_klist" title="Link to this definition">#</a></dt>
+<dd><dl class="simple">
+<dt>Calculates the three quantities needed for the orbital magnetization:</dt><dd><ul class="simple">
+<li><p>-2Im[f(k)] [Eq.33 CTVR06, Eq.6 LVTS12]</p></li>
+<li><p>-2Im[g(k)] [Eq.34 CTVR06, Eq.7 LVTS12]</p></li>
+<li><p>-2Im[h(k)] [Eq.35 CTVR06, Eq.8 LVTS12]</p></li>
+</ul>
+</dd>
+</dl>
+<p>They are calculated together (to reduce the number of Fourier calls)
+for a list of Fermi energies, and stored in axial-vector form.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>imf</strong> (<em>bool</em><em>, </em><em>optional</em>) – calculate -2Im[f(k)] ?</p></li>
+<li><p><strong>img</strong> (<em>bool</em><em>, </em><em>optional</em>) – calculate -2Im[g(k)] ?</p></li>
+<li><p><strong>imh</strong> (<em>bool</em><em>, </em><em>optional</em>) – calculate -2Im[h(k)] ?</p></li>
+<li><p><strong>occ</strong> (<em>ndarray</em><em>, </em><em>optional</em>) – occupancy.</p></li>
+<li><p><strong>ladpt</strong> (<em>ndarray</em><em>, </em><em>optional</em>) – <p>.</p>
+</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="symclosestwannier.analyzer.get_response.orbital_magnetization_main">
+<span class="sig-name descname"><span class="pre">orbital_magnetization_main</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/analyzer/get_response.html#orbital_magnetization_main"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.analyzer.get_response.orbital_magnetization_main" title="Link to this definition">#</a></dt>
+<dd><p>Orbital magnetization</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="symclosestwannier.analyzer.get_response.spin_moment_main">
+<span class="sig-name descname"><span class="pre">spin_moment_main</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cwi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">operators</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/analyzer/get_response.html#spin_moment_main"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.analyzer.get_response.spin_moment_main" title="Link to this definition">#</a></dt>
+<dd><p>Computes the spin magnetic moments, Ms_x, Ms_y, Ms_z.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>cwi</strong> (<a class="reference internal" href="cw.html#symclosestwannier.cw.cw_info.CWInfo" title="symclosestwannier.cw.cw_info.CWInfo"><em>CWInfo</em></a>) – CWInfo.</p></li>
+<li><p><strong>operators</strong> (<em>dict</em>) – operators.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Ms_x, Ms_y, Ms_z.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="symclosestwannier.analyzer.get_response.utility_w0gauss">
+<span class="sig-name descname"><span class="pre">utility_w0gauss</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/analyzer/get_response.html#utility_w0gauss"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.analyzer.get_response.utility_w0gauss" title="Link to this definition">#</a></dt>
+<dd><p>the derivative of utility_wgauss:  an approximation to the delta function</p>
+<p>(n&gt;=0) : derivative of the corresponding Methfessel-Paxton utility_wgauss</p>
+<dl class="simple">
+<dt>(n=-1 ): derivative of cold smearing:</dt><dd><p>1/sqrt(pi)*exp(-(x-1/sqrt(2))**2)*(2-sqrt(2)*x)</p>
+</dd>
+</dl>
+<p>(n=-99): derivative of Fermi-Dirac function: 0.5/(1.0+cosh(x))</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="symclosestwannier.analyzer.get_response.wham_get_D_h">
+<span class="sig-name descname"><span class="pre">wham_get_D_h</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">delHH</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">E</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">U</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/analyzer/get_response.html#wham_get_D_h"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.analyzer.get_response.wham_get_D_h" title="Link to this definition">#</a></dt>
+<dd><p>Compute D^H_a=UU^dag.del_a UU (a=x,y,z)
+using Eq.(24) of WYSV06</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="symclosestwannier.analyzer.get_response.wham_get_JJp_JJm_list">
+<span class="sig-name descname"><span class="pre">wham_get_JJp_JJm_list</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cwi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delHH</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">E</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">U</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">occ</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/analyzer/get_response.html#wham_get_JJp_JJm_list"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.analyzer.get_response.wham_get_JJp_JJm_list" title="Link to this definition">#</a></dt>
+<dd><p>Compute JJ^+_a and JJ^-_a (a=Cartesian index)
+for a list of Fermi energies</p>
+<p>This routine is a replacement for
+wham_get_JJp_list and wham_getJJm_list.
+It computes both lists at once in a more
+efficient manner.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="symclosestwannier.analyzer.get_response.wham_get_deleig">
+<span class="sig-name descname"><span class="pre">wham_get_deleig</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">delHH</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">E</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">U</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_degen_pert</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">degen_thr</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/analyzer/get_response.html#wham_get_deleig"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.analyzer.get_response.wham_get_deleig" title="Link to this definition">#</a></dt>
+<dd><p>This function returns derivatives of the eigenvalues dE/dk_a, using wham_get_deleig_a.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="symclosestwannier.analyzer.get_response.wham_get_deleig_a">
+<span class="sig-name descname"><span class="pre">wham_get_deleig_a</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">delHH_a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">E</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">U</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_degen_pert</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">degen_thr</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0001</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/analyzer/get_response.html#wham_get_deleig_a"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.analyzer.get_response.wham_get_deleig_a" title="Link to this definition">#</a></dt>
+<dd><p>Compute band derivatives dE/dk_a.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="symclosestwannier.analyzer.get_response.wham_get_eig_UU_HH_JJlist">
+<span class="sig-name descname"><span class="pre">wham_get_eig_UU_HH_JJlist</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cwi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delHH</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">E</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">U</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">occ</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/analyzer/get_response.html#wham_get_eig_UU_HH_JJlist"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.analyzer.get_response.wham_get_eig_UU_HH_JJlist" title="Link to this definition">#</a></dt>
+<dd><p>Wrapper routine used to reduce number of Fourier calls
+Added the optional occ parameter</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="symclosestwannier.analyzer.get_response.wham_get_occ_mat_list">
+<span class="sig-name descname"><span class="pre">wham_get_occ_mat_list</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cwi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">U</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">E</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">occ</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/analyzer/get_response.html#wham_get_occ_mat_list"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.analyzer.get_response.wham_get_occ_mat_list" title="Link to this definition">#</a></dt>
+<dd><p>Occupation matrix f, and g=1-f
+for a list of Fermi energies
+Tsirkin: !now optionally either E or occ parameters may be supplied
+(Changed consistently the calls from the Berry module)</p>
+</dd></dl>
+
+<dl class="py class" id="module-symclosestwannier.analyzer.response">
+<dt class="sig sig-object py" id="symclosestwannier.analyzer.response.Response">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Response</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cwi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cwm</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">HH_R</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/analyzer/response.html#Response"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.analyzer.response.Response" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></p>
+<p>Analyze external responses of Closest Wannier (CW) tight-binding (TB) model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>cwi</strong> (<a class="reference internal" href="cw.html#symclosestwannier.cw.cw_info.CWInfo" title="symclosestwannier.cw.cw_info.CWInfo"><em>CWInfo</em></a>) – CWInfo.</p></li>
+<li><p><strong>cwm</strong> (<a class="reference internal" href="cw.html#symclosestwannier.cw.cw_manager.CWManager" title="symclosestwannier.cw.cw_manager.CWManager"><em>CWManager</em></a>) – CWManager.</p></li>
+<li><p><strong>HH_R</strong> (<em>ndarray</em>) – matrix elements of real-space Hamiltonian, &lt;0n|H|Rm&gt;.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="symclosestwannier.analyzer.response.Response.calc_response">
+<span class="sig-name descname"><span class="pre">calc_response</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/analyzer/response.html#Response.calc_response"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.analyzer.response.Response.calc_response" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="symclosestwannier.analyzer.response.Response.calc_spin_moment">
+<span class="sig-name descname"><span class="pre">calc_spin_moment</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/analyzer/response.html#Response.calc_spin_moment"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.analyzer.response.Response.calc_spin_moment" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="symclosestwannier.analyzer.response.Response.set_operators">
+<span class="sig-name descname"><span class="pre">set_operators</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/analyzer/response.html#Response.set_operators"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.analyzer.response.Response.set_operators" title="Link to this definition">#</a></dt>
+<dd><p>Wannier matrix elements, allocations and initializations.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="symclosestwannier.analyzer.response.Response.write_ahc">
+<span class="sig-name descname"><span class="pre">write_ahc</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/analyzer/response.html#Response.write_ahc"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.analyzer.response.Response.write_ahc" title="Link to this definition">#</a></dt>
+<dd><p>write seedname-ahc.dat, seedname-ahc-fermiscan.dat.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="symclosestwannier.analyzer.response.Response.write_gyro_K">
+<span class="sig-name descname"><span class="pre">write_gyro_K</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/analyzer/response.html#Response.write_gyro_K"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.analyzer.response.Response.write_gyro_K" title="Link to this definition">#</a></dt>
+<dd><p>write <a href="#id1"><span class="problematic" id="id2">*</span></a>.dat.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="symclosestwannier.analyzer.response.Response.write_kubo">
+<span class="sig-name descname"><span class="pre">write_kubo</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/analyzer/response.html#Response.write_kubo"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.analyzer.response.Response.write_kubo" title="Link to this definition">#</a></dt>
+<dd><p>write seedname-kubo_H_*.dat, seedname-kubo_A_*.dat.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="symclosestwannier.analyzer.response.Response.write_morb">
+<span class="sig-name descname"><span class="pre">write_morb</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/analyzer/response.html#Response.write_morb"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.analyzer.response.Response.write_morb" title="Link to this definition">#</a></dt>
+<dd><p>write seedname-morb.dat (one Fermi energy) or seedname-morb-fermiscan.dat, in Bohr magnetons per cell.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="symclosestwannier.analyzer.response.Response.write_sc">
+<span class="sig-name descname"><span class="pre">write_sc</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/analyzer/response.html#Response.write_sc"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.analyzer.response.Response.write_sc" title="Link to this definition">#</a></dt>
+<dd><p>write seedname-sc_abc.dat, the shift current sigma_abc(omega) in A/V^2 (sigma_abc = sigma_acb).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="symclosestwannier.analyzer.response.Response.write_shc">
+<span class="sig-name descname"><span class="pre">write_shc</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/analyzer/response.html#Response.write_shc"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.analyzer.response.Response.write_shc" title="Link to this definition">#</a></dt>
+<dd><p>write seedname-shc.dat, seedname-shc-fermiscan.dat.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="symclosestwannier.analyzer.response.Response.write_spin">
+<span class="sig-name descname"><span class="pre">write_spin</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/symclosestwannier/analyzer/response.html#Response.write_spin"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#symclosestwannier.analyzer.response.Response.write_spin" title="Link to this definition">#</a></dt>
+<dd><p>write seedname-spin.dat.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>filename</strong> (<em>str</em>) – file name.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="symclosestwannier.analyzer.response.Response.operators">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">operators</span></span><a class="headerlink" href="#symclosestwannier.analyzer.response.Response.operators" title="Link to this definition">#</a></dt>
+<dd><p>operators in the gauge used by get_response.</p>
+<p>The stored operators are in the wannier90 convention (v_R is built in the gauge given by tb_gauge); for
+tb_gauge = true they are converted here, so that operators added by a later set_operators are converted as well.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./src/api"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.analyzer.analyzer"><code class="docutils literal notranslate"><span class="pre">analyzer()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.band.Band"><code class="docutils literal notranslate"><span class="pre">Band</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.band.Band.calc_band"><code class="docutils literal notranslate"><span class="pre">Band.calc_band()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.band.Band.set_operators"><code class="docutils literal notranslate"><span class="pre">Band.set_operators()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.get_band.dos_main"><code class="docutils literal notranslate"><span class="pre">dos_main()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.get_band.geninterp_main"><code class="docutils literal notranslate"><span class="pre">geninterp_main()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.get_band.k_path"><code class="docutils literal notranslate"><span class="pre">k_path()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.get_band.k_slice"><code class="docutils literal notranslate"><span class="pre">k_slice()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.get_band.spin_get_moment"><code class="docutils literal notranslate"><span class="pre">spin_get_moment()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.get_response.abs_ordinary_optical_cond_main"><code class="docutils literal notranslate"><span class="pre">abs_ordinary_optical_cond_main()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.get_response.absorptive_dichroic_optical_cond_main"><code class="docutils literal notranslate"><span class="pre">absorptive_dichroic_optical_cond_main()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.get_response.berry_get_ahc"><code class="docutils literal notranslate"><span class="pre">berry_get_ahc()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.get_response.berry_get_imf_klist"><code class="docutils literal notranslate"><span class="pre">berry_get_imf_klist()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.get_response.berry_get_imfgh_klist"><code class="docutils literal notranslate"><span class="pre">berry_get_imfgh_klist()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.get_response.berry_get_imfgh_matrix_klist"><code class="docutils literal notranslate"><span class="pre">berry_get_imfgh_matrix_klist()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.get_response.berry_get_js_k"><code class="docutils literal notranslate"><span class="pre">berry_get_js_k()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.get_response.berry_get_kubo"><code class="docutils literal notranslate"><span class="pre">berry_get_kubo()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.get_response.berry_get_kubo_tb"><code class="docutils literal notranslate"><span class="pre">berry_get_kubo_tb()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.get_response.berry_get_morb"><code class="docutils literal notranslate"><span class="pre">berry_get_morb()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.get_response.berry_get_sc"><code class="docutils literal notranslate"><span class="pre">berry_get_sc()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.get_response.berry_get_sc_klist"><code class="docutils literal notranslate"><span class="pre">berry_get_sc_klist()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.get_response.berry_get_shc"><code class="docutils literal notranslate"><span class="pre">berry_get_shc()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.get_response.berry_get_shc_klist"><code class="docutils literal notranslate"><span class="pre">berry_get_shc_klist()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.get_response.berry_main"><code class="docutils literal notranslate"><span class="pre">berry_main()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.get_response.boltzwann_main"><code class="docutils literal notranslate"><span class="pre">boltzwann_main()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.get_response.gyrotropic_get_K"><code class="docutils literal notranslate"><span class="pre">gyrotropic_get_K()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.get_response.gyrotropic_main"><code class="docutils literal notranslate"><span class="pre">gyrotropic_main()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.get_response.kmesh_spacing_mesh"><code class="docutils literal notranslate"><span class="pre">kmesh_spacing_mesh()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.get_response.kubo_frequencies"><code class="docutils literal notranslate"><span class="pre">kubo_frequencies()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.get_response.orb_matrix_klist"><code class="docutils literal notranslate"><span class="pre">orb_matrix_klist()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.get_response.orbital_magnetization_main"><code class="docutils literal notranslate"><span class="pre">orbital_magnetization_main()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.get_response.spin_moment_main"><code class="docutils literal notranslate"><span class="pre">spin_moment_main()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.get_response.utility_w0gauss"><code class="docutils literal notranslate"><span class="pre">utility_w0gauss()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.get_response.wham_get_D_h"><code class="docutils literal notranslate"><span class="pre">wham_get_D_h()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.get_response.wham_get_JJp_JJm_list"><code class="docutils literal notranslate"><span class="pre">wham_get_JJp_JJm_list()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.get_response.wham_get_deleig"><code class="docutils literal notranslate"><span class="pre">wham_get_deleig()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.get_response.wham_get_deleig_a"><code class="docutils literal notranslate"><span class="pre">wham_get_deleig_a()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.get_response.wham_get_eig_UU_HH_JJlist"><code class="docutils literal notranslate"><span class="pre">wham_get_eig_UU_HH_JJlist()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.get_response.wham_get_occ_mat_list"><code class="docutils literal notranslate"><span class="pre">wham_get_occ_mat_list()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.response.Response"><code class="docutils literal notranslate"><span class="pre">Response</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.response.Response.calc_response"><code class="docutils literal notranslate"><span class="pre">Response.calc_response()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.response.Response.calc_spin_moment"><code class="docutils literal notranslate"><span class="pre">Response.calc_spin_moment()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.response.Response.set_operators"><code class="docutils literal notranslate"><span class="pre">Response.set_operators()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.response.Response.write_ahc"><code class="docutils literal notranslate"><span class="pre">Response.write_ahc()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.response.Response.write_gyro_K"><code class="docutils literal notranslate"><span class="pre">Response.write_gyro_K()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.response.Response.write_kubo"><code class="docutils literal notranslate"><span class="pre">Response.write_kubo()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.response.Response.write_morb"><code class="docutils literal notranslate"><span class="pre">Response.write_morb()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.response.Response.write_sc"><code class="docutils literal notranslate"><span class="pre">Response.write_sc()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.response.Response.write_shc"><code class="docutils literal notranslate"><span class="pre">Response.write_shc()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.response.Response.write_spin"><code class="docutils literal notranslate"><span class="pre">Response.write_spin()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#symclosestwannier.analyzer.response.Response.operators"><code class="docutils literal notranslate"><span class="pre">Response.operators</span></code></a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Rikuto Oiwa
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2021-.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

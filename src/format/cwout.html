@@ -1,0 +1,748 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>seedname.cwout &#8212; SymClosestWannier</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=9c3e77be" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=34ddd5e8" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="../../_static/scripts/fontawesome.js?digest=55c26ed414f5f8a31ebb"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb" />
+
+    <script src="../../_static/documentation_options.js?v=a8e58a58"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js?v=b8b12719"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'src/format/cwout';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <script src="../../_static/custom.js?v=9c3a2667"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="seedname.hdf5 [default]" href="hdf5.html" />
+    <link rel="prev" title="seedname.cwin [default]" href="cwin.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  
+    
+    <script src="../../_static/searchtools.js"></script>
+    <script src="../../_static/language_data.js"></script>
+    <script src="../../searchindex.js"></script>
+  
+  </head>
+  <body data-default-mode="">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../README.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">SymClosestWannier</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">MultiPie</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../multipie.html">Construction of SAMBs by using MultiPie</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Closest Wannier method</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../cw.html">Closest Wannier method</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Construction of symmetry-adapted Closest Wannier model</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../scw.html">Symmetry-adapted Closest Wannier model</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">File Format</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="cwin.html">seedname.cwin [default]</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">seedname.cwout</a></li>
+<li class="toctree-l1"><a class="reference internal" href="hdf5.html">seedname.hdf5 [default]</a></li>
+
+
+
+<li class="toctree-l1"><a class="reference internal" href="hr.html">seedname_hr.dat.cw</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sr.html">seedname_sr.dat.cw</a></li>
+<li class="toctree-l1"><a class="reference internal" href="z.html">seedname_z.dat.cw</a></li>
+<li class="toctree-l1"><a class="reference internal" href="s.html">seedname_s.dat.cw</a></li>
+<li class="toctree-l1"><a class="reference internal" href="n.html">seedname_n.dat.cw</a></li>
+<li class="toctree-l1"><a class="reference internal" href="convention.html">Phase conventions of real-space operators</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/tutorial01.html">CH4: Closest Wannier tight-binding model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/tutorial02.html">Graphene: Closest Wannier tight-binding model</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">API</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../api/cw.html">Closest Wannier</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/analyzer.html">Analyzer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/util.html">Utility</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+<a href="https://github.com/CMT-MU/SymClosestWannier.git" target="_blank"
+   class="btn btn-sm btn-source-repository-button"
+   title="Source repository"
+   data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+
+</a>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>seedname.cwout</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="seedname-cwout">
+<h1>seedname.cwout<a class="headerlink" href="#seedname-cwout" title="Link to this heading">#</a></h1>
+<p>Example standard output for <a class="reference external" href="https://github.com/CMT-MU/SymClosestWannier/blob/main/tutorials/tutorial02/graphene.cwin">graphene</a> is given here.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>
+             <span class="o">+---------------------------------------------------+</span>
+             <span class="o">|</span>                                                   <span class="o">|</span>
+             <span class="o">|</span>                <span class="n">SymClosestWannier</span>                  <span class="o">|</span>
+             <span class="o">|</span>                                                   <span class="o">|</span>
+             <span class="o">+---------------------------------------------------+</span>
+             <span class="o">|</span>                                                   <span class="o">|</span>
+             <span class="o">|</span>         <span class="n">Welcome</span> <span class="n">to</span> <span class="n">the</span> <span class="n">Symmetry</span><span class="o">-</span><span class="n">Adapted</span>           <span class="o">|</span>
+             <span class="o">|</span>        <span class="n">Closest</span> <span class="n">Wannier</span> <span class="n">Tight</span><span class="o">-</span><span class="n">Binding</span> <span class="n">code</span>         <span class="o">|</span>
+             <span class="o">|</span>    <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">CMT</span><span class="o">-</span><span class="n">MU</span><span class="o">/</span><span class="n">SymClosestWannier</span>    <span class="o">|</span>
+             <span class="o">|</span>                                                   <span class="o">|</span>
+             <span class="o">|</span>                                                   <span class="o">|</span>
+             <span class="o">|</span>        <span class="n">SymClosestWannier</span> <span class="n">Developer</span> <span class="n">Group</span><span class="p">:</span>         <span class="o">|</span>
+             <span class="o">|</span>          <span class="n">Rikuto</span> <span class="n">Oiwa</span>      <span class="p">(</span><span class="n">RIKEN</span><span class="p">)</span>                 <span class="o">|</span>
+             <span class="o">|</span>          <span class="n">Hiroaki</span> <span class="n">Kusunose</span> <span class="p">(</span><span class="n">Meiji</span> <span class="n">Univ</span><span class="o">.</span><span class="p">)</span>           <span class="o">|</span>
+             <span class="o">|</span>                                                   <span class="o">|</span>
+             <span class="o">|</span>    <span class="n">For</span> <span class="n">more</span> <span class="n">detailed</span> <span class="n">information</span><span class="p">,</span>                 <span class="o">|</span>
+             <span class="o">|</span>    <span class="n">please</span> <span class="n">check</span> <span class="n">the</span> <span class="n">code</span> <span class="n">documentation</span> <span class="ow">and</span> <span class="n">the</span>    <span class="o">|</span>
+             <span class="o">|</span>    <span class="n">README</span> <span class="n">on</span> <span class="n">the</span> <span class="n">GitHub</span> <span class="n">page</span> <span class="n">of</span> <span class="n">the</span> <span class="n">code</span>          <span class="o">|</span>
+             <span class="o">|</span>                                                   <span class="o">|</span>
+             <span class="o">|</span>  <span class="n">Please</span> <span class="n">cite</span>                                      <span class="o">|</span>
+             <span class="o">|</span>                                                   <span class="o">|</span>
+             <span class="o">|</span>  <span class="p">[</span><span class="n">ref</span><span class="p">]</span> <span class="s2">"Symmetry-adapted closest Wannier modeling |</span>
+             <span class="o">|</span>         <span class="n">based</span> <span class="n">on</span> <span class="n">complete</span> <span class="n">multipole</span> <span class="n">basis</span> <span class="nb">set</span><span class="s2">"    |</span>
+             <span class="o">|</span>        <span class="n">Rikuto</span> <span class="n">Oiwa</span><span class="p">,</span> <span class="n">Akane</span> <span class="n">Inda</span><span class="p">,</span> <span class="n">Satoru</span> <span class="n">Hayami</span><span class="p">,</span>    <span class="o">|</span>
+             <span class="o">|</span>        <span class="n">Takuya</span> <span class="n">Nomoto</span><span class="p">,</span> <span class="n">Ryotaro</span> <span class="n">Arita</span><span class="p">,</span>              <span class="o">|</span>
+             <span class="o">|</span>        <span class="n">Hiroaki</span> <span class="n">Kusunose</span><span class="p">,</span>                          <span class="o">|</span>
+             <span class="o">|</span>        <span class="n">Phys</span><span class="o">.</span> <span class="n">Rev</span><span class="o">.</span> <span class="n">B</span> <span class="mi">112</span><span class="p">,</span> <span class="mi">035116</span> <span class="p">(</span><span class="mi">2025</span><span class="p">)</span>            <span class="o">|</span>
+             <span class="o">|</span>                                                   <span class="o">|</span>
+             <span class="o">|</span>  <span class="ow">in</span> <span class="nb">any</span> <span class="n">publications</span> <span class="n">arising</span> <span class="kn">from</span><span class="w"> </span><span class="nn">the</span> <span class="n">use</span> <span class="n">of</span>      <span class="o">|</span>
+             <span class="o">|</span>  <span class="n">this</span> <span class="n">code</span><span class="o">.</span> <span class="n">For</span> <span class="n">the</span> <span class="n">method</span> <span class="n">please</span> <span class="n">cite</span>            <span class="o">|</span>
+             <span class="o">|</span>                                                   <span class="o">|</span>
+             <span class="o">|</span>  <span class="p">[</span><span class="n">ref</span><span class="p">]</span> <span class="s2">"Closest Wannier functions to              |</span>
+             <span class="o">|</span>         <span class="n">a</span> <span class="n">given</span> <span class="nb">set</span> <span class="n">of</span> <span class="n">localized</span> <span class="n">orbitals</span><span class="s2">"        |</span>
+             <span class="o">|</span>         <span class="n">Taisuke</span> <span class="n">Ozaki</span><span class="p">,</span>                            <span class="o">|</span>
+             <span class="o">|</span>         <span class="n">Phys</span><span class="o">.</span> <span class="n">Rev</span><span class="o">.</span> <span class="n">B</span> <span class="mi">110</span><span class="p">,</span> <span class="mi">125115</span><span class="p">,</span> <span class="p">(</span><span class="mi">2024</span><span class="p">)</span><span class="o">.</span>         <span class="o">|</span>
+             <span class="o">|</span>                                                   <span class="o">|</span>
+             <span class="o">|</span>  <span class="p">[</span><span class="n">ref</span><span class="p">]</span> <span class="s2">"Symmetry-adapted modeling for             |</span>
+             <span class="o">|</span>         <span class="n">molecules</span> <span class="ow">and</span> <span class="n">crystals</span><span class="s2">"                   |</span>
+             <span class="o">|</span>  <span class="n">Hiroaki</span> <span class="n">Kusunose</span><span class="p">,</span> <span class="n">Rikuto</span> <span class="n">Oiwa</span><span class="p">,</span> <span class="ow">and</span> <span class="n">Satoru</span> <span class="n">Hayami</span> <span class="o">|</span>
+             <span class="o">|</span>         <span class="n">Phys</span><span class="o">.</span> <span class="n">Rev</span><span class="o">.</span> <span class="n">B</span> <span class="mi">107</span><span class="p">,</span> <span class="mi">195118</span> <span class="p">(</span><span class="mi">2023</span><span class="p">)</span>           <span class="o">|</span>
+             <span class="o">|</span>                                                   <span class="o">|</span>
+             <span class="o">|</span>                                                   <span class="o">|</span>
+             <span class="o">|</span> <span class="n">Copyright</span> <span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="mi">2023</span><span class="o">-</span>                               <span class="o">|</span>
+             <span class="o">|</span>     <span class="n">The</span> <span class="n">SymClosestWannier</span> <span class="n">Developer</span> <span class="n">Group</span> <span class="ow">and</span>     <span class="o">|</span>
+             <span class="o">|</span>        <span class="n">individual</span> <span class="n">contributors</span>                    <span class="o">|</span>
+             <span class="o">|</span>                                                   <span class="o">|</span>
+             <span class="o">|</span>         <span class="n">Release</span><span class="p">:</span> <span class="mf">2.0.7</span>     <span class="mi">15</span><span class="n">th</span> <span class="n">April</span>  <span class="mi">2026</span>       <span class="o">|</span>
+             <span class="o">|</span>                                                   <span class="o">|</span>
+             <span class="o">|</span> <span class="n">This</span> <span class="n">program</span> <span class="ow">is</span> <span class="n">free</span> <span class="n">software</span><span class="p">;</span> <span class="n">you</span> <span class="n">can</span>            <span class="o">|</span>
+             <span class="o">|</span> <span class="n">redistribute</span> <span class="n">it</span> <span class="ow">and</span><span class="o">/</span><span class="ow">or</span> <span class="n">modify</span> <span class="n">it</span> <span class="n">under</span> <span class="n">the</span> <span class="n">terms</span>  <span class="o">|</span>
+             <span class="o">|</span> <span class="n">of</span> <span class="n">the</span> <span class="n">GNU</span> <span class="n">General</span> <span class="n">Public</span> <span class="n">License</span> <span class="k">as</span> <span class="n">published</span> <span class="n">by</span> <span class="o">|</span>
+             <span class="o">|</span> <span class="n">the</span> <span class="n">Free</span> <span class="n">Software</span> <span class="n">Foundation</span><span class="p">;</span> <span class="n">either</span> <span class="n">version</span> <span class="mi">2</span> <span class="n">of</span> <span class="o">|</span>
+             <span class="o">|</span> <span class="n">the</span> <span class="n">License</span><span class="p">,</span> <span class="ow">or</span> <span class="p">(</span><span class="n">at</span> <span class="n">your</span> <span class="n">option</span><span class="p">)</span> <span class="nb">any</span> <span class="n">later</span> <span class="n">version</span><span class="o">|</span>
+             <span class="o">|</span>                                                   <span class="o">|</span>
+             <span class="o">|</span> <span class="n">This</span> <span class="n">program</span> <span class="ow">is</span> <span class="n">distributed</span> <span class="ow">in</span> <span class="n">the</span> <span class="n">hope</span> <span class="n">that</span> <span class="n">it</span>   <span class="o">|</span>
+             <span class="o">|</span> <span class="n">will</span> <span class="n">be</span> <span class="n">useful</span><span class="p">,</span> <span class="n">but</span> <span class="n">WITHOUT</span> <span class="n">ANY</span> <span class="n">WARRANTY</span><span class="p">;</span> <span class="n">without</span> <span class="o">|</span>
+             <span class="o">|</span> <span class="n">even</span> <span class="n">the</span> <span class="n">implied</span> <span class="n">warranty</span> <span class="n">of</span> <span class="n">MERCHANTABILITY</span> <span class="ow">or</span>   <span class="o">|</span>
+             <span class="o">|</span> <span class="n">FITNESS</span> <span class="n">FOR</span> <span class="n">A</span> <span class="n">PARTICULAR</span> <span class="n">PURPOSE</span><span class="o">.</span> <span class="n">See</span> <span class="n">the</span> <span class="n">GNU</span>     <span class="o">|</span>
+             <span class="o">|</span> <span class="n">General</span> <span class="n">Public</span> <span class="n">License</span> <span class="k">for</span> <span class="n">more</span> <span class="n">details</span><span class="o">.</span>          <span class="o">|</span>
+             <span class="o">|</span>                                                   <span class="o">|</span>
+             <span class="o">|</span> <span class="n">You</span> <span class="n">should</span> <span class="n">have</span> <span class="n">received</span> <span class="n">a</span> <span class="n">copy</span> <span class="n">of</span> <span class="n">the</span> <span class="n">GNU</span> <span class="n">General</span><span class="o">|</span>
+             <span class="o">|</span> <span class="n">Public</span> <span class="n">License</span> <span class="n">along</span> <span class="k">with</span> <span class="n">this</span> <span class="n">program</span><span class="p">;</span> <span class="k">if</span> <span class="ow">not</span><span class="p">,</span>   <span class="o">|</span>
+             <span class="o">|</span> <span class="n">write</span> <span class="n">to</span> <span class="n">the</span> <span class="n">Free</span> <span class="n">Software</span> <span class="n">Foundation</span><span class="p">,</span> <span class="n">Inc</span><span class="o">.</span><span class="p">,</span>      <span class="o">|</span>
+             <span class="o">|</span> <span class="mi">675</span> <span class="n">Mass</span> <span class="n">Ave</span><span class="p">,</span> <span class="n">Cambridge</span><span class="p">,</span> <span class="n">MA</span> <span class="mi">02139</span><span class="p">,</span> <span class="n">USA</span><span class="o">.</span>           <span class="o">|</span>
+             <span class="o">|</span>                                                   <span class="o">|</span>
+             <span class="o">+---------------------------------------------------+</span>
+             <span class="o">|</span>    <span class="n">Execution</span> <span class="n">started</span> <span class="n">on</span> <span class="mi">2026</span><span class="o">/</span><span class="mi">10</span><span class="o">/</span><span class="mi">13</span> <span class="mi">19</span><span class="p">:</span><span class="mi">10</span><span class="p">:</span><span class="mi">06</span>       <span class="o">|</span>
+             <span class="o">+---------------------------------------------------+</span>
+    
+
+
+                                   <span class="o">------</span>
+                                   <span class="n">SYSTEM</span>
+                                   <span class="o">------</span>
+
+                            <span class="n">Lattice</span> <span class="n">Vectors</span> <span class="p">(</span><span class="n">Ang</span><span class="p">)</span>
+                <span class="n">a_1</span>    <span class="mf">2.435000</span>   <span class="mf">0.000000</span>   <span class="mf">0.000000</span>
+                <span class="n">a_2</span>    <span class="o">-</span><span class="mf">1.217500</span>   <span class="mf">2.108772</span>   <span class="mf">0.000000</span>
+                <span class="n">a_3</span>    <span class="mf">0.000000</span>   <span class="mf">0.000000</span>   <span class="mf">9.740000</span>
+
+                <span class="n">Unit</span> <span class="n">Cell</span> <span class="n">Volume</span><span class="p">:</span>      <span class="mf">50.01353</span>  <span class="p">(</span><span class="n">Ang</span><span class="o">^</span><span class="mi">3</span><span class="p">)</span>
+
+                      <span class="n">Reciprocal</span><span class="o">-</span><span class="n">Space</span> <span class="n">Vectors</span> <span class="p">(</span><span class="n">Ang</span><span class="o">^-</span><span class="mi">1</span><span class="p">)</span>
+                <span class="n">b_1</span>    <span class="mf">2.580364</span>   <span class="mf">1.489774</span>   <span class="mf">0.000000</span>
+                <span class="n">b_2</span>    <span class="mf">0.000000</span>   <span class="mf">2.979547</span>   <span class="mf">0.000000</span>
+                <span class="n">b_3</span>    <span class="mf">0.000000</span>   <span class="mf">0.000000</span>   <span class="mf">0.645091</span>
+
+    
+<span class="o">*----------------------------------------------------------------------------*</span>
+<span class="o">|</span>   <span class="n">Site</span>       <span class="n">Fractional</span> <span class="n">Coordinate</span>          <span class="n">Cartesian</span> <span class="n">Coordinate</span> <span class="p">(</span><span class="n">Ang</span><span class="p">)</span>     <span class="o">|</span>
+<span class="o">+----------------------------------------------------------------------------+</span>
+    
+  <span class="n">C</span>   <span class="mi">1</span>   <span class="mf">0.66667</span>   <span class="mf">0.33333</span>   <span class="mf">0.00000</span>    <span class="o">|</span>    <span class="mf">1.21750</span>   <span class="mf">0.70292</span>   <span class="mf">0.00000</span>
+    
+  <span class="n">C</span>   <span class="mi">2</span>   <span class="mf">0.33333</span>   <span class="mf">0.66667</span>   <span class="mf">0.00000</span>    <span class="o">|</span>    <span class="mf">0.00000</span>   <span class="mf">1.40585</span>   <span class="mf">0.00000</span>
+    
+<span class="o">*----------------------------------------------------------------------------*</span>
+
+
+                                <span class="o">------------</span>
+                                <span class="n">K</span><span class="o">-</span><span class="n">POINT</span> <span class="n">GRID</span>
+                                <span class="o">------------</span>
+
+              <span class="n">Grid</span> <span class="n">size</span> <span class="o">=</span>  <span class="mi">19</span> <span class="n">x</span> <span class="mi">19</span> <span class="n">x</span> <span class="mi">1</span>      <span class="n">Total</span> <span class="n">points</span> <span class="o">=</span> <span class="mi">361</span>
+
+
+                               <span class="o">--------------</span>
+                               <span class="n">CLOSESTWANNIER</span>
+                               <span class="o">--------------</span>
+    
+<span class="o">*----------------------------------------------------------------------------*</span>
+<span class="o">|</span> <span class="n">seedname</span>                            <span class="p">:</span>                             <span class="n">graphene</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">restart</span>                             <span class="p">:</span>                                   <span class="n">cw</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">outdir</span>                              <span class="p">:</span>                                    <span class="o">.</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">disentangle</span>                         <span class="p">:</span>                                 <span class="kc">True</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">proj_min</span>                            <span class="p">:</span>                                  <span class="mf">0.1</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">cwf_mu_max</span>                          <span class="p">:</span>                                 <span class="mf">10.0</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">cwf_mu_min</span>                          <span class="p">:</span>                                <span class="o">-</span><span class="mf">30.0</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">cwf_sigma_max</span>                       <span class="p">:</span>                                  <span class="mf">3.0</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">cwf_sigma_min</span>                       <span class="p">:</span>                                  <span class="mf">0.0</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">cwf_delta</span>                           <span class="p">:</span>                                <span class="mf">1e-12</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">svd</span>                                 <span class="p">:</span>                                 <span class="kc">True</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">verbose</span>                             <span class="p">:</span>                                 <span class="kc">True</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">parallel</span>                            <span class="p">:</span>                                <span class="kc">False</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">formatter</span>                           <span class="p">:</span>                                <span class="kc">False</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">calc_spreads</span>                        <span class="p">:</span>                                <span class="kc">False</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">transl_inv</span>                          <span class="p">:</span>                                <span class="kc">False</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">use_degen_pert</span>                      <span class="p">:</span>                                <span class="kc">False</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">degen_thr</span>                           <span class="p">:</span>                               <span class="mf">0.0001</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">tb_gauge</span>                            <span class="p">:</span>                                <span class="kc">False</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">tb_position</span>                         <span class="p">:</span>                                <span class="kc">False</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">write_info_data</span>                     <span class="p">:</span>                                 <span class="kc">True</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">write_hr</span>                            <span class="p">:</span>                                 <span class="kc">True</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">write_sr</span>                            <span class="p">:</span>                                <span class="kc">False</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">write_u_matrices</span>                    <span class="p">:</span>                                <span class="kc">False</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">write_rmn</span>                           <span class="p">:</span>                                <span class="kc">False</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">write_vmn</span>                           <span class="p">:</span>                                <span class="kc">False</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">write_tb</span>                            <span class="p">:</span>                                <span class="kc">False</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">write_eig</span>                           <span class="p">:</span>                                <span class="kc">False</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">write_amn</span>                           <span class="p">:</span>                                <span class="kc">False</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">write_windowed_amn</span>                  <span class="p">:</span>                                 <span class="kc">True</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">write_mmn</span>                           <span class="p">:</span>                                <span class="kc">False</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">write_spn</span>                           <span class="p">:</span>                                <span class="kc">False</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">symmetrization</span>                      <span class="p">:</span>                                 <span class="kc">True</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">mp_outdir</span>                           <span class="p">:</span>                             <span class="n">graphene</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">mp_seedname</span>                         <span class="p">:</span>                             <span class="n">graphene</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">ket_amn</span>                             <span class="p">:</span>                                      <span class="o">|</span>
+<span class="o">|</span>                                                          <span class="p">[</span><span class="s1">'C'</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">'pz'</span><span class="p">]</span> <span class="o">|</span>
+<span class="o">|</span>                                                          <span class="p">[</span><span class="s1">'C'</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">'pz'</span><span class="p">]</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">irreps</span>                              <span class="p">:</span>                                  <span class="nb">all</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">N1</span>                                  <span class="p">:</span>                                   <span class="mi">50</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">calc_dos</span>                            <span class="p">:</span>                                <span class="kc">False</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">dos_kmesh</span>                           <span class="p">:</span>                            <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">dos_num_fermi</span>                       <span class="p">:</span>                                   <span class="mi">50</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">dos_smr_en_width</span>                    <span class="p">:</span>                                <span class="mf">0.001</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">calc_cohp</span>                           <span class="p">:</span>                                <span class="kc">False</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">calc_cohp_samb_decomp</span>               <span class="p">:</span>                                <span class="kc">False</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">cohp_bond_length_max</span>                <span class="p">:</span>                                    <span class="mi">6</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">cohp_bond_length_min</span>                <span class="p">:</span>                                    <span class="mi">0</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">cohp_kmesh</span>                          <span class="p">:</span>                            <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">cohp_num_fermi</span>                      <span class="p">:</span>                                   <span class="mi">50</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">cohp_smr_en_width</span>                   <span class="p">:</span>                                <span class="mf">0.001</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">calc_spin_2d</span>                        <span class="p">:</span>                                <span class="kc">False</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">zeeman_interaction</span>                  <span class="p">:</span>                                <span class="kc">False</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">magnetic_field</span>                      <span class="p">:</span>                                  <span class="mf">0.0</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">magnetic_field_theta</span>                <span class="p">:</span>                                  <span class="mf">0.0</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">magnetic_field_phi</span>                  <span class="p">:</span>                                  <span class="mf">0.0</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">g_factor</span>                            <span class="p">:</span>                                  <span class="mf">2.0</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">fermi_surface</span>                       <span class="p">:</span>                                <span class="kc">False</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">fermi_surface_kmesh</span>                 <span class="p">:</span>           <span class="p">[[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">]]</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">fermi_surface_view</span>                  <span class="p">:</span>                            <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">fermi_surface_const</span>                 <span class="p">:</span>                                  <span class="mf">0.0</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">lindhard</span>                            <span class="p">:</span>                                <span class="kc">False</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">lindhard_freq</span>                       <span class="p">:</span>                                  <span class="mf">0.0</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">lindhard_smr_fixed_en_width</span>         <span class="p">:</span>                                 <span class="mf">0.01</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">lindhard_kmesh</span>                      <span class="p">:</span>                            <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">lindhard_surface</span>                    <span class="p">:</span>                                <span class="kc">False</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">lindhard_surface_qmesh</span>              <span class="p">:</span>           <span class="p">[[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">]]</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">lindhard_surface_view</span>               <span class="p">:</span>                            <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">lindhard_surface_const</span>              <span class="p">:</span>                                  <span class="mf">0.0</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">Nq1</span>                                 <span class="p">:</span>                                   <span class="mi">30</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">temperature</span>                         <span class="p">:</span>                                  <span class="mf">0.0</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">hr_input</span>                            <span class="p">:</span>                                      <span class="o">|</span>
+<span class="o">|</span> <span class="n">use_tb_approximation</span>                <span class="p">:</span>                                <span class="kc">False</span> <span class="o">|</span>
+<span class="o">*----------------------------------------------------------------------------*</span>
+
+
+<span class="o">*----------------------------------------------------------------------------*</span>
+       <span class="n">Starting</span> <span class="n">a</span> <span class="n">new</span> <span class="n">SymClosestWannier</span> <span class="n">calculation</span> <span class="n">of</span> <span class="s1">''</span><span class="n">graphene</span><span class="s1">''</span>
+<span class="o">*----------------------------------------------------------------------------*</span>
+
+
+   <span class="o">-</span> <span class="n">excluding</span> <span class="n">bands</span> <span class="k">with</span> <span class="n">low</span> <span class="n">projectability</span> <span class="p">(</span><span class="n">proj_min</span> <span class="o">=</span> <span class="mf">0.1</span><span class="p">)</span> <span class="o">...</span> <span class="n">done</span> <span class="p">(</span> <span class="mf">0.01</span> <span class="p">[</span><span class="n">sec</span><span class="p">]</span> <span class="p">)</span><span class="o">.</span>
+   <span class="o">-</span> <span class="n">disentanglement</span> <span class="o">...</span> <span class="n">done</span> <span class="p">(</span> <span class="mf">0.0</span> <span class="p">[</span><span class="n">sec</span><span class="p">]</span> <span class="p">)</span><span class="o">.</span>
+   <span class="o">-</span> <span class="n">constructing</span> <span class="n">TB</span> <span class="n">Hamiltonian</span> <span class="o">...</span> <span class="n">done</span> <span class="p">(</span> <span class="mf">0.067</span> <span class="p">[</span><span class="n">sec</span><span class="p">]</span> <span class="p">)</span><span class="o">.</span>
+
+    <span class="o">*</span> <span class="n">band</span> <span class="n">distance</span> <span class="n">between</span> <span class="n">DFT</span> <span class="ow">and</span> <span class="n">Wannier</span> <span class="n">bands</span><span class="p">:</span>
+     <span class="o">-</span> <span class="n">eta_0</span>     <span class="o">=</span> <span class="mf">1.761368254533177e-12</span> <span class="p">[</span><span class="n">meV</span><span class="p">]</span>
+     <span class="o">-</span> <span class="n">eta_0_max</span> <span class="o">=</span> <span class="mf">7.105427357601002e-12</span> <span class="p">[</span><span class="n">meV</span><span class="p">]</span>
+     <span class="o">-</span> <span class="n">eta_2</span>     <span class="o">=</span> <span class="mf">1.6349972540977294e-12</span> <span class="p">[</span><span class="n">meV</span><span class="p">]</span>
+     <span class="o">-</span> <span class="n">eta_2_max</span> <span class="o">=</span> <span class="mf">7.105427357601002e-12</span> <span class="p">[</span><span class="n">meV</span><span class="p">]</span>
+     <span class="o">-</span> <span class="n">eta_5</span>     <span class="o">=</span> <span class="mf">1.5502689802867415e-12</span> <span class="p">[</span><span class="n">meV</span><span class="p">]</span>
+     <span class="o">-</span> <span class="n">eta_5_max</span> <span class="o">=</span> <span class="mf">7.105427357601002e-12</span> <span class="p">[</span><span class="n">meV</span><span class="p">]</span>
+<span class="n">done</span> <span class="p">(</span> <span class="mf">0.008</span> <span class="p">[</span><span class="n">sec</span><span class="p">]</span> <span class="p">)</span><span class="o">.</span>
+
+    <span class="o">*</span> <span class="n">Occupancy</span><span class="p">:</span>
+     <span class="n">idx</span>        <span class="n">occupancy</span> <span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="n">unit</span><span class="o">-</span><span class="n">cell</span><span class="p">)</span>
+     <span class="mi">1</span>             <span class="mf">0.50000000</span>
+     <span class="mi">2</span>             <span class="mf">0.50000000</span>
+     <span class="n">Sum</span>             <span class="mf">1.00000000</span>
+<span class="n">done</span> <span class="p">(</span> <span class="mf">0.007</span> <span class="p">[</span><span class="n">sec</span><span class="p">]</span> <span class="p">)</span><span class="o">.</span>
+   <span class="o">-</span> <span class="n">symmetrization</span> <span class="o">...</span> 
+    <span class="o">-</span> <span class="n">creating</span> <span class="n">combined</span> <span class="n">samb</span> <span class="n">matrix</span> <span class="o">...</span> 
+<span class="n">done</span> <span class="p">(</span> <span class="mf">0.543</span> <span class="p">[</span><span class="n">sec</span><span class="p">]</span> <span class="p">)</span><span class="o">.</span>
+    <span class="o">-</span> <span class="n">decomposing</span> <span class="n">Hamiltonian</span> <span class="k">as</span> <span class="n">linear</span> <span class="n">combination</span> <span class="n">of</span> <span class="n">SAMBs</span> <span class="o">...</span> <span class="n">done</span> <span class="p">(</span> <span class="mf">0.0</span> <span class="p">[</span><span class="n">sec</span><span class="p">]</span> <span class="p">)</span><span class="o">.</span>
+    <span class="o">-</span> <span class="n">decomposing</span> <span class="n">overlap</span> <span class="k">as</span> <span class="n">linear</span> <span class="n">combination</span> <span class="n">of</span> <span class="n">SAMBs</span> <span class="o">...</span> <span class="n">done</span> <span class="p">(</span> <span class="mf">0.001</span> <span class="p">[</span><span class="n">sec</span><span class="p">]</span> <span class="p">)</span><span class="o">.</span>
+    <span class="o">-</span> <span class="n">decomposing</span> <span class="n">non</span><span class="o">-</span><span class="n">orthogonal</span> <span class="n">Hamiltonian</span> <span class="k">as</span> <span class="n">linear</span> <span class="n">combination</span> <span class="n">of</span> <span class="n">SAMBs</span> <span class="o">...</span> <span class="n">done</span> <span class="p">(</span> <span class="mf">0.0</span> <span class="p">[</span><span class="n">sec</span><span class="p">]</span> <span class="p">)</span><span class="o">.</span>
+    <span class="o">-</span> <span class="n">decomposing</span> <span class="n">electronic</span> <span class="n">density</span> <span class="k">as</span> <span class="n">linear</span> <span class="n">combination</span> <span class="n">of</span> <span class="n">SAMBs</span> <span class="o">...</span> <span class="n">done</span> <span class="p">(</span> <span class="mf">0.0</span> <span class="p">[</span><span class="n">sec</span><span class="p">]</span> <span class="p">)</span><span class="o">.</span>
+<span class="n">done</span> <span class="p">(</span> <span class="mf">0.001</span> <span class="p">[</span><span class="n">sec</span><span class="p">]</span> <span class="p">)</span><span class="o">.</span>
+    <span class="o">-</span> <span class="n">constructing</span> <span class="n">symmetrized</span> <span class="n">TB</span> <span class="n">Hamiltonian</span> <span class="o">...</span> <span class="n">done</span> <span class="p">(</span> <span class="mf">0.031</span> <span class="p">[</span><span class="n">sec</span><span class="p">]</span> <span class="p">)</span><span class="o">.</span>
+    <span class="o">-</span> <span class="n">evaluating</span> <span class="n">fitting</span> <span class="n">accuracy</span> <span class="o">...</span> 
+     <span class="o">*</span> <span class="n">MAE</span> <span class="n">of</span> <span class="n">eigen</span> <span class="n">values</span> <span class="n">between</span> <span class="n">CW</span> <span class="ow">and</span> <span class="n">Symmetry</span><span class="o">-</span><span class="n">Adapted</span> <span class="n">CW</span> <span class="n">models</span> <span class="p">(</span><span class="n">grid</span><span class="p">)</span> <span class="o">=</span> <span class="mf">47.7270</span> <span class="p">[</span><span class="n">meV</span><span class="p">]</span> 
+     <span class="o">*</span> <span class="n">MAE</span> <span class="n">of</span> <span class="n">eigen</span> <span class="n">values</span> <span class="n">between</span> <span class="n">DFT</span> <span class="ow">and</span> <span class="n">Symmetry</span><span class="o">-</span><span class="n">Adapted</span> <span class="n">CW</span> <span class="n">models</span> <span class="p">(</span><span class="n">grid</span><span class="p">)</span> <span class="o">=</span> <span class="mf">47.7270</span> <span class="p">[</span><span class="n">meV</span><span class="p">]</span> 
+     <span class="o">*</span> <span class="n">MAE</span> <span class="n">of</span> <span class="n">eigen</span> <span class="n">values</span> <span class="n">between</span> <span class="n">CW</span> <span class="ow">and</span> <span class="n">Symmetry</span><span class="o">-</span><span class="n">Adapted</span> <span class="n">CW</span> <span class="n">models</span> <span class="p">(</span><span class="n">path</span><span class="p">)</span> <span class="o">=</span> <span class="mf">51.2897</span> <span class="p">[</span><span class="n">meV</span><span class="p">]</span>
+
+    <span class="o">-</span> <span class="n">band</span> <span class="n">energy</span> 
+     <span class="o">*</span> <span class="n">CW</span><span class="p">:</span> <span class="o">-</span><span class="mf">10.496512108654828</span> 
+     <span class="o">*</span> <span class="n">SCW</span><span class="p">:</span> <span class="o">-</span><span class="mf">10.478675214847124</span> 
+     <span class="o">*</span> <span class="n">SCW2</span><span class="p">:</span> <span class="o">-</span><span class="mf">4.441068212482784</span> 
+
+
+
+<span class="o">*----------------------------------------------------------------------------*</span>
+                               <span class="n">Output</span> <span class="n">results</span>
+<span class="o">*----------------------------------------------------------------------------*</span>
+
+
+
+  <span class="o">*</span> <span class="n">calculating</span> <span class="n">band</span> <span class="n">dispersion</span> <span class="o">...</span> <span class="n">done</span> <span class="p">(</span> <span class="mf">0.202</span> <span class="p">[</span><span class="n">sec</span><span class="p">]</span> <span class="p">)</span><span class="o">.</span>
+
+
+  <span class="o">*</span> <span class="n">total</span> <span class="n">elapsed_time</span><span class="p">:</span> <span class="p">(</span> <span class="mf">0.203</span> <span class="p">[</span><span class="n">sec</span><span class="p">]</span> <span class="p">)</span><span class="o">.</span>
+
+
+<span class="o">*----------------------------------------------------------------------------*</span>
+                              <span class="n">Output</span><span class="p">:</span> <span class="n">All</span> <span class="n">done</span>
+<span class="o">*----------------------------------------------------------------------------*</span>
+
+
+  <span class="o">*</span> <span class="n">total</span> <span class="n">elapsed_time</span><span class="p">:</span> <span class="p">(</span> <span class="mf">2.209</span> <span class="p">[</span><span class="n">sec</span><span class="p">]</span> <span class="p">)</span><span class="o">.</span>
+
+
+<span class="o">*----------------------------------------------------------------------------*</span>
+                             <span class="n">cw_model</span><span class="p">:</span> <span class="n">All</span> <span class="n">done</span>
+<span class="o">*----------------------------------------------------------------------------*</span>
+</pre></div>
+</div>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./src/format"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Rikuto Oiwa
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2021-.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

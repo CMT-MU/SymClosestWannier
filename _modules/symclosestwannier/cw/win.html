@@ -1,0 +1,1158 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>symclosestwannier.cw.win &#8212; SymClosestWannier</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../_static/styles/theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css?v=9c3e77be" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/custom.css?v=34ddd5e8" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="../../../_static/scripts/fontawesome.js?digest=55c26ed414f5f8a31ebb"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb" />
+
+    <script src="../../../_static/documentation_options.js?v=a8e58a58"></script>
+    <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../../_static/togglebutton.js?v=b8b12719"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/symclosestwannier/cw/win';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <script src="../../../_static/custom.js?v=9c3a2667"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  
+    
+    <script src="../../../_static/searchtools.js"></script>
+    <script src="../../../_static/language_data.js"></script>
+    <script src="../../../searchindex.js"></script>
+  
+  </head>
+  <body data-default-mode="">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../../README.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">SymClosestWannier</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">MultiPie</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../../src/multipie.html">Construction of SAMBs by using MultiPie</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Closest Wannier method</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../../src/cw.html">Closest Wannier method</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Construction of symmetry-adapted Closest Wannier model</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../../src/scw.html">Symmetry-adapted Closest Wannier model</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">File Format</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../../src/format/cwin.html">seedname.cwin [default]</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/format/cwout.html">seedname.cwout</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/format/hdf5.html">seedname.hdf5 [default]</a></li>
+
+
+
+<li class="toctree-l1"><a class="reference internal" href="../../../src/format/hr.html">seedname_hr.dat.cw</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/format/sr.html">seedname_sr.dat.cw</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/format/z.html">seedname_z.dat.cw</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/format/s.html">seedname_s.dat.cw</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/format/n.html">seedname_n.dat.cw</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/format/convention.html">Phase conventions of real-space operators</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../../src/tutorials/tutorial01.html">CH4: Closest Wannier tight-binding model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/tutorials/tutorial02.html">Graphene: Closest Wannier tight-binding model</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">API</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../../src/api/cw.html">Closest Wannier</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/api/analyzer.html">Analyzer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/api/util.html">Utility</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+<a href="https://github.com/CMT-MU/SymClosestWannier.git" target="_blank"
+   class="btn btn-sm btn-source-repository-button"
+   title="Source repository"
+   data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+
+</a>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1></h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <h1>Source code for symclosestwannier.cw.win</h1><div class="highlight"><pre>
+<span></span><span class="sd">"""</span>
+<span class="sd">Win manages input file for wannier90.x, seedname.win file.</span>
+<span class="sd">"""</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">symclosestwannier.util.exceptions</span><span class="w"> </span><span class="kn">import</span> <span class="n">SymCWFileNotFoundError</span><span class="p">,</span> <span class="n">SymCWInputError</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">symclosestwannier.util.utility</span><span class="w"> </span><span class="kn">import</span> <span class="n">shift_into_cell</span>
+
+
+<span class="n">_default</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">"seedname"</span><span class="p">:</span> <span class="s2">"cwannier"</span><span class="p">,</span>
+    <span class="s2">"num_k"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="s2">"num_bands"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="s2">"num_wann"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="c1">#</span>
+    <span class="s2">"dis_num_iter"</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="s2">"num_iter"</span><span class="p">:</span> <span class="mi">200</span><span class="p">,</span>
+    <span class="s2">"dis_froz_max"</span><span class="p">:</span> <span class="o">+</span><span class="mi">100000</span><span class="p">,</span>
+    <span class="s2">"dis_froz_min"</span><span class="p">:</span> <span class="o">-</span><span class="mi">100000</span><span class="p">,</span>
+    <span class="s2">"dis_win_max"</span><span class="p">:</span> <span class="o">+</span><span class="mi">100000</span><span class="p">,</span>
+    <span class="s2">"dis_win_min"</span><span class="p">:</span> <span class="o">-</span><span class="mi">100000</span><span class="p">,</span>
+    <span class="s2">"dis_mix_ratio"</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span>
+    <span class="s2">"exclude_bands"</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="c1">#</span>
+    <span class="s2">"mp_grid"</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
+    <span class="s2">"ws_distance_tol"</span><span class="p">:</span> <span class="mf">1.0e-5</span><span class="p">,</span>
+    <span class="s2">"ws_search_size"</span><span class="p">:</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span>
+    <span class="s2">"kpoints"</span><span class="p">:</span> <span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]],</span>
+    <span class="s2">"kpoint"</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="s2">"kpoint_path"</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="s2">"unit_cell_cart"</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="s2">"atoms_frac"</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="s2">"atoms_cart"</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="s2">"spinors"</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="s2">"spin_moment"</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="s2">"spn_formatted"</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="c1">#</span>
+    <span class="s2">"kmesh"</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
+    <span class="s2">"kmesh_spacing"</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
+    <span class="s2">"adpt_smr"</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="s2">"adpt_smr_fac"</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span>
+    <span class="s2">"adpt_smr_max"</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">,</span>
+    <span class="s2">"smr_type"</span><span class="p">:</span> <span class="s2">"gauss"</span><span class="p">,</span>
+    <span class="s2">"smr_fixed_en_width"</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+    <span class="s2">"spin_decomp"</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="c1"># berry</span>
+    <span class="s2">"berry"</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="s2">"berry_task"</span><span class="p">:</span> <span class="s2">""</span><span class="p">,</span>
+    <span class="s2">"berry_kmesh"</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
+    <span class="s2">"berry_kmesh_spacing"</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
+    <span class="c1"># berry curvature, ahc, shc</span>
+    <span class="s2">"berry_curv_unit"</span><span class="p">:</span> <span class="s2">"ang2"</span><span class="p">,</span>
+    <span class="s2">"berry_curv_adpt_kmesh"</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
+    <span class="s2">"berry_curv_adpt_kmesh_thresh"</span><span class="p">:</span> <span class="mi">100</span><span class="p">,</span>
+    <span class="s2">"fermi_energy"</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+    <span class="s2">"fermi_energy_max"</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="s2">"fermi_energy_min"</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="s2">"fermi_energy_step"</span><span class="p">:</span> <span class="mf">0.01</span><span class="p">,</span>
+    <span class="s2">"fermi_energy_list"</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="s2">"num_fermi"</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="s2">"shc_freq_scan"</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="s2">"shc_alpha"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="s2">"shc_beta"</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+    <span class="s2">"shc_gamma"</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+    <span class="s2">"shc_bandshift"</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="s2">"shc_bandshift_firstband"</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="s2">"shc_bandshift_energyshift"</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+    <span class="c1"># kubo</span>
+    <span class="s2">"kubo_freq_max"</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="s2">"kubo_freq_min"</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+    <span class="s2">"kubo_freq_step"</span><span class="p">:</span> <span class="mf">0.01</span><span class="p">,</span>
+    <span class="s2">"kubo_eigval_max"</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="s2">"kubo_adpt_smr"</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="s2">"kubo_adpt_smr_fac"</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span>
+    <span class="s2">"kubo_adpt_smr_max"</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">,</span>
+    <span class="s2">"kubo_smr_fixed_en_width"</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+    <span class="s2">"kubo_smr_type"</span><span class="p">:</span> <span class="s2">"gauss"</span><span class="p">,</span>
+    <span class="c1"># shift current</span>
+    <span class="s2">"sc_eta"</span><span class="p">:</span> <span class="mf">0.04</span><span class="p">,</span>
+    <span class="s2">"sc_w_thr"</span><span class="p">:</span> <span class="mf">5.0</span><span class="p">,</span>
+    <span class="s2">"sc_use_eta_corr"</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="c1"># gyrotropic</span>
+    <span class="s2">"gyrotropic"</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="s2">"gyrotropic_task"</span><span class="p">:</span> <span class="s2">""</span><span class="p">,</span>
+    <span class="s2">"gyrotropic_kmesh"</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
+    <span class="s2">"gyrotropic_kmesh_spacing"</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
+    <span class="s2">"gyrotropic_freq_max"</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="s2">"gyrotropic_freq_min"</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+    <span class="s2">"gyrotropic_freq_step"</span><span class="p">:</span> <span class="mf">0.01</span><span class="p">,</span>
+    <span class="s2">"gyrotropic_eigval_max"</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="s2">"gyrotropic_degen_thresh"</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+    <span class="s2">"gyrotropic_smr_fixed_en_width"</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+    <span class="s2">"gyrotropic_smr_type"</span><span class="p">:</span> <span class="s2">"gauss"</span><span class="p">,</span>
+    <span class="s2">"gyrotropic_band_list"</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="s2">"gyrotropic_box_center"</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">],</span>
+    <span class="s2">"gyrotropic_box_b1"</span><span class="p">:</span> <span class="p">[</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">],</span>
+    <span class="s2">"gyrotropic_box_b2"</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">],</span>
+    <span class="s2">"gyrotropic_box_b3"</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">],</span>
+    <span class="s2">"uHu_formatted"</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="c1"># boltzwann</span>
+    <span class="s2">"boltzwann"</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+<span class="p">}</span>
+
+
+<span class="c1"># ==================================================</span>
+<div class="viewcode-block" id="energy_range_defaults">
+<a class="viewcode-back" href="../../../src/api/cw.html#symclosestwannier.cw.win.energy_range_defaults">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">energy_range_defaults</span><span class="p">(</span><span class="n">d</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""</span>
+<span class="sd">    set the defaults of kubo_freq_max, kubo_eigval_max, gyrotropic_freq_max and gyrotropic_eigval_max that are not</span>
+<span class="sd">    given in seedname.win (None), as wannier90 (w90_wannier90_readwrite_read_energy_range in postw90_readwrite.F90):</span>
+
+<span class="sd">    - with an inner (frozen) window (dis_froz_max given): dis_froz_max - E_F + 0.6667 for the frequencies and</span>
+<span class="sd">      dis_froz_max + 0.6667 for the eigenvalues, with E_F the first Fermi energy;</span>
+<span class="sd">    - otherwise, with the energies of seedname.eig (Ek): max(Ek) - min(Ek) + 0.6667 and max(Ek) + 0.6667;</span>
+<span class="sd">    - otherwise: dis_win_max - dis_win_min + 0.6667 and dis_win_max + 0.6667.</span>
+
+<span class="sd">    As in wannier90, the gyrotropic defaults are these values, not kubo_freq_max and kubo_eigval_max given in</span>
+<span class="sd">    seedname.win.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        d (dict): information of seedname.win, with Ek (and the Fermi energies) if available; updated in place. Nothing</span>
+<span class="sd">            is set if neither an inner window, Ek nor an outer window is available.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        dict: d.</span>
+<span class="sd">    """</span>
+    <span class="n">keys</span> <span class="o">=</span> <span class="p">(</span><span class="s2">"kubo_freq_max"</span><span class="p">,</span> <span class="s2">"kubo_eigval_max"</span><span class="p">,</span> <span class="s2">"gyrotropic_freq_max"</span><span class="p">,</span> <span class="s2">"gyrotropic_eigval_max"</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">all</span><span class="p">(</span><span class="n">d</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">keys</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">d</span>
+
+    <span class="c1"># the inner window is given when dis_froz_max differs from the value of Win when it is absent (+100000).</span>
+    <span class="k">if</span> <span class="n">d</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"dis_froz_max"</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">d</span><span class="p">[</span><span class="s2">"dis_froz_max"</span><span class="p">]</span> <span class="o">!=</span> <span class="n">_default</span><span class="p">[</span><span class="s2">"dis_froz_max"</span><span class="p">]:</span>
+        <span class="n">fermi_energy_list</span> <span class="o">=</span> <span class="n">d</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"fermi_energy_list"</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">fermi_energy_list</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">fermi_energy_list</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">fermi_energy</span> <span class="o">=</span> <span class="n">fermi_energy_list</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">elif</span> <span class="n">d</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"fermi_energy"</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">fermi_energy</span> <span class="o">=</span> <span class="n">d</span><span class="p">[</span><span class="s2">"fermi_energy"</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">fermi_energy</span> <span class="o">=</span> <span class="mf">0.0</span>  <span class="c1"># the default Fermi energy of wannier90</span>
+        <span class="n">freq_max</span> <span class="o">=</span> <span class="n">d</span><span class="p">[</span><span class="s2">"dis_froz_max"</span><span class="p">]</span> <span class="o">-</span> <span class="nb">float</span><span class="p">(</span><span class="n">fermi_energy</span><span class="p">)</span> <span class="o">+</span> <span class="mf">0.6667</span>
+        <span class="n">eigval_max</span> <span class="o">=</span> <span class="n">d</span><span class="p">[</span><span class="s2">"dis_froz_max"</span><span class="p">]</span> <span class="o">+</span> <span class="mf">0.6667</span>
+    <span class="k">elif</span> <span class="n">d</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"Ek"</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">np</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="n">d</span><span class="p">[</span><span class="s2">"Ek"</span><span class="p">])</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">Ek</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">d</span><span class="p">[</span><span class="s2">"Ek"</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+        <span class="n">freq_max</span> <span class="o">=</span> <span class="n">Ek</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">-</span> <span class="n">Ek</span><span class="o">.</span><span class="n">min</span><span class="p">()</span> <span class="o">+</span> <span class="mf">0.6667</span>
+        <span class="n">eigval_max</span> <span class="o">=</span> <span class="n">Ek</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">+</span> <span class="mf">0.6667</span>
+    <span class="k">elif</span> <span class="n">d</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"dis_win_max"</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">d</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"dis_win_min"</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">freq_max</span> <span class="o">=</span> <span class="n">d</span><span class="p">[</span><span class="s2">"dis_win_max"</span><span class="p">]</span> <span class="o">-</span> <span class="n">d</span><span class="p">[</span><span class="s2">"dis_win_min"</span><span class="p">]</span> <span class="o">+</span> <span class="mf">0.6667</span>
+        <span class="n">eigval_max</span> <span class="o">=</span> <span class="n">d</span><span class="p">[</span><span class="s2">"dis_win_max"</span><span class="p">]</span> <span class="o">+</span> <span class="mf">0.6667</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">d</span>
+
+    <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">keys</span><span class="p">,</span> <span class="p">(</span><span class="n">freq_max</span><span class="p">,</span> <span class="n">eigval_max</span><span class="p">,</span> <span class="n">freq_max</span><span class="p">,</span> <span class="n">eigval_max</span><span class="p">)):</span>
+        <span class="k">if</span> <span class="n">d</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">d</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">d</span></div>
+
+
+
+<span class="c1"># ==================================================</span>
+<div class="viewcode-block" id="Win">
+<a class="viewcode-back" href="../../../src/api/cw.html#symclosestwannier.cw.win.Win">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">Win</span><span class="p">(</span><span class="nb">dict</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""</span>
+<span class="sd">    Win manages input file for wannier90.x, seedname.win file.</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">        _topdir (str): top directory.</span>
+<span class="sd">        _seedname (str): seedname.</span>
+<span class="sd">    """</span>
+
+    <span class="c1"># ==================================================</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">topdir</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">seedname</span><span class="o">=</span><span class="s2">"cwannier"</span><span class="p">,</span> <span class="n">dic</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""</span>
+<span class="sd">        Win manages input file for wannier90.x, seedname.win file.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            topdir (str, optional): directory of seedname.win file.</span>
+<span class="sd">            seedname (str, optional): seedname.</span>
+<span class="sd">            dic (dict, optional): dictionary of Win.</span>
+<span class="sd">        """</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_topdir</span> <span class="o">=</span> <span class="n">topdir</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_seedname</span> <span class="o">=</span> <span class="n">seedname</span>
+
+        <span class="k">if</span> <span class="n">dic</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">file_name</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">topdir</span><span class="p">,</span> <span class="s2">"</span><span class="si">{}</span><span class="s2">.</span><span class="si">{}</span><span class="s2">"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">seedname</span><span class="p">,</span> <span class="s2">"win"</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">file_name</span><span class="p">))</span>
+            <span class="bp">self</span><span class="p">[</span><span class="s2">"seedname"</span><span class="p">]</span> <span class="o">=</span> <span class="n">seedname</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">dic</span><span class="p">)</span>
+
+    <span class="c1"># ==================================================</span>
+<div class="viewcode-block" id="Win.read">
+<a class="viewcode-back" href="../../../src/api/cw.html#symclosestwannier.cw.win.Win.read">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">read</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_name</span><span class="o">=</span><span class="s2">"cwannier.win"</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""</span>
+<span class="sd">        read seedname.win file.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            file_name (str, optional): file name.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            dict: dictionary form of seedname.win.</span>
+<span class="sd">                - num_k           : # of k points (int), [1].</span>
+<span class="sd">                - num_bands       : # of bands passed to the code (int), [1].</span>
+<span class="sd">                - num_wann        : # of WFs (int), [1].</span>
+<span class="sd">                - kpoint*         : representative k points, [1].</span>
+<span class="sd">                - kpoint_path*    : high-symmetry line in k-space, [None].</span>
+<span class="sd">                - unit_cell_cart* : transform matrix, [a1,a2,a3], [None].</span>
+<span class="sd">                - atoms_frac*     : atomic positions in fractional coordinates with respect to the lattice vectors, {atom: [r1,r2,r3]} [None].</span>
+<span class="sd">                - atoms_cart*     : atomic positions in cartesian coordinates, {atom: [rx,ry,rz]} [None].</span>
+<span class="sd">                - spinors         : WFs are spinors? (bool) [False].</span>
+<span class="sd">                - spin_moment     : Determines whether to evaluate the spin moment (bool), [False].</span>
+<span class="sd">                - spn_formatted   : Read a formatted seedname.spn file (bool), [False].</span>
+<span class="sd">                - dis_num_iter*   : # of iterations for disentanglement (int), [0].</span>
+<span class="sd">                - num_iter*       : # of iterations for maximal localization (int), [200].</span>
+<span class="sd">                - dis_froz_max    : top of the inner (frozen) energy window (float), [+100000].</span>
+<span class="sd">                - dis_froz_min    : bottom of the inner (frozen) energy window (float), [-100000].</span>
+<span class="sd">                - dis_win_max     : top of the outer energy window (float), [+100000].</span>
+<span class="sd">                - dis_win_min     : bottom of the outer energy window (float), [-100000].</span>
+<span class="sd">                - dis_mix_ratio   : mixing ratio during the disentanglement (float), [0.5].</span>
+<span class="sd">                - mp_grid         : dimensions of the Monkhorst-Pack grid of k-points (list), [[1, 1, 1]],</span>
+<span class="sd">                - ws_distance_tol : tolerance of the distances in the Wigner-Seitz supercell of the R vectors (float, Angstrom), [1.0e-5].</span>
+<span class="sd">                - ws_search_size  : number of supercells searched for the Wigner-Seitz supercell along each direction (one or three integers), [2].</span>
+<span class="sd">                - kpoints         : k-points used in DFT calculation, [[k1, k2, k3]] (crystal coordinate).</span>
+<span class="sd">                - kpoint          : representative k points (dict), [None].</span>
+<span class="sd">                - kpoint_path     : k-points along high symmetry line in Brillouin zone, [[k1, k2, k3]] (crystal coordinate) (str), [None].</span>
+<span class="sd">                - unit_cell_cart  : transform matrix, [a1,a2,a3] (list), [None].</span>
+
+<span class="sd">            # only used for postcw calculation (same as postw90).</span>
+<span class="sd">                - kmesh                        : dimensions of the Monkhorst-Pack grid of k-points for response calculation (list), [[1, 1, 1]].</span>
+<span class="sd">                - kmesh_spacing                : minimum distance for neighboring k points along each of the three directions in k space (The units are [Ang])(list), [1,1,1]].</span>
+<span class="sd">                - adpt_smr                     : Determines whether to use an adaptive scheme for broadening the DOS and similar quantities defined on the energy axis (bool), [True].</span>
+<span class="sd">                - adpt_smr_fac                 : The width ηnk of the broadened delta function used to determine the contribution to the spectral property (DOS, ...) from band n at point k (float), [sqrt(2)].</span>
+<span class="sd">                - adpt_smr_max                 : Maximum allowed value for the adaptive energy smearing [eV] (float), [1.0].</span>
+<span class="sd">                - smr_type                     : Defines the analytical form used for the broadened delta function in the computation of the DOS and similar quantities defined on the energy axis, gauss/m-pN/m-v or cold/f-d (str), [gauss].</span>
+<span class="sd">                - smr_fixed_en_width           : Energy width for the smearing function for the DOS. Used only if adpt_smr is false (The units are [eV]) (flaot), [0.0].</span>
+<span class="sd">                - spin_decomp                  : If true, extra columns are added to some output files (such as seedname-dos.dat for the dos module, and analogously for the berry and BoltzWann modules) (bool), [False].</span>
+
+<span class="sd">            # berry</span>
+<span class="sd">                - berry                        : Determines whether to enter the berry routines (bool), [False].</span>
+<span class="sd">                - berry_task                   : The quantity to compute when berry=true, ahc/morb/kubo/sc/shc/kdotp/me (str).</span>
+<span class="sd">                - berry_kmesh                  : Overrides the kmesh global variable.</span>
+<span class="sd">                - berry_kmesh_spacing          : Overrides the kmesh_spacing global variable.</span>
+
+<span class="sd">            # berry curvature, ahc, shc</span>
+<span class="sd">                - berry_curv_unit              : Unit of Berry curvature, ang2/bohr2, ['ang2'].</span>
+<span class="sd">                - berry_curv_adpt_kmesh        : Linear dimension of the adaptively refined k-mesh used to compute the anomalous/spin Hall conductivity, [1, 1, 1].</span>
+<span class="sd">                - berry_curv_adpt_kmesh_thresh : Threshold magnitude of the Berry curvature for adaptive refinement, [100].</span>
+<span class="sd">                - fermi_energy                 : fermi energy, not with fermi_energy_min (float), [0.0].</span>
+<span class="sd">                - fermi_energy_max             : Upper limit of the Fermi energy range (float), [fermi_energy_min + 1].</span>
+<span class="sd">                - fermi_energy_min             : Lower limit of the Fermi energy range (float), [None].</span>
+<span class="sd">                - fermi_energy_step            : Step for increasing the Fermi energy in the specified range. (The units are [eV]) (float), [0.01].</span>
+<span class="sd">                - fermi_energy_list            : list of fermi energy (list), [None].</span>
+<span class="sd">                - num_fermi                    : number of fermi energies (int), [0].</span>
+<span class="sd">                - shc_freq_scan                : Determines whether to calculate the frequency scan (i.e. the ac SHC) or the Fermi energy scan (i.e. the dc SHC) of the spin Hall conductivity. The default value is false, which means dc SHC is calculated. (bool), [False].</span>
+<span class="sd">                - shc_alpha                    : The α index of spin Hall conductivity σ^{spin γ}_{αβ}, i.e. the direction of spin current. Possible values are 1, 2 and 3, representing the x, y and z directions respectively. (int), [1].</span>
+<span class="sd">                - shc_beta                     : The β index of spin Hall conductivity σ^{spin γ}_{αβ}, i.e. the direction of applied electric field. Possible values are 1, 2 and 3, representing the x, y and z directions respectively. (int), [2].</span>
+<span class="sd">                - shc_gamma                    : The γ index of spin Hall conductivity σ^{spin γ}_{αβ}, i.e. the spin direction of spin current. Possible values are 1, 2 and 3, representing the x, y and z directions respectively. (int), [3].</span>
+<span class="sd">                - shc_bandshift                : Shift all conduction bands by a given amount (bool), [False].</span>
+<span class="sd">                - shc_bandshift_firstband      : Index of the first band to shift, 1-based (int), [None].</span>
+<span class="sd">                - shc_bandshift_energyshift    : Energy shift of the conduction bands (eV) (float), [0.0].</span>
+
+<span class="sd">            # kubo</span>
+<span class="sd">                - kubo_freq_max           : Upper limit of the frequency range for computing the optical conductivity, JDOS and ac SHC. (The units are [eV]) (float), [If an inner energy window was specified, the default value is dis_froz_max-fermi_energy+0.6667. Otherwise it is the difference between the maximum and the minimum energy eigenvalue stored in seedname.eig, plus 0.6667.].</span>
+<span class="sd">                - kubo_freq_min           : Lower limit of the frequency range for computing the optical conductivity, JDOS and ac SHC. (The units are [eV]) (float), [0.0].</span>
+<span class="sd">                - kubo_freq_step          : Difference between consecutive values of the optical frequency between kubo_freq_min and kubo_freq_max. (The units are [eV]) (float), [0.01].</span>
+<span class="sd">                - kubo_eigval_max         : Maximum energy eigenvalue of the eigenstates to be included in the evaluation of the optical conductivity, JDOS and ac SHC. (The units are [eV]) (float), [If an inner energy window was specified, the default value is the upper bound of the inner energy window plus 0.6667. Otherwise it is the maximum energy eigenvalue stored in seedname.eig plus 0.6667.].</span>
+<span class="sd">                - kubo_adpt_smr           : Overrides the adpt_smr global variable (bool), [False].</span>
+<span class="sd">                - kubo_adpt_smr_fac       : Overrides the adpt_smr_fac global variable (float), [sqrt(2)].</span>
+<span class="sd">                - kubo_adpt_smr_max       : Overrides the adpt_smr_max global variable (float), [1.0].</span>
+<span class="sd">                - kubo_smr_fixed_en_width : Overrides the smr_fixed_en_width global variable (float), [0.0].</span>
+<span class="sd">                - kubo_smr_type           : Overrides the smr_type global variable (str), [gauss].</span>
+
+<span class="sd">            # shift current (berry_task = sc; also uses the kubo_* parameters)</span>
+<span class="sd">                - sc_eta                  : Broadening of the energy denominators of the generalized derivative (The units are [eV]) (float), [0.04].</span>
+<span class="sd">                - sc_w_thr                : Frequency window of the delta functions, in units of the smearing width (float), [5.0].</span>
+<span class="sd">                - sc_use_eta_corr         : Correct the finite sc_eta, Eq. (19) of PRB 103, 247101 (2021) (bool), [True].</span>
+
+<span class="sd">            # morb</span>
+
+<span class="sd">            # gyrotropic</span>
+<span class="sd">                - gyrotropic                    : Determines whether to enter the gyrotropic routines (bool), [False].</span>
+<span class="sd">                - gyrotropic_task               : The quantity to compute when gyrotropic=true, -DO/-Dw/-C/-K/-spin/-NOA/-dos, (str).</span>
+<span class="sd">                - gyrotropic_kmesh              : Overrides the kmesh global variable.</span>
+<span class="sd">                - gyrotropic_kmesh_spacing      : Overrides the kmesh_spacing global variable.</span>
+<span class="sd">                - gyrotropic_freq_max           : Upper limit of the frequency range for computing the optical activity. (The units are [eV]) (float), [If an inner energy window was specified, the default value is dis_froz_max-fermi_energy+0.6667. Otherwise it is the difference between the maximum and the minimum energy eigenvalue stored in seedname.eig, plus 0.6667.].</span>
+<span class="sd">                - gyrotropic_freq_min           : Lower limit of the frequency range for computing the optical activity. (The units are [eV]) (float), [0.0].</span>
+<span class="sd">                - gyrotropic_freq_step          : Difference between consecutive values of the optical frequency between gyrotropic_freq_min and gyrotropic_freq_max. (The units are [eV]) (float), [0.01].</span>
+<span class="sd">                - gyrotropic_eigval_max         : Maximum energy eigenvalue of the eigenstates to be included in the evaluation of the Natural optical activity. (The units are [eV]) (float), [If an inner energy window was specified, the default value is the upper bound of the inner energy window plus 0.6667. Otherwise it is the maximum energy eigenvalue stored in seedname.eig plus 0.6667.].</span>
+<span class="sd">                - gyrotropic_smr_max_arg        : Maximum value of smearing arg (float), [5.0].</span>
+<span class="sd">                - gyrotropic_degen_thresh       : The threshould to eliminate degenerate bands from the calculation in order to avoid divergences. (Units are [eV]) (float), [0.0].</span>
+<span class="sd">                - gyrotropic_smr_fixed_en_width : Overrides the smr_fixed_en_width global variable.</span>
+<span class="sd">                - gyrotropic_smr_type           : Overrides the smr_type global variable.</span>
+<span class="sd">                - gyrotropic_band_list          : List of bands used in the calculation.</span>
+<span class="sd">                - gyrotropic_box_center         : Three real numbers. Optionally the integration may be restricted to a parallelogram, centered at gyrotropic_box_center and defined by vectors gyrotropic_box_b{1,2,3}.  In reduced coordinates, [0.5 0.5 0.5].</span>
+<span class="sd">                - gyrotropic_box_b1             : Three real numbers. In reduced coordinates, [1.0 0.0 0.0].</span>
+<span class="sd">                - gyrotropic_box_b2             : Three real numbers. In reduced coordinates, [0.0 1.0 0.0].</span>
+<span class="sd">                - gyrotropic_box_b3             : Three real numbers. In reduced coordinates, [0.0 0.0 1.0].</span>
+<span class="sd">                - uHu_formatted                 : Read a formatted seedname.uHu file (bool), [False].</span>
+
+<span class="sd">            # boltzwann</span>
+<span class="sd">                - boltzwann           : Determines whether to enter the boltzwann routines (bool), [False].</span>
+<span class="sd">        """</span>
+        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">file_name</span><span class="p">):</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">file_name</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
+                <span class="n">win_data</span> <span class="o">=</span> <span class="n">fp</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">SymCWFileNotFoundError</span><span class="p">(</span><span class="s2">"win"</span><span class="p">,</span> <span class="n">file_name</span><span class="p">)</span>
+
+        <span class="n">d</span> <span class="o">=</span> <span class="n">Win</span><span class="o">.</span><span class="n">_default</span><span class="p">()</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+        <span class="n">win_data</span> <span class="o">=</span> <span class="p">[</span><span class="n">v</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="p">,</span> <span class="s2">""</span><span class="p">)</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">win_data</span><span class="p">]</span>
+        <span class="n">win_data_lower</span> <span class="o">=</span> <span class="p">[</span><span class="n">v</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="p">,</span> <span class="s2">""</span><span class="p">)</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">win_data</span><span class="p">]</span>
+
+        <span class="n">d</span><span class="p">[</span><span class="s2">"num_bands"</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_param_keyword</span><span class="p">(</span><span class="n">win_data</span><span class="p">,</span> <span class="s2">"num_bands"</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
+        <span class="n">d</span><span class="p">[</span><span class="s2">"num_wann"</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_param_keyword</span><span class="p">(</span><span class="n">win_data</span><span class="p">,</span> <span class="s2">"num_wann"</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
+        <span class="n">mp_grid</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_param_keyword</span><span class="p">(</span><span class="n">win_data</span><span class="p">,</span> <span class="s2">"mp_grid"</span><span class="p">,</span> <span class="s2">"1  1  1"</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">str</span><span class="p">)</span>
+        <span class="n">d</span><span class="p">[</span><span class="s2">"mp_grid"</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">mp_grid</span><span class="o">.</span><span class="n">split</span><span class="p">()]</span>
+        <span class="n">d</span><span class="p">[</span><span class="s2">"num_k"</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">prod</span><span class="p">(</span><span class="n">d</span><span class="p">[</span><span class="s2">"mp_grid"</span><span class="p">])</span>
+        <span class="n">d</span><span class="p">[</span><span class="s2">"ws_distance_tol"</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_param_keyword</span><span class="p">(</span><span class="n">win_data</span><span class="p">,</span> <span class="s2">"ws_distance_tol"</span><span class="p">,</span> <span class="mf">1.0e-5</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">d</span><span class="p">[</span><span class="s2">"ws_distance_tol"</span><span class="p">])</span> <span class="ow">and</span> <span class="n">d</span><span class="p">[</span><span class="s2">"ws_distance_tol"</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="n">SymCWInputError</span><span class="p">(</span><span class="s2">"ws_distance_tol must be a positive number in seedname.win."</span><span class="p">)</span>
+        <span class="n">ws_search_size</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_get_param_keyword</span><span class="p">(</span><span class="n">win_data</span><span class="p">,</span> <span class="s2">"ws_search_size"</span><span class="p">,</span> <span class="s2">"2"</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">str</span><span class="p">))</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">ws_search_size</span> <span class="o">=</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">ws_search_size</span><span class="p">]</span>
+        <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+            <span class="n">ws_search_size</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">ws_search_size</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">min</span><span class="p">(</span><span class="n">ws_search_size</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">SymCWInputError</span><span class="p">(</span><span class="s2">"ws_search_size must be one or three positive integers in seedname.win."</span><span class="p">)</span>
+        <span class="n">d</span><span class="p">[</span><span class="s2">"ws_search_size"</span><span class="p">]</span> <span class="o">=</span> <span class="n">ws_search_size</span> <span class="o">*</span> <span class="mi">3</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">ws_search_size</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span> <span class="k">else</span> <span class="n">ws_search_size</span>
+
+        <span class="k">if</span> <span class="n">d</span><span class="p">[</span><span class="s2">"num_bands"</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">d</span><span class="p">[</span><span class="s2">"num_wann"</span><span class="p">]:</span>
+            <span class="n">d</span><span class="p">[</span><span class="s2">"dis_num_iter"</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_param_keyword</span><span class="p">(</span><span class="n">win_data</span><span class="p">,</span> <span class="s2">"dis_num_iter"</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">d</span><span class="p">[</span><span class="s2">"dis_num_iter"</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">d</span><span class="p">[</span><span class="s2">"num_iter"</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_param_keyword</span><span class="p">(</span><span class="n">win_data</span><span class="p">,</span> <span class="s2">"num_iter"</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
+        <span class="n">d</span><span class="p">[</span><span class="s2">"dis_froz_max"</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_param_keyword</span><span class="p">(</span><span class="n">win_data</span><span class="p">,</span> <span class="s2">"dis_froz_max"</span><span class="p">,</span> <span class="o">+</span><span class="mi">100000</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+        <span class="n">d</span><span class="p">[</span><span class="s2">"dis_froz_min"</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_param_keyword</span><span class="p">(</span><span class="n">win_data</span><span class="p">,</span> <span class="s2">"dis_froz_min"</span><span class="p">,</span> <span class="o">-</span><span class="mi">100000</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+        <span class="n">d</span><span class="p">[</span><span class="s2">"dis_win_max"</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_param_keyword</span><span class="p">(</span><span class="n">win_data</span><span class="p">,</span> <span class="s2">"dis_win_max"</span><span class="p">,</span> <span class="o">+</span><span class="mi">100000</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+        <span class="n">d</span><span class="p">[</span><span class="s2">"dis_win_min"</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_param_keyword</span><span class="p">(</span><span class="n">win_data</span><span class="p">,</span> <span class="s2">"dis_win_min"</span><span class="p">,</span> <span class="o">-</span><span class="mi">100000</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+        <span class="n">d</span><span class="p">[</span><span class="s2">"dis_mix_ratio"</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_param_keyword</span><span class="p">(</span><span class="n">win_data</span><span class="p">,</span> <span class="s2">"dis_mix_ratio"</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+        <span class="n">d</span><span class="p">[</span><span class="s2">"exclude_bands"</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_param_keyword</span><span class="p">(</span><span class="n">win_data</span><span class="p">,</span> <span class="s2">"exclude_bands"</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">str</span><span class="p">)</span>
+
+        <span class="n">d</span><span class="p">[</span><span class="s2">"spinors"</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_param_keyword</span><span class="p">(</span><span class="n">win_data</span><span class="p">,</span> <span class="s2">"spinors"</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">bool</span><span class="p">)</span>
+        <span class="n">d</span><span class="p">[</span><span class="s2">"spin_moment"</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_param_keyword</span><span class="p">(</span><span class="n">win_data</span><span class="p">,</span> <span class="s2">"spin_moment"</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">bool</span><span class="p">)</span>
+        <span class="n">d</span><span class="p">[</span><span class="s2">"spn_formatted"</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_param_keyword</span><span class="p">(</span><span class="n">win_data</span><span class="p">,</span> <span class="s2">"spn_formatted"</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">bool</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">line</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">win_data_lower</span><span class="p">):</span>
+            <span class="k">if</span> <span class="s2">"begin kpoints"</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
+                <span class="n">kpoints</span> <span class="o">=</span> <span class="n">win_data</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span> <span class="p">:</span> <span class="n">win_data_lower</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">"end kpoints"</span><span class="p">)]</span>
+                <span class="n">kpoints</span> <span class="o">=</span> <span class="p">[[</span><span class="nb">float</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">kpt</span><span class="o">.</span><span class="n">split</span><span class="p">()]</span> <span class="k">for</span> <span class="n">kpt</span> <span class="ow">in</span> <span class="n">kpoints</span> <span class="k">if</span> <span class="n">kpt</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">""</span><span class="p">,</span> <span class="p">[])]</span>
+                <span class="n">kpoints</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mod</span><span class="p">(</span><span class="n">kpoints</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>  <span class="c1"># 0 &lt;= kj &lt; 1.0</span>
+                <span class="k">if</span> <span class="n">kpoints</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                    <span class="n">kpoints</span> <span class="o">=</span> <span class="p">[</span><span class="n">kpoints</span><span class="o">.</span><span class="n">tolist</span><span class="p">()]</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">kpoints</span> <span class="o">=</span> <span class="n">kpoints</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+
+                <span class="n">kpoints</span> <span class="o">=</span> <span class="p">[</span><span class="n">kpt</span><span class="p">[:</span><span class="mi">3</span><span class="p">]</span> <span class="k">for</span> <span class="n">kpt</span> <span class="ow">in</span> <span class="n">kpoints</span><span class="p">]</span>
+                <span class="n">d</span><span class="p">[</span><span class="s2">"kpoints"</span><span class="p">]</span> <span class="o">=</span> <span class="n">kpoints</span>
+
+            <span class="k">if</span> <span class="s2">"begin kpoint_path"</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
+                <span class="n">k_data</span> <span class="o">=</span> <span class="n">win_data</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span> <span class="p">:</span> <span class="n">win_data_lower</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">"end kpoint_path"</span><span class="p">)]</span>
+                <span class="n">k_data</span> <span class="o">=</span> <span class="p">[[</span><span class="n">vi</span> <span class="k">for</span> <span class="n">vi</span> <span class="ow">in</span> <span class="n">v</span><span class="o">.</span><span class="n">split</span><span class="p">()]</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">k_data</span><span class="p">]</span>
+                <span class="n">kpoint</span> <span class="o">=</span> <span class="p">{}</span>
+                <span class="n">kpoint_path</span> <span class="o">=</span> <span class="s2">""</span>
+                <span class="n">cnt</span> <span class="o">=</span> <span class="mi">1</span>
+                <span class="k">for</span> <span class="n">X</span><span class="p">,</span> <span class="n">ki1</span><span class="p">,</span> <span class="n">ki2</span><span class="p">,</span> <span class="n">ki3</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">kf1</span><span class="p">,</span> <span class="n">kf2</span><span class="p">,</span> <span class="n">kf3</span> <span class="ow">in</span> <span class="n">k_data</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">cnt</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                        <span class="n">kpoint_path</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">X</span><span class="si">}</span><span class="s2">-</span><span class="si">{</span><span class="n">Y</span><span class="si">}</span><span class="s2">-"</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="n">kpoint_path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"-"</span><span class="p">)[</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="n">X</span><span class="p">:</span>
+                            <span class="n">kpoint_path</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">Y</span><span class="si">}</span><span class="s2">-"</span>
+                        <span class="k">else</span><span class="p">:</span>
+                            <span class="n">kpoint_path</span> <span class="o">=</span> <span class="n">kpoint_path</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+                            <span class="n">kpoint_path</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">"|</span><span class="si">{</span><span class="n">X</span><span class="si">}</span><span class="s2">-</span><span class="si">{</span><span class="n">Y</span><span class="si">}</span><span class="s2">-"</span>
+                    <span class="k">if</span> <span class="n">X</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">kpoint</span><span class="p">:</span>
+                        <span class="n">kpoint</span><span class="p">[</span><span class="n">X</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">ki1</span><span class="p">),</span> <span class="nb">float</span><span class="p">(</span><span class="n">ki2</span><span class="p">),</span> <span class="nb">float</span><span class="p">(</span><span class="n">ki3</span><span class="p">)]</span>
+                    <span class="k">if</span> <span class="n">Y</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">kpoint</span><span class="p">:</span>
+                        <span class="n">kpoint</span><span class="p">[</span><span class="n">Y</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">kf1</span><span class="p">),</span> <span class="nb">float</span><span class="p">(</span><span class="n">kf2</span><span class="p">),</span> <span class="nb">float</span><span class="p">(</span><span class="n">kf3</span><span class="p">)]</span>
+
+                    <span class="n">cnt</span> <span class="o">+=</span> <span class="mi">1</span>
+
+                <span class="n">kpoint_path</span> <span class="o">=</span> <span class="n">kpoint_path</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+                <span class="n">d</span><span class="p">[</span><span class="s2">"kpoint"</span><span class="p">]</span> <span class="o">=</span> <span class="n">kpoint</span>
+                <span class="n">d</span><span class="p">[</span><span class="s2">"kpoint_path"</span><span class="p">]</span> <span class="o">=</span> <span class="n">kpoint_path</span>
+
+            <span class="k">if</span> <span class="s2">"begin unit_cell_cart"</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
+                <span class="n">units</span> <span class="o">=</span> <span class="n">win_data</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+                <span class="n">units</span> <span class="o">=</span> <span class="n">units</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">" "</span><span class="p">,</span> <span class="s2">""</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+                <span class="n">n</span> <span class="o">=</span> <span class="mi">2</span> <span class="k">if</span> <span class="n">units</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">"bohr"</span><span class="p">,</span> <span class="s2">"ang"</span><span class="p">)</span> <span class="k">else</span> <span class="mi">1</span>
+                <span class="n">unit_cell_cart_data</span> <span class="o">=</span> <span class="n">win_data</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="n">n</span> <span class="p">:</span> <span class="n">win_data_lower</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">"end unit_cell_cart"</span><span class="p">)]</span>
+                <span class="n">unit_cell_cart_data</span> <span class="o">=</span> <span class="p">[</span><span class="n">v</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">unit_cell_cart_data</span> <span class="k">if</span> <span class="n">v</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">""</span><span class="p">,</span> <span class="p">[])]</span>
+                <span class="n">unit_cell_cart</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="nb">float</span><span class="p">(</span><span class="n">vi</span><span class="p">)</span> <span class="k">for</span> <span class="n">vi</span> <span class="ow">in</span> <span class="n">v</span><span class="o">.</span><span class="n">split</span><span class="p">()</span> <span class="k">if</span> <span class="n">vi</span> <span class="o">!=</span> <span class="s2">""</span><span class="p">]</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">unit_cell_cart_data</span><span class="p">])</span>
+                <span class="k">if</span> <span class="n">units</span> <span class="o">==</span> <span class="s2">"bohr"</span><span class="p">:</span>
+                    <span class="n">unit_cell_cart</span> <span class="o">*=</span> <span class="mf">0.529177249</span>
+
+                <span class="n">d</span><span class="p">[</span><span class="s2">"units"</span><span class="p">]</span> <span class="o">=</span> <span class="n">units</span>
+                <span class="n">d</span><span class="p">[</span><span class="s2">"unit_cell_cart"</span><span class="p">]</span> <span class="o">=</span> <span class="n">unit_cell_cart</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+
+            <span class="k">if</span> <span class="s2">"begin atoms_frac"</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
+                <span class="n">ap_data</span> <span class="o">=</span> <span class="n">win_data</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span> <span class="p">:</span> <span class="n">win_data_lower</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">"end atoms_frac"</span><span class="p">)]</span>
+                <span class="n">ap_data</span> <span class="o">=</span> <span class="p">[[</span><span class="n">vi</span> <span class="k">for</span> <span class="n">vi</span> <span class="ow">in</span> <span class="n">v</span><span class="o">.</span><span class="n">split</span><span class="p">()</span> <span class="k">if</span> <span class="n">vi</span> <span class="o">!=</span> <span class="s2">""</span><span class="p">]</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">ap_data</span><span class="p">]</span>
+                <span class="n">ap_data</span> <span class="o">=</span> <span class="p">[</span><span class="n">v</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">ap_data</span> <span class="k">if</span> <span class="n">v</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">""</span><span class="p">,</span> <span class="p">[])]</span>
+
+                <span class="n">atoms_frac</span> <span class="o">=</span> <span class="p">{}</span>
+                <span class="n">cnt_X</span> <span class="o">=</span> <span class="p">{}</span>
+                <span class="k">for</span> <span class="n">X</span><span class="p">,</span> <span class="n">r1</span><span class="p">,</span> <span class="n">r2</span><span class="p">,</span> <span class="n">r3</span> <span class="ow">in</span> <span class="n">ap_data</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">X</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">cnt_X</span><span class="p">:</span>
+                        <span class="n">atoms_frac</span><span class="p">[(</span><span class="n">X</span><span class="p">,</span> <span class="mi">1</span><span class="p">)]</span> <span class="o">=</span> <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">r1</span><span class="p">),</span> <span class="nb">float</span><span class="p">(</span><span class="n">r2</span><span class="p">),</span> <span class="nb">float</span><span class="p">(</span><span class="n">r3</span><span class="p">)]</span>
+                        <span class="n">cnt_X</span><span class="p">[</span><span class="n">X</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">atoms_frac</span><span class="p">[(</span><span class="n">X</span><span class="p">,</span> <span class="n">cnt_X</span><span class="p">[</span><span class="n">X</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)]</span> <span class="o">=</span> <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">r1</span><span class="p">),</span> <span class="nb">float</span><span class="p">(</span><span class="n">r2</span><span class="p">),</span> <span class="nb">float</span><span class="p">(</span><span class="n">r3</span><span class="p">)]</span>
+                        <span class="n">cnt_X</span><span class="p">[</span><span class="n">X</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+
+                <span class="n">d</span><span class="p">[</span><span class="s2">"atoms_frac"</span><span class="p">]</span> <span class="o">=</span> <span class="n">atoms_frac</span>
+
+            <span class="k">if</span> <span class="s2">"begin atoms_cart"</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
+                <span class="n">units</span> <span class="o">=</span> <span class="n">win_data</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+                <span class="n">units</span> <span class="o">=</span> <span class="n">units</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">" "</span><span class="p">,</span> <span class="s2">""</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+                <span class="n">n</span> <span class="o">=</span> <span class="mi">2</span> <span class="k">if</span> <span class="n">units</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">"bohr"</span><span class="p">,</span> <span class="s2">"ang"</span><span class="p">)</span> <span class="k">else</span> <span class="mi">1</span>
+                <span class="n">ap_data</span> <span class="o">=</span> <span class="n">win_data</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="n">n</span> <span class="p">:</span> <span class="n">win_data_lower</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">"end atoms_cart"</span><span class="p">)]</span>
+                <span class="n">ap_data</span> <span class="o">=</span> <span class="p">[[</span><span class="n">vi</span> <span class="k">for</span> <span class="n">vi</span> <span class="ow">in</span> <span class="n">v</span><span class="o">.</span><span class="n">split</span><span class="p">()</span> <span class="k">if</span> <span class="n">vi</span> <span class="o">!=</span> <span class="s2">""</span><span class="p">]</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">ap_data</span><span class="p">]</span>
+                <span class="n">ap_data</span> <span class="o">=</span> <span class="p">[</span><span class="n">v</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">ap_data</span> <span class="k">if</span> <span class="n">v</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">""</span><span class="p">,</span> <span class="p">[])]</span>
+
+                <span class="n">atoms_cart</span> <span class="o">=</span> <span class="p">{}</span>
+                <span class="n">cnt_X</span> <span class="o">=</span> <span class="p">{}</span>
+                <span class="k">for</span> <span class="n">X</span><span class="p">,</span> <span class="n">r1</span><span class="p">,</span> <span class="n">r2</span><span class="p">,</span> <span class="n">r3</span> <span class="ow">in</span> <span class="n">ap_data</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">X</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">cnt_X</span><span class="p">:</span>
+                        <span class="n">atoms_cart</span><span class="p">[(</span><span class="n">X</span><span class="p">,</span> <span class="mi">1</span><span class="p">)]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="nb">float</span><span class="p">(</span><span class="n">r1</span><span class="p">),</span> <span class="nb">float</span><span class="p">(</span><span class="n">r2</span><span class="p">),</span> <span class="nb">float</span><span class="p">(</span><span class="n">r3</span><span class="p">)])</span>
+                        <span class="n">cnt_X</span><span class="p">[</span><span class="n">X</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">atoms_cart</span><span class="p">[(</span><span class="n">X</span><span class="p">,</span> <span class="n">cnt_X</span><span class="p">[</span><span class="n">X</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="nb">float</span><span class="p">(</span><span class="n">r1</span><span class="p">),</span> <span class="nb">float</span><span class="p">(</span><span class="n">r2</span><span class="p">),</span> <span class="nb">float</span><span class="p">(</span><span class="n">r3</span><span class="p">)])</span>
+                        <span class="n">cnt_X</span><span class="p">[</span><span class="n">X</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+
+                <span class="k">if</span> <span class="n">units</span> <span class="o">==</span> <span class="s2">"bohr"</span><span class="p">:</span>
+                    <span class="n">atoms_cart</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">v</span> <span class="o">*</span> <span class="mf">0.529177249</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">atoms_cart</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+
+                <span class="n">d</span><span class="p">[</span><span class="s2">"atoms_cart"</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">v</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">atoms_cart</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+
+        <span class="k">if</span> <span class="s2">"units"</span> <span class="ow">in</span> <span class="n">d</span><span class="p">:</span>
+            <span class="k">del</span> <span class="n">d</span><span class="p">[</span><span class="s2">"units"</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="n">d</span><span class="p">[</span><span class="s2">"atoms_cart"</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">d</span><span class="p">[</span><span class="s2">"atoms_frac"</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">A</span> <span class="o">=</span> <span class="n">d</span><span class="p">[</span><span class="s2">"unit_cell_cart"</span><span class="p">]</span>
+                <span class="n">d</span><span class="p">[</span><span class="s2">"atoms_frac"</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="o">@</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">A</span><span class="p">))</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">d</span><span class="p">[</span><span class="s2">"atoms_cart"</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+
+        <span class="k">if</span> <span class="n">d</span><span class="p">[</span><span class="s2">"atoms_frac"</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">d</span><span class="p">[</span><span class="s2">"atoms_cart"</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">A</span> <span class="o">=</span> <span class="n">d</span><span class="p">[</span><span class="s2">"unit_cell_cart"</span><span class="p">]</span>
+                <span class="n">d</span><span class="p">[</span><span class="s2">"atoms_cart"</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="o">@</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">A</span><span class="p">))</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">d</span><span class="p">[</span><span class="s2">"atoms_frac"</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+
+        <span class="c1"># shift</span>
+        <span class="n">d</span><span class="p">[</span><span class="s2">"atoms_frac_shift"</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">shift_into_cell</span><span class="p">(</span><span class="n">v</span><span class="p">)</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">d</span><span class="p">[</span><span class="s2">"atoms_frac"</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+
+        <span class="c1"># postcw</span>
+        <span class="n">kmesh</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_param_keyword</span><span class="p">(</span><span class="n">win_data</span><span class="p">,</span> <span class="s2">"kmesh"</span><span class="p">,</span> <span class="s2">"1  1  1"</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">str</span><span class="p">)</span>
+        <span class="n">d</span><span class="p">[</span><span class="s2">"kmesh"</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">kmesh</span><span class="o">.</span><span class="n">split</span><span class="p">()]</span>
+        <span class="n">kmesh_spacing</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_param_keyword</span><span class="p">(</span><span class="n">win_data</span><span class="p">,</span> <span class="s2">"kmesh_spacing"</span><span class="p">,</span> <span class="s2">"1  1  1"</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">str</span><span class="p">)</span>
+        <span class="n">d</span><span class="p">[</span><span class="s2">"kmesh_spacing"</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">kmesh_spacing</span><span class="o">.</span><span class="n">split</span><span class="p">()]</span>
+        <span class="n">d</span><span class="p">[</span><span class="s2">"adpt_smr"</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_param_keyword</span><span class="p">(</span><span class="n">win_data</span><span class="p">,</span> <span class="s2">"adpt_smr"</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">bool</span><span class="p">)</span>
+        <span class="n">d</span><span class="p">[</span><span class="s2">"adpt_smr_fac"</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_param_keyword</span><span class="p">(</span><span class="n">win_data</span><span class="p">,</span> <span class="s2">"adpt_smr_fac"</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+        <span class="n">d</span><span class="p">[</span><span class="s2">"adpt_smr_max"</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_param_keyword</span><span class="p">(</span><span class="n">win_data</span><span class="p">,</span> <span class="s2">"adpt_smr_max"</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+        <span class="n">d</span><span class="p">[</span><span class="s2">"smr_type"</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_param_keyword</span><span class="p">(</span><span class="n">win_data</span><span class="p">,</span> <span class="s2">"smr_type"</span><span class="p">,</span> <span class="s2">"gauss"</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">str</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">" "</span><span class="p">,</span> <span class="s2">""</span><span class="p">)</span>
+        <span class="n">d</span><span class="p">[</span><span class="s2">"smr_fixed_en_width"</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_param_keyword</span><span class="p">(</span><span class="n">win_data</span><span class="p">,</span> <span class="s2">"smr_fixed_en_width"</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+        <span class="n">d</span><span class="p">[</span><span class="s2">"spin_decomp"</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_param_keyword</span><span class="p">(</span><span class="n">win_data</span><span class="p">,</span> <span class="s2">"spin_decomp"</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">bool</span><span class="p">)</span>
+
+        <span class="n">d</span><span class="p">[</span><span class="s2">"berry"</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_param_keyword</span><span class="p">(</span><span class="n">win_data</span><span class="p">,</span> <span class="s2">"berry"</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">bool</span><span class="p">)</span>
+        <span class="n">berry_task</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_param_keyword</span><span class="p">(</span><span class="n">win_data</span><span class="p">,</span> <span class="s2">"berry_task"</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">str</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">berry_task</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">berry_task</span> <span class="o">=</span> <span class="n">berry_task</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">" "</span><span class="p">,</span> <span class="s2">""</span><span class="p">)</span>
+        <span class="n">d</span><span class="p">[</span><span class="s2">"berry_task"</span><span class="p">]</span> <span class="o">=</span> <span class="n">berry_task</span>
+        <span class="n">berry_kmesh</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_param_keyword</span><span class="p">(</span><span class="n">win_data</span><span class="p">,</span> <span class="s2">"berry_kmesh"</span><span class="p">,</span> <span class="s2">"1  1  1"</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">str</span><span class="p">)</span>
+        <span class="n">d</span><span class="p">[</span><span class="s2">"berry_kmesh"</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">berry_kmesh</span><span class="o">.</span><span class="n">split</span><span class="p">()]</span>
+        <span class="n">berry_kmesh_spacing</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_param_keyword</span><span class="p">(</span><span class="n">win_data</span><span class="p">,</span> <span class="s2">"berry_kmesh_spacing"</span><span class="p">,</span> <span class="s2">"1  1  1"</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">str</span><span class="p">)</span>
+        <span class="n">d</span><span class="p">[</span><span class="s2">"berry_kmesh_spacing"</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">berry_kmesh_spacing</span><span class="o">.</span><span class="n">split</span><span class="p">()]</span>
+
+        <span class="n">d</span><span class="p">[</span><span class="s2">"berry_curv_unit"</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_param_keyword</span><span class="p">(</span><span class="n">win_data</span><span class="p">,</span> <span class="s2">"berry_curv_unit"</span><span class="p">,</span> <span class="s2">"ang2"</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">str</span><span class="p">)</span>
+        <span class="n">berry_curv_adpt_kmesh</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_param_keyword</span><span class="p">(</span><span class="n">win_data</span><span class="p">,</span> <span class="s2">"berry_curv_adpt_kmesh"</span><span class="p">,</span> <span class="s2">"1  1  1"</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">str</span><span class="p">)</span>
+        <span class="n">d</span><span class="p">[</span><span class="s2">"berry_curv_adpt_kmesh"</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">berry_curv_adpt_kmesh</span><span class="o">.</span><span class="n">split</span><span class="p">()]</span>
+        <span class="n">d</span><span class="p">[</span><span class="s2">"berry_curv_adpt_kmesh_thresh"</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_param_keyword</span><span class="p">(</span>
+            <span class="n">win_data</span><span class="p">,</span> <span class="s2">"berry_curv_adpt_kmesh_thresh"</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span>
+        <span class="p">)</span>
+
+        <span class="c1"># kubo_freq_max, kubo_eigval_max, gyrotropic_freq_max and gyrotropic_eigval_max default to None here; their</span>
+        <span class="c1"># defaults depend on the energies and are set by energy_range_defaults.</span>
+        <span class="n">d</span><span class="p">[</span><span class="s2">"kubo_freq_max"</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_param_keyword</span><span class="p">(</span><span class="n">win_data</span><span class="p">,</span> <span class="s2">"kubo_freq_max"</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+        <span class="n">d</span><span class="p">[</span><span class="s2">"kubo_freq_min"</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_param_keyword</span><span class="p">(</span><span class="n">win_data</span><span class="p">,</span> <span class="s2">"kubo_freq_min"</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+        <span class="n">d</span><span class="p">[</span><span class="s2">"kubo_freq_step"</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_param_keyword</span><span class="p">(</span><span class="n">win_data</span><span class="p">,</span> <span class="s2">"kubo_freq_step"</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+        <span class="n">d</span><span class="p">[</span><span class="s2">"kubo_eigval_max"</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_param_keyword</span><span class="p">(</span><span class="n">win_data</span><span class="p">,</span> <span class="s2">"kubo_eigval_max"</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+        <span class="n">d</span><span class="p">[</span><span class="s2">"kubo_adpt_smr"</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_param_keyword</span><span class="p">(</span><span class="n">win_data</span><span class="p">,</span> <span class="s2">"kubo_adpt_smr"</span><span class="p">,</span> <span class="n">d</span><span class="p">[</span><span class="s2">"adpt_smr"</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">bool</span><span class="p">)</span>
+        <span class="n">d</span><span class="p">[</span><span class="s2">"kubo_adpt_smr_fac"</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_param_keyword</span><span class="p">(</span><span class="n">win_data</span><span class="p">,</span> <span class="s2">"kubo_adpt_smr_fac"</span><span class="p">,</span> <span class="n">d</span><span class="p">[</span><span class="s2">"adpt_smr_fac"</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+        <span class="n">d</span><span class="p">[</span><span class="s2">"kubo_adpt_smr_max"</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_param_keyword</span><span class="p">(</span><span class="n">win_data</span><span class="p">,</span> <span class="s2">"kubo_adpt_smr_max"</span><span class="p">,</span> <span class="n">d</span><span class="p">[</span><span class="s2">"adpt_smr_max"</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+        <span class="n">d</span><span class="p">[</span><span class="s2">"kubo_smr_type"</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_param_keyword</span><span class="p">(</span><span class="n">win_data</span><span class="p">,</span> <span class="s2">"kubo_smr_type"</span><span class="p">,</span> <span class="n">d</span><span class="p">[</span><span class="s2">"smr_type"</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">str</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">" "</span><span class="p">,</span> <span class="s2">""</span><span class="p">)</span>
+        <span class="n">d</span><span class="p">[</span><span class="s2">"kubo_smr_fixed_en_width"</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_param_keyword</span><span class="p">(</span>
+            <span class="n">win_data</span><span class="p">,</span> <span class="s2">"kubo_smr_fixed_en_width"</span><span class="p">,</span> <span class="n">d</span><span class="p">[</span><span class="s2">"smr_fixed_en_width"</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span>
+        <span class="p">)</span>
+
+        <span class="n">d</span><span class="p">[</span><span class="s2">"sc_eta"</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_param_keyword</span><span class="p">(</span><span class="n">win_data</span><span class="p">,</span> <span class="s2">"sc_eta"</span><span class="p">,</span> <span class="mf">0.04</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+        <span class="n">d</span><span class="p">[</span><span class="s2">"sc_w_thr"</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_param_keyword</span><span class="p">(</span><span class="n">win_data</span><span class="p">,</span> <span class="s2">"sc_w_thr"</span><span class="p">,</span> <span class="mf">5.0</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+        <span class="n">d</span><span class="p">[</span><span class="s2">"sc_use_eta_corr"</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_param_keyword</span><span class="p">(</span><span class="n">win_data</span><span class="p">,</span> <span class="s2">"sc_use_eta_corr"</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">bool</span><span class="p">)</span>
+
+        <span class="n">d</span><span class="p">[</span><span class="s2">"gyrotropic"</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_param_keyword</span><span class="p">(</span><span class="n">win_data</span><span class="p">,</span> <span class="s2">"gyrotropic"</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">bool</span><span class="p">)</span>
+        <span class="n">gyrotropic_task</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_param_keyword</span><span class="p">(</span><span class="n">win_data</span><span class="p">,</span> <span class="s2">"gyrotropic_task"</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">str</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">gyrotropic_task</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">d</span><span class="p">[</span><span class="s2">"gyrotropic_task"</span><span class="p">]</span> <span class="o">=</span> <span class="n">gyrotropic_task</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">" "</span><span class="p">,</span> <span class="s2">""</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">d</span><span class="p">[</span><span class="s2">"gyrotropic_task"</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="n">gyrotropic_kmesh</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_param_keyword</span><span class="p">(</span><span class="n">win_data</span><span class="p">,</span> <span class="s2">"gyrotropic_kmesh"</span><span class="p">,</span> <span class="s2">"1  1  1"</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">str</span><span class="p">)</span>
+        <span class="n">d</span><span class="p">[</span><span class="s2">"gyrotropic_kmesh"</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">gyrotropic_kmesh</span><span class="o">.</span><span class="n">split</span><span class="p">()]</span>
+        <span class="n">gyrotropic_kmesh_spacing</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_param_keyword</span><span class="p">(</span><span class="n">win_data</span><span class="p">,</span> <span class="s2">"gyrotropic_kmesh_spacing"</span><span class="p">,</span> <span class="s2">"1  1  1"</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">str</span><span class="p">)</span>
+        <span class="n">d</span><span class="p">[</span><span class="s2">"gyrotropic_kmesh_spacing"</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">gyrotropic_kmesh_spacing</span><span class="o">.</span><span class="n">split</span><span class="p">()]</span>
+
+        <span class="n">d</span><span class="p">[</span><span class="s2">"gyrotropic_freq_max"</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_param_keyword</span><span class="p">(</span><span class="n">win_data</span><span class="p">,</span> <span class="s2">"gyrotropic_freq_max"</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+        <span class="n">d</span><span class="p">[</span><span class="s2">"gyrotropic_freq_min"</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_param_keyword</span><span class="p">(</span><span class="n">win_data</span><span class="p">,</span> <span class="s2">"gyrotropic_freq_min"</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+        <span class="n">d</span><span class="p">[</span><span class="s2">"gyrotropic_freq_step"</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_param_keyword</span><span class="p">(</span><span class="n">win_data</span><span class="p">,</span> <span class="s2">"gyrotropic_freq_step"</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+        <span class="n">d</span><span class="p">[</span><span class="s2">"gyrotropic_eigval_max"</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_param_keyword</span><span class="p">(</span><span class="n">win_data</span><span class="p">,</span> <span class="s2">"gyrotropic_eigval_max"</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+        <span class="n">d</span><span class="p">[</span><span class="s2">"gyrotropic_smr_type"</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_param_keyword</span><span class="p">(</span><span class="n">win_data</span><span class="p">,</span> <span class="s2">"gyrotropic_smr_type"</span><span class="p">,</span> <span class="n">d</span><span class="p">[</span><span class="s2">"smr_type"</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">str</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span>
+            <span class="s2">" "</span><span class="p">,</span> <span class="s2">""</span>
+        <span class="p">)</span>
+        <span class="n">d</span><span class="p">[</span><span class="s2">"gyrotropic_smr_fixed_en_width"</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_param_keyword</span><span class="p">(</span>
+            <span class="n">win_data</span><span class="p">,</span> <span class="s2">"gyrotropic_smr_fixed_en_width"</span><span class="p">,</span> <span class="n">d</span><span class="p">[</span><span class="s2">"smr_fixed_en_width"</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span>
+        <span class="p">)</span>
+        <span class="n">d</span><span class="p">[</span><span class="s2">"gyrotropic_smr_max_arg"</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_param_keyword</span><span class="p">(</span><span class="n">win_data</span><span class="p">,</span> <span class="s2">"gyrotropic_smr_max_arg"</span><span class="p">,</span> <span class="mf">5.0</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+        <span class="n">d</span><span class="p">[</span><span class="s2">"gyrotropic_degen_thresh"</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_param_keyword</span><span class="p">(</span><span class="n">win_data</span><span class="p">,</span> <span class="s2">"gyrotropic_degen_thresh"</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+        <span class="n">d</span><span class="p">[</span><span class="s2">"gyrotropic_band_list"</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_param_keyword</span><span class="p">(</span><span class="n">win_data</span><span class="p">,</span> <span class="s2">"gyrotropic_band_list"</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">str</span><span class="p">)</span>
+        <span class="n">gyrotropic_box_center</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_param_keyword</span><span class="p">(</span><span class="n">win_data</span><span class="p">,</span> <span class="s2">"gyrotropic_box_center"</span><span class="p">,</span> <span class="s2">"0.5 0.5 0.5"</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">str</span><span class="p">)</span>
+        <span class="n">d</span><span class="p">[</span><span class="s2">"gyrotropic_box_center"</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">gyrotropic_box_center</span><span class="o">.</span><span class="n">split</span><span class="p">()]</span>
+        <span class="n">gyrotropic_box_b1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_param_keyword</span><span class="p">(</span><span class="n">win_data</span><span class="p">,</span> <span class="s2">"gyrotropic_box_b1"</span><span class="p">,</span> <span class="s2">"1.0 0.0 0.0"</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">str</span><span class="p">)</span>
+        <span class="n">d</span><span class="p">[</span><span class="s2">"gyrotropic_box_b1"</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">gyrotropic_box_b1</span><span class="o">.</span><span class="n">split</span><span class="p">()]</span>
+        <span class="n">gyrotropic_box_b2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_param_keyword</span><span class="p">(</span><span class="n">win_data</span><span class="p">,</span> <span class="s2">"gyrotropic_box_b2"</span><span class="p">,</span> <span class="s2">"0.0 1.0 0.0"</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">str</span><span class="p">)</span>
+        <span class="n">d</span><span class="p">[</span><span class="s2">"gyrotropic_box_b2"</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">gyrotropic_box_b2</span><span class="o">.</span><span class="n">split</span><span class="p">()]</span>
+        <span class="n">gyrotropic_box_b3</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_param_keyword</span><span class="p">(</span><span class="n">win_data</span><span class="p">,</span> <span class="s2">"gyrotropic_box_b3"</span><span class="p">,</span> <span class="s2">"0.0 0.0 1.0"</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">str</span><span class="p">)</span>
+        <span class="n">d</span><span class="p">[</span><span class="s2">"gyrotropic_box_b3"</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">gyrotropic_box_b3</span><span class="o">.</span><span class="n">split</span><span class="p">()]</span>
+
+        <span class="n">d</span><span class="p">[</span><span class="s2">"uHu_formatted"</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_param_keyword</span><span class="p">(</span><span class="n">win_data</span><span class="p">,</span> <span class="s2">"uHu_formatted"</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">bool</span><span class="p">)</span>
+
+        <span class="n">d</span><span class="p">[</span><span class="s2">"boltzwann"</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_param_keyword</span><span class="p">(</span><span class="n">win_data</span><span class="p">,</span> <span class="s2">"boltzwann"</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">bool</span><span class="p">)</span>
+
+        <span class="n">num_fermi</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">found_fermi_energy</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="n">fermi_energy_max</span> <span class="o">=</span> <span class="mf">0.0</span>
+        <span class="n">fermi_energy_min</span> <span class="o">=</span> <span class="mf">0.0</span>
+        <span class="n">fermi_energy_step</span> <span class="o">=</span> <span class="mf">0.0</span>
+        <span class="n">fermi_energy_list</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="c1"># as wannier90: fermi_energy_min (a scan) excludes fermi_energy; without either, the Fermi energy is 0</span>
+        <span class="n">fermi_energy</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_param_keyword</span><span class="p">(</span><span class="n">win_data</span><span class="p">,</span> <span class="s2">"fermi_energy"</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">fermi_energy</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">found_fermi_energy</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="n">num_fermi</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">fermi_energy</span> <span class="o">=</span> <span class="mf">0.0</span>
+
+        <span class="n">fermi_energy_scan</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="n">fermi_energy_min</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_param_keyword</span><span class="p">(</span><span class="n">win_data</span><span class="p">,</span> <span class="s2">"fermi_energy_min"</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">fermi_energy_min</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">found_fermi_energy</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">SymCWInputError</span><span class="p">(</span><span class="s2">"cannot specify both fermi_energy and fermi_energy_min in seedname.win."</span><span class="p">)</span>
+
+            <span class="n">fermi_energy_scan</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="n">fermi_energy_max</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_param_keyword</span><span class="p">(</span><span class="n">win_data</span><span class="p">,</span> <span class="s2">"fermi_energy_max"</span><span class="p">,</span> <span class="n">fermi_energy_min</span> <span class="o">+</span> <span class="mf">1.0</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">fermi_energy_max</span> <span class="o">&lt;=</span> <span class="n">fermi_energy_min</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">SymCWInputError</span><span class="p">(</span><span class="s2">"fermi_energy_max must be larger than fermi_energy_min in seedname.win."</span><span class="p">)</span>
+
+            <span class="n">fermi_energy_step</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_param_keyword</span><span class="p">(</span><span class="n">win_data</span><span class="p">,</span> <span class="s2">"fermi_energy_step"</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">fermi_energy_step</span> <span class="o">&lt;=</span> <span class="mf">0.0</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">SymCWInputError</span><span class="p">(</span><span class="s2">"fermi_energy_step must be positive in seedname.win."</span><span class="p">)</span>
+
+            <span class="c1"># nint of wannier90 (rounds half away from zero)</span>
+            <span class="n">num_fermi</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">floor</span><span class="p">((</span><span class="n">fermi_energy_max</span> <span class="o">-</span> <span class="n">fermi_energy_min</span><span class="p">)</span> <span class="o">/</span> <span class="n">fermi_energy_step</span> <span class="o">+</span> <span class="mf">0.5</span><span class="p">))</span> <span class="o">+</span> <span class="mi">1</span>
+
+        <span class="k">if</span> <span class="n">found_fermi_energy</span><span class="p">:</span>
+            <span class="n">fermi_energy_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">fermi_energy</span><span class="p">]</span>
+        <span class="k">elif</span> <span class="n">fermi_energy_scan</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">num_fermi</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">fermi_energy_step</span> <span class="o">=</span> <span class="mf">0.0</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">fermi_energy_step</span> <span class="o">=</span> <span class="p">(</span><span class="n">fermi_energy_max</span> <span class="o">-</span> <span class="n">fermi_energy_min</span><span class="p">)</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="n">num_fermi</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+
+            <span class="n">fermi_energy_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">fermi_energy_min</span> <span class="o">+</span> <span class="n">i</span> <span class="o">*</span> <span class="n">fermi_energy_step</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_fermi</span><span class="p">)]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">fermi_energy_list</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">]</span>
+            <span class="n">num_fermi</span> <span class="o">=</span> <span class="mi">1</span>
+
+        <span class="n">d</span><span class="p">[</span><span class="s2">"fermi_energy"</span><span class="p">]</span> <span class="o">=</span> <span class="n">fermi_energy</span>
+        <span class="n">d</span><span class="p">[</span><span class="s2">"fermi_energy_max"</span><span class="p">]</span> <span class="o">=</span> <span class="n">fermi_energy_max</span>
+        <span class="n">d</span><span class="p">[</span><span class="s2">"fermi_energy_min"</span><span class="p">]</span> <span class="o">=</span> <span class="n">fermi_energy_min</span>
+        <span class="n">d</span><span class="p">[</span><span class="s2">"fermi_energy_step"</span><span class="p">]</span> <span class="o">=</span> <span class="n">fermi_energy_step</span>
+        <span class="n">d</span><span class="p">[</span><span class="s2">"fermi_energy_list"</span><span class="p">]</span> <span class="o">=</span> <span class="n">fermi_energy_list</span>
+        <span class="n">d</span><span class="p">[</span><span class="s2">"num_fermi"</span><span class="p">]</span> <span class="o">=</span> <span class="n">num_fermi</span>
+
+        <span class="c1"># shc</span>
+        <span class="n">d</span><span class="p">[</span><span class="s2">"shc_freq_scan"</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_param_keyword</span><span class="p">(</span><span class="n">win_data</span><span class="p">,</span> <span class="s2">"shc_freq_scan"</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">bool</span><span class="p">)</span>
+        <span class="n">d</span><span class="p">[</span><span class="s2">"shc_alpha"</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_param_keyword</span><span class="p">(</span><span class="n">win_data</span><span class="p">,</span> <span class="s2">"shc_alpha"</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
+        <span class="n">d</span><span class="p">[</span><span class="s2">"shc_beta"</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_param_keyword</span><span class="p">(</span><span class="n">win_data</span><span class="p">,</span> <span class="s2">"shc_beta"</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
+        <span class="n">d</span><span class="p">[</span><span class="s2">"shc_gamma"</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_param_keyword</span><span class="p">(</span><span class="n">win_data</span><span class="p">,</span> <span class="s2">"shc_gamma"</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
+        <span class="n">d</span><span class="p">[</span><span class="s2">"shc_bandshift"</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_param_keyword</span><span class="p">(</span><span class="n">win_data</span><span class="p">,</span> <span class="s2">"shc_bandshift"</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">bool</span><span class="p">)</span>
+        <span class="n">d</span><span class="p">[</span><span class="s2">"shc_bandshift_firstband"</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_param_keyword</span><span class="p">(</span><span class="n">win_data</span><span class="p">,</span> <span class="s2">"shc_bandshift_firstband"</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
+        <span class="n">d</span><span class="p">[</span><span class="s2">"shc_bandshift_energyshift"</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_param_keyword</span><span class="p">(</span>
+            <span class="n">win_data</span><span class="p">,</span> <span class="s2">"shc_bandshift_energyshift"</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span>
+        <span class="p">)</span>
+        <span class="c1"># as in wannier90: the shift applies only to the spin Hall conductivity</span>
+        <span class="n">d</span><span class="p">[</span><span class="s2">"shc_bandshift"</span><span class="p">]</span> <span class="o">=</span> <span class="n">d</span><span class="p">[</span><span class="s2">"shc_bandshift"</span><span class="p">]</span> <span class="ow">and</span> <span class="n">d</span><span class="p">[</span><span class="s2">"berry"</span><span class="p">]</span> <span class="ow">and</span> <span class="s2">"shc"</span> <span class="ow">in</span> <span class="p">(</span><span class="n">d</span><span class="p">[</span><span class="s2">"berry_task"</span><span class="p">]</span> <span class="ow">or</span> <span class="s2">""</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">d</span><span class="p">[</span><span class="s2">"shc_bandshift"</span><span class="p">]</span> <span class="ow">and</span> <span class="n">d</span><span class="p">[</span><span class="s2">"shc_bandshift_firstband"</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">SymCWInputError</span><span class="p">(</span><span class="s2">"shc_bandshift = true requires shc_bandshift_firstband."</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">d</span><span class="p">[</span><span class="s2">"shc_bandshift_firstband"</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">d</span><span class="p">[</span><span class="s2">"shc_bandshift_firstband"</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">SymCWInputError</span><span class="p">(</span><span class="s2">"shc_bandshift_firstband must be &gt;= 1 (1-based band index)."</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">d</span></div>
+
+
+    <span class="c1"># ==================================================</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_get_param_keyword</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lines</span><span class="p">,</span> <span class="n">keyword</span><span class="p">,</span> <span class="n">default_value</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">):</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">keys</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">:</span>
+            <span class="n">line</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="p">,</span> <span class="s2">""</span><span class="p">)</span>
+            <span class="n">line</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">lstrip</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">keyword</span><span class="p">):</span>
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"="</span><span class="p">))</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+                    <span class="n">key</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"="</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+                    <span class="n">key</span> <span class="o">=</span> <span class="n">key</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">" "</span><span class="p">,</span> <span class="s2">""</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">key</span> <span class="o">==</span> <span class="n">keyword</span><span class="p">:</span>
+                        <span class="n">data</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"="</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"!"</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+                    <span class="k">assert</span> <span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">keys</span><span class="p">,</span> <span class="n">key</span> <span class="o">+</span> <span class="s2">" is defined more than once"</span>
+                    <span class="n">keys</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+                <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">":"</span><span class="p">))</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+                    <span class="n">key</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">":"</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+                    <span class="n">key</span> <span class="o">=</span> <span class="n">key</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">" "</span><span class="p">,</span> <span class="s2">""</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">key</span> <span class="o">==</span> <span class="n">keyword</span><span class="p">:</span>
+                        <span class="n">data</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">":"</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"!"</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+                    <span class="k">assert</span> <span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">keys</span><span class="p">,</span> <span class="n">key</span> <span class="o">+</span> <span class="s2">" is defined more than once"</span>
+                    <span class="n">keys</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">data</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="n">default_value</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">data</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">" "</span><span class="p">,</span> <span class="s2">""</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">"true"</span><span class="p">,</span> <span class="s2">".true."</span><span class="p">):</span>
+                <span class="n">data</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="k">elif</span> <span class="n">data</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">" "</span><span class="p">,</span> <span class="s2">""</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">"false"</span><span class="p">,</span> <span class="s2">".false."</span><span class="p">):</span>
+                <span class="n">data</span> <span class="o">=</span> <span class="kc">False</span>
+
+        <span class="k">if</span> <span class="n">data</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+
+        <span class="k">if</span> <span class="n">dtype</span> <span class="ow">is</span> <span class="nb">float</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="c1"># Fortran double precision exponent, e.g. 30.0d0</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s2">"(?&lt;=[0-9.])[dD](?=[+-]?[0-9])"</span><span class="p">,</span> <span class="s2">"e"</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+
+        <span class="k">return</span> <span class="n">dtype</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+
+    <span class="c1"># ==================================================</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">gyrotropic_task_list</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="p">[</span><span class="s2">"gyrotropic_task"</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">[]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">[</span><span class="n">task</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="k">for</span> <span class="n">task</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">[</span><span class="s2">"gyrotropic_task"</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"-"</span><span class="p">)]</span>
+
+    <span class="c1"># ==================================================</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">eval_K</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">"k"</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">gyrotropic_task_list</span> <span class="ow">or</span> <span class="s2">"all"</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">gyrotropic_task_list</span>
+
+    <span class="c1"># ==================================================</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">eval_C</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">"c"</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">gyrotropic_task_list</span> <span class="ow">or</span> <span class="s2">"all"</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">gyrotropic_task_list</span>
+
+    <span class="c1"># ==================================================</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">eval_D</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">"d0"</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">gyrotropic_task_list</span> <span class="ow">or</span> <span class="s2">"all"</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">gyrotropic_task_list</span>
+
+    <span class="c1"># ==================================================</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">eval_Dw</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">"dw"</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">gyrotropic_task_list</span> <span class="ow">or</span> <span class="s2">"all"</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">gyrotropic_task_list</span>
+
+    <span class="c1"># ==================================================</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">eval_spn</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">eval_spn</span> <span class="o">=</span> <span class="s2">"spin"</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">gyrotropic_task_list</span> <span class="ow">or</span> <span class="p">(</span><span class="s2">"all"</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">gyrotropic_task_list</span> <span class="ow">and</span> <span class="bp">self</span><span class="p">[</span><span class="s2">"spinors"</span><span class="p">])</span>
+        <span class="c1"># if not (self.eval_K or self.eval_NOA):</span>
+        <span class="c1">#    eval_spn = False</span>
+        <span class="k">return</span> <span class="n">eval_spn</span>
+
+    <span class="c1"># ==================================================</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">eval_NOA</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">"noa"</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">gyrotropic_task_list</span> <span class="ow">or</span> <span class="s2">"all"</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">gyrotropic_task_list</span>
+
+    <span class="c1"># ==================================================</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">eval_DOS</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">"dos"</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">gyrotropic_task_list</span> <span class="ow">or</span> <span class="s2">"all"</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">gyrotropic_task_list</span>
+
+    <span class="c1"># ==================================================</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">eval_DOS</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">"dos"</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">gyrotropic_task_list</span> <span class="ow">or</span> <span class="s2">"all"</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">gyrotropic_task_list</span>
+
+    <span class="c1"># ==================================================</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">gyrotropic_box</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="bp">self</span><span class="p">[</span><span class="s2">"gyrotropic_box_b1"</span><span class="p">],</span> <span class="bp">self</span><span class="p">[</span><span class="s2">"gyrotropic_box_b2"</span><span class="p">],</span> <span class="bp">self</span><span class="p">[</span><span class="s2">"gyrotropic_box_b3"</span><span class="p">]])</span>
+
+    <span class="c1"># ==================================================</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">gyrotropic_box_center</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="p">[</span><span class="s2">"gyrotropic_box_center"</span><span class="p">])</span>
+
+    <span class="c1"># ==================================================</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">gyrotropic_box_corner</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">gyrotropic_box_center</span> <span class="o">-</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">gyrotropic_box</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">gyrotropic_box</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">gyrotropic_box</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+        <span class="p">)</span>
+
+    <span class="c1"># ==================================================</span>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_default</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">_default</span></div>
+
+</pre></div>
+
+                </article>
+              
+
+              
+              
+              
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Rikuto Oiwa
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2021-.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../../_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb"></script>
+<script defer src="../../../_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
