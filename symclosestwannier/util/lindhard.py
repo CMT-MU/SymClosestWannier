@@ -2,7 +2,6 @@
 utility codes for lindhard function.
 """
 
-import subprocess
 import numpy as np
 import multiprocessing
 from joblib import Parallel, delayed
@@ -10,10 +9,12 @@ from tqdm import tqdm
 import gc
 
 from symclosestwannier.util.utility import (
+    run_gnuplot,
     fermi,
     fourier_transform_r_to_k,
     fourier_transform_r_to_k_vec,
     spin_zeeman_interaction,
+    tb_gauge_positions,
 )
 from symclosestwannier.analyzer.get_response import utility_w0gauss
 
@@ -76,11 +77,7 @@ def get_lindhard(cwi, HH_R, qpoints, omega, ef, T, delta):
 
     # ==================================================
 
-    if cwi["tb_gauge"]:
-        atoms_list = list(cwi["atoms_frac"].values())
-        atoms_frac = np.array([atoms_list[i] for i in cwi["nw2n"]])
-    else:
-        atoms_frac = None
+    atoms_frac = tb_gauge_positions(cwi)
 
     lindhard_kmesh = cwi["lindhard_kmesh"]
     N1, N2, N3 = lindhard_kmesh
@@ -219,7 +216,7 @@ def generate_lindhard_gnuplot(outdir, filename, qmax, lmax, lmin, **kwargs):
 
     fs.close()
 
-    subprocess.run(f"cd {outdir} ; gnuplot plot_lindhard.gnu", shell=True)
+    run_gnuplot(outdir, "plot_lindhard.gnu")
 
 
 # ==================================================
@@ -361,4 +358,4 @@ def generate_lindhard_surface_gnuplot(
 
     fs.close()
 
-    subprocess.run(f"cd {outdir} ; gnuplot plot_lindhard_surface.gnu", shell=True)
+    run_gnuplot(outdir, "plot_lindhard_surface.gnu")

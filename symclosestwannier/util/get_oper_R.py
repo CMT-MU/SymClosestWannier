@@ -21,7 +21,23 @@
 import numpy as np
 
 from symclosestwannier.util.constants import elem_charge_SI, hbar_SI
-from symclosestwannier.util.utility import fourier_transform_r_to_k, fourier_transform_k_to_r
+from symclosestwannier.util.utility import fourier_transform_r_to_k, fourier_transform_k_to_r, orbital_positions
+from symclosestwannier.util.exceptions import SymCWInputError
+
+
+# ==================================================
+def _require(cwi, key, ext, name):
+    """
+    check that the data read from seedname.ext is available.
+
+    Args:
+        cwi (CWInfo): CWInfo.
+        key (str): key of the data.
+        ext (str): extension of the file.
+        name (str): name of the operator to be calculated.
+    """
+    if cwi.get(key) is None:
+        raise SymCWInputError(f"{name} requires {cwi['seedname']}.{ext}, which is not found or not read.")
 
 
 # ==================================================
@@ -38,6 +54,7 @@ def get_oper_R(name, cwi, *args):
     d = {
         "HH_R": get_HH_R,  # <0n|H|Rm>
         "AA_R": get_AA_R,  # <0n|r|Rm>
+        "AA_R_tb": get_AA_R_tb,  # <0n|r|Rm> ≈ τ_n δ_nm δ_R0
         "BB_R": get_BB_R,  # <0|H(r-R)|R>
         "CC_R": get_CC_R,  # <0|r_alpha.H(r-R)_beta|R>
         "SS_R": get_SS_R,  # <0n|sigma_x,y,z|Rm>
@@ -70,15 +87,7 @@ def get_HH_R(cwi):
     kpoints = np.array(cwi["kpoints"])
     irvec = np.array(cwi["irvec"])
 
-    if cwi["tb_gauge"]:
-        atoms_list = list(cwi["atoms_frac_shift"].values())
-        atoms_frac = np.array([atoms_list[i] for i in cwi["nw2n"]])
-    else:
-        atoms_frac = None
-
-    print(f"atoms_frac = {atoms_frac}")
-
-    HH_R = fourier_transform_k_to_r(HH_k, kpoints, irvec, atoms_frac)
+    HH_R = fourier_transform_k_to_r(HH_k, kpoints, irvec)
 
     return HH_R
 
@@ -94,6 +103,7 @@ def get_AA_R(cwi):
     Returns:
         ndarray: position operator, AA_R(3, len(irvec), num_wann, num_wann).
     """
+    _require(cwi, "Mkb", "mmn", "position operator (AA_R)")
     Mkb = np.array(cwi["Mkb"])
     Uk = np.array(cwi["Uk"])
 
@@ -115,15 +125,33 @@ def get_AA_R(cwi):
 
     AA_k = 0.5 * (AA_k + np.einsum("akmn->aknm", AA_k).conj())
 
-    if cwi["tb_gauge"]:
-        atoms_list = list(cwi["atoms_frac_shift"].values())
-        atoms_frac = np.array([atoms_list[i] for i in cwi["nw2n"]])
-    else:
-        atoms_frac = None
+    AA_R = np.array([fourier_transform_k_to_r(AA_k[i], kpoints, irvec) for i in range(3)])
 
-    atoms_frac = None
+    return AA_R
 
-    AA_R = np.array([fourier_transform_k_to_r(AA_k[i], kpoints, irvec, atoms_frac) for i in range(3)])
+
+# ==================================================
+def get_AA_R_tb(cwi):
+    """
+    position operator in the tight-binding approximation, <0n|r|Rm> = τ_n δ_nm δ_R0,
+    with the projection centres τ_n (wannier90 convention). seedname.mmn is not needed.
+
+    Args:
+        cwi (CWInfo): CWInfo.
+
+    Returns:
+        ndarray: position operator, AA_R(3, len(irvec), num_wann, num_wann).
+    """
+    irvec = np.array(cwi["irvec"])
+    num_wann = cwi["num_wann"]
+    tau = orbital_positions(cwi) @ np.array(cwi["unit_cell_cart"], dtype=float)
+
+    R0 = np.where(np.all(irvec == 0, axis=1))[0]
+    if len(R0) != 1:
+        raise ValueError("R = 0 is not in irvec.")
+
+    AA_R = np.zeros((3, len(irvec), num_wann, num_wann), dtype=complex)
+    AA_R[:, R0[0], np.arange(num_wann), np.arange(num_wann)] = tau.T
 
     return AA_R
 
@@ -144,7 +172,7 @@ def get_BB_R(cwi):
         ndarray: position operator, BB_R(3, len(irvec), num_wann, num_wann).
     """
     if abs(cwi.get("scissors_shift", 0.0)) > 1.0e-7:
-        raise Exception("Error: scissors correction not yet implemented for BB_R")
+        raise NotImplementedError("scissors correction not yet implemented for BB_R")
 
     num_k = cwi["num_k"]
     kpoints = np.array(cwi["kpoints"])
@@ -156,6 +184,7 @@ def get_BB_R(cwi):
 
     Ek = np.array(cwi["Ek"])
     Uk = np.array(cwi["Uk"])
+    _require(cwi, "Mkb", "mmn", "BB_R")
     Mkb = np.array(cwi["Mkb"])
 
     H_o = np.array([np.diag(Ek[k]) for k in range(num_k)])
@@ -164,13 +193,7 @@ def get_BB_R(cwi):
     H_k_kb = np.einsum("klm, kblp, kbpn->kbmn", np.conj(Uk), HM_o, Uk[kb2k[:, :], :, :], optimize=True)
     BB_k = 1.0j * np.einsum("b,kbc,kbmn->ckmn", wb, bveck, H_k_kb, optimize=True)
 
-    if cwi["tb_gauge"]:
-        atoms_list = list(cwi["atoms_frac_shift"].values())
-        atoms_frac = np.array([atoms_list[i] for i in cwi["nw2n"]])
-    else:
-        atoms_frac = None
-
-    BB_R = np.array([fourier_transform_k_to_r(BB_k[i], kpoints, irvec, atoms_frac) for i in range(3)])
+    BB_R = np.array([fourier_transform_k_to_r(BB_k[i], kpoints, irvec) for i in range(3)])
 
     return BB_R
 
@@ -192,7 +215,7 @@ def get_CC_R(cwi):
 
     """
     if abs(cwi.get("scissors_shift", 0.0)) > 1.0e-7:
-        raise Exception("Error: scissors correction not yet implemented for CC_R")
+        raise NotImplementedError("scissors correction not yet implemented for CC_R")
 
     kpoints = np.array(cwi["kpoints"])
     irvec = np.array(cwi["irvec"])
@@ -202,25 +225,22 @@ def get_CC_R(cwi):
     wb = cwi["wb"]
 
     Uk = np.array(cwi["Uk"])
+    _require(cwi, "Hkb1b2", "uHu", "CC_R")
     Hkb1b2 = np.array(cwi["Hkb1b2"])
 
-    print(f"Uk[kb2k[:, :], :, :].shape = {Uk[kb2k[:, :], :, :].shape}")
-    print(f"Hkb1b2.shape = {Hkb1b2.shape}")
     Hkb1b2 = np.einsum(
         "kblm, kbdlp, kdpn->kbdmn", np.conj(Uk[kb2k[:, :], :, :]), Hkb1b2, Uk[kb2k[:, :], :, :], optimize=True
     )
     CC_k = np.einsum("b,kbi,d,kdj,kbdmn->ijkmn", wb, bveck, wb, bveck, Hkb1b2, optimize=True)
 
-    CC_k = 0.5 * (CC_k + np.einsum("ijkmn->ijknm", CC_k).conj())
-
-    if cwi["tb_gauge"]:
-        atoms_list = list(cwi["atoms_frac_shift"].values())
-        atoms_frac = np.array([atoms_list[i] for i in cwi["nw2n"]])
-    else:
-        atoms_frac = None
+    # CC_ab(k) is not hermitian for a != b; only CC_ba(k) = CC_ab(k)^† holds (as in wannier90 get_oper.F90).
+    for i in range(3):
+        CC_k[i, i] = 0.5 * (CC_k[i, i] + np.einsum("kmn->knm", CC_k[i, i]).conj())
+        for j in range(i + 1, 3):
+            CC_k[j, i] = np.einsum("kmn->knm", CC_k[i, j]).conj()
 
     CC_R = np.array(
-        [[fourier_transform_k_to_r(CC_k[i, j], kpoints, irvec, atoms_frac) for j in range(3)] for i in range(3)]
+        [[fourier_transform_k_to_r(CC_k[i, j], kpoints, irvec) for j in range(3)] for i in range(3)]
     )
 
     return CC_R
@@ -237,6 +257,7 @@ def get_SS_R(cwi):
     Returns:
         ndarray: spin operator, SS_R(3, len(irvec), num_wann, num_wann).
     """
+    _require(cwi, "pauli_spn", "spn", "spin operator (SS_R)")
     pauli_spn = np.array(cwi["pauli_spn"])
     Uk = np.array(cwi["Uk"])
 
@@ -247,15 +268,30 @@ def get_SS_R(cwi):
     kpoints = np.array(cwi["kpoints"])
     irvec = np.array(cwi["irvec"])
 
-    if cwi["tb_gauge"]:
-        atoms_list = list(cwi["atoms_frac_shift"].values())
-        atoms_frac = np.array([atoms_list[i] for i in cwi["nw2n"]])
-    else:
-        atoms_frac = None
-
-    SS_R = np.array([fourier_transform_k_to_r(SS_k[i], kpoints, irvec, atoms_frac) for i in range(3)])
+    SS_R = np.array([fourier_transform_k_to_r(SS_k[i], kpoints, irvec) for i in range(3)])
 
     return SS_R
+
+
+# ==================================================
+def shc_bandshift(E, cwi):
+    """
+    Shift the bands shc_bandshift_firstband, ..., num_bands (1-based, as in wannier90) by shc_bandshift_energyshift.
+
+    Args:
+        E (ndarray): eigenvalues, (num_k, num_bands).
+        cwi (CWInfo): CWInfo.
+
+    Returns:
+        ndarray: shifted copy of E, or E itself if shc_bandshift = false.
+    """
+    if not cwi["shc_bandshift"]:
+        return E
+
+    E = np.array(E)
+    E[:, cwi["shc_bandshift_firstband"] - 1 :] += cwi["shc_bandshift_energyshift"]
+
+    return E
 
 
 # ==================================================
@@ -276,12 +312,6 @@ def get_SHC_R(cwi):
     irvec = np.array(cwi["irvec"])
     num_k = cwi["num_k"]
 
-    if cwi["tb_gauge"]:
-        atoms_list = list(cwi["atoms_frac_shift"].values())
-        atoms_frac = np.array([atoms_list[i] for i in cwi["nw2n"]])
-    else:
-        atoms_frac = None
-
     Ek = np.array(cwi["Ek"])
     Uk = np.array(cwi["Uk"])
 
@@ -290,16 +320,12 @@ def get_SHC_R(cwi):
     SS_k = np.einsum("klm,aklp,kpn->akmn", np.conj(Uk), spn_o, Uk, optimize=True)
 
     # get_HH_R
-    shc_bandshift = cwi["shc_bandshift"]
-    shc_bandshift_firstband = cwi["shc_bandshift_firstband"]
-    shc_bandshift_energyshift = cwi["shc_bandshift_energyshift"]
-
-    if shc_bandshift:
-        Ek[:, shc_bandshift_firstband:] += shc_bandshift_energyshift
+    Ek = shc_bandshift(Ek, cwi)
 
     H_o = np.array([np.diag(Ek[k]) for k in range(num_k)])
 
     # get_AA_R
+    _require(cwi, "Mkb", "mmn", "spin Hall conductivity")
     Mkb = np.array(cwi["Mkb"])
     kb2k = cwi.nnkp.kb2k()
     bveck = cwi.nnkp.bveck()
@@ -323,12 +349,12 @@ def get_SHC_R(cwi):
         "b,kbc,akmn->ackmn", wb, bveck, SH_k, optimize=True
     )
 
-    SH_R = np.array([fourier_transform_k_to_r(SH_k[i], kpoints, irvec, atoms_frac) for i in range(3)])
+    SH_R = np.array([fourier_transform_k_to_r(SH_k[i], kpoints, irvec) for i in range(3)])
     SR_R = np.array(
-        [[fourier_transform_k_to_r(SR_k[i][j], kpoints, irvec, atoms_frac) for j in range(3)] for i in range(3)]
+        [[fourier_transform_k_to_r(SR_k[i][j], kpoints, irvec) for j in range(3)] for i in range(3)]
     )
     SHR_R = np.array(
-        [[fourier_transform_k_to_r(SHR_k[i][j], kpoints, irvec, atoms_frac) for j in range(3)] for i in range(3)]
+        [[fourier_transform_k_to_r(SHR_k[i][j], kpoints, irvec) for j in range(3)] for i in range(3)]
     )
 
     SR_R = 1.0j * SR_R
@@ -365,6 +391,7 @@ def get_berry_phase_R(cwi):
     Returns:
         ndarray: spin operator, SS_R(3, len(irvec), num_wann, num_wann).
     """
+    _require(cwi, "Mkb", "mmn", "berry phase")
     Mkb = np.array(cwi["Mkb"])
     Uk = np.array(cwi["Uk"])
     num_wann = cwi["num_wann"]
@@ -383,43 +410,39 @@ def get_berry_phase_R(cwi):
     kpoints = np.array(cwi["kpoints"])
     irvec = np.array(cwi["irvec"])
 
-    if cwi["tb_gauge"]:
-        atoms_list = list(cwi["atoms_frac_shift"].values())
-        atoms_frac = np.array([atoms_list[i] for i in cwi["nw2n"]])
-    else:
-        atoms_frac = None
-
-    a_R = np.array([fourier_transform_k_to_r(a_k[i], kpoints, irvec, atoms_frac) for i in range(3)])
+    a_R = np.array([fourier_transform_k_to_r(a_k[i], kpoints, irvec) for i in range(3)])
 
     return a_R
 
 
 # ==================================================
-def get_v_R(cwi, HH_R=None):
+def get_v_R(cwi, HH_R=None, atoms_frac=None):
     """
     matrix elements of real-space velocity operator in TB approximation, <0n|v|Rm>.
     v_k^a = 1 / (h/2π) ∇_k^a H_k [Angstrom / s]
 
+    The derivative is taken in the gauge given by atoms_frac: without atoms_frac (wannier90 convention) v_R = i R H(R),
+    with atoms_frac (tb_gauge = true) v_R = i (R + τ_n - τ_m) H(R), to be transformed to k space with the same atoms_frac.
+
     Args:
         cwi (CWInfo): CWInfo.
+        HH_R (ndarray, optional): Hamiltonian, HH_R(len(irvec), num_wann, num_wann).
+        atoms_frac (ndarray, optional): orbital positions in fractional coordinates, (num_wann, 3).
 
     Returns:
-        ndarray: position operator, v_R(3, len(irvec), num_wann, num_wann).
+        ndarray: velocity operator, v_R(3, len(irvec), num_wann, num_wann).
     """
     if HH_R is None:
         HH_R = get_HH_R(cwi)
 
     A = np.array(cwi["unit_cell_cart"])
     irvec = cwi["irvec"]
-    ndegen = cwi["ndegen"]
 
     irvec_cart = np.array([np.array(R) @ np.array(A) for R in irvec])
 
-    if cwi["tb_gauge"]:
-        atoms_list = list(cwi["atoms_frac_shift"].values())
-        atoms_frac = np.array([atoms_list[i] for i in cwi["nw2n"]])
-        atoms_cart = np.array([r @ A for r in atoms_frac])
-        bond_cart = np.array([[[(R + rn) - rm for rn in atoms_cart] for rm in atoms_cart] for R in irvec_cart])
+    if atoms_frac is not None:
+        atoms_cart = np.array(atoms_frac) @ A
+        bond_cart = irvec_cart[:, None, None, :] + atoms_cart[None, None, :, :] - atoms_cart[None, :, None, :]
         v_R_x, v_R_y, v_R_z = 1.0j * np.einsum("Rmna,Rmn->aRmn", bond_cart, HH_R, optimize=True)
     else:
         v_R_x, v_R_y, v_R_z = 1.0j * np.einsum("Ra,Rmn->aRmn", irvec_cart, HH_R, optimize=True)
@@ -441,6 +464,94 @@ def get_v_R(cwi, HH_R=None):
     v_R = fac * v_R
 
     return v_R
+
+
+# ==================================================
+def to_tb_gauge(operators, irvec, unit_cell_cart, atoms_frac, ndegen=None):
+    """
+    convert real-space operators from the wannier90 convention (no orbital position in the Fourier phase)
+    to the tb gauge (orbital positions τ in the phase), so that the Fourier transform with atoms_frac gives
+    the k-space operators of the Bloch basis e^{ik(R+τ_b)} |φ_b(R)>.
+
+        AA_a(R)      -> AA_a(R) - τ_{n,a} δ_{mn} δ_{R0}
+        BB_a(R)      -> BB_a(R) - τ_{n,a} HH(R)
+        CC_ab(R)     -> CC_ab(R) - τ_{m,a} BB_b(R) - τ_{n,b} BB_a^†(R) + τ_{m,a} τ_{n,b} HH(R), BB_a^†(R)_{mn} = BB_a(-R)_{nm}^*
+        SR_ab(R)     -> SR_ab(R) - τ_{n,b} SS_a(R)
+        SHR_ab(R)    -> SHR_ab(R) - τ_{n,b} SH_a(R)
+
+    (m, n: row and column orbitals, τ in Cartesian coordinates).
+    HH_R, SS_R and SH_R are the same in both conventions; v_R is not converted (see get_v_R).
+    HH_R must be the Hamiltonian from which BB_R and CC_R are built.
+    BB_a^†(R) is the Fourier coefficient of BB_a(k)^† only if ndegen(-R) = ndegen(R), as for a Wigner-Seitz supercell.
+
+    Args:
+        operators (dict): real-space operators in the wannier90 convention (None for those not calculated).
+        irvec (ndarray): lattice points, [[n1,n2,n3]].
+        unit_cell_cart (ndarray): lattice vectors (rows), [a1,a2,a3].
+        atoms_frac (ndarray): orbital positions in fractional coordinates, (num_wann, 3).
+        ndegen (ndarray, optional): degeneracy of each R, checked to be symmetric under R -> -R.
+
+    Returns:
+        dict: converted operators (only the keys given in operators, the input is not modified).
+    """
+    irvec = np.array(irvec, dtype=int)
+    tau = np.array(atoms_frac, dtype=float) @ np.array(unit_cell_cart, dtype=float)
+
+    def require(name, *keys):
+        for key in keys:
+            if operators.get(key) is None:
+                raise ValueError(f"{key} is required to convert {name} to the tb gauge.")
+
+    index = {tuple(R): ir for ir, R in enumerate(irvec)}
+    if (0, 0, 0) not in index:
+        raise ValueError("R = 0 is not in irvec.")
+
+    d = dict(operators)
+
+    if operators.get("AA_R") is not None:
+        AA_R = np.array(operators["AA_R"], dtype=complex)
+        num_wann = AA_R.shape[-1]
+        AA_R[:, index[(0, 0, 0)], np.arange(num_wann), np.arange(num_wann)] -= tau.T
+        d["AA_R"] = AA_R
+
+    if operators.get("BB_R") is not None:
+        require("BB_R", "HH_R")
+        HH_R = np.array(operators["HH_R"], dtype=complex)
+        BB_R = np.array(operators["BB_R"], dtype=complex)
+        d["BB_R"] = BB_R - np.einsum("na,Rmn->aRmn", tau, HH_R)
+
+    if operators.get("CC_R") is not None:
+        require("CC_R", "HH_R", "BB_R")
+        HH_R = np.array(operators["HH_R"], dtype=complex)
+        BB_R = np.array(operators["BB_R"], dtype=complex)
+        CC_R = np.array(operators["CC_R"], dtype=complex)
+
+        try:
+            minus_R = [index[tuple(-R)] for R in irvec]
+        except KeyError:
+            raise ValueError("irvec must contain -R for every R to convert CC_R to the tb gauge.")
+        if ndegen is not None and not np.array_equal(np.asarray(ndegen)[minus_R], np.asarray(ndegen)):
+            raise ValueError("ndegen must satisfy ndegen(-R) = ndegen(R) to convert CC_R to the tb gauge.")
+        BB_R_dag = BB_R[:, minus_R].transpose(0, 1, 3, 2).conj()
+
+        d["CC_R"] = (
+            CC_R
+            - np.einsum("ma,bRmn->abRmn", tau, BB_R)
+            - np.einsum("nb,aRmn->abRmn", tau, BB_R_dag)
+            + np.einsum("ma,nb,Rmn->abRmn", tau, tau, HH_R)
+        )
+
+    if operators.get("SR_R") is not None:
+        require("SR_R", "SS_R")
+        SS_R = np.array(operators["SS_R"], dtype=complex)
+        d["SR_R"] = np.array(operators["SR_R"], dtype=complex) - np.einsum("nb,aRmn->abRmn", tau, SS_R)
+
+    if operators.get("SHR_R") is not None:
+        require("SHR_R", "SH_R")
+        SH_R = np.array(operators["SH_R"], dtype=complex)
+        d["SHR_R"] = np.array(operators["SHR_R"], dtype=complex) - np.einsum("nb,aRmn->abRmn", tau, SH_R)
+
+    return d
 
 
 # ==================================================

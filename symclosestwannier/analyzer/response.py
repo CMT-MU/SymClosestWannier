@@ -20,8 +20,17 @@
 
 import numpy as np
 
-from symclosestwannier.util.get_oper_R import get_oper_R
-from symclosestwannier.analyzer.get_response import berry_main, boltzwann_main, gyrotropic_main, spin_moment_main
+from symclosestwannier.util.get_oper_R import get_oper_R, to_tb_gauge
+from symclosestwannier.util.utility import tb_gauge_positions
+from symclosestwannier.util.exceptions import SymCWInputError
+from symclosestwannier.cw.win import energy_range_defaults
+from symclosestwannier.analyzer.get_response import (
+    berry_main,
+    boltzwann_main,
+    gyrotropic_main,
+    kubo_frequencies,
+    spin_moment_main,
+)
 
 from symclosestwannier.util.message import (
     cw_start_set_operators_msg,
@@ -57,8 +66,13 @@ class Response(dict):
         super().__init__()
 
         self._cwi = cwi
+        # the frequency and eigenvalue ranges left unset in seedname.win (see Win.read).
+        energy_range_defaults(self._cwi)
         self._cwm = cwm
         self._outfile = f"{self._cwi['seedname']}.cwpout"
+        # a given HH_R (Hr_sym, hr_input, ...) may differ from the Hamiltonian from which BB_R and CC_R are built.
+        self._HH_R_given = HH_R is not None
+        self._HH_R_oper = None
 
         # operators
         self["HH_R"] = HH_R  # <0n|H|Rm>
@@ -103,10 +117,33 @@ class Response(dict):
     # ==================================================
     @property
     def operators(self):
-        return {
-            k: self[k]
-            for k in ("HH_R", "AA_R", "v_R", "BB_R", "CC_R", "SS_R", "SR_R", "SHR_R", "SH_R", "SAA_R", "SBB_R")
-        }
+        """
+        operators in the gauge used by get_response.
+
+        The stored operators are in the wannier90 convention (v_R is built in the gauge given by tb_gauge); for
+        tb_gauge = true they are converted here, so that operators added by a later set_operators are converted as well.
+        """
+        d = {k: self[k] for k in ("HH_R", "AA_R", "v_R", "BB_R", "CC_R", "SS_R", "SR_R", "SHR_R", "SH_R", "SAA_R", "SBB_R")}
+
+        if not self._cwi["tb_gauge"]:
+            return d
+
+        keys = ("AA_R", "BB_R", "CC_R", "SS_R", "SR_R", "SHR_R", "SH_R")
+        ops = {k: d[k] for k in keys}
+        if d["BB_R"] is not None or d["CC_R"] is not None:
+            # the corrections of BB_R and CC_R need the Hamiltonian they are built from.
+            if not self._HH_R_given:
+                ops["HH_R"] = d["HH_R"]
+            else:
+                if self._HH_R_oper is None:
+                    self._HH_R_oper = get_oper_R("HH_R", self._cwi)
+                ops["HH_R"] = self._HH_R_oper
+
+        tau = tb_gauge_positions(self._cwi)
+        ops = to_tb_gauge(ops, self._cwi["irvec"], self._cwi["unit_cell_cart"], tau, self._cwi["ndegen"])
+        d.update({k: ops[k] for k in keys})
+
+        return d
 
     # ==================================================
     def set_operators(self):
@@ -117,10 +154,23 @@ class Response(dict):
         self._cwm.set_stamp()
 
         if self._cwi["use_tb_approximation"]:
+            # only the optical conductivity has a tight-binding version (berry_get_kubo_tb).
+            if self._cwi["berry"] and self._cwi["berry_task"] != "kubo":
+                raise SymCWInputError(
+                    f"use_tb_approximation = true is available only for berry_task = kubo, not {self._cwi['berry_task']}."
+                )
+            if self._cwi["gyrotropic"]:
+                raise SymCWInputError("use_tb_approximation = true is not available for gyrotropic.")
+
+        if self._cwi["use_tb_approximation"]:
             self["HH_R"] = get_oper_R("HH_R", self._cwi) if self["HH_R"] is None else self["HH_R"]
 
             if self._cwi["berry_task"] == "kubo":
-                self["v_R"] = get_oper_R("v_R", self._cwi, self["HH_R"]) if self["v_R"] is None else self["v_R"]
+                self["v_R"] = (
+                    get_oper_R("v_R", self._cwi, self["HH_R"], tb_gauge_positions(self._cwi))
+                    if self["v_R"] is None
+                    else self["v_R"]
+                )
                 self["SS_R"] = (
                     get_oper_R("SS_R", self._cwi) if self._cwi["spin_decomp"] and self["SS_R"] is None else self["SS_R"]
                 )
@@ -160,7 +210,7 @@ class Response(dict):
 
                     # if self._cwi["shc_method"] == "qiao":
                     if self["SR_R"] is None:
-                        SR_R, SHR_R, SH_R = get_oper_R("get_SHC_R", self._cwi)
+                        SR_R, SHR_R, SH_R = get_oper_R("SHC_R", self._cwi)
                         self["SR_R"] = SR_R
                         self["SHR_R"] = SHR_R
                         self["SH_R"] = SH_R
@@ -189,6 +239,10 @@ class Response(dict):
                 if win.eval_K:
                     self["BB_R"] = get_oper_R("BB_R", self._cwi) if self["BB_R"] is None else self["BB_R"]
                     self["CC_R"] = get_oper_R("CC_R", self._cwi) if self["CC_R"] is None else self["CC_R"]
+
+        # the Zeeman term needs the spin operator in every response.
+        if self._cwi.get("zeeman_interaction") and self["SS_R"] is None:
+            self["SS_R"] = get_oper_R("SS_R", self._cwi)
 
         # spin magnetic moment
         if self._cwi["spin_moment"]:
@@ -264,12 +318,46 @@ class Response(dict):
             self._cwm.write(filename, ahc_str, None, None)
 
     # ==================================================
+    def write_morb(self):
+        """
+        write seedname-morb.dat (one Fermi energy) or seedname-morb-fermiscan.dat, in Bohr magnetons per cell.
+        """
+        fermi_energy_list = self._cwi["fermi_energy_list"]
+        LC, IC, M = (self[k].sum(axis=1) for k in ("morb_LC", "morb_IC", "morb"))
+
+        if len(fermi_energy_list) == 1:
+            morb_str = "M_orb (bohr magn/cell)        x                      y                      z \n"
+            morb_str += "======================\n"
+            for label, v in (("Local circulation :", LC[0]), ("Itinerant circulation:", IC[0]), ("Total   :", M[0])):
+                morb_str += "{:<22s}".format(label) + "".join(["{:>22.15f} ".format(x) for x in v]) + "\n"
+            filename = f"{self._cwi['seedname']}-morb.dat"
+        else:
+            morb_str = "".join(
+                ["{:>20.15f}   {:>20.15f}   {:>20.15f}   {:>20.15f} \n".format(ef, *v) for ef, v in zip(fermi_energy_list, M)]
+            )
+            filename = f"{self._cwi['seedname']}-morb-fermiscan.dat"
+
+        self._cwm.write(filename, morb_str, None, None)
+
+    # ==================================================
+    def write_sc(self):
+        """
+        write seedname-sc_abc.dat, the shift current sigma_abc(omega) in A/V^2 (sigma_abc = sigma_acb).
+        """
+        xyz = "xyz"
+        for a in range(3):
+            for bc, (b, c) in enumerate(zip((0, 1, 2, 0, 0, 1), (0, 1, 2, 1, 2, 2))):
+                sc_str = "".join(["{:>20.15f}   {:>24.15E} \n".format(w, v) for w, v in zip(self["sc_freq"], self["sc"][a, bc])])
+                filename = f"{self._cwi['seedname']}-sc_{xyz[a]}{xyz[b]}{xyz[c]}.dat"
+                self._cwm.write(filename, sc_str, None, None)
+
+    # ==================================================
     def write_kubo(self):
         """
         write seedname-kubo_H_*.dat, seedname-kubo_A_*.dat.
 
         """
-        kubo_freq_list = np.arange(self._cwi["kubo_freq_min"], self._cwi["kubo_freq_max"], self._cwi["kubo_freq_step"])
+        kubo_freq_list = kubo_frequencies(self._cwi)
 
         d = {"xx": (0, 0), "yy": (1, 1), "zz": (2, 2), "xy": (0, 1), "xz": (0, 2), "yz": (1, 2)}
 
@@ -318,9 +406,7 @@ class Response(dict):
         """
         if self._cwi["shc_freq_scan"]:
             shc_freq = self["shc_freq"]
-            kubo_freq_list = np.arange(
-                self._cwi["kubo_freq_min"], self._cwi["kubo_freq_max"], self._cwi["kubo_freq_step"]
-            )
+            kubo_freq_list = kubo_frequencies(self._cwi)
             kubo_nfreq = len(kubo_freq_list)
 
             shc_str = "#No.   Frequency(eV)   Re(sigma)((hbar/e)*S/cm)   Im(sigma)((hbar/e)*S/cm) \n"

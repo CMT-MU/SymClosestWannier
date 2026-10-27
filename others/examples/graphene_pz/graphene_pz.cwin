@@ -15,11 +15,10 @@ write_hr = .true.
 write_sr = .true.
 
 N1 = 50
-fermi_energy = -0.1863
 
 # symmetrization
 symmetrization = true
-mp_outdir      = './sym'
-mp_seedname    = graphene_pz_20
-ket_amn        = [pz@C_1,pz@C_2]
+mp_outdir      = './graphene_pz'
+mp_seedname    = graphene_pz
+ket_amn        = auto
 irreps         = full ! full/all/list

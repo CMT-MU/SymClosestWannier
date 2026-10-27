@@ -3,8 +3,9 @@ utility codes for CW.
 """
 
 import os
-import subprocess
 import numpy as np
+
+from symclosestwannier.util.utility import run_gnuplot
 
 
 # ==================================================
@@ -147,4 +148,4 @@ def generate_dos_gnuplot(outdir, filename, emax, emin, ef_shift, dos_max, num_wa
 
     fs.close()
 
-    subprocess.run(f"cd {outdir} ; gnuplot plot_dos.gnu", shell=True)
+    run_gnuplot(outdir, "plot_dos.gnu")

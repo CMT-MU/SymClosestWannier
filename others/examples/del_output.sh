@@ -1,28 +1,14 @@
 #!/bin/bash
 
-files="./*"
+# remove the outputs of run_examples.py, keeping the inputs and the SAMB data (seedname/seedname.pkl).
 
-dirary=()
-for filepath in $files; do
-  if [ -d $filepath ] ; then
-    dirary+=("$filepath")
-  fi
+for dir in ./*/; do
+  seedname=$(basename "$dir")
+  (
+    cd "$dir" || exit
+    ls | grep -v -x -E "$seedname\.(cwin|win|nnkp|eig|amn|mmn|band\.gnu|band\.gnu\.dat|py)|$seedname|sym" | xargs rm -rf
+    if [ -d "$seedname" ]; then
+      find "$seedname" -type f ! -name "$seedname.pkl" -delete
+    fi
+  )
 done
-
-
-for seedname in ${dirary[@]}; do
-  cd $seedname
-  seedname=`echo $seedname | awk '{print substr($0, 3)}'`
-  ls | grep -i -v -E "$seedname.cwin|$seedname.win|$seedname.nnkp|$seedname.eig|$seedname.amn|$seedname.mmn|$seedname.band.gnu|$seedname.band.gnu.dat|sym" | xargs rm -rf
-  if [ -d sym ]; then
-    find sym -name "*.eps" | xargs rm
-    find sym -name "*.txt" | xargs rm
-    find sym -name "*.cw" | xargs rm
-    find sym -name "*.cwout" | xargs rm
-    find sym -name "*.hdf5" | xargs rm
-    find sym -name "plot_band.gnu" | xargs rm
-  fi
-  cd ..
-done
-
-

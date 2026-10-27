@@ -8,12 +8,13 @@ cwf_mu_max      = 10.0
 cwf_mu_min      = -30
 cwf_sigma_max = 3.0
 cwf_sigma_min = 0.0
-delta             = 1e-12
+cwf_delta             = 1e-12
 svd               = true
 verbose           = true
 
 write_hr          = true
-write_amn         = true
+write_info_data   = true
+write_windowed_amn = true
 
 N1 = 50
 
@@ -21,7 +22,7 @@ N1 = 50
 symmetrization = true
 mp_outdir      = './graphene/'
 mp_seedname    = graphene
-ket_amn        = [pz@C_1,pz@C_2]
+ket_amn        = auto
 irreps         = all ! full/all/list
 
 

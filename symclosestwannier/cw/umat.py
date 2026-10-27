@@ -6,14 +6,13 @@ Umat manages unitary matrix elements in seedname_u.mat (Uopt(k)) and seedname_u_
 """
 
 import os
-import gzip
-import tarfile
 import datetime
 
 import numpy as np
 
 from symclosestwannier.cw.win import Win
 from symclosestwannier.cw.eig import Eig
+from symclosestwannier.util.input_file import open_input
 
 
 _default = {
@@ -81,17 +80,8 @@ class Umat(dict):
                 - Uk               : num_wann×num_bands full unitary matrix (ndarray), [None].
         """
         # Uoptk
-        if os.path.exists(u_file_name):
-            with open(u_file_name) as fp:
-                u_mat_data = fp.readlines()
-        elif os.path.exists(u_file_name + ".gz"):
-            with gzip.open(u_file_name + ".gz", "rt") as fp:
-                u_mat_data = fp.readlines()
-        elif os.path.exists(u_file_name + ".tar.gz"):
-            with tarfile.open(u_file_name + "tar.gz", "rt") as fp:
-                u_mat_data = fp.readlines()
-        else:
-            raise Exception("failed to read u.mat file: " + u_file_name)
+        with open_input(u_file_name, "u.mat") as fp:
+            u_mat_data = fp.readlines()
 
         d = Umat._default().copy()
 
@@ -114,17 +104,8 @@ class Umat(dict):
         if u_dis_file_name is None:
             Udisk = np.array([np.identity(num_wann, dtype=complex)] * num_k)
         else:
-            if os.path.exists(u_dis_file_name):
-                with open(u_dis_file_name) as fp:
-                    u_dis_mat_data = fp.readlines()
-            elif os.path.exists(u_dis_file_name + ".gz"):
-                with gzip.open(u_dis_file_name + ".gz", "rt") as fp:
-                    u_dis_mat_data = fp.readlines()
-            elif os.path.exists(u_dis_file_name + ".tar.gz"):
-                with tarfile.open(u_dis_file_name + "tar.gz", "rt") as fp:
-                    u_dis_mat_data = fp.readlines()
-            else:
-                raise Exception("failed to read u_dis.mat file: " + u_dis_file_name)
+            with open_input(u_dis_file_name, "u_dis.mat") as fp:
+                u_dis_mat_data = fp.readlines()
 
             num_k_, num_wann_, num_bands = [int(x) for x in u_dis_mat_data[1].split()]
 

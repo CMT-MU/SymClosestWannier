@@ -21,7 +21,6 @@
 import os
 import numpy as np
 
-from gcoreutils.nsarray import NSArray
 
 from symclosestwannier.cw.win import Win
 from symclosestwannier.cw.cwin import CWin
@@ -46,8 +45,28 @@ from symclosestwannier.util.message import (
 
 from symclosestwannier.util.get_oper_R import get_oper_R
 
-from symclosestwannier.util.utility import sort_ket_matrix, tune_fermi_level
+from symclosestwannier.util.utility import ket_samb_list, sort_ket_matrix, tune_fermi_level
 
+
+# ==================================================
+def _ref_band_filename(indir, seedname, plotdir):
+    """
+    reference DFT band file (seedname.band.gnu(.dat) in indir) relative to the directory of the gnuplot script.
+
+    Args:
+        indir (str): directory of input files.
+        seedname (str): seedname.
+        plotdir (str): directory where the gnuplot script is written.
+
+    Returns:
+        str or None: relative file name, or None if not found.
+    """
+    for ext in ("band.gnu", "band.gnu.dat"):
+        full = os.path.join(indir, f"{seedname}.{ext}")
+        if os.path.isfile(full):
+            return os.path.relpath(full, os.path.abspath(plotdir))
+
+    return None
 
 # ==================================================
 def cw_creator(seedname="cwannier"):
@@ -58,14 +77,29 @@ def cw_creator(seedname="cwannier"):
     Args:
         seedname (str, optional): seedname.
     """
-    cwin = CWin("./", seedname)
+    # input files are read from the current directory, CWManager moves to outdir.
+    # the current directory is restored afterwards.
+    indir = os.getcwd()
+    try:
+        _cw_creator(seedname, indir)
+    finally:
+        os.chdir(indir)
+
+# ==================================================
+def _cw_creator(seedname, indir):
+    """
+    Args:
+        seedname (str): seedname.
+        indir (str): directory of input files.
+    """
+    cwin = CWin(indir, seedname)
     cwm = CWManager(
         topdir=cwin["outdir"], verbose=cwin["verbose"], parallel=cwin["parallel"], formatter=cwin["formatter"]
     )
 
     outfile = f"{seedname}.cwout"
 
-    cwi = CWInfo("./", seedname)
+    cwi = CWInfo(indir, seedname)
 
     cwm.log(cw_open_msg(), stamp=None, end="\n", file=outfile, mode="w")
     cwm.log(system_msg(cwi), stamp=None, end="\n", file=outfile, mode="a")
@@ -99,26 +133,30 @@ def cw_creator(seedname="cwannier"):
         cw_model.write_or(cw_model["Sr"], filename)  # , header=CWModel._sr_header())
 
         filename = f"{cwi['seedname']}_sr_R_dep.dat.cw"
-        cw_model.write_O_R_dependence(cw_model["sr"], filename, header=CWModel._O_R_dependence_header())
+        cw_model.write_O_R_dependence(cw_model["Sr"], filename, header=CWModel._O_R_dependence_header())
 
     if cwi["write_u_matrices"] and cwi["restart"] != "w90":
         file_names = (f"{cwi['seedname']}_u.mat.cw", f"{cwi['seedname']}_u_dis.mat.cw")
         cwi.umat.write(file_names)
 
+    position = "AA_R_tb" if cwi["tb_position"] else "AA_R"
+
     if cwi["write_rmn"]:
-        AA_R = get_oper_R("AA_R", cwi)
+        AA_R = get_oper_R(position, cwi)
         filename = f"{cwi['seedname']}_r.dat.cw"
         cw_model.write_or(AA_R, filename, vec=True)
 
-        filename = f"{cwi['seedname']}_rx_R_dep.dat.cw"
-        cw_model.write_O_R_dependence(AA_R[0], filename, header=CWModel._O_R_dependence_header())
-        filename = f"{cwi['seedname']}_ry_R_dep.dat.cw"
-        cw_model.write_O_R_dependence(AA_R[1], filename, header=CWModel._O_R_dependence_header())
-        filename = f"{cwi['seedname']}_rz_R_dep.dat.cw"
-        cw_model.write_O_R_dependence(AA_R[2], filename, header=CWModel._O_R_dependence_header())
+        # with tb_position the position operator is on-site and diagonal: no dependence on R to show.
+        if not cwi["tb_position"]:
+            filename = f"{cwi['seedname']}_rx_R_dep.dat.cw"
+            cw_model.write_O_R_dependence(AA_R[0], filename, header=CWModel._O_R_dependence_header())
+            filename = f"{cwi['seedname']}_ry_R_dep.dat.cw"
+            cw_model.write_O_R_dependence(AA_R[1], filename, header=CWModel._O_R_dependence_header())
+            filename = f"{cwi['seedname']}_rz_R_dep.dat.cw"
+            cw_model.write_O_R_dependence(AA_R[2], filename, header=CWModel._O_R_dependence_header())
 
     if cwi["write_tb"]:
-        AA_R = get_oper_R("AA_R", cwi)
+        AA_R = get_oper_R(position, cwi)
         filename = f"{cwi['seedname']}_tb.dat.cw"
         cw_model.write_tb(cw_model["Hr"], AA_R, filename)
 
@@ -138,7 +176,7 @@ def cw_creator(seedname="cwannier"):
         filename = f"{cwi['seedname']}.eig.cw"
         cwi.eig.write(filename)
 
-    if cwi["write_amn"]:
+    if cwi["write_windowed_amn"] or cwi["write_amn"]:
         filename = f"{cwi['seedname']}.amn.cw"
         cwi.amn.write(filename)
 
@@ -167,7 +205,11 @@ def cw_creator(seedname="cwannier"):
             cw_model.write_or(cw_model["Sr_sym"], filename, header=CWModel._sr_header())
 
         if cwi["write_tb"]:
-            AA_R = get_oper_R("AA_R", cwi)
+            # Hr_sym is in the ket order of the SAMBs, AA_R in that of ket_amn.
+            ket_samb = cwi._mm["full_matrix"]["ket"]
+            ket_amn = cwi.get("ket_amn", ket_samb)
+            AA_R = get_oper_R(position, cwi)
+            AA_R = np.array([sort_ket_matrix(AA_R[a], ket_amn, ket_samb) for a in range(3)])
             filename = os.path.join(cwi["mp_outdir"], "{}".format(f"{cwi['mp_seedname']}_tb_sym.dat.cw"))
             cw_model.write_tb(cw_model["Hr_sym"], AA_R, filename)
 
@@ -207,20 +249,15 @@ def cw_creator(seedname="cwannier"):
     if cwi["kpoint"] is not None and cwi["kpoint_path"] is not None:
         cwm.log("\n  * calculating band dispersion ... ", None, end="", file=outfile, mode="a")
 
-        k_linear = NSArray(cwi["k_linear"], "vector", fmt="value")
+        k_linear = np.array(cwi["k_linear"], dtype=float)
         k_dis_pos = cwi["k_dis_pos"]
 
-        if os.path.isfile(f"{seedname}.band.gnu"):
-            ref_filename = f"{seedname}.band.gnu"
-        elif os.path.isfile(f"{seedname}.band.gnu.dat"):
-            ref_filename = f"{seedname}.band.gnu.dat"
-        else:
-            ref_filename = None
+        ref_filename = _ref_band_filename(indir, seedname, os.getcwd())
 
         a = cwi["a"]
         if a is None:
-            A = NSArray(cwi["unit_cell_cart"], "matrix", fmt="value")
-            a = A[0].norm()
+            A = np.array(cwi["unit_cell_cart"], dtype=float)
+            a = np.linalg.norm(A[0])
 
         Hk_path = cw_model.fourier_transform_r_to_k(
             cw_model["Hr"], cwi["kpoints_path"], cwi["irvec"], cwi["ndegen"], atoms_frac=atoms_frac
@@ -241,266 +278,11 @@ def cw_creator(seedname="cwannier"):
         else:
             Sk = None
 
-        ### orbital angular momentum ###
-        # Lx = np.array(
-        #    [
-        #        [0, 0, 0, 0],
-        #        [0, 0, 0, 1.0j],
-        #        [0, 0, 0, 0],
-        #        [0, -1.0j, 0, 0],
-        #    ]
-        # )
-        # Ly = np.array(
-        #    [
-        #        [0, 0, 0, 0],
-        #        [0, 0, -1.0j, 0],
-        #        [0, 1.0j, 0, 0],
-        #        [0, 0, 0, 0],
-        #    ]
-        # )
-        # Lz = np.array(
-        #    [
-        #        [0, 0, 0, 0],
-        #        [0, 0, 0, 0],
-        #        [0, 0, 0, -1.0j],
-        #        [0, 0, 1.0j, 0],
-        #    ]
-        # )
-        # from numpy import linalg as npl
-        # from scipy import linalg as spl
-
-        ## Sk_mat = cw_model.fourier_transform_r_to_k(
-        ##    cw_model["Sr"], cwi["kpoints_path"], cwi["irvec"], cwi["ndegen"], atoms_frac=atoms_frac
-        ## )
-        ## S2k_inv = np.array([npl.inv(spl.sqrtm(Sk_mat[k])) for k in range(len(cwi["kpoints_path"]))])
-
-        # identity_2 = np.eye(2)
-        # identity_3 = np.eye(3)
-        # Lx_ = np.kron(identity_3, np.kron(Lx, identity_2))
-        # Ly_ = np.kron(identity_3, np.kron(Ly, identity_2))
-        # Lz_ = np.kron(identity_3, np.kron(Lz, identity_2))
-        ## Lx_ = np.kron(identity_3, Lx)
-        ## Ly_ = np.kron(identity_3, Ly)
-        ## Lz_ = np.kron(identity_3, Lz)
-        # L = [Lx_, Ly_, Lz_]
-        # Lk = np.array([[L[a] for _ in cwi["kpoints_path"]] for a in range(3)])
-        ## Lk_H = np.array([Uk.transpose(0, 2, 1).conjugate() @ S2k_inv @ Lk[a] @ S2k_inv @ Uk for a in range(3)])
-        # Lk_H = np.array([Uk.transpose(0, 2, 1).conjugate() @ Lk[a] @ Uk for a in range(3)])
-        # Lk = np.real(np.diagonal(Lk_H, axis1=2, axis2=3))
-        # Lk = Lk.transpose(2, 1, 0)
-        ##### orbital angular momentum ###
-
-        #### Px Py Pz ###
-        # Px = np.array(
-        #    [
-        #        [0, 0, 0, 0],
-        #        [0, 0, 0, 0],
-        #        [0, 0, 1, 0],
-        #        [0, 0, 0, 0],
-        #    ]
-        # )
-        # Py = np.array(
-        #    [
-        #        [0, 0, 0, 0],
-        #        [0, 0, 0, 0],
-        #        [0, 0, 0, 0],
-        #        [0, 0, 0, 1],
-        #    ]
-        # )
-        # Pz = np.array(
-        #    [
-        #        [0, 0, 0, 0],
-        #        [0, 1, 0, 0],
-        #        [0, 0, 0, 0],
-        #        [0, 0, 0, 0],
-        #    ]
-        # )
-
-        # Px_ = np.kron(identity_3, np.kron(Px, identity_2))
-        # Py_ = np.kron(identity_3, np.kron(Py, identity_2))
-        # Pz_ = np.kron(identity_3, np.kron(Pz, identity_2))
-        # P = [Px_, Py_, Pz_]
-        # Pk = np.array([[P[a] for _ in cwi["kpoints_path"]] for a in range(3)])
-        ## Lk_H = np.array([Uk.transpose(0, 2, 1).conjugate() @ S2k_inv @ Lk[a] @ S2k_inv @ Uk for a in range(3)])
-        # Pk_H = np.array([Uk.transpose(0, 2, 1).conjugate() @ Pk[a] @ Uk for a in range(3)])
-        # Pk = np.real(np.diagonal(Pk_H, axis1=2, axis2=3))
-        # Pk = Pk.transpose(2, 1, 0)
-
-        ### Px Py Pz ###
-
-        #### sublattice angular momentum ###
-        # C3_site = np.array(
-        #    [
-        #        [0, 1, 0],
-        #        [0, 0, 1],
-        #        [1, 0, 0],
-        #    ]
-        # )
-
-        # identity_4 = np.eye(4)
-        # C3 = np.kron(C3_site, np.kron(identity_4, identity_2))
-        # Lz_site = 1.0j / np.sqrt(3) * (C3 - np.linalg.inv(C3))
-        # Lzk_site = np.array([Lz_site for _ in cwi["kpoints_path"]])
-        # Lzk_site_H = Uk.transpose(0, 2, 1).conjugate() @ Lzk_site @ Uk
-        # Lzk_site = np.real(np.diagonal(Lzk_site_H, axis1=1, axis2=2))
-        # Lzk_site = Lzk_site.transpose(1, 0)
-        #### sublattice angular momentum ###
-
-        #### crystal angular momentum (spinless) ###
-        # C3_site = np.array(
-        #    [
-        #        [0, 1, 0],
-        #        [0, 0, 1],
-        #        [1, 0, 0],
-        #    ]
-        # )
-        # C3_orb = np.array(
-        #    [
-        #        [1, 0, 0, 0],
-        #        [0, 1, 0, 0],
-        #        [0, 0, -1.0 / 2, -np.sqrt(3) / 2],
-        #        [0, 0, np.sqrt(3) / 2, -1.0 / 2],
-        #    ]
-        # )
-
-        # C3 = np.kron(C3_site, np.kron(C3_orb, identity_2))
-        # Jz_as_c = 1.0j / np.sqrt(3) * (C3 - np.linalg.inv(C3))
-        # Jzk_as_c = np.array([Jz_as_c for _ in cwi["kpoints_path"]])
-        # Jzk_as_c_H = Uk.transpose(0, 2, 1).conjugate() @ Jzk_as_c @ Uk
-        # Jzk_as_c = np.real(np.diagonal(Jzk_as_c_H, axis1=1, axis2=2))
-        # Jzk_as_c = Jzk_as_c.transpose(1, 0)
-        #### crystal angular momentum (spinless) ###
-
-        #### crystal angular momentum ###
-        # C3_site = np.array(
-        #    [
-        #        [0, 1, 0],
-        #        [0, 0, 1],
-        #        [1, 0, 0],
-        #    ]
-        # )
-        # C3_orb = np.array(
-        #    [
-        #        [1, 0, 0, 0],
-        #        [0, 1, 0, 0],
-        #        [0, 0, -1.0 / 2, -np.sqrt(3) / 2],
-        #        [0, 0, np.sqrt(3) / 2, -1.0 / 2],
-        #    ]
-        # )
-        # C3_spn = np.array(
-        #    [
-        #        [1.0 / 2 - 1.0j * np.sqrt(3) / 2, 0],
-        #        [0, 1.0 / 2 + 1.0j * np.sqrt(3) / 2],
-        #    ]
-        # )
-
-        # C3 = np.kron(C3_site, np.kron(C3_orb, C3_spn))
-        # Jz_c = 1.0j / np.sqrt(3) * (C3 - np.linalg.inv(C3))
-        # Jzk_c = np.array([Jz_c for _ in cwi["kpoints_path"]])
-        # Jzk_c_H = Uk.transpose(0, 2, 1).conjugate() @ Jzk_c @ Uk
-        # Jzk_c = np.real(np.diagonal(Jzk_c_H, axis1=1, axis2=2))
-        # Jzk_c = Jzk_c.transpose(1, 0)
-        #### crystal angular momentum ###
-
-        #### ET dipole ###
-        # sigma_x = np.array([[0, 1.0], [1.0, 0.0]]) / np.sqrt(2)
-        # sigma_y = np.array([[0, -1.0j], [1.0j, 0.0]]) / np.sqrt(2)
-        # Q0_s = np.array(
-        #    [
-        #        [1, 0, 0],
-        #        [0, 1, 0],
-        #        [0, 0, 1],
-        #    ]
-        # )
-        # Q0_u = np.array(
-        #    [
-        #        [0, 1, 1],
-        #        [1, 0, 1],
-        #        [1, 1, 0],
-        #    ]
-        # )
-        # Gz_ = np.kron(Q0_s, np.kron(Lx, sigma_y)) - np.kron(
-        #    Q0_s,
-        #    np.kron(Ly, sigma_x),
-        # )
-        # Gzk = np.array([Gz_ for _ in cwi["kpoints_path"]])
-        # Gzk_H = Uk.transpose(0, 2, 1).conjugate() @ Gzk @ Uk
-        # Gzk = np.real(np.diagonal(Gzk_H, axis1=1, axis2=2))
-        # Gzk = Gzk.transpose(1, 0)
-        #### ET dipole ###
-
-        #### Lzk_atomic_Q0u ###
-        # Q0_u = np.array(
-        #    [
-        #        [0, 1, 1],
-        #        [1, 0, 1],
-        #        [1, 1, 0],
-        #    ]
-        # )
-        # LazQ0u = np.kron(Q0_u, np.kron(Lz, identity_2))
-        # LazQ0u = np.array([LazQ0u for _ in cwi["kpoints_path"]])
-        # LazQ0u_H = Uk.transpose(0, 2, 1).conjugate() @ LazQ0u @ Uk
-        # LazQ0u = np.real(np.diagonal(LazQ0u_H, axis1=1, axis2=2))
-        # LazQ0u = LazQ0u.transpose(1, 0)
-        #### Lzk_atomic_Q0u ###
-
-        #### Lzk_site_Qua ###
-        # C3_site = np.array(
-        #    [
-        #        [0, 1, 0],
-        #        [0, 0, 1],
-        #        [1, 0, 0],
-        #    ]
-        # )
-
-        # identity_4 = np.eye(4)
-        # C3 = np.kron(C3_site, np.kron(identity_4, identity_2))
-        # Lz_site = 1.0j / np.sqrt(3) * (C3 - np.linalg.inv(C3))
-
-        # Qu_a = np.array(
-        #    [
-        #        [0, 0, 0, 0],
-        #        [0, 2, 0, 0],
-        #        [0, 0, -1, 0],
-        #        [0, 0, 0, -1],
-        #    ]
-        # )
-
-        # LszQua = Lz_site @ np.kron(identity_3, np.kron(Qu_a, identity_2))
-
-        # LszQua = np.array([LszQua for _ in cwi["kpoints_path"]])
-        # LszQua_H = Uk.transpose(0, 2, 1).conjugate() @ LszQua @ Uk
-        # LszQua = np.real(np.diagonal(LszQua_H, axis1=1, axis2=2))
-        # LszQua = LszQua.transpose(1, 0)
-        #### Lzk_site_Qua ###
-
-        # S_La_Ls_J_k = np.array([Sk[:, :, a] for a in range(3)] + [Lk[:, :, a] for a in range(3)] + [Lzk_site] + [Jzk_c])
-        # S_La_Ls_J_k = S_La_Ls_J_k.transpose(1, 2, 0)
-
-        # S_La_Ls_J_Gz_Jas_LazQ0u_LzsQua_k = np.array(
-        #    [Sk[:, :, a] for a in range(3)]
-        #    + [Lk[:, :, a] for a in range(3)]
-        #    + [Lzk_site]
-        #    # + [Jzk_c]
-        #    + [Lk[:, :, 2] + 0.5 * Sk[:, :, 2]]
-        #    + [Gzk]
-        #    + [Jzk_as_c]
-        #    + [LazQ0u]
-        #    + [LszQua]
-        # )
-        # S_La_Ls_J_Gz_Jas_LazQ0u_LzsQua_k = S_La_Ls_J_Gz_Jas_LazQ0u_LzsQua_k.transpose(1, 2, 0)
-
-        # S_L_P_k = np.array(
-        #    [Sk[:, :, a] for a in range(3)] + [Lk[:, :, a] for a in range(3)] + [Pk[:, :, a] for a in range(3)]
-        # )
-        # S_L_P_k = S_L_P_k.transpose(1, 2, 0)
-
         output_linear_dispersion_eig(
             ".",
             seedname + "_band.txt",
             k_linear,
             e=Ek,
-            # o=S_L_P_k,
             ref_filename=ref_filename,
             a=a,
             ef=ef,
@@ -520,7 +302,7 @@ def cw_creator(seedname="cwannier"):
         )
 
         if cwi["symmetrization"]:
-            ket_samb = cwi._mm["full_matrix"]["ket"]
+            ket_samb = ket_samb_list(cwi._mm)
 
             if cwi["tb_gauge"]:
                 site_dict = {
@@ -533,14 +315,7 @@ def cw_creator(seedname="cwannier"):
             else:
                 atoms_frac = None
 
-            rel = os.path.relpath(cwi["outdir"], cwi["mp_outdir"])
-
-            if os.path.isfile(f"{seedname}.band.gnu"):
-                ref_filename = f"{rel}/{seedname}.band.gnu"
-            elif os.path.isfile(f"{seedname}.band.gnu.dat"):
-                ref_filename = f"{rel}/{seedname}.band.gnu.dat"
-            else:
-                ref_filename = None
+            ref_filename = _ref_band_filename(indir, seedname, cwi["mp_outdir"])
 
             Hk_sym_path = cw_model.fourier_transform_r_to_k(
                 cw_model["Hr_sym"], cwi["kpoints_path"], cwi["irvec"], cwi["ndegen"], atoms_frac=atoms_frac
@@ -560,176 +335,18 @@ def cw_creator(seedname="cwannier"):
             else:
                 Sk = None
 
-            # Lx = np.array(
-            #    [
-            #        [0, 0, 0, 0],
-            #        [0, 0, 0, 0],
-            #        [0, 0, 0, -1.0j],
-            #        [0, 0, 1.0j, 0],
-            #    ]
-            # )
-            # Ly = np.array(
-            #    [
-            #        [0, 0, 0, 0],
-            #        [0, 0, 0, 1.0j],
-            #        [0, 0, 0, 0],
-            #        [0, -1.0j, 0, 0],
-            #    ]
-            # )
-            # Lz = np.array(
-            #    [
-            #        [0, 0, 0, 0],
-            #        [0, 0, -1.0j, 0],
-            #        [0, 1.0j, 0, 0],
-            #        [0, 0, 0, 0],
-            #    ]
-            # )
-
-            # identity_2 = np.eye(2)
-            # identity_3 = np.eye(3)
-            # Lx = np.kron(identity_3, np.kron(Lx, identity_2))
-            # Ly = np.kron(identity_3, np.kron(Ly, identity_2))
-            # Lz = np.kron(identity_3, np.kron(Lz, identity_2))
-            ## Lx = np.kron(identity_3, Lx)
-            ## Ly = np.kron(identity_3, Ly)
-            ## Lz = np.kron(identity_3, Lz)
-            # L = [Lx, Ly, Lz]
-            # Lk = np.array([[L[a] for _ in cwi["kpoints_path"]] for a in range(3)])
-            # Lk_H = np.array([Uk.transpose(0, 2, 1).conjugate() @ Lk[a] @ Uk for a in range(3)])
-            # Lk = np.real(np.diagonal(Lk_H, axis1=2, axis2=3))
-            # Lk = Lk.transpose(2, 1, 0)
-            ##### orbital angular momentum ###
-
-            ##
-            ##
-            ##
-
-            # model = cwm.read(os.path.join(cwi["mp_outdir"], "{}".format(f"{cwi['mp_seedname']}_model.py")))
-            # samb = cwm.read(os.path.join(cwi["mp_outdir"], "{}".format(f"{cwi['mp_seedname']}_samb.py")))
-
-            # try:
-            #    mat = cwm.read(os.path.join(cwi["mp_outdir"], "{}".format(f"{cwi['mp_seedname']}_matrix.pkl")))
-            # except:
-            #    mat = cwm.read(os.path.join(cwi["mp_outdir"], "{}".format(f"{cwi['mp_seedname']}_matrix.py")))
-
-            # if cwi["irreps"] == "all":
-            #    irreps = model["info"]["generate"]["irrep"]
-            # elif cwi["irreps"] == "full":
-            #    irreps = [model["info"]["generate"]["irrep"][0]]
-            # else:
-            #    irreps = cwi["irreps"]
-
-            # from multipie.tag.tag_multipole import TagMultipole
-
-            # for zj, (tag, _) in samb["data"]["Z"].items():
-            #    if TagMultipole(tag).irrep not in irreps:
-            #        del mat["matrix"][zj]
-
-            # tag_dict = {zj: tag for zj, (tag, _) in samb["data"]["Z"].items()}
-
-            ## Zr_dict = {
-            ##     (zj, tag_dict[zj]): {tuple(sp.sympify(k)): complex(sp.sympify(v)) for k, v in d.items()}
-            ##     for zj, d in mat["matrix"].items()
-            ## }
-            ## mat["matrix"] = {
-            ##     zj: {tuple(sp.sympify(k)): complex(sp.sympify(v)) for k, v in d.items()} for zj, d in mat["matrix"].items()
-            ## }
-
-            #### kuniyoshi (24/08/20) ###
-            # import sympy as sp
-            # import multiprocessing
-            # from joblib import Parallel, delayed, wrap_non_picklable_objects
-            # from symclosestwannier.util.utility import construct_Ok
-
-            # _num_proc = multiprocessing.cpu_count()
-
-            # def proc(j, zj, d):
-            #    return j, zj, {tuple(sp.sympify(k)): complex(sp.sympify(v)) for k, v in d.items()}
-
-            # res = Parallel(n_jobs=_num_proc, verbose=1)(
-            #    delayed(proc)(j, zj, d) for j, (zj, d) in enumerate(mat["matrix"].items())
-            # )
-            # res = sorted(res, key=lambda x: x[0])
-
-            # Zr_dict = {}
-            # for _, zj, d in res:
-            #    Zr_dict[(zj, tag_dict[zj])] = d
-            #    mat["matrix"][zj] = d
-
-            # atoms_list = list(cwi["atoms_frac"].values())
-            # atoms_frac = np.array([atoms_list[i] for i in cwi["nw2n"]])
-
-            # atoms_frac_samb = [
-            #    NSArray(mat["cell_site"][ket_samb[a].split("@")[1]][0], style="vector", fmt="value").tolist()
-            #    for a in range(cwi["num_wann"])
-            # ]
-
-            #### kuniyoshi (24/08/20) ###
-
-            # dic = mat.copy()
-            #### Gu local (i = 9) ###
-            ## Gu local (i = 9)
-            # tag, d = list(Zr_dict.items())[9]
-            # dic["matrix"] = {tag: d}
-            # print(tag)
-            # if cwi["tb_gauge"]:
-            #    Gu_local_k = construct_Ok(
-            #        [1], cwi["num_wann"], cwi["kpoints_path"], cwi["irvec"], dic, atoms_frac=atoms_frac_samb
-            #    )
-            # else:
-            #    Gu_local_k = construct_Ok([1], cwi["num_wann"], cwi["kpoints_path"], cwi["irvec"], dic)
-
-            # print((Gu_local_k[0]).tolist())
-
-            # Gu_local_k_H = Uk.transpose(0, 2, 1).conjugate() @ Gu_local_k @ Uk
-            # Gu_local_k = np.real(np.diagonal(Gu_local_k_H, axis1=1, axis2=2))
-            # Gu_local_k = Gu_local_k.transpose(1, 0)
-            #### Gu local (i = 9) ###
-
-            #### Gu B1 (i = 33) ###
-            # tag, d = list(Zr_dict.items())[33]
-            # dic["matrix"] = {tag: d}
-            # print(tag)
-            # if cwi["tb_gauge"]:
-            #    Gu_B1_k = construct_Ok(
-            #        [1], cwi["num_wann"], cwi["kpoints_path"], cwi["irvec"], dic, atoms_frac=atoms_frac_samb
-            #    )
-            # else:
-            #    Gu_B1_k = construct_Ok([1], cwi["num_wann"], cwi["kpoints_path"], cwi["irvec"], dic)
-
-            # print((Gu_B1_k[0]).tolist())
-
-            # Gu_B1_k_H = Uk.transpose(0, 2, 1).conjugate() @ Gu_B1_k @ Uk
-            # Gu_B1_k = np.real(np.diagonal(Gu_B1_k_H, axis1=1, axis2=2))
-            # Gu_B1_k = Gu_B1_k.transpose(1, 0)
-            #### Gu B1 (i = 33) ###
-
-            ##
-            ##
-            ##
-
-            # S_L_Gu_local_Gu_B1_k = np.array(
-            #    [Sk[:, :, a] for a in range(3)] + [Lk[:, :, a] for a in range(3)] + [Gu_local_k] + [Gu_B1_k]
-            # )
-            # S_L_Gu_local_Gu_B1_k = S_L_Gu_local_Gu_B1_k.transpose(1, 2, 0)
-
-            # output_linear_dispersion(
             output_linear_dispersion_eig(
                 cwi["mp_outdir"],
                 cwi["mp_seedname"] + "_band.txt",
                 k_linear,
                 e=Ek,
                 o=Sk,
-                # o=Lk,
-                # o=S_L_k,
-                # o=S_L_Gu_local_Gu_B1_k,
                 ref_filename=ref_filename,
                 a=a,
                 ef=ef,
                 k_dis_pos=k_dis_pos,
             )
 
-            # output_linear_dispersion(
             output_linear_dispersion(
                 cwi["mp_outdir"],
                 cwi["mp_seedname"] + "_band_detail.txt",
@@ -757,7 +374,7 @@ def cw_creator(seedname="cwannier"):
         output_fermi_surface_eig(".", seedname, kpoints_2d, e=Ek, ef=ef)
 
         if cwi["symmetrization"]:
-            ket_samb = cwi._mm["full_matrix"]["ket"]
+            ket_samb = ket_samb_list(cwi._mm)
 
             if cwi["tb_gauge"]:
                 site_dict = {
@@ -803,7 +420,7 @@ def cw_creator(seedname="cwannier"):
         output_dos(".", seedname + "_dos.txt", Ek, Uk, ef_shift, dos_num_fermi, dos_smr_en_width, dos_emax, dos_emin)
 
         if cwi["symmetrization"]:
-            ket_samb = cwi._mm["full_matrix"]["ket"]
+            ket_samb = ket_samb_list(cwi._mm)
 
             if cwi["tb_gauge"]:
                 site_dict = {
@@ -821,7 +438,6 @@ def cw_creator(seedname="cwannier"):
             )
             Ek, Uk = np.linalg.eigh(Hk_sym_grid)
 
-            # output_linear_dispersion(
             output_dos(
                 cwi["mp_outdir"],
                 cwi["mp_seedname"] + "_dos.txt",
@@ -846,7 +462,7 @@ def cw_creator(seedname="cwannier"):
             [[i / float(N1), j / float(N2), k / float(N3)] for i in range(N1) for j in range(N2) for k in range(N3)]
         )
 
-        A = NSArray(cwi["unit_cell_cart"], "matrix", fmt="value")
+        A = np.array(cwi["unit_cell_cart"], dtype=float)
 
         ef_shift = cwi["fermi_energy"]
         cohp_bond_length_max = cwi["cohp_bond_length_max"]

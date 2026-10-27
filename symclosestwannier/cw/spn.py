@@ -7,6 +7,7 @@ import os
 import numpy as np
 
 from symclosestwannier.util.utility import FortranFileR
+from symclosestwannier.util.input_file import input_path
 
 _default = {"num_k": 1, "num_bands": 1, "pauli_spn": None}
 
@@ -59,15 +60,20 @@ class Spn(dict):
                 - num_bands : # of bands passed to the code (int), [1].
                 - pauli_spn : num_bands×num_bands matrix elements of Pauli spin operators (ndarray), [None].
         """
-        if os.path.exists(file_name):
-            pass
-        elif os.path.exists(file_name + ".gz"):
-            pass
-        elif os.path.exists(file_name + ".tar.gz"):
-            pass
-        else:
-            raise Exception("failed to read spn file: " + file_name)
+        with input_path(file_name, "spn") as path:
+            return self._read(path)
 
+    # ==================================================
+    def _read(self, file_name):
+        """
+        read uncompressed seedname.spn file.
+
+        Args:
+            file_name (str): file name.
+
+        Returns:
+            dict: see read().
+        """
         if self._formatted:
             f_spn_in = open(file_name, "r")
             SPNheader = f_spn_in.readline().strip()

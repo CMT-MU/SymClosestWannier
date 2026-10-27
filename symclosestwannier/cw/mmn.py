@@ -4,14 +4,14 @@ Mmn manages overlap matrix elements in seedname.mmn file, M_{mn}(k,b) = <u^{KS}_
 """
 
 import os
-import gzip
-import tarfile
 import itertools
 import datetime
 import multiprocessing
 from itertools import islice
 
 import numpy as np
+
+from symclosestwannier.util.input_file import open_input
 
 
 _default = {"num_k": 1, "num_bands": 1, "num_b": 1, "nnkpts": None, "Mkb": None}
@@ -74,14 +74,7 @@ class Mmn(dict):
                 - nnkpts    : nearest-neighbor k-points (list), [None].
                 - Mkb       : Overlap matrix elements, M_{mn}(k,b) = <u^{KS}_{m}(k)|u^{KS}_{n}(k+b)> (list), [None].
         """
-        if os.path.exists(file_name):
-            fp = open(file_name, "r")
-        elif os.path.exists(file_name + ".gz"):
-            fp = gzip.open(file_name + ".gz", "rt")
-        elif os.path.exists(file_name + ".tar.gz"):
-            fp = tarfile.open(file_name + "tar.gz", "rt")
-        else:
-            raise Exception("failed to read mmn file: " + file_name)
+        fp = open_input(file_name, "mmn")
 
         fp.readline()
         num_bands, num_k, num_b = np.array(fp.readline().split(), dtype=int)

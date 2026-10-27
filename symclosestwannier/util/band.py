@@ -2,8 +2,9 @@
 utility codes for CW.
 """
 
-import subprocess
 import numpy as np
+
+from symclosestwannier.util.utility import run_gnuplot
 
 
 # ==================================================
@@ -151,7 +152,7 @@ def generate_band_gnuplot_eig(outdir, filename, kmax, emax, emin, num_wann, **kw
 
     fs.close()
 
-    subprocess.run(f"cd {outdir} ; gnuplot plot_band.gnu", shell=True)
+    run_gnuplot(outdir, "plot_band.gnu")
 
 
 # ==================================================
@@ -295,4 +296,4 @@ def generate_band_gnuplot(outdir, filename, kmax, emax, emin, num_wann, **kwargs
 
     fs.close()
 
-    subprocess.run(f"cd {outdir} ; gnuplot plot_band_detail.gnu", shell=True)
+    run_gnuplot(outdir, "plot_band_detail.gnu")

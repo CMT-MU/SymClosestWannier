@@ -5,12 +5,12 @@ Amn manages overlap matrix elements in seedname.amn file, A_{mn}(k) = <ψ^{KS}_{
 """
 
 import os
-import gzip
-import tarfile
 import itertools
 import datetime
 
 import numpy as np
+
+from symclosestwannier.util.input_file import open_input
 
 
 _default = {"num_k": 1, "num_bands": 1, "num_wann": 1, "Ak": None}
@@ -62,17 +62,8 @@ class Amn(dict):
                 - num_wann  : # of WFs (int), [1].
                 - Ak        : Overlap matrix elements, A_{mn}(k) = <ψ^{KS}_{m}(k)|φ_{n}(k)> (list), [None].
         """
-        if os.path.exists(file_name):
-            with open(file_name) as fp:
-                amn_data = fp.readlines()
-        elif os.path.exists(file_name + ".gz"):
-            with gzip.open(file_name + ".gz", "rt") as fp:
-                amn_data = fp.readlines()
-        elif os.path.exists(file_name + ".tar.gz"):
-            with tarfile.open(file_name + "tar.gz", "rt") as fp:
-                amn_data = fp.readlines()
-        else:
-            raise Exception("failed to read amn file: " + file_name)
+        with open_input(file_name, "amn") as fp:
+            amn_data = fp.readlines()
 
         num_bands, num_k, num_wann = [int(x) for x in amn_data[1].split()]
         amn_data = np.genfromtxt(amn_data[2:]).reshape(num_k, num_wann, num_bands, 5)
@@ -97,21 +88,15 @@ class Amn(dict):
         return d
 
     # ==================================================
-    def write(self, file_name="cwannier.amn.cw"):
+    def write(self, file_name="cwannier.amn.cw", Ak=None):
         """
-        write amn data.
+        write amn data (seedname.amn format).
 
         Args:
             file_name (str, optional): file name.
+            Ak (ndarray, optional): matrix elements A_{mn}(k) written as they are, [self["Ak"]].
         """
-        Ak = np.array(self["Ak"])
-
-        def U_mat(k):
-            u, _, vd = np.linalg.svd(Ak[k], full_matrices=False)
-            return u @ vd
-
-        Uk = np.array([U_mat(k) for k in range(self["num_k"])])
-        Ak = Uk
+        Ak = np.array(self["Ak"] if Ak is None else Ak)
 
         with open(file_name, "w") as fp:
             fp.write("Created by amn.py {}\n".format(datetime.datetime.now().strftime("on %d%b%Y at %H:%M:%S")))

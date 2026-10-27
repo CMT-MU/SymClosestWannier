@@ -2,7 +2,6 @@
 utility codes for lindhard function.
 """
 
-import subprocess
 import numpy as np
 import multiprocessing
 from joblib import Parallel, delayed
@@ -10,6 +9,7 @@ from tqdm import tqdm
 import gc
 
 from symclosestwannier.util.utility import (
+    run_gnuplot,
     fermi,
     fourier_transform_r_to_k,
     fourier_transform_r_to_k_vec,
@@ -160,4 +160,4 @@ def generate_fermi_surface_gnuplot_eig(
 
     fs.close()
 
-    subprocess.run(f"cd {outdir} ; gnuplot plot_fermi_surface.gnu", shell=True)
+    run_gnuplot(outdir, "plot_fermi_surface.gnu")

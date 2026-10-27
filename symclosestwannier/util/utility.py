@@ -2,8 +2,11 @@
 utility codes.
 """
 
+import os
 import datetime
 import itertools
+import subprocess
+import sys
 import textwrap
 import fortio
 import numpy as np
@@ -12,9 +15,8 @@ from heapq import nlargest
 import multiprocessing
 from joblib import Parallel, delayed, wrap_non_picklable_objects
 
-from gcoreutils.nsarray import NSArray
-
 from symclosestwannier.util.constants import k_B_SI, elem_charge_SI, bohr_magn_SI, joul_to_eV
+from symclosestwannier.util.exceptions import SymCWInputError
 
 M_ZERO = np.finfo(float).eps
 
@@ -29,6 +31,110 @@ class FortranFileR(fortio.FortranFile):
         except ValueError:
             print("File '{}' contains subrecords - using header_dtype='int32'".format(filename))
             super().__init__(filename, mode="r", header_dtype="int32", auto_endian=True, check_file=True)
+
+
+# ==================================================
+def grid_path(pts, gpath, N1=100, B=None):
+    """
+    grid points along a path of high-symmetry points.
+
+    Args:
+        pts (dict): points in fractional coordinates, e.g., {"G": [0,0,0], "X": [1/2,0,0]}.
+        gpath (str): path, e.g., "G-X-M|R-G"; "|" separates disconnected parts.
+        N1 (int, optional): number of divisions of each segment.
+        B (array_like, optional): matrix converting fractional to Cartesian coordinates (rows: basis vectors);
+            the linear positions are the Cartesian lengths. Identity if None.
+
+    Returns:
+        - ndarray: grid points (fractional), each segment with both end points.
+        - ndarray: linear positions of the grid points.
+        - dict: {linear position of each segment end: label}.
+    """
+    pts = {k: np.array(v, dtype=float) for k, v in pts.items()}
+    B = np.eye(len(next(iter(pts.values())))) if B is None else np.array(B, dtype=float)
+
+    gpath = "".join(gpath.split())
+    glabel = gpath.split("-")
+    segments = sum([[(i1, i2) for i1, i2 in zip(i[:-1], i[1:])] for i in (p.split("-") for p in gpath.split("|"))], [])
+
+    grid, glin, gdis = [], [], [0]
+    x = 0
+    for s, e in segments:
+        s, e = pts[s], pts[e]
+        dv = (e - s) / N1
+        d = np.linalg.norm(dv @ B.T)
+        for j in range(N1):
+            glin.append(x)
+            grid.append(s + j * dv)
+            x += d
+        grid.append(s + N1 * dv)
+        glin.append(x)
+        gdis.append(x)
+
+    return np.array(grid), np.array(glin), dict(zip(gdis, glabel))
+
+
+# ==================================================
+def surface_grid(A, V, x1, x2, x3):
+    """
+    k (or q) points of a plane for Fermi-surface (or Lindhard-surface) plots.
+
+    Args:
+        A (array_like): lattice vectors (rows).
+        V (float): unit-cell volume.
+        x1 (array_like): coordinates along the first axis, (N1,).
+        x2 (array_like): coordinates along the second axis, (N2,).
+        x3 (float): coordinate along the third axis (constant).
+
+    Returns:
+        - ndarray: points (x1_i |a2 x a3| / V, x2_j |a3 x a1| / V, x3 |a1 x a2| / V), (N1, N2, 3).
+        - ndarray: the same points in fractional coordinates of the reciprocal lattice, (N1 * N2, 3) with j fastest.
+    """
+    A = np.array(A, dtype=float)
+    B = np.linalg.inv(A).T
+    c1, c2, c3 = (np.linalg.norm(np.cross(A[i], A[j])) for i, j in ((1, 2), (2, 0), (0, 1)))
+    x1, x2 = np.asarray(x1, dtype=float), np.asarray(x2, dtype=float)
+
+    grid_2d = np.empty((len(x1), len(x2), 3))
+    grid_2d[:, :, 0] = (x1 / V * c1)[:, None]
+    grid_2d[:, :, 1] = (x2 / V * c2)[None, :]
+    grid_2d[:, :, 2] = x3 / V * c3
+
+    return grid_2d, grid_2d.reshape(-1, 3) @ np.linalg.inv(B)
+
+
+# ==================================================
+def shift_into_cell(r):
+    """
+    shift fractional coordinates into [0,1) by lattice vectors.
+
+    Args:
+        r (array_like): fractional coordinates.
+
+    Returns:
+        ndarray: shifted coordinates, r - floor(r); a result rounded up to 1 (r slightly below an integer) is set to 0.
+    """
+    r = np.array(r, dtype=float)
+    s = r - np.floor(r)
+    return np.where(s >= 1.0, 0.0, s)
+
+
+# ==================================================
+def run_gnuplot(outdir, script):
+    """
+    run gnuplot script in outdir (warn and continue if gnuplot is not installed).
+
+    Args:
+        outdir (str): directory where the script is placed and run.
+        script (str): file name of gnuplot script.
+    """
+    if not os.path.isdir(outdir):
+        raise FileNotFoundError(f"directory for gnuplot script is not found: {outdir}")
+
+    try:
+        subprocess.run(["gnuplot", script], cwd=outdir)
+    except FileNotFoundError:
+        print(f"warning: gnuplot is not found, {script} is not executed.", file=sys.stderr)
 
 
 # ==================================================
@@ -150,12 +256,6 @@ def band_distance(Ak, Ek, Hk, ef=0.0):
 
     fermi_ref = fermi(Ek_ref - (ef + 5.0), T=0.0, unit="eV")
     fermi_wan = fermi(Ek_wan - (ef + 5.0), T=0.0, unit="eV")
-    w = np.sqrt(fermi_ref * fermi_wan)
-    eta_5 = np.sqrt(np.sum(w * (Ek_ref - Ek_wan) ** 2) / np.sum(w)) * 1000
-    eta_5_max = np.max(w * np.abs(Ek_ref - Ek_wan)) * 1000
-
-    fermi_ref = fermi(Ek_ref - (ef + 10.0), T=0.0, unit="eV")
-    fermi_wan = fermi(Ek_wan - (ef + 10.0), T=0.0, unit="eV")
     w = np.sqrt(fermi_ref * fermi_wan)
     eta_5 = np.sqrt(np.sum(w * (Ek_ref - Ek_wan) ** 2) / np.sum(w)) * 1000
     eta_5_max = np.max(w * np.abs(Ek_ref - Ek_wan)) * 1000
@@ -293,7 +393,7 @@ def convert_w90_orbital(l, m, r, s):
             orbital = "f1"  # fy(3x2-y2)
 
     if orbital == "":
-        raise Exception(f"invalid orbital projection was given, (l={l},m={m},r={r},s={s}).")
+        raise SymCWInputError(f"invalid orbital projection was given, (l={l},m={m},r={r},s={s}).")
 
     if s == 1:
         orbital = f"({orbital},u)".replace("'", "")
@@ -320,41 +420,95 @@ def iterate3dpm(size):
 
 
 # ==================================================
-def wigner_seitz(A, mp_grid, prec=1.0e-4):
+def wigner_seitz(A, mp_grid, prec=None, *, ws_distance_tol=1.0e-5, ws_search_size=2):
     """
     wigner seitz cell.
     return irreducible R vectors and number of degeneracy at each R.
 
+    The R vectors and degeneracies are those of wannier90 (hamiltonian_wigner_seitz): R is kept when it is among the
+    nearest of R - T to the origin, with T on the supercell lattice of mp_grid, and ndegen is the number of these nearest
+    R - T. Two squared distances |R - T|^2 are equal when they differ by less than ws_distance_tol^2 (Angstrom^2).
+
     Args:
         A (list/ndarray): real lattice vectors, A = [a1,a2,a3] (list), [[[1,0,0], [0,1,0], [0,0,1]]].
         mp_grid (list/ndarray): dimensions of the Monkhorst-Pack grid of k-points (list), [0, 0, 0].,
+        prec (float, optional): tolerance of the squared distances (Angstrom^2) of earlier versions (1e-4 by default
+            there); if given, it replaces ws_distance_tol^2. Kept for existing calls only.
+        ws_distance_tol (float, optional): tolerance of the distances (Angstrom), as ws_distance_tol of wannier90.
+        ws_search_size (int or list, optional): R is searched in the supercells within ws_search_size of the home
+            supercell along each direction, as ws_search_size of wannier90.
 
     Returns:
         tuple: (irvec, ndegen)
             - irvec (ndarray): irreducible R vectors (crystal coordinate, [[n1,n2,n3]], nj: integer).
             - ndegen (ndarray): number of degeneracy at each R.
     """
-    ws_search_size = np.array([1] * 3)
-    dist_dim = np.prod((ws_search_size + 1) * 2 + 1)
-    origin = divmod((dist_dim + 1), 2)[0] - 1
-    real_metric = A.dot(A.T)
-    mp_grid = np.array(mp_grid)
+    real_metric = np.array(A, dtype=float) @ np.array(A, dtype=float).T
+    mp_grid = np.array(mp_grid, dtype="int64")
+    ws_search_size = np.broadcast_to(np.array(ws_search_size, dtype="int64"), (3,))
+    tol = ws_distance_tol**2 if prec is None else prec
+
+    # supercell lattice vectors T = i * mp_grid, |i_j| <= ws_search_size_j + 1; i = 0 is the home supercell
+    T = iterate3dpm(ws_search_size + 1) * mp_grid
+    origin = np.flatnonzero(np.all(T == 0, axis=1))[0]
+    n2n3 = iterate_nd(mp_grid[1:] * ws_search_size[1:], pm=True)
+
     irvec = []
     ndegen = []
-    for n in iterate3dpm(mp_grid * ws_search_size):
-        dist = []
-        for i in iterate3dpm((1, 1, 1) + ws_search_size):
-            ndiff = n - i * mp_grid
-            dist.append(ndiff.dot(real_metric.dot(ndiff)))
-        dist_min = np.min(dist)
-        if abs(dist[origin] - dist_min) < prec:
-            irvec.append(n)
-            ndegen.append(np.sum(abs(dist - dist_min) < prec))
+    for n1 in range(-mp_grid[0] * ws_search_size[0], mp_grid[0] * ws_search_size[0] + 1):
+        n = np.column_stack([np.full(len(n2n3), n1), n2n3])
+        ndiff = n[:, None, :] - T[None, :, :]
+        dist = np.einsum("rti,ij,rtj->rt", ndiff, real_metric, ndiff)
+        dist_min = dist.min(axis=1)
+        keep = np.abs(dist[:, origin] - dist_min) < tol
+        irvec.append(n[keep])
+        ndegen.append(np.sum(np.abs(dist[keep] - dist_min[keep, None]) < tol, axis=1))
 
-    ndegen = np.array(ndegen, dtype="int64")
-    irvec = np.array(irvec, dtype="int64")
+    irvec = np.concatenate(irvec).astype("int64")
+    ndegen = np.concatenate(ndegen).astype("int64")
+
+    # every point of the supercell is counted once (wannier90 stops otherwise)
+    if abs(np.sum(1.0 / ndegen) - np.prod(mp_grid)) > 1e-8:
+        raise SymCWInputError(
+            f"the Wigner-Seitz supercell is not found with ws_search_size = {ws_search_size.tolist()}; increase ws_search_size."
+        )
 
     return irvec, ndegen
+
+
+# ==================================================
+def orbital_positions(cwi):
+    """
+    positions of the orbitals: the projection centres of the Wannier functions in seedname.nnkp.
+
+    nw2n indexes the projection centres (atom_pos_r), not the atoms of seedname.win; the two lists differ when
+    not every atom is projected or when a projection is centred off an atom.
+
+    Args:
+        cwi (CWInfo): CWInfo.
+
+    Returns:
+        ndarray: positions in fractional coordinates, (num_wann, 3) (ket_amn order).
+    """
+    return np.array([cwi["atom_pos_r"][i] for i in cwi["nw2n"]], dtype=float)
+
+
+# ==================================================
+def tb_gauge_positions(cwi):
+    """
+    orbital positions entering the phase of the Fourier transform from real space to k space.
+
+    Args:
+        cwi (CWInfo): CWInfo.
+
+    Returns:
+        ndarray or None: orbital positions in fractional coordinates, (num_wann, 3) (ket_amn order),
+            or None if tb_gauge = false.
+    """
+    if not cwi["tb_gauge"]:
+        return None
+
+    return orbital_positions(cwi)
 
 
 # ==================================================
@@ -471,9 +625,6 @@ def fourier_transform_r_to_k_vec(
             "R,kR,km,aRmn,kn->akmn", weight, phase_R, eiktau, Or_vec, eiktau.conjugate(), optimize=True
         )
     else:
-        print(f"weight.shape = {weight.shape}")
-        print(f"phase_R.shape = {phase_R.shape}")
-        print(f"Or_vec.shape = {Or_vec.shape}")
         Ok_true_vec = np.einsum("R,kR,aRmn->akmn", weight, phase_R, Or_vec, optimize=True)
 
     if not pseudo:
@@ -497,8 +648,7 @@ def fourier_transform_r_to_k_vec(
                     Or_vec[b],
                     eiktau.conjugate(),
                     optimize=True,
-                )
-                -1.0j * np.einsum(
+                ) - 1.0j * np.einsum(
                     "R,kR,Rmn,km,Rmn,kn->kmn",
                     weight,
                     phase_R,
@@ -710,6 +860,18 @@ def sort_ket_matrix(Ok, ket1, ket2):
 
 
 # ==================================================
+def ket_samb_list(mm):
+    """
+    ket basis list of a MultiPie model as [atom, sublattice, rank, orbital].
+
+    MultiPie >= 2.3 (2026-07, "complete local operator") stores the kets as
+    [atom, sublattice, rank, idx, orbital]; earlier versions as [atom, sublattice, rank, orbital].
+    Both are reduced to the four-field form used throughout SymClosestWannier.
+    """
+    return [[k[0], k[1], k[2], k[-1]] for k in mm["full_matrix"]["ket"]]
+
+
+# ==================================================
 def sort_ket_matrix_dict(Or_dict, ket, ket_samb):
     """
     sort ket to align with the SAMB definition (ket_samb).
@@ -752,7 +914,7 @@ def sort_ket_list(lst, ket, ket_samb):
     elif lst.ndim == 3:
         lst = list(np.array(lst)[idx_list, :, :])
     else:
-        raise Exception(f"invalid dimension of lst = {lst.ndim} was given.")
+        raise ValueError(f"invalid dimension of lst = {lst.ndim} was given.")
 
     return list(lst)
 
@@ -913,7 +1075,7 @@ def thermal_avg(O, E, U, ef=0.0, T_Kelvin=0.0, num_k=0):
     Returns:
         ndarray: thermal average of the given operator.
     """
-    if type(O) != list:
+    if not isinstance(O, list):
         single_operator = True
         O = [O]
     else:
@@ -939,7 +1101,7 @@ def thermal_avg(O, E, U, ef=0.0, T_Kelvin=0.0, num_k=0):
         O_exp.append(np.real(Oi_exp))
 
         if np.imag(Oi_exp) > 1e-7:
-            raise Exception(f"expectation value of {i+1}th operator is wrong : {Oi_exp}")
+            raise RuntimeError(f"expectation value of {i+1}th operator is wrong : {Oi_exp}")
 
     if single_operator:
         O_exp = O_exp[0]
