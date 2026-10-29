@@ -182,6 +182,39 @@ def weight_proj(e, cwf_mu_min, cwf_mu_max, cwf_sigma_min, cwf_sigma_max, cwf_del
 
 
 # ==================================================
+def projection_rank_ratio(Ak):
+    """
+    ratio of the smallest to the largest singular value of the projection matrix at each k point.
+
+    The closest Wannier gauge U(k) is the polar factor of Ak[k] (num_bands x num_wann). When the window-weighted
+    projections give fewer than num_wann states with appreciable weight, the smallest singular values fall to the size
+    of the weight outside the window (cwf_delta, or the tail of the window function); a ratio near machine precision
+    means that U(k) is fixed by numerical noise in those directions, so the gauge is not smooth in k and the real-space
+    Hamiltonian is not localized, although the eigenvalues on the k mesh are unaffected.
+
+    The orthogonalization by Lowdin's method (svd = false) is more sensitive than SVD, since Sk = Ak^dagger Ak has the
+    squared condition number: a ratio of 1e-8 means a condition number of 1e16 of Sk.
+
+    Args:
+        Ak (ndarray): projections, shape (num_k, num_bands, num_wann).
+
+    Returns:
+        ndarray: smallest / largest singular value for each k point; 0 where Ak cannot have full column rank
+        (num_bands < num_wann) or contains non-finite values.
+    """
+    Ak = np.asarray(Ak)
+    num_k, num_bands, num_wann = Ak.shape
+    if num_bands < num_wann:
+        return np.zeros(num_k)
+    ratio = np.zeros(num_k)
+    finite = np.isfinite(Ak).all(axis=(1, 2))
+    if finite.any():
+        s = np.linalg.svd(Ak[finite], compute_uv=False)
+        ratio[finite] = s[:, -1] / np.maximum(s[:, 0], np.finfo(float).tiny)
+    return ratio
+
+
+# ==================================================
 def num_electron(e, ef, T=0.0):
     """number of electrons per unit-cell"""
     num_k = e.shape[0]
