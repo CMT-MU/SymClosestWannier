@@ -10,7 +10,7 @@ dependencies = [
     "sympy",
     "joblib",
     "click",
-    "multipie",
+    "multipie>=2.4",
     "xmltodict",
     "fortio",
     "h5py",
