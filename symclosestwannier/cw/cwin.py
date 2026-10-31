@@ -177,7 +177,7 @@ class CWin(dict):
                 - cwf_mu_min      : bottom of the energy window (float), [None].
                 - cwf_sigma_max : smearing temperature for the top of the energy window (float), [1.0].
                 - cwf_sigma_min : smearing temperature for the bottom of the energy window (float), [0.0].
-                - cwf_delta             : small constant to avoid ill-conditioning of overlap matrices (< 1e-5) (float), [0.0].
+                - cwf_delta             : baseline weight added to the window function, which the states outside the energy window keep (0 <= cwf_delta < 1); increase it (e.g. 1e-3) when seedname.cwout warns that the projections are rank-deficient (float), [0.0].
                 - svd               : implement singular value decomposition ? otherwise adopt Lowdin's orthogonalization method (bool), [False].
                 - verbose           : verbose calculation info (bool, optional), [False].
                 - parallel          : use parallel code? (bool), [False].
@@ -446,8 +446,8 @@ class CWin(dict):
         ):
             v = float(v)
             if key == "cwf_delta":
-                if v > 1e-5:
-                    raise SymCWInputError(f"cwf_delta is too large. cwf_delta must be less than 1e-5.")
+                if not 0.0 <= v < 1.0:
+                    raise SymCWInputError(f"cwf_delta = {v} is out of range. cwf_delta must satisfy 0 <= cwf_delta < 1.")
             elif key == "lindhard_smr_fixed_en_width":
                 pass
                 # if v == 0.0:
