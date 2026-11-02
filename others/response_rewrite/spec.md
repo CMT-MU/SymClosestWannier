@@ -58,6 +58,11 @@ output (`analyzer/response.py`).
 new module provides all of them (`spin_moment_main` and `_single_fermi_energy` by re-export, `boltzwann_main(*args, **kwargs)`
 doing nothing and returning `None`; BoltzWann is not implemented).
 
+`util/lindhard.py`, `util/fermi_surface.py` and `util/spread.py` import `utility_w0gauss(x, n)` from the module at import
+time, so `pw2cw` and `postcw` fail without it. The new module provides it: the kernel w(x) of section 6 for a scalar or
+an array `x`, returned as an ndarray of the shape of `x`; n = N with 0 ≤ N ≤ 10 is Methfessel–Paxton of order N (n = 0 is
+gauss), n = −1 cold, n = −99 Fermi–Dirac (0 for |x| > 36) [B]; any other n raises `NotImplementedError` [B].
+
 `berry_main(cwi, operators)`, `gyrotropic_main(cwi, operators)` and `spin_moment_main(cwi, operators)` print a short
 progress log to stdout and return a dict. `cwi` is a dict-like object with the keys of section 2.2 and an attribute
 `cwi.win`; `operators` is a dict of real-space operators (section 2.3).

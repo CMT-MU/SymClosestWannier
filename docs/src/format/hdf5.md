@@ -128,7 +128,7 @@
     - Uoptk             : num_wann×num_wann full unitary matrix (ndarray), [None].
     - Udisk             : num_wann×num_bands partial unitary matrix (ndarray), [None].
     - Uk                : num_wann×num_bands full unitary matrix (ndarray), [None].
-    - other keywords of seedname.win follow the [Wannier90](https://wannier.org/) user guide.
+    - other keywords of seedname.win follow the [Wannier90](https://wannier.org/) user guide, except that `berry_curv_adpt_kmesh` refines the spin Hall conductivity for each Fermi energy (see `Win.read`).
 
 
 # data [default]
