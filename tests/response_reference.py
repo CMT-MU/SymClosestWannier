@@ -5,9 +5,12 @@ reference model of reference_model.py.
 The values in tests/data/response_reference.npz were computed by the implementation of
 symclosestwannier/analyzer/get_response.py before it is rewritten from the equations of the papers; test_response_reference.py
 checks that any implementation reproduces them. Only the entry points are called, so that the internal structure of the
-implementation is free.
+implementation is free. They check backward compatibility, not the physics. shc_fermi_adpt_kmesh was computed after the
+correction of the adaptive k refinement of the SHC (Fermi energies below the threshold keep the point), so it differs
+from wannier90 and from earlier versions.
 
-usage: python tests/response_reference.py   (rewrites tests/data/response_reference.npz)
+usage: python tests/response_reference.py --write   (rewrites tests/data/response_reference.npz; only to add or change
+reference cases with the implementation that defines them, never to make a new implementation pass)
 """
 
 import contextlib
@@ -217,6 +220,8 @@ def compute_all():
 
 
 if __name__ == "__main__":
+    if sys.argv[1:] != ["--write"]:
+        sys.exit("usage: python tests/response_reference.py --write   (rewrites " + FILE + ")")
     data = compute_all()
     np.savez_compressed(FILE, **data)
     for k, v in data.items():

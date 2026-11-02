@@ -16,7 +16,12 @@ Rules for whoever writes the new implementation:
    wannier90 (Fortran), or the source code of other programs that implement these quantities (e.g. wannier-berri).
    The documentation of wannier90's input parameters (user guide) may be read, for the meaning of the input keys only.
    The implementer works in a copy of the repository **without `.git` and without `get_response.py`** and without the
-   tests that call its internal functions (section 7.1, item 3), so that nothing can be opened by accident.
+   tests that call its internal functions (section 7.1, item 3), so that nothing can be opened by accident. Strip:
+   `.git/`, `.ai-review/`, `symclosestwannier/analyzer/get_response.py`, `tests/test_tb_gauge.py`,
+   `tests/test_berry_morb_sc.py`, `tests/test_gyrotropic.py`, `tests/test_smearing.py`, `tests/test_kubo_frequencies.py`,
+   `tests/test_shc_bandshift.py`, `tests/test_fermi_energy.py`. Run the reference test with
+   `pytest tests/test_response_reference.py`; never regenerate the reference values (`python tests/response_reference.py
+   --write`).
 2. Work from this specification and from the papers in section 8. **Acceptance is reproducing the reference values**
    (section 7.1, backward compatibility). If a formula derived from a paper disagrees with the reference values, do not
    change either silently: report the disagreement with the derivation, and the maintainers decide.
@@ -175,7 +180,8 @@ read their docstrings.
   0 ≤ i < N1 etc. Integrals over the Brillouin zone: ∫ d³k/(2π)³ F(k) → (1/(N_k V_c)) Σ_k F(k).
 - Wannier gauge (W): matrices O^W(k) from the Fourier transform. Hamiltonian gauge (H): O^H = U† O^W U with
   H^W(k) U = U diag(E), eigenvalues in ascending order.
-- Occupations at T = 0: f_n = 1 if E_n ≤ E_F, else 0 (one value per Fermi energy).
+- Occupations at T = 0: f_n = 1 if E_n < E_F, else 0 (strict, as `util.utility.fermi(E − E_F, T=0.0)`; one value per
+  Fermi energy).
 - Antisymmetric tensors as pseudovectors: component c of X_ab is X_{α(c) β(c)} with (α, β) = (y, z), (z, x), (x, y).
 - Cartesian derivatives ∂_a = ∂/∂k_a with k in Å⁻¹.
 
@@ -233,7 +239,8 @@ C = 10⁸ e²/(ħ V_c N_k) (SI e, ħ; V_c in Å³; energies in eV), which gives 
 of section 2.1 are skipped.
 
 Tight-binding approximation (`use_tb_approximation`): the same, with A_a,nm replaced by i v_a,nm/(E_m − E_n) built from
-v^H = U† v^W U (v^W from `v_R`), and C = 10⁸ ħ e²/(V_c N_k) [B]; check the units with the reference value.
+v^H = U† v^W U (v^W from `v_R`), and C = 10⁸ ħ e²/(V_c N_k) [B]. `get_oper_R.get_v_R` returns i R H(R)/`hbar_SI`
+(eV Å/(J s)), i.e. ∂_a H/ħ with ħ in SI, which is why C contains ħ.
 
 ### 5.4 Shift current (IATS18; Lihm 2021)
 
@@ -288,9 +295,10 @@ state the units of each intermediate quantity in the docstrings.
 
 K_ab = Σ_n ∫ d³k/(2π)³ (∂_a E_n) m_nb δ(E_n − E_F) [TAS17 Eq. (3)], computed as [B]
 
-- orbital: K^orb_ab = C_orb Σ_k w_k Σ_n (∂_a E_n) m^orb_nb(k) δ_η(E_n − E_F), where m^orb_n is the band-resolved
-  orbital moment Im[⟨∂u_n| × (H − E_n)|∂u_n⟩] built from the band-resolved g and h of 5.2 (both, without the −E_F f
-  terms), C_orb = e²/(2 ħ V_c) (SI; V_c in Å³) [B];
+- orbital: K^orb_ab = C_orb Σ_k w_k Σ_n (∂_a E_n) m^orb_nb(k) δ_η(E_n − E_F), with
+  m^orb_n = 2 Im[⟨∂u_n| × (H − E_n)|∂u_n⟩] = (−2 Im h_n) − (−2 Im g_n), where (−2 Im g_n) and (−2 Im h_n) are the
+  quantities of 5.2 evaluated with band n alone occupied (f_n = 1, f_m = 0 otherwise); note the difference h − g here,
+  not the sum of 5.2; C_orb = e²/(2 ħ V_c) (SI; V_c in Å³) [B];
 - spin: K^spn_ab = C_spn Σ_k w_k Σ_n (∂_a E_n) ⟨u_n|σ_b|u_n⟩ δ_η(E_n − E_F), C_spn = −10²⁰ e ħ/(2 m_e V_c) [B].
 
 Units: ampere, as in the output files; confirm with the reference values. K^orb is computed only with `eval_K`,

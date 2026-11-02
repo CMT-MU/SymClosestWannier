@@ -6,4 +6,5 @@
 .. automodule:: symclosestwannier.analyzer.get_band
 .. automodule:: symclosestwannier.analyzer.get_response
 .. automodule:: symclosestwannier.analyzer.response
+.. automodule:: symclosestwannier.analyzer.spin_moment
 ```

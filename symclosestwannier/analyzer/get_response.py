@@ -2071,6 +2071,9 @@ def berry_get_shc(cwi, operators):
     """
     Spin Hall conductivity, in (hbar/e)*S/cm.
 
+    With berry_curv_adpt_kmesh, the k points are refined for each Fermi energy separately; the Fermi energies below the
+    threshold keep the point itself, also where another Fermi energy is refined (wannier90 drops it there).
+
     Args:
         cwi (CWInfo): CWInfo.
         operators (dict): operators.

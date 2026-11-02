@@ -54,3 +54,23 @@ def test_shc_adaptive_kmesh_keeps_points_below_threshold():
     name, entry, settings = cases["shc_fermi_adpt_kmesh"]
     none = compute(name, entry, dict(settings, berry_curv_adpt_kmesh_thresh=1.0e6))[f"{name}/shc_fermi"]
     np.testing.assert_allclose(none, plain, rtol=1e-12)
+
+
+@pytest.mark.parametrize(
+    "name, keys",
+    [("ahc", ["ahc_list"]), ("morb", ["morb", "morb_LC", "morb_IC"]), ("kubo_gauss", ["kubo_H", "kubo_AH"])],
+)
+def test_totals_do_not_depend_on_tb_gauge(name, keys):
+    """
+    the AHC, the orbital magnetization (summed over the terms J0, J1, J2) and the optical conductivity do not depend on
+    whether the orbital positions enter the Fourier phase (tb_gauge); independent of the reference values.
+    """
+    cases = {c[0]: c for c in CASES}
+    _, entry, settings = cases[name]
+    wannier = compute(name, entry, settings)
+    tb = compute(name, entry, dict(settings, tb_gauge=True))
+    for key in keys:
+        a, b = wannier[f"{name}/{key}"], tb[f"{name}/{key}"]
+        if key != "kubo_H" and key != "kubo_AH":
+            a, b = a.sum(axis=1), b.sum(axis=1)
+        _close(b, a, key)
