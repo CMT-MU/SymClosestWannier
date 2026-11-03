@@ -61,6 +61,7 @@ from symclosestwannier.util.constants import (
 )
 from symclosestwannier.util.exceptions import SymCWInputError
 from symclosestwannier.util.get_oper_R import shc_bandshift
+from symclosestwannier.analyzer.spin_moment import _single_fermi_energy, spin_moment_main  # noqa: F401
 
 _num_proc = multiprocessing.cpu_count()
 
@@ -70,91 +71,6 @@ _beta_A = [2, 0, 1]
 # symmetric pairs (b, c) of the shift current: xx, yy, zz, xy, xz, yz.
 _alpha_S = [0, 1, 2, 0, 0, 1]
 _beta_S = [0, 1, 2, 1, 2, 2]
-
-
-# ==================================================
-def _single_fermi_energy(cwi, what):
-    """
-    the Fermi energy of the calculations at a single Fermi energy, fermi_energy_list[0] as in wannier90; a Fermi energy
-    scan is rejected.
-
-    Args:
-        cwi (CWInfo): CWInfo.
-        what (str): the calculation, for the error message.
-
-    Returns:
-        float: Fermi energy (eV).
-    """
-    if cwi["num_fermi"] != 1:
-        raise SymCWInputError(f"{what} needs a single Fermi energy (fermi_energy in seedname.win), not a scan.")
-    return cwi["fermi_energy_list"][0]
-
-
-# ==================================================
-def spin_moment_main(cwi, operators):
-    """
-    Computes the spin magnetic moments, Ms_x, Ms_y, Ms_z.
-
-    Args:
-        cwi (CWInfo): CWInfo.
-        operators (dict): operators.
-
-    Returns:
-        dict: Ms_x, Ms_y, Ms_z.
-    """
-    ef = _single_fermi_energy(cwi, "the spin moment")
-
-    d = {"Ms_x": 0.0, "Ms_y": 0.0, "Ms_z": 0.0}
-
-    if not cwi["spinors"]:
-        return d
-    else:
-        atoms_frac = tb_gauge_positions(cwi)
-
-        B = cwi["magnetic_field"]
-        theta = cwi["magnetic_field_theta"]
-        phi = cwi["magnetic_field_phi"]
-        g_factor = cwi["g_factor"]
-        dim = cwi["num_wann"]
-
-        N1, N2, N3 = cwi["kmesh"]
-        kpoints = np.array(
-            [[i / float(N1), j / float(N2), k / float(N3)] for i in range(N1) for j in range(N2) for k in range(N3)]
-        )
-
-        num_k = np.prod(cwi["kmesh"])
-
-        mu_B = bohr_magn_SI * joul_to_eV
-
-        # ==================================================
-        @wrap_non_picklable_objects
-        def spin_moment_main_k(kpt):
-            HH = fourier_transform_r_to_k(operators["HH_R"], kpt, cwi["irvec"], cwi["ndegen"], atoms_frac)
-
-            pauli_spn = fourier_transform_r_to_k_vec(operators["SS_R"], kpt, cwi["irvec"], cwi["ndegen"], atoms_frac)
-
-            if cwi["zeeman_interaction"]:
-                H_zeeman = spin_zeeman_interaction(B, theta, phi, pauli_spn, g_factor, cwi["num_wann"])
-                HH += H_zeeman
-
-            E, U = np.linalg.eigh(HH)
-            HH = None
-
-            spn_x, spn_y, spn_z = spn_operator(pauli_spn, g_factor, dim) / mu_B
-
-            return thermal_avg([spn_x, spn_y, spn_z], E, U, ef, T_Kelvin=0.0, num_k=num_k)
-
-        # ==================================================
-        kpoints_chunks = np.split(kpoints, [j for j in range(1000, len(kpoints), 1000)])
-
-        for idx, kpoints in enumerate(kpoints_chunks):
-            print(f"* {idx+1}/{len(kpoints_chunks)}")
-            Ms_x_k, Ms_y_k, Ms_z_k = spin_moment_main_k(kpoints)
-            d["Ms_x"] += Ms_x_k
-            d["Ms_y"] += Ms_y_k
-            d["Ms_z"] += Ms_z_k
-
-        return d
 
 
 # ==================================================
@@ -225,9 +141,7 @@ def berry_main(cwi, operators):
             print("  Fermi energy scan")
 
     if cwi["transl_inv"]:
-        print(
-            "Using a translationally-invariant discretization for the band-diagonal Wannier matrix elements of r, etc."
-        )
+        print("Using a translationally-invariant discretization for the band-diagonal Wannier matrix elements of r, etc.")
 
     if cwi["use_tb_approximation"]:
         print("*** Using tight-binding approximation ***")
@@ -328,9 +242,7 @@ def gyrotropic_main(cwi, operators):
             print("    * excluding spin component ")
 
     if cwi["transl_inv"]:
-        print(
-            "Using a translationally-invariant discretization for the band-diagonal Wannier matrix elements of r, etc."
-        )
+        print("Using a translationally-invariant discretization for the band-diagonal Wannier matrix elements of r, etc.")
 
     # --- #
 
@@ -544,11 +456,7 @@ def wham_get_JJp_JJm_list(cwi, delHH, E, U, occ=None):
                 [
                     [
                         [
-                            (
-                                1.0 / (E[k, m] - E[k, n])
-                                if occ_list[ife, k, m] < 0.5 and occ_list[ife, k, n] > 0.5
-                                else 0.0
-                            )
+                            (1.0 / (E[k, m] - E[k, n]) if occ_list[ife, k, m] < 0.5 and occ_list[ife, k, n] > 0.5 else 0.0)
                             for m in range(num_wann)
                         ]
                         for n in range(num_wann)
@@ -564,11 +472,7 @@ def wham_get_JJp_JJm_list(cwi, delHH, E, U, occ=None):
                 [
                     [
                         [
-                            (
-                                1.0 / (E[k, n] - E[k, m])
-                                if occ_list[ife, k, m] < 0.5 and occ_list[ife, k, n] > 0.5
-                                else 0.0
-                            )
+                            (1.0 / (E[k, n] - E[k, m]) if occ_list[ife, k, m] < 0.5 and occ_list[ife, k, n] > 0.5 else 0.0)
                             for n in range(num_wann)
                         ]
                         for m in range(num_wann)
@@ -632,16 +536,8 @@ def wham_get_JJp_JJm_list(cwi, delHH, E, U, occ=None):
     del fac_m
     del delHH_Band
 
-    JJp_list = (
-        U[np.newaxis, np.newaxis, :, :, :]
-        @ JJp_list
-        @ U.transpose(0, 2, 1).conjugate()[np.newaxis, np.newaxis, :, :, :]
-    )
-    JJm_list = (
-        U[np.newaxis, np.newaxis, :, :, :]
-        @ JJm_list
-        @ U.transpose(0, 2, 1).conjugate()[np.newaxis, np.newaxis, :, :, :]
-    )
+    JJp_list = U[np.newaxis, np.newaxis, :, :, :] @ JJp_list @ U.transpose(0, 2, 1).conjugate()[np.newaxis, np.newaxis, :, :, :]
+    JJm_list = U[np.newaxis, np.newaxis, :, :, :] @ JJm_list @ U.transpose(0, 2, 1).conjugate()[np.newaxis, np.newaxis, :, :, :]
 
     return JJp_list, JJm_list
 
@@ -773,9 +669,7 @@ def berry_get_imfgh_klist(cwi, operators, kpoints, imf=False, img=False, imh=Fal
             if todo[ife]:
                 for i in range(3):
                     # J0 term (Omega_bar term of WYSV06)
-                    imf_k_list[ife, :, 0, i] = np.real(
-                        np.trace(f_list[ife, :, :, :] @ OOmega[i, :, :, :], axis1=1, axis2=2)
-                    )
+                    imf_k_list[ife, :, 0, i] = np.real(np.trace(f_list[ife, :, :, :] @ OOmega[i, :, :, :], axis1=1, axis2=2))
                     #
                     # J1 term (DA term of WYSV06)
                     imf_k_list[ife, :, 1, i] = -2.0 * np.imag(
@@ -785,9 +679,7 @@ def berry_get_imfgh_klist(cwi, operators, kpoints, imf=False, img=False, imh=Fal
                     #
                     # J2 term (DD of WYSV06)
                     imf_k_list[ife, :, 2, i] = -2.0 * np.imag(
-                        np.trace(
-                            JJm_list[_alpha_A[i], ife, :, :, :] @ JJp_list[_beta_A[i], ife, :, :, :], axis1=1, axis2=2
-                        )
+                        np.trace(JJm_list[_alpha_A[i], ife, :, :, :] @ JJp_list[_beta_A[i], ife, :, :, :], axis1=1, axis2=2)
                     )
 
     if img and imh:
@@ -856,12 +748,8 @@ def berry_get_imfgh_klist(cwi, operators, kpoints, imf=False, img=False, imh=Fal
                 tmp[3] = JJm_list[_alpha_A[i], ife] @ HH
                 tmp[4] = HH @ JJm_list[_alpha_A[i], ife]
 
-                img_k_list[ife, :, 2, i] = -2.0 * np.imag(
-                    np.trace(tmp[3] @ JJp_list[_beta_A[i], ife], axis1=1, axis2=2)
-                )
-                imh_k_list[ife, :, 2, i] = -2.0 * np.imag(
-                    np.trace(tmp[4] @ JJp_list[_beta_A[i], ife], axis1=1, axis2=2)
-                )
+                img_k_list[ife, :, 2, i] = -2.0 * np.imag(np.trace(tmp[3] @ JJp_list[_beta_A[i], ife], axis1=1, axis2=2))
+                imh_k_list[ife, :, 2, i] = -2.0 * np.imag(np.trace(tmp[4] @ JJp_list[_beta_A[i], ife], axis1=1, axis2=2))
 
     return imf_k_list, img_k_list, imh_k_list
 
@@ -989,8 +877,7 @@ def berry_get_imfgh_matrix_klist(cwi, operators, kpoints, img=False, imh=False, 
                 tmp[3] = HH @ JJm_list[_alpha_A[i], ife]
 
                 orb_k_list[ife, :, :, :, i] -= -2.0 * (
-                    np.imag(JJm_list[_alpha_A[i], ife] @ BB[_beta_A[i]])
-                    - np.imag(JJm_list[_beta_A[i], ife] @ BB[_alpha_A[i]])
+                    np.imag(JJm_list[_alpha_A[i], ife] @ BB[_beta_A[i]]) - np.imag(JJm_list[_beta_A[i], ife] @ BB[_alpha_A[i]])
                 )
                 orb_k_list[ife, :, :, :, i] += -2.0 * (
                     np.imag(tmp[0] @ JJp_list[_beta_A[i], ife]) + np.imag(tmp[3] @ AA[_beta_A[i]])
@@ -1453,9 +1340,7 @@ def berry_get_ahc(cwi, operators):
 
     # ==================================================
     N1, N2, N3 = cwi["berry_kmesh"]
-    kpoints = np.array(
-        [[i / float(N1), j / float(N2), k / float(N3)] for i in range(N1) for j in range(N2) for k in range(N3)]
-    )
+    kpoints = np.array([[i / float(N1), j / float(N2), k / float(N3)] for i in range(N1) for j in range(N2) for k in range(N3)])
 
     num_k = np.prod(cwi["berry_kmesh"])
 
@@ -1681,9 +1566,7 @@ def berry_get_kubo(cwi, operators):
 
     # ==================================================
     N1, N2, N3 = cwi["berry_kmesh"]
-    kpoints = np.array(
-        [[i / float(N1), j / float(N2), k / float(N3)] for i in range(N1) for j in range(N2) for k in range(N3)]
-    )
+    kpoints = np.array([[i / float(N1), j / float(N2), k / float(N3)] for i in range(N1) for j in range(N2) for k in range(N3)])
 
     num_k = np.prod(cwi["berry_kmesh"])
 
@@ -1902,9 +1785,7 @@ def berry_get_kubo_tb(cwi, operators):
 
     # ==================================================
     N1, N2, N3 = cwi["berry_kmesh"]
-    kpoints = np.array(
-        [[i / float(N1), j / float(N2), k / float(N3)] for i in range(N1) for j in range(N2) for k in range(N3)]
-    )
+    kpoints = np.array([[i / float(N1), j / float(N2), k / float(N3)] for i in range(N1) for j in range(N2) for k in range(N3)])
 
     num_k = np.prod(cwi["berry_kmesh"])
 
@@ -1971,9 +1852,7 @@ def berry_get_js_k(cwi, operators, kpoints, E, del_alpha_E, D_alpha_h, U):
     # =========== S_k ===========
     #  < u_k | sigma_gamma | u_k >, QZYZ18 Eq.(25)
     #  QZYZ18 Eq.(36)
-    S_gamma_w = fourier_transform_r_to_k(
-        operators["SS_R"][shc_gamma - 1], kpoints, cwi["irvec"], cwi["ndegen"], atoms_frac
-    )
+    S_gamma_w = fourier_transform_r_to_k(operators["SS_R"][shc_gamma - 1], kpoints, cwi["irvec"], cwi["ndegen"], atoms_frac)
     #  QZYZ18 Eq.(30)
     S_gamma_k = U.transpose(0, 2, 1).conjugate() @ S_gamma_w @ U
 
@@ -1994,9 +1873,7 @@ def berry_get_js_k(cwi, operators, kpoints, E, del_alpha_E, D_alpha_h, U):
         operators["SHR_R"][shc_gamma - 1, shc_alpha - 1], kpoints, cwi["irvec"], cwi["ndegen"], atoms_frac
     )
     # QZYZ18 Eq.(39)
-    S_gamma_H_w = fourier_transform_r_to_k(
-        operators["SH_R"][shc_gamma - 1], kpoints, cwi["irvec"], cwi["ndegen"], atoms_frac
-    )
+    S_gamma_H_w = fourier_transform_r_to_k(operators["SH_R"][shc_gamma - 1], kpoints, cwi["irvec"], cwi["ndegen"], atoms_frac)
     # QZYZ18 Eq.(32)
     S_gamma_HR_alpha_k = -1.0j * U.transpose(0, 2, 1).conjugate() @ S_gamma_HR_alpha_w @ U
     S_gamma_H_k = U.transpose(0, 2, 1).conjugate() @ S_gamma_H_w @ U
@@ -2005,9 +1882,7 @@ def berry_get_js_k(cwi, operators, kpoints, E, del_alpha_E, D_alpha_h, U):
     # =========== B_k ===========
     #  < \psi_nk | sigma_gamma v_alpha | \psi_mk >, QZYZ18 Eq.(24)
     B_k = (
-        np.einsum("km, knm->knm", del_alpha_E, S_gamma_k, optimize=True)
-        + np.einsum("km, knm->knm", E, K_k, optimize=True)
-        - L_k
+        np.einsum("km, knm->knm", del_alpha_E, S_gamma_k, optimize=True) + np.einsum("km, knm->knm", E, K_k, optimize=True) - L_k
     )
 
     # =========== js_k ===========
@@ -2196,6 +2071,9 @@ def berry_get_shc(cwi, operators):
     """
     Spin Hall conductivity, in (hbar/e)*S/cm.
 
+    With berry_curv_adpt_kmesh, the k points are refined for each Fermi energy separately; the Fermi energies below the
+    threshold keep the point itself, also where another Fermi energy is refined (wannier90 drops it there).
+
     Args:
         cwi (CWInfo): CWInfo.
         operators (dict): operators.
@@ -2263,6 +2141,12 @@ def berry_get_shc(cwi, operators):
                             adpt_counter_list[ife] = adpt_counter_list[ife] + 1
                             ladpt[ife] = True
 
+                # the Fermi energies below the threshold keep the point itself, as in berry_get_ahc
+                # (wannier90 drops their contribution when another Fermi energy is refined).
+                for ife in range(num_fermi):
+                    if not ladpt[ife]:
+                        shc_list[ife] += shc_k_list[ife, k] * kweight
+
                 if np.any(ladpt):
                     # for loop_adpt in range(berry_curv_adpt_kmesh**3):
                     # !Using shc_k here would corrupt values for other
@@ -2274,17 +2158,11 @@ def berry_get_shc(cwi, operators):
                             for loop_adpt in range(ka1 * ka2 * ka3):
                                 shc_list[ife_] += shc_k_list_dummy[ife_, loop_adpt] * kweight_adpt
 
-                else:
-                    for ife in range(num_fermi):
-                        shc_list[ife] += shc_k_list[ife, k] * kweight
-
             return shc_list
 
     # ==================================================
     N1, N2, N3 = cwi["berry_kmesh"]
-    kpoints = np.array(
-        [[i / float(N1), j / float(N2), k / float(N3)] for i in range(N1) for j in range(N2) for k in range(N3)]
-    )
+    kpoints = np.array([[i / float(N1), j / float(N2), k / float(N3)] for i in range(N1) for j in range(N2) for k in range(N3)])
 
     num_k = np.prod(cwi["berry_kmesh"])
 
@@ -2402,9 +2280,7 @@ def gyrotropic_get_K(cwi, operators):
             phi = cwi["magnetic_field_phi"]
             g_factor = cwi["g_factor"]
 
-            pauli_spin = fourier_transform_r_to_k_vec(
-                operators["SS_R"], kpoints, cwi["irvec"], cwi["ndegen"], atoms_frac
-            )
+            pauli_spin = fourier_transform_r_to_k_vec(operators["SS_R"], kpoints, cwi["irvec"], cwi["ndegen"], atoms_frac)
             H_zeeman = spin_zeeman_interaction(B, theta, phi, pauli_spin, g_factor, cwi["num_wann"])
             HH += H_zeeman
 
@@ -2522,9 +2398,7 @@ def gyrotropic_get_K(cwi, operators):
 
     # ==================================================
     N1, N2, N3 = cwi["gyrotropic_kmesh"]
-    kpoints = np.array(
-        [[i / float(N1), j / float(N2), k / float(N3)] for i in range(N1) for j in range(N2) for k in range(N3)]
-    )
+    kpoints = np.array([[i / float(N1), j / float(N2), k / float(N3)] for i in range(N1) for j in range(N2) for k in range(N3)])
 
     kpoints_chunks = np.split(kpoints, [j for j in range(300, len(kpoints), 300)])
     num_chunks = len(kpoints_chunks)
