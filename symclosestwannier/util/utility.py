@@ -413,13 +413,13 @@ def convert_w90_orbital(l, m, r, s):
         if m == 1:
             orbital = "faz"  # fz3
         elif m == 2:
-            orbital = "fx"  # fxz2
+            orbital = "f3x"  # fxz2
         elif m == 3:
-            orbital = "fy"  # fyz2
+            orbital = "f3y"  # fyz2
         elif m == 4:
             orbital = "fbz"  # fz(x2-y2)
         elif m == 5:
-            orbital = "fxyz"
+            orbital = "f3"  # fxyz
         elif m == 6:
             orbital = "f2"  # fx(x2-3y2)
         elif m == 7:
