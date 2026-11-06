@@ -246,7 +246,7 @@ class Win(dict):
 
             # berry curvature, ahc, shc
                 - berry_curv_unit              : Unit of Berry curvature, ang2/bohr2, ['ang2'].
-                - berry_curv_adpt_kmesh        : Linear dimension of the adaptively refined k-mesh used to compute the anomalous/spin Hall conductivity, [1, 1, 1].
+                - berry_curv_adpt_kmesh        : Linear dimension of the adaptively refined k-mesh used to compute the anomalous/spin Hall conductivity. In a Fermi-energy scan, refinement is decided for each Fermi energy; the Fermi energies below the threshold keep the point (for the spin Hall conductivity, wannier90 and earlier versions of SymClosestWannier dropped it when another Fermi energy was refined), [1, 1, 1].
                 - berry_curv_adpt_kmesh_thresh : Threshold magnitude of the Berry curvature for adaptive refinement, [100].
                 - fermi_energy                 : fermi energy, not with fermi_energy_min (float), [0.0].
                 - fermi_energy_max             : Upper limit of the Fermi energy range (float), [fermi_energy_min + 1].

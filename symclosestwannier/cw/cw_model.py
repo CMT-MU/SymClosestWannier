@@ -19,6 +19,7 @@
 # ****************************************************************** #
 
 import os
+import sys
 import h5py
 import ast
 import datetime
@@ -57,6 +58,7 @@ from symclosestwannier.util.utility import (
     fermi,
     fermi_dt,
     weight_proj,
+    projection_rank_ratio,
     band_distance,
     get_wannier_center_spread,
     get_spreads,
@@ -78,6 +80,9 @@ from symclosestwannier.util.utility import (
     embed_spin_unitary,
     Kelvin_to_eV,
 )
+
+# smallest / largest singular value of the projections below which the closest Wannier gauge is not reliable.
+PROJECTION_RANK_TOL = 1e-8
 
 _default = {
     "Sk": None,
@@ -327,6 +332,8 @@ class CWModel(dict):
 
             self._cwm.log("done", file=self._outfile, mode="a")
 
+        self._check_projection_rank(Ak)
+
         msg = "   - constructing TB Hamiltonian ... "
         self._cwm.log(msg, None, end="", file=self._outfile, mode="a")
         self._cwm.set_stamp()
@@ -495,6 +502,37 @@ class CWModel(dict):
             msg = "   - symmetrization ... "
             self._cwm.log(msg, None, end="\n", file=self._outfile, mode="a")
             self._sym()
+
+    # ==================================================
+    def _check_projection_rank(self, Ak, tol=PROJECTION_RANK_TOL):
+        """
+        warn when the projections are rank-deficient at some k points (see util.utility.projection_rank_ratio).
+
+        The warning is written to seedname.cwout and to stderr, also when verbose = false.
+
+        Args:
+            Ak (ndarray): projections after proj_min and the window function.
+            tol (float, optional): threshold of the smallest / largest singular value.
+
+        Returns:
+            ndarray: the ratio at each k point.
+        """
+        ratio = projection_rank_ratio(Ak)
+        bad = ratio < tol
+        if bad.any():
+            msg = (
+                f"   - WARNING: the projections are rank-deficient at {int(bad.sum())} of {len(ratio)} k points "
+                f"(smallest singular-value ratio {ratio.min():.1e} < {tol:.0e}).\n"
+                f"     The closest Wannier gauge is then fixed by numerical noise, and the real-space Hamiltonian and "
+                f"the interpolated bands are unreliable.\n"
+                f"     Usually fewer than num_wann = {self._cwi['num_wann']} states have appreciable weight in the energy "
+                f"window: with disentangle = true, increase cwf_delta (e.g. 1e-3) or widen the energy window "
+                f"(cwf_mu_max, cwf_sigma_max); otherwise check proj_min and the trial projections."
+            )
+            with open(self._outfile, "a", encoding="utf-8") as fp:
+                print(msg, file=fp)
+            print(msg, file=sys.stderr)
+        return ratio
 
     # ==================================================
     def _exclude_bands(self, Ak):

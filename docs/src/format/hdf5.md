@@ -12,7 +12,7 @@
     - cwf_mu_min      : bottom of the energy window (float), [None].
     - cwf_sigma_max : smearing temperature for the top of the energy window (float), [1.0].
     - cwf_sigma_min : smearing temperature for the bottom of the energy window (float), [0.0].
-    - cwf_delta             : small constant to avoid ill-conditioning of overlap matrices (< 1e-5) (float), [0.0].
+    - cwf_delta             : baseline weight added to the window function, which the states outside the energy window keep (0 <= cwf_delta < 1); increase it (e.g. 1e-3) when seedname.cwout warns that the projections are rank-deficient (float), [0.0].
     - svd               : implement singular value decomposition ? otherwise adopt Lowdin's orthogonalization method (bool), [False].
     - verbose           : verbose calculation info (bool, optional), [False].
     - parallel          : use parallel code? (bool), [False].
@@ -128,7 +128,7 @@
     - Uoptk             : num_wann×num_wann full unitary matrix (ndarray), [None].
     - Udisk             : num_wann×num_bands partial unitary matrix (ndarray), [None].
     - Uk                : num_wann×num_bands full unitary matrix (ndarray), [None].
-    - other keywords of seedname.win follow the [Wannier90](https://wannier.org/) user guide.
+    - other keywords of seedname.win follow the [Wannier90](https://wannier.org/) user guide, except that `berry_curv_adpt_kmesh` refines the spin Hall conductivity for each Fermi energy (see `Win.read`).
 
 
 # data [default]

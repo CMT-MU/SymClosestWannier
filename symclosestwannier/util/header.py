@@ -12,7 +12,7 @@ cwin_info = {
     "cwf_mu_min": "bottom of the energy window (float), [None].",
     "cwf_sigma_max": "smearing temperature for the top of the energy window (float), [1.0].",
     "cwf_sigma_min": "smearing temperature for the bottom of the energy window (float), [0.0].",
-    "cwf_delta": "small constant to avoid ill-conditioning of overlap matrices (< 1e-5) (float), [0.0].",
+    "cwf_delta": "baseline weight added to the window function, which the states outside the energy window keep (0 <= cwf_delta < 1); increase it (e.g. 1e-3) when seedname.cwout warns that the projections are rank-deficient (float), [0.0].",
     "svd": "implement singular value decomposition ? otherwise adopt Lowdin's orthogonalization method (bool), [False].",
     "verbose": "verbose calculation info (bool, optional), [False].",
     "parallel": "use parallel code? (bool), [False].",
@@ -131,7 +131,7 @@ win_info = {
     "berry_kmesh_spacing": "Overrides the kmesh_spacing global variable.",
     # berry curvature, ahc, shc
     "berry_curv_unit": " Unit of Berry curvature, ang2/bohr2, ['ang2']",
-    "berry_curv_adpt_kmesh": "Linear dimension of the adaptively refined k-mesh used to compute the anomalous/spin Hall conductivity, [1]",
+    "berry_curv_adpt_kmesh": "Linear dimension of the adaptively refined k-mesh used to compute the anomalous/spin Hall conductivity. In a Fermi-energy scan, refinement is decided for each Fermi energy; the Fermi energies below the threshold keep the point (for the spin Hall conductivity, wannier90 and earlier versions of SymClosestWannier dropped it when another Fermi energy was refined), [1, 1, 1]",
     "berry_curv_adpt_kmesh_thresh": "Threshold magnitude of the Berry curvature for adaptive refinement, [100]",
     # kubo
     "kubo_freq_max": "Upper limit of the frequency range for computing the optical conductivity, JDOS and ac SHC. (The units are [eV]) (float), [If an inner energy window was specified, the default value is dis_froz_max-fermi_energy+0.6667. Otherwise it is the difference between the maximum and the minimum energy eigenvalue stored in seedname.eig, plus 0.6667.].",
