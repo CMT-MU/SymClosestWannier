@@ -1,0 +1,1054 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>symclosestwannier.util.get_oper_R &#8212; SymClosestWannier</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../_static/styles/theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css?v=9c3e77be" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/custom.css?v=34ddd5e8" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="../../../_static/scripts/fontawesome.js?digest=55c26ed414f5f8a31ebb"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb" />
+
+    <script src="../../../_static/documentation_options.js?v=a8e58a58"></script>
+    <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../../_static/togglebutton.js?v=b8b12719"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/symclosestwannier/util/get_oper_R';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <script src="../../../_static/custom.js?v=9c3a2667"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  
+    
+    <script src="../../../_static/searchtools.js"></script>
+    <script src="../../../_static/language_data.js"></script>
+    <script src="../../../searchindex.js"></script>
+  
+  </head>
+  <body data-default-mode="">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../../README.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">SymClosestWannier</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">MultiPie</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../../src/multipie.html">Construction of SAMBs by using MultiPie</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Closest Wannier method</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../../src/cw.html">Closest Wannier method</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Construction of symmetry-adapted Closest Wannier model</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../../src/scw.html">Symmetry-adapted Closest Wannier model</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">File Format</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../../src/format/cwin.html">seedname.cwin [default]</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/format/cwout.html">seedname.cwout</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/format/hdf5.html">seedname.hdf5 [default]</a></li>
+
+
+
+<li class="toctree-l1"><a class="reference internal" href="../../../src/format/hr.html">seedname_hr.dat.cw</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/format/sr.html">seedname_sr.dat.cw</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/format/z.html">seedname_z.dat.cw</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/format/s.html">seedname_s.dat.cw</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/format/n.html">seedname_n.dat.cw</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/format/convention.html">Phase conventions of real-space operators</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../../src/tutorials/tutorial01.html">CH4: Closest Wannier tight-binding model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/tutorials/tutorial02.html">Graphene: Closest Wannier tight-binding model</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">API</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../../src/api/cw.html">Closest Wannier</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/api/analyzer.html">Analyzer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/api/util.html">Utility</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+<a href="https://github.com/CMT-MU/SymClosestWannier.git" target="_blank"
+   class="btn btn-sm btn-source-repository-button"
+   title="Source repository"
+   data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+
+</a>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1></h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <h1>Source code for symclosestwannier.util.get_oper_R</h1><div class="highlight"><pre>
+<span></span><span class="c1"># ****************************************************************** #</span>
+<span class="c1">#                                                                    #</span>
+<span class="c1"># This file is distributed as part of the symclosestwannier code and #</span>
+<span class="c1">#     under the terms of the GNU General Public License. See the     #</span>
+<span class="c1">#     file LICENSE in the root directory of the symclosestwannier    #</span>
+<span class="c1">#      distribution, or http://www.gnu.org/licenses/gpl-3.0.txt      #</span>
+<span class="c1">#                                                                    #</span>
+<span class="c1">#          The symclosestwannier code is hosted on GitHub:           #</span>
+<span class="c1">#                                                                    #</span>
+<span class="c1">#            https://github.com/CMT-MU/SymClosestWannier             #</span>
+<span class="c1">#                                                                    #</span>
+<span class="c1">#                            written by                              #</span>
+<span class="c1">#                        Rikuto Oiwa, RIKEN                          #</span>
+<span class="c1">#                                                                    #</span>
+<span class="c1"># ------------------------------------------------------------------ #</span>
+<span class="c1">#                                                                    #</span>
+<span class="c1">#         get_matrix_R: matrix elements of various operators         #</span>
+<span class="c1">#                                                                    #</span>
+<span class="c1"># ****************************************************************** #</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">symclosestwannier.util.constants</span><span class="w"> </span><span class="kn">import</span> <span class="n">elem_charge_SI</span><span class="p">,</span> <span class="n">hbar_SI</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">symclosestwannier.util.utility</span><span class="w"> </span><span class="kn">import</span> <span class="n">fourier_transform_r_to_k</span><span class="p">,</span> <span class="n">fourier_transform_k_to_r</span><span class="p">,</span> <span class="n">orbital_positions</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">symclosestwannier.util.exceptions</span><span class="w"> </span><span class="kn">import</span> <span class="n">SymCWInputError</span>
+
+
+<span class="c1"># ==================================================</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_require</span><span class="p">(</span><span class="n">cwi</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">ext</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""</span>
+<span class="sd">    check that the data read from seedname.ext is available.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        cwi (CWInfo): CWInfo.</span>
+<span class="sd">        key (str): key of the data.</span>
+<span class="sd">        ext (str): extension of the file.</span>
+<span class="sd">        name (str): name of the operator to be calculated.</span>
+<span class="sd">    """</span>
+    <span class="k">if</span> <span class="n">cwi</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">SymCWInputError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> requires </span><span class="si">{</span><span class="n">cwi</span><span class="p">[</span><span class="s1">'seedname'</span><span class="p">]</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">ext</span><span class="si">}</span><span class="s2">, which is not found or not read."</span><span class="p">)</span>
+
+
+<span class="c1"># ==================================================</span>
+<div class="viewcode-block" id="get_oper_R">
+<a class="viewcode-back" href="../../../src/api/util.html#symclosestwannier.util.get_oper_R.get_oper_R">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_oper_R</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">cwi</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""</span>
+<span class="sd">    wrapper for getting matrix elements of the operator.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        cwi (CWInfo): CWInfo.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        ndarray: matrix elements of the operator.</span>
+<span class="sd">    """</span>
+    <span class="n">d</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">"HH_R"</span><span class="p">:</span> <span class="n">get_HH_R</span><span class="p">,</span>  <span class="c1"># &lt;0n|H|Rm&gt;</span>
+        <span class="s2">"AA_R"</span><span class="p">:</span> <span class="n">get_AA_R</span><span class="p">,</span>  <span class="c1"># &lt;0n|r|Rm&gt;</span>
+        <span class="s2">"AA_R_tb"</span><span class="p">:</span> <span class="n">get_AA_R_tb</span><span class="p">,</span>  <span class="c1"># &lt;0n|r|Rm&gt; ≈ τ_n δ_nm δ_R0</span>
+        <span class="s2">"BB_R"</span><span class="p">:</span> <span class="n">get_BB_R</span><span class="p">,</span>  <span class="c1"># &lt;0|H(r-R)|R&gt;</span>
+        <span class="s2">"CC_R"</span><span class="p">:</span> <span class="n">get_CC_R</span><span class="p">,</span>  <span class="c1"># &lt;0|r_alpha.H(r-R)_beta|R&gt;</span>
+        <span class="s2">"SS_R"</span><span class="p">:</span> <span class="n">get_SS_R</span><span class="p">,</span>  <span class="c1"># &lt;0n|sigma_x,y,z|Rm&gt;</span>
+        <span class="s2">"SHC_R"</span><span class="p">:</span> <span class="n">get_SHC_R</span><span class="p">,</span>  <span class="c1"># &lt;0n|sigma_x,y,z.(r-R)_alpha|Rm&gt;, &lt;0n|sigma_x,y,z.H.(r-R)_alpha|Rm&gt;, &lt;0n|sigma_x,y,z.H|Rm&gt;</span>
+        <span class="s2">"SAA_R"</span><span class="p">:</span> <span class="n">get_SAA_R</span><span class="p">,</span>  <span class="c1"># &lt;0n|sigma_x,y,z.(r-R)_alpha|Rm&gt;</span>
+        <span class="s2">"SBB_R"</span><span class="p">:</span> <span class="n">get_SBB_R</span><span class="p">,</span>  <span class="c1"># &lt;0n|sigma_x,y,z.H.(r-R)_alpha|Rm&gt;</span>
+        <span class="s2">"v_R"</span><span class="p">:</span> <span class="n">get_v_R</span><span class="p">,</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">d</span><span class="p">[</span><span class="n">name</span><span class="p">](</span><span class="n">cwi</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">)</span></div>
+
+
+
+<span class="c1"># ==================================================</span>
+<div class="viewcode-block" id="get_HH_R">
+<a class="viewcode-back" href="../../../src/api/util.html#symclosestwannier.util.get_oper_R.get_HH_R">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_HH_R</span><span class="p">(</span><span class="n">cwi</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""</span>
+<span class="sd">    matrix elements of real-space Hamiltonian, &lt;0n|H|Rm&gt;.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        cwi (CWInfo): CWInfo.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        ndarray: Hamiltonian, HH_R(len(irvec), num_wann, num_wann).</span>
+<span class="sd">    """</span>
+    <span class="n">Ek</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">cwi</span><span class="p">[</span><span class="s2">"Ek"</span><span class="p">])</span>
+    <span class="n">Uk</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">cwi</span><span class="p">[</span><span class="s2">"Uk"</span><span class="p">])</span>
+
+    <span class="n">HH_k</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">"klm,kl,kln-&gt;kmn"</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">conj</span><span class="p">(</span><span class="n">Uk</span><span class="p">),</span> <span class="n">Ek</span><span class="p">,</span> <span class="n">Uk</span><span class="p">,</span> <span class="n">optimize</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">HH_k</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">HH_k</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">"kmn-&gt;knm"</span><span class="p">,</span> <span class="n">HH_k</span><span class="p">)</span><span class="o">.</span><span class="n">conj</span><span class="p">())</span>
+
+    <span class="n">kpoints</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">cwi</span><span class="p">[</span><span class="s2">"kpoints"</span><span class="p">])</span>
+    <span class="n">irvec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">cwi</span><span class="p">[</span><span class="s2">"irvec"</span><span class="p">])</span>
+
+    <span class="n">HH_R</span> <span class="o">=</span> <span class="n">fourier_transform_k_to_r</span><span class="p">(</span><span class="n">HH_k</span><span class="p">,</span> <span class="n">kpoints</span><span class="p">,</span> <span class="n">irvec</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">HH_R</span></div>
+
+
+
+<span class="c1"># ==================================================</span>
+<div class="viewcode-block" id="get_AA_R">
+<a class="viewcode-back" href="../../../src/api/util.html#symclosestwannier.util.get_oper_R.get_AA_R">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_AA_R</span><span class="p">(</span><span class="n">cwi</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""</span>
+<span class="sd">    matrix elements of real-space position operator, &lt;0n|r|Rm&gt;.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        cwi (CWInfo): CWInfo.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        ndarray: position operator, AA_R(3, len(irvec), num_wann, num_wann).</span>
+<span class="sd">    """</span>
+    <span class="n">_require</span><span class="p">(</span><span class="n">cwi</span><span class="p">,</span> <span class="s2">"Mkb"</span><span class="p">,</span> <span class="s2">"mmn"</span><span class="p">,</span> <span class="s2">"position operator (AA_R)"</span><span class="p">)</span>
+    <span class="n">Mkb</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">cwi</span><span class="p">[</span><span class="s2">"Mkb"</span><span class="p">])</span>
+    <span class="n">Uk</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">cwi</span><span class="p">[</span><span class="s2">"Uk"</span><span class="p">])</span>
+
+    <span class="n">kb2k</span> <span class="o">=</span> <span class="n">cwi</span><span class="o">.</span><span class="n">nnkp</span><span class="o">.</span><span class="n">kb2k</span><span class="p">()</span>
+    <span class="n">bveck</span> <span class="o">=</span> <span class="n">cwi</span><span class="o">.</span><span class="n">nnkp</span><span class="o">.</span><span class="n">bveck</span><span class="p">()</span>
+    <span class="n">wb</span> <span class="o">=</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">"wb"</span><span class="p">]</span>
+
+    <span class="n">kpoints</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">cwi</span><span class="p">[</span><span class="s2">"kpoints"</span><span class="p">])</span>
+    <span class="n">irvec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">cwi</span><span class="p">[</span><span class="s2">"irvec"</span><span class="p">])</span>
+
+    <span class="c1">### Unitary transform Mkb ###</span>
+    <span class="n">Mkb_w</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">"klm, kblp, kbpn-&gt;kbmn"</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">conj</span><span class="p">(</span><span class="n">Uk</span><span class="p">),</span> <span class="n">Mkb</span><span class="p">,</span> <span class="n">Uk</span><span class="p">[</span><span class="n">kb2k</span><span class="p">[:,</span> <span class="p">:],</span> <span class="p">:,</span> <span class="p">:],</span> <span class="n">optimize</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>  <span class="c1"># Eq. (61)</span>
+    <span class="n">AA_k</span> <span class="o">=</span> <span class="mf">1.0</span><span class="n">j</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">"b,kba,kbmn-&gt;akmn"</span><span class="p">,</span> <span class="n">wb</span><span class="p">,</span> <span class="n">bveck</span><span class="p">,</span> <span class="n">Mkb_w</span><span class="p">,</span> <span class="n">optimize</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="c1"># Use Eq.(31) of Marzari&amp;Vanderbilt PRB 56, 12847 (1997) for band-diagonal position matrix.</span>
+    <span class="k">if</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">"transl_inv"</span><span class="p">]:</span>
+        <span class="n">AA_k_diag</span> <span class="o">=</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">"b,kba,kbnn-&gt;akn"</span><span class="p">,</span> <span class="n">wb</span><span class="p">,</span> <span class="n">bveck</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">imag</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">Mkb_w</span><span class="p">)),</span> <span class="n">optimize</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">"aknn-&gt;akn"</span><span class="p">,</span> <span class="n">AA_k</span><span class="p">)[:]</span> <span class="o">=</span> <span class="n">AA_k_diag</span>
+
+    <span class="n">AA_k</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">AA_k</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">"akmn-&gt;aknm"</span><span class="p">,</span> <span class="n">AA_k</span><span class="p">)</span><span class="o">.</span><span class="n">conj</span><span class="p">())</span>
+
+    <span class="n">AA_R</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">fourier_transform_k_to_r</span><span class="p">(</span><span class="n">AA_k</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">kpoints</span><span class="p">,</span> <span class="n">irvec</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">)])</span>
+
+    <span class="k">return</span> <span class="n">AA_R</span></div>
+
+
+
+<span class="c1"># ==================================================</span>
+<div class="viewcode-block" id="get_AA_R_tb">
+<a class="viewcode-back" href="../../../src/api/util.html#symclosestwannier.util.get_oper_R.get_AA_R_tb">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_AA_R_tb</span><span class="p">(</span><span class="n">cwi</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""</span>
+<span class="sd">    position operator in the tight-binding approximation, &lt;0n|r|Rm&gt; = τ_n δ_nm δ_R0,</span>
+<span class="sd">    with the projection centres τ_n (wannier90 convention). seedname.mmn is not needed.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        cwi (CWInfo): CWInfo.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        ndarray: position operator, AA_R(3, len(irvec), num_wann, num_wann).</span>
+<span class="sd">    """</span>
+    <span class="n">irvec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">cwi</span><span class="p">[</span><span class="s2">"irvec"</span><span class="p">])</span>
+    <span class="n">num_wann</span> <span class="o">=</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">"num_wann"</span><span class="p">]</span>
+    <span class="n">tau</span> <span class="o">=</span> <span class="n">orbital_positions</span><span class="p">(</span><span class="n">cwi</span><span class="p">)</span> <span class="o">@</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">cwi</span><span class="p">[</span><span class="s2">"unit_cell_cart"</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+
+    <span class="n">R0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">irvec</span> <span class="o">==</span> <span class="mi">0</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">))[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">R0</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"R = 0 is not in irvec."</span><span class="p">)</span>
+
+    <span class="n">AA_R</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">irvec</span><span class="p">),</span> <span class="n">num_wann</span><span class="p">,</span> <span class="n">num_wann</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">complex</span><span class="p">)</span>
+    <span class="n">AA_R</span><span class="p">[:,</span> <span class="n">R0</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">num_wann</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">num_wann</span><span class="p">)]</span> <span class="o">=</span> <span class="n">tau</span><span class="o">.</span><span class="n">T</span>
+
+    <span class="k">return</span> <span class="n">AA_R</span></div>
+
+
+
+<span class="c1"># ==================================================</span>
+<div class="viewcode-block" id="get_BB_R">
+<a class="viewcode-back" href="../../../src/api/util.html#symclosestwannier.util.get_oper_R.get_BB_R">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_BB_R</span><span class="p">(</span><span class="n">cwi</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""</span>
+<span class="sd">    matrix elements of real-space BB operator,</span>
+<span class="sd">        BB_a(R)=&lt;0n|H(r-R)_a|Rm&gt;</span>
+
+<span class="sd">    BB_a(R) is the Fourier transform of</span>
+<span class="sd">        BB_a(k) = i&lt;u|H|del_a u&gt; (a=x,y,z)</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        cwi (CWInfo): CWInfo.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        ndarray: position operator, BB_R(3, len(irvec), num_wann, num_wann).</span>
+<span class="sd">    """</span>
+    <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">cwi</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"scissors_shift"</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">))</span> <span class="o">&gt;</span> <span class="mf">1.0e-7</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">"scissors correction not yet implemented for BB_R"</span><span class="p">)</span>
+
+    <span class="n">num_k</span> <span class="o">=</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">"num_k"</span><span class="p">]</span>
+    <span class="n">kpoints</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">cwi</span><span class="p">[</span><span class="s2">"kpoints"</span><span class="p">])</span>
+    <span class="n">irvec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">cwi</span><span class="p">[</span><span class="s2">"irvec"</span><span class="p">])</span>
+
+    <span class="n">kb2k</span> <span class="o">=</span> <span class="n">cwi</span><span class="o">.</span><span class="n">nnkp</span><span class="o">.</span><span class="n">kb2k</span><span class="p">()</span>
+    <span class="n">bveck</span> <span class="o">=</span> <span class="n">cwi</span><span class="o">.</span><span class="n">nnkp</span><span class="o">.</span><span class="n">bveck</span><span class="p">()</span>
+    <span class="n">wb</span> <span class="o">=</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">"wb"</span><span class="p">]</span>
+
+    <span class="n">Ek</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">cwi</span><span class="p">[</span><span class="s2">"Ek"</span><span class="p">])</span>
+    <span class="n">Uk</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">cwi</span><span class="p">[</span><span class="s2">"Uk"</span><span class="p">])</span>
+    <span class="n">_require</span><span class="p">(</span><span class="n">cwi</span><span class="p">,</span> <span class="s2">"Mkb"</span><span class="p">,</span> <span class="s2">"mmn"</span><span class="p">,</span> <span class="s2">"BB_R"</span><span class="p">)</span>
+    <span class="n">Mkb</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">cwi</span><span class="p">[</span><span class="s2">"Mkb"</span><span class="p">])</span>
+
+    <span class="n">H_o</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">Ek</span><span class="p">[</span><span class="n">k</span><span class="p">])</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_k</span><span class="p">)])</span>
+
+    <span class="n">HM_o</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">"kml, kbln-&gt;kbmn"</span><span class="p">,</span> <span class="n">H_o</span><span class="p">,</span> <span class="n">Mkb</span><span class="p">,</span> <span class="n">optimize</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">H_k_kb</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">"klm, kblp, kbpn-&gt;kbmn"</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">conj</span><span class="p">(</span><span class="n">Uk</span><span class="p">),</span> <span class="n">HM_o</span><span class="p">,</span> <span class="n">Uk</span><span class="p">[</span><span class="n">kb2k</span><span class="p">[:,</span> <span class="p">:],</span> <span class="p">:,</span> <span class="p">:],</span> <span class="n">optimize</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">BB_k</span> <span class="o">=</span> <span class="mf">1.0</span><span class="n">j</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">"b,kbc,kbmn-&gt;ckmn"</span><span class="p">,</span> <span class="n">wb</span><span class="p">,</span> <span class="n">bveck</span><span class="p">,</span> <span class="n">H_k_kb</span><span class="p">,</span> <span class="n">optimize</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="n">BB_R</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">fourier_transform_k_to_r</span><span class="p">(</span><span class="n">BB_k</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">kpoints</span><span class="p">,</span> <span class="n">irvec</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">)])</span>
+
+    <span class="k">return</span> <span class="n">BB_R</span></div>
+
+
+
+<span class="c1"># ==================================================</span>
+<div class="viewcode-block" id="get_CC_R">
+<a class="viewcode-back" href="../../../src/api/util.html#symclosestwannier.util.get_oper_R.get_CC_R">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_CC_R</span><span class="p">(</span><span class="n">cwi</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""</span>
+<span class="sd">    matrix elements of real-space CC operator,</span>
+<span class="sd">        CC_ab(R)=&lt;0n|r_a.H.(r-R)_b|Rm&gt;</span>
+
+<span class="sd">    CC_ab(R) is the Fourier transform of</span>
+<span class="sd">        CC_ab(k) = &lt;del_a u|H|del_b u&gt; (a,b=x,y,z)</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        cwi (CWInfo): CWInfo.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        ndarray: position operator, CC_R(3, 3, len(irvec), num_wann, num_wann).</span>
+
+<span class="sd">    """</span>
+    <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">cwi</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"scissors_shift"</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">))</span> <span class="o">&gt;</span> <span class="mf">1.0e-7</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">"scissors correction not yet implemented for CC_R"</span><span class="p">)</span>
+
+    <span class="n">kpoints</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">cwi</span><span class="p">[</span><span class="s2">"kpoints"</span><span class="p">])</span>
+    <span class="n">irvec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">cwi</span><span class="p">[</span><span class="s2">"irvec"</span><span class="p">])</span>
+
+    <span class="n">kb2k</span> <span class="o">=</span> <span class="n">cwi</span><span class="o">.</span><span class="n">nnkp</span><span class="o">.</span><span class="n">kb2k</span><span class="p">()</span>
+    <span class="n">bveck</span> <span class="o">=</span> <span class="n">cwi</span><span class="o">.</span><span class="n">nnkp</span><span class="o">.</span><span class="n">bveck</span><span class="p">()</span>
+    <span class="n">wb</span> <span class="o">=</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">"wb"</span><span class="p">]</span>
+
+    <span class="n">Uk</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">cwi</span><span class="p">[</span><span class="s2">"Uk"</span><span class="p">])</span>
+    <span class="n">_require</span><span class="p">(</span><span class="n">cwi</span><span class="p">,</span> <span class="s2">"Hkb1b2"</span><span class="p">,</span> <span class="s2">"uHu"</span><span class="p">,</span> <span class="s2">"CC_R"</span><span class="p">)</span>
+    <span class="n">Hkb1b2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">cwi</span><span class="p">[</span><span class="s2">"Hkb1b2"</span><span class="p">])</span>
+
+    <span class="n">Hkb1b2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span>
+        <span class="s2">"kblm, kbdlp, kdpn-&gt;kbdmn"</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">conj</span><span class="p">(</span><span class="n">Uk</span><span class="p">[</span><span class="n">kb2k</span><span class="p">[:,</span> <span class="p">:],</span> <span class="p">:,</span> <span class="p">:]),</span> <span class="n">Hkb1b2</span><span class="p">,</span> <span class="n">Uk</span><span class="p">[</span><span class="n">kb2k</span><span class="p">[:,</span> <span class="p">:],</span> <span class="p">:,</span> <span class="p">:],</span> <span class="n">optimize</span><span class="o">=</span><span class="kc">True</span>
+    <span class="p">)</span>
+    <span class="n">CC_k</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">"b,kbi,d,kdj,kbdmn-&gt;ijkmn"</span><span class="p">,</span> <span class="n">wb</span><span class="p">,</span> <span class="n">bveck</span><span class="p">,</span> <span class="n">wb</span><span class="p">,</span> <span class="n">bveck</span><span class="p">,</span> <span class="n">Hkb1b2</span><span class="p">,</span> <span class="n">optimize</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="c1"># CC_ab(k) is not hermitian for a != b; only CC_ba(k) = CC_ab(k)^† holds (as in wannier90 get_oper.F90).</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
+        <span class="n">CC_k</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">CC_k</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">"kmn-&gt;knm"</span><span class="p">,</span> <span class="n">CC_k</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">i</span><span class="p">])</span><span class="o">.</span><span class="n">conj</span><span class="p">())</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">):</span>
+            <span class="n">CC_k</span><span class="p">[</span><span class="n">j</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">"kmn-&gt;knm"</span><span class="p">,</span> <span class="n">CC_k</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">])</span><span class="o">.</span><span class="n">conj</span><span class="p">()</span>
+
+    <span class="n">CC_R</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+        <span class="p">[[</span><span class="n">fourier_transform_k_to_r</span><span class="p">(</span><span class="n">CC_k</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">],</span> <span class="n">kpoints</span><span class="p">,</span> <span class="n">irvec</span><span class="p">)</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">)]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">)]</span>
+    <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">CC_R</span></div>
+
+
+
+<span class="c1"># ==================================================</span>
+<div class="viewcode-block" id="get_SS_R">
+<a class="viewcode-back" href="../../../src/api/util.html#symclosestwannier.util.get_oper_R.get_SS_R">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_SS_R</span><span class="p">(</span><span class="n">cwi</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""</span>
+<span class="sd">    matrix elements of real-space spin operator, &lt;0n|sigma_x,y,z|Rm&gt;.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        cwi (CWInfo): CWInfo.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        ndarray: spin operator, SS_R(3, len(irvec), num_wann, num_wann).</span>
+<span class="sd">    """</span>
+    <span class="n">_require</span><span class="p">(</span><span class="n">cwi</span><span class="p">,</span> <span class="s2">"pauli_spn"</span><span class="p">,</span> <span class="s2">"spn"</span><span class="p">,</span> <span class="s2">"spin operator (SS_R)"</span><span class="p">)</span>
+    <span class="n">pauli_spn</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">cwi</span><span class="p">[</span><span class="s2">"pauli_spn"</span><span class="p">])</span>
+    <span class="n">Uk</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">cwi</span><span class="p">[</span><span class="s2">"Uk"</span><span class="p">])</span>
+
+    <span class="n">SS_k</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">"klm,aklp,kpn-&gt;akmn"</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">conj</span><span class="p">(</span><span class="n">Uk</span><span class="p">),</span> <span class="n">pauli_spn</span><span class="p">,</span> <span class="n">Uk</span><span class="p">,</span> <span class="n">optimize</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="n">SS_k</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">SS_k</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">"akmn-&gt;aknm"</span><span class="p">,</span> <span class="n">SS_k</span><span class="p">)</span><span class="o">.</span><span class="n">conj</span><span class="p">())</span>
+
+    <span class="n">kpoints</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">cwi</span><span class="p">[</span><span class="s2">"kpoints"</span><span class="p">])</span>
+    <span class="n">irvec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">cwi</span><span class="p">[</span><span class="s2">"irvec"</span><span class="p">])</span>
+
+    <span class="n">SS_R</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">fourier_transform_k_to_r</span><span class="p">(</span><span class="n">SS_k</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">kpoints</span><span class="p">,</span> <span class="n">irvec</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">)])</span>
+
+    <span class="k">return</span> <span class="n">SS_R</span></div>
+
+
+
+<span class="c1"># ==================================================</span>
+<div class="viewcode-block" id="shc_bandshift">
+<a class="viewcode-back" href="../../../src/api/util.html#symclosestwannier.util.get_oper_R.shc_bandshift">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">shc_bandshift</span><span class="p">(</span><span class="n">E</span><span class="p">,</span> <span class="n">cwi</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""</span>
+<span class="sd">    Shift the bands shc_bandshift_firstband, ..., num_bands (1-based, as in wannier90) by shc_bandshift_energyshift.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        E (ndarray): eigenvalues, (num_k, num_bands).</span>
+<span class="sd">        cwi (CWInfo): CWInfo.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        ndarray: shifted copy of E, or E itself if shc_bandshift = false.</span>
+<span class="sd">    """</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">"shc_bandshift"</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="n">E</span>
+
+    <span class="n">E</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">E</span><span class="p">)</span>
+    <span class="n">E</span><span class="p">[:,</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">"shc_bandshift_firstband"</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span> <span class="p">:]</span> <span class="o">+=</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">"shc_bandshift_energyshift"</span><span class="p">]</span>
+
+    <span class="k">return</span> <span class="n">E</span></div>
+
+
+
+<span class="c1"># ==================================================</span>
+<div class="viewcode-block" id="get_SHC_R">
+<a class="viewcode-back" href="../../../src/api/util.html#symclosestwannier.util.get_oper_R.get_SHC_R">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_SHC_R</span><span class="p">(</span><span class="n">cwi</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""</span>
+<span class="sd">    Compute several matrices for spin Hall conductivity</span>
+<span class="sd">        - SR_R  = &lt;0n|sigma_{x,y,z}.(r-R)_alpha|Rm&gt;</span>
+<span class="sd">        - SHR_R = &lt;0n|sigma_{x,y,z}.H.(r-R)_alpha|Rm&gt;</span>
+<span class="sd">        - SH_R  = &lt;0n|sigma_{x,y,z}.H|Rm&gt;</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        cwi (CWInfo): CWInfo.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        tuple: SR_R(3, 3, len(irvec), num_wann, num_wann), SHR_R(3, 3, len(irvec), num_wann, num_wann), SH_R(3, len(irvec), num_wann, num_wann).</span>
+<span class="sd">    """</span>
+    <span class="n">kpoints</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">cwi</span><span class="p">[</span><span class="s2">"kpoints"</span><span class="p">])</span>
+    <span class="n">irvec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">cwi</span><span class="p">[</span><span class="s2">"irvec"</span><span class="p">])</span>
+    <span class="n">num_k</span> <span class="o">=</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">"num_k"</span><span class="p">]</span>
+
+    <span class="n">Ek</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">cwi</span><span class="p">[</span><span class="s2">"Ek"</span><span class="p">])</span>
+    <span class="n">Uk</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">cwi</span><span class="p">[</span><span class="s2">"Uk"</span><span class="p">])</span>
+
+    <span class="c1"># spin operator</span>
+    <span class="n">spn_o</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">cwi</span><span class="p">[</span><span class="s2">"pauli_spn"</span><span class="p">])</span>
+    <span class="n">SS_k</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">"klm,aklp,kpn-&gt;akmn"</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">conj</span><span class="p">(</span><span class="n">Uk</span><span class="p">),</span> <span class="n">spn_o</span><span class="p">,</span> <span class="n">Uk</span><span class="p">,</span> <span class="n">optimize</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="c1"># get_HH_R</span>
+    <span class="n">Ek</span> <span class="o">=</span> <span class="n">shc_bandshift</span><span class="p">(</span><span class="n">Ek</span><span class="p">,</span> <span class="n">cwi</span><span class="p">)</span>
+
+    <span class="n">H_o</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">Ek</span><span class="p">[</span><span class="n">k</span><span class="p">])</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_k</span><span class="p">)])</span>
+
+    <span class="c1"># get_AA_R</span>
+    <span class="n">_require</span><span class="p">(</span><span class="n">cwi</span><span class="p">,</span> <span class="s2">"Mkb"</span><span class="p">,</span> <span class="s2">"mmn"</span><span class="p">,</span> <span class="s2">"spin Hall conductivity"</span><span class="p">)</span>
+    <span class="n">Mkb</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">cwi</span><span class="p">[</span><span class="s2">"Mkb"</span><span class="p">])</span>
+    <span class="n">kb2k</span> <span class="o">=</span> <span class="n">cwi</span><span class="o">.</span><span class="n">nnkp</span><span class="o">.</span><span class="n">kb2k</span><span class="p">()</span>
+    <span class="n">bveck</span> <span class="o">=</span> <span class="n">cwi</span><span class="o">.</span><span class="n">nnkp</span><span class="o">.</span><span class="n">bveck</span><span class="p">()</span>
+    <span class="n">wb</span> <span class="o">=</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">"wb"</span><span class="p">]</span>
+
+    <span class="c1">#! QZYZ18 Eq.(48)</span>
+    <span class="n">SH_o</span> <span class="o">=</span> <span class="n">spn_o</span> <span class="o">@</span> <span class="n">H_o</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:,</span> <span class="p">:]</span>
+    <span class="n">SH_k</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">"klm, aklp, kpn-&gt;akmn"</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">conj</span><span class="p">(</span><span class="n">Uk</span><span class="p">),</span> <span class="n">SH_o</span><span class="p">,</span> <span class="n">Uk</span><span class="p">,</span> <span class="n">optimize</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="c1">#! QZYZ18 Eq.(50)</span>
+    <span class="n">SM_o</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">"akml, kbln-&gt;akbmn"</span><span class="p">,</span> <span class="n">spn_o</span><span class="p">,</span> <span class="n">Mkb</span><span class="p">,</span> <span class="n">optimize</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">SM_k</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">"klm, akblp, kbpn-&gt;akbmn"</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">conj</span><span class="p">(</span><span class="n">Uk</span><span class="p">),</span> <span class="n">SM_o</span><span class="p">,</span> <span class="n">Uk</span><span class="p">[</span><span class="n">kb2k</span><span class="p">[:,</span> <span class="p">:],</span> <span class="p">:,</span> <span class="p">:],</span> <span class="n">optimize</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">SR_k</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">"b,kbc,akbmn-&gt;ackmn"</span><span class="p">,</span> <span class="n">wb</span><span class="p">,</span> <span class="n">bveck</span><span class="p">,</span> <span class="n">SM_k</span><span class="p">,</span> <span class="n">optimize</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span>
+        <span class="s2">"b,kbc,akmn-&gt;ackmn"</span><span class="p">,</span> <span class="n">wb</span><span class="p">,</span> <span class="n">bveck</span><span class="p">,</span> <span class="n">SS_k</span><span class="p">,</span> <span class="n">optimize</span><span class="o">=</span><span class="kc">True</span>
+    <span class="p">)</span>
+
+    <span class="c1">#! QZYZ18 Eq.(51)</span>
+    <span class="n">SHM_o</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">"akml, kbln-&gt;akbmn"</span><span class="p">,</span> <span class="n">SH_o</span><span class="p">,</span> <span class="n">Mkb</span><span class="p">,</span> <span class="n">optimize</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">SHM_k</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">"klm, akblp, kbpn-&gt;akbmn"</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">conj</span><span class="p">(</span><span class="n">Uk</span><span class="p">),</span> <span class="n">SHM_o</span><span class="p">,</span> <span class="n">Uk</span><span class="p">[</span><span class="n">kb2k</span><span class="p">[:,</span> <span class="p">:],</span> <span class="p">:,</span> <span class="p">:],</span> <span class="n">optimize</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">SHR_k</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">"b,kbc,akbmn-&gt;ackmn"</span><span class="p">,</span> <span class="n">wb</span><span class="p">,</span> <span class="n">bveck</span><span class="p">,</span> <span class="n">SHM_k</span><span class="p">,</span> <span class="n">optimize</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span>
+        <span class="s2">"b,kbc,akmn-&gt;ackmn"</span><span class="p">,</span> <span class="n">wb</span><span class="p">,</span> <span class="n">bveck</span><span class="p">,</span> <span class="n">SH_k</span><span class="p">,</span> <span class="n">optimize</span><span class="o">=</span><span class="kc">True</span>
+    <span class="p">)</span>
+
+    <span class="n">SH_R</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">fourier_transform_k_to_r</span><span class="p">(</span><span class="n">SH_k</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">kpoints</span><span class="p">,</span> <span class="n">irvec</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">)])</span>
+    <span class="n">SR_R</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+        <span class="p">[[</span><span class="n">fourier_transform_k_to_r</span><span class="p">(</span><span class="n">SR_k</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">],</span> <span class="n">kpoints</span><span class="p">,</span> <span class="n">irvec</span><span class="p">)</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">)]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">)]</span>
+    <span class="p">)</span>
+    <span class="n">SHR_R</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+        <span class="p">[[</span><span class="n">fourier_transform_k_to_r</span><span class="p">(</span><span class="n">SHR_k</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">],</span> <span class="n">kpoints</span><span class="p">,</span> <span class="n">irvec</span><span class="p">)</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">)]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">)]</span>
+    <span class="p">)</span>
+
+    <span class="n">SR_R</span> <span class="o">=</span> <span class="mf">1.0</span><span class="n">j</span> <span class="o">*</span> <span class="n">SR_R</span>
+    <span class="n">SHR_R</span> <span class="o">=</span> <span class="mf">1.0</span><span class="n">j</span> <span class="o">*</span> <span class="n">SHR_R</span>
+
+    <span class="k">return</span> <span class="n">SR_R</span><span class="p">,</span> <span class="n">SHR_R</span><span class="p">,</span> <span class="n">SH_R</span></div>
+
+
+
+<span class="c1"># ==================================================</span>
+<div class="viewcode-block" id="get_SAA_R">
+<a class="viewcode-back" href="../../../src/api/util.html#symclosestwannier.util.get_oper_R.get_SAA_R">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_SAA_R</span><span class="p">(</span><span class="n">cwi</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""&lt;0n|sigma_x,y,z.(r-R)_alpha|Rm&gt;"""</span>
+    <span class="k">pass</span></div>
+
+
+
+<span class="c1"># ==================================================</span>
+<div class="viewcode-block" id="get_SBB_R">
+<a class="viewcode-back" href="../../../src/api/util.html#symclosestwannier.util.get_oper_R.get_SBB_R">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_SBB_R</span><span class="p">(</span><span class="n">cwi</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""&lt;0n|sigma_x,y,z.H.(r-R)_alpha|Rm&gt;"""</span>
+    <span class="k">pass</span></div>
+
+
+
+<span class="c1"># ******************************************************************</span>
+<span class="c1"># ******************************************************************</span>
+<span class="c1"># ******************************************************************</span>
+
+
+<span class="c1"># ==================================================</span>
+<div class="viewcode-block" id="get_berry_phase_R">
+<a class="viewcode-back" href="../../../src/api/util.html#symclosestwannier.util.get_oper_R.get_berry_phase_R">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_berry_phase_R</span><span class="p">(</span><span class="n">cwi</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""</span>
+<span class="sd">    matrix elements of berry phase, &lt;0n|A_x,y,z|Rm&gt;.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        cwi (CWInfo): CWInfo.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        ndarray: spin operator, SS_R(3, len(irvec), num_wann, num_wann).</span>
+<span class="sd">    """</span>
+    <span class="n">_require</span><span class="p">(</span><span class="n">cwi</span><span class="p">,</span> <span class="s2">"Mkb"</span><span class="p">,</span> <span class="s2">"mmn"</span><span class="p">,</span> <span class="s2">"berry phase"</span><span class="p">)</span>
+    <span class="n">Mkb</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">cwi</span><span class="p">[</span><span class="s2">"Mkb"</span><span class="p">])</span>
+    <span class="n">Uk</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">cwi</span><span class="p">[</span><span class="s2">"Uk"</span><span class="p">])</span>
+    <span class="n">num_wann</span> <span class="o">=</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">"num_wann"</span><span class="p">]</span>
+
+    <span class="c1">### Unitary transform Mkb ###</span>
+    <span class="n">kb2k</span> <span class="o">=</span> <span class="n">cwi</span><span class="o">.</span><span class="n">nnkp</span><span class="o">.</span><span class="n">kb2k</span><span class="p">()</span>
+    <span class="n">Mkb_w</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">"klm, kblp, kbpn-&gt;kbmn"</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">conj</span><span class="p">(</span><span class="n">Uk</span><span class="p">),</span> <span class="n">Mkb</span><span class="p">,</span> <span class="n">Uk</span><span class="p">[</span><span class="n">kb2k</span><span class="p">[:,</span> <span class="p">:],</span> <span class="p">:,</span> <span class="p">:],</span> <span class="n">optimize</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>  <span class="c1"># Eq. (61)</span>
+
+    <span class="n">bveck</span> <span class="o">=</span> <span class="n">cwi</span><span class="o">.</span><span class="n">nnkp</span><span class="o">.</span><span class="n">bveck</span><span class="p">()</span>
+    <span class="n">wk</span> <span class="o">=</span> <span class="n">cwi</span><span class="o">.</span><span class="n">nnkp</span><span class="o">.</span><span class="n">wk</span><span class="p">()</span>
+
+    <span class="c1"># i&lt;wik|∇wjk&gt;</span>
+    <span class="n">a_k</span> <span class="o">=</span> <span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">"kb,kba,kbmn-&gt;akmn"</span><span class="p">,</span> <span class="n">wk</span><span class="p">,</span> <span class="n">bveck</span><span class="p">,</span> <span class="p">(</span><span class="n">Mkb_w</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">num_wann</span><span class="p">)),</span> <span class="n">optimize</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">a_k</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">a_k</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">"akmn-&gt;aknm"</span><span class="p">,</span> <span class="n">a_k</span><span class="o">.</span><span class="n">conj</span><span class="p">()))</span>
+
+    <span class="n">kpoints</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">cwi</span><span class="p">[</span><span class="s2">"kpoints"</span><span class="p">])</span>
+    <span class="n">irvec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">cwi</span><span class="p">[</span><span class="s2">"irvec"</span><span class="p">])</span>
+
+    <span class="n">a_R</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">fourier_transform_k_to_r</span><span class="p">(</span><span class="n">a_k</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">kpoints</span><span class="p">,</span> <span class="n">irvec</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">)])</span>
+
+    <span class="k">return</span> <span class="n">a_R</span></div>
+
+
+
+<span class="c1"># ==================================================</span>
+<div class="viewcode-block" id="get_v_R">
+<a class="viewcode-back" href="../../../src/api/util.html#symclosestwannier.util.get_oper_R.get_v_R">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_v_R</span><span class="p">(</span><span class="n">cwi</span><span class="p">,</span> <span class="n">HH_R</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">atoms_frac</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""</span>
+<span class="sd">    matrix elements of real-space velocity operator in TB approximation, &lt;0n|v|Rm&gt;.</span>
+<span class="sd">    v_k^a = 1 / (h/2π) ∇_k^a H_k [Angstrom / s]</span>
+
+<span class="sd">    The derivative is taken in the gauge given by atoms_frac: without atoms_frac (wannier90 convention) v_R = i R H(R),</span>
+<span class="sd">    with atoms_frac (tb_gauge = true) v_R = i (R + τ_n - τ_m) H(R), to be transformed to k space with the same atoms_frac.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        cwi (CWInfo): CWInfo.</span>
+<span class="sd">        HH_R (ndarray, optional): Hamiltonian, HH_R(len(irvec), num_wann, num_wann).</span>
+<span class="sd">        atoms_frac (ndarray, optional): orbital positions in fractional coordinates, (num_wann, 3).</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        ndarray: velocity operator, v_R(3, len(irvec), num_wann, num_wann).</span>
+<span class="sd">    """</span>
+    <span class="k">if</span> <span class="n">HH_R</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">HH_R</span> <span class="o">=</span> <span class="n">get_HH_R</span><span class="p">(</span><span class="n">cwi</span><span class="p">)</span>
+
+    <span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">cwi</span><span class="p">[</span><span class="s2">"unit_cell_cart"</span><span class="p">])</span>
+    <span class="n">irvec</span> <span class="o">=</span> <span class="n">cwi</span><span class="p">[</span><span class="s2">"irvec"</span><span class="p">]</span>
+
+    <span class="n">irvec_cart</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">R</span><span class="p">)</span> <span class="o">@</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">A</span><span class="p">)</span> <span class="k">for</span> <span class="n">R</span> <span class="ow">in</span> <span class="n">irvec</span><span class="p">])</span>
+
+    <span class="k">if</span> <span class="n">atoms_frac</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">atoms_cart</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">atoms_frac</span><span class="p">)</span> <span class="o">@</span> <span class="n">A</span>
+        <span class="n">bond_cart</span> <span class="o">=</span> <span class="n">irvec_cart</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="p">:]</span> <span class="o">+</span> <span class="n">atoms_cart</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:]</span> <span class="o">-</span> <span class="n">atoms_cart</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="p">:,</span> <span class="kc">None</span><span class="p">,</span> <span class="p">:]</span>
+        <span class="n">v_R_x</span><span class="p">,</span> <span class="n">v_R_y</span><span class="p">,</span> <span class="n">v_R_z</span> <span class="o">=</span> <span class="mf">1.0</span><span class="n">j</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">"Rmna,Rmn-&gt;aRmn"</span><span class="p">,</span> <span class="n">bond_cart</span><span class="p">,</span> <span class="n">HH_R</span><span class="p">,</span> <span class="n">optimize</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">v_R_x</span><span class="p">,</span> <span class="n">v_R_y</span><span class="p">,</span> <span class="n">v_R_z</span> <span class="o">=</span> <span class="mf">1.0</span><span class="n">j</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">"Ra,Rmn-&gt;aRmn"</span><span class="p">,</span> <span class="n">irvec_cart</span><span class="p">,</span> <span class="n">HH_R</span><span class="p">,</span> <span class="n">optimize</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="n">v_R</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">v_R_x</span><span class="p">,</span> <span class="n">v_R_y</span><span class="p">,</span> <span class="n">v_R_z</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">complex</span><span class="p">)</span>
+
+<span class="w">    </span><span class="sd">"""</span>
+<span class="sd">    --------------------------------------------------------------------</span>
+<span class="sd">    Convert to Angstrom eV / (J s)</span>
+
+<span class="sd">    fac = 1.0 / hbar [1 / (J s)]</span>
+
+<span class="sd">    'hbar' in SI units</span>
+<span class="sd">    --------------------------------------------------------------------</span>
+<span class="sd">    """</span>
+
+    <span class="n">fac</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="n">hbar_SI</span>
+
+    <span class="n">v_R</span> <span class="o">=</span> <span class="n">fac</span> <span class="o">*</span> <span class="n">v_R</span>
+
+    <span class="k">return</span> <span class="n">v_R</span></div>
+
+
+
+<span class="c1"># ==================================================</span>
+<div class="viewcode-block" id="to_tb_gauge">
+<a class="viewcode-back" href="../../../src/api/util.html#symclosestwannier.util.get_oper_R.to_tb_gauge">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">to_tb_gauge</span><span class="p">(</span><span class="n">operators</span><span class="p">,</span> <span class="n">irvec</span><span class="p">,</span> <span class="n">unit_cell_cart</span><span class="p">,</span> <span class="n">atoms_frac</span><span class="p">,</span> <span class="n">ndegen</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""</span>
+<span class="sd">    convert real-space operators from the wannier90 convention (no orbital position in the Fourier phase)</span>
+<span class="sd">    to the tb gauge (orbital positions τ in the phase), so that the Fourier transform with atoms_frac gives</span>
+<span class="sd">    the k-space operators of the Bloch basis e^{ik(R+τ_b)} |φ_b(R)&gt;.</span>
+
+<span class="sd">        AA_a(R)      -&gt; AA_a(R) - τ_{n,a} δ_{mn} δ_{R0}</span>
+<span class="sd">        BB_a(R)      -&gt; BB_a(R) - τ_{n,a} HH(R)</span>
+<span class="sd">        CC_ab(R)     -&gt; CC_ab(R) - τ_{m,a} BB_b(R) - τ_{n,b} BB_a^†(R) + τ_{m,a} τ_{n,b} HH(R), BB_a^†(R)_{mn} = BB_a(-R)_{nm}^*</span>
+<span class="sd">        SR_ab(R)     -&gt; SR_ab(R) - τ_{n,b} SS_a(R)</span>
+<span class="sd">        SHR_ab(R)    -&gt; SHR_ab(R) - τ_{n,b} SH_a(R)</span>
+
+<span class="sd">    (m, n: row and column orbitals, τ in Cartesian coordinates).</span>
+<span class="sd">    HH_R, SS_R and SH_R are the same in both conventions; v_R is not converted (see get_v_R).</span>
+<span class="sd">    HH_R must be the Hamiltonian from which BB_R and CC_R are built.</span>
+<span class="sd">    BB_a^†(R) is the Fourier coefficient of BB_a(k)^† only if ndegen(-R) = ndegen(R), as for a Wigner-Seitz supercell.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        operators (dict): real-space operators in the wannier90 convention (None for those not calculated).</span>
+<span class="sd">        irvec (ndarray): lattice points, [[n1,n2,n3]].</span>
+<span class="sd">        unit_cell_cart (ndarray): lattice vectors (rows), [a1,a2,a3].</span>
+<span class="sd">        atoms_frac (ndarray): orbital positions in fractional coordinates, (num_wann, 3).</span>
+<span class="sd">        ndegen (ndarray, optional): degeneracy of each R, checked to be symmetric under R -&gt; -R.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        dict: converted operators (only the keys given in operators, the input is not modified).</span>
+<span class="sd">    """</span>
+    <span class="n">irvec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">irvec</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
+    <span class="n">tau</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">atoms_frac</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span> <span class="o">@</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">unit_cell_cart</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">require</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="o">*</span><span class="n">keys</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">keys</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">operators</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2"> is required to convert </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> to the tb gauge."</span><span class="p">)</span>
+
+    <span class="n">index</span> <span class="o">=</span> <span class="p">{</span><span class="nb">tuple</span><span class="p">(</span><span class="n">R</span><span class="p">):</span> <span class="n">ir</span> <span class="k">for</span> <span class="n">ir</span><span class="p">,</span> <span class="n">R</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">irvec</span><span class="p">)}</span>
+    <span class="k">if</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">index</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"R = 0 is not in irvec."</span><span class="p">)</span>
+
+    <span class="n">d</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">operators</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">operators</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"AA_R"</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">AA_R</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">operators</span><span class="p">[</span><span class="s2">"AA_R"</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">complex</span><span class="p">)</span>
+        <span class="n">num_wann</span> <span class="o">=</span> <span class="n">AA_R</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">AA_R</span><span class="p">[:,</span> <span class="n">index</span><span class="p">[(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)],</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">num_wann</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">num_wann</span><span class="p">)]</span> <span class="o">-=</span> <span class="n">tau</span><span class="o">.</span><span class="n">T</span>
+        <span class="n">d</span><span class="p">[</span><span class="s2">"AA_R"</span><span class="p">]</span> <span class="o">=</span> <span class="n">AA_R</span>
+
+    <span class="k">if</span> <span class="n">operators</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"BB_R"</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">require</span><span class="p">(</span><span class="s2">"BB_R"</span><span class="p">,</span> <span class="s2">"HH_R"</span><span class="p">)</span>
+        <span class="n">HH_R</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">operators</span><span class="p">[</span><span class="s2">"HH_R"</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">complex</span><span class="p">)</span>
+        <span class="n">BB_R</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">operators</span><span class="p">[</span><span class="s2">"BB_R"</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">complex</span><span class="p">)</span>
+        <span class="n">d</span><span class="p">[</span><span class="s2">"BB_R"</span><span class="p">]</span> <span class="o">=</span> <span class="n">BB_R</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">"na,Rmn-&gt;aRmn"</span><span class="p">,</span> <span class="n">tau</span><span class="p">,</span> <span class="n">HH_R</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">operators</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"CC_R"</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">require</span><span class="p">(</span><span class="s2">"CC_R"</span><span class="p">,</span> <span class="s2">"HH_R"</span><span class="p">,</span> <span class="s2">"BB_R"</span><span class="p">)</span>
+        <span class="n">HH_R</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">operators</span><span class="p">[</span><span class="s2">"HH_R"</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">complex</span><span class="p">)</span>
+        <span class="n">BB_R</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">operators</span><span class="p">[</span><span class="s2">"BB_R"</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">complex</span><span class="p">)</span>
+        <span class="n">CC_R</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">operators</span><span class="p">[</span><span class="s2">"CC_R"</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">complex</span><span class="p">)</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">minus_R</span> <span class="o">=</span> <span class="p">[</span><span class="n">index</span><span class="p">[</span><span class="nb">tuple</span><span class="p">(</span><span class="o">-</span><span class="n">R</span><span class="p">)]</span> <span class="k">for</span> <span class="n">R</span> <span class="ow">in</span> <span class="n">irvec</span><span class="p">]</span>
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"irvec must contain -R for every R to convert CC_R to the tb gauge."</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">ndegen</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">array_equal</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">ndegen</span><span class="p">)[</span><span class="n">minus_R</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">ndegen</span><span class="p">)):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"ndegen must satisfy ndegen(-R) = ndegen(R) to convert CC_R to the tb gauge."</span><span class="p">)</span>
+        <span class="n">BB_R_dag</span> <span class="o">=</span> <span class="n">BB_R</span><span class="p">[:,</span> <span class="n">minus_R</span><span class="p">]</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">conj</span><span class="p">()</span>
+
+        <span class="n">d</span><span class="p">[</span><span class="s2">"CC_R"</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">CC_R</span>
+            <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">"ma,bRmn-&gt;abRmn"</span><span class="p">,</span> <span class="n">tau</span><span class="p">,</span> <span class="n">BB_R</span><span class="p">)</span>
+            <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">"nb,aRmn-&gt;abRmn"</span><span class="p">,</span> <span class="n">tau</span><span class="p">,</span> <span class="n">BB_R_dag</span><span class="p">)</span>
+            <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">"ma,nb,Rmn-&gt;abRmn"</span><span class="p">,</span> <span class="n">tau</span><span class="p">,</span> <span class="n">tau</span><span class="p">,</span> <span class="n">HH_R</span><span class="p">)</span>
+        <span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">operators</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"SR_R"</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">require</span><span class="p">(</span><span class="s2">"SR_R"</span><span class="p">,</span> <span class="s2">"SS_R"</span><span class="p">)</span>
+        <span class="n">SS_R</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">operators</span><span class="p">[</span><span class="s2">"SS_R"</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">complex</span><span class="p">)</span>
+        <span class="n">d</span><span class="p">[</span><span class="s2">"SR_R"</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">operators</span><span class="p">[</span><span class="s2">"SR_R"</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">complex</span><span class="p">)</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">"nb,aRmn-&gt;abRmn"</span><span class="p">,</span> <span class="n">tau</span><span class="p">,</span> <span class="n">SS_R</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">operators</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"SHR_R"</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">require</span><span class="p">(</span><span class="s2">"SHR_R"</span><span class="p">,</span> <span class="s2">"SH_R"</span><span class="p">)</span>
+        <span class="n">SH_R</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">operators</span><span class="p">[</span><span class="s2">"SH_R"</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">complex</span><span class="p">)</span>
+        <span class="n">d</span><span class="p">[</span><span class="s2">"SHR_R"</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">operators</span><span class="p">[</span><span class="s2">"SHR_R"</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">complex</span><span class="p">)</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">"nb,aRmn-&gt;abRmn"</span><span class="p">,</span> <span class="n">tau</span><span class="p">,</span> <span class="n">SH_R</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">d</span></div>
+
+
+
+<span class="c1"># ==================================================</span>
+<div class="viewcode-block" id="get_berry_Curvature_R">
+<a class="viewcode-back" href="../../../src/api/util.html#symclosestwannier.util.get_oper_R.get_berry_Curvature_R">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_berry_Curvature_R</span><span class="p">(</span><span class="n">cwi</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""&lt;0n|Ω|Rm&gt;"""</span>
+    <span class="k">pass</span></div>
+
+
+
+<span class="c1"># ==================================================</span>
+<div class="viewcode-block" id="get_der_berry_Curvature_Rcwi">
+<a class="viewcode-back" href="../../../src/api/util.html#symclosestwannier.util.get_oper_R.get_der_berry_Curvature_Rcwi">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_der_berry_Curvature_Rcwi</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">"""&lt;0n|∇Ω|Rm&gt;"""</span>
+
+    <span class="k">pass</span></div>
+
+
+
+<span class="c1"># ==================================================</span>
+<div class="viewcode-block" id="get_orbital_moment_R">
+<a class="viewcode-back" href="../../../src/api/util.html#symclosestwannier.util.get_oper_R.get_orbital_moment_R">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_orbital_moment_R</span><span class="p">(</span><span class="n">cwi</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""&lt;0n|Morb|Rm&gt;"""</span>
+
+    <span class="k">pass</span></div>
+
+
+
+<span class="c1"># ==================================================</span>
+<div class="viewcode-block" id="get_der_orbital_moment_R">
+<a class="viewcode-back" href="../../../src/api/util.html#symclosestwannier.util.get_oper_R.get_der_orbital_moment_R">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_der_orbital_moment_R</span><span class="p">(</span><span class="n">cwi</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""&lt;0n|∇Morb|Rm&gt;"""</span>
+
+    <span class="k">pass</span></div>
+
+</pre></div>
+
+                </article>
+              
+
+              
+              
+              
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Rikuto Oiwa
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2021-.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../../_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb"></script>
+<script defer src="../../../_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
