@@ -1,5 +1,11 @@
 # [SymClosestWannier](https://cmt-mu.github.io/SymClosestWannier/)
 
+[![PyPI](https://img.shields.io/pypi/v/symclosestwannier?label=pip%20install%20symclosestwannier)](https://pypi.org/project/symclosestwannier/)
+[![Python](https://img.shields.io/pypi/pyversions/symclosestwannier)](https://pypi.org/project/symclosestwannier/)
+[![License](https://img.shields.io/github/license/CMT-MU/SymClosestWannier)](https://github.com/CMT-MU/SymClosestWannier/blob/main/LICENSE)
+[![tests](https://github.com/CMT-MU/SymClosestWannier/actions/workflows/tests.yml/badge.svg)](https://github.com/CMT-MU/SymClosestWannier/actions/workflows/tests.yml)
+[![docs](https://github.com/CMT-MU/SymClosestWannier/actions/workflows/docs.yml/badge.svg)](https://cmt-mu.github.io/SymClosestWannier/)
+
 - **Overview**:
     A Python library to create Symmetry-adapted Closest Wannier (SymCW) tight-binding models [1] based on the Symmetry-Adapted Multipole Basis (SAMB) [2] and the Closest Wannier formalism developed by Taisuke Ozaki [3].
 
