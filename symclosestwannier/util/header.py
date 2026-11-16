@@ -116,7 +116,7 @@ win_info = {
     "spin_moment": "Determines whether to evaluate the spin moment (bool), [False].",
     "spn_formatted": "Read a formatted seedname.spn file (bool), [False].",
     #
-    "kmesh": "dimensions of the Monkhorst-Pack grid of k-points for response calculation (list), [[1, 1, 1]].",
+    "kmesh": "dimensions of the Monkhorst-Pack grid of k-points for response calculation, one or three integers (one integer is used for all three directions) (list), [[1, 1, 1]].",
     "kmesh_spacing": "minimum distance for neighboring k points along each of the three directions in k space (list), [1,1,1]].",
     "adpt_smr": "Determines whether to use an adaptive scheme for broadening the DOS and similar quantities defined on the energy axis (bool), [True].",
     "adpt_smr_fac": "The width ηnk of the broadened delta function used to determine the contribution to the spectral property (DOS, ...) from band n at point k (float), [sqrt(2)].",
@@ -127,11 +127,11 @@ win_info = {
     # berry
     "berry": "Determines whether to enter the berry routines (bool), [False].",
     "berry_task": "The quantity to compute when berry=true, ahc/morb/kubo/sc/shc/kdotp/me (str).",
-    "berry_kmesh": "Overrides the kmesh global variable.",
+    "berry_kmesh": "Overrides the kmesh global variable, one or three integers.",
     "berry_kmesh_spacing": "Overrides the kmesh_spacing global variable.",
     # berry curvature, ahc, shc
     "berry_curv_unit": " Unit of Berry curvature, ang2/bohr2, ['ang2']",
-    "berry_curv_adpt_kmesh": "Linear dimension of the adaptively refined k-mesh used to compute the anomalous/spin Hall conductivity. In a Fermi-energy scan, refinement is decided for each Fermi energy; the Fermi energies below the threshold keep the point (for the spin Hall conductivity, wannier90 and earlier versions of SymClosestWannier dropped it when another Fermi energy was refined), [1, 1, 1]",
+    "berry_curv_adpt_kmesh": "Linear dimension of the adaptively refined k-mesh used to compute the anomalous/spin Hall conductivity, one integer (as in wannier90) or three. In a Fermi-energy scan, refinement is decided for each Fermi energy; the Fermi energies below the threshold keep the point (for the spin Hall conductivity, wannier90 and earlier versions of SymClosestWannier dropped it when another Fermi energy was refined), [1, 1, 1]",
     "berry_curv_adpt_kmesh_thresh": "Threshold magnitude of the Berry curvature for adaptive refinement, [100]",
     # kubo
     "kubo_freq_max": "Upper limit of the frequency range for computing the optical conductivity, JDOS and ac SHC. (The units are [eV]) (float), [If an inner energy window was specified, the default value is dis_froz_max-fermi_energy+0.6667. Otherwise it is the difference between the maximum and the minimum energy eigenvalue stored in seedname.eig, plus 0.6667.].",
@@ -146,7 +146,7 @@ win_info = {
     # gyrotropic
     "gyrotropic": "Determines whether to enter the gyrotropic routines (bool), [False].",
     "gyrotropic_task": "The quantity to compute when gyrotropic=true, -DO/-Dw/-C/-K/-spin/-NOA/-dos, (str).",
-    "gyrotropic_kmesh": "Overrides the kmesh global variable.",
+    "gyrotropic_kmesh": "Overrides the kmesh global variable, one or three integers.",
     "gyrotropic_kmesh_spacing": "Overrides the kmesh_spacing global variable.",
     "gyrotropic_freq_max": "Upper limit of the frequency range for computing the optical activity. (The units are [eV]) (float), [If an inner energy window was specified, the default value is dis_froz_max-fermi_energy+0.6667. Otherwise it is the difference between the maximum and the minimum energy eigenvalue stored in seedname.eig, plus 0.6667.].",
     "gyrotropic_freq_min": "Lower limit of the frequency range for computing the optical activity. (The units are [eV]) (float), [0.0].",

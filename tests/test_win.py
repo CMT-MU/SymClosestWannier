@@ -106,3 +106,32 @@ def test_shc_bandshift_inactive(tmp_path, text):
     without the spin Hall conductivity the shift is off, and shc_bandshift_firstband is not required.
     """
     assert write_win(tmp_path, text)["shc_bandshift"] is False
+
+
+# ==================================================
+_kmesh_keys = ["kmesh", "berry_kmesh", "berry_curv_adpt_kmesh", "gyrotropic_kmesh"]
+
+
+# ==================================================
+@pytest.mark.parametrize("key", _kmesh_keys)
+@pytest.mark.parametrize("text, expected", [(None, [1, 1, 1]), ("3", [3, 3, 3]), ("2 3 4", [2, 3, 4])])
+def test_kmesh(tmp_path, key, text, expected):
+    """
+    one integer is used for all three directions, as in wannier90.
+    """
+    win = write_win(tmp_path, "" if text is None else f"{key} = {text}\n")
+    assert win[key] == expected
+
+
+# ==================================================
+@pytest.mark.parametrize("key", _kmesh_keys)
+@pytest.mark.parametrize("text", ["0", "-2", "1 2", "1 2 3 4", "2 0 2", "a", "2.5"])
+def test_kmesh_invalid(tmp_path, key, text):
+    with pytest.raises(SymCWInputError, match=key):
+        write_win(tmp_path, f"{key} = {text}\n")
+
+
+# ==================================================
+@pytest.mark.parametrize("line", ["berry_kmesh : 4 ! comment\n", "berry_kmesh = 4 4 4 ! comment\n"])
+def test_kmesh_syntax(tmp_path, line):
+    assert write_win(tmp_path, line)["berry_kmesh"] == [4, 4, 4]

@@ -229,7 +229,7 @@ class Win(dict):
                 - unit_cell_cart  : transform matrix, [a1,a2,a3] (list), [None].
 
             # only used for postcw calculation (same as postw90).
-                - kmesh                        : dimensions of the Monkhorst-Pack grid of k-points for response calculation (list), [[1, 1, 1]].
+                - kmesh                        : dimensions of the Monkhorst-Pack grid of k-points for response calculation, one or three integers (one integer is used for all three directions) (list), [[1, 1, 1]].
                 - kmesh_spacing                : minimum distance for neighboring k points along each of the three directions in k space (The units are [Ang])(list), [1,1,1]].
                 - adpt_smr                     : Determines whether to use an adaptive scheme for broadening the DOS and similar quantities defined on the energy axis (bool), [True].
                 - adpt_smr_fac                 : The width ηnk of the broadened delta function used to determine the contribution to the spectral property (DOS, ...) from band n at point k (float), [sqrt(2)].
@@ -241,12 +241,12 @@ class Win(dict):
             # berry
                 - berry                        : Determines whether to enter the berry routines (bool), [False].
                 - berry_task                   : The quantity to compute when berry=true, ahc/morb/kubo/sc/shc/kdotp/me (str).
-                - berry_kmesh                  : Overrides the kmesh global variable.
+                - berry_kmesh                  : Overrides the kmesh global variable, one or three integers.
                 - berry_kmesh_spacing          : Overrides the kmesh_spacing global variable.
 
             # berry curvature, ahc, shc
                 - berry_curv_unit              : Unit of Berry curvature, ang2/bohr2, ['ang2'].
-                - berry_curv_adpt_kmesh        : Linear dimension of the adaptively refined k-mesh used to compute the anomalous/spin Hall conductivity. In a Fermi-energy scan, refinement is decided for each Fermi energy; the Fermi energies below the threshold keep the point (for the spin Hall conductivity, wannier90 and earlier versions of SymClosestWannier dropped it when another Fermi energy was refined), [1, 1, 1].
+                - berry_curv_adpt_kmesh        : Linear dimension of the adaptively refined k-mesh used to compute the anomalous/spin Hall conductivity, one integer (as in wannier90) or three. In a Fermi-energy scan, refinement is decided for each Fermi energy; the Fermi energies below the threshold keep the point (for the spin Hall conductivity, wannier90 and earlier versions of SymClosestWannier dropped it when another Fermi energy was refined), [1, 1, 1].
                 - berry_curv_adpt_kmesh_thresh : Threshold magnitude of the Berry curvature for adaptive refinement, [100].
                 - fermi_energy                 : fermi energy, not with fermi_energy_min (float), [0.0].
                 - fermi_energy_max             : Upper limit of the Fermi energy range (float), [fermi_energy_min + 1].
@@ -283,7 +283,7 @@ class Win(dict):
             # gyrotropic
                 - gyrotropic                    : Determines whether to enter the gyrotropic routines (bool), [False].
                 - gyrotropic_task               : The quantity to compute when gyrotropic=true, -DO/-Dw/-C/-K/-spin/-NOA/-dos, (str).
-                - gyrotropic_kmesh              : Overrides the kmesh global variable.
+                - gyrotropic_kmesh              : Overrides the kmesh global variable, one or three integers.
                 - gyrotropic_kmesh_spacing      : Overrides the kmesh_spacing global variable.
                 - gyrotropic_freq_max           : Upper limit of the frequency range for computing the optical activity. (The units are [eV]) (float), [If an inner energy window was specified, the default value is dis_froz_max-fermi_energy+0.6667. Otherwise it is the difference between the maximum and the minimum energy eigenvalue stored in seedname.eig, plus 0.6667.].
                 - gyrotropic_freq_min           : Lower limit of the frequency range for computing the optical activity. (The units are [eV]) (float), [0.0].
@@ -457,8 +457,7 @@ class Win(dict):
         d["atoms_frac_shift"] = {k: shift_into_cell(v).tolist() for k, v in d["atoms_frac"].items()}
 
         # postcw
-        kmesh = self._get_param_keyword(win_data, "kmesh", "1  1  1", dtype=str)
-        d["kmesh"] = [int(x) for x in kmesh.split()]
+        d["kmesh"] = self._get_kmesh(win_data, "kmesh")
         kmesh_spacing = self._get_param_keyword(win_data, "kmesh_spacing", "1  1  1", dtype=str)
         d["kmesh_spacing"] = [int(x) for x in kmesh_spacing.split()]
         d["adpt_smr"] = self._get_param_keyword(win_data, "adpt_smr", True, dtype=bool)
@@ -473,14 +472,12 @@ class Win(dict):
         if berry_task is not None:
             berry_task = berry_task.replace(" ", "")
         d["berry_task"] = berry_task
-        berry_kmesh = self._get_param_keyword(win_data, "berry_kmesh", "1  1  1", dtype=str)
-        d["berry_kmesh"] = [int(x) for x in berry_kmesh.split()]
+        d["berry_kmesh"] = self._get_kmesh(win_data, "berry_kmesh")
         berry_kmesh_spacing = self._get_param_keyword(win_data, "berry_kmesh_spacing", "1  1  1", dtype=str)
         d["berry_kmesh_spacing"] = [int(x) for x in berry_kmesh_spacing.split()]
 
         d["berry_curv_unit"] = self._get_param_keyword(win_data, "berry_curv_unit", "ang2", dtype=str)
-        berry_curv_adpt_kmesh = self._get_param_keyword(win_data, "berry_curv_adpt_kmesh", "1  1  1", dtype=str)
-        d["berry_curv_adpt_kmesh"] = [int(x) for x in berry_curv_adpt_kmesh.split()]
+        d["berry_curv_adpt_kmesh"] = self._get_kmesh(win_data, "berry_curv_adpt_kmesh")
         d["berry_curv_adpt_kmesh_thresh"] = self._get_param_keyword(
             win_data, "berry_curv_adpt_kmesh_thresh", 100, dtype=float
         )
@@ -510,8 +507,7 @@ class Win(dict):
         else:
             d["gyrotropic_task"] = None
 
-        gyrotropic_kmesh = self._get_param_keyword(win_data, "gyrotropic_kmesh", "1  1  1", dtype=str)
-        d["gyrotropic_kmesh"] = [int(x) for x in gyrotropic_kmesh.split()]
+        d["gyrotropic_kmesh"] = self._get_kmesh(win_data, "gyrotropic_kmesh")
         gyrotropic_kmesh_spacing = self._get_param_keyword(win_data, "gyrotropic_kmesh_spacing", "1  1  1", dtype=str)
         d["gyrotropic_kmesh_spacing"] = [int(x) for x in gyrotropic_kmesh_spacing.split()]
 
@@ -615,6 +611,20 @@ class Win(dict):
             raise SymCWInputError("shc_bandshift_firstband must be >= 1 (1-based band index).")
 
         return d
+
+    # ==================================================
+    def _get_kmesh(self, lines, keyword):
+        """
+        one or three positive integers, as in wannier90; one integer is used for all three directions.
+        """
+        mesh = str(self._get_param_keyword(lines, keyword, "1  1  1", dtype=str)).split()
+        try:
+            mesh = [int(x) for x in mesh]
+        except ValueError:
+            mesh = []
+        if len(mesh) not in (1, 3) or min(mesh) < 1:
+            raise SymCWInputError(f"{keyword} must be one or three positive integers in seedname.win.")
+        return mesh * 3 if len(mesh) == 1 else mesh
 
     # ==================================================
     def _get_param_keyword(self, lines, keyword, default_value=None, dtype=int):
