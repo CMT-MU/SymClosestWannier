@@ -9,8 +9,10 @@ mos2_11orbs = {
     # a = 5.983 bohr as in mos2_11orbs.win; set large enough interlayer distance.
     "cell": {"a": 3.16607, "b": 3.16607, "c": 1000},
     #
-    # Mo at the origin and S at z = +-1.5735 A (+-0.0497 c of mos2_11orbs.win), as in mos2_11orbs.win.
-    "site": {"Mo": ("[2/3,1/3,0]", "d"), "S": ("[1/3,2/3,0.0015735]", "p")},
+    # Mo at z = 1/2, and S at 1.5735 A (0.0497 c of mos2_11orbs.win) above and below it. The atoms are shifted by c/2
+    # from mos2_11orbs.win, so that all of them are in the same unit cell, as in mos2_11orbs.win (where the S below Mo
+    # is at z < 0): the lattice vectors R of H(R) are then the same as those of Wannier90.
+    "site": {"Mo": ("[2/3,1/3,1/2]", "d"), "S": ("[1/3,2/3,0.5015735]", "p")},
     # Mo-Mo, Mo-S and S-S bonds up to 50th neighbors.
     # fmt: off
     "bond": [
