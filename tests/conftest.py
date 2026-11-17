@@ -125,3 +125,49 @@ def make_case(tmp_path, monkeypatch):
         return workdir
 
     return _make
+
+
+# ==================================================
+# search ranges of the bonds for MultiPie Ver.2, as in the model inputs for Ver.2: without it, 2.5 enlarges the search
+# grid of graphene with c = 1000 to the next layer, which does not finish (Ver.3 sets the range by itself).
+MP_V2_SEARCH_CELL_RANGE = {"graphene_pz": (-5, 6, -5, 6, 0, 1)}
+
+
+# ==================================================
+@pytest.fixture(scope="session")
+def multipie_model(tmp_path_factory):
+    """
+    create a MultiPie model from a model input (seedname.py) with the installed MultiPie, once per session.
+
+    The models are made at test time because a model saved by one version of MultiPie is not read by another
+    (e.g., Ver.3 does not read the models of Ver.2). The model inputs are those of Ver.3, where the bonds are given by
+    "bond" only; Ver.2 also needs "max_neighbor".
+
+    Returns:
+        function: (input file, seedname) -> directory where seedname/seedname.pkl is created.
+    """
+    import ast
+
+    created = {}
+
+    def _create(filename, seedname):
+        if seedname not in created:
+            from multipie import create_model
+
+            from symclosestwannier.util.utility import multipie_major_version
+
+            text = open(filename).read()
+            model = ast.literal_eval(text[text.index("{") : text.rindex("}") + 1])
+
+            if multipie_major_version() < 3:  # Ver.2 draws bonds only up to max_neighbor (10 by default).
+                model["max_neighbor"] = max(max(b[2]) if isinstance(b[2], list) else b[2] for b in model["bond"])
+                if seedname in MP_V2_SEARCH_CELL_RANGE:
+                    model["search_cell_range"] = MP_V2_SEARCH_CELL_RANGE[seedname]
+            model |= {"pdf": {"create": False}, "qtdraw": {"create": False}}  # only the .pkl.
+            topdir = tmp_path_factory.mktemp(f"mp_{seedname}")
+            if create_model(model, topdir=str(topdir)):
+                raise RuntimeError(f"MultiPie could not create the model {seedname}.")
+            created[seedname] = topdir
+        return created[seedname]
+
+    return _create

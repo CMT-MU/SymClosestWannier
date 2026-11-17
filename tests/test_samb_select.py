@@ -25,11 +25,11 @@ def test_samb_select(irreps, expected):
 
 
 # ==================================================
-def test_full_selects_only_identity_irrep():
+def test_full_selects_only_identity_irrep(multipie_model):
     # the MultiPie model of CH4 (Td) in tutorial01, with SAMBs of A1, A2, E, T1 and T2.
     from multipie import MaterialModel
 
-    mm = MaterialModel(topdir=str(TUTORIAL01), verbose=False)
+    mm = MaterialModel(topdir=str(multipie_model(TUTORIAL01 / "ch4.py", "ch4")), verbose=False)
     mm.load("ch4")
 
     def irreps(select):

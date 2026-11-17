@@ -10,7 +10,7 @@ dependencies = [
     "sympy",
     "joblib",
     "click",
-    "multipie>=2.4",
+    "multipie>=2.4,<4",  # Ver.2 or Ver.3: the names of the f orbitals follow the installed MultiPie.
     "xmltodict",
     "fortio",
     "h5py",

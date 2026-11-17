@@ -11,11 +11,6 @@ graphene_pz = {
     "site": {"C": ("[2/3,1/3,0]", "pz")},  # position of C site and its orbital.
     # C-C bonds up to 20th neighbors.
     "bond": [("C", "C", [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20])],
-    "max_neighbor": 20,
-    "search_cell_range": (-5, 6, -5, 6, 0, 1),
     #
     "spinful": False,  # spinless.
-    #
-    "k_point": {"Γ": "[0,0,0]", "K": "[1/3,1/3,0]", "M": "[1/2,0,0]"},
-    "k_path": "Γ-M-K-Γ",
 }

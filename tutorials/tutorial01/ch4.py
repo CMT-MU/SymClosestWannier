@@ -2,6 +2,7 @@
 """
 input file for ch4 molecule.
 """
+
 ch4 = {
     "model": "ch4",  # name of model.
     "group": "Td",  # name of point group.
