@@ -67,6 +67,8 @@ Real-space operators for responses (`AA_R`, `BB_R`, `CC_R`, `SS_R`, `v_R`, …) 
   (an orphan page, as in MultiPie), linked from the English page; `docs/README.md` (the top page) is English only.
   Keep the two languages in sync, including the keyword lists of `format/cwin.md` and `format/hdf5.md`.
   `format/cwout_ja.md` includes the example output of `format/cwout.md`.
+  The sidebar shows "[en, ja]" after the entries listed in `LANGUAGE_PAIRS` of `docs/_static/custom.js` (as in MultiPie);
+  add a new page there.
 - **Errors:** errors caused by inputs or settings raise subclasses of `util/exceptions.py:SymCWError`
   (`SymCWInputError`, `SymCWFileNotFoundError`). The CLI shows these without a traceback.
 - **Input files:** they are opened through `util/input_file.py:open_input`, which also reads compressed files and tar
