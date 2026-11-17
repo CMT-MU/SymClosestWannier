@@ -204,8 +204,8 @@ class CWin(dict):
             # only used for symmetrization.
                 - symmetrization    : symmetrize ? (bool), [False].
                 - mp_outdir         : output files for multipie are written to this directory, relative to the directory of seedname.cwin (str). ["./"].
-                - mp_seedname       : seedname for seedname_model.py, seedname_samb.py and seedname_matrix.py files (str), ["default"].
-                - ket_amn           : ket basis list in the seedname.amn file. If ket_amn == auto, the list of orbitals are set automatically, or it can be set manually. The format of each ket must be same as the "ket" in sambname_model.py file. See sambname["info"]["ket"] in sambname_model.py file for the format (list), [None].
+                - mp_seedname       : name of the MultiPie model (the directory and .pkl file created by mp_create) (str), ["default"].
+                - ket_amn           : ket basis list in the seedname.amn file (list), [None]. Each ket is given as [atom, sublattice, rank, orbital], e.g. [[C,1,1,pz],[C,2,1,pz]], or [[C,1,1,(pz,u)],[C,1,1,(pz,d)]] for the spinful case. If ket_amn = auto, the list of orbitals is set automatically.
                 - irreps            : list of irreps to be considered (str/list), ["all"].
 
             # only used for band dispersion calculation.
