@@ -173,12 +173,7 @@ def fermi_ddt(x, T=0.01, unit="Kelvin"):
 # ==================================================
 def weight_proj(e, cwf_mu_min, cwf_mu_max, cwf_sigma_min, cwf_sigma_max, cwf_delta=10e-12):
     """weight function for projection"""
-    return (
-        fermi(cwf_mu_min - e, cwf_sigma_min, unit="eV")
-        + fermi(e - cwf_mu_max, cwf_sigma_max, unit="eV")
-        - 1.0
-        + cwf_delta
-    )
+    return fermi(cwf_mu_min - e, cwf_sigma_min, unit="eV") + fermi(e - cwf_mu_max, cwf_sigma_max, unit="eV") - 1.0 + cwf_delta
 
 
 # ==================================================
@@ -373,6 +368,28 @@ def get_spreads(cwi):
     return OmegaI, OmegaD, OmegaOD
 
 
+MULTIPIE_V3_ORBITAL = {"f3x": "fx", "f3y": "fy", "f2": "fc", "f1": "fs"}
+"""
+f orbitals renamed in MultiPie Ver.3 (Ver.2 name -> Ver.3 name).
+"""
+
+
+# ==================================================
+def multipie_major_version():
+    """
+    major version of the installed MultiPie (2 when it is not installed).
+
+    Returns:
+        int: major version.
+    """
+    try:
+        from multipie import __version__
+
+        return int(__version__.split(".")[0])
+    except Exception:
+        return 2
+
+
 # ==================================================
 def convert_w90_orbital(l, m, r, s):
     """
@@ -386,6 +403,9 @@ def convert_w90_orbital(l, m, r, s):
 
     Returns:
         str: converted orbital.
+
+    Note:
+        - the names of f orbitals are those of the installed MultiPie (f3x, f3y, f2, f1 in Ver.2; fx, fy, fc, fs in Ver.3).
     """
     orbital = ""
 
@@ -427,6 +447,9 @@ def convert_w90_orbital(l, m, r, s):
 
     if orbital == "":
         raise SymCWInputError(f"invalid orbital projection was given, (l={l},m={m},r={r},s={s}).")
+
+    if multipie_major_version() >= 3:  # f orbitals renamed in MultiPie Ver.3.
+        orbital = MULTIPIE_V3_ORBITAL.get(orbital, orbital)
 
     if s == 1:
         orbital = f"({orbital},u)".replace("'", "")
@@ -618,9 +641,7 @@ def fourier_transform_r_to_k(Or, kpoints, irvec, ndegen=None, atoms_frac=None):
 
 
 # ==================================================
-def fourier_transform_r_to_k_vec(
-    Or_vec, kpoints, irvec, ndegen=None, atoms_frac=None, unit_cell_cart=None, pseudo=False
-):
+def fourier_transform_r_to_k_vec(Or_vec, kpoints, irvec, ndegen=None, atoms_frac=None, unit_cell_cart=None, pseudo=False):
     """
     fourier transformation of an arbitrary operator from real-space representation into k-space representation.
 
@@ -654,9 +675,7 @@ def fourier_transform_r_to_k_vec(
         ktau = np.einsum("ka,ma->km", kpoints, tau, optimize=True)
         eiktau = np.exp(-2 * np.pi * 1j * ktau)
 
-        Ok_true_vec = np.einsum(
-            "R,kR,km,aRmn,kn->akmn", weight, phase_R, eiktau, Or_vec, eiktau.conjugate(), optimize=True
-        )
+        Ok_true_vec = np.einsum("R,kR,km,aRmn,kn->akmn", weight, phase_R, eiktau, Or_vec, eiktau.conjugate(), optimize=True)
     else:
         Ok_true_vec = np.einsum("R,kR,aRmn->akmn", weight, phase_R, Or_vec, optimize=True)
 
@@ -802,9 +821,7 @@ def matrix_dict_r(Or, rpoints, diagonal=False):
     if diagonal:
         Or_dict = {(n1, n2, n3, a, a): Or[r][a] for r, n1, n2, n3 in r_list for a in range(dim_r)}
     else:
-        Or_dict = {
-            (n1, n2, n3, a, b): Or[r][a][b] for r, n1, n2, n3 in r_list for a in range(dim_r) for b in range(dim_c)
-        }
+        Or_dict = {(n1, n2, n3, a, b): Or[r][a][b] for r, n1, n2, n3 in r_list for a in range(dim_r) for b in range(dim_c)}
 
     return Or_dict
 
@@ -832,9 +849,7 @@ def matrix_dict_k(Ok, kpoints, diagonal=False):
     if diagonal:
         Ok_dict = {(k1, k2, k3, a, a): Ok[k][a] for k, k1, k2, k3 in k_list for a in range(dim_r)}
     else:
-        Ok_dict = {
-            (k1, k2, k3, a, b): Ok[k][a][b] for k, k1, k2, k3 in k_list for a in range(dim_r) for b in range(dim_c)
-        }
+        Ok_dict = {(k1, k2, k3, a, b): Ok[k][a][b] for k, k1, k2, k3 in k_list for a in range(dim_r) for b in range(dim_c)}
 
     return Ok_dict
 
@@ -1059,10 +1074,7 @@ def construct_Or(coeff, num_wann, rpoints, matrix_dict):
                 Or_dict[(n1, n2, n3, a, b)] += coeff[zj] * v
 
     Or = np.array(
-        [
-            [[Or_dict.get((n1, n2, n3, a, b), 0.0) for b in range(num_wann)] for a in range(num_wann)]
-            for (n1, n2, n3) in rpoints
-        ]
+        [[[Or_dict.get((n1, n2, n3, a, b), 0.0) for b in range(num_wann)] for a in range(num_wann)] for (n1, n2, n3) in rpoints]
     )
 
     return Or

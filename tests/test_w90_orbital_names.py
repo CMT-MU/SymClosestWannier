@@ -5,6 +5,7 @@ since sort_ket_matrix_dict looks every Wannier function up in the ket list of th
 
 import pytest
 
+from symclosestwannier.util import utility
 from symclosestwannier.util.utility import convert_w90_orbital
 
 util_wannier = pytest.importorskip("multipie.util.util_wannier")
@@ -21,5 +22,11 @@ def test_names_match_multipie(l, s):
 
 
 # ==================================================
-def test_f_names():
-    assert [convert_w90_orbital(3, m, 1, 0) for m in W90_M[3]] == ["faz", "f3x", "f3y", "fbz", "f3", "f2", "f1"]
+@pytest.mark.parametrize(
+    "major, names",
+    [(2, ["faz", "f3x", "f3y", "fbz", "f3", "f2", "f1"]), (3, ["faz", "fx", "fy", "fbz", "f3", "fc", "fs"])],
+)
+def test_f_names(monkeypatch, major, names):
+    # the names of the installed MultiPie: renamed in Ver.3.
+    monkeypatch.setattr(utility, "multipie_major_version", lambda: major)
+    assert [convert_w90_orbital(3, m, 1, 0) for m in W90_M[3]] == names
