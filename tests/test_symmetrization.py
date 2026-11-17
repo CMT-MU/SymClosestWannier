@@ -1,5 +1,5 @@
 """
-symmetrization with the SAMB data of others/examples (MultiPie v2): the symmetrized Hamiltonian
+symmetrization with the SAMB of the model inputs of others/examples, created with the installed MultiPie: the symmetrized Hamiltonian
 seedname_hr_sym.dat.cw has the same eigenvalues as seedname_hr.dat.cw within the truncation of the model.
 """
 
@@ -41,15 +41,16 @@ def eigenvalues(ndegen, irvec, Hr, k):
 
 # ==================================================
 @pytest.mark.parametrize("seedname, atol", [("ch4_sl", 1e-6), ("graphene_pz", 0.03)])
-def test_symmetrized_hamiltonian(make_case, tmp_path, seedname, atol):
+def test_symmetrized_hamiltonian(multipie_model, make_case, tmp_path, seedname, atol):
     """
     ch4_sl: H(0) is fully symmetric, so the eigenvalues agree.
     graphene_pz: the SAMBs cover up to the 20th neighbor, the rest of H(R) is dropped (max. deviation 18 meV).
     """
     extra = f"write_hr = true\nsymmetrization = true\nmp_outdir = ./{seedname}\nmp_seedname = {seedname}\nket_amn = {KET_AMN[seedname]}"
+    mpdir = multipie_model(os.path.join(EXAMPLES_DIR, seedname, f"{seedname}.py"), seedname)
     workdir = make_case(seedname, extra=extra)
     (workdir / seedname).mkdir()
-    shutil.copy(os.path.join(EXAMPLES_DIR, seedname, seedname, f"{seedname}.pkl"), workdir / seedname)
+    shutil.copy(mpdir / seedname / f"{seedname}.pkl", workdir / seedname)
 
     cw_creator(seedname)
 
