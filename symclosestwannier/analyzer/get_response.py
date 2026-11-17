@@ -954,8 +954,10 @@ def _berry_kmesh(cwi):
 # ==================================================
 def berry_get_morb(cwi, operators):
     """
-    Orbital magnetization, in Bohr magnetons per cell [Eq. (1) LVTS12], as wannier90 berry_main:
+    Orbital magnetization, in Bohr magnetons per cell [Eq. (1) LVTS12], as wannier90 berry_main::
+
         LC = (img - E_F imf) fac,  IC = (imh - E_F imf) fac,  M = LC + IC,  fac = -eV_au/bohr^2,
+
     with -2Im[f], -2Im[g], -2Im[h] of berry_get_imfgh_klist averaged over berry_kmesh.
 
     Args:
@@ -1900,9 +1902,8 @@ def berry_get_js_k(cwi, operators, kpoints, E, del_alpha_E, D_alpha_h, U):
 def berry_get_shc_klist(cwi, operators, kpoints, band=False):
     """
     Contribution from a k-point to the spin Hall conductivity on a list
-    of Fermi energies or a list of frequencies or a list of energy bands
-      sigma_{alpha,beta}^{gamma}(k), alpha, beta, gamma = 1, 2, 3
-                                                         (x, y, z, respectively)
+    of Fermi energies or a list of frequencies or a list of energy bands,
+    ``sigma_{alpha,beta}^{gamma}(k)`` with alpha, beta, gamma = 1, 2, 3 (x, y, z, respectively),
     i.e. the Berry curvature-like term of QZYZ18 Eq.(3) & (4).
     The unit is angstrom^2, similar to that of Berry curvature of AHC.
 

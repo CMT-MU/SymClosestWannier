@@ -1,5 +1,5 @@
 
-## Graphene: Closest Wannier tight-binding model
+# Graphene: Closest Wannier tight-binding model
 
 A Japanese version is [here](tutorial02_ja.md).
 
@@ -7,7 +7,7 @@ A Japanese version is [here](tutorial02_ja.md).
     the Wannier interpolated band structure of
     graphene based on the closest Wannier method
     using hydrogenic atomic $p_{z}$ orbitals.
-    For the detail of the theoretical background, see Ref.[@ozaki-prb24].
+    For the detail of the theoretical background, see Ref. {footcite}`ozaki-prb24`.
 
 - Directory: `tutorials/tutorial02/` *Files can be downloaded from
     [here](https://github.com/CMT-MU/SymClosestWannier/tree/main/tutorials/tutorial02)*
@@ -31,19 +31,19 @@ The following files are used for the next step.
     (additional files: seedname.mmn, seedname.spn, seedname.uHu, seedname.uIu, ...)
 
 2. Run `pw2cw` to create Closest Wannier tight-binding model.
-    ```bash title="Terminal"
+    ```bash
     pw2cw graphene
     ```
 
     The disentanglement based on the closest Wannier method can be performed by specifying in `graphene.cwin`
 
-    ```vi title="Input file"
+    ```text
     disentangle = true
     ```
 
     Following the closest Wannier method, the overlap between Bloch states and
     the projections is multiplied by the window function $w(\varepsilon)$
-    (See Eq. (4) in Ref. [@ozaki-prb24]):
+    (See Eq. (4) in Ref. {footcite}`ozaki-prb24`):
 
     $$
     & A_{mn}^{(\bf{k})} = w(\varepsilon_{m\bf{k}}) \langle \psi_{m{\bf k}}|g_{n}\rangle,
@@ -64,7 +64,7 @@ The following files are used for the next step.
     $\mu_{\rm max}$, $\mu_{\rm min}$, $\sigma_{\rm max}$, $\sigma_{\rm min}$, and
     $\delta$ can be specified in `graphene.cwin`
 
-    ```vi title="Input file"
+    ```text
     cwf_mu_max      = 10.0
     cwf_mu_min      = -30
     cwf_sigma_max = 3.0
@@ -74,7 +74,7 @@ The following files are used for the next step.
 
     and
 
-     ```vi title="Input file"
+     ```text
     proj_min          = 0.1
     ```
 
@@ -93,11 +93,11 @@ The following files are used for the next step.
     By properly choosing $\mu_{\rm min}$, $\mu_{\rm max}$,
     $\sigma_{\rm min}$, $\sigma_{\rm max}$, and $\delta$,
     one can obtain the Wannier functions *closest* to the initial guesses in
-    a Hilbert space (see Eqs. (5)~(17) in Ref. [@ozaki-prb24]).
+    a Hilbert space (see Eqs. (5)~(17) in Ref. {footcite}`ozaki-prb24`).
 
     To write `graphene.amn.cw`, the projections with the window function applied, $w(\varepsilon_{m{\bf k}}) \langle \psi_{m{\bf k}}|g_{n}\rangle$ (the bands removed by `proj_min` are set to zero; $w = 1$ without `disentangle`), `write_windowed_amn` can be specified in `graphene.cwin` as
 
-    ```vi title="Input file"
+    ```text
     write_windowed_amn = true
     ```
 
@@ -106,7 +106,7 @@ The following files are used for the next step.
 
     To get the Closest Wannier Hamiltonian matrix elements in real-space, `write_hr` can be specified in `graphene.cwin` as
 
-    ```vi title="Input file"
+    ```text
     write_hr = true
     ```
 
@@ -166,3 +166,8 @@ The following files are used for the next step.
     - [mp_seedname_z.dat.cw](../format/z.md)
     - [mp_seedname_s.dat.cw](../format/s.md)
     - [mp_seedname_n.dat.cw](../format/n.md)
+
+## References
+
+```{footbibliography}
+```

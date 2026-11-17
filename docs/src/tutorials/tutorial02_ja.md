@@ -2,12 +2,12 @@
 orphan: true
 ---
 
-## グラフェン：Closest Wannier 強束縛模型
+# グラフェン：Closest Wannier 強束縛模型
 
 英語版は[こちら](tutorial02.md)です。
 
 - 概要：水素様原子の $p_{z}$ 軌道を使い、Closest Wannier 法でグラフェンの Closest Wannier 模型と、ワニエ補間したバンド構造を計算します。
-    理論的な背景の詳細は、文献 [@ozaki-prb24] を参照してください。
+    理論的な背景の詳細は、文献 {footcite}`ozaki-prb24` を参照してください。
 
 - ディレクトリ：`tutorials/tutorial02/` *ファイルは
     [こちら](https://github.com/CMT-MU/SymClosestWannier/tree/main/tutorials/tutorial02)からダウンロードできます*
@@ -31,17 +31,17 @@ orphan: true
     （追加のファイル：seedname.mmn、seedname.spn、seedname.uHu、seedname.uIu など）
 
 2. `pw2cw` を実行して、Closest Wannier 強束縛模型を作ります。
-    ```bash title="Terminal"
+    ```bash
     pw2cw graphene
     ```
 
     Closest Wannier 法による disentanglement は、`graphene.cwin` で次のように指定して行います。
 
-    ```vi title="Input file"
+    ```text
     disentangle = true
     ```
 
-    Closest Wannier 法では、ブロッホ状態と射影の重なりに、窓関数 $w(\varepsilon)$ を掛けます（文献 [@ozaki-prb24] の式 (4)）。
+    Closest Wannier 法では、ブロッホ状態と射影の重なりに、窓関数 $w(\varepsilon)$ を掛けます（文献 {footcite}`ozaki-prb24` の式 (4)）。
 
     $$
     & A_{mn}^{(\bf{k})} = w(\varepsilon_{m\bf{k}}) \langle \psi_{m{\bf k}}|g_{n}\rangle,
@@ -57,7 +57,7 @@ orphan: true
 
     $\mu_{\rm max}$、$\mu_{\rm min}$、$\sigma_{\rm max}$、$\sigma_{\rm min}$、$\delta$ は、`graphene.cwin` で次のように指定します。
 
-    ```vi title="Input file"
+    ```text
     cwf_mu_max      = 10.0
     cwf_mu_min      = -30
     cwf_sigma_max = 3.0
@@ -67,7 +67,7 @@ orphan: true
 
     また、
 
-     ```vi title="Input file"
+     ```text
     proj_min          = 0.1
     ```
 
@@ -80,11 +80,11 @@ orphan: true
     (\mathbf{A}^{(\bf{k}) \dagger} \mathbf{A}^{(\bf{k})})^{-1/2}$
     で得られ、バンドの disentanglement とワニエ化のための反復計算は要りません。
 
-    $\mu_{\rm min}$、$\mu_{\rm max}$、$\sigma_{\rm min}$、$\sigma_{\rm max}$、$\delta$ を適切に選ぶと、ヒルベルト空間で初期推定に*最も近い*ワニエ関数が得られます（文献 [@ozaki-prb24] の式 (5)〜(17) を参照）。
+    $\mu_{\rm min}$、$\mu_{\rm max}$、$\sigma_{\rm min}$、$\sigma_{\rm max}$、$\delta$ を適切に選ぶと、ヒルベルト空間で初期推定に*最も近い*ワニエ関数が得られます（文献 {footcite}`ozaki-prb24` の式 (5)〜(17) を参照）。
 
     窓関数を適用した射影 $w(\varepsilon_{m{\bf k}}) \langle \psi_{m{\bf k}}|g_{n}\rangle$ を `graphene.amn.cw` に書き出すには（`proj_min` で除いたバンドは 0、`disentangle` しないときは $w = 1$）、`graphene.cwin` で `write_windowed_amn` を次のように指定します。
 
-    ```vi title="Input file"
+    ```text
     write_windowed_amn = true
     ```
 
@@ -93,7 +93,7 @@ orphan: true
 
     実空間の Closest Wannier ハミルトニアンの行列要素を得るには、`graphene.cwin` で `write_hr` を次のように指定します。
 
-    ```vi title="Input file"
+    ```text
     write_hr = true
     ```
 
@@ -152,3 +152,8 @@ orphan: true
     - [mp_seedname_z.dat.cw](../format/z_ja.md)
     - [mp_seedname_s.dat.cw](../format/s_ja.md)
     - [mp_seedname_n.dat.cw](../format/n_ja.md)
+
+## 参考文献
+
+```{footbibliography}
+```

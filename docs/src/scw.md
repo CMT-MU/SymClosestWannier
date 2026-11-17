@@ -1,10 +1,10 @@
-## Symmetry-adapted Closest Wannier model
+# Symmetry-adapted Closest Wannier model
 
 A Japanese version is [here](scw_ja.md).
 
 Following the closest Wannier method, one can obtain
 the closest Wannier functions (CWFs) and the closest Wannier (CW) Hamiltonian $H^{\rm (CW)}$.
-Then, following the symmetry-adapted modeling in Ref. [hk-prb23], we can decompose the CW Hamiltonian as the linear combination of the symmetry-adapted multipole bases (SAMBs) as
+Then, following the symmetry-adapted modeling in Ref. {footcite}`hk-prb23`, we can decompose the CW Hamiltonian as the linear combination of the symmetry-adapted multipole bases (SAMBs) as
 
 $$
 H^{\rm (SymCW)} = \sum_{j} z_{j} \mathbb{Z}_{j}
@@ -16,4 +16,9 @@ $$
 z_{j} = \sum_{\bf{R}} \mathrm{Tr}\left[H^{\rm (CW)}(\bf{R}) \mathbb{Z}_{j}(-\bf{R}) \right]
 $$
 
-For the detail of the theoretical background, see Ref. [ro-prb25].
+For the detail of the theoretical background, see Ref. {footcite}`ro-prb25`.
+
+## References
+
+```{footbibliography}
+```

@@ -4,7 +4,9 @@ Slater-Koster parameters
 
 import sympy as sp
 
-from multipie.multipole.util.spin_orbital_basis import _standard_spinless_basis
+# order of the orbitals (cubic basis of MultiPie Ver.1, which is not in MultiPie any more): the pair of orbitals of
+# sk_parameter is put in this order.
+_CUBIC_BASIS = ["s", "px", "py", "pz", "du", "dv", "dyz", "dzx", "dxy", "fxyz", "fax", "fay", "faz", "fbx", "fby", "fbz"]
 
 # ==================================================
 """
@@ -39,16 +41,16 @@ def sk_parameter(o1, o2, l, m, n):
     """
     Slater-Koster parameters list
 
-    r/|r| = (l,m,n)
+    ``r/|r| = (l,m,n)``
 
     Args:
-        o1 (str): <o1|
-        o2 (str): |o2>
+        o1 (str): ``<o1|``
+        o2 (str): ``|o2>``
         l (sympy/float):
         m (sympy/float):
         n (sympy/float):
     """
-    idx1, idx2 = _standard_spinless_basis["cubic"].index(o1), _standard_spinless_basis["cubic"].index(o2)
+    idx1, idx2 = _CUBIC_BASIS.index(o1), _CUBIC_BASIS.index(o2)
     if idx1 > idx2:
         o1, o2 = o2, o1
 

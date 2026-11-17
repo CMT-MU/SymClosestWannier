@@ -471,7 +471,7 @@ def to_tb_gauge(operators, irvec, unit_cell_cart, atoms_frac, ndegen=None):
     """
     convert real-space operators from the wannier90 convention (no orbital position in the Fourier phase)
     to the tb gauge (orbital positions τ in the phase), so that the Fourier transform with atoms_frac gives
-    the k-space operators of the Bloch basis e^{ik(R+τ_b)} |φ_b(R)>.
+    the k-space operators of the Bloch basis ``e^{ik(R+τ_b)} |φ_b(R)>``.
 
         AA_a(R)      -> AA_a(R) - τ_{n,a} δ_{mn} δ_{R0}
         BB_a(R)      -> BB_a(R) - τ_{n,a} HH(R)
