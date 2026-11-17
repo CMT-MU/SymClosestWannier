@@ -39,6 +39,7 @@
     - mp_outdir         : output files for multipie are written to this directory, relative to the directory of seedname.cwin (str). ["./"].
     - mp_seedname       : name of the MultiPie model (the directory and .pkl file created by mp_create) (str), ["default"].
     - ket_amn           : ket basis list in the seedname.amn file (list), [None]. Each ket is given as [atom, sublattice, rank, orbital], e.g. `[[C,1,1,pz],[C,2,1,pz]]`, or `[[C,1,1,(pz,u)],[C,1,1,(pz,d)]]` for the spinful case. If ket_amn = auto, the list of orbitals is set automatically.
+    - site_offset       : lattice vector t = [n1,n2,n3] from the site of the MultiPie model to the projection centre in seedname.nnkp of each WF (ket_amn order), pos(seedname.nnkp) = pos(model) + t (+ a translation common to all the sites for an explicit ket_amn) (list), set with symmetrization = true.
     - irreps            : irreps of the SAMBs to be considered: "all" (all irreps), "full" (only the identity irrep) or a list of irreps (str/list), ["all"].
     - a                 : lattice parameter (in Ang) used to correct units of k points in reference band data (float, optional), [None] (|a1| is used when None).
     - N1                : number of divisions for high symmetry lines (int, optional), [50].

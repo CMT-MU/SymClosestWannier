@@ -74,6 +74,9 @@ from symclosestwannier.util.utility import (
     samb_decomp_operator,
     O_R_dependence,
     construct_Or,
+    shift_matrix_dict_r,
+    samb_positions,
+    samb_offset,
     construct_Ok,
     spin_zeeman_interaction,
     su2_that_maps_z_to_n,
@@ -657,13 +660,21 @@ class CWModel(dict):
         Hk = np.array(self["Hk"])
         Sk = np.array(self["Sk"])
         nk = np.array(self["nk"])
-        Hr_dict = CWModel.matrix_dict_r(self["Hr"], self._cwi["irvec"])
-        Sr_dict = CWModel.matrix_dict_r(self["Sr"], self._cwi["irvec"])
-        nr_dict = CWModel.matrix_dict_r(self["nr"], self._cwi["irvec"])
-        Hr_nonortho_dict = CWModel.matrix_dict_r(self["Hr_nonortho"], self._cwi["irvec"])
+        # H(R) of wannier90 has the lattice vectors R relative to the projection centres in seedname.nnkp, the SAMBs
+        # relative to the sites of the MultiPie model in the unit cell. Shift R by the lattice vectors between them
+        # (site_offset, ket_amn order), so that the SAMB decomposition does not depend on where the atoms are put.
+        offset = self._cwi.get("site_offset", None)
+
+        def _matrix_dict_r(Or):
+            return shift_matrix_dict_r(CWModel.matrix_dict_r(Or, self._cwi["irvec"]), offset)
+
+        Hr_dict = _matrix_dict_r(self["Hr"])
+        Sr_dict = _matrix_dict_r(self["Sr"])
+        nr_dict = _matrix_dict_r(self["nr"])
+        Hr_nonortho_dict = _matrix_dict_r(self["Hr_nonortho"])
 
         if self._cwi["calc_spin_2d"] and self._cwi["pauli_spn"] is not None:
-            SSr_dict = np.array([CWModel.matrix_dict_r(self["SSr"][a], self._cwi["irvec"]) for a in range(3)])
+            SSr_dict = np.array([_matrix_dict_r(self["SSr"][a]) for a in range(3)])
 
         #####
 
@@ -799,7 +810,7 @@ class CWModel(dict):
                 nr_delta_func = CWModel.fourier_transform_k_to_r(
                     nk_delta_func, self._cwi["kpoints"], self._cwi["irvec"]
                 )
-                nr_delta_dict = CWModel.matrix_dict_r(nr_delta_func, self._cwi["irvec"])
+                nr_delta_dict = _matrix_dict_r(nr_delta_func)
 
                 n_i = CWModel.samb_decomp_operator(nr_delta_dict, combined_samb_matrix, ket_amn, ket_samb)
                 n_list.append(n_i)
@@ -852,26 +863,20 @@ class CWModel(dict):
 
         #####
 
-        site_dict = {
-            k + "_" + str(vi.sublattice): vi.position_primitive.tolist()
-            for k, v in self._cwi._mm["site"]["cell"].items()
-            for vi in v
-            if vi.plus_set == 1
-        }
-        atoms_frac_samb = [
-            site_dict[atom + "_" + str(sl)] for atom, sl, rank, orbital in ket_samb_list(self._cwi._mm)
-        ]
+        # positions and lattice vectors of the symmetrized operators: those of seedname.nnkp (ket_samb order).
+        atoms_frac_samb = samb_positions(self._cwi)
+        offset_samb = samb_offset(self._cwi)
 
         msg = "    - constructing symmetrized TB Hamiltonian ... "
         self._cwm.log(msg, None, end="", file=self._outfile, mode="a")
         self._cwm.set_stamp()
 
-        Sr_sym = CWModel.construct_Or(s, self._cwi["num_wann"], self._cwi["irvec"], combined_samb_matrix)
-        Hr_sym = CWModel.construct_Or(z, self._cwi["num_wann"], self._cwi["irvec"], combined_samb_matrix)
+        Sr_sym = CWModel.construct_Or(s, self._cwi["num_wann"], self._cwi["irvec"], combined_samb_matrix, offset_samb)
+        Hr_sym = CWModel.construct_Or(z, self._cwi["num_wann"], self._cwi["irvec"], combined_samb_matrix, offset_samb)
         Hr_nonortho_sym = CWModel.construct_Or(
-            z_nonortho, self._cwi["num_wann"], self._cwi["irvec"], combined_samb_matrix
+            z_nonortho, self._cwi["num_wann"], self._cwi["irvec"], combined_samb_matrix, offset_samb
         )
-        nr_sym = CWModel.construct_Or(n, self._cwi["num_wann"], self._cwi["irvec"], combined_samb_matrix)
+        nr_sym = CWModel.construct_Or(n, self._cwi["num_wann"], self._cwi["irvec"], combined_samb_matrix, offset_samb)
 
         if self._cwi["tb_gauge"]:
             Sk_sym = CWModel.fourier_transform_r_to_k(
@@ -1185,7 +1190,7 @@ class CWModel(dict):
 
     # ==================================================
     @classmethod
-    def construct_Or(cls, coeff, num_wann, rpoints, matrix_dict):
+    def construct_Or(cls, coeff, num_wann, rpoints, matrix_dict, offset=None):
         """
         arbitrary operator constructed by linear combination of SAMBs in real-space representation.
 
@@ -1194,11 +1199,12 @@ class CWModel(dict):
             num_wann (int): # of WFs.
             rpoints (ndarray, optional): lattice points (crystal coordinate, [[n1,n2,n3]], nj: integer).
             matrix_dict (dict): SAMBs.
+            offset (array-like, optional): lattice vectors t_a of the orbitals (see util.utility.construct_Or).
 
         Returns:
             ndarray: matrix, [#r, dim, dim].
         """
-        return construct_Or(coeff, num_wann, rpoints, matrix_dict)
+        return construct_Or(coeff, num_wann, rpoints, matrix_dict, offset)
 
     # ==================================================
     @classmethod

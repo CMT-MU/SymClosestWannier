@@ -10,6 +10,14 @@ This page fixes the conventions used for the real-space matrices written by `pw2
 - Lattice vectors `unit_cell_cart` are rows $\boldsymbol{a}_1, \boldsymbol{a}_2, \boldsymbol{a}_3$ in Å.
 - The orbital order is the order of `ket_amn` (the projections in `seedname.win`). Symmetrized matrices (`*_sym`) use the SAMB ket order of MultiPie; `sort_ket_matrix` converts between the two.
 
+## Symmetrized matrices and atoms outside the unit cell
+
+MultiPie puts the sites of a model in the unit cell, $[0,1)$, and its SAMBs have the lattice vectors $\boldsymbol{R}$ relative to these positions $\boldsymbol{\tau}^{\rm MP}_a$. The positions $\boldsymbol{\tau}_a$ in `seedname.nnkp` may be anywhere (e.g., the S below the Mo plane of MoS$_2$ at $z<0$). For each orbital, `site_offset` is the lattice vector $\boldsymbol{t}_a$ with $\boldsymbol{\tau}_a = \boldsymbol{\tau}^{\rm MP}_a + \boldsymbol{t}_a$ (the sites are matched modulo the lattice vectors; along a lattice vector whose length differs from that of the model, e.g., the vacuum of a slab, by the distance along it; with an explicit `ket_amn`, the model may also be translated as a whole, $\boldsymbol{\tau}_a = \boldsymbol{\tau}^{\rm MP}_a + \boldsymbol{u} + \boldsymbol{t}_a$, since only $\boldsymbol{t}_b-\boldsymbol{t}_a$ enters). Before the SAMB decomposition, the operators are moved to the lattice vectors of the model,
+$$
+O^{\rm MP}_{ab}(\boldsymbol{R}+\boldsymbol{t}_b-\boldsymbol{t}_a) = O_{ab}(\boldsymbol{R}),
+$$
+and the symmetrized matrices (`*_sym`) are moved back, so that they have the lattice vectors `irvec` of `seedname.nnkp` like the other matrices (with `tb_gauge = true`, their orbital positions are $\boldsymbol{\tau}^{\rm MP}_a + \boldsymbol{t}_a$). The SAMB coefficients do not depend on where the atoms are put.
+
 ## Fourier transform
 
 The Bloch basis is $|\phi_{b}(\boldsymbol{k})\rangle = \sum_{\boldsymbol{R}} e^{i\boldsymbol{k}\cdot\boldsymbol{R}}|\phi_{b}(\boldsymbol{R})\rangle$, with no orbital position in the phase. This is the basis in which the closest Wannier construction gives $H(\boldsymbol{k})$, $S(\boldsymbol{k})$, … from `seedname.amn` and `seedname.eig`, and it is the convention of wannier90 (`_hr.dat`, `_tb.dat`). Then

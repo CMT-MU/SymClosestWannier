@@ -32,7 +32,15 @@ from symclosestwannier.cw.umat import Umat
 from symclosestwannier.cw.spn import Spn
 from symclosestwannier.cw.uHu import UHu
 
-from symclosestwannier.util.utility import wigner_seitz, convert_w90_orbital, grid_path, surface_grid
+from symclosestwannier.util.utility import (
+    wigner_seitz,
+    convert_w90_orbital,
+    grid_path,
+    surface_grid,
+    site_offset,
+    site_offsets,
+    ket_samb_list,
+)
 from symclosestwannier.util.exceptions import SymCWInputError
 
 _class_map = {
@@ -267,33 +275,71 @@ class CWInfo(dict):
             self._mm.load(d["mp_seedname"])
 
             # ket
-            if d["ket_amn"] == "auto":
-                site_dict = {
-                    (k, vi.sublattice): vi.position_primitive.tolist()
-                    for k, v in self._mm["site"]["cell"].items()
-                    for vi in v
-                    if vi.plus_set == 1
-                }
+            molecule = self._mm.group.is_point_group
+            site_dict = {
+                (k, vi.sublattice): vi.position_primitive.tolist()
+                for k, v in self._mm["site"]["cell"].items()
+                for vi in v
+                if vi.plus_set == 1
+            }
+            A = d["unit_cell_cart"]
+            A_model = None if molecule else self._mm["unit_vector_primitive"]
 
-                ket_amn = [] * d["num_wann"]
-                for pos_idx, l, m, r, s in zip(d["nw2n"], d["nw2l"], d["nw2m"], d["nw2r"], d["nw2s"]):
-                    pos = d["atom_pos_r"][pos_idx]
+            def _offset(pos, pos_model):
+                # a molecule has no lattice: the positions must be the same.
+                if molecule:
+                    return [0, 0, 0] if np.allclose(pos, pos_model, rtol=1e-04, atol=1e-04) else None
+                return site_offset(pos, pos_model, A, A_model)
 
-                    name = ""
-                    sl = 0
-                    for (name_, sl_), pos_ in site_dict.items():
-                        if np.allclose(np.array(pos, dtype=float), np.array(pos_, dtype=float), rtol=1e-04, atol=1e-04):
-                            name = name_
-                            sl = sl_
-                    if name == "":
+            positions = [d["atom_pos_r"][pos_idx] for pos_idx in d["nw2n"]]
+
+            auto = d["ket_amn"] == "auto"
+            if auto:
+                ket_amn = []
+                for pos, l, m, r, s in zip(positions, d["nw2l"], d["nw2m"], d["nw2r"], d["nw2s"]):
+                    match = [(name, sl) for (name, sl), pos_ in site_dict.items() if _offset(pos, pos_) is not None]
+                    if len(match) == 0:
                         raise SymCWInputError(
-                            f"the atomic position {pos} in seedname.nnkp is not found in the MultiPie model {d['mp_seedname']}."
+                            f"the atomic position {pos} in seedname.nnkp is not found in the MultiPie model {d['mp_seedname']} "
+                            "(also modulo the lattice vectors)."
                         )
+                    name, sl = match[0]
 
                     orbital = convert_w90_orbital(l, m, r, s)
                     ket_amn.append([name, sl, l, orbital])
 
                 d["ket_amn"] = ket_amn
+
+            # lattice vector from the site of the MultiPie model to the projection centre in seedname.nnkp
+            # (the operators are shifted by them before the SAMB decomposition, see CWModel._sym).
+            ket = d["ket_amn"] if d["ket_amn"] is not None else ket_samb_list(self._mm)
+            if len(ket) != d["num_wann"]:
+                raise SymCWInputError(
+                    f"the number of kets ({len(ket)}) in ket_amn (or the MultiPie model {d['mp_seedname']}) "
+                    f"differs from num_wann = {d['num_wann']}."
+                )
+            for ket_i in ket:
+                if (ket_i[0], ket_i[1]) not in site_dict:
+                    raise SymCWInputError(
+                        f"the site {ket_i[0]}_{ket_i[1]} of ket {ket_i} is not found in the MultiPie model {d['mp_seedname']}."
+                    )
+
+            if molecule:
+                # a molecule has no lattice vectors (the positions of an explicit ket_amn are not checked).
+                site_offset_list = [[0, 0, 0]] * len(ket)
+            else:
+                # the model may be translated as a whole from seedname.nnkp (only for an explicit ket_amn).
+                pos_model = [site_dict[(ket_i[0], ket_i[1])] for ket_i in ket]
+                site_offset_list, idx = site_offsets(positions, pos_model, A, A_model, translation=(not auto))
+                if site_offset_list is None:
+                    raise SymCWInputError(
+                        f"the projection centre {positions[idx]} in seedname.nnkp of ket {ket[idx]} does not match the position "
+                        f"{pos_model[idx]} of {ket[idx][0]}_{ket[idx][1]} in the MultiPie model {d['mp_seedname']} modulo the "
+                        "lattice vectors (and a translation common to all the sites). "
+                        "Check the order of ket_amn and the atomic positions."
+                    )
+
+            d["site_offset"] = site_offset_list
 
         return d
 
