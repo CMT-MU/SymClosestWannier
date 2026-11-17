@@ -69,6 +69,8 @@ Real-space operators for responses (`AA_R`, `BB_R`, `CC_R`, `SS_R`, `v_R`, …) 
   `format/cwout_ja.md` includes the example output of `format/cwout.md`.
   The sidebar shows "[en, ja]" after the entries listed in `LANGUAGE_PAIRS` of `docs/_static/custom.js` (as in MultiPie);
   add a new page there.
+- **Docs build without warnings:** cite with `{footcite}` (keys of `docs/references.bib`) and end the page with a
+  `{footbibliography}`; write code in docstrings as ``` ``...`` ``` (RST), since `|x|` and `*` are markup.
 - **Errors:** errors caused by inputs or settings raise subclasses of `util/exceptions.py:SymCWError`
   (`SymCWInputError`, `SymCWFileNotFoundError`). The CLI shows these without a traceback.
 - **Input files:** they are opened through `util/input_file.py:open_input`, which also reads compressed files and tar

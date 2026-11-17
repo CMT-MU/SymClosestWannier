@@ -87,7 +87,7 @@ def surface_grid(A, V, x1, x2, x3):
         x3 (float): coordinate along the third axis (constant).
 
     Returns:
-        - ndarray: points (x1_i |a2 x a3| / V, x2_j |a3 x a1| / V, x3 |a1 x a2| / V), (N1, N2, 3).
+        - ndarray: points ``(x1_i |a2 x a3| / V, x2_j |a3 x a1| / V, x3 |a1 x a2| / V)``, (N1, N2, 3).
         - ndarray: the same points in fractional coordinates of the reciprocal lattice, (N1 * N2, 3) with j fastest.
     """
     A = np.array(A, dtype=float)
@@ -483,7 +483,7 @@ def wigner_seitz(A, mp_grid, prec=None, *, ws_distance_tol=1.0e-5, ws_search_siz
 
     The R vectors and degeneracies are those of wannier90 (hamiltonian_wigner_seitz): R is kept when it is among the
     nearest of R - T to the origin, with T on the supercell lattice of mp_grid, and ndegen is the number of these nearest
-    R - T. Two squared distances |R - T|^2 are equal when they differ by less than ws_distance_tol^2 (Angstrom^2).
+    R - T. Two squared distances ``|R - T|^2`` are equal when they differ by less than ws_distance_tol^2 (Angstrom^2).
 
     Args:
         A (list/ndarray): real lattice vectors, A = [a1,a2,a3] (list), [[[1,0,0], [0,1,0], [0,0,1]]].
@@ -929,7 +929,7 @@ def site_offsets(pos, pos_model, A=None, A_model=None, translation=True, tol=1e-
     lattice vector, the positions are the same sites if their fractional coordinates differ by u + an integer (within tol),
     or, if the lengths of the lattice vectors differ (e.g., the vacuum of a slab), if their distances along the lattice
     vector differ by u + an integer times the length of the lattice vector of the model (within tol_length [Ang]).
-    Only the differences t_j - t_i enter H(R), so that u does not matter (|u| <= 1/2 and t = 0 for the first site,
+    Only the differences t_j - t_i enter H(R), so that u does not matter (``|u| <= 1/2`` and t = 0 for the first site,
     or u = 0 if not translation).
 
     Args:
@@ -1146,8 +1146,8 @@ def O_R_dependence(Or, A, irvec, ndegen, ef=0.0):
         ndegen (ndarray, optional): number of degeneracy at each R.
         ef (float, optional): fermi energy.
 
-    Returns: (list, list, list, float, float, float)
-            [||R||], [||O(R)||], [max(|O(R)|)], ||O(Rmin)||, ||Rmin||, τ.
+    Returns:
+        (list, list, list, float, float, float): ``[||R||], [||O(R)||], [max(|O(R)|)], ||O(Rmin)||, ||Rmin||, τ``.
     """
     R_2_norm_lst = []
     OR_F_norm_lst = []
@@ -1472,8 +1472,7 @@ def su2_rotation_right(theta, lam, mu, nu):
 # ==================================================
 def su2_that_maps_z_to_n(n):
     """
-    Construct U such that:
-        U * sigma_z * U^dagger = n·sigma
+    Construct U such that ``U * sigma_z * U^dagger = n·sigma``,
     using the axis-angle rotation that rotates z-hat -> n (right-handed).
 
     n : array-like (nx, ny, nz)  (not necessarily normalized)
@@ -1517,7 +1516,7 @@ def change_quantization_axis_operators(dim, n):
 
     Convention:
       U maps sigma_z -> n·sigma via  U sigma_z U^dagger = n·sigma.
-      Basis change (state transformation): |psi>' = U^dagger |psi|
+      Basis change (state transformation): ``|psi>' = U^dagger |psi>``
       Operator in new basis: O' = U^dagger O U
     """
     U2 = su2_that_maps_z_to_n(n)

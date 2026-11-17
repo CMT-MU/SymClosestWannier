@@ -84,6 +84,10 @@ sphinx:
     bibtex_reference_style: label
     bibtex_default_style: "unsrt"
     language: en
+    # footcite of sphinxcontrib-bibtex is rendered correctly, but myst-parser reports its footnotes as undefined.
+    suppress_warnings: ["myst.footnote"]
+    # no transition before the footnotes (with the references of footbibliography, it would be left at the end of a page).
+    myst_footnote_transition: false
     mathjax_path: "https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"
     mathjax3_config:
       loader:

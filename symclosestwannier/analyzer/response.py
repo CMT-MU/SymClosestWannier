@@ -434,7 +434,7 @@ class Response(dict):
     # ==================================================
     def write_gyro_K(self):
         """
-        write *.dat.
+        write ``*.dat``.
         """
 
         def write(f_out_name_tmp, units_tmp, comment_tmp, spin=False):

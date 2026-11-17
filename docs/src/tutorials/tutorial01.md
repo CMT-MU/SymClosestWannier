@@ -1,5 +1,5 @@
 
-## CH4: Closest Wannier tight-binding model
+# CH4: Closest Wannier tight-binding model
 
 A Japanese version is [here](tutorial01_ja.md).
 
@@ -7,7 +7,7 @@ A Japanese version is [here](tutorial01_ja.md).
     the Wannier interpolated band structure of
     ${\rm CH}_{4}$ molecule based on the closest Wannier method
     using hydrogenic atomic $s$ and $p$ orbitals.
-    For the detail of the theoretical background, see Ref.[@ozaki-prb24].
+    For the detail of the theoretical background, see Ref. {footcite}`ozaki-prb24`.
 
 - Directory: `tutorials/tutorial01/` *Files can be downloaded from
     [here](https://github.com/CMT-MU/SymClosestWannier/tree/main/tutorials/tutorial01)*
@@ -31,19 +31,19 @@ The following files are used for the next step.
 
 2. Run `pw2cw` to create Closest Wannier tight-binding model.
 
-    ```bash title="Terminal"
+    ```bash
     pw2cw ch4
     ```
 
     Since ${\rm CH}_{4}$ is a molecule, the disentanglement is not necessary, `disentangle` can be specified in `ch4.cwin` as
 
-    ```vi title="Input file"
+    ```text
     disentangle = false
     ```
 
     To get the Closest Wannier Hamiltonian matrix elements in real-space, `write_hr` can be specified in `ch4.cwin` as
 
-    ```vi title="Input file"
+    ```text
     write_hr = true
     ```
     
@@ -68,4 +68,7 @@ The following files are used for the next step.
     - [mp_seedname_s.dat.cw](../format/s.md)
     - [mp_seedname_n.dat.cw](../format/n.md)
 
+## References
 
+```{footbibliography}
+```

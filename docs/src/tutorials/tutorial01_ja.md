@@ -2,12 +2,12 @@
 orphan: true
 ---
 
-## CH4：Closest Wannier 強束縛模型
+# CH4：Closest Wannier 強束縛模型
 
 英語版は[こちら](tutorial01.md)です。
 
 - 概要：水素様原子の $s$ 軌道と $p$ 軌道を使い、Closest Wannier 法で ${\rm CH}_{4}$ 分子の Closest Wannier 模型と、ワニエ補間したバンド構造を計算します。
-    理論的な背景の詳細は、文献 [@ozaki-prb24] を参照してください。
+    理論的な背景の詳細は、文献 {footcite}`ozaki-prb24` を参照してください。
 
 - ディレクトリ：`tutorials/tutorial01/` *ファイルは
     [こちら](https://github.com/CMT-MU/SymClosestWannier/tree/main/tutorials/tutorial01)からダウンロードできます*
@@ -31,19 +31,19 @@ orphan: true
 
 2. `pw2cw` を実行して、Closest Wannier 強束縛模型を作ります。
 
-    ```bash title="Terminal"
+    ```bash
     pw2cw ch4
     ```
 
     ${\rm CH}_{4}$ は分子なので disentanglement は必要なく、`ch4.cwin` で `disentangle` を次のように指定できます。
 
-    ```vi title="Input file"
+    ```text
     disentangle = false
     ```
 
     実空間の Closest Wannier ハミルトニアンの行列要素を得るには、`ch4.cwin` で `write_hr` を次のように指定します。
 
-    ```vi title="Input file"
+    ```text
     write_hr = true
     ```
     
@@ -67,3 +67,8 @@ orphan: true
     - [mp_seedname_z.dat.cw](../format/z_ja.md)
     - [mp_seedname_s.dat.cw](../format/s_ja.md)
     - [mp_seedname_n.dat.cw](../format/n_ja.md)
+
+## 参考文献
+
+```{footbibliography}
+```

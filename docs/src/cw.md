@@ -1,4 +1,4 @@
-## Closest Wannier method
+# Closest Wannier method
 
 A Japanese version is [here](cw_ja.md).
 
@@ -6,11 +6,11 @@ Following the closest Wannier method, one can obtain
 the closest Wannier functions (CWFs)
 to the initial guesses in a Hilbert space without iterative calculations,
 significantly reducing computational costs.
-For the detail of the theoretical background, see Ref. [ozaki-prb24].
+For the detail of the theoretical background, see Ref. {footcite}`ozaki-prb24`.
 
 A main idea of the closest Wannier method is to
 introduce a window function $w(\varepsilon)$ (See Eq. (4) in
-Ref. [ozaki-prb24]) for the projection of the Bloch states
+Ref. {footcite}`ozaki-prb24`) for the projection of the Bloch states
     $|\psi_{n\bf{k}}\rangle$ onto trial localised orbitals
     $|g_{n}\rangle$
 
@@ -43,8 +43,14 @@ and wannierisation (`dis_num_iter = 0` and `num_iter = 0`).
 By properly choosing $\mu_{\rm min}$, $\mu_{\rm max}$,
 $\sigma_{\rm min}$, $\sigma_{\rm max}$, and $\delta$,
 one can obtain the Wannier functions _closest_ to the initial guesses in
-a Hilbert space (see Eqs. (5)~(17) in Ref. [ozaki-prb24]).
+a Hilbert space (see Eqs. (5)~(17) in Ref. {footcite}`ozaki-prb24`).
 
-!!! note
-    It's worth noting that the CWFs can be treated as initial guesses to generate
-    a set of MLWFs by specifying parameters for disentanglement and wannierisation.
+```{note}
+The CWFs can be treated as initial guesses to generate
+a set of MLWFs by specifying parameters for disentanglement and wannierisation.
+```
+
+## References
+
+```{footbibliography}
+```
