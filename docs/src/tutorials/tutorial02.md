@@ -1,6 +1,8 @@
 
 ## Graphene: Closest Wannier tight-binding model
 
+A Japanese version is [here](tutorial02_ja.md).
+
 - Outline: Compute the closest Wannier model and
     the Wannier interpolated band structure of
     graphene based on the closest Wannier method

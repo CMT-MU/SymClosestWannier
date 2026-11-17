@@ -1,4 +1,7 @@
 # seedname_hr.dat.cw
+
+A Japanese version is [here](hr_ja.md).
+
 - Hamiltonian matrix elements in real-space
 - n1 n2 n3 a b re(H_{ab}(R)) im(H_{ab}(R))
     - $H_{ab}(R)$ : $\langle \phi_{a}(0)|H|\phi_{b}(R)\rangle$.
