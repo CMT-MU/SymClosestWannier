@@ -1,6 +1,8 @@
 
 ## CH4: Closest Wannier tight-binding model
 
+A Japanese version is [here](tutorial01_ja.md).
+
 - Outline: Compute the closest Wannier model and
     the Wannier interpolated band structure of
     ${\rm CH}_{4}$ molecule based on the closest Wannier method

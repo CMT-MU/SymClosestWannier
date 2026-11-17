@@ -1,4 +1,7 @@
 # seedname.cwin [default]
+
+A Japanese version is [here](cwin_ja.md).
+
 - For execution use: pw2cw seedname
   - SEEDNAME is required: the code reads its input from seedname.cwin.
       One can also equivalently provide the string seedname.cwin instead of seedname.

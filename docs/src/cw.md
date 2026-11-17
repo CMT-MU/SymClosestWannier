@@ -1,5 +1,7 @@
 ## Closest Wannier method
 
+A Japanese version is [here](cw_ja.md).
+
 Following the closest Wannier method, one can obtain
 the closest Wannier functions (CWFs)
 to the initial guesses in a Hilbert space without iterative calculations,

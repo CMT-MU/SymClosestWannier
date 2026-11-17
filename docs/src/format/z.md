@@ -1,4 +1,7 @@
 # seedname_z.dat.cw
+
+A Japanese version is [here](z_ja.md).
+
 - The expansion coefficients of the Hamiltonian matrix (orthogonal) H expressed by a linear combination of SAMBs
 - $j z_j$ TagMultipole coefficient
     - $H(R) \sim \sum_{j} z_j Z_j(R)$.

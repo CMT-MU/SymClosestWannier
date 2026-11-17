@@ -2,7 +2,7 @@
 input keywords of seedname.cwin must be documented consistently.
 
 CWin._default() defines the accepted keywords; they are also listed in
-util/header.py (shown by `pw2cw -i`), the CWin.read docstring and docs/src/format/cwin.md.
+util/header.py (shown by `pw2cw -i`), the CWin.read docstring and docs/src/format/cwin.md (and cwin_ja.md).
 """
 
 import ast
@@ -15,6 +15,13 @@ from symclosestwannier.cw.cwin import CWin
 from symclosestwannier.util.header import cwin_info
 
 from conftest import TOPDIR
+
+
+# ==================================================
+def doc(name):
+    with open(os.path.join(TOPDIR, "docs", "src", "format", name), encoding="utf-8") as fp:
+        return fp.read()
+
 
 KEYS = set(CWin._default().keys())
 
@@ -30,7 +37,8 @@ def listed_keys(text):
     [
         ("util/header.py (pw2cw -i)", set(cwin_info.keys())),
         ("CWin.read docstring", listed_keys(CWin.read.__doc__)),
-        ("docs/src/format/cwin.md", listed_keys(open(os.path.join(TOPDIR, "docs", "src", "format", "cwin.md")).read())),
+        ("docs/src/format/cwin.md", listed_keys(doc("cwin.md"))),
+        ("docs/src/format/cwin_ja.md", listed_keys(doc("cwin_ja.md"))),
     ],
 )
 def test_keys_are_documented(name, keys):
@@ -87,7 +95,8 @@ def described(text):
     [
         ("util/header.py (pw2cw -i)", cwin_info),
         ("CWin.read docstring", described(CWin.read.__doc__)),
-        ("docs/src/format/cwin.md", described(open(os.path.join(TOPDIR, "docs", "src", "format", "cwin.md")).read())),
+        ("docs/src/format/cwin.md", described(doc("cwin.md"))),
+        ("docs/src/format/cwin_ja.md", described(doc("cwin_ja.md"))),
     ],
 )
 def test_documented_defaults(name, descriptions):

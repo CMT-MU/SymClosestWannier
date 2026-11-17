@@ -1,5 +1,7 @@
 # Phase conventions of real-space operators
 
+A Japanese version is [here](convention_ja.md).
+
 This page fixes the conventions used for the real-space matrices written by `pw2cw` (`seedname_hr.dat.cw`, `seedname_tb.dat.cw`, …) and stored in `seedname.hdf5`, and states what `tb_gauge` changes.
 
 ## Real-space matrices
