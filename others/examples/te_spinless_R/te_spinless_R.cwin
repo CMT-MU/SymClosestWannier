@@ -19,7 +19,7 @@ N1 = 50
 
 # symmetrization
 symmetrization = true
-mp_outdir      = 'sym'
-mp_seedname    = te_spinless_R_200
-ket_amn        = [pz@Te_1,px@Te_1,py@Te_1,pz@Te_2,px@Te_2,py@Te_2,pz@Te_3,px@Te_3,py@Te_3]
+mp_outdir      = './te_spinless_R'
+mp_seedname    = te_spinless_R
+ket_amn        = auto
 irreps         = full ! full/all/list

@@ -920,6 +920,147 @@ def ket_samb_list(mm):
 
 
 # ==================================================
+def site_offsets(pos, pos_model, A=None, A_model=None, translation=True, tol=1e-4, tol_length=1e-3):
+    """
+    lattice vectors t_i from the positions of sites in a MultiPie model to the positions of the same sites in seedname.nnkp,
+    pos_i = pos_model_i + u + t_i, with a translation u common to all the sites.
+
+    MultiPie puts the sites in the unit cell, [0,1), while the positions in seedname.nnkp may be anywhere. Along each
+    lattice vector, the positions are the same sites if their fractional coordinates differ by u + an integer (within tol),
+    or, if the lengths of the lattice vectors differ (e.g., the vacuum of a slab), if their distances along the lattice
+    vector differ by u + an integer times the length of the lattice vector of the model (within tol_length [Ang]).
+    Only the differences t_j - t_i enter H(R), so that u does not matter (|u| <= 1/2 and t = 0 for the first site,
+    or u = 0 if not translation).
+
+    Args:
+        pos (array-like): positions in seedname.nnkp (fractional coordinates of A), (n, 3).
+        pos_model (array-like): positions in the MultiPie model (fractional coordinates of A_model), (n, 3).
+        A (array-like, optional): lattice vectors of seedname.win, [a1,a2,a3] [Ang].
+        A_model (array-like, optional): lattice vectors of the MultiPie model, [a1,a2,a3] [Ang].
+        translation (bool, optional): allow a common translation u ?
+        tol (float, optional): tolerance of the fractional coordinates.
+        tol_length (float, optional): tolerance of the distances along the lattice vectors [Ang].
+
+    Returns:
+        tuple: (t, None) with t = [[n1,n2,n3]] (integers), or (None, index of the first site that does not match).
+    """
+    pos = np.array(pos, dtype=float).reshape(-1, 3)
+    pos_model = np.array(pos_model, dtype=float).reshape(-1, 3)
+
+    t = np.zeros(pos.shape, dtype=int)
+    for i in range(3):
+        modes = [(pos[:, i] - pos_model[:, i], tol)]
+        if A is not None and A_model is not None:
+            L = np.linalg.norm(np.array(A, dtype=float)[i])
+            L_model = np.linalg.norm(np.array(A_model, dtype=float)[i])
+            modes.append((pos[:, i] * L / L_model - pos_model[:, i], tol_length / L_model))
+
+        for d, tol_i in modes:
+            u = d[0] - np.round(d[0]) if translation else 0.0
+            n = np.round(d - u)
+            ok = np.abs(d - u - n) < tol_i
+            if ok.all():
+                t[:, i] = n.astype(int)
+                break
+        else:
+            return None, int(np.argmin(ok))
+
+    return t.tolist(), None
+
+
+# ==================================================
+def site_offset(pos, pos_model, A=None, A_model=None, tol=1e-4, tol_length=1e-3):
+    """
+    lattice vector t from the position of a site in a MultiPie model to the position of the same site in seedname.nnkp,
+    pos = pos_model + t (see site_offsets, without translation).
+
+    Args:
+        pos (array-like): position in seedname.nnkp (fractional coordinates of A).
+        pos_model (array-like): position in the MultiPie model (fractional coordinates of A_model).
+        A (array-like, optional): lattice vectors of seedname.win, [a1,a2,a3] [Ang].
+        A_model (array-like, optional): lattice vectors of the MultiPie model, [a1,a2,a3] [Ang].
+        tol (float, optional): tolerance of the fractional coordinates.
+        tol_length (float, optional): tolerance of the distances along the lattice vectors [Ang].
+
+    Returns:
+        list or None: t = [n1,n2,n3] (integers), or None if the positions are not the same site.
+    """
+    t, _ = site_offsets([pos], [pos_model], A, A_model, translation=False, tol=tol, tol_length=tol_length)
+
+    return None if t is None else t[0]
+
+
+# ==================================================
+def shift_matrix_dict_r(Or_dict, offset):
+    """
+    change the lattice vectors of an operator, O_{ab}(R) = <φ_{a}(0)|O|φ_{b}(R)>, from the positions τ_a + t_a
+    (seedname.nnkp) to the positions τ_a (MultiPie model): O'_{ab}(R + t_b - t_a) = O_{ab}(R).
+
+    Args:
+        Or_dict (dict): dictionary form of an operator, {(n1,n2,n3,a,b): O_{ab}(R)}.
+        offset (array-like or None): lattice vector t_a of each orbital, [[n1,n2,n3]].
+
+    Returns:
+        dict: dictionary form of the operator with the lattice vectors of the MultiPie model.
+    """
+    if offset is None or not np.any(offset):
+        return Or_dict
+
+    t = [tuple(int(x) for x in ta) for ta in offset]
+
+    return {
+        (n1 + t[b][0] - t[a][0], n2 + t[b][1] - t[a][1], n3 + t[b][2] - t[a][2], a, b): v
+        for (n1, n2, n3, a, b), v in Or_dict.items()
+    }
+
+
+# ==================================================
+def samb_positions(cwi):
+    """
+    positions of the orbitals of the SAMBs: the sites of the MultiPie model shifted by the lattice vectors to the
+    projection centres in seedname.nnkp (site_offset).
+
+    Args:
+        cwi (CWInfo): CWInfo with the MultiPie model.
+
+    Returns:
+        list: positions in fractional coordinates, (num_wann, 3) (ket_samb order).
+    """
+    mm = cwi._mm
+    site_dict = {
+        (k, vi.sublattice): np.array(vi.position_primitive, dtype=float)
+        for k, v in mm["site"]["cell"].items()
+        for vi in v
+        if vi.plus_set == 1
+    }
+    ket_samb = ket_samb_list(mm)
+    offset = samb_offset(cwi)
+
+    return [(site_dict[(atom, sl)] + offset[j]).tolist() for j, (atom, sl, rank, orbital) in enumerate(ket_samb)]
+
+
+# ==================================================
+def samb_offset(cwi):
+    """
+    lattice vectors t from the sites of the MultiPie model to the projection centres in seedname.nnkp (site_offset)
+    in the ket order of the SAMBs.
+
+    Args:
+        cwi (CWInfo): CWInfo with the MultiPie model.
+
+    Returns:
+        ndarray: t, (num_wann, 3) (ket_samb order).
+    """
+    ket_samb = ket_samb_list(cwi._mm)
+    offset = cwi.get("site_offset", None)
+    if offset is None:
+        return np.zeros((len(ket_samb), 3), dtype=int)
+
+    ket_amn = cwi.get("ket_amn", None) or ket_samb
+    return np.array([offset[ket_amn.index(o)] for o in ket_samb], dtype=int)
+
+
+# ==================================================
 def sort_ket_matrix_dict(Or_dict, ket, ket_samb):
     """
     sort ket to align with the SAMB definition (ket_samb).
@@ -1054,7 +1195,7 @@ def O_R_dependence(Or, A, irvec, ndegen, ef=0.0):
 
 
 # ==================================================
-def construct_Or(coeff, num_wann, rpoints, matrix_dict):
+def construct_Or(coeff, num_wann, rpoints, matrix_dict, offset=None):
     """
     arbitrary operator constructed by linear combination of SAMBs in real-space representation.
 
@@ -1063,19 +1204,32 @@ def construct_Or(coeff, num_wann, rpoints, matrix_dict):
         num_wann (int): # of WFs.
         rpoints (ndarray, optional): lattice points (crystal coordinate, [[n1,n2,n3]], nj: integer).
         matrix_dict (dict): SAMBs.
+        offset (array-like, optional): lattice vector t_a of each orbital from the site of the MultiPie model to the
+            position of the returned operator, [[n1,n2,n3]] (ket order of the SAMBs). O_{ab}(R) is taken from the
+            SAMBs at R + t_b - t_a (see shift_matrix_dict_r).
 
     Returns:
         ndarray: matrix, [#r, dim, dim].
     """
-    Or_dict = {(n1, n2, n3, a, b): 0.0 for (n1, n2, n3) in rpoints for a in range(num_wann) for b in range(num_wann)}
-    for zj, d in matrix_dict.items():
-        for (n1, n2, n3, a, b), v in d.items():
-            if (n1, n2, n3, a, b) in Or_dict:
-                Or_dict[(n1, n2, n3, a, b)] += coeff[zj] * v
+    if offset is None:
+        offset = np.zeros((num_wann, 3), dtype=int)
+    t = [tuple(int(x) for x in ta) for ta in offset]
 
-    Or = np.array(
-        [[[Or_dict.get((n1, n2, n3, a, b), 0.0) for b in range(num_wann)] for a in range(num_wann)] for (n1, n2, n3) in rpoints]
-    )
+    keys = [
+        [
+            [(n1 + t[b][0] - t[a][0], n2 + t[b][1] - t[a][1], n3 + t[b][2] - t[a][2], a, b) for b in range(num_wann)]
+            for a in range(num_wann)
+        ]
+        for (n1, n2, n3) in rpoints
+    ]
+
+    Or_dict = {k: 0.0 for kr in keys for ka in kr for k in ka}
+    for zj, d in matrix_dict.items():
+        for k, v in d.items():
+            if k in Or_dict:
+                Or_dict[k] += coeff[zj] * v
+
+    Or = np.array([[[Or_dict[k] for k in ka] for ka in kr] for kr in keys])
 
     return Or
 
