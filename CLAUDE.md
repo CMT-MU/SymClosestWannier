@@ -61,8 +61,12 @@ Real-space operators for responses (`AA_R`, `BB_R`, `CC_R`, `SS_R`, `v_R`, …) 
 - **Orbital order:** plain matrices use the `ket_amn` order (the projections in `.win`). `*_sym` matrices use MultiPie's
   SAMB ket order. Convert between the two with `util/utility.py:sort_ket_matrix`.
 - **Input keywords:** `CWin._default()` in `cw/cwin.py` defines the accepted keys. A new key must also be added to
-  `util/header.py` (`cwin_info`, shown by `pw2cw -i`), to the `CWin.read` docstring, and to `docs/src/format/cwin.md`.
-  `tests/test_cwin_keys.py` enforces this.
+  `util/header.py` (`cwin_info`, shown by `pw2cw -i`), to the `CWin.read` docstring, and to `docs/src/format/cwin.md`
+  (and `cwin_ja.md`). `tests/test_cwin_keys.py` enforces this.
+- **Docs in English and Japanese:** every page of `docs/src` except the API pages has a Japanese version `<page>_ja.md`
+  (an orphan page, as in MultiPie), linked from the English page; `docs/README.md` (the top page) is English only.
+  Keep the two languages in sync, including the keyword lists of `format/cwin.md` and `format/hdf5.md`.
+  `format/cwout_ja.md` includes the example output of `format/cwout.md`.
 - **Errors:** errors caused by inputs or settings raise subclasses of `util/exceptions.py:SymCWError`
   (`SymCWInputError`, `SymCWFileNotFoundError`). The CLI shows these without a traceback.
 - **Input files:** they are opened through `util/input_file.py:open_input`, which also reads compressed files and tar

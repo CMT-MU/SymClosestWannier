@@ -1,4 +1,7 @@
 # seedname_s.dat.cw
+
+A Japanese version is [here](s_ja.md).
+
 - The expansion coefficients of the Overlap matrix expressed by a linear combination of SAMBs
 - $j z_j$ TagMultipole coefficient
     - $S(R) \sim \sum_{j} z_j Z_j(R)$.

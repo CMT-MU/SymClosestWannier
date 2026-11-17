@@ -1,0 +1,168 @@
+---
+orphan: true
+---
+
+# seedname.hdf5 [既定値]
+
+英語版は[こちら](hdf5.md)です。
+
+- seedname.hdf5 は `write_info_data = true` のときに書き出します。info、data、samb_info の 3 つのグループがあります。
+
+# info [既定値]
+- seedname.cwin のキーワード：
+    - restart           : 再開の位置 'cw'/'w90' (str), ["cw"].
+    - seedname          : seedname (str), ["cwannier"].
+    - outdir            : 出力ファイルを書き出すディレクトリ。seedname.cwin のディレクトリからの相対パス (str), ["./"].
+    - disentangle       : バンドを disentangle するか (bool), [False].
+    - proj_min          : 射影度の最小値, [0.0].
+    - cwf_mu_max        : エネルギー窓の上端 (float), [None].
+    - cwf_mu_min        : エネルギー窓の下端 (float), [None].
+    - cwf_sigma_max     : エネルギー窓の上端のぼかしの温度 (float), [1.0].
+    - cwf_sigma_min     : エネルギー窓の下端のぼかしの温度 (float), [0.0].
+    - cwf_delta         : 窓関数に加える基準の重み。エネルギー窓の外の状態はこの重みを持ちます (0 <= cwf_delta < 1)。seedname.cwout が射影の階数落ちを警告したときは大きくしてください（例：1e-3） (float), [0.0].
+    - svd               : 特異値分解を使うか。使わないときはレーヴディンの直交化を使います (bool), [False].
+    - verbose           : 計算の情報を詳しく表示するか (bool, optional), [False].
+    - parallel          : 並列のコードを使うか (bool), [False].
+    - formatter         : black で整形するか (bool), [False].
+    - calc_spreads      : 広がりを計算するか (bool), [False].
+    - write_info_data   : 情報とデータを seedname.hdf5（hdf5 形式）に書き出すか (bool), [False].
+    - transl_inv        : バンド対角の位置の行列要素に、Marzari&Vanderbilt PRB 56, 12847 (1997) の式 (31) を使うか (bool), [False].
+    - use_degen_pert    : バンドが縮退していてバンドの微分が要るとき、縮退のある摂動論を使うか (bool), [False].
+    - degen_thr         : 縮退したバンドを計算から除くしきい値, [0.0001].
+    - tb_gauge          : tb ゲージを使うか (bool), [False].
+    - tb_position       : seedname_r.dat.cw と seedname_tb.dat.cw の位置演算子を、射影の中心 r_ab(R) = tau_a delta_ab delta_R0 で近似するか（このとき seedname.mmn は不要） (bool), [False].
+    - write_hr          : seedname_hr.dat.cw、seedname_hr_R_dep.dat.cw、seedname_nr.dat.cw、seedname_nr_R_dep.dat.cw を書き出すか (bool), [False].
+    - write_sr          : seedname_sr.dat.cw と seedname_sr_R_dep.dat.cw を書き出すか (bool), [False].
+    - write_u_matrices  : seedname_u.mat.cw と seedname_u_dis.mat.cw を書き出すか（restart = w90 では書き出さない） (bool), [False].
+    - write_rmn         : seedname_r.dat.cw を書き出すか（tb_position = true でなければ seedname.mmn が必要） (bool), [False].
+    - write_vmn         : seedname_v.dat.cw を書き出すか (bool), [False].
+    - write_tb          : seedname_tb.dat.cw（wannier90 の形式）を書き出すか（tb_position = true でなければ seedname.mmn が必要。tb_gauge = true では書き出さない） (bool), [False].
+    - write_eig         : seedname.eig.cw を書き出すか (bool), [False].
+    - write_amn         : write_windowed_amn と同じ。互換性のために残しています (bool), [False].
+    - write_windowed_amn : seedname.amn.cw を書き出すか。窓関数 w と proj_min を適用した射影 w(e_mk) <psi_mk|g_n> で、直交化はしません（disentangle しないときは w = 1。restart = w90 では入力の射影） (bool), [False].
+    - write_mmn         : seedname.mmn.cw を書き出すか (bool), [False].
+    - write_spn         : スピン演算子を seedname.s.cw に書き出すか (bool), [False].
+    - symmetrization    : 対称化するか (bool), [False].
+    - mp_outdir         : multipie の出力ファイルを書き出すディレクトリ。seedname.cwin のディレクトリからの相対パス (str). ["./"].
+    - mp_seedname       : MultiPie の模型の名前（mp_create が作るディレクトリと .pkl ファイル） (str), ["default"].
+    - ket_amn           : seedname.amn の ket の基底のリスト (list), [None]. 各 ket は [atom, sublattice, rank, orbital] で与えます。例：`[[C,1,1,pz],[C,2,1,pz]]`。スピンを含むときは `[[C,1,1,(pz,u)],[C,1,1,(pz,d)]]`。ket_amn = auto なら、軌道のリストを自動で決めます。
+    - site_offset       : 各ワニエ関数（ket_amn の順）について、MultiPie の模型のサイトから seedname.nnkp の射影の中心への格子ベクトル t = [n1,n2,n3]。pos(seedname.nnkp) = pos(model) + t（ket_amn を明示したときは、全サイトに共通の平行移動も加わります） (list), symmetrization = true のときに設定。
+    - irreps            : 考える SAMB の既約表現："all"（すべての既約表現）、"full"（恒等表現だけ）、または既約表現のリスト (str/list), ["all"].
+    - a                 : 参照のバンドのデータの k 点の単位を直す格子定数（Å） (float, optional), [None]（None のときは |a1|）.
+    - N1                : 高対称線の分割数 (int, optional), [50].
+    - calc_spin_2d      : *.spn で与えるスピン演算子の期待値を出力ファイルに加えるか (bool). [False].
+    - calc_dos          : 状態密度を計算するか (bool), [False].
+    - dos_kmesh         : 状態密度の計算の k 点の Monkhorst-Pack 格子の大きさ。空白で区切った整数で与えます。例：`dos_kmesh = 10 10 10` (list), [[1, 1, 1]].
+    - dos_num_fermi     : フェルミエネルギーの数 (int), [50].
+    - dos_smr_en_width  : 状態密度のぼかし関数のエネルギー幅（単位は [eV]） (float), [0.001].
+    - dos_emax          : 計算するエネルギーの最大値 (float), [None].
+    - dos_emin          : 計算するエネルギーの最小値 (float), [None].
+    - calc_cohp         : COHP を計算するか (bool), [False].
+    - calc_cohp_samb_decomp : COHP を SAMB で分解するか (bool), [False].
+    - cohp_bond_length_max : 計算するボンドの長さの最大値（Å） (float), [6.0].
+    - cohp_bond_length_min : 計算するボンドの長さの最小値（Å） (float), [0.0].
+    - cohp_head_atom    : 計算するボンドの先の原子 (str), [None].
+    - cohp_head_atom_idx : 計算するボンドの先の原子の番号 (int), [None].
+    - cohp_tail_atom    : 計算するボンドの元の原子 (str), [None].
+    - cohp_tail_atom_idx : 計算するボンドの元の原子の番号 (int), [None].
+    - cohp_kmesh        : COHP の計算の k 点の Monkhorst-Pack 格子の大きさ。空白で区切った整数で与えます。例：`cohp_kmesh = 10 10 10` (list), [[1, 1, 1]].
+    - cohp_num_fermi    : フェルミエネルギーの数 (int), [50].
+    - cohp_smr_en_width : COHP のぼかし関数のエネルギー幅（単位は [eV]） (float), [0.001].
+    - cohp_emax         : 計算するエネルギーの最大値 (float), [None].
+    - cohp_emin         : 計算するエネルギーの最小値 (float), [None].
+    - zeeman_interaction : ゼーマン相互作用を考えるか (bool), [False].
+    - magnetic_field    : 磁場の強さ (float), [0.0].
+    - magnetic_field_theta : 磁場の z 軸からの角度 (float), [0.0].
+    - magnetic_field_phi : 磁場の x 軸からの角度 (float), [0.0].
+    - g_factor          : スピンの g 因子 (float), [2.0].
+    - fermi_surface     : フェルミ面を計算するか (bool), [False].
+    - fermi_surface_kmesh : 2 次元の k メッシュ [[k1_min, k1_max, N1], [k2_min, k2_max, N2]]（結晶座標）。空白で区切った 6 つの整数 k1_min k1_max N1 k2_min k2_max N2 で与えます。例：`fermi_surface_kmesh = -1 1 10 -1 1 10` (list), [ [[-1, 1, 10], [-1, 1, 10]] ].
+    - fermi_surface_view : k3 の方向。空白で区切った整数で与えます。例：`fermi_surface_view = 0 0 1` (list), [ [0, 0, 1] ].
+    - fermi_surface_const : k3 軸の一定値 [0.0].
+    - lindhard          : Lindhard 関数を計算するか (bool), [False].
+    - lindhard_freq     : Lindhard 関数を計算する振動数（単位は [eV]） (float), [0.0].
+    - lindhard_smr_fixed_en_width : 大域変数 smr_fixed_en_width を上書きします (float), [0.01].
+    - lindhard_kmesh    : Lindhard 関数の k 点の Monkhorst-Pack 格子の大きさ。空白で区切った整数で与えます。例：`lindhard_kmesh = 10 10 10` (list), [[1, 1, 1]].
+    - lindhard_surface  : 2 次元の q 平面で Lindhard 関数を計算するか (bool), [False].
+    - lindhard_surface_qmesh : 2 次元の q メッシュ [[q1_min, q1_max, N1], [q2_min, q2_max, N2]]（結晶座標）。空白で区切った 6 つの整数 q1_min q1_max N1 q2_min q2_max N2 で与えます。例：`lindhard_surface_qmesh = -1 1 10 -1 1 10` (list), [ [[-1, 1, 10], [-1, 1, 10]] ].
+    - lindhard_surface_view : q3 の方向。空白で区切った整数で与えます。例：`lindhard_surface_view = 0 0 1` (list), [ [0, 0, 1] ].
+    - lindhard_surface_const : q3 軸の一定値 [0.0].
+    - qpoint            : 代表的な q 点 (dict), [None].
+    - qpoint_path       : ブリルアンゾーンの高対称線に沿った q 点、[[k1, k2, k3]]（結晶座標） (str), [None].
+    - Nq1               : 高対称線の分割数 (int, optional), [30].
+    - filling           : 単位胞あたりの電子数, [None].
+    - temperature       : Lindhard 関数を計算する温度 (float), [0.0].
+    - hr_input          : hr.dat ファイルのファイル名（パスを含む） (str), [""].
+    - use_tb_approximation : 強束縛近似を使うか (bool), [False].
+- seedname.win のキーワードと、seedname.nnkp、seedname.eig、seedname.amn などから読む量：
+    - num_k             : k 点の数 (int), [1].
+    - num_bands         : コードに渡すバンドの数 (int), [1].
+    - num_wann          : ワニエ関数の数 (int), [1].
+    - dis_num_iter      : disentanglement の反復回数 (int), [0].
+    - num_iter          : 最局在化の反復回数 (int), [200].
+    - dis_froz_max      : 内側の（固定した）エネルギー窓の上端 (float), [+100000].
+    - dis_froz_min      : 内側の（固定した）エネルギー窓の下端 (float), [-100000].
+    - dis_win_max       : 外側のエネルギー窓の上端 (float), [+100000].
+    - dis_win_min       : 外側のエネルギー窓の下端 (float), [-100000].
+    - dis_mix_ratio     : disentanglement の混合の割合 (float), [0.5].
+    - mp_grid           : k 点の Monkhorst-Pack 格子の大きさ (list), [[1, 1, 1]].
+    - ws_distance_tol   : R ベクトルの Wigner-Seitz 超格子の距離の許容誤差。wannier90 と同じ (float, Angstrom), [1.0e-5].
+    - ws_search_size    : Wigner-Seitz 超格子を探す、各方向の超格子の数。wannier90 と同じ (list), [[2, 2, 2]].
+    - kpoints           : k 点、[[k1, k2, k3]]（結晶座標） (list), [[[0, 0, 0]]].
+    - kpoint            : 代表的な k 点 (dict), [None].
+    - kpoint_path       : ブリルアンゾーンの高対称線に沿った k 点、[[k1, k2, k3]]（結晶座標） (str), [None].
+    - unit_cell_cart    : 変換行列、[a1,a2,a3], [None].
+    - atoms_frac        : 格子ベクトルに対する分数座標での原子の位置、{atom: [r1,r2,r3]} [None].
+    - atoms_cart        : デカルト座標での原子の位置、{atom: [rx,ry,rz]} [None].
+    - A                 : 実空間の格子ベクトル、A = [a1,a2,a3] (list), [[[1,0,0], [0,1,0], [0,0,1]]].
+    - B                 : 逆格子ベクトル、B = [b1,b2,b3] (list), [[[2pi,0,0], [0,2pi,0], [0,0,2pi]]].
+    - num_atom          : 原子の数 (int), [1].
+    - num_b             : b ベクトルの数 (int), [1].
+    - nnkpts            : 最近接の k 点 (list), [None].
+    - nw2n              : 各ワニエ関数の原子の位置の番号 (list), [None].
+    - nw2l              : $l$ は角度の部分 $\Theta_{lm}(\theta,\phi)$ を指定します (list), [None].
+    - nw2m              : $m$ は角度の部分 $\Theta_{lm}(\theta,\phi)$ を指定します (list), [None].
+    - nw2r              : $r$ は動径の部分 $R_r(r)$ を指定します (list), [None].
+    - nw2s              : $s$ はスピンを指定します、1(up)/-1(dn) (list), [None].
+    - atom_orb          : 各原子のワニエ関数の番号 (list), [None].
+    - atom_pos          : 各原子の原子の位置の番号 (list), [None].
+    - atom_pos_r        : 格子ベクトルに対する分数座標での各原子の位置 (list), [None].
+    - bvec_cart         : b ベクトル（デカルト座標） (list), [None].
+    - bvec_crys         : b ベクトル（結晶座標） (list), [None].
+    - wb                : 各 k 点と最近接の k 点の重み (list), [None].
+    - Ek                : コーン-シャムのエネルギー、$ E_{m}(k) $ (list), [None].
+    - Ak                : 重なりの行列要素、$ A_{mn}(k) = \langle \psi^{\rm KS}_{m}(k)|\psi_{n}(k)\rangle $ (list), [None].
+    - Mkb               : 重なりの行列要素、$ M_{mn}(k,b) = \langle u^{\rm KS}_{m}(k)|u^{\rm KS}_{n}(k+b)\rangle $ (list), [None].
+    - Uoptk             : num_wann×num_wann の完全なユニタリー行列 (ndarray), [None].
+    - Udisk             : num_wann×num_bands の部分的なユニタリー行列 (ndarray), [None].
+    - Uk                : num_wann×num_bands の完全なユニタリー行列 (ndarray), [None].
+    - seedname.win のその他のキーワードは [Wannier90](https://wannier.org/) のユーザーガイドに従います。ただし `berry_curv_adpt_kmesh` は、各フェルミエネルギーでスピンホール伝導度を細かくします（`Win.read` を参照）。
+
+
+# data [既定値]
+- Sk              : k 空間の重なり行列の要素 (ndarray).
+- nk              : k 空間の電子密度行列の要素 (ndarray).
+- Hk              : k 空間のハミルトニアンの行列要素（直交） (ndarray).
+- Hk_nonortho     : k 空間のハミルトニアンの行列要素（非直交） (ndarray).
+- Sr              : 実空間の重なり行列の要素 (ndarray).
+- nr              : 実空間の電子密度行列の要素 (ndarray).
+- Hr              : 実空間のハミルトニアンの行列要素（直交） (ndarray).
+- Hr_nonortho     : 実空間のハミルトニアンの行列要素（非直交） (ndarray).
+- s               : Sk を SAMB の線形結合で表したときの展開係数（SAMB のタグと係数の dict、str で保存）.
+- n               : nk を SAMB の線形結合で表したときの展開係数（SAMB のタグと係数の dict、str で保存）.
+- z               : Hk を SAMB の線形結合で表したときの展開係数（SAMB のタグと係数の dict、str で保存）.
+- z_nonortho      : Hk_nonortho を SAMB の線形結合で表したときの展開係数（SAMB のタグと係数の dict、str で保存）.
+- Sk_sym          : k 空間の対称化した重なり行列の要素 (ndarray).
+- nk_sym          : k 空間の対称化した電子密度行列の要素 (ndarray).
+- Hk_sym          : k 空間の対称化したハミルトニアンの行列要素（直交） (ndarray).
+- Hk_nonortho_sym : k 空間の対称化したハミルトニアンの行列要素（非直交） (ndarray).
+- Sr_sym          : 実空間の対称化した重なり行列の要素 (ndarray).
+- nr_sym          : 実空間の対称化した電子密度行列の要素 (ndarray).
+- Hr_sym          : 実空間の対称化したハミルトニアンの行列要素（直交） (ndarray).
+- Hr_nonortho_sym : 実空間の対称化したハミルトニアンの行列要素（非直交） (ndarray).
+- Ek_MAE_grid     : k 点の格子での、Closest Wannier の強束縛模型と対称性に適合した Closest Wannier の強束縛模型の固有エネルギーの平均絶対誤差 [meV]（float、str で保存）.
+- Ek_MAE_path     : 高対称な k 経路に沿った、Closest Wannier の強束縛模型と対称性に適合した Closest Wannier の強束縛模型の固有エネルギーの平均絶対誤差 [meV]（分子では None）（float、str で保存）.
+
+
+# samb_info
+- 解析のコードが使う SAMB の情報のグループ（SAMB の ket の基底 `ket` など）。

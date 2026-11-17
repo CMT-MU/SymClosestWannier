@@ -1,4 +1,7 @@
 # seedname.hdf5 [default]
+
+A Japanese version is [here](hdf5_ja.md).
+
 - seedname.hdf5 is written when `write_info_data = true`. It has three groups: info, data and samb_info.
 
 # info [default]
