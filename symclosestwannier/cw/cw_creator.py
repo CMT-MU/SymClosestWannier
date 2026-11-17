@@ -45,7 +45,7 @@ from symclosestwannier.util.message import (
 
 from symclosestwannier.util.get_oper_R import get_oper_R
 
-from symclosestwannier.util.utility import ket_samb_list, sort_ket_matrix, tune_fermi_level
+from symclosestwannier.util.utility import ket_samb_list, samb_positions, sort_ket_matrix, tune_fermi_level
 
 
 # ==================================================
@@ -305,13 +305,7 @@ def _cw_creator(seedname, indir):
             ket_samb = ket_samb_list(cwi._mm)
 
             if cwi["tb_gauge"]:
-                site_dict = {
-                    k + "_" + str(vi.sublattice): vi.position_primitive.tolist()
-                    for k, v in cwi._mm["site"]["cell"].items()
-                    for vi in v
-                    if vi.plus_set == 1
-                }
-                atoms_frac = [site_dict[atom + "_" + str(sl)] for atom, sl, rank, orbital in ket_samb]
+                atoms_frac = samb_positions(cwi)
             else:
                 atoms_frac = None
 
@@ -377,13 +371,7 @@ def _cw_creator(seedname, indir):
             ket_samb = ket_samb_list(cwi._mm)
 
             if cwi["tb_gauge"]:
-                site_dict = {
-                    k + "_" + str(vi.sublattice): vi.position_primitive.tolist()
-                    for k, v in cwi._mm["site"]["cell"].items()
-                    for vi in v
-                    if vi.plus_set == 1
-                }
-                atoms_frac = [site_dict[atom + "_" + str(sl)] for atom, sl, rank, orbital in ket_samb]
+                atoms_frac = samb_positions(cwi)
             else:
                 atoms_frac = None
 
@@ -423,13 +411,7 @@ def _cw_creator(seedname, indir):
             ket_samb = ket_samb_list(cwi._mm)
 
             if cwi["tb_gauge"]:
-                site_dict = {
-                    k + "_" + str(vi.sublattice): vi.position_primitive.tolist()
-                    for k, v in cwi._mm["site"]["cell"].items()
-                    for vi in v
-                    if vi.plus_set == 1
-                }
-                atoms_frac = [site_dict[atom + "_" + str(sl)] for atom, sl, rank, orbital in ket_samb]
+                atoms_frac = samb_positions(cwi)
             else:
                 atoms_frac = None
 
