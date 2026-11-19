@@ -1,0 +1,706 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>seedname.hdf5 [既定値] &#8212; SymClosestWannier</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=9c3e77be" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=6a604523" />
+    <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=41ba1782" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="../../_static/scripts/fontawesome.js?digest=55c26ed414f5f8a31ebb"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb" />
+
+    <script src="../../_static/documentation_options.js?v=a8e58a58"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js?v=b8b12719"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script data-sd-tabs-storage-prefix="sphinx-design-tab-id-" src="../../_static/design-tabs.js?v=fcb327ea"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"loader": {"load": ["[tex]/physics"]}, "tex": {"packages": {"[+]": ["physics"]}, "macros": {"bm": ["\\boldsymbol{#1}", 1]}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'src/format/hdf5_ja';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <script src="../../_static/custom.js?v=66a4751a"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  
+    
+    <script src="../../_static/searchtools.js"></script>
+    <script src="../../_static/language_data.js"></script>
+    <script src="../../searchindex.js"></script>
+  
+  </head>
+  <body data-default-mode="">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../README.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">SymClosestWannier</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">MultiPie</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../multipie.html">Construction of SAMBs by using MultiPie</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Closest Wannier method</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../cw.html">Closest Wannier method</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Construction of symmetry-adapted Closest Wannier model</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../scw.html">Symmetry-adapted Closest Wannier model</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">File Format</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="cwin.html">seedname.cwin [default]</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cwout.html">seedname.cwout</a></li>
+<li class="toctree-l1"><a class="reference internal" href="hdf5.html">seedname.hdf5 [default]</a></li>
+
+
+
+<li class="toctree-l1"><a class="reference internal" href="hr.html">seedname_hr.dat.cw</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sr.html">seedname_sr.dat.cw</a></li>
+<li class="toctree-l1"><a class="reference internal" href="z.html">seedname_z.dat.cw</a></li>
+<li class="toctree-l1"><a class="reference internal" href="s.html">seedname_s.dat.cw</a></li>
+<li class="toctree-l1"><a class="reference internal" href="n.html">seedname_n.dat.cw</a></li>
+<li class="toctree-l1"><a class="reference internal" href="convention.html">Phase conventions of real-space operators</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/tutorial01.html">CH4: Closest Wannier tight-binding model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/tutorial02.html">Graphene: Closest Wannier tight-binding model</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">API</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../api/cw.html">Closest Wannier</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/analyzer.html">Analyzer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/util.html">Utility</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+<a href="https://github.com/CMT-MU/SymClosestWannier.git" target="_blank"
+   class="btn btn-sm btn-source-repository-button"
+   title="Source repository"
+   data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+
+</a>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>seedname.hdf5 [既定値]</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">seedname.hdf5 [既定値]</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#info">info [既定値]</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#data">data [既定値]</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#samb-info">samb_info</a></li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="seedname-hdf5">
+<h1>seedname.hdf5 [既定値]<a class="headerlink" href="#seedname-hdf5" title="Link to this heading">#</a></h1>
+<p>英語版は<a class="reference internal" href="hdf5.html"><span class="std std-doc">こちら</span></a>です。</p>
+<ul class="simple">
+<li><p>seedname.hdf5 は <code class="docutils literal notranslate"><span class="pre">write_info_data</span> <span class="pre">=</span> <span class="pre">true</span></code> のときに書き出します。info、data、samb_info の 3 つのグループがあります。</p></li>
+</ul>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="info">
+<h1>info [既定値]<a class="headerlink" href="#info" title="Link to this heading">#</a></h1>
+<ul class="simple">
+<li><p>seedname.cwin のキーワード：</p>
+<ul>
+<li><p>restart           : 再開の位置 ‘cw’/‘w90’ (str), [“cw”].</p></li>
+<li><p>seedname          : seedname (str), [“cwannier”].</p></li>
+<li><p>outdir            : 出力ファイルを書き出すディレクトリ。seedname.cwin のディレクトリからの相対パス (str), [“./”].</p></li>
+<li><p>disentangle       : バンドを disentangle するか (bool), [False].</p></li>
+<li><p>proj_min          : 射影度の最小値, [0.0].</p></li>
+<li><p>cwf_mu_max        : エネルギー窓の上端 (float), [None].</p></li>
+<li><p>cwf_mu_min        : エネルギー窓の下端 (float), [None].</p></li>
+<li><p>cwf_sigma_max     : エネルギー窓の上端のぼかしの温度 (float), [1.0].</p></li>
+<li><p>cwf_sigma_min     : エネルギー窓の下端のぼかしの温度 (float), [0.0].</p></li>
+<li><p>cwf_delta         : 窓関数に加える基準の重み。エネルギー窓の外の状態はこの重みを持ちます (0 &lt;= cwf_delta &lt; 1)。seedname.cwout が射影の階数落ちを警告したときは大きくしてください（例：1e-3） (float), [0.0].</p></li>
+<li><p>svd               : 特異値分解を使うか。使わないときはレーヴディンの直交化を使います (bool), [False].</p></li>
+<li><p>verbose           : 計算の情報を詳しく表示するか (bool, optional), [False].</p></li>
+<li><p>parallel          : 並列のコードを使うか (bool), [False].</p></li>
+<li><p>formatter         : black で整形するか (bool), [False].</p></li>
+<li><p>calc_spreads      : 広がりを計算するか (bool), [False].</p></li>
+<li><p>write_info_data   : 情報とデータを seedname.hdf5（hdf5 形式）に書き出すか (bool), [False].</p></li>
+<li><p>transl_inv        : バンド対角の位置の行列要素に、Marzari&amp;Vanderbilt PRB 56, 12847 (1997) の式 (31) を使うか (bool), [False].</p></li>
+<li><p>use_degen_pert    : バンドが縮退していてバンドの微分が要るとき、縮退のある摂動論を使うか (bool), [False].</p></li>
+<li><p>degen_thr         : 縮退したバンドを計算から除くしきい値, [0.0001].</p></li>
+<li><p>tb_gauge          : tb ゲージを使うか (bool), [False].</p></li>
+<li><p>tb_position       : seedname_r.dat.cw と seedname_tb.dat.cw の位置演算子を、射影の中心 r_ab® = tau_a delta_ab delta_R0 で近似するか（このとき seedname.mmn は不要） (bool), [False].</p></li>
+<li><p>write_hr          : seedname_hr.dat.cw、seedname_hr_R_dep.dat.cw、seedname_nr.dat.cw、seedname_nr_R_dep.dat.cw を書き出すか (bool), [False].</p></li>
+<li><p>write_sr          : seedname_sr.dat.cw と seedname_sr_R_dep.dat.cw を書き出すか (bool), [False].</p></li>
+<li><p>write_u_matrices  : seedname_u.mat.cw と seedname_u_dis.mat.cw を書き出すか（restart = w90 では書き出さない） (bool), [False].</p></li>
+<li><p>write_rmn         : seedname_r.dat.cw を書き出すか（tb_position = true でなければ seedname.mmn が必要） (bool), [False].</p></li>
+<li><p>write_vmn         : seedname_v.dat.cw を書き出すか (bool), [False].</p></li>
+<li><p>write_tb          : seedname_tb.dat.cw（wannier90 の形式）を書き出すか（tb_position = true でなければ seedname.mmn が必要。tb_gauge = true では書き出さない） (bool), [False].</p></li>
+<li><p>write_eig         : <a class="reference external" href="http://seedname.eig.cw">seedname.eig.cw</a> を書き出すか (bool), [False].</p></li>
+<li><p>write_amn         : write_windowed_amn と同じ。互換性のために残しています (bool), [False].</p></li>
+<li><p>write_windowed_amn : <a class="reference external" href="http://seedname.amn.cw">seedname.amn.cw</a> を書き出すか。窓関数 w と proj_min を適用した射影 w(e_mk) &lt;psi_mk|g_n&gt; で、直交化はしません（disentangle しないときは w = 1。restart = w90 では入力の射影） (bool), [False].</p></li>
+<li><p>write_mmn         : <a class="reference external" href="http://seedname.mmn.cw">seedname.mmn.cw</a> を書き出すか (bool), [False].</p></li>
+<li><p>write_spn         : スピン演算子を <a class="reference external" href="http://seedname.s.cw">seedname.s.cw</a> に書き出すか (bool), [False].</p></li>
+<li><p>symmetrization    : 対称化するか (bool), [False].</p></li>
+<li><p>mp_outdir         : multipie の出力ファイルを書き出すディレクトリ。seedname.cwin のディレクトリからの相対パス (str). [“./”].</p></li>
+<li><p>mp_seedname       : MultiPie の模型の名前（mp_create が作るディレクトリと .pkl ファイル） (str), [“default”].</p></li>
+<li><p>ket_amn           : seedname.amn の ket の基底のリスト (list), [None]. 各 ket は [atom, sublattice, rank, orbital] で与えます。例：<code class="docutils literal notranslate"><span class="pre">[[C,1,1,pz],[C,2,1,pz]]</span></code>。スピンを含むときは <code class="docutils literal notranslate"><span class="pre">[[C,1,1,(pz,u)],[C,1,1,(pz,d)]]</span></code>。ket_amn = auto なら、軌道のリストを自動で決めます。</p></li>
+<li><p>site_offset       : 各ワニエ関数（ket_amn の順）について、MultiPie の模型のサイトから seedname.nnkp の射影の中心への格子ベクトル t = [n1,n2,n3]。pos(seedname.nnkp) = pos(model) + t（ket_amn を明示したときは、全サイトに共通の平行移動も加わります） (list), symmetrization = true のときに設定。</p></li>
+<li><p>irreps            : 考える SAMB の既約表現：“all”（すべての既約表現）、“full”（恒等表現だけ）、または既約表現のリスト (str/list), [“all”].</p></li>
+<li><p>a                 : 参照のバンドのデータの k 点の単位を直す格子定数（Å） (float, optional), [None]（None のときは |a1|）.</p></li>
+<li><p>N1                : 高対称線の分割数 (int, optional), [50].</p></li>
+<li><p>calc_spin_2d      : *.spn で与えるスピン演算子の期待値を出力ファイルに加えるか (bool). [False].</p></li>
+<li><p>calc_dos          : 状態密度を計算するか (bool), [False].</p></li>
+<li><p>dos_kmesh         : 状態密度の計算の k 点の Monkhorst-Pack 格子の大きさ。空白で区切った整数で与えます。例：<code class="docutils literal notranslate"><span class="pre">dos_kmesh</span> <span class="pre">=</span> <span class="pre">10</span> <span class="pre">10</span> <span class="pre">10</span></code> (list), [[1, 1, 1]].</p></li>
+<li><p>dos_num_fermi     : フェルミエネルギーの数 (int), [50].</p></li>
+<li><p>dos_smr_en_width  : 状態密度のぼかし関数のエネルギー幅（単位は [eV]） (float), [0.001].</p></li>
+<li><p>dos_emax          : 計算するエネルギーの最大値 (float), [None].</p></li>
+<li><p>dos_emin          : 計算するエネルギーの最小値 (float), [None].</p></li>
+<li><p>calc_cohp         : COHP を計算するか (bool), [False].</p></li>
+<li><p>calc_cohp_samb_decomp : COHP を SAMB で分解するか (bool), [False].</p></li>
+<li><p>cohp_bond_length_max : 計算するボンドの長さの最大値（Å） (float), [6.0].</p></li>
+<li><p>cohp_bond_length_min : 計算するボンドの長さの最小値（Å） (float), [0.0].</p></li>
+<li><p>cohp_head_atom    : 計算するボンドの先の原子 (str), [None].</p></li>
+<li><p>cohp_head_atom_idx : 計算するボンドの先の原子の番号 (int), [None].</p></li>
+<li><p>cohp_tail_atom    : 計算するボンドの元の原子 (str), [None].</p></li>
+<li><p>cohp_tail_atom_idx : 計算するボンドの元の原子の番号 (int), [None].</p></li>
+<li><p>cohp_kmesh        : COHP の計算の k 点の Monkhorst-Pack 格子の大きさ。空白で区切った整数で与えます。例：<code class="docutils literal notranslate"><span class="pre">cohp_kmesh</span> <span class="pre">=</span> <span class="pre">10</span> <span class="pre">10</span> <span class="pre">10</span></code> (list), [[1, 1, 1]].</p></li>
+<li><p>cohp_num_fermi    : フェルミエネルギーの数 (int), [50].</p></li>
+<li><p>cohp_smr_en_width : COHP のぼかし関数のエネルギー幅（単位は [eV]） (float), [0.001].</p></li>
+<li><p>cohp_emax         : 計算するエネルギーの最大値 (float), [None].</p></li>
+<li><p>cohp_emin         : 計算するエネルギーの最小値 (float), [None].</p></li>
+<li><p>zeeman_interaction : ゼーマン相互作用を考えるか (bool), [False].</p></li>
+<li><p>magnetic_field    : 磁場の強さ (float), [0.0].</p></li>
+<li><p>magnetic_field_theta : 磁場の z 軸からの角度 (float), [0.0].</p></li>
+<li><p>magnetic_field_phi : 磁場の x 軸からの角度 (float), [0.0].</p></li>
+<li><p>g_factor          : スピンの g 因子 (float), [2.0].</p></li>
+<li><p>fermi_surface     : フェルミ面を計算するか (bool), [False].</p></li>
+<li><p>fermi_surface_kmesh : 2 次元の k メッシュ [[k1_min, k1_max, N1], [k2_min, k2_max, N2]]（結晶座標）。空白で区切った 6 つの整数 k1_min k1_max N1 k2_min k2_max N2 で与えます。例：<code class="docutils literal notranslate"><span class="pre">fermi_surface_kmesh</span> <span class="pre">=</span> <span class="pre">-1</span> <span class="pre">1</span> <span class="pre">10</span> <span class="pre">-1</span> <span class="pre">1</span> <span class="pre">10</span></code> (list), [ [[-1, 1, 10], [-1, 1, 10]] ].</p></li>
+<li><p>fermi_surface_view : k3 の方向。空白で区切った整数で与えます。例：<code class="docutils literal notranslate"><span class="pre">fermi_surface_view</span> <span class="pre">=</span> <span class="pre">0</span> <span class="pre">0</span> <span class="pre">1</span></code> (list), [ [0, 0, 1] ].</p></li>
+<li><p>fermi_surface_const : k3 軸の一定値 [0.0].</p></li>
+<li><p>lindhard          : Lindhard 関数を計算するか (bool), [False].</p></li>
+<li><p>lindhard_freq     : Lindhard 関数を計算する振動数（単位は [eV]） (float), [0.0].</p></li>
+<li><p>lindhard_smr_fixed_en_width : 大域変数 smr_fixed_en_width を上書きします (float), [0.01].</p></li>
+<li><p>lindhard_kmesh    : Lindhard 関数の k 点の Monkhorst-Pack 格子の大きさ。空白で区切った整数で与えます。例：<code class="docutils literal notranslate"><span class="pre">lindhard_kmesh</span> <span class="pre">=</span> <span class="pre">10</span> <span class="pre">10</span> <span class="pre">10</span></code> (list), [[1, 1, 1]].</p></li>
+<li><p>lindhard_surface  : 2 次元の q 平面で Lindhard 関数を計算するか (bool), [False].</p></li>
+<li><p>lindhard_surface_qmesh : 2 次元の q メッシュ [[q1_min, q1_max, N1], [q2_min, q2_max, N2]]（結晶座標）。空白で区切った 6 つの整数 q1_min q1_max N1 q2_min q2_max N2 で与えます。例：<code class="docutils literal notranslate"><span class="pre">lindhard_surface_qmesh</span> <span class="pre">=</span> <span class="pre">-1</span> <span class="pre">1</span> <span class="pre">10</span> <span class="pre">-1</span> <span class="pre">1</span> <span class="pre">10</span></code> (list), [ [[-1, 1, 10], [-1, 1, 10]] ].</p></li>
+<li><p>lindhard_surface_view : q3 の方向。空白で区切った整数で与えます。例：<code class="docutils literal notranslate"><span class="pre">lindhard_surface_view</span> <span class="pre">=</span> <span class="pre">0</span> <span class="pre">0</span> <span class="pre">1</span></code> (list), [ [0, 0, 1] ].</p></li>
+<li><p>lindhard_surface_const : q3 軸の一定値 [0.0].</p></li>
+<li><p>qpoint            : 代表的な q 点 (dict), [None].</p></li>
+<li><p>qpoint_path       : ブリルアンゾーンの高対称線に沿った q 点、[[k1, k2, k3]]（結晶座標） (str), [None].</p></li>
+<li><p>Nq1               : 高対称線の分割数 (int, optional), [30].</p></li>
+<li><p>filling           : 単位胞あたりの電子数, [None].</p></li>
+<li><p>temperature       : Lindhard 関数を計算する温度 (float), [0.0].</p></li>
+<li><p>hr_input          : hr.dat ファイルのファイル名（パスを含む） (str), [“”].</p></li>
+<li><p>use_tb_approximation : 強束縛近似を使うか (bool), [False].</p></li>
+</ul>
+</li>
+<li><p>seedname.win のキーワードと、seedname.nnkp、seedname.eig、seedname.amn などから読む量：</p>
+<ul>
+<li><p>num_k             : k 点の数 (int), [1].</p></li>
+<li><p>num_bands         : コードに渡すバンドの数 (int), [1].</p></li>
+<li><p>num_wann          : ワニエ関数の数 (int), [1].</p></li>
+<li><p>dis_num_iter      : disentanglement の反復回数 (int), [0].</p></li>
+<li><p>num_iter          : 最局在化の反復回数 (int), [200].</p></li>
+<li><p>dis_froz_max      : 内側の（固定した）エネルギー窓の上端 (float), [+100000].</p></li>
+<li><p>dis_froz_min      : 内側の（固定した）エネルギー窓の下端 (float), [-100000].</p></li>
+<li><p>dis_win_max       : 外側のエネルギー窓の上端 (float), [+100000].</p></li>
+<li><p>dis_win_min       : 外側のエネルギー窓の下端 (float), [-100000].</p></li>
+<li><p>dis_mix_ratio     : disentanglement の混合の割合 (float), [0.5].</p></li>
+<li><p>mp_grid           : k 点の Monkhorst-Pack 格子の大きさ (list), [[1, 1, 1]].</p></li>
+<li><p>ws_distance_tol   : R ベクトルの Wigner-Seitz 超格子の距離の許容誤差。wannier90 と同じ (float, Angstrom), [1.0e-5].</p></li>
+<li><p>ws_search_size    : Wigner-Seitz 超格子を探す、各方向の超格子の数。wannier90 と同じ (list), [[2, 2, 2]].</p></li>
+<li><p>kpoints           : k 点、[[k1, k2, k3]]（結晶座標） (list), [[[0, 0, 0]]].</p></li>
+<li><p>kpoint            : 代表的な k 点 (dict), [None].</p></li>
+<li><p>kpoint_path       : ブリルアンゾーンの高対称線に沿った k 点、[[k1, k2, k3]]（結晶座標） (str), [None].</p></li>
+<li><p>unit_cell_cart    : 変換行列、[a1,a2,a3], [None].</p></li>
+<li><p>atoms_frac        : 格子ベクトルに対する分数座標での原子の位置、{atom: [r1,r2,r3]} [None].</p></li>
+<li><p>atoms_cart        : デカルト座標での原子の位置、{atom: [rx,ry,rz]} [None].</p></li>
+<li><p>A                 : 実空間の格子ベクトル、A = [a1,a2,a3] (list), [[[1,0,0], [0,1,0], [0,0,1]]].</p></li>
+<li><p>B                 : 逆格子ベクトル、B = [b1,b2,b3] (list), [[[2pi,0,0], [0,2pi,0], [0,0,2pi]]].</p></li>
+<li><p>num_atom          : 原子の数 (int), [1].</p></li>
+<li><p>num_b             : b ベクトルの数 (int), [1].</p></li>
+<li><p>nnkpts            : 最近接の k 点 (list), [None].</p></li>
+<li><p>nw2n              : 各ワニエ関数の原子の位置の番号 (list), [None].</p></li>
+<li><p>nw2l              : <span class="math notranslate nohighlight">\(l\)</span> は角度の部分 <span class="math notranslate nohighlight">\(\Theta_{lm}(\theta,\phi)\)</span> を指定します (list), [None].</p></li>
+<li><p>nw2m              : <span class="math notranslate nohighlight">\(m\)</span> は角度の部分 <span class="math notranslate nohighlight">\(\Theta_{lm}(\theta,\phi)\)</span> を指定します (list), [None].</p></li>
+<li><p>nw2r              : <span class="math notranslate nohighlight">\(r\)</span> は動径の部分 <span class="math notranslate nohighlight">\(R_r(r)\)</span> を指定します (list), [None].</p></li>
+<li><p>nw2s              : <span class="math notranslate nohighlight">\(s\)</span> はスピンを指定します、1(up)/-1(dn) (list), [None].</p></li>
+<li><p>atom_orb          : 各原子のワニエ関数の番号 (list), [None].</p></li>
+<li><p>atom_pos          : 各原子の原子の位置の番号 (list), [None].</p></li>
+<li><p>atom_pos_r        : 格子ベクトルに対する分数座標での各原子の位置 (list), [None].</p></li>
+<li><p>bvec_cart         : b ベクトル（デカルト座標） (list), [None].</p></li>
+<li><p>bvec_crys         : b ベクトル（結晶座標） (list), [None].</p></li>
+<li><p>wb                : 各 k 点と最近接の k 点の重み (list), [None].</p></li>
+<li><p>Ek                : コーン-シャムのエネルギー、<span class="math notranslate nohighlight">\( E_{m}(k) \)</span> (list), [None].</p></li>
+<li><p>Ak                : 重なりの行列要素、<span class="math notranslate nohighlight">\( A_{mn}(k) = \langle \psi^{\rm KS}_{m}(k)|\psi_{n}(k)\rangle \)</span> (list), [None].</p></li>
+<li><p>Mkb               : 重なりの行列要素、<span class="math notranslate nohighlight">\( M_{mn}(k,b) = \langle u^{\rm KS}_{m}(k)|u^{\rm KS}_{n}(k+b)\rangle \)</span> (list), [None].</p></li>
+<li><p>Uoptk             : num_wann×num_wann の完全なユニタリー行列 (ndarray), [None].</p></li>
+<li><p>Udisk             : num_wann×num_bands の部分的なユニタリー行列 (ndarray), [None].</p></li>
+<li><p>Uk                : num_wann×num_bands の完全なユニタリー行列 (ndarray), [None].</p></li>
+<li><p>seedname.win のその他のキーワードは <a class="reference external" href="https://wannier.org/">Wannier90</a> のユーザーガイドに従います。ただし <code class="docutils literal notranslate"><span class="pre">berry_curv_adpt_kmesh</span></code> は、各フェルミエネルギーでスピンホール伝導度を細かくします（<code class="docutils literal notranslate"><span class="pre">Win.read</span></code> を参照）。</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="data">
+<h1>data [既定値]<a class="headerlink" href="#data" title="Link to this heading">#</a></h1>
+<ul class="simple">
+<li><p>Sk              : k 空間の重なり行列の要素 (ndarray).</p></li>
+<li><p>nk              : k 空間の電子密度行列の要素 (ndarray).</p></li>
+<li><p>Hk              : k 空間のハミルトニアンの行列要素（直交） (ndarray).</p></li>
+<li><p>Hk_nonortho     : k 空間のハミルトニアンの行列要素（非直交） (ndarray).</p></li>
+<li><p>Sr              : 実空間の重なり行列の要素 (ndarray).</p></li>
+<li><p>nr              : 実空間の電子密度行列の要素 (ndarray).</p></li>
+<li><p>Hr              : 実空間のハミルトニアンの行列要素（直交） (ndarray).</p></li>
+<li><p>Hr_nonortho     : 実空間のハミルトニアンの行列要素（非直交） (ndarray).</p></li>
+<li><p>s               : Sk を SAMB の線形結合で表したときの展開係数（SAMB のタグと係数の dict、str で保存）.</p></li>
+<li><p>n               : nk を SAMB の線形結合で表したときの展開係数（SAMB のタグと係数の dict、str で保存）.</p></li>
+<li><p>z               : Hk を SAMB の線形結合で表したときの展開係数（SAMB のタグと係数の dict、str で保存）.</p></li>
+<li><p>z_nonortho      : Hk_nonortho を SAMB の線形結合で表したときの展開係数（SAMB のタグと係数の dict、str で保存）.</p></li>
+<li><p>Sk_sym          : k 空間の対称化した重なり行列の要素 (ndarray).</p></li>
+<li><p>nk_sym          : k 空間の対称化した電子密度行列の要素 (ndarray).</p></li>
+<li><p>Hk_sym          : k 空間の対称化したハミルトニアンの行列要素（直交） (ndarray).</p></li>
+<li><p>Hk_nonortho_sym : k 空間の対称化したハミルトニアンの行列要素（非直交） (ndarray).</p></li>
+<li><p>Sr_sym          : 実空間の対称化した重なり行列の要素 (ndarray).</p></li>
+<li><p>nr_sym          : 実空間の対称化した電子密度行列の要素 (ndarray).</p></li>
+<li><p>Hr_sym          : 実空間の対称化したハミルトニアンの行列要素（直交） (ndarray).</p></li>
+<li><p>Hr_nonortho_sym : 実空間の対称化したハミルトニアンの行列要素（非直交） (ndarray).</p></li>
+<li><p>Ek_MAE_grid     : k 点の格子での、Closest Wannier の強束縛模型と対称性に適合した Closest Wannier の強束縛模型の固有エネルギーの平均絶対誤差 [meV]（float、str で保存）.</p></li>
+<li><p>Ek_MAE_path     : 高対称な k 経路に沿った、Closest Wannier の強束縛模型と対称性に適合した Closest Wannier の強束縛模型の固有エネルギーの平均絶対誤差 [meV]（分子では None）（float、str で保存）.</p></li>
+</ul>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="samb-info">
+<h1>samb_info<a class="headerlink" href="#samb-info" title="Link to this heading">#</a></h1>
+<ul class="simple">
+<li><p>解析のコードが使う SAMB の情報のグループ（SAMB の ket の基底 <code class="docutils literal notranslate"><span class="pre">ket</span></code> など）。</p></li>
+</ul>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./src/format"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">seedname.hdf5 [既定値]</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#info">info [既定値]</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#data">data [既定値]</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#samb-info">samb_info</a></li>
+</ul>
+
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Rikuto Oiwa
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2021-.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
