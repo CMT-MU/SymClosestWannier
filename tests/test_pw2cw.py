@@ -143,3 +143,43 @@ def test_write_rmn_with_tb_position(make_case):
 
     assert (workdir / f"{seedname}_r.dat.cw").stat().st_size > 0
     assert not list(workdir.glob(f"{seedname}_r*_R_dep.dat.cw"))
+
+
+# ==================================================
+def test_write_tb_with_bond_centred_projection(make_case):
+    """
+    a projection centred on a bond, so that there are more projection centres than atoms (6 for the 5 atoms of CH4):
+    with tb_gauge = false, the step after writing seedname_tb.dat.cw must not index the atoms by the projection centres.
+    """
+    seedname = "ch4_sl"
+    workdir = make_case(seedname, extra="write_hr = true\nwrite_tb = true\ntb_position = true\ntb_gauge = false")
+
+    # move the C pz projection (the second one) to the middle of the C-H1 bond, keeping the fixed-width format.
+    nnkp = workdir / f"{seedname}.nnkp"
+    lines = nnkp.read_text().splitlines(keepends=True)
+    i = next(i for i, line in enumerate(lines) if "begin projections" in line) + 2 + 2 * 1
+    assert lines[i].split()[:6] == ["0.00000", "0.00000", "0.00000", "1", "1", "2"]
+    lines[i] = "   0.03994    0.03994    0.03994     1  1  2\n"
+    nnkp.write_text("".join(lines))
+    first = i - 2
+    centres = np.array([lines[first + 2 * j].split()[:3] for j in range(8)], dtype=float)
+
+    cw_creator(seedname)
+
+    from test_write_tb import read_tb_dat
+
+    lattice, _, irvec, Hr, Ar = read_tb_dat(workdir / f"{seedname}_tb.dat.cw")
+    _, irvec_hr, Hr_hr = read_hr_dat(workdir / f"{seedname}_hr.dat.cw")
+    np.testing.assert_array_equal(irvec, irvec_hr)
+    np.testing.assert_allclose(Hr, Hr_hr, rtol=0, atol=1e-7)
+
+    # with tb_position = true the position operator is diagonal at R = 0, at the projection centres (the bond centre
+    # for the second orbital).
+    R0 = np.where(np.all(irvec == 0, axis=1))[0][0]
+    np.testing.assert_allclose(np.diagonal(Ar[:, R0], axis1=1, axis2=2).T, centres @ lattice, rtol=0, atol=1e-4)
+    Ar_rest = Ar.copy()
+    Ar_rest[:, R0, range(8), range(8)] = 0
+    assert np.all(Ar_rest == 0)
+
+    # the run reaches its end.
+    assert "cw_model: All done" in (workdir / f"{seedname}.cwout").read_text()
