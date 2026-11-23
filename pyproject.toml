@@ -1,5 +1,5 @@
 [build-system]
-requires = ["setuptools"]
+requires = ["setuptools>=64"]  # 64: editable install without setup.py (PEP 660).
 build-backend = "setuptools.build_meta"
 
 [project]
@@ -66,11 +66,3 @@ testpaths = ["tests"]
 
 [tool.black]
 line-length = 130
-
-[tool.build_sphinx]
-source-dir = "docs"
-build-dir  = "./docs/_build"
-all_files  = 1
-
-[tool.upload_sphinx]
-upload-dir = "docs/_build/html"
