@@ -236,9 +236,6 @@ def _cw_creator(seedname, indir):
             cw_model.write_samb_coeffs(filename, type="sz")
 
     # # the order of atoms are different from that of SAMBs
-    atoms_list = list(cw_model._cwi["atoms_frac_shift"].values())
-    atoms_frac = [atoms_list[i] for i in cw_model._cwi["nw2n"]]
-
     if cwi["tb_gauge"]:
         atoms_list = list(cw_model._cwi["atoms_frac_shift"].values())
         atoms_frac = [atoms_list[i] for i in cw_model._cwi["nw2n"]]

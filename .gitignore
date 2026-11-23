@@ -6,10 +6,6 @@
 *.o
 __pycache__/
 
-# Cython generated files #
-##########################
-#pymeshfix/cython/_meshfix.cpp
-
 # OS generated files #
 ######################
 .fuse_hidden*
@@ -93,10 +89,10 @@ venv/
 
 # LaTeX #
 #########
-.dvi
-.fdb_latexmk
-.fls
-.aux
-.log
-.out
-.synctex.gz
+*.dvi
+*.fdb_latexmk
+*.fls
+*.aux
+*.log
+*.out
+*.synctex.gz
