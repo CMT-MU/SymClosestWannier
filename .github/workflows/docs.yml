@@ -40,7 +40,7 @@ jobs:
       - name: Build
         run: make -C docs build
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: html
           path: docs/_build/html/
@@ -60,7 +60,7 @@ jobs:
       # the checkout is the git repository that ghp-import commits to and pushes from (with GITHUB_TOKEN).
       - uses: actions/checkout@v7
 
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v8
         with:
           name: html
           path: ${{ runner.temp }}/html
