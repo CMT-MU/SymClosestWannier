@@ -1,0 +1,670 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>グラフェン：Closest Wannier 強束縛模型 &#8212; SymClosestWannier</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=9c3e77be" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=6a604523" />
+    <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=41ba1782" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="../../_static/scripts/fontawesome.js?digest=55c26ed414f5f8a31ebb"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb" />
+
+    <script src="../../_static/documentation_options.js?v=a8e58a58"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js?v=b8b12719"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script data-sd-tabs-storage-prefix="sphinx-design-tab-id-" src="../../_static/design-tabs.js?v=fcb327ea"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"loader": {"load": ["[tex]/physics"]}, "tex": {"packages": {"[+]": ["physics"]}, "macros": {"bm": ["\\boldsymbol{#1}", 1]}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'src/tutorials/tutorial02_ja';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <script src="../../_static/custom.js?v=66a4751a"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  
+    
+    <script src="../../_static/searchtools.js"></script>
+    <script src="../../_static/language_data.js"></script>
+    <script src="../../searchindex.js"></script>
+  
+  </head>
+  <body data-default-mode="">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../README.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">SymClosestWannier</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">MultiPie</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../multipie.html">Construction of SAMBs by using MultiPie</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Closest Wannier method</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../cw.html">Closest Wannier method</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Construction of symmetry-adapted Closest Wannier model</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../scw.html">Symmetry-adapted Closest Wannier model</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">File Format</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../format/cwin.html">seedname.cwin [default]</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../format/cwout.html">seedname.cwout</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../format/hdf5.html">seedname.hdf5 [default]</a></li>
+
+
+
+<li class="toctree-l1"><a class="reference internal" href="../format/hr.html">seedname_hr.dat.cw</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../format/sr.html">seedname_sr.dat.cw</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../format/z.html">seedname_z.dat.cw</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../format/s.html">seedname_s.dat.cw</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../format/n.html">seedname_n.dat.cw</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../format/convention.html">Phase conventions of real-space operators</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="tutorial01.html">CH4: Closest Wannier tight-binding model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial02.html">Graphene: Closest Wannier tight-binding model</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">API</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../api/cw.html">Closest Wannier</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/analyzer.html">Analyzer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/util.html">Utility</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+<a href="https://github.com/CMT-MU/SymClosestWannier.git" target="_blank"
+   class="btn btn-sm btn-source-repository-button"
+   title="Source repository"
+   data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+
+</a>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>グラフェン：Closest Wannier 強束縛模型</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">参考文献</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="closest-wannier">
+<h1>グラフェン：Closest Wannier 強束縛模型<a class="headerlink" href="#closest-wannier" title="Link to this heading">#</a></h1>
+<p>英語版は<a class="reference internal" href="tutorial02.html"><span class="std std-doc">こちら</span></a>です。</p>
+<ul class="simple">
+<li><p>概要：水素様原子の <span class="math notranslate nohighlight">\(p_{z}\)</span> 軌道を使い、Closest Wannier 法でグラフェンの Closest Wannier 模型と、ワニエ補間したバンド構造を計算します。
+理論的な背景の詳細は、文献 <a class="footnote-reference brackets" href="#footcite-ozaki-prb24" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a> を参照してください。</p></li>
+<li><p>ディレクトリ：<code class="docutils literal notranslate"><span class="pre">others/tutorials/tutorial02/</span></code> <em>ファイルは
+<a class="reference external" href="https://github.com/CMT-MU/SymClosestWannier/tree/main/others/tutorials/tutorial02">こちら</a>からダウンロードできます</em></p></li>
+<li><p>入力ファイル</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">graphene.cwin</span></code>： <em><code class="docutils literal notranslate"><span class="pre">pw2cw</span></code> の入力ファイル</em></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">graphene.win</span></code>： <em><code class="docutils literal notranslate"><span class="pre">wannier90.x</span></code> の入力ファイル</em></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">graphene.nnkp</span></code>： <em><code class="docutils literal notranslate"><span class="pre">wannier90.x</span></code> が作る結晶のデータの出力ファイル</em></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">graphene.eig,</span> <span class="pre">graphene.amn</span></code>： <em><code class="docutils literal notranslate"><span class="pre">pw2wannier.x</span></code>、<code class="docutils literal notranslate"><span class="pre">VASP2WANNIER</span></code>、<code class="docutils literal notranslate"><span class="pre">WIEN2WANNIER</span></code> が作る出力ファイル</em></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">graphene.band.gnu</span></code>： <em>DFT のバンドのデータ</em></p></li>
+</ul>
+</li>
+</ul>
+<p> </p>
+<ol class="arabic">
+<li><p><a class="reference external" href="https://www.quantum-espresso.org/">Quantum ESPRESSO</a> や <a class="reference external" href="https://www.vasp.at/">VASP</a> などの平面波（PW）の DFT 計算のソフトウェアで、コーン-シャム軌道と擬原子軌道の重なりを計算します。
+次のステップでは、次のファイルを使います。</p>
+<ul class="simple">
+<li><p>seedname.win、seedname.nnkp、seedname.eig、seedname.amn（<a class="reference external" href="https://wannier.org/">Wannier90</a> が作るもの）
+（追加のファイル：seedname.mmn、seedname.spn、seedname.uHu、seedname.uIu など）</p></li>
+</ul>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">pw2cw</span></code> を実行して、Closest Wannier 強束縛模型を作ります。</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pw2cw<span class="w"> </span>graphene
+</pre></div>
+</div>
+<p>Closest Wannier 法による disentanglement は、<code class="docutils literal notranslate"><span class="pre">graphene.cwin</span></code> で次のように指定して行います。</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>disentangle = true
+</pre></div>
+</div>
+<p>Closest Wannier 法では、ブロッホ状態と射影の重なりに、窓関数 <span class="math notranslate nohighlight">\(w(\varepsilon)\)</span> を掛けます（文献 <a class="footnote-reference brackets" href="#footcite-ozaki-prb24" id="id2" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a> の式 (4)）。</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+    &amp; A_{mn}^{(\bf{k})} = w(\varepsilon_{m\bf{k}}) \langle \psi_{m{\bf k}}|g_{n}\rangle,
+    \\
+    &amp; w(\varepsilon)
+    = \frac{1}{e^{(\varepsilon - \mu_{\rm max})/\sigma_{\rm max}} + 1}
+    + \frac{1}{e^{(\mu_{\rm min} - \varepsilon)/\sigma_{\rm min}} + 1}
+    - 1 + \delta,
+    \end{split}\]</div>
+<p>ここで <span class="math notranslate nohighlight">\(\mu_{\rm min}\)</span> と <span class="math notranslate nohighlight">\(\mu_{\rm max}\)</span>（<span class="math notranslate nohighlight">\(\mu_{\rm min} &lt; \mu_{\rm max}\)</span>）はエネルギー窓の下端と上端を表し、<span class="math notranslate nohighlight">\(\sigma_{\rm min}\)</span> と <span class="math notranslate nohighlight">\(\sigma_{\rm max}\)</span> は <span class="math notranslate nohighlight">\(\mu_{\rm min}\)</span> と <span class="math notranslate nohighlight">\(\mu_{\rm max}\)</span> の周りのぼかしの程度を決めます。
+<span class="math notranslate nohighlight">\(\delta\)</span> は、<span class="math notranslate nohighlight">\(A_{mn}^{(\bf{k})}\)</span> からなる行列が悪条件にならないように加える小さな定数です。</p>
+<p><span class="math notranslate nohighlight">\(\mu_{\rm max}\)</span>、<span class="math notranslate nohighlight">\(\mu_{\rm min}\)</span>、<span class="math notranslate nohighlight">\(\sigma_{\rm max}\)</span>、<span class="math notranslate nohighlight">\(\sigma_{\rm min}\)</span>、<span class="math notranslate nohighlight">\(\delta\)</span> は、<code class="docutils literal notranslate"><span class="pre">graphene.cwin</span></code> で次のように指定します。</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>cwf_mu_max      = 10.0
+cwf_mu_min      = -30
+cwf_sigma_max = 3.0
+cwf_sigma_min = 0.0
+cwf_delta             = 1e-12
+</pre></div>
+</div>
+<p>また、</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>proj_min          = 0.1
+</pre></div>
+</div>
+<p>は射影度 <span class="math notranslate nohighlight">\(p_{m\bf{k}} = \sum_{n} |\langle \psi_{m{\bf k}}|g_{n}\rangle|^{2}\)</span>（窓関数なし）の最小値です。
+<span class="math notranslate nohighlight">\(p_{m\bf{k}}\)</span> が <code class="docutils literal notranslate"><span class="pre">proj_min</span></code> より大きくないとき、その <span class="math notranslate nohighlight">\(m\)</span> 番目の DFT のバンドはワニエ化から除きます。</p>
+<p>窓関数を導入することで、バンドの disentanglement が自然に取り込まれることに注意してください。
+ユニタリー行列は <span class="math notranslate nohighlight">\(\mathbf{U}^{(\mathbf{k})} = \mathbf{A}^{(\bf{k})}
+ (\mathbf{A}^{(\bf{k}) \dagger} \mathbf{A}^{(\bf{k})})^{-1/2}\)</span>
+で得られ、バンドの disentanglement とワニエ化のための反復計算は要りません。</p>
+<p><span class="math notranslate nohighlight">\(\mu_{\rm min}\)</span>、<span class="math notranslate nohighlight">\(\mu_{\rm max}\)</span>、<span class="math notranslate nohighlight">\(\sigma_{\rm min}\)</span>、<span class="math notranslate nohighlight">\(\sigma_{\rm max}\)</span>、<span class="math notranslate nohighlight">\(\delta\)</span> を適切に選ぶと、ヒルベルト空間で初期推定に<em>最も近い</em>ワニエ関数が得られます（文献 <a class="footnote-reference brackets" href="#footcite-ozaki-prb24" id="id3" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a> の式 (5)〜(17) を参照）。</p>
+<p>窓関数を適用した射影 <span class="math notranslate nohighlight">\(w(\varepsilon_{m{\bf k}}) \langle \psi_{m{\bf k}}|g_{n}\rangle\)</span> を <code class="docutils literal notranslate"><span class="pre">graphene.amn.cw</span></code> に書き出すには（<code class="docutils literal notranslate"><span class="pre">proj_min</span></code> で除いたバンドは 0、<code class="docutils literal notranslate"><span class="pre">disentangle</span></code> しないときは <span class="math notranslate nohighlight">\(w = 1\)</span>）、<code class="docutils literal notranslate"><span class="pre">graphene.cwin</span></code> で <code class="docutils literal notranslate"><span class="pre">write_windowed_amn</span></code> を次のように指定します。</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>write_windowed_amn = true
+</pre></div>
+</div>
+<p>Wannier90 の <code class="docutils literal notranslate"><span class="pre">seedname.amn</span></code> の形式で、直交化せずに書き出します。
+直交化した後のユニタリー行列は、<code class="docutils literal notranslate"><span class="pre">write_u_matrices</span> <span class="pre">=</span> <span class="pre">true</span></code> で書き出します。</p>
+<p>実空間の Closest Wannier ハミルトニアンの行列要素を得るには、<code class="docutils literal notranslate"><span class="pre">graphene.cwin</span></code> で <code class="docutils literal notranslate"><span class="pre">write_hr</span></code> を次のように指定します。</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>write_hr = true
+</pre></div>
+</div>
+<p>出力ファイル <code class="docutils literal notranslate"><span class="pre">graphene.cwout</span></code> を見てください。
+CWF は反復計算なしに得られ、計算コストを大きく減らせます。
+eta_ <span class="math notranslate nohighlight">\(\nu\)</span> と eta_ <span class="math notranslate nohighlight">\(\nu\)</span> _max（<span class="math notranslate nohighlight">\(\nu = 0, 2, 5\)</span>）は、DFT のバンドと Closest Wannier のバンドの間のバンド距離で、次のように定義します。</p>
+<div class="math notranslate nohighlight">
+\[
+    \eta_{\nu} = \sqrt{\frac{\sum_{n\bf{k}}(\epsilon_{n\bf{k}}^{\rm DFT} - \epsilon_{n\bf{k}}^{\rm CW})^{2} \tilde{f}_{n\bf{k}} }{\sum_{n\bf{k}}\tilde{f}_{n\bf{k}}}}
+    \]</div>
+<div class="math notranslate nohighlight">
+\[
+    \tilde{f}_{n\bf{k}} = \sqrt{f_{n\bf{k}}^{\rm DFT}(\nu, \tau) f_{n\bf{k}}^{\rm CW}(\nu, \tau)}
+    \]</div>
+<p>ここで <span class="math notranslate nohighlight">\(f_{n\bf{k}}(\nu, \tau)\)</span> は、エネルギーをずらしたフェルミ-ディラック分布関数です。
+$<span class="math notranslate nohighlight">\(
+ (\nu = 0)\, \epsilon_{\rm F} + 0.0\, [{\rm eV}] \\
+ (\nu = 2)\, \epsilon_{\rm F} + 2.0\, [{\rm eV}] \\
+ (\nu = 5)\, \epsilon_{\rm F} + 5.0\, [{\rm eV}]
+ \)</span>$</p>
+<p>有効温度は <span class="math notranslate nohighlight">\(\tau = 0.0\)</span> です。</p>
+</li>
+</ol>
+<ul>
+<li><p>出力ファイル：</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">graphene.cwout</span></code>： <em>標準出力</em></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">graphene.hdf5</span></code>： <em>CWModel の計算の情報とデータ（<code class="docutils literal notranslate"><span class="pre">write_info_data</span> <span class="pre">=</span> <span class="pre">true</span></code> のとき）</em></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">graphene_hr.dat.cw</span></code>： <em>実空間の Closest Wannier ハミルトニアンの行列要素 <span class="math notranslate nohighlight">\(H(R)\)</span></em></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">graphene_hr_R_dep.dat.cw</span></code>： <em>ハミルトニアンのフロベニウスノルムの、ボンドの長さ ||R||（格子ベクトルの 2 ノルム）への依存性と、指数関数のフィット <span class="math notranslate nohighlight">\(||H(R)|| = ||H(0)|| \exp(-||R||/\tau)\)</span> で定義した減衰長 <span class="math notranslate nohighlight">\(\tau\)</span> [Å]</em></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">graphene_nr.dat.cw</span></code>： <em>実空間の Closest Wannier の電子密度行列の要素 <span class="math notranslate nohighlight">\(n(R)\)</span></em></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">graphene.amn.cw</span></code>： <em>窓関数を適用した、ブロッホ状態の試行軌道への射影（<code class="docutils literal notranslate"><span class="pre">write_windowed_amn</span> <span class="pre">=</span> <span class="pre">true</span></code> のとき）</em></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">graphene_band.txt</span></code>： Closest Wannier 強束縛模型のバンド分散のデータ。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">graphene_band_detail.txt</span></code>： 軌道の寄与を含む、Closest Wannier 強束縛模型のバンド分散のデータ。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">plot_band.gnu</span></code>： <em>DFT と Closest Wannier のバンドを比べる gnuplot のスクリプト</em></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">plot_band_detail.gnu</span></code>： <em>DFT と Closest Wannier のバンドを比べる gnuplot のスクリプト</em></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">graphene_band.pdf(eps)</span></code>： <em>DFT と Closest Wannier のバンドの比較</em></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">graphene_band_detail.pdf(eps)</span></code>： <em>DFT と Closest Wannier のバンドの比較</em></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">graphene/</span></code></p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">graphene_hr_sym.dat.cw</span></code>： <em>実空間の、対称性に適合した Closest Wannier ハミルトニアンの行列要素</em></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">graphene_z.dat.cw</span></code>： <em>ハミルトニアン行列を SAMB の線形結合で表したときの展開係数</em></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">graphene_s.dat.cw</span></code>： <em>重なり行列を SAMB の線形結合で表したときの展開係数</em></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">graphene_n.dat.cw</span></code>： <em>電子密度行列を SAMB の線形結合で表したときの展開係数</em></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">graphene_band.txt</span></code>： 対称性に適合した Closest Wannier 強束縛模型のバンド分散のデータ。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">graphene_band_detail.txt</span></code>： 軌道の寄与を含む、対称性に適合した Closest Wannier 強束縛模型のバンド分散のデータ。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">plot_band.gnu</span></code>： <em>Closest Wannier と対称性に適合した Closest Wannier のバンドを比べる gnuplot のスクリプト</em></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">plot_band_detail.gnu</span></code>： <em>Closest Wannier と対称性に適合した Closest Wannier のバンドを比べる gnuplot のスクリプト</em></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">graphene_band.pdf(eps)</span></code>： <em>Closest Wannier と対称性に適合した Closest Wannier のバンドの比較</em></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">graphene_band_detail.pdf(eps)</span></code>： <em>Closest Wannier と対称性に適合した Closest Wannier のバンドの比較</em></p></li>
+</ul>
+</li>
+</ul>
+<p>ファイル形式の詳細は次のとおりです。</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="../format/cwin_ja.html"><span class="std std-doc">seedname.cwin</span></a></p></li>
+<li><p><a class="reference internal" href="../format/cwout_ja.html"><span class="std std-doc">seedname.cwout</span></a></p></li>
+<li><p><a class="reference internal" href="../format/hdf5_ja.html"><span class="std std-doc">seedname.hdf5</span></a></p></li>
+<li><p><a class="reference internal" href="../format/hr_ja.html"><span class="std std-doc">seedname_hr.dat.cw</span></a></p></li>
+<li><p><a class="reference internal" href="../format/z_ja.html"><span class="std std-doc">mp_seedname_z.dat.cw</span></a></p></li>
+<li><p><a class="reference internal" href="../format/s_ja.html"><span class="std std-doc">mp_seedname_s.dat.cw</span></a></p></li>
+<li><p><a class="reference internal" href="../format/n_ja.html"><span class="std std-doc">mp_seedname_n.dat.cw</span></a></p></li>
+</ul>
+</li>
+</ul>
+<section id="id4">
+<h2>参考文献<a class="headerlink" href="#id4" title="Link to this heading">#</a></h2>
+<div class="docutils container" id="id5">
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="footcite-ozaki-prb24" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></span>
+<span class="backrefs">(<a role="doc-backlink" href="#id1">1</a>,<a role="doc-backlink" href="#id2">2</a>,<a role="doc-backlink" href="#id3">3</a>)</span>
+<p>Taisuke Ozaki. Closest wannier functions to a given set of localized orbitals. <em>Phys. Rev. B</em>, 110:125115, Sep 2024. <a class="reference external" href="https://doi.org/10.1103/PhysRevB.110.125115">doi:10.1103/PhysRevB.110.125115</a>.</p>
+</aside>
+</aside>
+</div>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./src/tutorials"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">参考文献</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Rikuto Oiwa
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2021-.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

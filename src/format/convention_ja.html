@@ -1,0 +1,597 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>実空間の演算子の位相の規約 &#8212; SymClosestWannier</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=9c3e77be" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=6a604523" />
+    <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=41ba1782" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="../../_static/scripts/fontawesome.js?digest=55c26ed414f5f8a31ebb"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb" />
+
+    <script src="../../_static/documentation_options.js?v=a8e58a58"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js?v=b8b12719"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script data-sd-tabs-storage-prefix="sphinx-design-tab-id-" src="../../_static/design-tabs.js?v=fcb327ea"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"loader": {"load": ["[tex]/physics"]}, "tex": {"packages": {"[+]": ["physics"]}, "macros": {"bm": ["\\boldsymbol{#1}", 1]}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'src/format/convention_ja';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <script src="../../_static/custom.js?v=66a4751a"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  
+    
+    <script src="../../_static/searchtools.js"></script>
+    <script src="../../_static/language_data.js"></script>
+    <script src="../../searchindex.js"></script>
+  
+  </head>
+  <body data-default-mode="">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../README.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">SymClosestWannier</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">MultiPie</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../multipie.html">Construction of SAMBs by using MultiPie</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Closest Wannier method</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../cw.html">Closest Wannier method</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Construction of symmetry-adapted Closest Wannier model</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../scw.html">Symmetry-adapted Closest Wannier model</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">File Format</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="cwin.html">seedname.cwin [default]</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cwout.html">seedname.cwout</a></li>
+<li class="toctree-l1"><a class="reference internal" href="hdf5.html">seedname.hdf5 [default]</a></li>
+
+
+
+<li class="toctree-l1"><a class="reference internal" href="hr.html">seedname_hr.dat.cw</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sr.html">seedname_sr.dat.cw</a></li>
+<li class="toctree-l1"><a class="reference internal" href="z.html">seedname_z.dat.cw</a></li>
+<li class="toctree-l1"><a class="reference internal" href="s.html">seedname_s.dat.cw</a></li>
+<li class="toctree-l1"><a class="reference internal" href="n.html">seedname_n.dat.cw</a></li>
+<li class="toctree-l1"><a class="reference internal" href="convention.html">Phase conventions of real-space operators</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/tutorial01.html">CH4: Closest Wannier tight-binding model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/tutorial02.html">Graphene: Closest Wannier tight-binding model</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">API</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../api/cw.html">Closest Wannier</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/analyzer.html">Analyzer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/util.html">Utility</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+<a href="https://github.com/CMT-MU/SymClosestWannier.git" target="_blank"
+   class="btn btn-sm btn-source-repository-button"
+   title="Source repository"
+   data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+
+</a>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>実空間の演算子の位相の規約</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">実空間の行列</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">対称化した行列と単位胞の外にある原子</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">フーリエ変換</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tb-gauge">tb_gauge</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="id1">
+<h1>実空間の演算子の位相の規約<a class="headerlink" href="#id1" title="Link to this heading">#</a></h1>
+<p>英語版は<a class="reference internal" href="convention.html"><span class="std std-doc">こちら</span></a>です。</p>
+<p>このページでは、<code class="docutils literal notranslate"><span class="pre">pw2cw</span></code> が書き出す実空間の行列（<code class="docutils literal notranslate"><span class="pre">seedname_hr.dat.cw</span></code>、<code class="docutils literal notranslate"><span class="pre">seedname_tb.dat.cw</span></code> など）と <code class="docutils literal notranslate"><span class="pre">seedname.hdf5</span></code> に保存する行列の規約を定め、<code class="docutils literal notranslate"><span class="pre">tb_gauge</span></code> で何が変わるかを説明します。</p>
+<section id="id2">
+<h2>実空間の行列<a class="headerlink" href="#id2" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(O_{ab}(\boldsymbol{R}) = \langle \phi_{a}(\boldsymbol{0})|O|\phi_{b}(\boldsymbol{R})\rangle\)</span>。<span class="math notranslate nohighlight">\(\phi_{b}(\boldsymbol{R})\)</span> は格子ベクトル <span class="math notranslate nohighlight">\(\boldsymbol{R}\)</span> の胞にある軌道 <span class="math notranslate nohighlight">\(b\)</span> です。</p></li>
+<li><p><span class="math notranslate nohighlight">\(\boldsymbol{R} = n_1\boldsymbol{a}_1 + n_2\boldsymbol{a}_2 + n_3\boldsymbol{a}_3\)</span> は、Wigner–Seitz 超格子の整数 <code class="docutils literal notranslate"><span class="pre">irvec</span></code> = (n1, n2, n3) で与えます（<code class="docutils literal notranslate"><span class="pre">util/utility.py:wigner_seitz</span></code>）。<code class="docutils literal notranslate"><span class="pre">ndegen</span></code> は各 <span class="math notranslate nohighlight">\(\boldsymbol{R}\)</span> の縮重度です。</p></li>
+<li><p>配列の添字は <code class="docutils literal notranslate"><span class="pre">O[iR,</span> <span class="pre">a,</span> <span class="pre">b]</span></code> です（ベクトル演算子は <code class="docutils literal notranslate"><span class="pre">O[i,</span> <span class="pre">iR,</span> <span class="pre">a,</span> <span class="pre">b]</span></code>、i = x, y, z）。保存する値は、wannier90 と同じく <code class="docutils literal notranslate"><span class="pre">ndegen</span></code> で割り<strong>ません</strong>。</p></li>
+<li><p>格子ベクトル <code class="docutils literal notranslate"><span class="pre">unit_cell_cart</span></code> は、行が <span class="math notranslate nohighlight">\(\boldsymbol{a}_1, \boldsymbol{a}_2, \boldsymbol{a}_3\)</span> で、単位は Å です。</p></li>
+<li><p>軌道の順は <code class="docutils literal notranslate"><span class="pre">ket_amn</span></code> の順（<code class="docutils literal notranslate"><span class="pre">seedname.win</span></code> の射影の順）です。対称化した行列（<code class="docutils literal notranslate"><span class="pre">*_sym</span></code>）は MultiPie の SAMB の ket の順で、<code class="docutils literal notranslate"><span class="pre">sort_ket_matrix</span></code> で両者を変換します。</p></li>
+</ul>
+</section>
+<section id="id3">
+<h2>対称化した行列と単位胞の外にある原子<a class="headerlink" href="#id3" title="Link to this heading">#</a></h2>
+<p>MultiPie は模型のサイトを単位胞 <span class="math notranslate nohighlight">\([0,1)\)</span> に置き、その SAMB の格子ベクトル <span class="math notranslate nohighlight">\(\boldsymbol{R}\)</span> は、この位置 <span class="math notranslate nohighlight">\(\boldsymbol{\tau}^{\rm MP}_a\)</span> を基準にしています。<code class="docutils literal notranslate"><span class="pre">seedname.nnkp</span></code> の位置 <span class="math notranslate nohighlight">\(\boldsymbol{\tau}_a\)</span> はどこにあってもかまいません（例えば MoS<span class="math notranslate nohighlight">\(_2\)</span> で Mo の面の下にある S は <span class="math notranslate nohighlight">\(z&lt;0\)</span>）。各軌道について、<code class="docutils literal notranslate"><span class="pre">site_offset</span></code> は <span class="math notranslate nohighlight">\(\boldsymbol{\tau}_a = \boldsymbol{\tau}^{\rm MP}_a + \boldsymbol{t}_a\)</span> となる格子ベクトル <span class="math notranslate nohighlight">\(\boldsymbol{t}_a\)</span> です（サイトは格子ベクトルの差を除いて対応づけます。スラブの真空のように模型と長さが違う格子ベクトルの方向では、その方向の距離で対応づけます。<code class="docutils literal notranslate"><span class="pre">ket_amn</span></code> を明示したときは、<span class="math notranslate nohighlight">\(\boldsymbol{t}_b-\boldsymbol{t}_a\)</span> しか効かないので、模型全体を平行移動したもの <span class="math notranslate nohighlight">\(\boldsymbol{\tau}_a = \boldsymbol{\tau}^{\rm MP}_a + \boldsymbol{u} + \boldsymbol{t}_a\)</span> でもかまいません）。SAMB に分解する前に、演算子を模型の格子ベクトルに移し、
+$<span class="math notranslate nohighlight">\(
+O^{\rm MP}_{ab}(\boldsymbol{R}+\boldsymbol{t}_b-\boldsymbol{t}_a) = O_{ab}(\boldsymbol{R}),
+\)</span><span class="math notranslate nohighlight">\(
+対称化した行列（`*_sym`）は元に戻します。こうして、対称化した行列も、他の行列と同じく `seedname.nnkp` の格子ベクトル `irvec` を持ちます（`tb_gauge = true` のとき、その軌道の位置は \)</span>\boldsymbol{\tau}^{\rm MP}_a + \boldsymbol{t}_a$ です）。SAMB の係数は、原子をどこに置くかによりません。</p>
+</section>
+<section id="id4">
+<h2>フーリエ変換<a class="headerlink" href="#id4" title="Link to this heading">#</a></h2>
+<p>ブロッホ基底は <span class="math notranslate nohighlight">\(|\phi_{b}(\boldsymbol{k})\rangle = \sum_{\boldsymbol{R}} e^{i\boldsymbol{k}\cdot\boldsymbol{R}}|\phi_{b}(\boldsymbol{R})\rangle\)</span> で、位相に軌道の位置を含みません。Closest Wannier の構成が <code class="docutils literal notranslate"><span class="pre">seedname.amn</span></code> と <code class="docutils literal notranslate"><span class="pre">seedname.eig</span></code> から <span class="math notranslate nohighlight">\(H(\boldsymbol{k})\)</span>、<span class="math notranslate nohighlight">\(S(\boldsymbol{k})\)</span> などを与えるのはこの基底で、wannier90 の規約（<code class="docutils literal notranslate"><span class="pre">_hr.dat</span></code>、<code class="docutils literal notranslate"><span class="pre">_tb.dat</span></code>）と同じです。このとき</p>
+<div class="math notranslate nohighlight">
+\[
+O_{ab}(\boldsymbol{k}) = \sum_{\boldsymbol{R}} \frac{1}{N_{\boldsymbol{R}}} e^{i\boldsymbol{k}\cdot\boldsymbol{R}} O_{ab}(\boldsymbol{R}), \qquad
+O_{ab}(\boldsymbol{R}) = \frac{1}{N_k}\sum_{\boldsymbol{k}} e^{-i\boldsymbol{k}\cdot\boldsymbol{R}} O_{ab}(\boldsymbol{k}),
+\]</div>
+<p>で、<span class="math notranslate nohighlight">\(N_{\boldsymbol{R}}\)</span> = <code class="docutils literal notranslate"><span class="pre">ndegen</span></code>、和は DFT の k メッシュについてとります（<code class="docutils literal notranslate"><span class="pre">atoms_frac</span></code> なしの <code class="docutils literal notranslate"><span class="pre">fourier_transform_r_to_k</span></code> / <code class="docutils literal notranslate"><span class="pre">fourier_transform_k_to_r</span></code>）。</p>
+</section>
+<section id="tb-gauge">
+<h2>tb_gauge<a class="headerlink" href="#tb-gauge" title="Link to this heading">#</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">tb_gauge</span> <span class="pre">=</span> <span class="pre">true</span></code> のとき、ブロッホ基底は軌道の位置 <span class="math notranslate nohighlight">\(\boldsymbol{\tau}_b\)</span> を含み（<code class="docutils literal notranslate"><span class="pre">seedname.nnkp</span></code> にある軌道 <span class="math notranslate nohighlight">\(b\)</span> の射影の中心、<code class="docutils literal notranslate"><span class="pre">util/utility.py:orbital_positions</span></code>。原子への射影ではその原子の位置）、<span class="math notranslate nohighlight">\(|\phi^{\rm tb}_{b}(\boldsymbol{k})\rangle = e^{i\boldsymbol{k}\cdot\boldsymbol{\tau}_b}|\phi_{b}(\boldsymbol{k})\rangle\)</span> です。k 空間の行列は
+$<span class="math notranslate nohighlight">\(
+O^{\rm tb}_{ab}(\boldsymbol{k}) = \sum_{\boldsymbol{R}} \frac{1}{N_{\boldsymbol{R}}} e^{i\boldsymbol{k}\cdot(\boldsymbol{R}+\boldsymbol{\tau}_b-\boldsymbol{\tau}_a)} O^{\rm tb}_{ab}(\boldsymbol{R})
+\)</span>$
+になります（<code class="docutils literal notranslate"><span class="pre">fourier_transform_r_to_k</span></code> の <code class="docutils literal notranslate"><span class="pre">atoms_frac</span></code> 引数）。基底の変更は k に依存するユニタリー変換なので、固有値は変わりません。固有ベクトルと、ベリー接続や k 微分のワニエゲージの行列は変わります。</p>
+<p><code class="docutils literal notranslate"><span class="pre">pw2cw</span></code> が計算して書き出す実空間の行列（<code class="docutils literal notranslate"><span class="pre">Hr</span></code>、<code class="docutils literal notranslate"><span class="pre">Sr</span></code>、<code class="docutils literal notranslate"><span class="pre">*_sym</span></code>、<code class="docutils literal notranslate"><span class="pre">seedname_hr.dat.cw</span></code>、<code class="docutils literal notranslate"><span class="pre">seedname_r.dat.cw</span></code>、<code class="docutils literal notranslate"><span class="pre">seedname_v.dat.cw</span></code>、<code class="docutils literal notranslate"><span class="pre">seedname.s.cw</span></code> など）は、<code class="docutils literal notranslate"><span class="pre">tb_gauge</span></code> によらず、すべて wannier90 の規約です。<code class="docutils literal notranslate"><span class="pre">seedname_tb.dat.cw</span></code> は <code class="docutils literal notranslate"><span class="pre">tb_gauge</span> <span class="pre">=</span> <span class="pre">false</span></code> のときだけ書き出します。</p>
+<p><code class="docutils literal notranslate"><span class="pre">tb_gauge</span> <span class="pre">=</span> <span class="pre">true</span></code> の <code class="docutils literal notranslate"><span class="pre">postcw</span></code> では、<code class="docutils literal notranslate"><span class="pre">Response</span></code> は演算子を wannier90 の規約のまま持ち、計算に渡すときに変換します（<code class="docutils literal notranslate"><span class="pre">util/get_oper_R.py:to_tb_gauge</span></code>、<code class="docutils literal notranslate"><span class="pre">Response.operators</span></code> から呼ぶ）。<span class="math notranslate nohighlight">\(\boldsymbol{\tau}\)</span> はデカルト座標、<span class="math notranslate nohighlight">\(m\)</span>、<span class="math notranslate nohighlight">\(n\)</span> は行と列の軌道です。</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>演算子</p></th>
+<th class="head"><p>変換</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">HH_R</span></code>、<code class="docutils literal notranslate"><span class="pre">SS_R</span></code>、<code class="docutils literal notranslate"><span class="pre">SH_R</span></code></p></td>
+<td><p>変えない</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">AA_R</span></code>（<span class="math notranslate nohighlight">\(\boldsymbol{r}\)</span>）</p></td>
+<td><p><span class="math notranslate nohighlight">\(A^{\rm tb}_{a,mn}(\boldsymbol{R}) = A_{a,mn}(\boldsymbol{R}) - \tau_{n,a}\delta_{mn}\delta_{\boldsymbol{R}\boldsymbol{0}}\)</span></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">BB_R</span></code>（<span class="math notranslate nohighlight">\(H\boldsymbol{r}\)</span>）</p></td>
+<td><p><span class="math notranslate nohighlight">\(B^{\rm tb}_{a}(\boldsymbol{R}) = B_{a}(\boldsymbol{R}) - \tau_{n,a} H(\boldsymbol{R})\)</span></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">CC_R</span></code>（<span class="math notranslate nohighlight">\(\boldsymbol{r}H\boldsymbol{r}\)</span>）</p></td>
+<td><p><span class="math notranslate nohighlight">\(C^{\rm tb}_{ab} = C_{ab} - \tau_{m,a} B_{b} - \tau_{n,b} B^{\dagger}_{a} + \tau_{m,a}\tau_{n,b} H\)</span>、ただし <span class="math notranslate nohighlight">\(B^{\dagger}_{a,mn}(\boldsymbol{R}) = B_{a,nm}(-\boldsymbol{R})^{*}\)</span></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">SR_R</span></code>（<span class="math notranslate nohighlight">\(\sigma\boldsymbol{r}\)</span>）、<code class="docutils literal notranslate"><span class="pre">SHR_R</span></code>（<span class="math notranslate nohighlight">\(\sigma H\boldsymbol{r}\)</span>）</p></td>
+<td><p><span class="math notranslate nohighlight">\(SR^{\rm tb}_{ab}(\boldsymbol{R}) = SR_{ab}(\boldsymbol{R}) - \tau_{n,b} SS_{a}(\boldsymbol{R})\)</span>、<span class="math notranslate nohighlight">\(SHR^{\rm tb}_{ab}(\boldsymbol{R}) = SHR_{ab}(\boldsymbol{R}) - \tau_{n,b} SH_{a}(\boldsymbol{R})\)</span>（<span class="math notranslate nohighlight">\(a\)</span>：スピンの成分）</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>k 微分も同じ基底でとります。<span class="math notranslate nohighlight">\(\partial_{\boldsymbol{k}} O^{\rm tb}(\boldsymbol{k}) = \sum_{\boldsymbol{R}} i(\boldsymbol{R}+\boldsymbol{\tau}_b-\boldsymbol{\tau}_a)\,e^{i\boldsymbol{k}\cdot(\boldsymbol{R}+\boldsymbol{\tau}_b-\boldsymbol{\tau}_a)} O^{\rm tb}_{ab}(\boldsymbol{R})/N_{\boldsymbol{R}}\)</span>（<code class="docutils literal notranslate"><span class="pre">pseudo=True</span></code> の <code class="docutils literal notranslate"><span class="pre">fourier_transform_r_to_k_new</span></code>、<code class="docutils literal notranslate"><span class="pre">fourier_transform_r_to_k_vec</span></code>、<code class="docutils literal notranslate"><span class="pre">atoms_frac</span></code> を与えた <code class="docutils literal notranslate"><span class="pre">get_v_R</span></code>）。</p>
+<p><code class="docutils literal notranslate"><span class="pre">to_tb_gauge</span></code> は <code class="docutils literal notranslate"><span class="pre">ndegen(-R)</span> <span class="pre">=</span> <span class="pre">ndegen(R)</span></code> を仮定しています。これは Wigner–Seitz 超格子では成り立ちます。</p>
+<p>これらの変換により、どちらのゲージの演算子も同じ物理量を表すので、ワニエ補間の式は、各 k 点で同じベリー曲率、軌道磁化（−2Im f、g、h）、スピン流を与えます。J0、J1、J2 の項への分け方だけがゲージによります（<code class="docutils literal notranslate"><span class="pre">tests/test_tb_gauge.py</span></code> で確認）。これは、<code class="docutils literal notranslate"><span class="pre">HH_R</span></code> が <code class="docutils literal notranslate"><span class="pre">BB_R</span></code> と <code class="docutils literal notranslate"><span class="pre">CC_R</span></code> を作ったハミルトニアンであるときに成り立ちます。Qiao の方法のスピン流でも、テストの模型のように <span class="math notranslate nohighlight">\(SH(\boldsymbol{k}) = SS(\boldsymbol{k})\,H(\boldsymbol{k})\)</span>（k 空間の行列の積、<span class="math notranslate nohighlight">\(\boldsymbol{R}\)</span> では畳み込み）なら、2 つのゲージは一致します。<code class="docutils literal notranslate"><span class="pre">SH_R</span></code> はすべてのブロッホバンドから <span class="math notranslate nohighlight">\(U^\dagger s H U\)</span> として作るので、<span class="math notranslate nohighlight">\(U^\dagger s U\,U^\dagger H U\)</span> とは <span class="math notranslate nohighlight">\(U^\dagger s(1-UU^\dagger)HU\)</span> だけ違います。これは disentangle した模型では一般に 0 でなく、そのとき Qiao の方法のスピンホール伝導度は <code class="docutils literal notranslate"><span class="pre">tb_gauge</span></code> によることがあります（<code class="docutils literal notranslate"><span class="pre">symcw-wberri</span></code> のテストの disentangle したスピノルの模型がそうです）。wannier90 は <code class="docutils literal notranslate"><span class="pre">tb_gauge</span> <span class="pre">=</span> <span class="pre">false</span></code> の規約を使います。<code class="docutils literal notranslate"><span class="pre">postcw</span></code> は別のハミルトニアン（対称化したときの <code class="docutils literal notranslate"><span class="pre">Hr_sym</span></code>、<code class="docutils literal notranslate"><span class="pre">hr_input</span></code>）を使うことがあります。そのときも <code class="docutils literal notranslate"><span class="pre">BB_R</span></code> と <code class="docutils literal notranslate"><span class="pre">CC_R</span></code> はそれ自身のハミルトニアンで変換しますが、それらを与えたハミルトニアンと組み合わせる量（軌道磁化、ジャイロトロピックな K）は、どちらのゲージでも近似になり、2 つのハミルトニアンの差の程度だけゲージによって違います。</p>
+<p>固有値だけを使う量（バンド分散、状態密度、Lindhard 関数）は <code class="docutils literal notranslate"><span class="pre">tb_gauge</span></code> によりません。位置演算子を無視するところでは、結果は <code class="docutils literal notranslate"><span class="pre">tb_gauge</span></code> によります。<code class="docutils literal notranslate"><span class="pre">use_tb_approximation</span> <span class="pre">=</span> <span class="pre">true</span></code> で使う速度 <span class="math notranslate nohighlight">\(\partial_{\boldsymbol{k}} H/\hbar\)</span>（<code class="docutils literal notranslate"><span class="pre">get_v_R</span></code>）のバンド間の行列要素は、軌道の位相によるからです。</p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./src/format"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">実空間の行列</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">対称化した行列と単位胞の外にある原子</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">フーリエ変換</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tb-gauge">tb_gauge</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Rikuto Oiwa
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2021-.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
