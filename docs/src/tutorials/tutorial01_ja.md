@@ -9,8 +9,8 @@ orphan: true
 - 概要：水素様原子の $s$ 軌道と $p$ 軌道を使い、Closest Wannier 法で ${\rm CH}_{4}$ 分子の Closest Wannier 模型と、ワニエ補間したバンド構造を計算します。
     理論的な背景の詳細は、文献 {footcite}`ozaki-prb24` を参照してください。
 
-- ディレクトリ：`tutorials/tutorial01/` *ファイルは
-    [こちら](https://github.com/CMT-MU/SymClosestWannier/tree/main/tutorials/tutorial01)からダウンロードできます*
+- ディレクトリ：`others/tutorials/tutorial01/` *ファイルは
+    [こちら](https://github.com/CMT-MU/SymClosestWannier/tree/main/others/tutorials/tutorial01)からダウンロードできます*
 
 
 - 入力ファイル

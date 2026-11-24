@@ -4,12 +4,12 @@ A Japanese version is [here](multipie_ja.md).
 
 **Note**: if symmetrization is not required, this procedure is not necessary
 
-1. Prepare input file. Example input files for [CH4](https://github.com/CMT-MU/SymClosestWannier/blob/main/tutorials/tutorial01/ch4.py) molecule and [graphene](https://github.com/CMT-MU/SymClosestWannier/blob/main/tutorials/tutorial02/graphene.py) are given here.
+1. Prepare input file. Example input files for [CH4](https://github.com/CMT-MU/SymClosestWannier/blob/main/others/tutorials/tutorial01/ch4.py) molecule and [graphene](https://github.com/CMT-MU/SymClosestWannier/blob/main/others/tutorials/tutorial02/graphene.py) are given here.
     - CH4 molecule
-    ```{literalinclude} ../../tutorials/tutorial01/ch4.py
+    ```{literalinclude} ../../others/tutorials/tutorial01/ch4.py
     ```
     - graphene
-    ```{literalinclude} ../../tutorials/tutorial02/graphene.py
+    ```{literalinclude} ../../others/tutorials/tutorial02/graphene.py
     ```
 
 2. At the folder where these two input files exist, do the following to create SAMB.

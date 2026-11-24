@@ -9,8 +9,8 @@ A Japanese version is [here](tutorial02_ja.md).
     using hydrogenic atomic $p_{z}$ orbitals.
     For the detail of the theoretical background, see Ref. {footcite}`ozaki-prb24`.
 
-- Directory: `tutorials/tutorial02/` *Files can be downloaded from
-    [here](https://github.com/CMT-MU/SymClosestWannier/tree/main/tutorials/tutorial02)*
+- Directory: `others/tutorials/tutorial02/` *Files can be downloaded from
+    [here](https://github.com/CMT-MU/SymClosestWannier/tree/main/others/tutorials/tutorial02)*
 
 - Input files
     - `graphene.cwin`:  *The input file for `pw2cw`*
