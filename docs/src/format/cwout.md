@@ -2,7 +2,7 @@
 
 A Japanese version is [here](cwout_ja.md).
 
-Example standard output for [graphene](https://github.com/CMT-MU/SymClosestWannier/blob/main/tutorials/tutorial02/graphene.cwin) is given here.
+Example standard output for [graphene](https://github.com/CMT-MU/SymClosestWannier/blob/main/others/tutorials/tutorial02/graphene.cwin) is given here.
 ```
 
              +---------------------------------------------------+

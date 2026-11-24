@@ -80,6 +80,9 @@ Real-space operators for responses (`AA_R`, `BB_R`, `CC_R`, `SS_R`, `v_R`, …) 
 
 - `tests/conftest.py:make_case` copies DFT inputs from `others/examples/<seed>/` into a temporary directory, writes a
   `.cwin` from `CWIN`, and `chdir`s into it.
+- `others/tutorials/tutorial01/` (CH4) and `tutorial02/` (graphene) hold the files of the docs tutorials
+  (`docs/src/tutorials/`, linked and included by the docs pages); `tests/test_samb_select.py` builds the MultiPie model
+  of `tutorial01/ch4.py`.
 - Regression references live in `tests/data/`; their provenance is in `tests/data/README.md`. Hamiltonians are compared
   with `atol = 1e-7`.
 - `tests/response_reference.py` + `tests/data/response_reference.npz` pin the outputs of `postcw` responses on a model

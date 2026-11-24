@@ -9,8 +9,8 @@ A Japanese version is [here](tutorial01_ja.md).
     using hydrogenic atomic $s$ and $p$ orbitals.
     For the detail of the theoretical background, see Ref. {footcite}`ozaki-prb24`.
 
-- Directory: `tutorials/tutorial01/` *Files can be downloaded from
-    [here](https://github.com/CMT-MU/SymClosestWannier/tree/main/tutorials/tutorial01)*
+- Directory: `others/tutorials/tutorial01/` *Files can be downloaded from
+    [here](https://github.com/CMT-MU/SymClosestWannier/tree/main/others/tutorials/tutorial01)*
 
 
 - Input files

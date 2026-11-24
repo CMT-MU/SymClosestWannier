@@ -9,8 +9,8 @@ orphan: true
 - 概要：水素様原子の $p_{z}$ 軌道を使い、Closest Wannier 法でグラフェンの Closest Wannier 模型と、ワニエ補間したバンド構造を計算します。
     理論的な背景の詳細は、文献 {footcite}`ozaki-prb24` を参照してください。
 
-- ディレクトリ：`tutorials/tutorial02/` *ファイルは
-    [こちら](https://github.com/CMT-MU/SymClosestWannier/tree/main/tutorials/tutorial02)からダウンロードできます*
+- ディレクトリ：`others/tutorials/tutorial02/` *ファイルは
+    [こちら](https://github.com/CMT-MU/SymClosestWannier/tree/main/others/tutorials/tutorial02)からダウンロードできます*
 
 - 入力ファイル
     - `graphene.cwin`： *`pw2cw` の入力ファイル*
