@@ -8,12 +8,12 @@ orphan: true
 
 **注意**：対称化をしない場合、この手順は必要ありません。
 
-1. 入力ファイルを用意します。[CH4](https://github.com/CMT-MU/SymClosestWannier/blob/main/tutorials/tutorial01/ch4.py) 分子と [グラフェン](https://github.com/CMT-MU/SymClosestWannier/blob/main/tutorials/tutorial02/graphene.py) の入力ファイルの例を示します。
+1. 入力ファイルを用意します。[CH4](https://github.com/CMT-MU/SymClosestWannier/blob/main/others/tutorials/tutorial01/ch4.py) 分子と [グラフェン](https://github.com/CMT-MU/SymClosestWannier/blob/main/others/tutorials/tutorial02/graphene.py) の入力ファイルの例を示します。
     - CH4 分子
-    ```{literalinclude} ../../tutorials/tutorial01/ch4.py
+    ```{literalinclude} ../../others/tutorials/tutorial01/ch4.py
     ```
     - グラフェン
-    ```{literalinclude} ../../tutorials/tutorial02/graphene.py
+    ```{literalinclude} ../../others/tutorials/tutorial02/graphene.py
     ```
 
 2. この 2 つの入力ファイルがあるフォルダで、次のように実行して SAMB を作ります。

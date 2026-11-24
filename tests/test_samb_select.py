@@ -8,7 +8,7 @@ import pytest
 
 from symclosestwannier.cw.cw_model import CWModel
 
-TUTORIAL01 = Path(__file__).resolve().parents[1] / "tutorials" / "tutorial01"
+TUTORIAL01 = Path(__file__).resolve().parents[1] / "others" / "tutorials" / "tutorial01"
 
 
 # ==================================================
