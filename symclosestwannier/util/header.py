@@ -127,7 +127,7 @@ win_info = {
     # berry
     "berry": "Determines whether to enter the berry routines (bool), [False].",
     "berry_task": "The quantity to compute when berry=true, ahc/morb/kubo/sc/shc/kdotp/me (str).",
-    "berry_kmesh": "Overrides the kmesh global variable, one or three integers.",
+    "berry_kmesh": "Overrides the kmesh global variable, one or three integers (one integer is used for all three directions) (list), [kmesh] (earlier versions of SymClosestWannier defaulted to [1, 1, 1]).",
     "berry_kmesh_spacing": "Overrides the kmesh_spacing global variable.",
     # berry curvature, ahc, shc
     "berry_curv_unit": " Unit of Berry curvature, ang2/bohr2, ['ang2']",
@@ -146,7 +146,7 @@ win_info = {
     # gyrotropic
     "gyrotropic": "Determines whether to enter the gyrotropic routines (bool), [False].",
     "gyrotropic_task": "The quantity to compute when gyrotropic=true, -DO/-Dw/-C/-K/-spin/-NOA/-dos, (str).",
-    "gyrotropic_kmesh": "Overrides the kmesh global variable, one or three integers.",
+    "gyrotropic_kmesh": "Overrides the kmesh global variable, one or three integers (one integer is used for all three directions) (list), [kmesh] (earlier versions of SymClosestWannier defaulted to [1, 1, 1]).",
     "gyrotropic_kmesh_spacing": "Overrides the kmesh_spacing global variable.",
     "gyrotropic_freq_max": "Upper limit of the frequency range for computing the optical activity. (The units are [eV]) (float), [If an inner energy window was specified, the default value is dis_froz_max-fermi_energy+0.6667. Otherwise it is the difference between the maximum and the minimum energy eigenvalue stored in seedname.eig, plus 0.6667.].",
     "gyrotropic_freq_min": "Lower limit of the frequency range for computing the optical activity. (The units are [eV]) (float), [0.0].",

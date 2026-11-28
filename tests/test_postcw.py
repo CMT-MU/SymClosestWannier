@@ -34,6 +34,28 @@ def test_postcw_computes_and_writes_the_response(make_case):
 
 
 # ==================================================
+def test_postcw_berry_kmesh_defaults_to_kmesh(make_case):
+    """
+    without berry_kmesh, postcw uses kmesh, as in wannier90 (it used a 1x1x1 mesh).
+    """
+    seedname = "graphene_pz"
+    results = []
+    for dirname, mesh in (("explicit", "berry_kmesh = 6 6 1"), ("inherited", "kmesh = 6 6 1")):
+        workdir = make_case(
+            seedname, extra="write_info_data = true\nuse_tb_approximation = true\nverbose = false", dirname=dirname
+        )
+        with open(workdir / f"{seedname}.win", "a") as fp:
+            fp.write(f"\nberry = true\nberry_task = kubo\n{mesh}\nkubo_freq_max = 6.0\nkubo_freq_step = 0.5\n")
+            fp.write("kubo_smr_fixed_en_width = 0.2\n")
+        cw_creator(seedname)
+        analyzer(seedname)
+        results.append(np.loadtxt(workdir / f"{seedname}-kubo_S_xx.dat"))
+
+    assert np.abs(results[0][:, 2]).max() > 1.0  # 0 on a 1x1x1 mesh
+    np.testing.assert_allclose(results[1], results[0], rtol=1e-12, atol=0.0)
+
+
+# ==================================================
 def _flags(**kwargs):
     d = dict(
         calc_spreads=False,

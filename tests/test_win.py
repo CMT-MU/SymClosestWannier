@@ -135,3 +135,25 @@ def test_kmesh_invalid(tmp_path, key, text):
 @pytest.mark.parametrize("line", ["berry_kmesh : 4 ! comment\n", "berry_kmesh = 4 4 4 ! comment\n"])
 def test_kmesh_syntax(tmp_path, line):
     assert write_win(tmp_path, line)["berry_kmesh"] == [4, 4, 4]
+
+
+# ==================================================
+@pytest.mark.parametrize("key", ["berry_kmesh", "gyrotropic_kmesh"])
+def test_kmesh_inherited(tmp_path, key):
+    """
+    berry_kmesh and gyrotropic_kmesh default to kmesh, as in wannier90.
+    """
+    win = write_win(tmp_path, "kmesh = 5\n")
+    assert win[key] == [5, 5, 5]
+    assert win[key] is not win["kmesh"]
+    assert write_win(tmp_path, f"kmesh = 5\n{key} = 2 3 4\n")[key] == [2, 3, 4]
+    assert write_win(tmp_path, f"{key} = 6\n")["kmesh"] == [1, 1, 1]
+
+
+# ==================================================
+def test_kmesh_inherited_each_key(tmp_path):
+    win = write_win(tmp_path, "kmesh = 2 3 4\n")
+    assert win["berry_kmesh"] == win["gyrotropic_kmesh"] == [2, 3, 4]
+    win = write_win(tmp_path, "kmesh = 2 3 4\nberry_kmesh = 6\n")
+    assert win["berry_kmesh"] == [6, 6, 6]
+    assert win["gyrotropic_kmesh"] == [2, 3, 4]
