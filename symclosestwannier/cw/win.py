@@ -241,7 +241,7 @@ class Win(dict):
             # berry
                 - berry                        : Determines whether to enter the berry routines (bool), [False].
                 - berry_task                   : The quantity to compute when berry=true, ahc/morb/kubo/sc/shc/kdotp/me (str).
-                - berry_kmesh                  : Overrides the kmesh global variable, one or three integers.
+                - berry_kmesh                  : Overrides the kmesh global variable, one or three integers (one integer is used for all three directions) (list), [kmesh] (earlier versions of SymClosestWannier defaulted to [1, 1, 1]).
                 - berry_kmesh_spacing          : Overrides the kmesh_spacing global variable.
 
             # berry curvature, ahc, shc
@@ -283,7 +283,7 @@ class Win(dict):
             # gyrotropic
                 - gyrotropic                    : Determines whether to enter the gyrotropic routines (bool), [False].
                 - gyrotropic_task               : The quantity to compute when gyrotropic=true, -DO/-Dw/-C/-K/-spin/-NOA/-dos, (str).
-                - gyrotropic_kmesh              : Overrides the kmesh global variable, one or three integers.
+                - gyrotropic_kmesh              : Overrides the kmesh global variable, one or three integers (one integer is used for all three directions) (list), [kmesh] (earlier versions of SymClosestWannier defaulted to [1, 1, 1]).
                 - gyrotropic_kmesh_spacing      : Overrides the kmesh_spacing global variable.
                 - gyrotropic_freq_max           : Upper limit of the frequency range for computing the optical activity. (The units are [eV]) (float), [If an inner energy window was specified, the default value is dis_froz_max-fermi_energy+0.6667. Otherwise it is the difference between the maximum and the minimum energy eigenvalue stored in seedname.eig, plus 0.6667.].
                 - gyrotropic_freq_min           : Lower limit of the frequency range for computing the optical activity. (The units are [eV]) (float), [0.0].
@@ -472,7 +472,8 @@ class Win(dict):
         if berry_task is not None:
             berry_task = berry_task.replace(" ", "")
         d["berry_task"] = berry_task
-        d["berry_kmesh"] = self._get_kmesh(win_data, "berry_kmesh")
+        # as wannier90: berry_kmesh and gyrotropic_kmesh default to kmesh
+        d["berry_kmesh"] = self._get_kmesh(win_data, "berry_kmesh", d["kmesh"])
         berry_kmesh_spacing = self._get_param_keyword(win_data, "berry_kmesh_spacing", "1  1  1", dtype=str)
         d["berry_kmesh_spacing"] = [int(x) for x in berry_kmesh_spacing.split()]
 
@@ -507,7 +508,7 @@ class Win(dict):
         else:
             d["gyrotropic_task"] = None
 
-        d["gyrotropic_kmesh"] = self._get_kmesh(win_data, "gyrotropic_kmesh")
+        d["gyrotropic_kmesh"] = self._get_kmesh(win_data, "gyrotropic_kmesh", d["kmesh"])
         gyrotropic_kmesh_spacing = self._get_param_keyword(win_data, "gyrotropic_kmesh_spacing", "1  1  1", dtype=str)
         d["gyrotropic_kmesh_spacing"] = [int(x) for x in gyrotropic_kmesh_spacing.split()]
 
@@ -613,11 +614,15 @@ class Win(dict):
         return d
 
     # ==================================================
-    def _get_kmesh(self, lines, keyword):
+    def _get_kmesh(self, lines, keyword, default=(1, 1, 1)):
         """
         one or three positive integers, as in wannier90; one integer is used for all three directions.
+        default is used if keyword is not given.
         """
-        mesh = str(self._get_param_keyword(lines, keyword, "1  1  1", dtype=str)).split()
+        mesh = self._get_param_keyword(lines, keyword, None, dtype=str)
+        if mesh is None:
+            return list(default)
+        mesh = mesh.split()
         try:
             mesh = [int(x) for x in mesh]
         except ValueError:
